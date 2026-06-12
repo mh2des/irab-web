@@ -1,0 +1,62 @@
+---
+import Container from '../Container.astro';
+import Section from '../Section.astro';
+---
+<Section id="audience" class="bg-paper-soft/60 dark:bg-coal-soft/30 border-y border-stone/60 dark:border-coal-edge/60">
+  <Container>
+    <div class="max-w-2xl mb-16">
+      <p class="eyebrow mb-4" data-reveal>For whom</p>
+      <h2 class="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.1] tracking-tight" data-reveal data-reveal-delay="100">
+        Built for serious learners, at every level.
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-stone dark:bg-coal-edge">
+      {/* Students */}
+      <div class="relative bg-paper-soft dark:bg-coal-soft p-8 md:p-10 border-t-2 border-purple" data-reveal>
+        <div class="flex items-center gap-2 mb-6">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-purple"></span>
+          <p class="font-mono text-caption uppercase tracking-widest text-ink/60 dark:text-mist/60">Students</p>
+        </div>
+        <h3 class="font-display text-h2 leading-tight mb-6">From basmala to Baqara.</h3>
+        <p class="text-body text-ink/70 dark:text-mist/70 leading-relaxed mb-6">
+          You finished Duolingo Arabic and still can't read the Quran. Irab is the bridge, real grammar, curated practice + AI custom grading, and a daily ritual that compounds.
+        </p>
+        <p class="font-mono text-caption text-ink/50 dark:text-mist/50">
+          → Madinah Books · Bayyinah · classical curricula
+        </p>
+      </div>
+
+      {/* Teachers, teal accent */}
+      <div class="relative bg-paper-soft dark:bg-coal-soft p-8 md:p-10 border-t-2 border-teal" data-reveal data-reveal-delay="100">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-teal"></span>
+          <p class="font-mono text-caption uppercase tracking-widest text-ink/60 dark:text-mist/60">Teachers</p>
+        </div>
+        <h3 class="font-display text-h2 leading-tight mb-6">Check in seconds.</h3>
+        <p class="text-body text-ink/70 dark:text-mist/70 leading-relaxed mb-6">
+          Instant i'rab on any sentence your students bring you. Review shared parse results, compare analyses, and point students toward practice without needing a classroom dashboard.
+        </p>
+        <a href="/teachers" class="inline-flex items-center gap-2 text-teal hover:text-teal-deep font-medium text-small transition-colors duration-200">
+          For madrasahs &amp; academies
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      {/* Scholars */}
+      <div class="relative bg-paper-soft dark:bg-coal-soft p-8 md:p-10 border-t-2 border-ink dark:border-mist" data-reveal data-reveal-delay="200">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-ink dark:bg-mist"></span>
+          <p class="font-mono text-caption uppercase tracking-widest text-ink/60 dark:text-mist/60">Scholars</p>
+        </div>
+        <h3 class="font-display text-h2 leading-tight mb-6">A second opinion, instantly.</h3>
+        <p class="text-body text-ink/70 dark:text-mist/70 leading-relaxed mb-6">
+          Cross-check edge cases. Settle ambiguous parses. Get a starting point for tafsir or translation work. Not a replacement for your training, an augmentation of it.
+        </p>
+        <p class="font-mono text-caption text-ink/50 dark:text-mist/50">
+          → Translation work · tafsir · research
+        </p>
+      </div>
+    </div>
+  </Container>
+</Section>

@@ -1,0 +1,25 @@
+---
+/**
+ * Section, vertical rhythm wrapper.
+ *
+ * Each section gets generous breathing room, no two sections feel cramped.
+ * `lg` for hero / pivotal moments. `default` for normal flow. `sm` for FAQ-y.
+ */
+interface Props {
+  size?: 'sm' | 'default' | 'lg' | 'xl';
+  class?: string;
+  id?: string;
+}
+
+const { size = 'default', class: className = '', id } = Astro.props as Props;
+
+const sizes: Record<NonNullable<Props['size']>, string> = {
+  sm: 'py-16 md:py-20',
+  default: 'py-24 md:py-32',
+  lg: 'py-32 md:py-40',
+  xl: 'py-40 md:py-56',
+};
+---
+<section id={id} class:list={[sizes[size], className]}>
+  <slot />
+</section>

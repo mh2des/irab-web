@@ -1,0 +1,48 @@
+---
+/**
+ * Irab, Homepage
+ *
+ * Direction C · The Forge.
+ * Section order matches /docs/marketing_plan.md.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Schema from '../../components/Schema.astro';
+import Nav from '../../components/Nav.astro';
+import Hero from '../../components/sections/Hero.astro';
+import Thesis from '../../components/sections/Thesis.astro';
+import LiveDemo from '../../components/sections/LiveDemo.astro';
+import Features from '../../components/sections/Features.astro';
+import Audience from '../../components/sections/Audience.astro';
+import SocialProof from '../../components/sections/SocialProof.astro';
+import Pricing from '../../components/sections/Pricing.astro';
+import Faq, { FAQS } from '../../components/sections/Faq.astro';
+import FinalCta from '../../components/sections/FinalCta.astro';
+import AppShowcase from '../../components/sections/AppShowcase.astro';
+import Footer from '../../components/sections/Footer.astro';
+---
+<BaseLayout
+lang="en"   title="Irab · Read Arabic the way scholars read."
+  description="AI-powered Arabic grammar (i'rab) for Quran students, teachers, and serious learners. Paste any sentence, get word-by-word analysis, then practice with challenges, dictionaries, and references."
+>
+  <Schema slot="head" faqs={FAQS.map(f => ({ q: f.q, a: f.a }))} />
+
+  <Nav lang="en" />
+  <main>
+    <Hero />
+    <Thesis />
+    <LiveDemo />
+    <Features />
+    <Audience />
+    <SocialProof />
+    <Pricing />
+    <AppShowcase lang="en" />
+    <Faq />
+    <FinalCta />
+  </main>
+  <Footer lang="en" />
+
+  {/* Scroll-triggered reveals */}
+  <script>
+    import '../../scripts/scroll-reveal';
+  </script>
+</BaseLayout>

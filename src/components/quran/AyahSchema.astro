@@ -1,0 +1,67 @@
+---
+/**
+ * AyahSchema — JSON-LD for an ayah page: ScholarlyArticle (citing الجدول),
+ * BreadcrumbList, and FAQPage when genuine Q&A exist. Emitted into <head>.
+ */
+import type { Ayah, SurahMeta } from '../../lib/quran';
+
+interface Props {
+  ayah: Ayah;
+  surah: SurahMeta;
+  canonical: string;
+  title: string;
+  description: string;
+  faqs?: { q: string; a: string }[];
+}
+const { ayah, surah, canonical, title, description, faqs = [] } = Astro.props;
+const SITE = 'https://irab.app';
+const surahUrl = `${SITE}/quran/${surah.slug}`;
+
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: title,
+  description,
+  inLanguage: 'ar',
+  url: canonical,
+  about: `سورة ${surah.name} الآية ${ayah.ayah}`,
+  isPartOf: { '@type': 'WebPage', name: `إعراب سورة ${surah.name}`, url: surahUrl },
+  citation: {
+    '@type': 'Book',
+    name: 'الجدول في إعراب القرآن',
+    author: { '@type': 'Person', name: 'محمود صافي' },
+  },
+  author: { '@type': 'Organization', name: 'Irab', url: SITE },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Irab',
+    url: SITE,
+    logo: { '@type': 'ImageObject', url: `${SITE}/icons/Icon-512.png` },
+  },
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'إعراب القرآن', item: `${SITE}/quran` },
+    { '@type': 'ListItem', position: 2, name: `سورة ${surah.name}`, item: surahUrl },
+    { '@type': 'ListItem', position: 3, name: `الآية ${ayah.ayah}`, item: canonical },
+  ],
+};
+
+const faqPage = faqs.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    }
+  : null;
+---
+<script type="application/ld+json" set:html={JSON.stringify(article)} is:inline />
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} is:inline />
+{faqPage && <script type="application/ld+json" set:html={JSON.stringify(faqPage)} is:inline />}

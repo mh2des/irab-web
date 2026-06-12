@@ -1,0 +1,61 @@
+---
+/**
+ * ArticleSection, H2 + 60-word lead + body slot.
+ */
+import Container from './Container.astro';
+
+interface Props {
+  id?: string;
+  title: string;
+  lead: string;
+  class?: string;
+  lang?: 'en' | 'ar';
+}
+
+const { id, title, lead, class: className = '', lang = 'ar' } = Astro.props;
+const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
+const leadClass  = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxed';
+const bodyClass  = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxed';
+---
+<section id={id} class:list={['py-12 md:py-16', className]}>
+  <Container size="narrow">
+    <h2 class:list={[titleClass, 'text-[clamp(1.75rem,3.5vw,2.5rem)] leading-tight tracking-tight mb-6']}>{title}</h2>
+    <p class:list={[leadClass, 'text-body-lg text-ink/80 dark:text-mist/80 mb-6']}>{lead}</p>
+    <div class:list={['prose-irab text-body text-ink/75 dark:text-mist/75 space-y-4', bodyClass]}>
+      <slot />
+    </div>
+  </Container>
+</section>
+
+<style is:global>
+  .prose-irab p { margin: 0; }
+  .prose-irab strong { color: var(--color-ink); font-weight: 500; }
+  .dark .prose-irab strong { color: var(--color-mist); }
+  .prose-irab a { color: var(--color-purple); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  .prose-irab a:hover { color: var(--color-purple-deep); text-decoration: underline; }
+  .prose-irab ul { list-style: disc; padding-inline-start: 1.5rem; margin: 0.5rem 0; }
+  .prose-irab ol { list-style: decimal; padding-inline-start: 1.5rem; margin: 0.5rem 0; }
+  .prose-irab li { margin-bottom: 0.4rem; }
+  .prose-irab code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.1em 0.35em;
+    background: var(--color-paper-soft);
+    border: 1px solid var(--color-stone);
+    border-radius: 4px;
+  }
+  .dark .prose-irab code {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+  }
+  .prose-irab blockquote {
+    border-inline-start: 3px solid var(--color-purple);
+    padding-inline-start: 1.25rem;
+    margin: 1rem 0;
+    color: var(--color-ink);
+    font-style: italic;
+  }
+  .dark .prose-irab blockquote { color: var(--color-mist); }
+  .prose-irab .ar { font-family: var(--font-arabic); direction: rtl; unicode-bidi: isolate; }
+  .prose-irab .en { font-family: var(--font-sans); direction: ltr; unicode-bidi: isolate; }
+</style>

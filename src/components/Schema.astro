@@ -1,0 +1,79 @@
+---
+/**
+ * Schema.astro, JSON-LD structured data.
+ *
+ * Three schemas the AI engines actually parse:
+ *   • MobileApplication  → Google AI Overviews, app cards
+ *   • Organization       → Knowledge Panel + entity authority for LLMs
+ *   • FAQPage            → extracted directly into AI Overviews
+ */
+
+interface FaqItem { q: string; a: string; }
+
+interface Props {
+  faqs?: FaqItem[];
+}
+
+const { faqs = [] } = Astro.props;
+
+const mobileApp = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: 'Irab: Arabic Grammar & Nahw',
+  alternateName: 'إعراب',
+  description:
+    "AI-powered Arabic grammar (i'rab) analyzer with practice, challenges, dictionaries, a classical grammar library, and progress tracking for serious learners.",
+  applicationCategory: 'EducationApplication',
+  operatingSystem: 'iOS, Android',
+  url: 'https://irab.app',
+  image: 'https://irab.app/og-default.png',
+  inLanguage: ['en', 'ar'],
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    description: 'Free with optional Irab Plus subscription.',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Irab',
+    url: 'https://irab.app',
+  },
+  downloadUrl: [
+    'https://play.google.com/store/apps/details?id=com.irabapp.arabic',
+    'https://apps.apple.com/app/id6765811277',
+  ],
+};
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Irab',
+  alternateName: ['إعراب', 'IrabApp'],
+  url: 'https://irab.app',
+  logo: 'https://irab.app/icons/Icon-512.png',
+  description:
+    'Irab builds AI-powered tools for studying Arabic grammar and the Quran. Founded in 2025.',
+  founder: { '@type': 'Person', name: 'Mansour Shakla' },
+  sameAs: [
+    'https://play.google.com/store/apps/details?id=com.irabapp.arabic',
+    'https://apps.apple.com/app/id6765811277',
+  ],
+};
+
+const faqPage = faqs.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    }
+  : null;
+---
+<script type="application/ld+json" set:html={JSON.stringify(mobileApp)} is:inline />
+<script type="application/ld+json" set:html={JSON.stringify(organization)} is:inline />
+{faqPage && <script type="application/ld+json" set:html={JSON.stringify(faqPage)} is:inline />}

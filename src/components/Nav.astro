@@ -1,0 +1,243 @@
+---
+import Container from './Container.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  lang?: 'en' | 'ar';
+}
+
+const { lang = 'ar' } = Astro.props;
+
+const t = lang === 'ar'
+  ? {
+      tryDemo:  'جرّب التطبيق',
+      quran:    'إعراب القرآن',
+      features: 'المميزات',
+      teachers: 'للمعلمين',
+      pricing:  'الأسعار',
+      cta:      'حمّل التطبيق',
+      menu:     'القائمة',
+      close:    'إغلاق',
+    }
+  : {
+      tryDemo:  'Try the demo',
+      quran:    "Quran i'rab",
+      features: 'Features',
+      teachers: 'For teachers',
+      pricing:  'Pricing',
+      cta:      'Get the app',
+      menu:     'Menu',
+      close:    'Close',
+    };
+
+// Arabic at root, English under /en
+const home = lang === 'ar' ? '/' : '/en';
+const teachersHref = lang === 'ar' ? '/teachers' : '/en/teachers';
+const quranHref = '/quran'; // the full Quran-i'rab section (Arabic corpus)
+
+// Equivalent URL in the other language for the toggle
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const otherUrl = lang === 'ar'
+  ? (path === '/' ? '/en' : `/en${path}`)
+  : (path === '/en' ? '/' : path.replace(/^\/en/, ''));
+---
+<nav class="sticky top-0 z-50 bg-paper/85 dark:bg-coal/85 backdrop-blur-md border-b border-stone/60 dark:border-coal-edge/60">
+  <Container>
+    <div class="flex items-center justify-between py-4 gap-4">
+      {/* Logo — pulled snug into the corner */}
+      <a href={home} class="flex items-center gap-2.5 shrink-0 group -ms-2 md:-ms-4">
+        <img src="/brand-mark.png" alt="" width="56" height="56" loading="eager" decoding="sync" class="w-12 h-12 md:w-14 md:h-14 rounded-lg shrink-0 transition-transform duration-200 group-hover:scale-105"/>
+        <span class:list={[lang === 'ar' ? 'font-arabic-display font-bold text-4xl md:text-5xl' : 'font-display text-3xl', 'tracking-tight']}>{lang === 'ar' ? 'إعراب' : 'Irab'}</span>
+      </a>
+
+      {/* Desktop links — segmented pill bar, soft fill + shadow lift on hover */}
+      <div class="nav-bar hidden md:flex items-center gap-1 text-small">
+        <a href={`${home}#demo`}     class="nav-link">{t.tryDemo}</a>
+        <a href={quranHref}          class="nav-link nav-link-feature">{t.quran}</a>
+        <a href={`${home}#features`} class="nav-link">{t.features}</a>
+        <a href={teachersHref}       class="nav-link">{t.teachers}</a>
+        <a href={`${home}#pricing`}  class="nav-link">{t.pricing}</a>
+      </div>
+
+      {/* Right cluster, desktop */}
+      <div class="hidden md:flex items-center gap-3">
+        {/* Language toggle (segmented) */}
+        <div class="flex items-center bg-stone/60 dark:bg-coal-edge/60 rounded-full p-0.5 font-mono text-caption" role="group" aria-label="Language">
+          <a
+            href={lang === 'ar' ? path : otherUrl}
+            class:list={[
+              'px-2.5 py-1 rounded-full transition-colors duration-200',
+              lang === 'ar' ? 'bg-paper dark:bg-coal text-ink dark:text-mist shadow-sm' : 'text-ink/50 dark:text-mist/50 hover:text-ink dark:hover:text-mist',
+            ]}
+            aria-current={lang === 'ar' ? 'true' : 'false'}
+          >ع</a>
+          <a
+            href={lang === 'en' ? path : otherUrl}
+            class:list={[
+              'px-2.5 py-1 rounded-full transition-colors duration-200',
+              lang === 'en' ? 'bg-paper dark:bg-coal text-ink dark:text-mist shadow-sm' : 'text-ink/50 dark:text-mist/50 hover:text-ink dark:hover:text-mist',
+            ]}
+            aria-current={lang === 'en' ? 'true' : 'false'}
+          >EN</a>
+        </div>
+
+        <ThemeToggle />
+
+        <a
+          href={`${home}#cta`}
+          class="inline-flex items-center gap-2 px-4 py-2 bg-ink dark:bg-mist text-paper dark:text-coal text-small font-medium tracking-tight rounded-full hover:bg-purple dark:hover:bg-purple hover:text-white lift"
+        >
+          {t.cta}
+        </a>
+      </div>
+
+      {/* Right cluster, mobile */}
+      <div class="md:hidden flex items-center gap-2">
+        <ThemeToggle />
+        <button
+          type="button"
+          data-mobile-toggle
+          aria-label={t.menu}
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          class="grid place-items-center w-10 h-10 rounded-full text-ink dark:text-mist hover:bg-stone/60 dark:hover:bg-coal-edge/60 transition-colors duration-200"
+        >
+          <svg data-icon-menu class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"/>
+          </svg>
+          <svg data-icon-close class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6l-12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </Container>
+
+  {/* Mobile menu, slide-down panel */}
+  <div
+    id="mobile-menu"
+    data-mobile-menu
+    class="md:hidden hidden border-t border-stone dark:border-coal-edge bg-paper dark:bg-coal"
+  >
+    <Container>
+      <div class="py-6 flex flex-col gap-1">
+        <a href={`${home}#demo`}     class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.tryDemo}</a>
+        <a href={quranHref}          class="block py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.quran}</a>
+        <a href={`${home}#features`} class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.features}</a>
+        <a href={teachersHref}       class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.teachers}</a>
+        <a href={`${home}#pricing`}  class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.pricing}</a>
+
+        <div class="hairline my-5"></div>
+
+        {/* Mobile language toggle */}
+        <div class="flex items-center justify-between py-2">
+          <span class="font-mono text-caption text-ink/50 dark:text-mist/50 uppercase tracking-widest">{lang === 'ar' ? 'اللغة' : 'Language'}</span>
+          <div class="flex items-center bg-stone/60 dark:bg-coal-edge/60 rounded-full p-0.5 font-mono text-caption">
+            <a
+              href={lang === 'ar' ? path : otherUrl}
+              class:list={['px-3 py-1.5 rounded-full transition-colors duration-200', lang === 'ar' ? 'bg-paper dark:bg-coal text-ink dark:text-mist shadow-sm' : 'text-ink/50 dark:text-mist/50']}
+            >العربية</a>
+            <a
+              href={lang === 'en' ? path : otherUrl}
+              class:list={['px-3 py-1.5 rounded-full transition-colors duration-200', lang === 'en' ? 'bg-paper dark:bg-coal text-ink dark:text-mist shadow-sm' : 'text-ink/50 dark:text-mist/50']}
+            >English</a>
+          </div>
+        </div>
+
+        <a
+          href={`${home}#cta`}
+          class="mt-3 inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-ink dark:bg-mist text-paper dark:text-coal font-medium tracking-tight rounded-full hover:bg-purple dark:hover:bg-purple hover:text-white lift"
+        >
+          {t.cta}
+        </a>
+      </div>
+    </Container>
+  </div>
+</nav>
+
+<style>
+  /* Segmented pill bar holding the links (screenshot inspiration). */
+  .nav-bar {
+    background: color-mix(in srgb, var(--color-stone) 40%, transparent);
+    border-radius: 9999px;
+    padding: 0.3rem;
+  }
+  :global(.dark) .nav-bar { background: color-mix(in srgb, var(--color-coal-edge) 45%, transparent); }
+
+  /* Each link is a pill that fills + lifts with a soft shadow on hover. */
+  .nav-link {
+    padding: 0.5rem 1.15rem;
+    border-radius: 9999px;
+    color: color-mix(in srgb, var(--color-ink) 68%, transparent);
+    white-space: nowrap;
+    transition: background-color .22s var(--ease-out-quart),
+                box-shadow .22s var(--ease-out-quart),
+                transform .22s var(--ease-out-quart), color .2s;
+  }
+  :global(.dark) .nav-link { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
+  .nav-link:hover {
+    color: var(--color-purple-deep);
+    background: var(--color-paper);
+    box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--color-purple) 50%, transparent),
+                0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent);
+    transform: translateY(-1.5px);
+  }
+  :global(.dark) .nav-link:hover {
+    color: var(--color-mist);
+    background: var(--color-coal-soft);
+    box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--color-purple) 60%, transparent);
+  }
+
+  /* The Quran-i'rab feature — teal accent so it stands out as the key feature. */
+  .nav-link-feature { color: var(--color-teal); font-weight: 700; }
+  :global(.dark) .nav-link-feature { color: color-mix(in srgb, var(--color-teal) 88%, white); }
+  .nav-link-feature:hover {
+    color: var(--color-teal-deep);
+    background: var(--color-paper);
+    box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--color-teal) 55%, transparent),
+                0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent);
+  }
+  :global(.dark) .nav-link-feature:hover { color: color-mix(in srgb, var(--color-teal) 88%, white); background: var(--color-coal-soft); }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-mobile-toggle]');
+  const menu   = document.querySelector<HTMLElement>('[data-mobile-menu]');
+  const open   = document.querySelector<SVGElement>('[data-icon-menu]');
+  const close  = document.querySelector<SVGElement>('[data-icon-close]');
+
+  function closeMenu() {
+    menu?.classList.add('hidden');
+    open?.classList.remove('hidden');
+    close?.classList.add('hidden');
+    toggle?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    if (isOpen) {
+      closeMenu();
+    } else {
+      menu?.classList.remove('hidden');
+      open?.classList.add('hidden');
+      close?.classList.remove('hidden');
+      toggle?.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  // Close on link tap inside the menu
+  menu?.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', closeMenu);
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  // Close on resize to desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) closeMenu();
+  });
+</script>

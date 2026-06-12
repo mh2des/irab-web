@@ -1,0 +1,26 @@
+---
+/**
+ * Container, horizontal max-width wrapper with consistent gutters.
+ *
+ *   <Container>          → 72rem max width (default)
+ *   <Container size="narrow"> → 48rem (long-form text)
+ *   <Container size="wide">   → 80rem (visual-heavy sections)
+ *   <Container size="full">   → no max width
+ */
+interface Props {
+  size?: 'narrow' | 'default' | 'wide' | 'full';
+  class?: string;
+}
+
+const { size = 'default', class: className = '' } = Astro.props as Props;
+
+const sizes: Record<NonNullable<Props['size']>, string> = {
+  narrow: 'max-w-3xl',
+  default: 'max-w-6xl',
+  wide: 'max-w-[80rem]',
+  full: 'max-w-none',
+};
+---
+<div class:list={['mx-auto px-6 md:px-8 lg:px-12', sizes[size], className]}>
+  <slot />
+</div>

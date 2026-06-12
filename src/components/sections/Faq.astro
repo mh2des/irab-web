@@ -1,0 +1,68 @@
+---
+import Container from '../Container.astro';
+import Section from '../Section.astro';
+
+export const FAQS = [
+  {
+    q: "What is i'rab?",
+    a: "I'rab (إعراب) is the traditional Arabic system of marking grammatical case and function. It identifies whether a noun is the subject (مرفوع/marfu'), object (منصوب/mansub), or genitive (مجرور/majrur), and explains each word's role in the sentence. Mastering i'rab is the difference between decoding Arabic and truly reading it.",
+  },
+  {
+    q: 'How does the AI parser work?',
+    a: 'Irab uses a Gemini-backed grammar pipeline through a secure Cloudflare Worker. Each parse identifies each word\'s grammatical type, i\'rab, function/case details, vocalized sentence, correction notes when needed, and sentence-level explanation. The same analysis stack powers both the in-app analyzer and the live demo on this page.',
+  },
+  {
+    q: 'Can it handle Quranic Arabic?',
+    a: 'Yes, you can paste Quranic text and receive word-by-word i\'rab analysis. It is a study helper, not a substitute for a qualified teacher or specialist Quran reference, especially for ambiguous readings.',
+  },
+  {
+    q: 'Do I need internet to use the app?',
+    a: 'The Dialect Dictionary works fully offline (30,000+ entries in a local database). Previously loaded library books and cached smart-dictionary entries can be reused locally. The AI parser, new Smart Dictionary lookups, OCR, custom grading, and Traditional Dictionary require an internet connection.',
+  },
+  {
+    q: 'How many dictionaries does Irab include?',
+    a: 'Three, each with a different mission. (1) Smart Dictionary — AI-powered for modern Arabic; returns meaning, root, examples, and translations in English and French (more languages on roadmap). (2) Traditional Dictionary — 13 classical heritage works including Lisan al-Arab, accessed via the Qamoos API. (3) Dialect Dictionary — 30,000+ entries across 8 Arab regions (Egyptian, Levantine, Palestinian, Gulf, Maghrebi, Iraqi, Yemeni, Sudanese), fully offline.',
+  },
+  {
+    q: 'How much does Irab Plus cost?',
+    a: 'From $4.99/month or $39.99/year in Asia/Africa regions, with higher regional pricing in some Western markets. The yearly plan includes a 7-day free trial and unlocks mastery certificates.',
+  },
+  {
+    q: 'Does Irab work with Madinah Books / Bayyinah / Ajrumiyya?',
+    a: 'Yes. Whatever curriculum you\'re studying, Irab speeds up your understanding by giving you instant grammatical analysis on any sentence. It\'s a complement to classical curricula, not a replacement, use it alongside whatever course you\'re already taking.',
+  },
+  {
+    q: 'Is my data private?',
+    a: 'We do not sell your data. Authentication uses secure tokens, and parsed sentences are used only to provide the service, maintain your own history/cache where enabled, and operate the app safely. Read the full privacy policy at irab.app/privacy.',
+  },
+];
+---
+<Section id="faq">
+  <Container>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+      <div class="md:col-span-1">
+        <p class="eyebrow mb-4" data-reveal>Questions</p>
+        <h2 class="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.05] tracking-tight" data-reveal data-reveal-delay="100">
+          Probably what you're wondering.
+        </h2>
+        <p class="mt-6 text-body text-ink/70 dark:text-mist/70" data-reveal data-reveal-delay="200">
+          Still have a question? <a href="mailto:support@irab.app" class="text-purple hover:text-purple-deep underline-offset-4 hover:underline transition-colors">Email us</a>.
+        </p>
+      </div>
+
+      <div class="md:col-span-2 divide-y divide-stone dark:divide-coal-edge border-y border-stone dark:border-coal-edge">
+        {FAQS.map((f) => (
+          <details class="group py-6 cursor-pointer">
+            <summary class="flex items-start justify-between gap-6 list-none [&::-webkit-details-marker]:hidden">
+              <h3 class="font-display text-h3 leading-snug pr-4 transition-colors duration-200 group-hover:text-purple group-open:text-purple">{f.q}</h3>
+              <span class="shrink-0 mt-1 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 group-open:bg-purple text-purple group-open:text-white transition-all duration-300 group-open:rotate-45">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-body text-ink/70 dark:text-mist/70 leading-relaxed pr-12">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </Container>
+</Section>

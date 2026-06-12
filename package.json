@@ -1,0 +1,40 @@
+{
+  "name": "irab-web",
+  "description": "Official website for irab.app — AI-powered Arabic i'rab analysis and learning",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "author": {
+    "name": "Mansoor Hasan Ali Shokla",
+    "email": "hello@irab.app",
+    "url": "https://irab.app"
+  },
+  "homepage": "https://irab.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mh2des/irab-web.git"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@10.33.2",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "export:quran": "node scripts/export-quran.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/sitemap": "^3.7.2",
+    "@tailwindcss/vite": "^4.2.4",
+    "astro": "^6.2.2",
+    "gsap": "^3.15.0",
+    "lucide-static": "^1.14.0",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^6.0.3"
+  }
+}

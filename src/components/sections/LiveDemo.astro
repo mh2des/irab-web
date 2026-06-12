@@ -1,0 +1,548 @@
+---
+import Container from '../Container.astro';
+import Section from '../Section.astro';
+import { SPECIMEN, EXAMPLES, CASE_COLORS, TYPE_META } from '../../data/demo-examples';
+
+interface Props { lang?: 'en' | 'ar'; }
+const { lang = 'en' } = Astro.props;
+
+const t = lang === 'ar'
+  ? {
+      eyebrow:    'تجربة مباشرة',
+      headline:   'جرّبه الآن. على هذه الصفحة.',
+      sub:        'إعراب كامل بمستوى تطبيق إعراب نفسه. الأمثلة التالية مجانية بلا حدود. لديك تحليلان مجانيّان لجملك الخاصة.',
+      remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
+      tryYour:    'جرّب جملتك',
+      placeholder:'ألصق أو اكتب أيّ جملة عربية…',
+      parse:      'أعرب',
+      poweredBy:  'مدعوم بالمحرّك المحمي نفسه في التطبيق',
+      gateLabel:  'لقد ذُقتَ القوّة',
+      gateTitle:  'الإعراب اللامحدود في التطبيق.',
+      gateBody:   'يمنحك التطبيق تحليلات يومية مجانية. يفتح Irab Plus الإعراب غير المحدود، بنك التدريب الكامل، OCR، PDF، الشهادات السنوية، والتحليلات المتقدمة.',
+      googlePlay: 'حمّل من Google Play',
+      appStore:   'متجر التطبيقات',
+      irabLabel:  'الإعراب',
+      structure:  'بنية الجملة',
+      rhetorical: 'ملاحظة بلاغية',
+      showDetails:'عرض التفاصيل',
+      hideDetails:'إخفاء التفاصيل',
+      wordsCount: (n: number) => `${n} كلمات`,
+      parsedIn:   (s: string) => `أُعرِب في ${s}`,
+    }
+  : {
+      eyebrow:    'Live demo',
+      headline:   'Try it. Now. On this page.',
+      sub:        "Full app-grade i'rab — same depth as the app itself. Examples below are free and unlimited. Two free parses for your own sentences.",
+      remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
+      tryYour:    'Try your own',
+      placeholder:'ألصق أو اكتب أيّ جملة عربية…',
+      parse:      'Parse',
+      poweredBy:  'Powered by the same protected AI engine as the app',
+      gateLabel:  "YOU'VE TASTED THE POWER",
+      gateTitle:  'Unlimited parsing lives in the app.',
+      gateBody:   "The app gives you daily free parses. Irab Plus unlocks unlimited i'rab, the full practice bank, OCR, PDF export, annual certificates, and deeper analytics.",
+      googlePlay: 'Get on Google Play',
+      appStore:   'App Store',
+      irabLabel:  "I'rab",
+      structure:  'Sentence structure',
+      rhetorical: 'Rhetorical note',
+      showDetails:'Show details',
+      hideDetails:'Hide details',
+      wordsCount: (n: number) => `${n} words`,
+      parsedIn:   (s: string) => `Parsed in ${s}`,
+    };
+
+const specimen = SPECIMEN;
+const chipPreviews = EXAMPLES.map((ex) => ({
+  id: ex.id,
+  preview: ex.text.split(' ').slice(0, 3).join(' '),
+}));
+---
+<Section id="demo" class="bg-paper-soft/40 dark:bg-coal-soft/40">
+  <Container>
+    {/* ── Section header ─────────────────────────────────────────────── */}
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <p class="eyebrow mb-4" data-reveal>{t.eyebrow}</p>
+      <h2 class="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.1] tracking-tight" data-reveal data-reveal-delay="100">
+        {t.headline}
+      </h2>
+      <p class="mt-6 text-body-lg text-ink/70 dark:text-mist/70" data-reveal data-reveal-delay="200">
+        {t.sub}
+      </p>
+    </div>
+
+    {/* ── Result panel ───────────────────────────────────────────────── */}
+    <div class="max-w-5xl mx-auto" data-demo data-lang={lang}>
+      {/* Source citation (editorial, no box) + quota (visual dots) */}
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-8 px-1">
+        {/* Source — surah name big in display, verse in small mono */}
+        <div data-demo-source class="flex items-baseline gap-2.5 min-h-[2rem]">
+          <span data-source-main class="font-arabic-display font-bold text-[clamp(1.125rem,2vw,1.5rem)] text-purple leading-none">{(specimen.source ?? '').split('·')[0].trim()}</span>
+          {(specimen.source ?? '').includes('·') && (
+            <>
+              <span class="text-ink/25 dark:text-mist/25 text-small select-none">·</span>
+              <span data-source-sub class="font-mono text-caption text-ink/55 dark:text-mist/55 tracking-widest">{(specimen.source ?? '').split('·')[1].trim()}</span>
+            </>
+          )}
+        </div>
+
+        {/* Quota — visual dots + Arabic/English label */}
+        <div class="flex items-center gap-2.5">
+          <div class="flex gap-1" data-quota-dots>
+            <span class="quota-dot w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
+            <span class="quota-dot w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
+          </div>
+          <span data-demo-quota class="font-arabic text-small text-ink/60 dark:text-mist/60">{t.remainingN(2)}</span>
+        </div>
+      </div>
+
+      {/* Vocalized verse — clean, one dignified colour, no underlines */}
+      <div lang="ar" dir="rtl" class="text-center mb-6 px-4" data-demo-verse>
+        <div class="text-[clamp(2rem,5.5vw,3.75rem)] leading-[1.9] text-ink dark:text-mist" style="font-family: var(--font-quran);" data-demo-verse-inner>
+          {specimen.vocalizedSentence}
+        </div>
+      </div>
+
+      {/* Meaning */}
+      {specimen.meaning && (
+        <p class="text-center text-body text-ink/55 dark:text-mist/55 italic mb-8" data-demo-meaning>
+          "{specimen.meaning}"
+        </p>
+      )}
+
+      <div class="mb-12"></div>
+
+      {/* Word cards grid */}
+      <div class="demo-cards grid grid-cols-1 md:grid-cols-2 gap-5 mb-10" data-demo-cards>
+        {specimen.words.map((w, i) => {
+          const caseColor = CASE_COLORS[w.case].hex;
+          const typeMeta = TYPE_META[w.type];
+          const showDetails = w.details && w.details !== 'لا توجد تفاصيل إضافية';
+          return (
+            <article class="demo-card word-card relative rounded-2xl p-6 md:p-7" style={`animation-delay: ${i * 80}ms;`}>
+              <div class="flex items-start justify-between gap-4 mb-4">
+                <div lang="ar" dir="rtl" class="font-bold text-[clamp(2rem,3.6vw,2.7rem)] leading-tight text-ink dark:text-mist" style="font-family: var(--font-quran);">
+                  {w.word}
+                </div>
+                <div class="flex items-center gap-2 shrink-0 pt-1.5">
+                  <span lang="ar" dir="rtl" class="font-arabic text-small text-ink/40 dark:text-mist/40">{typeMeta.ar}</span>
+                  <span lang="ar" dir="rtl" class="word-chip font-arabic text-small font-medium" style={`--chip: ${caseColor};`}>{w.caseLabel}</span>
+                </div>
+              </div>
+              <p lang="ar" dir="rtl" class="font-arabic text-body leading-loose text-ink/85 dark:text-mist/85" style="font-family: var(--font-arabic-classical);">{w.irab}</p>
+              {showDetails && (
+                <details class="word-details group/details mt-4 pt-4 border-t border-stone/60 dark:border-coal-edge/60">
+                  <summary class="inline-flex items-center gap-2 cursor-pointer list-none font-arabic text-small text-ink/55 dark:text-mist/55 hover:text-ink dark:hover:text-mist transition-colors [&::-webkit-details-marker]:hidden">
+                    <span class="group-open/details:hidden">{t.showDetails}</span>
+                    <span class="hidden group-open/details:inline">{t.hideDetails}</span>
+                    <svg class="w-3.5 h-3.5 transition-transform duration-300 group-open/details:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                  </summary>
+                  <div class="mt-3">
+                    <p lang="ar" dir="rtl" class="font-arabic text-small text-ink/75 dark:text-mist/75 leading-loose">{w.details}</p>
+                  </div>
+                </details>
+              )}
+            </article>
+          );
+        })}
+      </div>
+
+      {/* Sentence structure explanation */}
+      {specimen.explanation && (
+        <div class="mb-6 rounded-2xl p-7 md:p-8 bg-purple/5 dark:bg-purple/10 border border-purple/20 dark:border-purple/30" data-demo-explanation>
+          <p class="flex items-center gap-2 mb-4 font-arabic-display font-bold text-3xl text-purple">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span lang="ar" dir="rtl" class="font-arabic">{t.structure}</span>
+          </p>
+          <p lang="ar" dir="rtl" class="font-arabic text-body-lg text-ink/85 dark:text-mist/85 leading-loose" style="font-family: var(--font-arabic-classical);" data-explanation-text>
+            {specimen.explanation}
+          </p>
+        </div>
+      )}
+
+      {/* Rhetorical / balagha note */}
+      {specimen.additionalClarification && (
+        <div class="mb-6 rounded-2xl p-6 md:p-7 bg-teal/5 dark:bg-teal/10 border border-teal/20 dark:border-teal/30" data-demo-clarification>
+          <p class="flex items-center gap-2 mb-3 font-arabic-display font-bold text-3xl text-teal">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <span lang="ar" dir="rtl" class="font-arabic">{t.rhetorical}</span>
+          </p>
+          <p lang="ar" dir="rtl" class="font-arabic text-body text-ink/80 dark:text-mist/80 leading-loose" style="font-family: var(--font-arabic-classical);" data-clarification-text>
+            {specimen.additionalClarification}
+          </p>
+        </div>
+      )}
+
+      {/* Try your own */}
+      <div class="demo-try mt-12 rounded-2xl p-7 md:p-9">
+        <p class="eyebrow mb-4">{t.tryYour}</p>
+        <form data-demo-form class="relative">
+          <textarea data-demo-input lang="ar" dir="rtl" rows="2" maxlength="200" placeholder={t.placeholder}
+            class="demo-textarea w-full rounded-xl px-5 py-4 font-arabic text-body-lg text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
+            style="font-family: var(--font-arabic-classical);"></textarea>
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap gap-2">
+              {chipPreviews.map((c) => (
+                <button type="button" data-demo-chip data-example-id={c.id}
+                  class="demo-chip px-4 py-2 text-ink dark:text-mist text-small rounded-full lift">
+                  <span lang="ar" dir="rtl" class="font-arabic">{c.preview}…</span>
+                </button>
+              ))}
+            </div>
+            <button type="submit" data-demo-submit
+              class="inline-flex items-center gap-2 px-6 py-2.5 bg-purple hover:bg-purple-deep text-white text-small font-medium rounded-full lift disabled:opacity-50 disabled:cursor-not-allowed">
+              <span data-submit-label>{t.parse}</span>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d={lang === 'ar' ? 'M19 12H5M11 19l-7-7 7-7' : 'M5 12h14M13 5l7 7-7 7'}/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {/* Conversion gate */}
+    <div data-demo-gate class="max-w-5xl mx-auto mt-6 hidden bg-ink dark:bg-mist text-paper dark:text-coal rounded-2xl p-8 md:p-12">
+      <div class="flex flex-col md:flex-row items-start md:items-center gap-6 justify-between">
+        <div class="flex-1">
+          <p class="font-mono text-caption opacity-60 mb-2 tracking-wider">{t.gateLabel}</p>
+          <p class="font-display text-h2 leading-tight">{t.gateTitle}</p>
+          <p class="mt-3 opacity-70 max-w-lg">{t.gateBody}</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+          <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener" class="px-6 py-3 bg-purple hover:bg-purple-deep text-white font-medium tracking-tight rounded-full text-center">{t.googlePlay}</a>
+          <a href="https://apps.apple.com/app/id6765811277" target="_blank" rel="noopener" class="px-6 py-3 border border-paper/30 hover:border-paper dark:border-coal/30 dark:hover:border-coal font-medium tracking-tight rounded-full text-center">{t.appStore}</a>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<style>
+  /* Entrance — `backwards` fill (not forwards) so the settled transform stays
+     free for the hover lift below. */
+  .word-card { animation: card-in 600ms cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  details[open] > summary ~ * { animation: details-in 350ms ease-out; }
+  @keyframes details-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Glass + soft-3D word cards. */
+  .demo-card {
+    background: color-mix(in srgb, var(--color-paper) 58%, transparent);
+    -webkit-backdrop-filter: blur(12px) saturate(1.1);
+    backdrop-filter: blur(12px) saturate(1.1);
+    border: 1px solid color-mix(in srgb, white 55%, var(--color-stone));
+    box-shadow:
+      0 14px 36px -16px color-mix(in srgb, var(--color-ink) 28%, transparent),
+      0 2px 6px -3px color-mix(in srgb, var(--color-ink) 12%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 70%, transparent);
+    transition: transform .4s var(--ease-out-quart), box-shadow .4s var(--ease-out-quart),
+                filter .4s var(--ease-out-quart), opacity .4s var(--ease-out-quart);
+  }
+  :global(.dark) .demo-card {
+    background: color-mix(in srgb, var(--color-coal-soft) 55%, transparent);
+    border-color: color-mix(in srgb, white 8%, var(--color-coal-edge));
+    box-shadow: 0 16px 38px -16px rgb(0 0 0 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.05);
+  }
+  .demo-card:hover {
+    transform: translateY(-6px) scale(1.022);
+    z-index: 2;
+    box-shadow:
+      0 28px 52px -18px color-mix(in srgb, var(--color-purple) 34%, transparent),
+      0 10px 22px -12px color-mix(in srgb, var(--color-ink) 18%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 82%, transparent);
+  }
+  :global(.dark) .demo-card:hover {
+    box-shadow: 0 30px 56px -18px color-mix(in srgb, var(--color-purple) 52%, transparent),
+                inset 0 1px 0 rgb(255 255 255 / 0.07);
+  }
+  /* Focus-on-hover: the hovered card pops, the others gently recede. */
+  .demo-cards:hover > .demo-card:not(:hover) {
+    filter: blur(2.5px);
+    opacity: 0.5;
+    transform: scale(0.97);
+  }
+
+  /* Case pill — the only place the case color lives now: a quiet status tag. */
+  .word-chip {
+    padding: 0.15rem 0.7rem;
+    border-radius: 9999px;
+    color: var(--chip);
+    background: color-mix(in srgb, var(--chip) 11%, transparent);
+    border: 1px solid color-mix(in srgb, var(--chip) 22%, transparent);
+  }
+  :global(.dark) .word-chip {
+    color: color-mix(in srgb, var(--chip) 80%, white);
+    background: color-mix(in srgb, var(--chip) 18%, transparent);
+    border-color: color-mix(in srgb, var(--chip) 30%, transparent);
+  }
+
+  /* Glass "try your own" panel. */
+  .demo-try {
+    background: color-mix(in srgb, var(--color-paper) 52%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    backdrop-filter: blur(16px) saturate(1.1);
+    border: 1px solid color-mix(in srgb, white 55%, var(--color-stone));
+    box-shadow:
+      0 18px 44px -20px color-mix(in srgb, var(--color-ink) 26%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 62%, transparent);
+  }
+  :global(.dark) .demo-try {
+    background: color-mix(in srgb, var(--color-coal-soft) 48%, transparent);
+    border-color: color-mix(in srgb, white 8%, var(--color-coal-edge));
+    box-shadow: 0 18px 44px -20px rgb(0 0 0 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.05);
+  }
+
+  /* Inset glass textarea + glass chips. */
+  .demo-textarea {
+    background: color-mix(in srgb, var(--color-paper-soft) 70%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-stone) 85%, transparent);
+    box-shadow: inset 0 2px 8px -2px color-mix(in srgb, var(--color-ink) 10%, transparent);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .demo-textarea:focus {
+    outline: none;
+    border-color: var(--color-purple);
+    box-shadow: inset 0 2px 8px -2px color-mix(in srgb, var(--color-ink) 8%, transparent),
+                0 0 0 4px color-mix(in srgb, var(--color-purple) 12%, transparent);
+  }
+  :global(.dark) .demo-textarea { background: color-mix(in srgb, var(--color-coal) 65%, transparent); border-color: var(--color-coal-edge); }
+
+  .demo-chip {
+    background: color-mix(in srgb, var(--color-paper) 45%, transparent);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border: 1px solid color-mix(in srgb, white 50%, var(--color-stone));
+    box-shadow: inset 0 1px 0 color-mix(in srgb, white 55%, transparent);
+  }
+  :global(.dark) .demo-chip { background: color-mix(in srgb, var(--color-coal-soft) 55%, transparent); border-color: var(--color-coal-edge); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .word-card { animation: none; }
+    .demo-card, .demo-card:hover, .demo-cards:hover > .demo-card:not(:hover) { transform: none; filter: none; opacity: 1; }
+    details[open] > summary ~ * { animation: none; }
+  }
+</style>
+
+<script>
+  import { EXAMPLES, SPECIMEN, CASE_COLORS, TYPE_META, type ParseExample } from '../../data/demo-examples';
+
+  const STORAGE_KEY = 'irab-demo-quota';
+  const FP_KEY = 'irab-fp';
+  const MAX_FREE = 2;
+  // TEMP: workers.dev URL until 2026-05-16 when irab.app domain unlocks transfer.
+  // Then map api.irab.app to the worker and swap to:
+  //   https://api.irab.app/v1/parse-public
+  const API_URL = 'https://irab-api-v2.mansourhassan783.workers.dev/v1/parse-public';
+
+  async function getFingerprint(): Promise<string> {
+    try {
+      const cached = localStorage.getItem(FP_KEY);
+      if (cached && /^[a-f0-9]{16}$/.test(cached)) return cached;
+      const sig = [navigator.userAgent, navigator.language, `${screen.width}x${screen.height}x${screen.colorDepth}`, new Date().getTimezoneOffset(), navigator.hardwareConcurrency || ''].join('|');
+      const buf = new TextEncoder().encode(sig);
+      const hash = await crypto.subtle.digest('SHA-256', buf);
+      const fp = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 16);
+      localStorage.setItem(FP_KEY, fp);
+      return fp;
+    } catch {
+      return 'anon-' + Math.random().toString(36).slice(2, 10);
+    }
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-demo]');
+  if (root) {
+    const lang = (root.dataset.lang === 'ar' ? 'ar' : 'en') as 'en' | 'ar';
+    const i18n = lang === 'ar'
+      ? { remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
+          parsing: 'جارٍ الإعراب…', customSrc: 'جملتك', fallback: 'العرض غير متاح · عرض النموذج',
+          irabLabel: 'الإعراب', showDetails: 'عرض التفاصيل', hideDetails: 'إخفاء التفاصيل',
+          wordsCount: (n: number) => `${n} كلمات`, parsedIn: (s: string) => `أُعرِب في ${s}`, parse: 'أعرب' }
+      : { remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
+          parsing: 'Parsing…', customSrc: 'Your sentence', fallback: 'Demo offline · showing specimen',
+          irabLabel: "I'rab", showDetails: 'Show details', hideDetails: 'Hide details',
+          wordsCount: (n: number) => `${n} words`, parsedIn: (s: string) => `Parsed in ${s}`, parse: 'Parse' };
+
+    const sourceMainEl = root.querySelector<HTMLElement>('[data-source-main]')!;
+    const sourceSubEl  = root.querySelector<HTMLElement>('[data-source-sub]');
+    const quotaDots    = root.querySelectorAll<HTMLElement>('[data-dot]');
+    const sourceContainer = root.querySelector<HTMLElement>('[data-demo-source]')!;
+    const verseInner   = root.querySelector<HTMLElement>('[data-demo-verse-inner]')!;
+    const meaningEl    = root.querySelector<HTMLElement>('[data-demo-meaning]');
+    const wordCountEl  = root.querySelector<HTMLElement>('[data-demo-wordcount]');
+    const timeEl       = root.querySelector<HTMLElement>('[data-demo-time]');
+    const cardsEl      = root.querySelector<HTMLElement>('[data-demo-cards]')!;
+    const explanationEl = root.querySelector<HTMLElement>('[data-demo-explanation]');
+    const explanationTextEl = root.querySelector<HTMLElement>('[data-explanation-text]');
+    const clarificationEl = root.querySelector<HTMLElement>('[data-demo-clarification]');
+    const clarificationTextEl = root.querySelector<HTMLElement>('[data-clarification-text]');
+    const formEl       = root.querySelector<HTMLFormElement>('[data-demo-form]')!;
+    const inputEl      = root.querySelector<HTMLTextAreaElement>('[data-demo-input]')!;
+    const submitEl     = root.querySelector<HTMLButtonElement>('[data-demo-submit]')!;
+    const submitLabelEl = submitEl.querySelector<HTMLElement>('[data-submit-label]')!;
+    const quotaEl      = root.querySelector<HTMLElement>('[data-demo-quota]')!;
+    const gateEl       = document.querySelector<HTMLElement>('[data-demo-gate]')!;
+
+    function getQuota(): number {
+      try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? parseInt(raw, 10) : 0; } catch { return 0; }
+    }
+    function bumpQuota() { try { localStorage.setItem(STORAGE_KEY, String(getQuota() + 1)); } catch {} }
+    function renderQuota() {
+      const remaining = Math.max(0, MAX_FREE - getQuota());
+      quotaEl.textContent = i18n.remainingN(remaining);
+      // Fill dots = remaining, hollow dots = used
+      quotaDots.forEach((dot, i) => {
+        if (i < remaining) {
+          dot.classList.add('bg-purple');
+          dot.classList.remove('bg-transparent', 'border', 'border-purple/30');
+        } else {
+          dot.classList.remove('bg-purple');
+          dot.classList.add('bg-transparent', 'border', 'border-purple/30');
+        }
+      });
+      if (remaining === 0) { submitEl.disabled = true; gateEl.classList.remove('hidden'); }
+    }
+
+    function escape(s: string): string {
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
+    }
+
+    function renderExample(ex: ParseExample, parsedSeconds: string | null = null) {
+      // Update source as main + sub split by "·"
+      const sourceText = ex.source ?? i18n.customSrc;
+      const parts = sourceText.split('·');
+      sourceMainEl.textContent = (parts[0] ?? '').trim();
+      if (sourceSubEl) {
+        if (parts.length > 1) {
+          sourceSubEl.textContent = parts[1].trim();
+          sourceSubEl.classList.remove('hidden');
+          // Show the separator dot before sub
+          const sep = sourceContainer.querySelector('span.text-ink\\/25');
+          if (sep) sep.classList.remove('hidden');
+        } else {
+          sourceSubEl.classList.add('hidden');
+          const sep = sourceContainer.querySelector('span.text-ink\\/25');
+          if (sep) sep.classList.add('hidden');
+        }
+      }
+
+      // Verse — clean, no underlines
+      verseInner.textContent = ex.vocalizedSentence || ex.words.map((w) => w.word).join(' ');
+
+      // Meaning
+      if (meaningEl) {
+        if (ex.meaning) { meaningEl.textContent = `"${ex.meaning}"`; meaningEl.style.display = ''; }
+        else { meaningEl.style.display = 'none'; }
+      }
+
+      // Stats (bar removed; guard in case the elements aren't present)
+      if (wordCountEl) wordCountEl.textContent = i18n.wordsCount(ex.words.length);
+      if (timeEl && parsedSeconds) timeEl.textContent = i18n.parsedIn(parsedSeconds);
+
+      // Cards
+      cardsEl.innerHTML = ex.words.map((w, i) => {
+        const caseColor = CASE_COLORS[w.case].hex;
+        const typeMeta = TYPE_META[w.type];
+        const showDetails = w.details && w.details !== 'لا توجد تفاصيل إضافية';
+        const detailsHtml = showDetails ? `
+          <details class="word-details group/details mt-4 pt-4 border-t border-stone/60 dark:border-coal-edge/60">
+            <summary class="inline-flex items-center gap-2 cursor-pointer list-none font-arabic text-small text-ink/55 dark:text-mist/55 hover:text-ink dark:hover:text-mist transition-colors [&::-webkit-details-marker]:hidden">
+              <span class="group-open/details:hidden">${i18n.showDetails}</span>
+              <span class="hidden group-open/details:inline">${i18n.hideDetails}</span>
+              <svg class="w-3.5 h-3.5 transition-transform duration-300 group-open/details:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="mt-3">
+              <p lang="ar" dir="rtl" class="font-arabic text-small text-ink/75 dark:text-mist/75 leading-loose">${escape(w.details)}</p>
+            </div>
+          </details>` : '';
+        return `
+          <article class="demo-card word-card relative rounded-2xl p-6 md:p-7" style="animation-delay: ${i * 80}ms;">
+            <div class="flex items-start justify-between gap-4 mb-4">
+              <div lang="ar" dir="rtl" class="font-bold text-[clamp(2rem,3.6vw,2.7rem)] leading-tight text-ink dark:text-mist" style="font-family: var(--font-quran);">${escape(w.word)}</div>
+              <div class="flex items-center gap-2 shrink-0 pt-1.5">
+                <span lang="ar" dir="rtl" class="font-arabic text-small text-ink/40 dark:text-mist/40">${typeMeta.ar}</span>
+                <span lang="ar" dir="rtl" class="word-chip font-arabic text-small font-medium" style="--chip: ${caseColor};">${escape(w.caseLabel)}</span>
+              </div>
+            </div>
+            <p lang="ar" dir="rtl" class="font-arabic text-body leading-loose text-ink/85 dark:text-mist/85" style="font-family: var(--font-arabic-classical);">${escape(w.irab)}</p>
+            ${detailsHtml}
+          </article>`;
+      }).join('');
+
+      // Re-trigger card animation
+      cardsEl.querySelectorAll<HTMLElement>('.word-card').forEach((c, i) => {
+        c.style.animation = 'none';
+        void c.offsetWidth;
+        c.style.animation = '';
+        c.style.animationDelay = `${i * 80}ms`;
+      });
+
+      // Sentence explanation
+      if (explanationEl && explanationTextEl) {
+        if (ex.explanation) { explanationTextEl.textContent = ex.explanation; explanationEl.classList.remove('hidden'); }
+        else explanationEl.classList.add('hidden');
+      }
+      // Clarification
+      if (clarificationEl && clarificationTextEl) {
+        if (ex.additionalClarification) { clarificationTextEl.textContent = ex.additionalClarification; clarificationEl.classList.remove('hidden'); }
+        else clarificationEl.classList.add('hidden');
+      }
+    }
+
+    // Chips
+    root.querySelectorAll<HTMLButtonElement>('[data-demo-chip]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const ex = EXAMPLES.find((e) => e.id === btn.dataset.exampleId);
+        if (ex) {
+          renderExample(ex);
+          root.querySelector('[data-demo-verse]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Form
+    formEl.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = inputEl.value.trim();
+      if (!text) return;
+      if (getQuota() >= MAX_FREE) { gateEl.classList.remove('hidden'); return; }
+
+      const start = performance.now();
+      submitEl.disabled = true;
+      submitLabelEl.textContent = i18n.parsing;
+
+      try {
+        const fingerprint = await getFingerprint();
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, fingerprint }),
+        });
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        const parsed = await res.json() as ParseExample;
+        const elapsed = ((performance.now() - start) / 1000).toFixed(1) + 's';
+        renderExample({ ...parsed, source: i18n.customSrc }, elapsed);
+        bumpQuota();
+        renderQuota();
+        root.querySelector('[data-demo-verse]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        console.warn('Demo API unavailable, falling back to specimen', err);
+        renderExample({ ...SPECIMEN, source: i18n.fallback });
+        bumpQuota();
+        renderQuota();
+      } finally {
+        submitEl.disabled = false;
+        submitLabelEl.textContent = i18n.parse;
+        inputEl.value = '';
+      }
+    });
+
+    renderQuota();
+  }
+</script>

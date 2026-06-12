@@ -1,0 +1,104 @@
+---
+/**
+ * Surah index — lists a surah's ayat, each linking to its i'rab page.
+ * Generated only for surahs with published ayat (no broken links).
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import Container from '../../../components/Container.astro';
+import {
+  SURAHS, ayatOfSurah, toArabicDigits, plainVerse, type SurahMeta,
+} from '../../../lib/quran';
+
+export function getStaticPaths() {
+  return SURAHS.filter((s) => s.publishedCount > 0).map((s) => ({
+    params: { surah: s.slug },
+    props: { surah: s },
+  }));
+}
+
+const { surah } = Astro.props as { surah: SurahMeta };
+const ayat = ayatOfSurah(surah.id);
+const placeAr = surah.place === 'makki' ? 'مكية' : 'مدنية';
+const title = `إعراب سورة ${surah.name}، كل آية كلمةً كلمة | إعراب`;
+const description = `إعراب سورة ${surah.name} آيةً آية: التحليل النحوي الكامل لكل كلمة، من «الجدول في إعراب القرآن». ${toArabicDigits(surah.ayahCount)} آية.`;
+const canonical = `https://irab.app/quran/${surah.slug}`;
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'إعراب القرآن', item: 'https://irab.app/quran' },
+    { '@type': 'ListItem', position: 2, name: `سورة ${surah.name}`, item: canonical },
+  ],
+};
+---
+<BaseLayout lang="ar" title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumb)} is:inline />
+  <Nav lang="ar" />
+
+  <main>
+    <section class="py-12 md:py-16">
+      <Container size="narrow">
+        <nav class="bc" aria-label="مسار التنقّل">
+          <a href="/quran">إعراب القرآن</a><span aria-hidden="true">›</span>
+          <span class="bc-cur">سورة {surah.name}</span>
+        </nav>
+
+        <span class="eyebrow eyebrow-teal">{placeAr} · {toArabicDigits(surah.ayahCount)} آية</span>
+        <h1 class="s-h1 font-arabic-display">إعراب سورة {surah.name}</h1>
+        <p class="s-lead">التحليل النحوي الكامل لكل آية من سورة {surah.name}، كلمةً كلمة، من «الجدول في إعراب القرآن» لمحمود صافي. اختر آيةً لقراءة إعرابها المفصّل.</p>
+
+        <ol class="ayat">
+          {ayat.map((a) => (
+            <li>
+              <a href={`/quran/${surah.slug}/${a.ayah}`} class="a-card">
+                <span class="a-num">{toArabicDigits(a.ayah)}</span>
+                <span class="a-verse quran-text">{plainVerse(a.uthmani)}</span>
+                <svg class="a-go" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </Container>
+    </section>
+  </main>
+
+  <Footer lang="ar" />
+</BaseLayout>
+
+<style>
+  .bc { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 1.1rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); margin-bottom: 1.25rem; }
+  :global(.dark) .bc { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .bc a { color: inherit; text-decoration: none; }
+  .bc a:hover { color: var(--color-purple); }
+  .bc-cur { color: var(--color-ink); font-weight: 600; }
+  :global(.dark) .bc-cur { color: var(--color-mist); }
+
+  .s-h1 { font-size: clamp(2.1rem, 5vw, 3.1rem); font-weight: 700; color: var(--color-ink); margin: 0.5rem 0 0.75rem; }
+  :global(.dark) .s-h1 { color: var(--color-mist); }
+  .s-lead { font-family: var(--font-arabic); font-size: 1.7rem; line-height: 1.95; color: color-mix(in srgb, var(--color-ink) 72%, transparent); margin-bottom: 2.5rem; max-width: 40rem; }
+  :global(.dark) .s-lead { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+
+  .ayat { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .a-card {
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem;
+    border: 1px solid var(--color-stone); border-radius: 14px; padding: 1rem 1.25rem;
+    text-decoration: none; transition: border-color .2s, transform .2s, box-shadow .2s;
+  }
+  :global(.dark) .a-card { border-color: var(--color-coal-edge); }
+  .a-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
+  .a-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.4rem; height: 2.4rem; flex: none;
+    font-family: var(--font-mono); font-size: 1.2rem; font-weight: 600;
+    color: var(--color-purple);
+    border: 1.5px solid color-mix(in srgb, var(--color-purple) 35%, transparent);
+    border-radius: 10px;
+  }
+  .a-verse {
+    font-size: 1.95rem; line-height: 1.9; color: var(--color-ink);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  :global(.dark) .a-verse { color: var(--color-mist); }
+  .a-go { width: 1.1rem; height: 1.1rem; flex: none; color: color-mix(in srgb, var(--color-ink) 40%, transparent); }
+</style>

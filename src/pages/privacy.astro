@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+import body from '../data/legal/privacy.html?raw';
+---
+<BaseLayout
+  lang="ar"
+  title="سياسة الخصوصية · إعراب"
+  description="سياسة خصوصية تطبيق إعراب: ما البيانات التي نجمعها وكيف نستخدمها ونحميها، وحقوقك."
+>
+  <LegalDoc kind="privacy" body={body} />
+</BaseLayout>

@@ -1,0 +1,91 @@
+---
+import Container from '../Container.astro';
+
+interface Props {
+  lang?: 'en' | 'ar';
+}
+
+const { lang = 'ar' } = Astro.props;
+
+const t = lang === 'ar'
+  ? {
+      brand:   'إعراب: أداة قواعد اللغة العربية المدعومة بالذكاء الاصطناعي لطلاب القرآن والمعلّمين والمتعلّمين الجادّين.',
+      product: 'المنتج',
+      learn:   'مراجع',
+      legal:   'قانوني',
+      links: {
+        demo: 'التجربة المباشرة', features: 'المميزات', pricing: 'الأسعار', faq: 'الأسئلة',
+        irab: 'ما هو الإعراب؟', nahw: 'ما هو النحو؟', quran: 'إعراب القرآن', teachers: 'للمعلمين',
+        privacy: 'الخصوصية', terms: 'الشروط', contact: 'تواصل',
+      },
+      built: '© ٢٠٢٦ إعراب. كلّ الحقوق محفوظة.',
+    }
+  : {
+      brand:   "AI-powered Arabic grammar (i'rab) for Quran students, teachers, and serious learners.",
+      product: 'Product',
+      learn:   'Learn',
+      legal:   'Legal',
+      links: {
+        demo: 'Live demo', features: 'Features', pricing: 'Pricing', faq: 'FAQ',
+        irab: "What is i'rab?", nahw: 'What is nahw?', quran: 'Parse the Quran', teachers: 'For teachers',
+        privacy: 'Privacy', terms: 'Terms', contact: 'Contact',
+      },
+      built: '© 2026 Irab. All rights reserved.',
+    };
+
+// Arabic at root, English under /en
+const home = lang === 'ar' ? '/' : '/en';
+const p = (path: string) => (lang === 'ar' ? path : `/en${path}`);
+---
+<footer class="border-t border-stone dark:border-coal-edge mt-0">
+  <Container>
+    <div class="py-16 grid grid-cols-2 md:grid-cols-5 gap-10">
+      <div class="col-span-2 md:col-span-2">
+        <a href={home} class="flex items-center gap-2.5 mb-4">
+          <img src="/brand-mark.png" alt="" width="32" height="32" loading="lazy" decoding="async" class="w-8 h-8 rounded-md shrink-0"/>
+          <span class:list={[lang === 'ar' ? 'font-arabic-display font-bold text-xl' : 'font-display text-lg', 'tracking-tight']}>{lang === 'ar' ? 'إعراب' : 'Irab'}</span>
+        </a>
+        <p class="text-small text-ink/60 dark:text-mist/60 max-w-sm leading-relaxed">{t.brand}</p>
+      </div>
+
+      <div>
+        <p class="eyebrow mb-4">{t.product}</p>
+        <ul class="space-y-2 text-small">
+          <li><a href="/quran" class="text-teal hover:text-teal-deep dark:text-teal font-bold transition-colors duration-200">{lang === 'ar' ? 'إعراب القرآن الكريم' : "Quran i'rab (full)"}</a></li>
+          <li><a href={`${home}#demo`}     class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.demo}</a></li>
+          <li><a href={`${home}#features`} class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.features}</a></li>
+          <li><a href={`${home}#pricing`}  class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.pricing}</a></li>
+          <li><a href={`${home}#faq`}      class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.faq}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="eyebrow mb-4">{t.learn}</p>
+        <ul class="space-y-2 text-small">
+          <li><a href={p('/irab')}          class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.irab}</a></li>
+          <li><a href={p('/nahw')}          class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.nahw}</a></li>
+          <li><a href={p('/quran-parser')}  class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.quran}</a></li>
+          <li><a href={p('/teachers')}      class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.teachers}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="eyebrow mb-4">{t.legal}</p>
+        <ul class="space-y-2 text-small">
+          <li><a href="/privacy" class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.privacy}</a></li>
+          <li><a href="/terms"   class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.terms}</a></li>
+          <li><a href="mailto:hello@irab.app" class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.contact}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="py-6 border-t border-stone dark:border-coal-edge flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <p class="font-mono text-caption text-ink/40 dark:text-mist/40">{t.built}</p>
+      <div class="flex items-center gap-4 font-mono text-caption">
+        <a href="/"   class:list={['transition-colors', lang === 'ar' ? 'text-ink dark:text-mist' : 'text-ink/40 hover:text-ink dark:text-mist/40 dark:hover:text-mist']}>العربية</a>
+        <span class="text-ink/20 dark:text-mist/20">·</span>
+        <a href="/en" class:list={['transition-colors', lang === 'en' ? 'text-ink dark:text-mist' : 'text-ink/40 hover:text-ink dark:text-mist/40 dark:hover:text-mist']}>EN</a>
+      </div>
+    </div>
+  </Container>
+</footer>

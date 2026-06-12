@@ -1,0 +1,39 @@
+---
+/**
+ * ThemeToggle, light/dark switch.
+ *
+ * No icon flicker on load: BaseLayout's no-flash script runs first and
+ * sets `.dark` on <html> before paint. The CSS-only icon swap below
+ * mirrors that state instantly.
+ */
+---
+<button
+  type="button"
+  data-theme-toggle
+  aria-label="Toggle dark mode"
+  class:list={[
+    'group relative grid place-items-center w-9 h-9 rounded-full',
+    'text-ink/60 hover:text-ink dark:text-mist/60 dark:hover:text-mist',
+    'transition-colors duration-200',
+  ]}
+>
+  {/* Sun (visible in dark mode → click to go light) */}
+  <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2M12 20v2M22 12h-2M4 12H2M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41M19.07 19.07l-1.41-1.41M6.34 6.34L4.93 4.93"/>
+  </svg>
+  {/* Moon (visible in light mode → click to go dark) */}
+  <svg class="w-4 h-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+</button>
+
+<script>
+  const STORAGE_KEY = 'irab-theme';
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      try { localStorage.setItem(STORAGE_KEY, isDark ? 'dark' : 'light'); } catch {}
+    });
+  });
+</script>

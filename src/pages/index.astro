@@ -1,0 +1,407 @@
+---
+/**
+ * Irab, Arabic homepage (الصفحة الرئيسية).
+ *
+ * Native Arabic copy, not translated from English. Targets MENA + diaspora
+ * Arabic readers who already know the language but want to deepen their
+ * grammatical understanding.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Schema from '../components/Schema.astro';
+import Nav from '../components/Nav.astro';
+import Container from '../components/Container.astro';
+import Section from '../components/Section.astro';
+import LiveDemo from '../components/sections/LiveDemo.astro';
+import AppShowcase from '../components/sections/AppShowcase.astro';
+import Footer from '../components/sections/Footer.astro';
+
+const features = [
+  { title: 'محلل إعراب بالذكاء الاصطناعي', body: 'تحليل نحوي كلمة بكلمة: النوع، الوظيفة، الإعراب، العلامة، التفاصيل، التشكيل الكامل، ملاحظة التصحيح، وشرح واضح للجملة.', span: 'md:col-span-2' },
+  { title: 'مناسب للنص القرآني', body: 'ألصق آية وادرس بنيتها كلمة بكلمة. إعراب أداة مساعدة للنص العربي الكلاسيكي، وليس أداة قراءات أو بديلًا عن المعلّم.', span: '' },
+  { title: 'ثلاثة معاجم، تطبيق واحد', body: 'الذكي (مدعوم بالذكاء الاصطناعي). التقليدي (١٣ معجمًا تراثيًا منها لسان العرب). اللهجات (٨ مناطق: مصري، شامي، خليجي، مغاربي، عراقي، يمني، سوداني، فلسطيني). أكثر من ٣٠٠٠٠ مدخل، يعمل دون إنترنت.', span: 'md:col-span-2' },
+  { title: '٥٧٦ جملة تدريبية', body: 'تقييم فوري على ٥٧٦ جملة منتقاة، وتقييم AI على جملك الخاصة. من أوّل مرفوع إلى مفعول لأجله متقدّم.', span: '' },
+  { title: 'نظام التحديات', body: 'حملة من ٧ أبواب، تحدٍ يومي، XP، سلاسل، ١٠ رتب، شارات، ولوحات صدارة. Arena وSpeak & Parse في الخطة القادمة.', span: '' },
+  { title: 'شهادات إتقان', body: 'مشتركو الخطة السنوية يستطيعون طلب شهادة قابلة للمشاركة بعد إكمال مستوى بدقّة قوية في كل موضوع.', span: 'md:col-span-2' },
+  { title: 'مكتبة الكتب الكلاسيكية', body: '٤٧ كتابًا كلاسيكيًّا في النحو والصرف والبلاغة والإعراب، مع بحث، مفضلة، متابعة قراءة، وفهرس داخلي.', span: '' },
+  { title: 'إدخال صوتي + OCR', body: 'تكلّم بالجملة ليحلّلها التطبيق. ومع Plus يمكنك تصوير النص العربي، قصّه، اختيار النص، ثم إعرابه.', span: 'md:col-span-2' },
+];
+
+const faqs = [
+  { q: 'ما هو الإعراب؟', a: 'الإعراب هو نظام بيان الموقع النحوي ووظيفة الكلمة في الجملة العربية. يُحدّد ما إذا كانت الكلمة فاعلًا أو مفعولًا أو مضافًا إليه، ويبيّن العلاقة بين كل كلمة وأخرى. الإعراب هو الفرق بين فكّ رموز اللغة والقراءة الحقيقية.' },
+  { q: 'كيف يعمل المحلل بالذكاء الاصطناعي؟', a: 'يستخدم إعراب مسارًا نحويًا مدعومًا بـ Gemini عبر Cloudflare Worker آمن. كل تحليل يحدّد نوع الكلمة، إعرابها، وظيفتها، علامتها، التشكيل الكامل، وملاحظة التصحيح عند الحاجة. هذا هو نفس مسار التحليل في التطبيق والعرض المباشر.' },
+  { q: 'هل يتعامل مع العربية القرآنية؟', a: 'نعم، يمكنك لصق نص قرآني والحصول على إعراب كلمة بكلمة. هو مساعد دراسة للنص العربي الكلاسيكي، لا بديل عن معلّم مؤهل أو مرجع قرآني متخصص، خصوصًا في مواضع الاحتمال والقراءات.' },
+  { q: 'هل أحتاج إلى الإنترنت؟', a: 'معجم اللهجات يعمل دون إنترنت كاملًا (٣٠٠٠٠+ مدخل في قاعدة محلية). الكتب المحمّلة سابقًا ونتائج المعجم الذكي المخزّنة يمكن الرجوع إليها محليًا. المحلّل بالذكاء الاصطناعي، OCR، التقييم المخصص، البحث الجديد في المعجم الذكي، والمعجم التقليدي تحتاج إلى اتصال.' },
+  { q: 'كم معجمًا يضمّ تطبيق إعراب؟', a: 'ثلاثة معاجم. (١) المعجم الذكي: مدعوم بالذكاء الاصطناعي للعربية الحديثة، مع ترجمات بالإنجليزية والفرنسية (لغات إضافية ضمن الخطط). (٢) المعجم التقليدي: ١٣ معجمًا تراثيًا منها لسان العرب، عبر واجهة Qamoos. (٣) معجم اللهجات: أكثر من ٣٠٠٠٠ مدخل في ٨ مناطق عربية (مصري، شامي، فلسطيني، خليجي، مغاربي، عراقي، يمني، سوداني)، يعمل دون إنترنت كاملًا.' },
+  { q: 'كم تكلفة Irab Plus؟', a: 'تبدأ من ٤٫٩٩$ شهريًّا أو ٣٩٫٩٩$ سنويًّا في مناطق آسيا وأفريقيا، مع أسعار إقليمية أعلى في بعض الأسواق الغربية. التجربة المجانية ٧ أيام على الخطة السنوية، وهي التي تفتح شهادات الإتقان.' },
+  { q: 'هل يعمل مع كتب المدينة / البيّنة / الآجرومية؟', a: 'نعم. مهما كان منهجك، يسرّع إعراب فهمك بإعطائك تحليلًا فوريًّا لأي جملة. هو مكمّل للمنهج الكلاسيكي لا بديل عنه، استعمله جنبًا إلى جنب مع دورتك الحالية.' },
+  { q: 'هل بياناتي خاصّة؟', a: 'نعم. لا نبيع بياناتك. تسجيل الدخول يستخدم رموزًا آمنة، والجمل التي تُعربها تُستخدم لتقديم الخدمة وحفظ السجل أو الذاكرة المؤقتة عند تفعيلها وتشغيل التطبيق بأمان. اطّلع على سياسة الخصوصية الكاملة في irab.app/privacy.' },
+];
+---
+<BaseLayout
+  lang="ar"
+  hasEn
+  title="إعراب · اقرأ العربية كما يقرؤها العلماء."
+  description="إعراب آلي للعربية والقرآن مدعوم بالذكاء الاصطناعي. حلّل الجملة كلمة بكلمة، ثم تدرّب بالتحديات والمعاجم والمكتبة المرجعية."
+>
+  <Schema slot="head" faqs={faqs} />
+
+  <Nav lang="ar" />
+
+  <main>
+    {/* ── Hero ─────────────────────────────────────────────────────── */}
+    <Section size="lg" class="relative overflow-hidden" id="hero">
+      {/* Ambient brand watermark */}
+      <img
+        src="/brand-watermark.png"
+        alt=""
+        aria-hidden="true"
+        class="pointer-events-none select-none absolute inset-x-0 mx-auto top-1/2 -translate-y-1/2 w-[80%] max-w-[900px] opacity-[0.09] dark:opacity-[0.14] dark:invert"
+      />
+      <Container>
+        <div class="text-center">
+          <div
+            lang="ar"
+            dir="rtl"
+            class="hero-word font-arabic-display font-bold text-[clamp(4rem,11vw,9rem)] leading-[0.95] text-purple-deep dark:text-purple mt-4 mb-12 select-none"
+            aria-label="إعراب"
+          >
+            إعراب
+          </div>
+
+          <h1
+            class="font-arabic-display text-[clamp(1.9rem,4.5vw,3.4rem)] leading-[1.2] tracking-tight max-w-4xl mx-auto"
+            data-reveal data-reveal-delay="600"
+          >
+            أعرب العربية كما يفعل <span class="text-teal">العلماء</span>.
+          </h1>
+
+          <p
+            class="mt-8 text-base md:text-body-lg max-w-xl mx-auto text-ink/70 dark:text-mist/70 font-arabic leading-loose"
+            data-reveal data-reveal-delay="800"
+          >
+            إعراب يمنح المتعلّمين الجادّين تحليلًا نحويًا كلمة بكلمة، تشكيلًا، ملاحظات تصحيح، وشرحًا واضحًا. ألصق جملة أو آية، ثم واصل التعلّم بالتدريب، التحديات، المعاجم، والمكتبة.
+          </p>
+
+          <div
+            class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
+            data-reveal data-reveal-delay="1000"
+          >
+            <a
+              href="https://play.google.com/store/apps/details?id=com.irabapp.arabic"
+              target="_blank" rel="noopener"
+              class="inline-flex items-center gap-3 px-8 py-4 bg-purple hover:bg-purple-deep text-white font-medium tracking-tight rounded-full shadow-lg shadow-purple/20 hover:shadow-purple/30 transition-all duration-200 hover:-translate-y-[3px]"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5V3.5c0-.59.34-1.11.84-1.35L13.69 12 3.84 21.85c-.5-.25-.84-.76-.84-1.35M16.81 15.12L6.05 21.34l8.49-8.49 2.27 2.27M20.16 10.81c.34.27.59.66.59 1.19s-.25.92-.59 1.19l-2.31 1.34-2.61-2.55 2.61-2.55 2.31 1.38M6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
+              <span>حمّل من Google Play</span>
+            </a>
+            <a
+              href="https://apps.apple.com/app/id6765811277" target="_blank" rel="noopener"
+              class="inline-flex items-center gap-3 px-8 py-4 border-2 border-ink/15 hover:border-purple/50 dark:border-mist/15 dark:hover:border-purple text-ink dark:text-mist font-medium tracking-tight rounded-full transition-all duration-200 hover:-translate-y-[3px]"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/></svg>
+              <span>App Store</span>
+            </a>
+          </div>
+
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Thesis ───────────────────────────────────────────────────── */}
+    <Section size="lg" class="relative bg-teal/[0.035] dark:bg-teal/[0.06] border-y border-teal/15 dark:border-teal/20">
+      <Container size="narrow">
+        <p class="eyebrow mb-10" data-reveal>الفكرة</p>
+        <blockquote
+          class="font-arabic-display text-[clamp(1.6rem,3.5vw,2.5rem)] leading-[1.5] tracking-tight"
+          data-reveal data-reveal-delay="100"
+        >
+          يقرأ كلّ عربيّ القرآن. لكنّ قلّة من يدركون <span class="text-teal">إعرابه</span>.<br />
+          هذا ما نحلّه.
+        </blockquote>
+        <p class="mt-8 text-body-lg text-ink/70 dark:text-mist/70 font-arabic leading-loose" data-reveal data-reveal-delay="200">
+          أكثر تطبيقات اللغة تعلّمك المفردات. إعراب يعلّمك <span class="text-teal font-medium">ما وراء الكلمة</span>، البنية النحوية التي تجعل الفصحى تنفتح أمامك بدلًا من أن تتحرّك بطريقة سطحية.
+        </p>
+      </Container>
+    </Section>
+
+    {/* ── Live Demo ────────────────────────────────────────────────── */}
+    <LiveDemo lang="ar" />
+
+    {/* ── Features ─────────────────────────────────────────────────── */}
+    <Section id="features">
+      <Container>
+        <div class="max-w-2xl mb-16">
+          <p class="eyebrow mb-4" data-reveal>المنتج</p>
+          <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+            ورشة عمل كاملة لقواعد العربية.
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {features.map((f, i) => {
+            const isPurple = i % 2 === 0;
+            const accentClass = isPurple ? 'text-purple' : 'text-teal';
+            const hoverBorder = isPurple ? 'hover:border-purple/40' : 'hover:border-teal/40';
+            return (
+              <article
+                class:list={[
+                  'group relative p-7 md:p-8 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft transition-colors duration-300',
+                  hoverBorder,
+                  f.span,
+                ]}
+                data-reveal data-reveal-delay={String(i * 60)}
+              >
+                <div class="flex items-start justify-between gap-4 mb-3">
+                  <h3 class="font-arabic-display text-h3 leading-tight">{f.title}</h3>
+                  <span class:list={[accentClass, 'font-mono text-caption mt-1.5 tabular-nums tracking-wider']}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <p class="font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose">{f.body}</p>
+              </article>
+            );
+          })}
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Audience ─────────────────────────────────────────────────── */}
+    <Section id="audience" class="bg-paper-soft/60 dark:bg-coal-soft/30 border-y border-stone/60 dark:border-coal-edge/60">
+      <Container>
+        <div class="max-w-2xl mb-16">
+          <p class="eyebrow mb-4" data-reveal>لمن</p>
+          <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+            مصنوع للمتعلّمين الجادّين، في كلّ مستوى.
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-8 md:p-10" data-reveal>
+            <p class="font-arabic-display font-bold text-3xl text-purple mb-5">الطلاب</p>
+            <h3 class="font-arabic-display text-h2 leading-tight mb-6">من البسملة إلى البقرة.</h3>
+            <p class="font-arabic text-body text-ink/75 dark:text-mist/75 leading-loose">
+              أتقنت العربية المحادثة، لكنّك لا تزال تعجز عن قراءة القرآن بفهم. إعراب هو الجسر: قواعد حقيقية، وتدريب بتقييم ذكي، وعادة يومية تتراكم.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-8 md:p-10" data-reveal data-reveal-delay="100">
+            <p class="font-arabic-display font-bold text-3xl text-teal mb-5">المعلّمون</p>
+            <h3 class="font-arabic-display text-h2 leading-tight mb-6">افحص في ثوانٍ.</h3>
+            <p class="font-arabic text-body text-ink/75 dark:text-mist/75 leading-loose mb-6">
+              إعراب فوري لأي جملة يأتيك بها طلابك. راجع النتائج التي يشاركونها معك، وقارن التحليلات، ووجّههم إلى التدريب دون الحاجة إلى لوحة معلّم أو قائمة طلاب.
+            </p>
+            <a href="/teachers" class="font-arabic-display font-bold text-teal hover:text-teal-deep text-xl transition-colors duration-200">للمدارس والأكاديميات</a>
+          </div>
+
+          <div class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-8 md:p-10" data-reveal data-reveal-delay="200">
+            <p class="font-arabic-display font-bold text-3xl text-ink dark:text-mist mb-5">طلاب العلم</p>
+            <h3 class="font-arabic-display text-h2 leading-tight mb-6">رأي ثانٍ، فوريّ.</h3>
+            <p class="font-arabic text-body text-ink/75 dark:text-mist/75 leading-loose">
+              تحقّق من الحالات المختلطة، وسوِّ الإعرابات الغامضة، وابدأ من نقطة موثوقة في أعمال التفسير والترجمة. ليس بديلًا عن التكوين العلمي، بل تكميلٌ له.
+            </p>
+          </div>
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Social Proof ─────────────────────────────────────────────── */}
+    <Section id="proof">
+      <Container>
+        <div class="max-w-2xl mb-16">
+          <p class="eyebrow mb-4" data-reveal>قالها الناس، لا نحن</p>
+          <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+            آراء حقيقية من متعلّمين يحبّون العربية.
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { body: 'ممتاز جدًا جدًا، لم أرَ مثله في الإعراب.', name: 'محمد', detail: '★★★★★ · Google Play' },
+            { body: 'ماشاءالله جميل جدًا لعشاق اللغة العربية، ولِمن لديهم شغف بها، وحتى الذين يتعلّمونها الآن يمكنهم بسهولة فهم أيّ كلمة يريدونها.', name: 'Osamah Alrebaki', detail: '★★★★★ · Google Play' },
+            { body: 'التطبيق واضح أنه متعوبٌ عليه، بأسلوبٍ حديثٍ ورائع. أحيّيكم على هذه الجهود المثمرة.', name: 'Aboood Aboooda', detail: '★★★★★ · Google Play' },
+            { body: 'بصّ بصّ من غير أيّ كلام كتير، عشرة على عشرة. بسّ محتاج إنترنت.', name: 'مصطفى عبدالرحمن', detail: '★★★★★ · Google Play' },
+            { body: 'تطبيق رائع جدًا، ونرجو أن يبقى مجانيًّا دائمًا. بارك الله فيكم.', name: 'Ahmed', detail: '★★★★★ · Google Play' },
+            { body: 'تطبيق أكثر من رائع، تمنّيت وجوده عند تحضيري للاختبارات الثانوية وعند دراسة اللغة والقرآن الكريم. أنصح الجميع بتجربته.', name: 'Ali Aljawzi', detail: '★★★★★ · App Store' },
+            { body: 'تطبيق عظيم، يعمل على جهازي ماك وهذا الذي أبهرني. شكرًا جزيلًا.', name: 'مستخدم App Store', detail: '★★★★★ · App Store' },
+            { body: 'خطوة ممتازة، بالتوفيق.', name: 'Albahr Malek', detail: '★★★★★ · App Store' },
+          ].map((q, i) => (
+            <figure class="p-8 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft" data-reveal data-reveal-delay={String(i * 80)}>
+              <div class="flex items-center gap-1 mb-5" aria-label="٥ من ٥">
+                {Array.from({ length: 5 }).map(() => (
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-marfu);"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                ))}
+              </div>
+              <blockquote class="font-arabic text-body leading-loose text-ink/80 dark:text-mist/80">"{q.body}"</blockquote>
+              <figcaption class="mt-6 pt-5 border-t border-stone dark:border-coal-edge">
+                <p class="font-arabic font-medium text-small">{q.name}</p>
+                <p class="font-mono text-caption text-ink/50 dark:text-mist/50 mt-0.5">{q.detail}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Pricing ──────────────────────────────────────────────────── */}
+    <Section id="pricing" class="bg-paper-soft/40 dark:bg-coal-soft/30 border-y border-stone/60 dark:border-coal-edge/60">
+      <Container>
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <p class="eyebrow mb-4" data-reveal>الأسعار</p>
+          <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+            مجاني للتجربة. صادق في الدفع.
+          </h2>
+          <p class="mt-6 font-arabic text-body-lg text-ink/70 dark:text-mist/70 leading-loose" data-reveal data-reveal-delay="200">
+            خطّتان. بلا خطّة وسطى تضليلية.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div class="relative p-8 md:p-10 rounded-2xl border-2 border-teal/30 dark:border-teal/40 bg-paper dark:bg-coal-soft flex flex-col" data-reveal>
+            <span class="absolute -top-3 right-8 px-4 py-1.5 bg-teal text-white text-small font-arabic font-bold rounded-full">ابدأ هنا</span>
+            <div class="flex items-baseline justify-between gap-3 mb-2 mt-2">
+              <h3 class="font-arabic-display text-h2 leading-tight">مجاني</h3>
+              <p class="font-arabic text-small text-teal">مجاناً للأبد</p>
+            </div>
+            <p class="font-arabic text-body text-ink/70 dark:text-mist/70 mb-8 leading-loose">كلّ ما تحتاجه لتبدأ قراءة العربية بجدّية.</p>
+            <ul class="space-y-3 mb-10 flex-1 font-arabic">
+              {['٣ تحليلات إعرابية يومية', '٥ عمليات بحث يومية في المعجم الذكي', 'المعجم التقليدي ومعجم اللهجات بلا حد', 'مكتبة مرجعية كاملة', 'إدخال صوتي', 'مستويات التدريب ١-٢ والبابان ١-٢ من التحديات', 'بدون إعلانات.'].map((f) => (
+                <li class="flex items-start gap-3">
+                  <svg class="w-5 h-5 mt-0.5 shrink-0 text-ink/40 dark:text-mist/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12l5 5L20 7"/></svg>
+                  <span class="text-body">{f}</span>
+                </li>
+              ))}
+            </ul>
+            <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center px-6 py-3 bg-teal hover:bg-teal-deep text-white font-arabic font-medium tracking-tight rounded-full lift">
+              حمّل التطبيق المجاني
+            </a>
+          </div>
+
+          <div class="relative p-8 md:p-10 rounded-2xl border-2 border-purple bg-paper dark:bg-coal-soft flex flex-col" data-reveal data-reveal-delay="100">
+            <span class="absolute -top-3 right-8 px-4 py-1.5 bg-purple text-white text-small font-arabic font-bold rounded-full">للجادّين</span>
+            <div class="flex items-baseline justify-between gap-3 mb-2 mt-2">
+              <h3 class="font-arabic-display text-h2 leading-tight">Irab Plus</h3>
+              <p class="font-arabic text-small text-ink/55 dark:text-mist/55">من ٤٫٩٩$ شهريّاً</p>
+            </div>
+            <p class="font-arabic text-body text-ink/70 dark:text-mist/70 mb-8 leading-loose">كلّ ما في الخطّة المجانية، إضافة إلى العمق الذي يصنع الإتقان فعلًا.</p>
+            <ul class="space-y-3 mb-10 flex-1 font-arabic">
+              {['تحليلات إعرابية لا محدودة', 'بحث غير محدود في المعجم الذكي', 'بنك التدريب الكامل ٥٧٦ جملة + تقييم إعرابك الخاص', 'كلّ أبواب التحدّي السبعة + الشروحات المدفوعة', 'كاميرا OCR، تصدير PDF، وبطاقات مشاركة بلا علامة', 'تحليلات تقدّم، ظهور في لوحة الصدارة، وتجميد إضافي للسلسلة', 'شهادات الإتقان في الخطة السنوية'].map((p) => (
+                <li class="flex items-start gap-3">
+                  <svg class="w-5 h-5 mt-0.5 shrink-0 text-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12l5 5L20 7"/></svg>
+                  <span class="text-body">{p}</span>
+                </li>
+              ))}
+            </ul>
+            <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center px-6 py-3 bg-purple hover:bg-purple-deep text-white font-arabic font-medium tracking-tight rounded-full lift">
+              ابدأ التجربة المجانية ٧ أيام
+            </a>
+          </div>
+        </div>
+
+        <p class="text-center mt-10 font-arabic text-small text-ink/55 dark:text-mist/55 leading-loose" data-reveal>
+          إلغاء في أيّ وقت · ٧ أيّام تجربة مجانية على السنوي · قد تختلف الأسعار حسب المنطقة
+        </p>
+      </Container>
+    </Section>
+
+    {/* ── App showcase + download ──────────────────────────────────── */}
+    <AppShowcase lang="ar" />
+
+    {/* ── FAQ ──────────────────────────────────────────────────────── */}
+    <Section id="faq">
+      <Container>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+          <div class="md:col-span-1">
+            <p class="eyebrow mb-4" data-reveal>أسئلة</p>
+            <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.2] tracking-tight" data-reveal data-reveal-delay="100">
+              ربّما هذا ما تتساءل عنه.
+            </h2>
+            <p class="mt-6 font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose" data-reveal data-reveal-delay="200">
+              عندك سؤال آخر؟ <a href="mailto:support@irab.app" class="text-purple hover:text-purple-deep">راسلنا</a>.
+            </p>
+          </div>
+
+          <div class="md:col-span-2 divide-y divide-stone dark:divide-coal-edge border-y border-stone dark:border-coal-edge">
+            {faqs.map((f) => (
+              <details class="group py-6 cursor-pointer">
+                <summary class="flex items-start justify-between gap-6 list-none [&::-webkit-details-marker]:hidden">
+                  <h3 class="font-arabic-display text-h3 leading-snug pl-4 transition-colors duration-200 group-hover:text-purple group-open:text-purple">{f.q}</h3>
+                  <span class="shrink-0 mt-1 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 group-open:bg-purple text-purple group-open:text-white transition-all duration-300 group-open:rotate-45">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                  </span>
+                </summary>
+                <p class="mt-4 font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose pl-12">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Final CTA ────────────────────────────────────────────────── */}
+    <Section id="cta" size="lg" class="relative overflow-hidden bg-ink dark:bg-mist text-paper dark:text-coal">
+      {/* Watermark accent — bottom-left corner (opposite to LTR page since Arabic is RTL) */}
+      <img
+        src="/brand-watermark.png"
+        alt=""
+        aria-hidden="true"
+        class="pointer-events-none select-none absolute -left-12 -bottom-16 w-[40%] max-w-[480px] opacity-[0.06] dark:opacity-[0.08] invert dark:invert-0"
+      />
+      <Container>
+        <div class="text-center">
+          <p lang="ar" dir="rtl" class="font-arabic-display font-bold text-[clamp(4rem,12vw,10rem)] leading-[0.9] mb-12" data-reveal>
+            ابدأ الآن
+          </p>
+          <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight max-w-2xl mx-auto" data-reveal data-reveal-delay="100">
+            أوّل يوم تستعمل فيه إعراب هو اليوم الذي تفتح فيه العربية لك بطريقة مختلفة.
+          </h2>
+          <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4" data-reveal data-reveal-delay="200">
+            <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener"
+               class="inline-flex items-center gap-3 px-8 py-4 bg-purple hover:bg-purple-deep text-white font-arabic font-medium tracking-tight rounded-full lift">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5V3.5c0-.59.34-1.11.84-1.35L13.69 12 3.84 21.85c-.5-.25-.84-.76-.84-1.35M16.81 15.12L6.05 21.34l8.49-8.49 2.27 2.27M20.16 10.81c.34.27.59.66.59 1.19s-.25.92-.59 1.19l-2.31 1.34-2.61-2.55 2.61-2.55 2.31 1.38M6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
+              <span>حمّل من Google Play</span>
+            </a>
+            <a href="https://apps.apple.com/app/id6765811277" target="_blank" rel="noopener"
+               class="inline-flex items-center gap-3 px-8 py-4 border border-paper/30 hover:border-paper dark:border-coal/30 dark:hover:border-coal font-arabic font-medium tracking-tight rounded-full lift">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/></svg>
+              <span>حمّل من App Store</span>
+            </a>
+          </div>
+          <p class="mt-8 font-mono text-caption opacity-50">
+            خطّة مجانية · بلا تسجيل · معجم اللهجات يعمل دون إنترنت
+          </p>
+        </div>
+      </Container>
+    </Section>
+  </main>
+
+  <Footer lang="ar" />
+
+  <script>
+    import '../scripts/scroll-reveal';
+  </script>
+
+  <style>
+    .hero-word {
+      opacity: 0;
+      -webkit-clip-path: inset(0 100% 0 0);
+      clip-path: inset(0 100% 0 0);
+      animation:
+        hero-fade 200ms 100ms forwards,
+        hero-write-rtl 1600ms 100ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes hero-fade { to { opacity: 1; } }
+
+    /* RTL: write the word from right to left (i.e. reveal mask shrinks from the LEFT side in RTL) */
+    @keyframes hero-write-rtl {
+      from { -webkit-clip-path: inset(0 100% 0 0); clip-path: inset(0 100% 0 0); }
+      to   { -webkit-clip-path: inset(0 0 0 0);     clip-path: inset(0 0 0 0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-word { opacity: 1; animation: none; -webkit-clip-path: none; clip-path: none; }
+    }
+  </style>
+</BaseLayout>

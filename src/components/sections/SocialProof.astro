@@ -1,0 +1,105 @@
+---
+import Container from '../Container.astro';
+import Section from '../Section.astro';
+
+// Selected real store reviews — Google Play + App Store.
+const quotes = [
+  {
+    body: 'ممتاز جدًا جدًا، لم أرَ مثله في الإعراب.',
+    bodyEn: '"Excellent — I have not seen anything like it for i\'rab."',
+    name: 'Mohammed',
+    detail: '★★★★★ · Google Play',
+    arabic: true,
+  },
+  {
+    body: 'ماشاءالله جميل جدًا لعشاق اللغة العربية، ولِمن لديهم شغف بها، وحتى الذين يتعلّمونها الآن يمكنهم بسهولة فهم أيّ كلمة يريدونها.',
+    bodyEn: '"Beautiful for Arabic lovers, and those passionate about it — even people just now learning it can easily understand any word they want."',
+    name: 'Osamah Alrebaki',
+    detail: '★★★★★ · Google Play',
+    arabic: true,
+  },
+  {
+    body: 'التطبيق واضح أنه متعوبٌ عليه، بأسلوبٍ حديثٍ ورائع. أحيّيكم على هذه الجهود المثمرة.',
+    bodyEn: '"You can tell real effort went into it — modern and excellent. Well done on this fruitful work."',
+    name: 'Aboood Aboooda',
+    detail: '★★★★★ · Google Play',
+    arabic: true,
+  },
+  {
+    body: 'بصّ بصّ من غير أيّ كلام كتير، عشرة على عشرة. بسّ محتاج إنترنت.',
+    bodyEn: '"Ten out of ten, no need for many words. It just needs internet."',
+    name: 'Mostafa Abdelrahman',
+    detail: '★★★★★ · Google Play',
+    arabic: true,
+  },
+  {
+    body: 'تطبيق رائع جدًا، ونرجو أن يبقى مجانيًّا دائمًا. بارك الله فيكم.',
+    bodyEn: '"A truly great app — we hope it stays free forever. God bless you."',
+    name: 'Ahmed',
+    detail: '★★★★★ · Google Play',
+    arabic: true,
+  },
+  {
+    body: 'تطبيق أكثر من رائع، تمنّيت وجوده عند تحضيري للاختبارات الثانوية وعند دراسة اللغة والقرآن الكريم. أنصح الجميع بتجربته.',
+    bodyEn: '"More than excellent. I wish it existed when I was preparing for exams and studying Arabic and the Quran. I recommend everyone try it."',
+    name: 'Ali Aljawzi',
+    detail: '★★★★★ · App Store',
+    arabic: true,
+  },
+  {
+    body: 'تطبيق عظيم، يعمل على جهازي ماك وهذا الذي أبهرني. شكرًا جزيلًا.',
+    bodyEn: '"A superb app — it even works on my Mac, which impressed me. Many thanks."',
+    name: 'App Store user',
+    detail: '★★★★★ · App Store',
+    arabic: true,
+  },
+  {
+    body: 'خطوة ممتازة، بالتوفيق.',
+    bodyEn: '"An excellent step. Wishing you success."',
+    name: 'Albahr Malek',
+    detail: '★★★★★ · App Store',
+    arabic: true,
+  },
+];
+---
+<Section id="proof">
+  <Container>
+    <div class="max-w-2xl mb-16">
+      <p class="eyebrow mb-4" data-reveal>Said by people, not us</p>
+      <h2 class="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.1] tracking-tight" data-reveal data-reveal-delay="100">
+        Loved by early Arabic learners across locales.
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {quotes.map((q, i) => (
+        <figure
+          class="p-8 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft"
+          data-reveal data-reveal-delay={String(i * 80)}
+        >
+          <div class="flex items-center gap-1 mb-5" aria-label="5 out of 5 stars">
+            {Array.from({ length: 5 }).map(() => (
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-marfu);" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            ))}
+          </div>
+          <blockquote class="text-body leading-relaxed text-ink/80 dark:text-mist/80">
+            {q.arabic ? (
+              <>
+                <span lang="ar" dir="rtl" class="font-arabic block">{q.body}</span>
+                <span class="block mt-3 text-ink/50 dark:text-mist/50 italic">{q.bodyEn}</span>
+              </>
+            ) : (
+              <>"{q.body}"</>
+            )}
+          </blockquote>
+          <figcaption class="mt-6 pt-5 border-t border-stone dark:border-coal-edge">
+            <p class="font-medium text-small">{q.name}</p>
+            <p class="font-mono text-caption text-ink/50 dark:text-mist/50 mt-0.5">{q.detail}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </Container>
+</Section>

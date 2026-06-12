@@ -1,0 +1,24 @@
+---
+import Container from '../Container.astro';
+import Section from '../Section.astro';
+---
+<Section size="lg" class="relative bg-teal/[0.035] dark:bg-teal/[0.06] border-y border-teal/15 dark:border-teal/20">
+  {/* Side rule, vertical accent in teal aligning with the blockquote */}
+  <div class="absolute left-0 inset-y-16 w-1 bg-teal/70 hidden md:block" aria-hidden="true"></div>
+
+  <Container size="narrow">
+    <p class="eyebrow mb-10 flex items-center gap-2" data-reveal>
+      <span class="inline-block w-1 h-1 rounded-full bg-teal"></span>
+      <span>The thesis</span>
+    </p>
+    <blockquote
+      class="font-display text-[clamp(1.75rem,4vw,3rem)] leading-[1.25] tracking-tight"
+      data-reveal data-reveal-delay="100"
+    >
+      Most Arabic apps teach you to <span class="text-ink/40 dark:text-mist/40 line-through decoration-1">order coffee in Cairo</span>. Irab teaches you to read <span class="italic text-teal" style="font-variation-settings: 'SOFT' 100, 'WONK' 1;">Surah&nbsp;al-Baqara</span>.
+    </blockquote>
+    <p class="mt-8 text-body-lg text-ink/70 dark:text-mist/70" data-reveal data-reveal-delay="200">
+      Generic language apps teach phrasebook tourism. We teach the structural grammar, nahw and sarf, that lets you actually <em class="text-teal not-italic font-medium">read</em> the Quran, classical texts, and modern Arabic with comprehension.
+    </p>
+  </Container>
+</Section>

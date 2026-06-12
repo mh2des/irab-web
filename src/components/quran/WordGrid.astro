@@ -1,0 +1,88 @@
+---
+/**
+ * WordGrid — the word-by-word i'rab table. Each row: the token (Amiri Quran)
+ * with a case-coloured leading rail, then its analysis (Amiri Naskh) and a
+ * case chip. This is the differentiated, AI-liftable core of an ayah page.
+ */
+import { caseHex, type AyahWord } from '../../lib/quran';
+
+interface Props { words: AyahWord[]; }
+const { words } = Astro.props;
+
+const CASE_LABEL: Record<string, string> = {
+  marfu: 'مرفوع',
+  mansub: 'منصوب',
+  majrur: 'مجرور',
+  jazm: 'مجزوم',
+  mabni: 'مبني',
+};
+---
+<div class="wg">
+  {words.map((w) => {
+    const hex = caseHex(w.case);
+    return (
+      <div class="wg-row" style={`--case:${hex ?? 'var(--color-stone-soft)'}`}>
+        <div class="wg-tok quran-text">{w.token}</div>
+        <div class="wg-body">
+          <p class="wg-an classical-naskh">{w.analysis}</p>
+          {w.case && <span class="wg-chip">{CASE_LABEL[w.case]}</span>}
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+<style>
+  .wg {
+    border: 1px solid var(--color-stone);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--color-paper-soft);
+  }
+  :global(.dark) .wg { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+
+  .wg-row {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, 11rem) 1fr;
+    gap: 1.25rem;
+    align-items: start;
+    padding: 1.1rem 1.3rem;
+    border-bottom: 1px solid var(--color-stone);
+    border-inline-start: 4px solid var(--case);
+  }
+  :global(.dark) .wg-row { border-bottom-color: var(--color-coal-edge); }
+  .wg-row:last-child { border-bottom: 0; }
+
+  .wg-tok {
+    font-size: 2.4rem;
+    line-height: 1.6;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  :global(.dark) .wg-tok { color: var(--color-mist); }
+
+  .wg-body { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+  .wg-an {
+    font-size: 1.7rem;
+    line-height: 1.95;
+    color: color-mix(in srgb, var(--color-ink) 95%, transparent);
+  }
+  :global(.dark) .wg-an { color: color-mix(in srgb, var(--color-mist) 92%, transparent); }
+
+  .wg-chip {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    padding: 0.12rem 0.55rem;
+    border-radius: 999px;
+    color: var(--case);
+    background: color-mix(in srgb, var(--case) 13%, transparent);
+  }
+
+  @media (max-width: 480px) {
+    .wg-row { grid-template-columns: 1fr; gap: 0.45rem; }
+    .wg-tok { font-size: 1.5rem; }
+  }
+</style>

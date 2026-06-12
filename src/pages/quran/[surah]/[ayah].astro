@@ -1,0 +1,320 @@
+---
+/**
+ * Ayah i'rab page — the spoke. Answer-first: verse → source → (TL;DR) →
+ * word-by-word grid → detailed i'rab → sarf/balagha/fawaid → footnotes →
+ * related → FAQ → app CTA. Pure static; JSON-LD via AyahSchema.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import Container from '../../../components/Container.astro';
+import ArticleCta from '../../../components/ArticleCta.astro';
+import WordGrid from '../../../components/quran/WordGrid.astro';
+import AyahSchema from '../../../components/quran/AyahSchema.astro';
+import {
+  AYAT, surahById, ayatOfSurah, toArabicDigits, renderIrab, plainVerse, type Ayah,
+} from '../../../lib/quran';
+import { INTROS } from '../../../data/ayah-intros';
+
+export function getStaticPaths() {
+  return AYAT.map((a) => {
+    const s = surahById(a.surah)!;
+    return { params: { surah: s.slug, ayah: String(a.ayah) }, props: { ayah: a } };
+  });
+}
+
+const { ayah } = Astro.props as { ayah: Ayah };
+const surah = surahById(ayah.surah)!;
+const intro = INTROS[`${ayah.surah}:${ayah.ayah}`] ?? {};
+const an = toArabicDigits(ayah.ayah);
+
+const h1 = intro.h1 ?? `إعراب سورة ${surah.name}، الآية ${an}`;
+const title = intro.h1
+  ? `${intro.h1} (${surah.name} ${an}) · كلمة بكلمة | إعراب`
+  : `إعراب سورة ${surah.name} الآية ${an} · كلمة بكلمة | إعراب`;
+const versePlain = plainVerse(ayah.uthmani);
+const description = `إعراب ${surah.name} الآية ${an} كلمةً كلمةً: ${versePlain.slice(0, 80)}… تحليلٌ نحويٌّ مفصّل من «الجدول في إعراب القرآن».`;
+const selfUrl = `https://irab.app/quran/${surah.slug}/${ayah.ayah}`;
+const headUrl = `https://irab.app/quran/${surah.slug}/${ayah.ayahStart}`;
+const isHead = ayah.ayah === ayah.ayahStart;
+const placeAr = surah.place === 'makki' ? 'مكية' : 'مدنية';
+const shared = ayah.ayahStart !== ayah.ayahEnd;
+// A multi-ayah group shares ONE i'rab block. Consolidate non-head members to
+// the head's URL so we don't ship thousands of duplicate-content pages — the
+// member page still exists (own verse + own word grid) but ranking flows to
+// the head, whose H1 enumerates the covered ayat.
+const canonical = shared && ayah.isShared && !isHead ? headUrl : selfUrl;
+const faqs = intro.faqs ?? [];
+
+const irabHtml = renderIrab(ayah.irab, ayah.footnotes);
+const sarfHtml = renderIrab(ayah.sarf, ayah.footnotes);
+const balaghaHtml = renderIrab(ayah.balagha, ayah.footnotes);
+const fawaidHtml = renderIrab(ayah.fawaid, ayah.footnotes);
+
+const inSurah = ayatOfSurah(ayah.surah);
+const idx = inSurah.findIndex((a) => a.ayah === ayah.ayah);
+const prev = idx > 0 ? inSurah[idx - 1] : null;
+const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
+
+// Index gate: noindex only GENUINELY empty/backfilled ayat. A concise but real
+// analysis (e.g. a multi-ayah group head with few of its own words) is still a
+// valuable, indexable page — don't suppress it.
+const thin = ayah.isBackfilled || (!ayah.irab && ayah.words.length === 0);
+const fnId = (m: string) => `fn-${m.replace(/[^0-9]/g, '')}`;
+---
+<BaseLayout lang="ar" title={title} description={description} noindex={thin} canonicalOverride={canonical}>
+  <AyahSchema slot="head" ayah={ayah} surah={surah} canonical={canonical} title={h1} description={description} faqs={faqs} />
+  <Nav lang="ar" />
+
+  <main>
+    <article class="py-10 md:py-14">
+      <Container size="narrow">
+        <nav class="bc" aria-label="مسار التنقّل">
+          <a href="/quran">إعراب القرآن</a><span aria-hidden="true">›</span>
+          <a href={`/quran/${surah.slug}`}>سورة {surah.name}</a><span aria-hidden="true">›</span>
+          <span class="bc-cur">الآية {an}</span>
+        </nav>
+
+        <h1 class="ayah-h1 font-arabic-display">{h1}</h1>
+        <p class="ayah-sub">سورة {surah.name} · {placeAr} · الآية {an}</p>
+
+        <blockquote class="verse quran-text" lang="ar" dir="rtl">
+          <span class="verse-text">{ayah.uthmani}</span>
+          <span class="verse-num" aria-hidden="true">{an}</span>
+        </blockquote>
+
+        <p class="source">
+          المصدر: <span class="source-book">الجدول في إعراب القرآن</span>، تأليف محمود صافي{shared ? `، يشمل الآيات ${toArabicDigits(ayah.ayahStart)}–${toArabicDigits(ayah.ayahEnd)}` : ''}
+        </p>
+
+        {intro.tldr && (
+          <div class="tldr">
+            <span class="eyebrow eyebrow-ink">الإعراب باختصار</span>
+            <p class="classical-naskh">{intro.tldr}</p>
+          </div>
+        )}
+
+        {shared && ayah.isShared && !isHead && (
+          <p class="shared-note">
+            هذا الإعراب مشترك للآيات {toArabicDigits(ayah.ayahStart)}–{toArabicDigits(ayah.ayahEnd)}.
+            <a href={`/quran/${surah.slug}/${ayah.ayahStart}`}>انظر الإعراب الكامل في الآية {toArabicDigits(ayah.ayahStart)}</a>.
+          </p>
+        )}
+
+        {ayah.words.length > 0 && (
+          <section class="blk">
+            <h2>إعراب المفردات كلمةً كلمة</h2>
+            <WordGrid words={ayah.words} />
+          </section>
+        )}
+
+        {thin && (
+          <p class="pending-note classical-naskh">التحليل التفصيلي لهذه الآية قيد الإعداد، وسيُضاف قريباً بإذن الله.</p>
+        )}
+
+        {irabHtml && (
+          <section class="blk">
+            <h2>الإعراب التفصيلي</h2>
+            <div class="irab-html classical-naskh" set:html={irabHtml} />
+          </section>
+        )}
+
+        {(sarfHtml || balaghaHtml || fawaidHtml) && (
+          <section class="blk">
+            <h2>الصرف والبلاغة والفوائد</h2>
+            {sarfHtml && <details class="exp"><summary>الصرف</summary><div class="irab-html classical-naskh" set:html={sarfHtml} /></details>}
+            {balaghaHtml && <details class="exp"><summary>البلاغة</summary><div class="irab-html classical-naskh" set:html={balaghaHtml} /></details>}
+            {fawaidHtml && <details class="exp"><summary>الفوائد</summary><div class="irab-html classical-naskh" set:html={fawaidHtml} /></details>}
+          </section>
+        )}
+
+        {ayah.footnotes.length > 0 && (
+          <section class="blk">
+            <h2>الهوامش</h2>
+            <ol class="fns classical-naskh">
+              {ayah.footnotes.map((f) => (
+                <li id={fnId(f.marker)}>{f.content}</li>
+              ))}
+            </ol>
+          </section>
+        )}
+
+        {(prev || next) && (
+          <section class="blk">
+            <h2>آياتٌ ذات صلة</h2>
+            <div class="rel">
+              {next && (
+                <a class="rel-card" href={`/quran/${surah.slug}/${next.ayah}`}>
+                  <span>الآية التالية</span><b class="quran-text">{surah.name} · {toArabicDigits(next.ayah)}</b>
+                </a>
+              )}
+              {prev && (
+                <a class="rel-card" href={`/quran/${surah.slug}/${prev.ayah}`}>
+                  <span>الآية السابقة</span><b class="quran-text">{surah.name} · {toArabicDigits(prev.ayah)}</b>
+                </a>
+              )}
+              <a class="rel-card" href={`/quran/${surah.slug}`}>
+                <span>كل آيات السورة</span><b>سورة {surah.name}</b>
+              </a>
+            </div>
+          </section>
+        )}
+
+        {faqs.length > 0 && (
+          <section class="blk">
+            <h2>أسئلة شائعة</h2>
+            <div class="faq">
+              {faqs.map((f) => (
+                <details class="exp"><summary>{f.q}</summary><p class="classical-naskh faq-a">{f.a}</p></details>
+              ))}
+            </div>
+          </section>
+        )}
+      </Container>
+
+      <ArticleCta lang="ar">
+        <span slot="title">ادرس الإعراب كاملاً في التطبيق.</span>
+        الصرف والبلاغة والفوائد لكل آية، مع بحثٍ فوري وحفظٍ للآيات، في تطبيق إعراب، ويعمل دون إنترنت.
+      </ArticleCta>
+    </article>
+  </main>
+
+  <Footer lang="ar" />
+</BaseLayout>
+
+<style>
+  .bc {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+    font-size: 1.1rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+    margin-bottom: 1.5rem;
+  }
+  :global(.dark) .bc { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .bc a { color: inherit; text-decoration: none; }
+  .bc a:hover { color: var(--color-purple); }
+  .bc-cur { color: var(--color-ink); font-weight: 600; }
+  :global(.dark) .bc-cur { color: var(--color-mist); }
+
+  .ayah-h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem); line-height: 1.15; font-weight: 700;
+    color: var(--color-ink); margin-bottom: 0.5rem;
+  }
+  :global(.dark) .ayah-h1 { color: var(--color-mist); }
+  .ayah-sub {
+    font-size: 1.3rem; color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+    margin-bottom: 1.75rem;
+  }
+  :global(.dark) .ayah-sub { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+
+  .verse {
+    position: relative; text-align: center;
+    font-size: clamp(2.3rem, 5.5vw, 3.2rem); line-height: 2.15;
+    color: var(--color-ink);
+    background: var(--color-paper-soft);
+    border: 1px solid var(--color-stone);
+    border-top: 3px solid var(--color-purple);
+    border-radius: 18px;
+    padding: 2rem 1.75rem 2.25rem;
+    margin: 0 0 1.1rem;
+  }
+  :global(.dark) .verse {
+    color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge);
+    border-top-color: var(--color-purple);
+  }
+  .verse-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.1em; height: 2.1em; margin-inline-start: 0.4em;
+    font-size: 0.5em; font-family: var(--font-mono); color: var(--color-purple);
+    border: 1.5px solid color-mix(in srgb, var(--color-purple) 45%, transparent);
+    border-radius: 999px; vertical-align: middle;
+  }
+
+  .source {
+    font-size: 1.1rem; color: color-mix(in srgb, var(--color-ink) 58%, transparent);
+    margin-bottom: 2rem; text-align: center;
+  }
+  :global(.dark) .source { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
+  .source-book { color: var(--color-teal); font-weight: 600; }
+
+  .shared-note {
+    font-size: 1.3rem; line-height: 1.7; margin: 0 0 1.5rem;
+    padding: 0.85rem 1.1rem; border-radius: 12px;
+    background: color-mix(in srgb, var(--color-teal) 8%, var(--color-paper));
+    border: 1px solid color-mix(in srgb, var(--color-teal) 20%, transparent);
+    color: color-mix(in srgb, var(--color-ink) 80%, transparent);
+  }
+  :global(.dark) .shared-note { background: color-mix(in srgb, var(--color-teal) 14%, var(--color-coal)); color: color-mix(in srgb, var(--color-mist) 80%, transparent); }
+  .shared-note a { color: var(--color-teal); font-weight: 600; text-underline-offset: 3px; }
+
+  .pending-note {
+    font-size: 1.45rem; line-height: 1.9; margin-top: 1.5rem;
+    padding: 1.25rem 1.4rem; border-radius: 14px; text-align: center;
+    background: var(--color-paper-soft); border: 1px dashed var(--color-stone);
+    color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+  }
+  :global(.dark) .pending-note { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+
+  .tldr {
+    background: color-mix(in srgb, var(--color-purple) 6%, var(--color-paper));
+    border: 1px solid color-mix(in srgb, var(--color-purple) 18%, transparent);
+    border-radius: 16px; padding: 1.5rem 1.6rem; margin-bottom: 2.5rem;
+  }
+  :global(.dark) .tldr { background: color-mix(in srgb, var(--color-purple) 12%, var(--color-coal)); }
+  .tldr .eyebrow { margin-bottom: 0.75rem; }
+  .tldr p { font-size: 1.8rem; line-height: 2.1; color: var(--color-ink); }
+  :global(.dark) .tldr p { color: var(--color-mist); }
+
+  .blk { margin-top: 2.75rem; }
+  .blk h2 {
+    font-family: var(--font-arabic-display); font-weight: 700;
+    font-size: clamp(1.7rem, 3.8vw, 2.4rem); color: var(--color-ink);
+    margin-bottom: 1.1rem;
+  }
+  :global(.dark) .blk h2 { color: var(--color-mist); }
+
+  .exp {
+    border: 1px solid var(--color-stone); border-radius: 12px;
+    padding: 0.4rem 1rem; margin-bottom: 0.75rem; background: var(--color-paper-soft);
+  }
+  :global(.dark) .exp { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .exp summary {
+    cursor: pointer; font-weight: 600; padding: 0.55rem 0;
+    font-family: var(--font-arabic-display); color: var(--color-ink);
+  }
+  :global(.dark) .exp summary { color: var(--color-mist); }
+  .exp[open] summary { color: var(--color-purple); }
+  .exp > div, .exp > p { padding: 0.4rem 0 0.9rem; line-height: 2.1; font-size: 1.6rem; }
+  .exp summary { font-size: 1.5rem; }
+  .faq-a { color: color-mix(in srgb, var(--color-ink) 80%, transparent); }
+  :global(.dark) .faq-a { color: color-mix(in srgb, var(--color-mist) 80%, transparent); }
+
+  .fns { list-style: decimal; padding-inline-start: 1.5rem; font-size: 1.4rem; line-height: 2.0; color: color-mix(in srgb, var(--color-ink) 82%, transparent); }
+  :global(.dark) .fns { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
+  .fns li { margin-bottom: 0.5rem; }
+  .fns li:target { background: color-mix(in srgb, var(--color-purple) 12%, transparent); border-radius: 6px; }
+
+  .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.75rem; }
+  .rel-card {
+    display: flex; flex-direction: column; gap: 0.35rem;
+    border: 1px solid var(--color-stone); border-radius: 12px;
+    padding: 1rem 1.1rem; text-decoration: none; transition: border-color .2s, transform .2s;
+  }
+  :global(.dark) .rel-card { border-color: var(--color-coal-edge); }
+  .rel-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
+  .rel-card span { font-size: 1.1rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
+  :global(.dark) .rel-card span { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .rel-card b { font-size: 1.5rem; color: var(--color-ink); font-weight: 700; }
+  :global(.dark) .rel-card b { color: var(--color-mist); }
+</style>
+
+<style is:global>
+  /* Injected i'rab HTML (set:html) — global because scoped attrs aren't added. */
+  .irab-html { font-size: 1.7rem; line-height: 2.2; color: color-mix(in srgb, var(--color-ink) 92%, transparent); }
+  :global(.dark) .irab-html { color: color-mix(in srgb, var(--color-mist) 90%, transparent); }
+  .irab-html p { margin: 0 0 1rem; }
+  .irab-html h3 { font-family: var(--font-arabic-display); font-weight: 700; font-size: 1.7rem; color: var(--color-ink); margin: 1.5rem 0 0.6rem; }
+  .dark .irab-html h3 { color: var(--color-mist); }
+  .irab-html b.tok { color: var(--color-purple); font-weight: 700; }
+  .dark .irab-html b.tok { color: color-mix(in srgb, var(--color-purple) 85%, white); }
+  .irab-html sup.fn a { color: var(--color-teal); text-decoration: none; font-size: 0.7em; padding: 0 0.15em; }
+  .irab-html sup.fn a:hover { text-decoration: underline; }
+</style>

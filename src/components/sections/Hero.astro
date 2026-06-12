@@ -1,0 +1,111 @@
+---
+import Container from '../Container.astro';
+import Section from '../Section.astro';
+---
+<Section size="lg" class="relative overflow-hidden" id="hero">
+  {/* Ambient brand watermark — sits behind the calligraphic word, very subtle */}
+  <img
+    src="/brand-watermark.png"
+    alt=""
+    aria-hidden="true"
+    class="hero-watermark pointer-events-none select-none absolute inset-x-0 mx-auto top-1/2 -translate-y-1/2 w-[80%] max-w-[900px] opacity-[0.04] dark:opacity-[0.08] dark:invert"
+  />
+  <Container>
+    <div class="text-center">
+      {/* The hero word — إعراب (the brand mark) in deep brand purple */}
+      <div
+        lang="ar"
+        dir="rtl"
+        class="hero-word font-arabic-display font-bold text-[clamp(5rem,14vw,12rem)] leading-[0.95] text-purple-deep dark:text-purple mt-4 mb-12 select-none"
+        aria-label="Irab"
+      >
+        إعراب
+      </div>
+
+      {/* Headline — accent word in teal for color story */}
+      <h1
+        class="font-display text-[clamp(2.25rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight max-w-4xl mx-auto"
+        data-reveal data-reveal-delay="600"
+      >
+        Parse Arabic the way <span class="italic text-teal" style="font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;">scholars</span> do.
+      </h1>
+
+      {/* Subhead */}
+      <p
+        class="mt-8 text-base md:text-body-lg max-w-xl mx-auto text-ink/70 dark:text-mist/70"
+        data-reveal data-reveal-delay="800"
+      >
+        Irab gives serious Arabic learners word-by-word i'rab, vocalization, correction notes, and plain explanations. Paste a sentence or ayah, then keep learning with practice, challenges, dictionaries, and the grammar library.
+      </p>
+
+      {/* CTAs */}
+      <div
+        class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
+        data-reveal data-reveal-delay="1000"
+      >
+        <a
+          href="https://play.google.com/store/apps/details?id=com.irabapp.arabic"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-3 px-8 py-4 bg-purple hover:bg-purple-deep text-white font-medium tracking-tight rounded-full shadow-lg shadow-purple/20 hover:shadow-purple/30 transition-all duration-200"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M3 20.5V3.5c0-.59.34-1.11.84-1.35L13.69 12 3.84 21.85c-.5-.25-.84-.76-.84-1.35M16.81 15.12L6.05 21.34l8.49-8.49 2.27 2.27M20.16 10.81c.34.27.59.66.59 1.19s-.25.92-.59 1.19l-2.31 1.34-2.61-2.55 2.61-2.55 2.31 1.38M6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/>
+          </svg>
+          <span>Get on Google Play</span>
+        </a>
+
+        <a
+          href="https://apps.apple.com/app/id6765811277"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-3 px-8 py-4 border-2 border-ink/15 hover:border-purple/50 dark:border-mist/15 dark:hover:border-purple text-ink dark:text-mist font-medium tracking-tight rounded-full transition-all duration-200"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/>
+          </svg>
+          <span>App Store</span>
+        </a>
+      </div>
+
+    </div>
+  </Container>
+</Section>
+
+<style>
+  /* Calligraphic reveal for the hero word.
+     Uses clip-path to "write" right-to-left (Arabic direction).
+     No JS, pure CSS animation, runs once on load. */
+  .hero-word {
+    opacity: 0;
+    -webkit-clip-path: inset(0 0 0 100%);
+    clip-path: inset(0 0 0 100%);
+    animation:
+      hero-fade 200ms 100ms forwards,
+      hero-write 1600ms 100ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+  }
+
+  @keyframes hero-fade {
+    to { opacity: 1; }
+  }
+
+  @keyframes hero-write {
+    from {
+      -webkit-clip-path: inset(0 0 0 100%);
+      clip-path: inset(0 0 0 100%);
+    }
+    to {
+      -webkit-clip-path: inset(0 0 0 0);
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-word {
+      opacity: 1;
+      animation: none;
+      -webkit-clip-path: none;
+      clip-path: none;
+    }
+  }
+</style>

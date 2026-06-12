@@ -1,0 +1,40 @@
+---
+/**
+ * ArticleHero, common hero block for pillar / long-form pages.
+ */
+import Container from './Container.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  summary: string;
+  lang?: 'en' | 'ar';
+}
+
+const { eyebrow, title, summary, lang = 'ar' } = Astro.props;
+const homeHref = lang === 'ar' ? '/' : '/en';
+const back = lang === 'ar' ? '→ إعراب' : '← Irab';
+const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
+const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxed';
+---
+<header class="relative overflow-hidden border-b border-stone dark:border-coal-edge">
+  {/* Ambient brand watermark, sits in the corner away from the text column */}
+  <img
+    src="/brand-watermark.png"
+    alt=""
+    aria-hidden="true"
+    class:list={[
+      'pointer-events-none select-none absolute top-1/2 -translate-y-1/2 w-[40%] max-w-[480px] opacity-[0.05] dark:opacity-[0.10] dark:invert',
+      // Place opposite to the text alignment: text reads from start side, so watermark sits on the end side
+      lang === 'ar' ? 'left-[-6%]' : 'right-[-6%]',
+    ]}
+  />
+
+  <Container size="narrow">
+    <div class="relative py-20 md:py-28">
+      <p class="eyebrow mb-6"><a href={homeHref} class="hover:text-ink dark:hover:text-mist transition-colors">{back}</a> · {eyebrow}</p>
+      <h1 class:list={[titleClass, 'text-[clamp(2.5rem,6vw,5rem)] leading-[1.1] tracking-tight']}>{title}</h1>
+      <p class:list={[summaryClass, 'mt-8 text-body-lg text-ink/75 dark:text-mist/75 max-w-2xl']}>{summary}</p>
+    </div>
+  </Container>
+</header>

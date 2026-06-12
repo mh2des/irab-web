@@ -1,0 +1,10 @@
+# Irab — robots.txt
+# All crawlers welcome. We want to be found.
+
+User-agent: *
+Allow: /
+
+# Be polite to the live demo endpoint
+Disallow: /v1/
+
+Sitemap: https://irab.app/sitemap-index.xml

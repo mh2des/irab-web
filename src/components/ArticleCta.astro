@@ -1,0 +1,35 @@
+---
+/**
+ * Inline CTA block to embed inside long-form articles.
+ */
+import Container from './Container.astro';
+
+interface Props { lang?: 'en' | 'ar'; }
+const { lang = 'ar' } = Astro.props;
+
+const t = lang === 'ar'
+  ? { primary: 'جرّب التجربة المباشرة', secondary: 'حمّل التطبيق' }
+  : { primary: 'Try the live demo',     secondary: 'Get the app' };
+
+const homeHref = lang === 'ar' ? '/#demo' : '/en#demo';
+const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
+const bodyClass = lang === 'ar' ? 'font-arabic leading-loose' : '';
+---
+<aside class="my-16">
+  <Container size="narrow">
+    <div class="bg-paper-soft dark:bg-coal-soft border border-stone dark:border-coal-edge rounded-2xl p-8 md:p-10 text-center">
+      <p class:list={[titleClass, 'text-h2 leading-tight mb-4']}><slot name="title">Try it in 10 seconds.</slot></p>
+      <p class:list={[bodyClass, 'text-body text-ink/70 dark:text-mist/70 mb-8 max-w-md mx-auto']}>
+        <slot>Paste any Arabic sentence on the homepage.</slot>
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href={homeHref} class="inline-flex items-center justify-center px-6 py-3 bg-purple hover:bg-purple-deep text-white font-medium tracking-tight rounded-full lift">
+          {t.primary}
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener" class="inline-flex items-center justify-center px-6 py-3 border border-ink/30 hover:border-ink dark:border-mist/30 dark:hover:border-mist text-ink dark:text-mist font-medium tracking-tight rounded-full lift">
+          {t.secondary}
+        </a>
+      </div>
+    </div>
+  </Container>
+</aside>

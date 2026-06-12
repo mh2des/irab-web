@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+import body from '../data/legal/terms.html?raw';
+---
+<BaseLayout
+  lang="ar"
+  title="شروط الخدمة · إعراب"
+  description="شروط استخدام تطبيق إعراب: الحساب، الاشتراكات، الاستخدام المقبول، والمسؤولية."
+>
+  <LegalDoc kind="terms" body={body} />
+</BaseLayout>

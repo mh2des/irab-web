@@ -1,0 +1,126 @@
+---
+/**
+ * BaseLayout, the canonical HTML wrapper for every page.
+ *
+ * Responsibilities:
+ *   • SEO meta (title, description, canonical, OG, Twitter)
+ *   • Hreflang for en/ar
+ *   • Theme initialization (no-flash)
+ *   • Direction (RTL for Arabic)
+ *   • Reduced-motion respect
+ */
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: 'en' | 'ar';
+  ogImage?: string;
+  noindex?: boolean;
+  pathOverride?: string;
+  /**
+   * Whether an English twin of this page actually exists. Controls hreflang:
+   * we only advertise an `en` alternate when there's a real page behind it.
+   * English pages (lang="en") always have an Arabic source, so they emit both.
+   */
+  hasEn?: boolean;
+  /** Absolute canonical URL override (e.g. a multi-ayah group member pointing
+   *  at its group head). Defaults to this page's own URL. */
+  canonicalOverride?: string;
+}
+
+const {
+  title = "إعراب · اقرأ العربية كما يقرؤها العلماء.",
+  description = "إعراب آلي للعربية والقرآن مدعوم بالذكاء الاصطناعي.",
+  lang = 'ar',
+  ogImage = '/og-default.png',
+  noindex = false,
+  pathOverride,
+  hasEn = false,
+  canonicalOverride,
+} = Astro.props;
+
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
+const path = pathOverride ?? Astro.url.pathname;
+const canonical = canonicalOverride ? new URL(canonicalOverride) : new URL(path, Astro.site);
+
+// Arabic is default (root). English lives under /en/*.
+const stripEn = (p: string) => p.replace(/^\/en(?=\/|$)/, '') || '/';
+const arPath = stripEn(path);
+const enPath = arPath === '/' ? '/en' : `/en${arPath}`;
+// Only emit the bilingual alternate cluster when an English twin truly exists:
+// an English page always has an Arabic source; an Arabic page must opt in via
+// `hasEn`. This stops every Arabic-only page from pointing hreflang at a 404.
+const hasAlternate = lang === 'en' || hasEn;
+---
+<!doctype html>
+<html lang={lang} dir={dir}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="generator" content={Astro.generator} />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="canonical" href={canonical.toString()} />
+
+  {/* Preload the three self-hosted faces (body, display, Quran) for fast,
+      flash-free first paint. Stable /public paths — not content-hashed. */}
+  <link rel="preload" href="/fonts/lateef-swashes.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/aref-ruqaa.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/uthmanic-hafs.woff2" as="font" type="font/woff2" crossorigin />
+
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+  {/* Bing Webmaster Tools verification */}
+  <meta name="msvalidate.01" content="23665E5F763CEED1B6E7FB1F5DAE5261" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+
+  {/* Open Graph */}
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Irab" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical.toString()} />
+  <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+  <meta property="og:locale" content={lang === 'ar' ? 'ar_SA' : 'en_US'} />
+
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={new URL(ogImage, Astro.site).toString()} />
+
+  {/* Hreflang — only when an English twin exists, else Arabic-only pages
+      would advertise an alternate that 404s. Arabic is x-default. */}
+  {hasAlternate && (
+    <>
+      <link rel="alternate" hreflang="ar" href={new URL(arPath, Astro.site).toString()} />
+      <link rel="alternate" hreflang="en" href={new URL(enPath, Astro.site).toString()} />
+      <link rel="alternate" hreflang="x-default" href={new URL(arPath, Astro.site).toString()} />
+    </>
+  )}
+
+  {/* Theme color reflects current mode for native browser chrome */}
+  <meta name="theme-color" content="#F8F6F1" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0B1115" media="(prefers-color-scheme: dark)" />
+
+  {/* No-flash theme init, runs before paint */}
+  <script is:inline>
+    (function() {
+      try {
+        var stored = localStorage.getItem('irab-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = stored || (prefersDark ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <slot name="head" />
+</head>
+<body>
+  <slot />
+</body>
+</html>

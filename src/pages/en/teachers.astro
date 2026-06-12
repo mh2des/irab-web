@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleSection from '../../components/ArticleSection.astro';
+import ArticleFaq from '../../components/ArticleFaq.astro';
+import Container from '../../components/Container.astro';
+
+const faqs = [
+  {
+    q: 'How do free institution accounts work?',
+    a: 'We give qualifying madrasahs, Islamic schools, and online Quran academies free Plus accounts for their teachers in exchange for a link from your resources page or syllabus. Email hello@irab.app with your institution name and student count to apply.',
+  },
+  {
+    q: 'Can I track my students\' progress?',
+    a: 'No. Irab does not include a teacher dashboard, student roster, or classroom progress tracker. Students can still share their parse results and mastery certificates with you directly.',
+  },
+  {
+    q: 'Is the AI accurate enough to grade student work?',
+    a: 'Use it as a fast first pass, not an automatic final grade. For most student-level sentences it gives useful structure quickly; for ambiguous cases or advanced classical constructions, apply your own judgment.',
+  },
+  {
+    q: 'Do you offer institutional pricing for student licenses?',
+    a: 'We\'re happy to discuss bulk arrangements for schools, madrasahs, and academies, email hello@irab.app with your student count and we\'ll work out a fair rate together. There\'s no fixed institutional tier in the app yet, every arrangement is custom.',
+  },
+  {
+    q: 'Will Irab replace my role as a teacher?',
+    a: 'No, and that\'s not the goal. Irab is a practice multiplier: it gives students more repetitions, feedback, and reference access outside class. The framework, motivation, and correction that come from a real teacher remain irreplaceable.',
+  },
+  {
+    q: 'Can I integrate Irab with my existing curriculum?',
+    a: 'Yes. Teachers using Madinah Books, Bayyinah, Ajrumiyya, Qatr al-Nada, and other classical curricula assign Irab as supplemental practice. The app\'s library has 47 classical grammar books searchable by category (nahw, sarf, balagha, i\'rab) and level (beginner/intermediate/advanced), so students can look up specific topics from any course.',
+  },
+];
+---
+<BaseLayout
+lang="en"   title="Irab for teachers · Check i'rab in seconds · Free institution accounts"
+  description="Irab is the AI-powered grammar tool teachers use to review i'rab homework, test sentence parses, and give students extra grammar practice. Free institution accounts for qualifying madrasahs and academies."
+>
+  <Nav lang="en" />
+
+  <ArticleHero
+    eyebrow="For institutions"
+    title="Irab for teachers."
+    summary="Madrasah teachers, Islamic school instructors, and online Arabic academy faculty use Irab to review student i'rab attempts, test sentence parses before class, and give students extra grammar practice. Qualifying institutions get free teacher accounts in exchange for a resources-page link. This page covers how Irab fits in your classroom and how to apply for free institution access."
+  />
+
+  <ArticleSection
+    id="what-it-does"
+    title="What teachers actually use Irab for"
+    lead="Three things, mostly: reviewing homework faster, testing parses before class, and giving students a self-paced practice tool outside class. Irab has no teacher dashboard; shared results and certificates stay student-driven."
+  >
+    <ul>
+      <li><strong>Check in seconds.</strong> Paste the Arabic sentence. Compare Irab's analysis with your own answer key or a student's submitted work.</li>
+      <li><strong>Parse checking.</strong> Before teaching a new sentence or ayah, run it through Irab and compare it with your own analysis.</li>
+      <li><strong>Self-paced student practice.</strong> 576 graded sentences in the app. Students drill on their own time. You spend class time on the harder material.</li>
+      <li><strong>Mastery certificates.</strong> Eligible annual Plus students can earn shareable certificates after completing a level with strong topic accuracy.</li>
+      <li><strong>Reference library.</strong> 47 classical Arabic grammar books — Ajrumiyya, al-Kafiya, al-Mufassal, an-Nahw al-Wadih, Shadha al-'Arf, and more. 25,000+ chapters across nahw, sarf, balagha, and i'rab. Searchable, with reader mode.</li>
+    </ul>
+  </ArticleSection>
+
+  {/* Free institution program callout */}
+  <Container size="narrow">
+    <div class="my-16 bg-teal text-white rounded-2xl p-8 md:p-10">
+      <p class="font-mono text-caption opacity-70 uppercase tracking-widest mb-4">Free institution program</p>
+      <h3 class="font-display text-h2 leading-tight mb-4">Free Plus accounts for qualifying institutions.</h3>
+      <p class="text-body-lg opacity-90 max-w-2xl mb-6 leading-relaxed">
+        We give madrasahs, Islamic schools, and online Quran academies free teacher accounts. In exchange: a link to Irab from your resources page, syllabus, or recommended-tools list.
+      </p>
+      <p class="text-body opacity-80 mb-6">
+        Apply by emailing <a href="mailto:hello@irab.app" class="underline underline-offset-4 hover:no-underline">hello@irab.app</a> with your institution name, location, and approximate student count.
+      </p>
+      <a
+        href="mailto:hello@irab.app?subject=Free%20institution%20account%20request"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-paper text-teal font-medium tracking-tight rounded-full transition-colors duration-200"
+      >
+        Email us to apply
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </Container>
+
+  <ArticleSection
+    id="curriculum-fit"
+    title="Fits whatever curriculum you teach"
+    lead="Teachers using Madinah Arabic Books, Bayyinah Arabic, Ajrumiyya, Qatr al-Nada, and Alfiyyat Ibn Malik all use Irab as supplemental practice. The app's library has 47 classical grammar books organized by category and level, so students can look up topics from any course. Irab doesn't replace your curriculum, it accelerates the practice phase of it."
+  >
+    <p>Common pairings teachers report:</p>
+    <ul>
+      <li><strong>Madinah Book 1 → early practice levels.</strong> Beginners drill on simple sentences while learning vocabulary and basic case roles.</li>
+      <li><strong>Madinah Book 2-3 → Irab practice mode.</strong> Intermediate students get instant feedback on increasingly complex sentences, plus AI grading on sentences they write themselves.</li>
+      <li><strong>Ajrumiyya → pasted ayah analysis.</strong> Classical students apply rules to Quranic examples and compare their work with a structured i'rab result.</li>
+      <li><strong>Bayyinah Arabic → reference library.</strong> Students look up rules between class sessions.</li>
+    </ul>
+  </ArticleSection>
+
+  <ArticleSection
+    id="institutional-pricing"
+    title="Pricing for institutions"
+    lead="Standard Irab Plus is $4.99/month or $39.99/year per user, with a 7-day free trial on the annual plan. For schools, madrasahs, and academies that want bulk Plus access for students, we work out custom rates case-by-case, the more students, the better the rate. Email us with your numbers and we'll send a fair quote."
+  >
+    <p>Standard pricing: <strong>$4.99/month or $39.99/year</strong> per user. 7-day free trial on annual.</p>
+    <p>Institutional bulk: <strong>custom quote</strong>. We don't have a fixed tier system, we negotiate based on student count, term length, and your institution's budget reality.</p>
+    <p>For a quote, email <a href="mailto:hello@irab.app">hello@irab.app</a> with your student count and country.</p>
+  </ArticleSection>
+
+  <ArticleFaq items={faqs} />
+
+  <Footer lang="en" />
+</BaseLayout>

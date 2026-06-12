@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleSection from '../../components/ArticleSection.astro';
+import ArticleCta from '../../components/ArticleCta.astro';
+import ArticleFaq from '../../components/ArticleFaq.astro';
+
+const faqs = [
+  {
+    q: "What's the difference between nahw and sarf?",
+    a: 'Nahw (نحو) is Arabic syntax, the rules of how sentences are built and how words relate to each other. Sarf (صرف) is Arabic morphology, the rules of how individual words are formed from roots. They are two separate sciences, both essential for serious Arabic study.',
+  },
+  {
+    q: 'Where does the word "nahw" come from?',
+    a: 'According to classical tradition, Imam Ali ibn Abi Talib instructed Abu al-Aswad al-Du\'ali to write the first treatise on Arabic grammar, telling him to follow "this path" (انحُ هذا النحو). The science took its name, nahw, from that phrase, "this way" or "this method."',
+  },
+  {
+    q: 'Is nahw harder than English grammar?',
+    a: "Nahw is more systematic than English grammar, it has fewer exceptions and more consistent rules. But it's wider in scope: case marking, idafa constructions, dual forms, and verbal noun structures don't exist in English. Most students find it harder at first but more logical once the patterns click.",
+  },
+  {
+    q: 'Do I need nahw to read modern Arabic?',
+    a: 'Yes, for any non-trivial reading, newspapers, books, academic articles, the Quran. Spoken dialects often drop case endings, but written formal Arabic preserves them. Without nahw you can spot vocabulary but cannot understand structure.',
+  },
+  {
+    q: 'What is the best classical book on nahw?',
+    a: "Al-Ajrumiyya (الآجرومية) by Ibn Ajurrum is the standard introductory text, short, structured, and used in madrasahs worldwide for over 700 years. After Ajrumiyya, Qatr al-Nada and Alfiyyat Ibn Malik are the classical advanced texts.",
+  },
+  {
+    q: 'How long does it take to learn nahw?',
+    a: 'Most students reach intermediate competence in 8-14 months of daily study. Full mastery, the ability to read complex classical texts effortlessly, takes 3-5 years. Time scales with practice volume, not study hours alone.',
+  },
+];
+---
+<BaseLayout
+lang="en"   title="What is nahw? Arabic syntax explained · Irab"
+  description="Nahw (نحو) is the science of Arabic syntax, how words build sentences. A complete guide to nahw fundamentals, sentence types, and the relationship between nahw and i'rab."
+>
+  <Nav lang="en" />
+
+  <ArticleHero
+    eyebrow="Reference"
+    title="What is nahw?"
+    summary="Nahw (نحو) is the science of Arabic syntax, the system of rules that govern how Arabic words combine into meaningful sentences. It defines sentence structure, determines case endings, and explains the relationship between every word in a phrase. Together with sarf (morphology), nahw forms the foundation of classical Arabic study. This guide covers nahw fundamentals, sentence types, and how it relates to i'rab."
+  />
+
+  <ArticleSection
+    id="definition"
+    title="The short answer"
+    lead="Nahw is the science of Arabic grammar that focuses on syntax, how words function and relate within a sentence. While i'rab is the practical output (identifying each word's case), nahw is the theoretical framework that produces those judgments. It's grammar in the broadest sense: the rules that make Arabic a coherent language rather than a list of words."
+  >
+    <p>The Arabic word <span class="ar">نَحْو</span> literally means "way" or "direction." It became the name of the grammatical science through a famous narration: when Imam Ali asked Abu al-Aswad al-Du'ali to systematize Arabic grammar to protect the Quran from misreading, he reportedly said <span class="ar">"انحُ هذا النحو"</span>, "follow this method." The science took its name from that phrase.</p>
+
+    <p>Nahw answers questions like: What is the subject of this sentence? Which word is the predicate? Why does this noun take a kasra? What does this preposition govern? Where i'rab is the diagnosis, nahw is the medicine cabinet, the system of rules behind every diagnosis.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    id="vs-sarf"
+    title="Nahw vs. sarf, two different sciences"
+    lead="Nahw governs how words relate within sentences (syntax). Sarf governs how words themselves are formed from roots (morphology). Nahw asks: 'What case is this word and why?' Sarf asks: 'What pattern is this word built on?' Both are required for Arabic mastery; neither replaces the other."
+  >
+    <p><strong>Sarf example:</strong> The root <span class="ar">ك-ت-ب</span> generates <span class="ar">كَتَبَ</span> (he wrote), <span class="ar">يَكْتُبُ</span> (he writes), <span class="ar">كِتَاب</span> (book), <span class="ar">مَكْتَب</span> (office). Sarf studies these patterns.</p>
+
+    <p><strong>Nahw example:</strong> In the sentence <span class="ar">كَتَبَ الطَّالِبُ الدَّرْسَ</span> ("the student wrote the lesson"), nahw tells us <span class="ar">الطَّالِبُ</span> is the subject (fa'il, marfu') and <span class="ar">الدَّرْسَ</span> is the direct object (maf'ul bih, mansub).</p>
+
+    <p>The two sciences interlock: nahw decides what role a word plays; sarf decides which form of the word is required for that role. <a href="/en/irab">I'rab</a> is the practical output of applying both.</p>
+  </ArticleSection>
+
+  <ArticleCta>
+    <span slot="title">See nahw at work.</span>
+    Try the live demo on our homepage. Paste any Arabic sentence and watch the nahw rules apply, every word marked, every relationship explained, in seconds.
+  </ArticleCta>
+
+  <ArticleSection
+    id="sentence-types"
+    title="The two basic sentence types"
+    lead="Arabic has two fundamental sentence types: jumla ismiyya (nominal) and jumla fi'liyya (verbal). A nominal sentence starts with a noun and consists of a subject (mubtada) and predicate (khabar). A verbal sentence starts with a verb and contains a verb, subject (fa'il), and optional object (maf'ul). Knowing which type you're reading is the first step in any nahw analysis."
+  >
+    <p><strong>Jumla ismiyya (nominal sentence):</strong> <span class="ar">الْعِلْمُ نُورٌ</span>, "Knowledge is light." Both <span class="ar">الْعِلْمُ</span> (subject) and <span class="ar">نُورٌ</span> (predicate) are marfu'.</p>
+
+    <p><strong>Jumla fi'liyya (verbal sentence):</strong> <span class="ar">قَرَأَ الطَّالِبُ الْكِتَابَ</span>, "The student read the book." The verb <span class="ar">قَرَأَ</span> opens, the subject <span class="ar">الطَّالِبُ</span> is marfu', and the object <span class="ar">الْكِتَابَ</span> is mansub.</p>
+
+    <p>Most Quranic verses begin with verbs, making jumla fi'liyya structure the more common pattern in classical Arabic. Modern news writing tends toward jumla ismiyya for fronted topicalization.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    id="building-blocks"
+    title="The building blocks of nahw"
+    lead="Every Arabic sentence is built from three categories of words: ism (noun), fi'l (verb), and harf (particle). Each behaves differently under nahw rules. Nouns can take all four cases. Verbs can be perfect, imperfect, or imperative. Particles never take case markings, they govern other words."
+  >
+    <ul>
+      <li><strong>Ism (noun)</strong>, declines for case. Includes proper nouns, common nouns, adjectives, demonstratives, and relatives. Most of nahw is about nouns.</li>
+      <li><strong>Fi'l (verb)</strong>, conjugates for tense, person, gender, and number. Three tenses: madi (past), mudari' (present/future), amr (imperative).</li>
+      <li><strong>Harf (particle)</strong>, does not decline or conjugate. Includes prepositions (<span class="ar">في</span>, <span class="ar">على</span>), conjunctions (<span class="ar">و</span>, <span class="ar">أو</span>), and grammatical operators (<span class="ar">إنّ</span>, <span class="ar">أنّ</span>, <span class="ar">كأن</span>). Particles often <em>cause</em> case changes in other words.</li>
+    </ul>
+  </ArticleSection>
+
+  <ArticleSection
+    id="how-to-learn"
+    title="How to learn nahw effectively"
+    lead="Pick one structured curriculum and finish it. Pair it with daily practice on real text. The classical sequence is Ajrumiyya → Qatr al-Nada → Alfiyyat Ibn Malik. The modern sequence is Madinah Books → Bayyinah → custom reading. Whichever path you take, consistency beats intensity. Thirty minutes daily for a year beats three hours weekly for three."
+  >
+    <ol>
+      <li><strong>Choose your path.</strong> Classical (Ajrumiyya) for traditional study. Modern (Madinah Books) for English-language structure. Pick one and commit.</li>
+      <li><strong>Drill the basics until they're automatic.</strong> The four cases. Idafa. Pronouns. Verb conjugation tables.</li>
+      <li><strong>Read every day.</strong> Even one sentence. Real Arabic, not just textbooks. Quran ayat work brilliantly.</li>
+      <li><strong>Use a parser to check yourself.</strong> Tools like <a href="/">Irab</a> give instant feedback that classical study never had.</li>
+      <li><strong>Find a teacher.</strong> A weekly check-in with someone who knows nahw will save you months of confusion.</li>
+    </ol>
+  </ArticleSection>
+
+  <ArticleFaq items={faqs} />
+
+  <Footer lang="en" />
+</BaseLayout>

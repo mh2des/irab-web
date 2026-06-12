@@ -1,0 +1,176 @@
+---
+/**
+ * 404, page not found.
+ *
+ * Bilingual (Arabic primary, English fallback) since this catches paths from
+ * both locales. Locale detected client-side from `location.pathname` so the
+ * appropriate version is highlighted.
+ *
+ * Firebase Hosting serves /404.html automatically when no file matches.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import Container from '../components/Container.astro';
+import Section from '../components/Section.astro';
+---
+<BaseLayout
+  lang="ar"
+  title="الصفحة غير موجودة · إعراب"
+  description="الصفحة التي تبحث عنها لا توجد. ربما انتقلت أو لم تُكتب بعد."
+  noindex
+>
+  <Nav lang="ar" />
+
+  <Section size="lg" class="relative overflow-hidden">
+    <Container>
+      <div class="text-center py-16 md:py-24">
+        {/* Big 404 */}
+        <div
+          lang="ar"
+          dir="rtl"
+          class="font-arabic-display font-bold text-[clamp(8rem,22vw,18rem)] leading-[0.85] text-ink/15 dark:text-mist/15 select-none mb-2"
+          aria-hidden="true"
+        >
+          ٤٠٤
+        </div>
+
+        {/* Arabic block */}
+        <div data-lang-ar class="space-y-6">
+          <h1 class="font-arabic-display text-[clamp(2rem,5vw,3.5rem)] leading-[1.2] tracking-tight">
+            هذه الصفحة <span class="italic" style="font-variation-settings: 'SOFT' 100, 'WONK' 1;">مجهولة الإعراب</span>.
+          </h1>
+          <p class="font-arabic text-body-lg text-ink/70 dark:text-mist/70 max-w-xl mx-auto leading-loose">
+            الرابط الذي طلبته لا يقابل صفحة على هذا الموقع. ربما انتقلت، أو لم تُكتب بعد، أو أنّ هناك خطأ بسيطًا في العنوان.
+          </p>
+        </div>
+
+        {/* English block, always visible, smaller */}
+        <div data-lang-en class="mt-10 pt-10 border-t border-stone dark:border-coal-edge max-w-xl mx-auto space-y-4">
+          <p class="font-mono text-caption uppercase tracking-widest text-ink/40 dark:text-mist/40">In English</p>
+          <h2 class="font-display text-h2 leading-tight">This page is unparsed.</h2>
+          <p class="text-body text-ink/70 dark:text-mist/70 leading-relaxed">
+            The URL you requested doesn't match a page on this site. It may have moved, may not exist yet, or there's a small typo in the address.
+          </p>
+        </div>
+
+        {/* CTAs */}
+        <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/"
+            data-cta-home-ar
+            class="inline-flex items-center gap-2 px-6 py-3 bg-ink dark:bg-mist text-paper dark:text-coal font-arabic font-medium tracking-tight rounded-full hover:bg-purple dark:hover:bg-purple hover:text-white transition-colors duration-200"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: scaleX(-1);"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            <span>العودة إلى الصفحة الرئيسية</span>
+          </a>
+          <a
+            href="/#demo"
+            data-cta-demo-ar
+            class="inline-flex items-center gap-2 px-6 py-3 border border-ink/30 hover:border-ink dark:border-mist/30 dark:hover:border-mist text-ink dark:text-mist font-arabic font-medium tracking-tight rounded-full transition-colors duration-200"
+          >
+            <span>جرّب التجربة المباشرة</span>
+          </a>
+        </div>
+
+        {/* Small popular links */}
+        <div class="mt-16 pt-12 border-t border-stone dark:border-coal-edge max-w-2xl mx-auto">
+          <p class="eyebrow mb-6">صفحات قد تبحث عنها</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-start">
+            <a href="/irab" class="group p-5 rounded-lg border border-stone dark:border-coal-edge hover:border-ink/40 dark:hover:border-mist/40 transition-colors duration-200">
+              <p class="font-arabic-display text-h3 leading-tight">ما هو الإعراب؟</p>
+              <p class="font-arabic text-small text-ink/60 dark:text-mist/60 mt-1">دليل شامل لقواعد التحليل النحوي</p>
+            </a>
+            <a href="/nahw" class="group p-5 rounded-lg border border-stone dark:border-coal-edge hover:border-ink/40 dark:hover:border-mist/40 transition-colors duration-200">
+              <p class="font-arabic-display text-h3 leading-tight">ما هو النحو؟</p>
+              <p class="font-arabic text-small text-ink/60 dark:text-mist/60 mt-1">علم بناء الجملة العربية</p>
+            </a>
+            <a href="/quran-parser" class="group p-5 rounded-lg border border-stone dark:border-coal-edge hover:border-ink/40 dark:hover:border-mist/40 transition-colors duration-200">
+              <p class="font-arabic-display text-h3 leading-tight">إعراب القرآن</p>
+              <p class="font-arabic text-small text-ink/60 dark:text-mist/60 mt-1">تحليل أيّ آية بالذكاء الاصطناعي</p>
+            </a>
+            <a href="/teachers" class="group p-5 rounded-lg border border-stone dark:border-coal-edge hover:border-ink/40 dark:hover:border-mist/40 transition-colors duration-200">
+              <p class="font-arabic-display text-h3 leading-tight">للمعلمين</p>
+              <p class="font-arabic text-small text-ink/60 dark:text-mist/60 mt-1">حسابات مجانية للمؤسّسات</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </Section>
+
+  <Footer lang="ar" />
+
+  {/*
+    Auto-locale-switch:
+    If the broken URL was under /en/*, flip the page to English (lang/dir,
+    text content, footer, nav) by mutating the DOM. Cheaper than maintaining
+    two 404 files. Runs before any user interaction.
+  */}
+  <script is:inline>
+    (function () {
+      try {
+        const path = location.pathname || '/';
+        const isEnglish = path === '/en' || path.startsWith('/en/');
+        if (!isEnglish) return;
+
+        // Flip <html> attributes
+        document.documentElement.setAttribute('lang', 'en');
+        document.documentElement.setAttribute('dir', 'ltr');
+
+        // Update title
+        document.title = 'Page not found · Irab';
+
+        // Update home CTA links and labels
+        const arHome = document.querySelector('[data-cta-home-ar]');
+        const arDemo = document.querySelector('[data-cta-demo-ar]');
+        if (arHome) {
+          arHome.setAttribute('href', '/en');
+          arHome.querySelector('span').textContent = 'Back to home';
+          arHome.classList.remove('font-arabic');
+        }
+        if (arDemo) {
+          arDemo.setAttribute('href', '/en#demo');
+          arDemo.querySelector('span').textContent = 'Try the live demo';
+          arDemo.classList.remove('font-arabic');
+        }
+
+        // Demote Arabic block, promote English block visually
+        const arBlock = document.querySelector('[data-lang-ar]');
+        const enBlock = document.querySelector('[data-lang-en]');
+        if (arBlock && enBlock) {
+          // Move English block above Arabic
+          arBlock.parentNode.insertBefore(enBlock, arBlock);
+          // Remove the divider on the now-bottom Arabic block
+          arBlock.classList.add('mt-10', 'pt-10', 'border-t', 'border-stone', 'dark:border-coal-edge', 'max-w-xl', 'mx-auto');
+          enBlock.classList.remove('border-t', 'border-stone', 'dark:border-coal-edge', 'pt-10');
+          // Simplify English block headline (drop "In English" eyebrow)
+          const enEyebrow = enBlock.querySelector('p.font-mono');
+          if (enEyebrow) enEyebrow.remove();
+          // Promote English h2 to h1-equivalent size
+          const enH2 = enBlock.querySelector('h2');
+          if (enH2) {
+            enH2.className = 'font-display text-[clamp(2rem,5vw,3.5rem)] leading-[1.2] tracking-tight';
+          }
+          // Add eyebrow above Arabic block
+          const arEyebrow = document.createElement('p');
+          arEyebrow.className = 'font-mono text-caption uppercase tracking-widest text-ink/40 dark:text-mist/40 mb-4';
+          arEyebrow.textContent = 'بالعربية';
+          arBlock.insertBefore(arEyebrow, arBlock.firstChild);
+        }
+
+        // Update popular-page links to /en/*
+        document.querySelectorAll('a[href^="/"]:not([href^="/en"]):not([href="/"])').forEach((a) => {
+          const href = a.getAttribute('href') || '';
+          if (href.startsWith('/#')) {
+            a.setAttribute('href', '/en' + href.slice(1));
+          } else if (href === '/irab' || href === '/nahw' || href === '/quran-parser' || href === '/teachers') {
+            a.setAttribute('href', '/en' + href);
+          }
+        });
+      } catch (e) {
+        // Fail silently, Arabic stays as default
+      }
+    })();
+  </script>
+</BaseLayout>

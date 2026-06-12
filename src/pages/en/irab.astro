@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleSection from '../../components/ArticleSection.astro';
+import ArticleCta from '../../components/ArticleCta.astro';
+import ArticleFaq from '../../components/ArticleFaq.astro';
+
+const faqs = [
+  {
+    q: "What does 'i'rab' mean in English?",
+    a: "I'rab (إعراب) literally means 'making clear' or 'expression.' Grammatically, it's the system of marking case endings on Arabic words to show their syntactic role, subject, object, possessor, and so on. It's how Arabic communicates relationships between words without relying on word order.",
+  },
+  {
+    q: "Do I need i'rab to understand the Quran?",
+    a: 'You can read the Quran without it, but you cannot truly understand it without it. Subtle case distinctions in the Quran change tafsir significantly, a single fatḥa vs. ḍamma can shift meaning. Classical scholars treat i\'rab as a non-negotiable foundation for serious Quran study.',
+  },
+  {
+    q: "What's the difference between i'rab and nahw?",
+    a: "Nahw is the broader field of Arabic syntax, the rules that govern how sentences are built. I'rab is the specific output of applying those rules: identifying each word's case and function. Nahw is the science; i'rab is the practice.",
+  },
+  {
+    q: 'Is i\'rab still relevant in modern standard Arabic?',
+    a: 'Yes, especially in formal writing, news broadcasts, academic texts, and the Quran. Spoken dialects often drop case endings, but reading newspapers, books, or scripture without i\'rab leaves you decoding rather than reading.',
+  },
+  {
+    q: 'How long does it take to learn i\'rab properly?',
+    a: 'With daily practice and a structured curriculum (Madinah Books, Bayyinah, or similar), most learners reach intermediate competence in 6-12 months. Mastery, the ability to parse complex Quranic ayat instantly, typically takes 2-3 years of consistent study.',
+  },
+  {
+    q: 'Can AI tools like Irab replace a human teacher?',
+    a: 'No, but they dramatically accelerate the practice phase. A teacher gives you the framework and corrects your understanding. An AI parser like Irab gives you instant feedback on hundreds of sentences a day, practice volume that would be impossible with a human alone.',
+  },
+];
+---
+<BaseLayout
+lang="en"   title="What is i'rab? A complete guide to Arabic grammatical analysis · Irab"
+  description="I'rab is the Arabic system of marking case endings to show each word's syntactic role. A complete 2026 guide to what i'rab is, why it matters for Quran study, and how to learn it."
+>
+  <Nav lang="en" />
+
+  <ArticleHero
+    eyebrow="Reference"
+    title="What is i'rab?"
+    summary="I'rab (إعراب) is the Arabic grammatical system that marks each word's case and function within a sentence. Where English uses word order to show meaning, Arabic uses case endings, and i'rab is the practice of identifying them. It's the difference between decoding Arabic and truly reading it. This guide covers what i'rab is, the four cases, why it matters for Quran study, and how to start learning it today."
+  />
+
+  <ArticleSection
+    id="definition"
+    title="The short answer"
+    lead="I'rab is the system of identifying each word's grammatical case and function in an Arabic sentence. It marks whether a noun is a subject, object, or possessor, whether a verb is finite or jussive, and how every word relates to the others. Without i'rab, Arabic sentences would be ambiguous; with it, meaning is precise."
+  >
+    <p>The word i'rab (إِعْرَاب) comes from the root <code class="ar">ع-ر-ب</code>, meaning to clarify or make clear. The grammarians who developed the system in the 7th-8th centuries CE, Sibawayh, al-Khalil, and the Basra school, treated it as exactly that: the act of <em>making clear</em> what each word is doing.</p>
+
+    <p>Where English relies on word order ("the dog bit the man" ≠ "the man bit the dog"), Arabic relies on case endings (<span class="ar">حركات الإعراب</span>). The endings travel with the word. You can rearrange the sentence and the meaning stays clear because the case markers tell you who did what to whom.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    id="four-cases"
+    title="The four cases of i'rab"
+    lead="Arabic has four grammatical cases: marfu' (nominative), mansub (accusative), majrur (genitive), and majzum (jussive, for verbs only). Each is marked by a specific vowel or letter at the end of a word. Marfu' typically takes ḍamma, mansub fatḥa, majrur kasra, and majzum sukun, with variations for duals, plurals, and certain noun forms."
+  >
+    <p><strong>Marfu' (مرفوع)</strong>, nominative. Used for subjects of nominal sentences (mubtada, khabar) and subjects of verbal sentences (fa'il). Marked by ḍamma (ـُ) on a regular noun.</p>
+
+    <p><strong>Mansub (منصوب)</strong>, accusative. Used for direct objects (maf'ul bih), adverbs (zarf), the object of <span class="ar">إنّ</span> and her sisters, and several other roles. Marked by fatḥa (ـَ).</p>
+
+    <p><strong>Majrur (مجرور)</strong>, genitive. Used for nouns following prepositions (jarr) and the second noun in a construct (mudaf ilayh). Marked by kasra (ـِ).</p>
+
+    <p><strong>Majzum (مجزوم)</strong>, jussive. Applies to verbs only. Used after particles like <span class="ar">لم</span>, <span class="ar">لا</span> of prohibition, and conditional structures. Marked by sukun (ـْ).</p>
+
+    <p>Beyond these, words can also be <strong>mabni</strong> (مبني), indeclinable, with a fixed ending that doesn't change. Particles like <span class="ar">إنّ</span> and demonstratives like <span class="ar">هذا</span> are mabni.</p>
+  </ArticleSection>
+
+  <ArticleCta>
+    <span slot="title">See i'rab in action.</span>
+    Paste any Arabic sentence, even a Quran ayah, into the live demo on the homepage. We'll mark every word's case in real time using the same engine that powers the app.
+  </ArticleCta>
+
+  <ArticleSection
+    id="why-quran"
+    title="Why i'rab matters for the Quran"
+    lead="Every word in the Quran is marked according to i'rab rules established by classical grammarians. Subtle case differences in Quranic ayat carry tafsir consequences, single vowel changes can alter meaning, emphasis, or theological reading. To understand the Quran the way classical scholars understood it, you need i'rab."
+  >
+    <p>Take Surah al-Fatiha verse 7: <span class="ar">صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ</span>. The word <span class="ar">صِرَٰطَ</span> is mansub, accusative, because it's a substitute (badal) for <span class="ar">ٱلصِّرَٰطَ</span> earlier. A reader who doesn't know i'rab might read it as a starting noun. A reader who does sees the apposition and grasps the rhetorical structure.</p>
+
+    <p>This pattern repeats across the Quran thousands of times. Idafa constructions, prepositional phrases, particle-led sentences, conditional structures, all require i'rab knowledge to parse correctly. <a href="/en/quran-parser">See our free Quran parser</a> for live examples.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    id="how-to-learn"
+    title="How to start learning i'rab today"
+    lead="Begin with a structured curriculum like Madinah Arabic Books, Bayyinah Arabic, or Ajrumiyya. Pair it with daily practice on real Arabic, ideally short Quran ayat, using a parser to check your work. Aim for 30 minutes a day, six days a week. Most students reach intermediate fluency within a year."
+  >
+    <ol>
+      <li><strong>Master the alphabet and diacritics first.</strong> You can't see case endings if you can't read them. Diacritics aren't optional in classical study.</li>
+      <li><strong>Pick one curriculum and finish it.</strong> Madinah Books are gentlest. Bayyinah is structured for English speakers. Ajrumiyya is the classical fast-track.</li>
+      <li><strong>Practice on real text daily.</strong> Take one short ayah per day. Try to parse it yourself first, then check against a parser like <a href="/">Irab</a>.</li>
+      <li><strong>Build a memorization habit.</strong> Quranic vocabulary plus the major paradigms (verb conjugations, noun declensions) is non-negotiable.</li>
+      <li><strong>Find a teacher or community.</strong> Online options: Bayyinah TV, Studio Arabiya, Qalamquest. Or a local mosque study circle.</li>
+    </ol>
+  </ArticleSection>
+
+  <ArticleSection
+    id="common-mistakes"
+    title="Common mistakes beginners make"
+    lead="The biggest beginner mistake is trying to memorize i'rab tables instead of learning to apply rules. Other common pitfalls: confusing nahw with sarf, dropping diacritics in practice, neglecting harf (particle) recognition, and skipping idafa construction drills. Avoid these and you'll learn faster than 90% of students."
+  >
+    <ul>
+      <li><strong>Memorizing instead of applying.</strong> I'rab is not a list of words to memorize, it's a system to apply. Practice on sentences, not tables.</li>
+      <li><strong>Confusing nahw and sarf.</strong> Nahw is syntax (word relationships); sarf is morphology (word forms). Different sciences. Both needed.</li>
+      <li><strong>Skipping diacritics.</strong> If you read undiacriticized Arabic and guess, you're not doing i'rab, you're decoding. Use diacritized text until your instincts are sharp.</li>
+      <li><strong>Ignoring particles (huruf).</strong> Particles like <span class="ar">إنّ، أنّ، كأن</span> dramatically change case rules. They're 30% of the work.</li>
+      <li><strong>Avoiding idafa.</strong> Construct phrases (mudaf-mudaf ilayh) trip up beginners constantly. Drill them until they're automatic.</li>
+    </ul>
+  </ArticleSection>
+
+  <ArticleFaq items={faqs} />
+
+  <Footer lang="en" />
+</BaseLayout>

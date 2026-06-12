@@ -1,0 +1,83 @@
+---
+import Container from '../Container.astro';
+import Section from '../Section.astro';
+
+const features = [
+  {
+    title: 'AI i\'rab analyzer',
+    body: 'Word-by-word grammatical breakdown for Arabic sentences: type, syntactic role, i\'rab, case marker, details, vocalization, correction notes, and a plain explanation.',
+    span: 'md:col-span-2',
+  },
+  {
+    title: 'Quran-ready',
+    body: 'Paste an ayah and study its structure word by word. Irab is a classical-Arabic study helper, not a qira\'at comparison tool or a replacement for a teacher.',
+    span: '',
+  },
+  {
+    title: 'Three dictionaries, one app',
+    body: 'Smart (AI-powered, modern Arabic). Traditional (13 heritage works including Lisan al-Arab). Dialect (30,000+ entries across 8 regions: Egyptian, Levantine, Palestinian, Gulf, Maghrebi, Iraqi, Yemeni, Sudanese — fully offline).',
+    span: 'md:col-span-2',
+  },
+  {
+    title: '576 practice sentences',
+    body: 'progressive difficulty with instant feedback. From your first مرفوع to advanced مفعول لأجله.',
+    span: '',
+  },
+  {
+    title: 'Challenge system',
+    body: '7-bab campaign, daily challenge, XP, streaks, 10 ranks, badges, and leaderboards. Arena and Speak & Parse are planned for later.',
+    span: '',
+  },
+  {
+    title: 'Mastery certificates',
+    body: 'Annual Plus learners can claim shareable certificates after completing a level with strong topic accuracy, proof of real progress.',
+    span: 'md:col-span-2',
+  },
+  {
+    title: 'Library of 47 classical grammar books (25,000+ chapters)',
+    body: 'Search and read classical references across nahw, sarf, balagha, and i\'rab, with bookmarks, themes, and continue-reading support.',
+    span: '',
+  },
+  {
+    title: 'Voice + OCR',
+    body: 'Speak a sentence for analysis, or use Plus OCR to scan Arabic text from a page, crop it, select the text, and parse it.',
+    span: 'md:col-span-2',
+  },
+];
+---
+<Section id="features">
+  <Container>
+    <div class="max-w-2xl mb-16">
+      <p class="eyebrow mb-4" data-reveal>The product</p>
+      <h2 class="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.1] tracking-tight" data-reveal data-reveal-delay="100">
+        A complete Arabic grammar workbench.
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      {features.map((f, i) => {
+        const isPurple = i % 2 === 0;
+        const accentClass = isPurple ? 'text-purple' : 'text-teal';
+        const hoverBorder = isPurple ? 'hover:border-purple/40 dark:hover:border-purple/40' : 'hover:border-teal/40 dark:hover:border-teal/40';
+        return (
+          <article
+            class:list={[
+              'group relative p-7 md:p-8 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft transition-colors duration-300',
+              hoverBorder,
+              f.span,
+            ]}
+            data-reveal data-reveal-delay={String(i * 60)}
+          >
+            <div class="flex items-start justify-between gap-4 mb-3">
+              <h3 class="font-display text-h3 leading-tight">{f.title}</h3>
+              <span class:list={[accentClass, 'font-mono text-caption mt-1.5 tabular-nums tracking-wider']}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+            </div>
+            <p class="text-body text-ink/70 dark:text-mist/70 leading-relaxed">{f.body}</p>
+          </article>
+        );
+      })}
+    </div>
+  </Container>
+</Section>

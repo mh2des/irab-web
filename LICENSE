@@ -1,0 +1,16 @@
+Copyright (c) 2026 Mansoor Hasan Ali Shokla. All rights reserved.
+
+This repository contains the source code and content of the irab.app
+website. It is published for reference and portfolio purposes only.
+
+No permission is granted to use, copy, modify, merge, publish,
+distribute, sublicense, or sell copies of this software or its content,
+in whole or in part, without prior written permission from the
+copyright holder.
+
+The Quranic i'rab content in `src/data/` is derived from the classical
+work "الجدول في إعراب القرآن" (Al-Jadwal fi I'rab al-Qur'an) by Mahmud
+Safi and is included solely for building the irab.app website. It may
+not be extracted, redistributed, or reused separately.
+
+For licensing inquiries, contact legal@irab.app.
