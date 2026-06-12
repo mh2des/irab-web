@@ -7,6 +7,7 @@
 **The official website for [Irab](https://irab.app), the AI-powered Arabic i'rab (إعراب) analysis and learning app.**
 
 [![CI](https://github.com/mh2des/irab-web/actions/workflows/ci.yml/badge.svg)](https://github.com/mh2des/irab-web/actions/workflows/ci.yml)
+[![Deploy](https://github.com/mh2des/irab-web/actions/workflows/deploy.yml/badge.svg)](https://github.com/mh2des/irab-web/actions/workflows/deploy.yml)
 [![Astro](https://img.shields.io/badge/Astro-6-BC52EE?logo=astro&logoColor=white)](https://astro.build)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
@@ -125,7 +126,11 @@ The export emits a compact JSON bundle (`src/data/quran-pilot.json`) that `getSt
 
 ## Deployment
 
-The site deploys to **Firebase Hosting** (project `arabic-grammar-app-43de9`, connected to the `irab.app` domain):
+The site deploys to **Firebase Hosting** (project `arabic-grammar-app-43de9`, connected to the `irab.app` domain).
+
+**Continuous deployment:** every push to `main` triggers the [Deploy workflow](.github/workflows/deploy.yml), which builds the site and publishes it to the live channel using a dedicated deploy service account (stored as the `FIREBASE_SERVICE_ACCOUNT` repository secret). Deploys are queued, never concurrent, so the latest commit always wins. The workflow can also be triggered manually from the Actions tab.
+
+**Manual deploy** (fallback):
 
 ```sh
 firebase deploy --only hosting
