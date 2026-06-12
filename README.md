@@ -135,7 +135,7 @@ The `predeploy` hook in `firebase.json` runs a frozen-lockfile install and a ful
 
 ## Contributing
 
-This is a private product website, but the same standards apply as on any shared codebase — see [CONTRIBUTING.md](CONTRIBUTING.md) for conventions, and note the **content accuracy policy**: every product claim on the site must match what the shipped app actually does.
+The source is public for reference, but this is a proprietary product website — see [CONTRIBUTING.md](CONTRIBUTING.md) for conventions, and note the **content accuracy policy**: every product claim on the site must match what the shipped app actually does.
 
 ## Security
 
