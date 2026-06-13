@@ -1,4 +1,6 @@
 ---
+const CF_BEACON_TOKEN = ""; // paste Cloudflare Web Analytics token to enable
+
 /**
  * BaseLayout, the canonical HTML wrapper for every page.
  *
@@ -119,6 +121,17 @@ const hasAlternate = lang === 'en' || hasEn;
   </script>
 
   <slot name="head" />
+
+  <!-- Cloudflare Web Analytics — free, cookieless, no consent banner needed.
+       Activates when CF_BEACON_TOKEN is set (dash.cloudflare.com → Web Analytics
+       → Add site (irab.app, no-proxy) → copy the token here). -->
+  {CF_BEACON_TOKEN && (
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={`{"token": "${CF_BEACON_TOKEN}"}`}
+    ></script>
+  )}
 </head>
 <body>
   <slot />

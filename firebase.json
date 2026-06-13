@@ -22,6 +22,1146 @@
         "source": "/terms.html",
         "destination": "/terms",
         "type": 301
+      },
+      {
+        "source": "/quran/1",
+        "destination": "/quran/al-fatiha",
+        "type": 301
+      },
+      {
+        "source": "/quran/1/:ayah",
+        "destination": "/quran/al-fatiha/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/2",
+        "destination": "/quran/al-baqarah",
+        "type": 301
+      },
+      {
+        "source": "/quran/2/:ayah",
+        "destination": "/quran/al-baqarah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/3",
+        "destination": "/quran/al-imran",
+        "type": 301
+      },
+      {
+        "source": "/quran/3/:ayah",
+        "destination": "/quran/al-imran/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/4",
+        "destination": "/quran/an-nisa",
+        "type": 301
+      },
+      {
+        "source": "/quran/4/:ayah",
+        "destination": "/quran/an-nisa/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/5",
+        "destination": "/quran/al-maidah",
+        "type": 301
+      },
+      {
+        "source": "/quran/5/:ayah",
+        "destination": "/quran/al-maidah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/6",
+        "destination": "/quran/al-anam",
+        "type": 301
+      },
+      {
+        "source": "/quran/6/:ayah",
+        "destination": "/quran/al-anam/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/7",
+        "destination": "/quran/al-araf",
+        "type": 301
+      },
+      {
+        "source": "/quran/7/:ayah",
+        "destination": "/quran/al-araf/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/8",
+        "destination": "/quran/al-anfal",
+        "type": 301
+      },
+      {
+        "source": "/quran/8/:ayah",
+        "destination": "/quran/al-anfal/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/9",
+        "destination": "/quran/at-tawbah",
+        "type": 301
+      },
+      {
+        "source": "/quran/9/:ayah",
+        "destination": "/quran/at-tawbah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/10",
+        "destination": "/quran/yunus",
+        "type": 301
+      },
+      {
+        "source": "/quran/10/:ayah",
+        "destination": "/quran/yunus/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/11",
+        "destination": "/quran/hud",
+        "type": 301
+      },
+      {
+        "source": "/quran/11/:ayah",
+        "destination": "/quran/hud/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/12",
+        "destination": "/quran/yusuf",
+        "type": 301
+      },
+      {
+        "source": "/quran/12/:ayah",
+        "destination": "/quran/yusuf/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/13",
+        "destination": "/quran/ar-rad",
+        "type": 301
+      },
+      {
+        "source": "/quran/13/:ayah",
+        "destination": "/quran/ar-rad/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/14",
+        "destination": "/quran/ibrahim",
+        "type": 301
+      },
+      {
+        "source": "/quran/14/:ayah",
+        "destination": "/quran/ibrahim/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/15",
+        "destination": "/quran/al-hijr",
+        "type": 301
+      },
+      {
+        "source": "/quran/15/:ayah",
+        "destination": "/quran/al-hijr/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/16",
+        "destination": "/quran/an-nahl",
+        "type": 301
+      },
+      {
+        "source": "/quran/16/:ayah",
+        "destination": "/quran/an-nahl/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/17",
+        "destination": "/quran/al-isra",
+        "type": 301
+      },
+      {
+        "source": "/quran/17/:ayah",
+        "destination": "/quran/al-isra/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/18",
+        "destination": "/quran/al-kahf",
+        "type": 301
+      },
+      {
+        "source": "/quran/18/:ayah",
+        "destination": "/quran/al-kahf/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/19",
+        "destination": "/quran/maryam",
+        "type": 301
+      },
+      {
+        "source": "/quran/19/:ayah",
+        "destination": "/quran/maryam/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/20",
+        "destination": "/quran/ta-ha",
+        "type": 301
+      },
+      {
+        "source": "/quran/20/:ayah",
+        "destination": "/quran/ta-ha/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/21",
+        "destination": "/quran/al-anbiya",
+        "type": 301
+      },
+      {
+        "source": "/quran/21/:ayah",
+        "destination": "/quran/al-anbiya/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/22",
+        "destination": "/quran/al-hajj",
+        "type": 301
+      },
+      {
+        "source": "/quran/22/:ayah",
+        "destination": "/quran/al-hajj/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/23",
+        "destination": "/quran/al-muminun",
+        "type": 301
+      },
+      {
+        "source": "/quran/23/:ayah",
+        "destination": "/quran/al-muminun/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/24",
+        "destination": "/quran/an-nur",
+        "type": 301
+      },
+      {
+        "source": "/quran/24/:ayah",
+        "destination": "/quran/an-nur/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/25",
+        "destination": "/quran/al-furqan",
+        "type": 301
+      },
+      {
+        "source": "/quran/25/:ayah",
+        "destination": "/quran/al-furqan/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/26",
+        "destination": "/quran/ash-shuara",
+        "type": 301
+      },
+      {
+        "source": "/quran/26/:ayah",
+        "destination": "/quran/ash-shuara/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/27",
+        "destination": "/quran/an-naml",
+        "type": 301
+      },
+      {
+        "source": "/quran/27/:ayah",
+        "destination": "/quran/an-naml/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/28",
+        "destination": "/quran/al-qasas",
+        "type": 301
+      },
+      {
+        "source": "/quran/28/:ayah",
+        "destination": "/quran/al-qasas/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/29",
+        "destination": "/quran/al-ankabut",
+        "type": 301
+      },
+      {
+        "source": "/quran/29/:ayah",
+        "destination": "/quran/al-ankabut/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/30",
+        "destination": "/quran/ar-rum",
+        "type": 301
+      },
+      {
+        "source": "/quran/30/:ayah",
+        "destination": "/quran/ar-rum/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/31",
+        "destination": "/quran/luqman",
+        "type": 301
+      },
+      {
+        "source": "/quran/31/:ayah",
+        "destination": "/quran/luqman/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/32",
+        "destination": "/quran/as-sajdah",
+        "type": 301
+      },
+      {
+        "source": "/quran/32/:ayah",
+        "destination": "/quran/as-sajdah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/33",
+        "destination": "/quran/al-ahzab",
+        "type": 301
+      },
+      {
+        "source": "/quran/33/:ayah",
+        "destination": "/quran/al-ahzab/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/34",
+        "destination": "/quran/saba",
+        "type": 301
+      },
+      {
+        "source": "/quran/34/:ayah",
+        "destination": "/quran/saba/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/35",
+        "destination": "/quran/fatir",
+        "type": 301
+      },
+      {
+        "source": "/quran/35/:ayah",
+        "destination": "/quran/fatir/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/36",
+        "destination": "/quran/ya-sin",
+        "type": 301
+      },
+      {
+        "source": "/quran/36/:ayah",
+        "destination": "/quran/ya-sin/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/37",
+        "destination": "/quran/as-saffat",
+        "type": 301
+      },
+      {
+        "source": "/quran/37/:ayah",
+        "destination": "/quran/as-saffat/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/38",
+        "destination": "/quran/sad",
+        "type": 301
+      },
+      {
+        "source": "/quran/38/:ayah",
+        "destination": "/quran/sad/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/39",
+        "destination": "/quran/az-zumar",
+        "type": 301
+      },
+      {
+        "source": "/quran/39/:ayah",
+        "destination": "/quran/az-zumar/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/40",
+        "destination": "/quran/ghafir",
+        "type": 301
+      },
+      {
+        "source": "/quran/40/:ayah",
+        "destination": "/quran/ghafir/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/41",
+        "destination": "/quran/fussilat",
+        "type": 301
+      },
+      {
+        "source": "/quran/41/:ayah",
+        "destination": "/quran/fussilat/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/42",
+        "destination": "/quran/ash-shura",
+        "type": 301
+      },
+      {
+        "source": "/quran/42/:ayah",
+        "destination": "/quran/ash-shura/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/43",
+        "destination": "/quran/az-zukhruf",
+        "type": 301
+      },
+      {
+        "source": "/quran/43/:ayah",
+        "destination": "/quran/az-zukhruf/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/44",
+        "destination": "/quran/ad-dukhan",
+        "type": 301
+      },
+      {
+        "source": "/quran/44/:ayah",
+        "destination": "/quran/ad-dukhan/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/45",
+        "destination": "/quran/al-jathiyah",
+        "type": 301
+      },
+      {
+        "source": "/quran/45/:ayah",
+        "destination": "/quran/al-jathiyah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/46",
+        "destination": "/quran/al-ahqaf",
+        "type": 301
+      },
+      {
+        "source": "/quran/46/:ayah",
+        "destination": "/quran/al-ahqaf/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/47",
+        "destination": "/quran/muhammad",
+        "type": 301
+      },
+      {
+        "source": "/quran/47/:ayah",
+        "destination": "/quran/muhammad/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/48",
+        "destination": "/quran/al-fath",
+        "type": 301
+      },
+      {
+        "source": "/quran/48/:ayah",
+        "destination": "/quran/al-fath/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/49",
+        "destination": "/quran/al-hujurat",
+        "type": 301
+      },
+      {
+        "source": "/quran/49/:ayah",
+        "destination": "/quran/al-hujurat/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/50",
+        "destination": "/quran/qaf",
+        "type": 301
+      },
+      {
+        "source": "/quran/50/:ayah",
+        "destination": "/quran/qaf/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/51",
+        "destination": "/quran/adh-dhariyat",
+        "type": 301
+      },
+      {
+        "source": "/quran/51/:ayah",
+        "destination": "/quran/adh-dhariyat/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/52",
+        "destination": "/quran/at-tur",
+        "type": 301
+      },
+      {
+        "source": "/quran/52/:ayah",
+        "destination": "/quran/at-tur/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/53",
+        "destination": "/quran/an-najm",
+        "type": 301
+      },
+      {
+        "source": "/quran/53/:ayah",
+        "destination": "/quran/an-najm/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/54",
+        "destination": "/quran/al-qamar",
+        "type": 301
+      },
+      {
+        "source": "/quran/54/:ayah",
+        "destination": "/quran/al-qamar/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/55",
+        "destination": "/quran/ar-rahman",
+        "type": 301
+      },
+      {
+        "source": "/quran/55/:ayah",
+        "destination": "/quran/ar-rahman/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/56",
+        "destination": "/quran/al-waqiah",
+        "type": 301
+      },
+      {
+        "source": "/quran/56/:ayah",
+        "destination": "/quran/al-waqiah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/57",
+        "destination": "/quran/al-hadid",
+        "type": 301
+      },
+      {
+        "source": "/quran/57/:ayah",
+        "destination": "/quran/al-hadid/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/58",
+        "destination": "/quran/al-mujadilah",
+        "type": 301
+      },
+      {
+        "source": "/quran/58/:ayah",
+        "destination": "/quran/al-mujadilah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/59",
+        "destination": "/quran/al-hashr",
+        "type": 301
+      },
+      {
+        "source": "/quran/59/:ayah",
+        "destination": "/quran/al-hashr/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/60",
+        "destination": "/quran/al-mumtahanah",
+        "type": 301
+      },
+      {
+        "source": "/quran/60/:ayah",
+        "destination": "/quran/al-mumtahanah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/61",
+        "destination": "/quran/as-saff",
+        "type": 301
+      },
+      {
+        "source": "/quran/61/:ayah",
+        "destination": "/quran/as-saff/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/62",
+        "destination": "/quran/al-jumuah",
+        "type": 301
+      },
+      {
+        "source": "/quran/62/:ayah",
+        "destination": "/quran/al-jumuah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/63",
+        "destination": "/quran/al-munafiqun",
+        "type": 301
+      },
+      {
+        "source": "/quran/63/:ayah",
+        "destination": "/quran/al-munafiqun/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/64",
+        "destination": "/quran/at-taghabun",
+        "type": 301
+      },
+      {
+        "source": "/quran/64/:ayah",
+        "destination": "/quran/at-taghabun/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/65",
+        "destination": "/quran/at-talaq",
+        "type": 301
+      },
+      {
+        "source": "/quran/65/:ayah",
+        "destination": "/quran/at-talaq/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/66",
+        "destination": "/quran/at-tahrim",
+        "type": 301
+      },
+      {
+        "source": "/quran/66/:ayah",
+        "destination": "/quran/at-tahrim/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/67",
+        "destination": "/quran/al-mulk",
+        "type": 301
+      },
+      {
+        "source": "/quran/67/:ayah",
+        "destination": "/quran/al-mulk/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/68",
+        "destination": "/quran/al-qalam",
+        "type": 301
+      },
+      {
+        "source": "/quran/68/:ayah",
+        "destination": "/quran/al-qalam/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/69",
+        "destination": "/quran/al-haqqah",
+        "type": 301
+      },
+      {
+        "source": "/quran/69/:ayah",
+        "destination": "/quran/al-haqqah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/70",
+        "destination": "/quran/al-maarij",
+        "type": 301
+      },
+      {
+        "source": "/quran/70/:ayah",
+        "destination": "/quran/al-maarij/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/71",
+        "destination": "/quran/nuh",
+        "type": 301
+      },
+      {
+        "source": "/quran/71/:ayah",
+        "destination": "/quran/nuh/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/72",
+        "destination": "/quran/al-jinn",
+        "type": 301
+      },
+      {
+        "source": "/quran/72/:ayah",
+        "destination": "/quran/al-jinn/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/73",
+        "destination": "/quran/al-muzzammil",
+        "type": 301
+      },
+      {
+        "source": "/quran/73/:ayah",
+        "destination": "/quran/al-muzzammil/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/74",
+        "destination": "/quran/al-muddaththir",
+        "type": 301
+      },
+      {
+        "source": "/quran/74/:ayah",
+        "destination": "/quran/al-muddaththir/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/75",
+        "destination": "/quran/al-qiyamah",
+        "type": 301
+      },
+      {
+        "source": "/quran/75/:ayah",
+        "destination": "/quran/al-qiyamah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/76",
+        "destination": "/quran/al-insan",
+        "type": 301
+      },
+      {
+        "source": "/quran/76/:ayah",
+        "destination": "/quran/al-insan/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/77",
+        "destination": "/quran/al-mursalat",
+        "type": 301
+      },
+      {
+        "source": "/quran/77/:ayah",
+        "destination": "/quran/al-mursalat/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/78",
+        "destination": "/quran/an-naba",
+        "type": 301
+      },
+      {
+        "source": "/quran/78/:ayah",
+        "destination": "/quran/an-naba/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/79",
+        "destination": "/quran/an-naziat",
+        "type": 301
+      },
+      {
+        "source": "/quran/79/:ayah",
+        "destination": "/quran/an-naziat/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/80",
+        "destination": "/quran/abasa",
+        "type": 301
+      },
+      {
+        "source": "/quran/80/:ayah",
+        "destination": "/quran/abasa/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/81",
+        "destination": "/quran/at-takwir",
+        "type": 301
+      },
+      {
+        "source": "/quran/81/:ayah",
+        "destination": "/quran/at-takwir/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/82",
+        "destination": "/quran/al-infitar",
+        "type": 301
+      },
+      {
+        "source": "/quran/82/:ayah",
+        "destination": "/quran/al-infitar/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/83",
+        "destination": "/quran/al-mutaffifin",
+        "type": 301
+      },
+      {
+        "source": "/quran/83/:ayah",
+        "destination": "/quran/al-mutaffifin/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/84",
+        "destination": "/quran/al-inshiqaq",
+        "type": 301
+      },
+      {
+        "source": "/quran/84/:ayah",
+        "destination": "/quran/al-inshiqaq/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/85",
+        "destination": "/quran/al-buruj",
+        "type": 301
+      },
+      {
+        "source": "/quran/85/:ayah",
+        "destination": "/quran/al-buruj/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/86",
+        "destination": "/quran/at-tariq",
+        "type": 301
+      },
+      {
+        "source": "/quran/86/:ayah",
+        "destination": "/quran/at-tariq/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/87",
+        "destination": "/quran/al-ala",
+        "type": 301
+      },
+      {
+        "source": "/quran/87/:ayah",
+        "destination": "/quran/al-ala/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/88",
+        "destination": "/quran/al-ghashiyah",
+        "type": 301
+      },
+      {
+        "source": "/quran/88/:ayah",
+        "destination": "/quran/al-ghashiyah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/89",
+        "destination": "/quran/al-fajr",
+        "type": 301
+      },
+      {
+        "source": "/quran/89/:ayah",
+        "destination": "/quran/al-fajr/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/90",
+        "destination": "/quran/al-balad",
+        "type": 301
+      },
+      {
+        "source": "/quran/90/:ayah",
+        "destination": "/quran/al-balad/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/91",
+        "destination": "/quran/ash-shams",
+        "type": 301
+      },
+      {
+        "source": "/quran/91/:ayah",
+        "destination": "/quran/ash-shams/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/92",
+        "destination": "/quran/al-layl",
+        "type": 301
+      },
+      {
+        "source": "/quran/92/:ayah",
+        "destination": "/quran/al-layl/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/93",
+        "destination": "/quran/ad-duha",
+        "type": 301
+      },
+      {
+        "source": "/quran/93/:ayah",
+        "destination": "/quran/ad-duha/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/94",
+        "destination": "/quran/ash-sharh",
+        "type": 301
+      },
+      {
+        "source": "/quran/94/:ayah",
+        "destination": "/quran/ash-sharh/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/95",
+        "destination": "/quran/at-tin",
+        "type": 301
+      },
+      {
+        "source": "/quran/95/:ayah",
+        "destination": "/quran/at-tin/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/96",
+        "destination": "/quran/al-alaq",
+        "type": 301
+      },
+      {
+        "source": "/quran/96/:ayah",
+        "destination": "/quran/al-alaq/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/97",
+        "destination": "/quran/al-qadr",
+        "type": 301
+      },
+      {
+        "source": "/quran/97/:ayah",
+        "destination": "/quran/al-qadr/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/98",
+        "destination": "/quran/al-bayyinah",
+        "type": 301
+      },
+      {
+        "source": "/quran/98/:ayah",
+        "destination": "/quran/al-bayyinah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/99",
+        "destination": "/quran/az-zalzalah",
+        "type": 301
+      },
+      {
+        "source": "/quran/99/:ayah",
+        "destination": "/quran/az-zalzalah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/100",
+        "destination": "/quran/al-adiyat",
+        "type": 301
+      },
+      {
+        "source": "/quran/100/:ayah",
+        "destination": "/quran/al-adiyat/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/101",
+        "destination": "/quran/al-qariah",
+        "type": 301
+      },
+      {
+        "source": "/quran/101/:ayah",
+        "destination": "/quran/al-qariah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/102",
+        "destination": "/quran/at-takathur",
+        "type": 301
+      },
+      {
+        "source": "/quran/102/:ayah",
+        "destination": "/quran/at-takathur/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/103",
+        "destination": "/quran/al-asr",
+        "type": 301
+      },
+      {
+        "source": "/quran/103/:ayah",
+        "destination": "/quran/al-asr/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/104",
+        "destination": "/quran/al-humazah",
+        "type": 301
+      },
+      {
+        "source": "/quran/104/:ayah",
+        "destination": "/quran/al-humazah/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/105",
+        "destination": "/quran/al-fil",
+        "type": 301
+      },
+      {
+        "source": "/quran/105/:ayah",
+        "destination": "/quran/al-fil/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/106",
+        "destination": "/quran/quraysh",
+        "type": 301
+      },
+      {
+        "source": "/quran/106/:ayah",
+        "destination": "/quran/quraysh/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/107",
+        "destination": "/quran/al-maun",
+        "type": 301
+      },
+      {
+        "source": "/quran/107/:ayah",
+        "destination": "/quran/al-maun/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/108",
+        "destination": "/quran/al-kawthar",
+        "type": 301
+      },
+      {
+        "source": "/quran/108/:ayah",
+        "destination": "/quran/al-kawthar/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/109",
+        "destination": "/quran/al-kafirun",
+        "type": 301
+      },
+      {
+        "source": "/quran/109/:ayah",
+        "destination": "/quran/al-kafirun/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/110",
+        "destination": "/quran/an-nasr",
+        "type": 301
+      },
+      {
+        "source": "/quran/110/:ayah",
+        "destination": "/quran/an-nasr/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/111",
+        "destination": "/quran/al-masad",
+        "type": 301
+      },
+      {
+        "source": "/quran/111/:ayah",
+        "destination": "/quran/al-masad/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/112",
+        "destination": "/quran/al-ikhlas",
+        "type": 301
+      },
+      {
+        "source": "/quran/112/:ayah",
+        "destination": "/quran/al-ikhlas/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/113",
+        "destination": "/quran/al-falaq",
+        "type": 301
+      },
+      {
+        "source": "/quran/113/:ayah",
+        "destination": "/quran/al-falaq/:ayah",
+        "type": 301
+      },
+      {
+        "source": "/quran/114",
+        "destination": "/quran/an-nas",
+        "type": 301
+      },
+      {
+        "source": "/quran/114/:ayah",
+        "destination": "/quran/an-nas/:ayah",
+        "type": 301
       }
     ],
     "headers": [
