@@ -14,14 +14,20 @@ const t = lang === 'ar'
       title: 'حسابي', loading: 'جارٍ التحميل…',
       verified: 'البريد موثّق', unverified: 'البريد غير موثّق',
       resend: 'إعادة إرسال رابط التوثيق', sent: 'أُرسل رابط التوثيق إلى بريدك.',
-      plan: 'الاشتراك', planFree: 'مجاني', planNote: 'إدارة الاشتراك والدفع عبر الويب قريباً.',
+      plan: 'الاشتراك', planFree: 'مجاني', planPlus: 'إعراب بلس',
+      planChecking: 'جارٍ التحقّق…',
+      planNoteFree: 'اشترك من التطبيق لتفتح كل الميزات على الويب والتطبيق.',
+      planNotePlus: 'اشتراكك مفعّل على جميع أجهزتك — الويب والتطبيق. ✓',
       signOut: 'تسجيل الخروج', backHome: 'إلى الصفحة الرئيسية',
     }
   : {
       title: 'My account', loading: 'Loading…',
       verified: 'Email verified', unverified: 'Email not verified',
       resend: 'Resend verification link', sent: 'Verification link sent to your email.',
-      plan: 'Subscription', planFree: 'Free', planNote: 'Web subscription & billing management coming soon.',
+      plan: 'Subscription', planFree: 'Free', planPlus: 'Irab Plus',
+      planChecking: 'Checking…',
+      planNoteFree: 'Subscribe in the app to unlock every feature on web and app.',
+      planNotePlus: 'Your subscription is active on all your devices — web and app. ✓',
       signOut: 'Sign out', backHome: 'Back to home',
     };
 const dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -48,8 +54,8 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       {/* Subscription block (foundation placeholder for Phase 4) */}
       <div class="mt-7 pt-6 border-t border-stone dark:border-coal-edge">
         <p class="text-small text-ink/55 dark:text-mist/55 mb-1">{t.plan}</p>
-        <p class="text-h3 font-arabic-display">{t.planFree}</p>
-        <p class="text-caption text-ink/45 dark:text-mist/45 mt-1">{t.planNote}</p>
+        <p data-plan class="text-h3 font-arabic-display">{t.planChecking}</p>
+        <p data-plan-note class="text-caption text-ink/45 dark:text-mist/45 mt-1"></p>
       </div>
 
       <div class="mt-8 flex flex-col sm:flex-row gap-3">
@@ -64,6 +70,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
 <script>
   import { onAuth, logout, resendVerification } from '../lib/auth';
+  import { fetchMe } from '../lib/entitlement';
 
   const root = document.querySelector<HTMLElement>('[data-account-root]');
   if (root) {
@@ -76,6 +83,13 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
     const vText = lang === 'ar'
       ? { yes: 'البريد موثّق', no: 'البريد غير موثّق' }
       : { yes: 'Email verified', no: 'Email not verified' };
+    const planText = lang === 'ar'
+      ? { free: 'مجاني', plus: 'إعراب بلس',
+          noteFree: 'اشترك من التطبيق لتفتح كل الميزات على الويب والتطبيق.',
+          notePlus: 'اشتراكك مفعّل على جميع أجهزتك — الويب والتطبيق. ✓' }
+      : { free: 'Free', plus: 'Irab Plus',
+          noteFree: 'Subscribe in the app to unlock every feature on web and app.',
+          notePlus: 'Your subscription is active on all your devices — web and app. ✓' };
 
     onAuth((u) => {
       if (!u) { window.location.replace(login); return; }
@@ -100,6 +114,16 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
           try { await resendVerification(u); resend.textContent = sentMsg; resend.disabled = true; } catch {}
         }, { once: true });
       }
+
+      // Subscription status — read from the worker (RevenueCat by uid).
+      const planEl = q<HTMLElement>('[data-plan]');
+      const planNoteEl = q<HTMLElement>('[data-plan-note]');
+      fetchMe(u).then((me) => {
+        const premium = me?.premium === true;
+        planEl.textContent = premium ? planText.plus : planText.free;
+        planNoteEl.textContent = premium ? planText.notePlus : planText.noteFree;
+        if (premium) planEl.classList.add('text-purple');
+      });
     });
 
     q<HTMLButtonElement>('[data-signout]').addEventListener('click', async () => {
