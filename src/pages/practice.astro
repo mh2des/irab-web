@@ -1,0 +1,100 @@
+---
+/**
+ * /practice — the do-it-yourself i'rab + instant AI feedback page (Arabic).
+ *
+ * The category-of-one wedge: every competitor only OUTPUTS the i'rab; Irab
+ * makes the learner DO it and grades it. Targets practice-intent queries
+ * (تمارين إعراب / اختبر إعرابك / تدريب على الإعراب) and showcases the
+ * gamification. LearningResource + FAQPage structured data.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Schema from '../components/Schema.astro';
+import Nav from '../components/Nav.astro';
+import ArticleHero from '../components/ArticleHero.astro';
+import ArticleSection from '../components/ArticleSection.astro';
+import ArticleCta from '../components/ArticleCta.astro';
+import ArticleFaq from '../components/ArticleFaq.astro';
+import Footer from '../components/sections/Footer.astro';
+
+const faqs = [
+  { q: 'كيف أتدرّب على الإعراب؟', a: 'في تطبيق إعراب تختار جملة، ثمّ تُعرِب كلماتها بنفسك: لكلّ كلمة تحدّد نوعها (اسم/فعل/حرف)، ووظيفتها النحوية، وعلامة إعرابها. بعدها يصحّح لك الذكاء الاصطناعي فورًا ويشرح كلّ خطأ. هذا تدريب فعّال (استرجاع نشط)، لا قراءة سلبية.' },
+  { q: 'هل التدريب مجاني؟', a: 'نعم، تبدأ مجانًا بمستويات وجمل تدريبية مجانية يوميًّا. يفتح Irab Plus بنك التدريب الكامل (٥٧٦ جملة)، وتقييم إعرابك على جملك الخاصة، وكلّ أبواب التحدّي.' },
+  { q: 'ما الفرق بين قراءة الإعراب والتدرّب عليه؟', a: 'قراءة الإعراب الجاهز تمنحك ألفة سطحية سرعان ما تُنسى. التدرّب — أن تُعرِب بنفسك ثمّ تُصحَّح — يبني الحاسّة النحوية ويثبّت القاعدة. هذا ما لا تقدّمه أدوات الإعراب الآلي الأخرى التي تكتفي بإعطائك الجواب.' },
+  { q: 'هل يصحّح أخطائي ويشرحها؟', a: 'نعم. بعد كلّ محاولة تحصل على تصحيح كلمة بكلمة يبيّن الصواب مقابل إجابتك، ولماذا، مع شرحٍ مفصّل بالذكاء الاصطناعي على جملك الخاصة.' },
+  { q: 'هل يناسب المبتدئين؟', a: 'نعم. تبدأ من أوّل المرفوعات وتتدرّج إلى تراكيب متقدّمة عبر ٧ أبواب و١٠ رتب. كلّ مستوى يبني على ما قبله، مع تحدٍّ يومي وسلاسل تحافظ على عادتك.' },
+];
+
+const learningResource = {
+  '@context': 'https://schema.org',
+  '@type': 'LearningResource',
+  name: 'تمارين الإعراب التفاعلية مع تصحيح فوري — إعراب',
+  url: 'https://irab.app/practice',
+  inLanguage: 'ar',
+  learningResourceType: ['Exercise', 'Quiz', 'Game'],
+  teaches: ['الإعراب', 'النحو', 'الصرف'],
+  educationalLevel: 'مبتدئ إلى متقدّم',
+  isAccessibleForFree: true,
+  description:
+    'تدرّب على الإعراب بنفسك واحصل على تصحيحٍ فوري وشرحٍ بالذكاء الاصطناعي، مع تحدّيات ومستويات ونقاط ولوحة صدارة.',
+  provider: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
+};
+---
+<BaseLayout
+  lang="ar"
+  hasEn
+  title="تمارين الإعراب مع تصحيح فوري بالذكاء الاصطناعي · إعراب"
+  description="لا تكتفِ بقراءة الإعراب — أَعرِبْ بنفسك واحصل على تصحيحٍ وشرحٍ فوري لكلّ كلمة. ٥٧٦ جملة تدريبية، تقييم لجملك الخاصة، وتحدّياتٌ ومستوياتٌ ترفع مستواك."
+>
+  <Schema slot="head" />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(learningResource)} is:inline />
+
+  <Nav lang="ar" />
+
+  <ArticleHero
+    lang="ar"
+    eyebrow="تدرّب"
+    title="اختبر إعرابك، لا تكتفِ بقراءته."
+    summary="أكثر الأدوات تعطيك الإعراب جاهزًا. إعراب يجعلك تُعرِبُ بنفسك: اختر نوع الكلمة ووظيفتها وعلامتها، فيصحّح لك الذكاء الاصطناعي فورًا ويشرح أين أخطأت ولماذا. ٥٧٦ جملة منتقاة، وتقييمٌ على جملك الخاصة، وتحدّياتٌ ترفع مستواك — في تطبيق إعراب على iOS وAndroid."
+  />
+
+  <ArticleSection
+    lang="ar"
+    id="how"
+    title="كيف تتدرّب على الإعراب"
+    lead="ثلاث خطوات بسيطة تحوّل القاعدة النحوية من معلومة تقرؤها إلى مهارة تملكها."
+  >
+    <p><strong>١. أَعرِبْ بنفسك.</strong> لكلّ كلمة في الجملة، اختر نوعها (اسم، فعل، حرف)، ووظيفتها النحوية (مبتدأ، فاعل، مفعول…)، وعلامة إعرابها. أنت من يحلّل، لا الآلة.</p>
+    <p><strong>٢. تصحيحٌ فوري وشرح.</strong> يقارن الذكاء الاصطناعي إجابتك بالصواب كلمةً كلمة، ويبيّن أين أصبتَ وأين أخطأت، ولماذا — بشرحٍ مفصّل على جملك الخاصة.</p>
+    <p><strong>٣. اصعد وتقدّم.</strong> اجمع نقاط XP، حافظ على سلسلتك اليومية، افتح المستويات السبعة والرتب العشر، وتنافس في لوحة الصدارة.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="why"
+    title="لماذا التدريب الفعّال يصنع الفرق"
+    lead="الدماغ يثبّت ما يستدعيه، لا ما يقرؤه فقط. الاسترجاع النشط هو سرّ الإتقان."
+  >
+    <p>قراءة الإعراب الجاهز تمنحك شعورًا زائفًا بالفهم سرعان ما يتبخّر. أمّا أن تُعرِب بنفسك ثمّ تُصحَّح، فهو ما يبني الحاسّة النحوية ويرسّخ القاعدة في الذاكرة طويلة المدى.</p>
+    <p>هذا تحديدًا ما لا تقدّمه أدوات الإعراب الآلي الأخرى: كلّها تعطيك الجواب وتنتهي. إعراب وحده يغلق الحلقة — تحاول، فيُصحَّح لك، فتتعلّم من خطئك. هذه هي الميزة التي تصنع متعلّمًا حقيقيًّا لا متلقّيًا.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="gamification"
+    title="تعلَّم باللعب"
+    lead="حوّلنا تعلّم النحو إلى لعبة تدمن إتقانها، لا واجبًا تؤجّله."
+  >
+    <p><strong>حملة من ٧ أبواب</strong> تتدرّج من التأسيس إلى التراكيب المتقدّمة، و<strong>تحدٍّ يومي</strong> يبقيك على العهد.</p>
+    <p><strong>نقاط XP وسلاسل و١٠ رتب وشارات</strong> تكافئ مثابرتك، و<strong>لوحة صدارة</strong> تنافس فيها متعلّمين آخرين حول العالم.</p>
+    <p>كلّ جلسة قصيرة، ممتعة، وتترك أثرًا — حتى يصبح الإعراب عادةً يوميّة لا مهمّةً ثقيلة.</p>
+  </ArticleSection>
+
+  <ArticleCta lang="ar">
+    <span slot="title">ابدأ التدريب اليوم.</span>
+    حمّل تطبيق إعراب مجانًا على iOS وAndroid، واختبر إعرابك بأوّل جملة الآن — مع تصحيحٍ فوري وشرحٍ لكلّ كلمة.
+  </ArticleCta>
+
+  <ArticleFaq items={faqs} lang="ar" />
+
+  <Footer lang="ar" />
+</BaseLayout>
