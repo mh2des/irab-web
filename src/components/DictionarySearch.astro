@@ -1,0 +1,199 @@
+---
+/**
+ * DictionarySearch — the smart (AI) Arabic dictionary as a web tool.
+ * Login-gated (the worker /api/dictionary needs a Firebase token); free users
+ * get their daily quota, premium unlimited — enforced server-side, same engine
+ * as the app. Firebase loads only on this tool page, never on content pages.
+ */
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const login = lang === 'ar' ? '/login' : '/en/login';
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+const t = lang === 'ar'
+  ? {
+      placeholder: 'اكتب كلمة عربية…', search: 'بحث', searching: 'جارٍ البحث…',
+      signedOutTitle: 'سجّل الدخول لاستعمال المعجم',
+      signedOutBody: 'المعجم الذكي متاح لأصحاب الحساب. سجّل الدخول مجاناً للبدء.',
+      signIn: 'تسجيل الدخول',
+      root: 'الجذر', pos: 'النوع', meanings: 'المعاني', examples: 'أمثلة',
+      translations: 'الترجمة', noResult: 'لم نجد نتيجة لهذه الكلمة. تأكّد من الإملاء.',
+      limit: 'بلغت حدّك اليومي المجاني. اشترك من التطبيق لبحثٍ غير محدود.',
+      error: 'حدث خطأ. حاول مرة أخرى.', unlimited: 'بحث غير محدود ⚡',
+    }
+  : {
+      placeholder: 'Type an Arabic word…', search: 'Search', searching: 'Searching…',
+      signedOutTitle: 'Sign in to use the dictionary',
+      signedOutBody: 'The smart dictionary is for account holders. Sign in free to start.',
+      signIn: 'Sign in',
+      root: 'Root', pos: 'Type', meanings: 'Meanings', examples: 'Examples',
+      translations: 'Translation', noResult: 'No result for that word — check the spelling.',
+      limit: "You've reached your free daily limit. Subscribe in the app for unlimited search.",
+      error: 'Something went wrong. Please try again.', unlimited: 'Unlimited search ⚡',
+    };
+---
+<div data-dict-root data-lang={lang} data-login={login} dir={dir} class="w-full max-w-2xl mx-auto">
+  {/* Signed-out gate */}
+  <div data-dict-gate class="hidden rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-8 text-center">
+    <h2 class="font-arabic-display text-h2 mb-2">{t.signedOutTitle}</h2>
+    <p class="text-ink/65 dark:text-mist/65 mb-6">{t.signedOutBody}</p>
+    <a href={login} class="inline-block px-6 py-3 rounded-full bg-purple hover:bg-purple-deep text-white font-medium transition-colors">{t.signIn}</a>
+  </div>
+
+  {/* Tool (shown when signed in) */}
+  <div data-dict-tool class="hidden">
+    <form data-dict-form class="flex gap-2 mb-3">
+      <input data-dict-input type="text" dir="rtl" autocomplete="off" placeholder={t.placeholder}
+        class="flex-1 px-5 py-3.5 rounded-full border border-stone dark:border-coal-edge bg-white dark:bg-coal text-ink dark:text-mist text-lg outline-none focus:border-purple" />
+      <button type="submit" data-dict-submit
+        class="px-7 py-3.5 rounded-full bg-purple hover:bg-purple-deep text-white font-medium transition-colors disabled:opacity-60">
+        <span data-dict-submit-label>{t.search}</span>
+      </button>
+    </form>
+    <p data-dict-quota class="text-caption text-ink/45 dark:text-mist/45 mb-6 h-4"></p>
+
+    <p data-dict-msg class="hidden text-small rounded-lg px-4 py-3 mb-4"></p>
+    <div data-dict-result></div>
+  </div>
+
+  <div data-dict-loading class="text-center py-12 text-ink/40 dark:text-mist/40">…</div>
+</div>
+
+<script>
+  import { maybeSignedIn } from '../lib/session';
+
+  const root = document.querySelector<HTMLElement>('[data-dict-root]');
+  if (root) {
+    const lang = root.dataset.lang === 'en' ? 'en' : 'ar';
+    const login = root.dataset.login || '/login';
+    const WORKER = 'https://irab-api-v2.mansourhassan783.workers.dev';
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const gate = q<HTMLElement>('[data-dict-gate]');
+    const tool = q<HTMLElement>('[data-dict-tool]');
+    const loadingEl = q<HTMLElement>('[data-dict-loading]');
+    const form = q<HTMLFormElement>('[data-dict-form]');
+    const input = q<HTMLInputElement>('[data-dict-input]');
+    const submit = q<HTMLButtonElement>('[data-dict-submit]');
+    const submitLabel = q<HTMLElement>('[data-dict-submit-label]');
+    const msg = q<HTMLElement>('[data-dict-msg]');
+    const result = q<HTMLElement>('[data-dict-result]');
+    const quota = q<HTMLElement>('[data-dict-quota]');
+
+    const T = lang === 'ar'
+      ? { searching: 'جارٍ البحث…', search: 'بحث', root: 'الجذر', meanings: 'المعاني', examples: 'أمثلة', translations: 'الترجمة',
+          noResult: 'لم نجد نتيجة لهذه الكلمة. تأكّد من الإملاء.', limit: 'بلغت حدّك اليومي المجاني. اشترك من التطبيق لبحثٍ غير محدود.',
+          error: 'حدث خطأ. حاول مرة أخرى.', unlimited: 'بحث غير محدود ⚡' }
+      : { searching: 'Searching…', search: 'Search', root: 'Root', meanings: 'Meanings', examples: 'Examples', translations: 'Translation',
+          noResult: 'No result for that word — check the spelling.', limit: "You've reached your free daily limit. Subscribe in the app for unlimited search.",
+          error: 'Something went wrong. Please try again.', unlimited: 'Unlimited search ⚡' };
+
+    let idToken: string | null = null;
+
+    function showMsg(text: string, kind: 'err' | 'info') {
+      msg.textContent = text;
+      msg.className = 'text-small rounded-lg px-4 py-3 mb-4 ' +
+        (kind === 'info' ? 'bg-purple/10 text-purple' : 'bg-red-500/10 text-red-600 dark:text-red-400');
+    }
+    const clearMsg = () => { msg.className = 'hidden'; };
+
+    const el = (tag: string, cls?: string, text?: string) => {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    };
+
+    function render(data: any) {
+      result.replaceChildren();
+      const v = (data?.variants && data.variants[0]) || data;
+      if (!v || !Array.isArray(v.senses) || v.senses.length === 0) {
+        showMsg(T.noResult, 'info'); return;
+      }
+      clearMsg();
+      const card = el('div', 'rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-6 md:p-8');
+
+      // Header: word + root + pos
+      const head = el('div', 'flex flex-wrap items-baseline gap-3 mb-5 pb-5 border-b border-stone dark:border-coal-edge');
+      const word = el('span', 'font-arabic-display text-[2rem] leading-none text-ink dark:text-mist');
+      word.setAttribute('dir', 'rtl'); word.textContent = v.lemma || input.value.trim();
+      head.appendChild(word);
+      if (v.root) { const r = el('span', 'text-small text-purple', `${T.root}: ${v.root}`); r.setAttribute('dir','rtl'); head.appendChild(r); }
+      if (v.pos)  head.appendChild(el('span', 'text-caption px-2.5 py-1 rounded-full bg-teal/12 text-teal', v.pos));
+      card.appendChild(head);
+
+      // Senses
+      card.appendChild(el('p', 'text-caption text-ink/45 dark:text-mist/45 mb-2', T.meanings));
+      const ol = el('ol', 'space-y-4 mb-2');
+      v.senses.forEach((s: any) => {
+        const li = el('li', 'ps-1');
+        const def = el('p', 'text-body text-ink dark:text-mist leading-relaxed'); def.setAttribute('dir','rtl');
+        def.textContent = s.definition || '';
+        li.appendChild(def);
+        const exs = Array.isArray(s.examples) ? s.examples.filter((e:any)=>e && (e.ar||e.text||e.example)) : [];
+        if (exs.length) {
+          const exWrap = el('ul', 'mt-2 space-y-1');
+          exs.slice(0, 3).forEach((e: any) => {
+            const line = el('li', 'text-small text-ink/60 dark:text-mist/60 ps-3 border-s-2 border-teal/30'); line.setAttribute('dir','rtl');
+            line.textContent = e.ar || e.text || e.example || '';
+            exWrap.appendChild(line);
+          });
+          li.appendChild(exWrap);
+        }
+        ol.appendChild(li);
+      });
+      card.appendChild(ol);
+
+      // Translations
+      const tr = v.translations || {};
+      const en = Array.isArray(tr.en) ? tr.en : [];
+      const fr = Array.isArray(tr.fr) ? tr.fr : [];
+      if (en.length || fr.length) {
+        const trWrap = el('div', 'mt-5 pt-5 border-t border-stone dark:border-coal-edge');
+        trWrap.appendChild(el('p', 'text-caption text-ink/45 dark:text-mist/45 mb-2', T.translations));
+        if (en.length) trWrap.appendChild(el('p', 'text-body text-ink/80 dark:text-mist/80', 'EN: ' + en.join(', ')));
+        if (fr.length) trWrap.appendChild(el('p', 'text-body text-ink/80 dark:text-mist/80', 'FR: ' + fr.join(', ')));
+        card.appendChild(trWrap);
+      }
+      result.appendChild(card);
+    }
+
+    async function search(word: string) {
+      if (!word) return;
+      clearMsg(); result.replaceChildren();
+      submit.disabled = true; submitLabel.textContent = T.searching;
+      try {
+        const res = await fetch(`${WORKER}/api/dictionary`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
+          body: JSON.stringify({ word }),
+        });
+        if (res.status === 429) { showMsg(T.limit, 'info'); return; }
+        if (!res.ok) { showMsg(T.error, 'err'); return; }
+        const json = await res.json();
+        render(json?.data ?? json);
+      } catch {
+        showMsg(T.error, 'err');
+      } finally {
+        submit.disabled = false; submitLabel.textContent = T.search;
+      }
+    }
+
+    form.addEventListener('submit', (e) => { e.preventDefault(); search(input.value.trim()); });
+
+    // Auth gate — Firebase only loads here (a tool page), never on content pages.
+    (async () => {
+      if (!maybeSignedIn()) { loadingEl.classList.add('hidden'); gate.classList.remove('hidden'); return; }
+      try {
+        const [{ onAuth }, { fetchMe }] = await Promise.all([import('../lib/auth'), import('../lib/entitlement')]);
+        onAuth(async (u) => {
+          loadingEl.classList.add('hidden');
+          if (!u) { gate.classList.remove('hidden'); return; }
+          try { idToken = await u.getIdToken(); } catch {}
+          tool.classList.remove('hidden');
+          try { const me = await fetchMe(u); if (me?.premium) quota.textContent = T.unlimited; } catch {}
+          input.focus();
+        });
+      } catch { loadingEl.classList.add('hidden'); gate.classList.remove('hidden'); }
+    })();
+  }
+</script>

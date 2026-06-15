@@ -12,6 +12,7 @@ const t = lang === 'ar'
   ? {
       tryDemo:  'محلّل الإعراب',
       practice: 'تمارين الإعراب',
+      dictionary: 'المعجم',
       quran:    'إعراب القرآن',
       features: 'المميزات',
       teachers: 'للمعلمين',
@@ -24,6 +25,7 @@ const t = lang === 'ar'
   : {
       tryDemo:  "I'rab analyzer",
       practice: 'Practice',
+      dictionary: 'Dictionary',
       quran:    "Quran i'rab",
       features: 'Features',
       teachers: 'For teachers',
@@ -40,6 +42,7 @@ const teachersHref = lang === 'ar' ? '/teachers' : '/en/teachers';
 const quranHref = '/quran'; // the full Quran-i'rab section (Arabic corpus)
 const toolHref = lang === 'ar' ? '/tool' : '/en/tool'; // the AI analyzer landing page
 const practiceHref = lang === 'ar' ? '/practice' : '/en/practice'; // do-it-yourself + AI feedback
+const dictionaryHref = lang === 'ar' ? '/dictionary' : '/en/dictionary'; // smart dictionary tool
 const signinHref = lang === 'ar' ? '/login' : '/en/login'; // web account
 
 // Equivalent URL in the other language for the toggle
@@ -61,6 +64,7 @@ const otherUrl = lang === 'ar'
       <div class="nav-bar hidden md:flex items-center gap-1 text-small">
         <a href={toolHref}           class="nav-link">{t.tryDemo}</a>
         <a href={practiceHref}       class="nav-link">{t.practice}</a>
+        <a href={dictionaryHref}     class="nav-link">{t.dictionary}</a>
         <a href={quranHref}          class="nav-link nav-link-feature">{t.quran}</a>
         <a href={`${home}#features`} class="nav-link">{t.features}</a>
         <a href={teachersHref}       class="nav-link">{t.teachers}</a>
@@ -133,6 +137,7 @@ const otherUrl = lang === 'ar'
       <div class="py-6 flex flex-col gap-1">
         <a href={toolHref}           class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.tryDemo}</a>
         <a href={practiceHref}       class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.practice}</a>
+        <a href={dictionaryHref}     class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.dictionary}</a>
         <a href={quranHref}          class="block py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.quran}</a>
         <a href={`${home}#features`} class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.features}</a>
         <a href={teachersHref}       class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.teachers}</a>

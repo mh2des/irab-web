@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import DictionarySearch from '../components/DictionarySearch.astro';
+---
+<BaseLayout lang="ar" title="المعجم الذكي · إعراب" description="معجم عربي ذكي مدعوم بالذكاء الاصطناعي: المعاني، الجذر، الأمثلة، والترجمة لأي كلمة.">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <Nav lang="ar" />
+  <main class="px-6 py-14 md:py-20">
+    <h1 class="text-center font-arabic-display text-[clamp(1.8rem,4vw,2.6rem)] leading-tight mb-3">المعجم الذكي</h1>
+    <p class="text-center text-ink/60 dark:text-mist/60 mb-10">معانٍ، جذر، أمثلة، وترجمة لأي كلمة عربية.</p>
+    <DictionarySearch lang="ar" />
+  </main>
+  <Footer lang="ar" />
+</BaseLayout>
