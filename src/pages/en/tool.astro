@@ -1,0 +1,91 @@
+---
+/**
+ * /en/tool — the free AI i'rab analyzer landing page (English).
+ *
+ * Targets the near-empty English SERP for "Arabic sentence parser / i'rab
+ * analyzer / Arabic grammar analyzer" — an audience (learners, Islamic-studies
+ * students) that the Arabic-only competitors don't serve at all.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Schema from '../../components/Schema.astro';
+import Nav from '../../components/Nav.astro';
+import Container from '../../components/Container.astro';
+import Section from '../../components/Section.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import LiveDemo from '../../components/sections/LiveDemo.astro';
+import ArticleFaq from '../../components/ArticleFaq.astro';
+import Footer from '../../components/sections/Footer.astro';
+
+const faqs = [
+  { q: "What is the Arabic i'rab analyzer?", a: "A free tool from Irab that takes any Arabic sentence and returns its full i'rab (grammatical analysis) word by word with AI: each word's type, syntactic role, case, case marker, full diacritics, and a plain explanation of the sentence. Paste a sentence above and press Parse." },
+  { q: 'Is it free?', a: "Yes. The ready examples are free and unlimited, and you get two free parses for your own sentences on the web. Unlimited parsing, the full practice bank, and graded feedback on your own i'rab live in the Irab app on iOS and Android." },
+  { q: 'Does it parse any sentence or only Quran?', a: 'Any Classical/Modern Standard Arabic text you paste — an ordinary sentence, a line of poetry, or a Quranic verse. The analyzer is general; full Quran i\'rab is also available as a reference library on the site.' },
+  { q: 'How accurate is the AI parsing?', a: 'The engine is purpose-built for Arabic grammar and is detailed and accurate in most cases, but AI can err on ambiguous constructions. Treat it as a fast study aid to check your own i\'rab, not a replacement for a qualified teacher on subtle points.' },
+  { q: 'Do I need an account?', a: 'No. Try it right here, no sign-up. For more analyses and learn-by-doing practice with instant feedback, download the free Irab app.' },
+];
+
+const webApp = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: "Irab — AI Arabic i'rab analyzer",
+  alternateName: ['Arabic sentence parser', 'أداة إعراب'],
+  url: 'https://irab.app/en/tool',
+  applicationCategory: 'EducationApplication',
+  operatingSystem: 'Web',
+  inLanguage: ['ar', 'en'],
+  description:
+    "A free AI tool that gives the full word-by-word i'rab (grammatical analysis) of any Arabic sentence: type, role, case, case marker, and full diacritics.",
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
+};
+
+const whys = [
+  { t: 'Free, no character cap', b: 'Run the full analysis on the ready examples with no limit, no sign-up, and no annoying length cap on your sentence.' },
+  { t: 'Real depth, not just a case tag', b: "Not only the case: word type, syntactic role, i'rab, case marker, full diacritics, and an explanation of the whole sentence structure." },
+  { t: 'Grounded in a real reference', b: 'The Quran i\'rab on the site is built on a published, verified scholarly reference — checked letter-by-letter — not guesswork.' },
+  { t: 'Part of a complete app', b: "After analyzing, do the i'rab yourself with instant feedback, then take on challenges and level up — on iOS and Android." },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Free AI Arabic i'rab Analyzer — Parse Any Sentence · Irab"
+  description="Free AI tool: paste any Arabic sentence and get its full i'rab word by word instantly — type, role, case, case marker, and full diacritics, with a sentence explanation. No character cap."
+>
+  <Schema slot="head" />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(webApp)} is:inline />
+
+  <Nav lang="en" />
+
+  <ArticleHero
+    lang="en"
+    eyebrow="Free tool"
+    title="AI Arabic i'rab analyzer"
+    summary="Paste any Arabic sentence and get its full i'rab instantly, word by word: each word's type, role, i'rab, case marker, full diacritics, and an explanation of the sentence. Free, no character cap, same engine as the Irab app. Try it below."
+  />
+
+  {/* The live analyzer — same engine as the app */}
+  <LiveDemo lang="en" />
+
+  <Section>
+    <Container>
+      <div class="max-w-2xl mb-12">
+        <p class="eyebrow mb-4">Why Irab</p>
+        <h2 class="font-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight">
+          One i'rab analyzer, done right.
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {whys.map((w) => (
+          <article class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-7 md:p-8">
+            <h3 class="font-display text-h3 leading-tight mb-3">{w.t}</h3>
+            <p class="text-body text-ink/70 dark:text-mist/70 leading-relaxed">{w.b}</p>
+          </article>
+        ))}
+      </div>
+    </Container>
+  </Section>
+
+  <ArticleFaq items={faqs} lang="en" />
+
+  <Footer lang="en" />
+</BaseLayout>

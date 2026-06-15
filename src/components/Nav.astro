@@ -34,6 +34,7 @@ const t = lang === 'ar'
 const home = lang === 'ar' ? '/' : '/en';
 const teachersHref = lang === 'ar' ? '/teachers' : '/en/teachers';
 const quranHref = '/quran'; // the full Quran-i'rab section (Arabic corpus)
+const toolHref = lang === 'ar' ? '/tool' : '/en/tool'; // the AI analyzer landing page
 
 // Equivalent URL in the other language for the toggle
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -52,7 +53,7 @@ const otherUrl = lang === 'ar'
 
       {/* Desktop links — segmented pill bar, soft fill + shadow lift on hover */}
       <div class="nav-bar hidden md:flex items-center gap-1 text-small">
-        <a href={`${home}#demo`}     class="nav-link">{t.tryDemo}</a>
+        <a href={toolHref}           class="nav-link">{t.tryDemo}</a>
         <a href={quranHref}          class="nav-link nav-link-feature">{t.quran}</a>
         <a href={`${home}#features`} class="nav-link">{t.features}</a>
         <a href={teachersHref}       class="nav-link">{t.teachers}</a>
@@ -121,7 +122,7 @@ const otherUrl = lang === 'ar'
   >
     <Container>
       <div class="py-6 flex flex-col gap-1">
-        <a href={`${home}#demo`}     class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.tryDemo}</a>
+        <a href={toolHref}           class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.tryDemo}</a>
         <a href={quranHref}          class="block py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.quran}</a>
         <a href={`${home}#features`} class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.features}</a>
         <a href={teachersHref}       class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.teachers}</a>

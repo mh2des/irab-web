@@ -1,0 +1,94 @@
+---
+/**
+ * /tool — the free AI i'rab analyzer landing page (Arabic).
+ *
+ * The hero conversion + SEO surface for tool-intent queries
+ * (أداة إعراب / محلل إعراب / إعراب تلقائي / إعراب الجمل). Embeds the same live
+ * analyzer as the homepage demo, answer-first, with WebApplication + FAQPage
+ * structured data. This is the page that contests the AI-i'rab-tool space.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Schema from '../components/Schema.astro';
+import Nav from '../components/Nav.astro';
+import Container from '../components/Container.astro';
+import Section from '../components/Section.astro';
+import ArticleHero from '../components/ArticleHero.astro';
+import LiveDemo from '../components/sections/LiveDemo.astro';
+import ArticleFaq from '../components/ArticleFaq.astro';
+import Footer from '../components/sections/Footer.astro';
+
+const faqs = [
+  { q: 'ما هي أداة إعراب الجمل؟', a: 'أداة مجانية على إعراب تأخذ أيّ جملة عربية وتعطيك إعرابها كلمة بكلمة بالذكاء الاصطناعي: نوع كل كلمة، وظيفتها النحوية، إعرابها، علامتها، تشكيلها الكامل، وشرحًا واضحًا للجملة. ألصق الجملة في الأعلى واضغط «أعرب».' },
+  { q: 'هل الأداة مجانية؟', a: 'نعم. الأمثلة الجاهزة مجانية بلا حدود، ولك تحليلان مجانيّان لجملك الخاصة على الويب. الإعراب غير المحدود، وبنك التدريب الكامل، وتقييم إعرابك أنت موجودة في تطبيق إعراب على iOS وAndroid.' },
+  { q: 'هل تُعرِب أيّ جملة أم النص القرآني فقط؟', a: 'تُعرِب أيّ نصّ عربي فصيح تلصقه — جملة عادية أو بيت شعر أو آية قرآنية. الأداة عامّة للعربية الكلاسيكية، وإعراب القرآن متوفّر أيضًا كمكتبة مرجعية على الموقع.' },
+  { q: 'ما مدى دقّة الإعراب الآلي؟', a: 'المحرّك مصمّم خصّيصًا لقواعد النحو العربي ويعطي تحليلًا مفصّلًا دقيقًا في غالب المواضع، لكنّ الذكاء الاصطناعي قد يخطئ في المواضع المحتملة. اعتبره مساعد دراسة سريعًا للتحقّق من إعرابك، لا بديلًا عن معلّم مؤهّل في المواضع الدقيقة.' },
+  { q: 'هل أحتاج إلى حساب أو تسجيل؟', a: 'لا. جرّب الأداة مباشرة على هذه الصفحة دون تسجيل. لمزيد من التحليلات والتدريب بتقييم فوري، حمّل تطبيق إعراب المجاني.' },
+];
+
+const webApp = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'محلّل الإعراب بالذكاء الاصطناعي — إعراب',
+  alternateName: ['أداة إعراب', "Irab i'rab analyzer"],
+  url: 'https://irab.app/tool',
+  applicationCategory: 'EducationApplication',
+  operatingSystem: 'Web',
+  inLanguage: ['ar', 'en'],
+  description:
+    'أداة مجانية لإعراب الجمل العربية بالذكاء الاصطناعي كلمة بكلمة: النوع، الوظيفة، الإعراب، العلامة، والتشكيل الكامل.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
+};
+
+const whys = [
+  { t: 'مجاني وبلا حدود على الأمثلة', b: 'جرّب الإعراب الكامل على الأمثلة الجاهزة بلا حدود، دون تسجيل ودون حدٍّ مزعج لطول الجملة.' },
+  { t: 'عمقٌ حقيقي، لا مجرّد وسم', b: 'لا نكتفي بوسم الحالة: النوع، الوظيفة، الإعراب، العلامة، التشكيل الكامل، وشرحٌ لبنية الجملة كاملة.' },
+  { t: 'مدعومٌ بمرجع موثوق', b: 'إعراب القرآن على الموقع مبنيّ على مرجع منشور معتمد ومُتحقَّقٍ منه حرفًا حرفًا — لا تخمين.' },
+  { t: 'جزء من تطبيق متكامل', b: 'بعد التحليل، تدرّب وأَعرِبْ بنفسك بتقييمٍ فوري، وتحدَّ نفسك واصعد المستويات — على iOS وAndroid.' },
+];
+---
+<BaseLayout
+  lang="ar"
+  hasEn
+  title="أداة إعراب الجمل بالذكاء الاصطناعي — مجاناً · إعراب"
+  description="محلّل إعراب مجاني: ألصق أيّ جملة عربية واحصل على إعرابها كلمة بكلمة فورًا — النوع، الوظيفة، الإعراب، العلامة، والتشكيل الكامل، مع شرح الجملة. بلا حدّ لطول الجملة."
+>
+  <Schema slot="head" />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(webApp)} is:inline />
+
+  <Nav lang="ar" />
+
+  <ArticleHero
+    lang="ar"
+    eyebrow="أداة مجانية"
+    title="محلّل الإعراب بالذكاء الاصطناعي"
+    summary="ألصق أيّ جملة عربية فيُعربها لك إعرابًا فوريًّا كلمة بكلمة: نوع كل كلمة، ووظيفتها، وإعرابها، وعلامتها، والتشكيل الكامل، مع شرحٍ للجملة. مجاني، بلا حدّ لطول الجملة، وبنفس محرّك تطبيق إعراب. جرّبه الآن في الأسفل."
+  />
+
+  {/* The live analyzer — same engine as the app */}
+  <LiveDemo lang="ar" />
+
+  {/* Why this analyzer (positions vs weaker tools without naming them) */}
+  <Section>
+    <Container>
+      <div class="max-w-2xl mb-12">
+        <p class="eyebrow mb-4">لماذا إعراب</p>
+        <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight">
+          أداة إعراب واحدة تكفيك.
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {whys.map((w) => (
+          <article class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-7 md:p-8">
+            <h3 class="font-arabic-display text-h3 leading-tight mb-3">{w.t}</h3>
+            <p class="font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose">{w.b}</p>
+          </article>
+        ))}
+      </div>
+    </Container>
+  </Section>
+
+  <ArticleFaq items={faqs} lang="ar" />
+
+  <Footer lang="ar" />
+</BaseLayout>
