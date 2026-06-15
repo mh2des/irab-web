@@ -113,6 +113,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
 <script>
   import { signInEmail, signUpEmail, resetPassword, signInGoogle, signInApple, authError, onAuth, type Lang } from '../lib/auth';
+  import { rememberSignedIn } from '../lib/session';
 
   const root = document.querySelector<HTMLElement>('[data-auth-root]');
   if (root) {
@@ -144,7 +145,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
     let mode: 'in' | 'up' = 'in';
 
     // Already signed in? Go to account.
-    onAuth((u) => { if (u) window.location.replace(account); });
+    onAuth((u) => { if (u) { rememberSignedIn(); window.location.replace(account); } });
 
     function showMsg(text: string, kind: 'err' | 'ok') {
       msg.textContent = text;
@@ -177,6 +178,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       submitLabel.textContent = T.working;
       try {
         await fn();
+        rememberSignedIn();
         window.location.assign(account);
       } catch (e: any) {
         showMsg(authError(e?.code || '', lang), 'err');

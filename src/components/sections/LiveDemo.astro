@@ -332,10 +332,12 @@ const chipPreviews = EXAMPLES.map((ex) => ({
 
 <script>
   import { EXAMPLES, SPECIMEN, CASE_COLORS, TYPE_META, type ParseExample } from '../../data/demo-examples';
+  import { maybeSignedIn } from '../../lib/session';
 
   const STORAGE_KEY = 'irab-demo-quota';
   const FP_KEY = 'irab-fp';
-  const MAX_FREE = 2;
+  let MAX_FREE = 2;          // becomes Infinity for signed-in premium users
+  let idToken: string | null = null;  // sent to the worker so premium uncaps
   // TEMP: workers.dev URL until 2026-05-16 when irab.app domain unlocks transfer.
   // Then map api.irab.app to the worker and swap to:
   //   https://api.irab.app/v1/parse-public
@@ -363,11 +365,11 @@ const chipPreviews = EXAMPLES.map((ex) => ({
       ? { remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
           parsing: 'جارٍ الإعراب…', customSrc: 'جملتك', fallback: 'العرض غير متاح · عرض النموذج',
           irabLabel: 'الإعراب', showDetails: 'عرض التفاصيل', hideDetails: 'إخفاء التفاصيل',
-          wordsCount: (n: number) => `${n} كلمات`, parsedIn: (s: string) => `أُعرِب في ${s}`, parse: 'أعرب' }
+          wordsCount: (n: number) => `${n} كلمات`, parsedIn: (s: string) => `أُعرِب في ${s}`, parse: 'أعرب', unlimited: 'إعراب غير محدود ⚡' }
       : { remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
           parsing: 'Parsing…', customSrc: 'Your sentence', fallback: 'Demo offline · showing specimen',
           irabLabel: "I'rab", showDetails: 'Show details', hideDetails: 'Hide details',
-          wordsCount: (n: number) => `${n} words`, parsedIn: (s: string) => `Parsed in ${s}`, parse: 'Parse' };
+          wordsCount: (n: number) => `${n} words`, parsedIn: (s: string) => `Parsed in ${s}`, parse: 'Parse', unlimited: 'Unlimited parsing ⚡' };
 
     const sourceMainEl = root.querySelector<HTMLElement>('[data-source-main]')!;
     const sourceSubEl  = root.querySelector<HTMLElement>('[data-source-sub]');
@@ -394,6 +396,14 @@ const chipPreviews = EXAMPLES.map((ex) => ({
     }
     function bumpQuota() { try { localStorage.setItem(STORAGE_KEY, String(getQuota() + 1)); } catch {} }
     function renderQuota() {
+      // Signed-in premium: no cap, no gate — show an "unlimited" badge instead.
+      if (!isFinite(MAX_FREE)) {
+        quotaEl.textContent = i18n.unlimited;
+        quotaDots.forEach((dot) => dot.classList.add('hidden'));
+        gateEl.classList.add('hidden');
+        submitEl.disabled = false;
+        return;
+      }
       const remaining = Math.max(0, MAX_FREE - getQuota());
       quotaEl.textContent = i18n.remainingN(remaining);
       // Fill dots = remaining, hollow dots = used
@@ -521,7 +531,10 @@ const chipPreviews = EXAMPLES.map((ex) => ({
         const fingerprint = await getFingerprint();
         const res = await fetch(API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+          },
           body: JSON.stringify({ text, fingerprint }),
         });
         if (!res.ok) throw new Error(`API ${res.status}`);
@@ -544,5 +557,35 @@ const chipPreviews = EXAMPLES.map((ex) => ({
     });
 
     renderQuota();
+
+    // Signed-in premium → uncap. Firebase is lazy-loaded ONLY when the
+    // signed-in flag is present, so anonymous visitors never download it.
+    if (maybeSignedIn()) {
+      (async () => {
+        try {
+          const [{ onAuth }, { fetchMe }] = await Promise.all([
+            import('../../lib/auth'),
+            import('../../lib/entitlement'),
+          ]);
+          await new Promise<void>((resolve) => {
+            const unsub = onAuth(async (u) => {
+              unsub();
+              if (u) {
+                try {
+                  idToken = await u.getIdToken();
+                  const me = await fetchMe(u);
+                  if (me?.premium) {
+                    MAX_FREE = Infinity;
+                    inputEl.maxLength = 600; // premium can parse longer sentences
+                  }
+                } catch { /* ignore — stay on free path */ }
+              }
+              resolve();
+            });
+          });
+          renderQuota();
+        } catch { /* ignore — anonymous/free path already rendered */ }
+      })();
+    }
   }
 </script>

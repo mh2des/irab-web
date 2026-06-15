@@ -71,6 +71,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
 <script>
   import { onAuth, logout, resendVerification } from '../lib/auth';
   import { fetchMe } from '../lib/entitlement';
+  import { rememberSignedIn, forgetSignedIn } from '../lib/session';
 
   const root = document.querySelector<HTMLElement>('[data-account-root]');
   if (root) {
@@ -92,7 +93,8 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
           notePlus: 'Your subscription is active on all your devices — web and app. ✓' };
 
     onAuth((u) => {
-      if (!u) { window.location.replace(login); return; }
+      if (!u) { forgetSignedIn(); window.location.replace(login); return; }
+      rememberSignedIn();
       loading.classList.add('hidden');
       panel.classList.remove('hidden');
 
@@ -128,6 +130,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
     q<HTMLButtonElement>('[data-signout]').addEventListener('click', async () => {
       await logout();
+      forgetSignedIn();
       window.location.assign(login);
     });
   }
