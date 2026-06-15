@@ -18,6 +18,7 @@ const t = lang === 'ar'
       teachers: 'للمعلمين',
       pricing:  'الأسعار',
       signin:   'دخول',
+      myApp:    'تطبيقي',
       cta:      'حمّل التطبيق',
       menu:     'القائمة',
       close:    'إغلاق',
@@ -31,6 +32,7 @@ const t = lang === 'ar'
       teachers: 'For teachers',
       pricing:  'Pricing',
       signin:   'Sign in',
+      myApp:    'My app',
       cta:      'Get the app',
       menu:     'Menu',
       close:    'Close',
@@ -44,6 +46,7 @@ const toolHref = lang === 'ar' ? '/tool' : '/en/tool'; // the AI analyzer landin
 const practiceHref = lang === 'ar' ? '/practice' : '/en/practice'; // do-it-yourself + AI feedback
 const dictionaryHref = lang === 'ar' ? '/dictionary' : '/en/dictionary'; // smart dictionary tool
 const signinHref = lang === 'ar' ? '/login' : '/en/login'; // web account
+const appHref = lang === 'ar' ? '/app' : '/en/app'; // signed-in web app hub
 
 // Equivalent URL in the other language for the toggle
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -95,7 +98,8 @@ const otherUrl = lang === 'ar'
 
         <ThemeToggle />
 
-        <a href={signinHref} class="nav-link">{t.signin}</a>
+        <a href={signinHref} data-signin-link class="nav-link">{t.signin}</a>
+        <a href={appHref} data-app-link class="nav-link nav-link-feature hidden">{t.myApp}</a>
 
         <a
           href={`${home}#cta`}
@@ -142,7 +146,8 @@ const otherUrl = lang === 'ar'
         <a href={`${home}#features`} class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.features}</a>
         <a href={teachersHref}       class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.teachers}</a>
         <a href={`${home}#pricing`}  class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.pricing}</a>
-        <a href={signinHref}         class="block py-3 font-display text-h3 tracking-tight text-purple hover:text-purple-deep transition-colors">{t.signin}</a>
+        <a href={signinHref} data-signin-link class="block py-3 font-display text-h3 tracking-tight text-purple hover:text-purple-deep transition-colors">{t.signin}</a>
+        <a href={appHref} data-app-link class="hidden py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.myApp}</a>
 
         <div class="hairline my-5"></div>
 
@@ -218,6 +223,14 @@ const otherUrl = lang === 'ar'
 </style>
 
 <script>
+  import { maybeSignedIn } from '../lib/session';
+
+  // Signed-in users see "My app" instead of "Sign in" (progressive, no Firebase).
+  if (maybeSignedIn()) {
+    document.querySelectorAll<HTMLElement>('[data-signin-link]').forEach((el) => el.classList.add('hidden'));
+    document.querySelectorAll<HTMLElement>('[data-app-link]').forEach((el) => el.classList.remove('hidden'));
+  }
+
   const toggle = document.querySelector<HTMLButtonElement>('[data-mobile-toggle]');
   const menu   = document.querySelector<HTMLElement>('[data-mobile-menu]');
   const open   = document.querySelector<SVGElement>('[data-icon-menu]');

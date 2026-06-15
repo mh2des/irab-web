@@ -6,7 +6,8 @@
  */
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
-const account = lang === 'ar' ? '/account' : '/en/account';
+// After auth, land users on the app hub (their signed-in home), not the bare account page.
+const account = lang === 'ar' ? '/app' : '/en/app';
 
 const t = lang === 'ar'
   ? {
