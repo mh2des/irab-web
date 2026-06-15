@@ -1,0 +1,110 @@
+---
+/**
+ * AccountPanel — signed-in user's hub (foundation). Shows identity + email
+ * verification + sign out. Redirects to /login if not authenticated. This is
+ * where the subscription + manage-billing UI will live (Phase 4).
+ */
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const login = lang === 'ar' ? '/login' : '/en/login';
+const home = lang === 'ar' ? '/' : '/en';
+
+const t = lang === 'ar'
+  ? {
+      title: 'حسابي', loading: 'جارٍ التحميل…',
+      verified: 'البريد موثّق', unverified: 'البريد غير موثّق',
+      resend: 'إعادة إرسال رابط التوثيق', sent: 'أُرسل رابط التوثيق إلى بريدك.',
+      plan: 'الاشتراك', planFree: 'مجاني', planNote: 'إدارة الاشتراك والدفع عبر الويب قريباً.',
+      signOut: 'تسجيل الخروج', backHome: 'إلى الصفحة الرئيسية',
+    }
+  : {
+      title: 'My account', loading: 'Loading…',
+      verified: 'Email verified', unverified: 'Email not verified',
+      resend: 'Resend verification link', sent: 'Verification link sent to your email.',
+      plan: 'Subscription', planFree: 'Free', planNote: 'Web subscription & billing management coming soon.',
+      signOut: 'Sign out', backHome: 'Back to home',
+    };
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
+---
+<div data-account-root data-lang={lang} data-login={login} dir={dir} class="w-full max-w-lg mx-auto">
+  {/* Loading state until auth resolves */}
+  <div data-loading class="text-center py-16 text-ink/50 dark:text-mist/50">{t.loading}</div>
+
+  <div data-panel class="hidden">
+    <div class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-7 md:p-9">
+      <div class="flex items-center gap-4">
+        <div data-avatar class="w-14 h-14 rounded-full bg-purple/15 text-purple grid place-items-center text-2xl font-bold shrink-0"></div>
+        <div class="min-w-0">
+          <p data-name class="text-h3 font-arabic-display leading-tight truncate"></p>
+          <p data-email dir="ltr" class="text-small text-ink/60 dark:text-mist/60 truncate"></p>
+        </div>
+      </div>
+
+      <div class="mt-6 flex items-center gap-2">
+        <span data-verify-badge class="text-caption px-3 py-1 rounded-full"></span>
+        <button type="button" data-resend class="hidden text-caption text-purple hover:text-purple-deep">{t.resend}</button>
+      </div>
+
+      {/* Subscription block (foundation placeholder for Phase 4) */}
+      <div class="mt-7 pt-6 border-t border-stone dark:border-coal-edge">
+        <p class="text-small text-ink/55 dark:text-mist/55 mb-1">{t.plan}</p>
+        <p class="text-h3 font-arabic-display">{t.planFree}</p>
+        <p class="text-caption text-ink/45 dark:text-mist/45 mt-1">{t.planNote}</p>
+      </div>
+
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <button type="button" data-signout
+          class="px-6 py-3 rounded-full bg-ink dark:bg-mist text-paper dark:text-coal font-medium hover:opacity-90 transition-opacity">{t.signOut}</button>
+        <a href={home}
+          class="px-6 py-3 rounded-full border border-stone dark:border-coal-edge text-ink dark:text-mist font-medium hover:border-purple/50 transition-colors text-center">{t.backHome}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { onAuth, logout, resendVerification } from '../lib/auth';
+
+  const root = document.querySelector<HTMLElement>('[data-account-root]');
+  if (root) {
+    const lang = root.dataset.lang === 'en' ? 'en' : 'ar';
+    const login = root.dataset.login || '/login';
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const loading = q<HTMLElement>('[data-loading]');
+    const panel = q<HTMLElement>('[data-panel]');
+    const sentMsg = lang === 'ar' ? 'أُرسل رابط التوثيق إلى بريدك.' : 'Verification link sent to your email.';
+    const vText = lang === 'ar'
+      ? { yes: 'البريد موثّق', no: 'البريد غير موثّق' }
+      : { yes: 'Email verified', no: 'Email not verified' };
+
+    onAuth((u) => {
+      if (!u) { window.location.replace(login); return; }
+      loading.classList.add('hidden');
+      panel.classList.remove('hidden');
+
+      const name = u.displayName || (u.email ? u.email.split('@')[0] : (lang === 'ar' ? 'مستخدم' : 'User'));
+      q<HTMLElement>('[data-name]').textContent = name;
+      q<HTMLElement>('[data-email]').textContent = u.email || '';
+      q<HTMLElement>('[data-avatar]').textContent = (name[0] || '?').toUpperCase();
+
+      const badge = q<HTMLElement>('[data-verify-badge]');
+      const resend = q<HTMLButtonElement>('[data-resend]');
+      if (u.emailVerified) {
+        badge.textContent = vText.yes;
+        badge.className = 'text-caption px-3 py-1 rounded-full bg-teal/12 text-teal';
+      } else {
+        badge.textContent = vText.no;
+        badge.className = 'text-caption px-3 py-1 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400';
+        resend.classList.remove('hidden');
+        resend.addEventListener('click', async () => {
+          try { await resendVerification(u); resend.textContent = sentMsg; resend.disabled = true; } catch {}
+        }, { once: true });
+      }
+    });
+
+    q<HTMLButtonElement>('[data-signout]').addEventListener('click', async () => {
+      await logout();
+      window.location.assign(login);
+    });
+  }
+</script>

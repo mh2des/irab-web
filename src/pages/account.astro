@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import AccountPanel from '../components/AccountPanel.astro';
+---
+<BaseLayout lang="ar" title="حسابي · إعراب" description="حسابك في إعراب.">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <Nav lang="ar" />
+  <main class="px-6 py-14 md:py-20">
+    <AccountPanel lang="ar" />
+  </main>
+  <Footer lang="ar" />
+</BaseLayout>

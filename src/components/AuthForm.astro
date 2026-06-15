@@ -1,0 +1,206 @@
+---
+/**
+ * AuthForm — sign in / create account with Email, Google, Apple.
+ * Client-only logic (Firebase) lives in the module <script> below; it reads
+ * config from data-attributes so it can use SDK imports.
+ */
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const account = lang === 'ar' ? '/account' : '/en/account';
+
+const t = lang === 'ar'
+  ? {
+      signIn: 'تسجيل الدخول', signUp: 'إنشاء حساب',
+      tabIn: 'دخول', tabUp: 'حساب جديد',
+      name: 'الاسم', email: 'البريد الإلكتروني', password: 'كلمة المرور',
+      forgot: 'نسيت كلمة المرور؟', or: 'أو',
+      google: 'المتابعة بحساب Google', apple: 'المتابعة بحساب Apple',
+      reset: 'أرسلنا رابط إعادة التعيين إلى بريدك.',
+      needEmail: 'اكتب بريدك أولاً لإعادة التعيين.',
+      switchToUp: 'ليس لديك حساب؟ أنشئ واحداً', switchToIn: 'لديك حساب؟ سجّل الدخول',
+      working: 'جارٍ…',
+    }
+  : {
+      signIn: 'Sign in', signUp: 'Create account',
+      tabIn: 'Sign in', tabUp: 'Create account',
+      name: 'Name', email: 'Email', password: 'Password',
+      forgot: 'Forgot password?', or: 'or',
+      google: 'Continue with Google', apple: 'Continue with Apple',
+      reset: 'We sent a reset link to your email.',
+      needEmail: 'Enter your email first to reset.',
+      switchToUp: "No account? Create one", switchToIn: 'Have an account? Sign in',
+      working: 'Working…',
+    };
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
+---
+<div
+  data-auth-root
+  data-lang={lang}
+  data-account={account}
+  dir={dir}
+  class="w-full max-w-md mx-auto"
+>
+  <div class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-7 md:p-9 shadow-sm">
+    {/* Tabs */}
+    <div class="grid grid-cols-2 gap-1 p-1 mb-7 rounded-full bg-stone/40 dark:bg-coal-edge/40">
+      <button type="button" data-tab="in"
+        class="auth-tab py-2.5 rounded-full text-small font-medium transition-colors">{t.tabIn}</button>
+      <button type="button" data-tab="up"
+        class="auth-tab py-2.5 rounded-full text-small font-medium transition-colors">{t.tabUp}</button>
+    </div>
+
+    {/* Social */}
+    <div class="space-y-3">
+      <button type="button" data-provider="google"
+        class="w-full flex items-center justify-center gap-3 px-5 py-3 rounded-full border border-stone dark:border-coal-edge bg-white dark:bg-coal hover:border-purple/50 transition-colors text-ink dark:text-mist font-medium">
+        <svg class="w-5 h-5" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span>{t.google}</span>
+      </button>
+      <button type="button" data-provider="apple"
+        class="w-full flex items-center justify-center gap-3 px-5 py-3 rounded-full border border-stone dark:border-coal-edge bg-white dark:bg-coal hover:border-purple/50 transition-colors text-ink dark:text-mist font-medium">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/></svg>
+        <span>{t.apple}</span>
+      </button>
+    </div>
+
+    {/* Divider */}
+    <div class="flex items-center gap-4 my-6">
+      <span class="h-px flex-1 bg-stone dark:bg-coal-edge"></span>
+      <span class="text-caption text-ink/45 dark:text-mist/45">{t.or}</span>
+      <span class="h-px flex-1 bg-stone dark:bg-coal-edge"></span>
+    </div>
+
+    {/* Email form */}
+    <form data-auth-form class="space-y-4">
+      <div data-name-field class="hidden">
+        <label class="block text-small text-ink/70 dark:text-mist/70 mb-1.5">{t.name}</label>
+        <input data-name type="text" autocomplete="name"
+          class="auth-input w-full px-4 py-3 rounded-xl border border-stone dark:border-coal-edge bg-white dark:bg-coal text-ink dark:text-mist outline-none focus:border-purple" />
+      </div>
+      <div>
+        <label class="block text-small text-ink/70 dark:text-mist/70 mb-1.5">{t.email}</label>
+        <input data-email type="email" required autocomplete="email" dir="ltr"
+          class="auth-input w-full px-4 py-3 rounded-xl border border-stone dark:border-coal-edge bg-white dark:bg-coal text-ink dark:text-mist outline-none focus:border-purple" />
+      </div>
+      <div>
+        <label class="block text-small text-ink/70 dark:text-mist/70 mb-1.5">{t.password}</label>
+        <input data-password type="password" required minlength="6" autocomplete="current-password" dir="ltr"
+          class="auth-input w-full px-4 py-3 rounded-xl border border-stone dark:border-coal-edge bg-white dark:bg-coal text-ink dark:text-mist outline-none focus:border-purple" />
+      </div>
+
+      <p data-msg aria-live="polite" class="hidden text-small leading-relaxed rounded-lg px-3 py-2"></p>
+
+      <button type="submit" data-submit
+        class="w-full px-6 py-3 rounded-full bg-purple hover:bg-purple-deep text-white font-medium transition-colors disabled:opacity-60">
+        <span data-submit-label>{t.signIn}</span>
+      </button>
+
+      <button type="button" data-forgot
+        class="block mx-auto text-small text-purple hover:text-purple-deep transition-colors">{t.forgot}</button>
+    </form>
+
+    <button type="button" data-switch
+      class="block mx-auto mt-6 text-small text-ink/60 dark:text-mist/60 hover:text-ink dark:hover:text-mist transition-colors"></button>
+  </div>
+</div>
+
+<style>
+  .auth-tab[aria-selected="true"] { background: var(--color-paper); color: var(--color-purple); box-shadow: 0 1px 3px rgb(23 56 71 / 0.08); }
+  :global(.dark) .auth-tab[aria-selected="true"] { background: var(--color-coal-soft); }
+  .auth-tab[aria-selected="false"] { color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
+  :global(.dark) .auth-tab[aria-selected="false"] { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+</style>
+
+<script>
+  import { signInEmail, signUpEmail, resetPassword, signInGoogle, signInApple, authError, onAuth, type Lang } from '../lib/auth';
+
+  const root = document.querySelector<HTMLElement>('[data-auth-root]');
+  if (root) {
+    const lang = (root.dataset.lang === 'en' ? 'en' : 'ar') as Lang;
+    const account = root.dataset.account || '/account';
+    const T = {
+      signIn: lang === 'ar' ? 'تسجيل الدخول' : 'Sign in',
+      signUp: lang === 'ar' ? 'إنشاء حساب' : 'Create account',
+      switchToUp: lang === 'ar' ? 'ليس لديك حساب؟ أنشئ واحداً' : "No account? Create one",
+      switchToIn: lang === 'ar' ? 'لديك حساب؟ سجّل الدخول' : 'Have an account? Sign in',
+      reset: lang === 'ar' ? 'أرسلنا رابط إعادة التعيين إلى بريدك.' : 'We sent a reset link to your email.',
+      needEmail: lang === 'ar' ? 'اكتب بريدك أولاً لإعادة التعيين.' : 'Enter your email first to reset.',
+      working: lang === 'ar' ? 'جارٍ…' : 'Working…',
+    };
+
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-tab]');
+    const nameField = q<HTMLElement>('[data-name-field]');
+    const nameI = q<HTMLInputElement>('[data-name]');
+    const emailI = q<HTMLInputElement>('[data-email]');
+    const passI = q<HTMLInputElement>('[data-password]');
+    const submit = q<HTMLButtonElement>('[data-submit]');
+    const submitLabel = q<HTMLElement>('[data-submit-label]');
+    const switchBtn = q<HTMLButtonElement>('[data-switch]');
+    const forgot = q<HTMLButtonElement>('[data-forgot]');
+    const msg = q<HTMLElement>('[data-msg]');
+    const form = q<HTMLFormElement>('[data-auth-form]');
+
+    let mode: 'in' | 'up' = 'in';
+
+    // Already signed in? Go to account.
+    onAuth((u) => { if (u) window.location.replace(account); });
+
+    function showMsg(text: string, kind: 'err' | 'ok') {
+      msg.textContent = text;
+      msg.className = 'text-small leading-relaxed rounded-lg px-3 py-2 ' +
+        (kind === 'ok'
+          ? 'bg-teal/10 text-teal'
+          : 'bg-red-500/10 text-red-600 dark:text-red-400');
+    }
+    function clearMsg() { msg.className = 'hidden'; msg.textContent = ''; }
+
+    function setMode(m: 'in' | 'up') {
+      mode = m;
+      tabs.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === m)));
+      nameField.classList.toggle('hidden', m !== 'up');
+      submitLabel.textContent = m === 'up' ? T.signUp : T.signIn;
+      switchBtn.textContent = m === 'up' ? T.switchToIn : T.switchToUp;
+      forgot.classList.toggle('hidden', m === 'up');
+      passI.setAttribute('autocomplete', m === 'up' ? 'new-password' : 'current-password');
+      clearMsg();
+    }
+    setMode('in');
+
+    tabs.forEach((b) => b.addEventListener('click', () => setMode(b.dataset.tab as 'in' | 'up')));
+    switchBtn.addEventListener('click', () => setMode(mode === 'in' ? 'up' : 'in'));
+
+    async function run(fn: () => Promise<unknown>) {
+      clearMsg();
+      submit.disabled = true;
+      const prev = submitLabel.textContent;
+      submitLabel.textContent = T.working;
+      try {
+        await fn();
+        window.location.assign(account);
+      } catch (e: any) {
+        showMsg(authError(e?.code || '', lang), 'err');
+        submit.disabled = false;
+        submitLabel.textContent = prev;
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = emailI.value.trim();
+      const pass = passI.value;
+      if (mode === 'up') run(() => signUpEmail(email, pass, nameI.value.trim() || undefined));
+      else run(() => signInEmail(email, pass));
+    });
+
+    root.querySelector('[data-provider="google"]')!.addEventListener('click', () => run(signInGoogle));
+    root.querySelector('[data-provider="apple"]')!.addEventListener('click', () => run(signInApple));
+
+    forgot.addEventListener('click', async () => {
+      const email = emailI.value.trim();
+      if (!email) { showMsg(T.needEmail, 'err'); return; }
+      try { await resetPassword(email); showMsg(T.reset, 'ok'); }
+      catch (e: any) { showMsg(authError(e?.code || '', lang), 'err'); }
+    });
+  }
+</script>

@@ -21,6 +21,11 @@ for (const a of quran.ayat) {
   if (thin || nonCanonical) sitemapExclude.add(`https://irab.app/quran/${slugById[a.surah]}/${a.ayah}`);
 }
 
+// Private/auth pages — noindex, keep out of the sitemap.
+for (const p of ['/login', '/account', '/en/login', '/en/account']) {
+  sitemapExclude.add(`https://irab.app${p}`);
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://irab.app',

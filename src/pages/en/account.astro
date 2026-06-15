@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import AccountPanel from '../../components/AccountPanel.astro';
+---
+<BaseLayout lang="en" title="My account · Irab" description="Your Irab account.">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <Nav lang="en" />
+  <main class="px-6 py-14 md:py-20">
+    <AccountPanel lang="en" />
+  </main>
+  <Footer lang="en" />
+</BaseLayout>
