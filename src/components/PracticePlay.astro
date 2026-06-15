@@ -1,0 +1,227 @@
+---
+/**
+ * PracticePlay — the hero wedge as a web tool: type a sentence, do the i'rab
+ * YOURSELF (free text per word), get AI-graded word-by-word feedback.
+ * Login-gated (worker /api/grade-custom-irab needs a Firebase token); free
+ * daily quota vs premium unlimited, enforced server-side. The one thing no
+ * competitor offers. Firebase loads only here, never on content pages.
+ */
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const login = lang === 'ar' ? '/login' : '/en/login';
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+const t = lang === 'ar'
+  ? {
+      gateTitle: 'سجّل الدخول لتبدأ التدريب',
+      gateBody: 'تدرّب على الإعراب بنفسك واحصل على تصحيح فوري. سجّل الدخول مجاناً للبدء.',
+      signIn: 'تسجيل الدخول',
+      sentencePlaceholder: 'اكتب جملة عربية لتُعربها بنفسك…',
+      start: 'ابدأ', startHint: 'سنقسّم الجملة كلماتٍ لتُعرب كلًّا منها.',
+      yourIrab: 'اكتب إعرابك لهذه الكلمة…',
+      grade: 'صحّح إعرابي', grading: 'جارٍ التصحيح…',
+      back: 'جملة أخرى', yourAnswer: 'إجابتك', correct: 'الصواب',
+      overall: 'التقييم العام',
+      limit: 'بلغت حدّك اليومي المجاني للتدريب المخصّص. اشترك من التطبيق للمزيد.',
+      error: 'حدث خطأ. حاول مرة أخرى.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.',
+      unlimited: 'تدريب غير محدود ⚡',
+    }
+  : {
+      gateTitle: 'Sign in to start practicing',
+      gateBody: 'Do the i\'rab yourself and get instant AI correction. Sign in free to start.',
+      signIn: 'Sign in',
+      sentencePlaceholder: 'Type an Arabic sentence to parse yourself…',
+      start: 'Start', startHint: 'We\'ll split it into words for you to parse.',
+      yourIrab: 'Type your i\'rab for this word…',
+      grade: 'Grade my i\'rab', grading: 'Grading…',
+      back: 'Try another', yourAnswer: 'Your answer', correct: 'Correct',
+      overall: 'Overall',
+      limit: 'You\'ve reached your free daily custom-practice limit. Subscribe in the app for more.',
+      error: 'Something went wrong. Please try again.', needWords: 'Write your i\'rab for at least one word.',
+      unlimited: 'Unlimited practice ⚡',
+    };
+---
+<div data-play-root data-lang={lang} data-login={login} dir={dir} class="w-full max-w-2xl mx-auto">
+  <div data-play-loading class="text-center py-10 text-ink/40 dark:text-mist/40">…</div>
+
+  {/* Signed-out gate */}
+  <div data-play-gate class="hidden rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-8 text-center">
+    <h2 class="font-arabic-display text-h2 mb-2">{t.gateTitle}</h2>
+    <p class="text-ink/65 dark:text-mist/65 mb-6">{t.gateBody}</p>
+    <a href={login} class="inline-block px-6 py-3 rounded-full bg-purple hover:bg-purple-deep text-white font-medium transition-colors">{t.signIn}</a>
+  </div>
+
+  {/* Tool */}
+  <div data-play-tool class="hidden">
+    <p data-play-quota class="text-caption text-ink/45 dark:text-mist/45 mb-3 h-4 text-center"></p>
+
+    {/* Phase 1: sentence input */}
+    <div data-phase-input>
+      <textarea data-play-sentence rows="2" dir="rtl" maxlength="500" placeholder={t.sentencePlaceholder}
+        class="w-full px-5 py-4 rounded-2xl border border-stone dark:border-coal-edge bg-white dark:bg-coal text-ink dark:text-mist text-lg outline-none focus:border-purple resize-none"></textarea>
+      <p class="text-caption text-ink/45 dark:text-mist/45 mt-2 mb-4">{t.startHint}</p>
+      <button type="button" data-play-start class="w-full px-6 py-3 rounded-full bg-purple hover:bg-purple-deep text-white font-medium transition-colors">{t.start}</button>
+    </div>
+
+    {/* Phase 2: per-word i'rab fields */}
+    <div data-phase-fill class="hidden">
+      <div data-fill-words class="space-y-4 mb-5"></div>
+      <p data-play-msg class="hidden text-small rounded-lg px-4 py-3 mb-4"></p>
+      <button type="button" data-play-grade class="w-full px-6 py-3 rounded-full bg-purple hover:bg-purple-deep text-white font-medium transition-colors disabled:opacity-60">
+        <span data-grade-label>{t.grade}</span>
+      </button>
+    </div>
+
+    {/* Phase 3: results */}
+    <div data-phase-results class="hidden">
+      <div data-results-overall class="mb-5"></div>
+      <div data-results-words class="space-y-3 mb-6"></div>
+      <button type="button" data-play-again class="w-full px-6 py-3 rounded-full border border-stone dark:border-coal-edge text-ink dark:text-mist font-medium hover:border-purple/50 transition-colors">{t.back}</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { maybeSignedIn } from '../lib/session';
+
+  const root = document.querySelector<HTMLElement>('[data-play-root]');
+  if (root) {
+    const lang = root.dataset.lang === 'en' ? 'en' : 'ar';
+    const login = root.dataset.login || '/login';
+    const WORKER = 'https://irab-api-v2.mansourhassan783.workers.dev';
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const T = lang === 'ar'
+      ? { yourIrab: 'اكتب إعرابك لهذه الكلمة…', grade: 'صحّح إعرابي', grading: 'جارٍ التصحيح…', yourAnswer: 'إجابتك', correct: 'الصواب', overall: 'التقييم العام', limit: 'بلغت حدّك اليومي المجاني للتدريب المخصّص. اشترك من التطبيق للمزيد.', error: 'حدث خطأ. حاول مرة أخرى.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', unlimited: 'تدريب غير محدود ⚡' }
+      : { yourIrab: "Type your i'rab for this word…", grade: 'Grade my i\'rab', grading: 'Grading…', yourAnswer: 'Your answer', correct: 'Correct', overall: 'Overall', limit: 'You\'ve reached your free daily limit. Subscribe in the app for more.', error: 'Something went wrong. Please try again.', needWords: 'Write your i\'rab for at least one word.', unlimited: 'Unlimited practice ⚡' };
+
+    const loadingEl = q<HTMLElement>('[data-play-loading]');
+    const gate = q<HTMLElement>('[data-play-gate]');
+    const tool = q<HTMLElement>('[data-play-tool]');
+    const quota = q<HTMLElement>('[data-play-quota]');
+    const phaseInput = q<HTMLElement>('[data-phase-input]');
+    const phaseFill = q<HTMLElement>('[data-phase-fill]');
+    const phaseResults = q<HTMLElement>('[data-phase-results]');
+    const sentenceEl = q<HTMLTextAreaElement>('[data-play-sentence]');
+    const startBtn = q<HTMLButtonElement>('[data-play-start]');
+    const fillWords = q<HTMLElement>('[data-fill-words]');
+    const gradeBtn = q<HTMLButtonElement>('[data-play-grade]');
+    const gradeLabel = q<HTMLElement>('[data-grade-label]');
+    const msg = q<HTMLElement>('[data-play-msg]');
+    const overall = q<HTMLElement>('[data-results-overall]');
+    const wordsOut = q<HTMLElement>('[data-results-words]');
+    const againBtn = q<HTMLButtonElement>('[data-play-again]');
+
+    let idToken: string | null = null;
+    let currentSentence = '';
+    let wordInputs: { word: string; input: HTMLInputElement }[] = [];
+
+    const el = (tag: string, cls?: string, text?: string) => {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    };
+    function showMsg(text: string, kind: 'err' | 'info') {
+      msg.textContent = text;
+      msg.className = 'text-small rounded-lg px-4 py-3 mb-4 ' + (kind === 'info' ? 'bg-purple/10 text-purple' : 'bg-red-500/10 text-red-600 dark:text-red-400');
+    }
+    const clearMsg = () => { msg.className = 'hidden'; };
+    const show = (node: HTMLElement) => node.classList.remove('hidden');
+    const hide = (node: HTMLElement) => node.classList.add('hidden');
+
+    startBtn.addEventListener('click', () => {
+      const s = sentenceEl.value.trim();
+      if (!s) return;
+      currentSentence = s;
+      const words = s.split(/\s+/).filter(Boolean).slice(0, 30);
+      fillWords.replaceChildren();
+      wordInputs = words.map((w) => {
+        const row = el('div', 'rounded-xl border border-stone dark:border-coal-edge bg-white dark:bg-coal p-3');
+        const label = el('div', 'font-arabic-display text-xl text-ink dark:text-mist mb-2'); label.setAttribute('dir', 'rtl'); label.textContent = w;
+        const input = el('input', 'w-full px-3 py-2 rounded-lg border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft text-ink dark:text-mist outline-none focus:border-purple') as HTMLInputElement;
+        input.type = 'text'; input.setAttribute('dir', 'rtl'); input.placeholder = T.yourIrab;
+        row.appendChild(label); row.appendChild(input);
+        fillWords.appendChild(row);
+        return { word: w, input };
+      });
+      clearMsg();
+      hide(phaseInput); show(phaseFill); hide(phaseResults);
+    });
+
+    gradeBtn.addEventListener('click', async () => {
+      const userAnalysis = wordInputs
+        .map((w) => ({ word: w.word, irab: w.input.value.trim() }))
+        .filter((w) => w.irab.length > 0);
+      if (userAnalysis.length === 0) { showMsg(T.needWords, 'err'); return; }
+      clearMsg();
+      gradeBtn.disabled = true; gradeLabel.textContent = T.grading;
+      try {
+        const res = await fetch(`${WORKER}/api/grade-custom-irab`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
+          body: JSON.stringify({ sentence: currentSentence, userAnalysis }),
+        });
+        if (res.status === 429) { showMsg(T.limit, 'info'); return; }
+        if (!res.ok) { showMsg(T.error, 'err'); return; }
+        const json = await res.json();
+        renderResults(json?.data ?? json);
+      } catch {
+        showMsg(T.error, 'err');
+      } finally {
+        gradeBtn.disabled = false; gradeLabel.textContent = T.grade;
+      }
+    });
+
+    function renderResults(data: any) {
+      overall.replaceChildren();
+      wordsOut.replaceChildren();
+      // Overall card
+      const score = typeof data?.score === 'number' ? data.score : null;
+      const card = el('div', 'rounded-2xl bg-purple p-6 text-white text-center');
+      if (score != null) card.appendChild(el('div', 'text-4xl font-extrabold', String(Math.round(score)) + (score <= 1 ? '' : '')));
+      if (data?.level) card.appendChild(el('div', 'text-sm opacity-90 mt-1', String(data.level)));
+      if (data?.overallFeedback) { const p = el('p', 'text-sm opacity-95 mt-3 leading-relaxed'); p.setAttribute('dir','rtl'); p.textContent = String(data.overallFeedback); card.appendChild(p); }
+      overall.appendChild(card);
+
+      const wf = Array.isArray(data?.wordFeedback) ? data.wordFeedback : [];
+      wf.forEach((w: any) => {
+        const ok = w?.isCorrect === true;
+        const c = el('div', 'rounded-xl border p-4 ' + (ok ? 'border-teal/40 bg-teal/5' : 'border-red-400/40 bg-red-500/5'));
+        const head = el('div', 'flex items-center justify-between gap-3 mb-2');
+        const word = el('span', 'font-arabic-display text-xl text-ink dark:text-mist'); word.setAttribute('dir','rtl'); word.textContent = w?.word || '';
+        head.appendChild(word);
+        head.appendChild(el('span', ok ? 'text-teal text-lg' : 'text-red-500 text-lg', ok ? '✓' : '✗'));
+        c.appendChild(head);
+        const yours = el('p', 'text-small text-ink/70 dark:text-mist/70'); yours.setAttribute('dir','rtl'); yours.textContent = `${T.yourAnswer}: ${w?.userIrab || '—'}`;
+        c.appendChild(yours);
+        if (!ok && w?.correctIrab) { const corr = el('p', 'text-small text-teal mt-1'); corr.setAttribute('dir','rtl'); corr.textContent = `${T.correct}: ${w.correctIrab}`; c.appendChild(corr); }
+        if (w?.explanation) { const ex = el('p', 'text-small text-ink/55 dark:text-mist/55 mt-2 leading-relaxed'); ex.setAttribute('dir','rtl'); ex.textContent = String(w.explanation); c.appendChild(ex); }
+        wordsOut.appendChild(c);
+      });
+
+      hide(phaseInput); hide(phaseFill); show(phaseResults);
+    }
+
+    againBtn.addEventListener('click', () => {
+      sentenceEl.value = ''; currentSentence = ''; wordInputs = [];
+      clearMsg(); hide(phaseResults); hide(phaseFill); show(phaseInput);
+      sentenceEl.focus();
+    });
+
+    // Auth gate (Firebase lazy — tool pages only)
+    (async () => {
+      if (!maybeSignedIn()) { hide(loadingEl); show(gate); return; }
+      try {
+        const [{ onAuth }, { fetchMe }] = await Promise.all([import('../lib/auth'), import('../lib/entitlement')]);
+        onAuth(async (u) => {
+          hide(loadingEl);
+          if (!u) { show(gate); return; }
+          try { idToken = await u.getIdToken(); } catch {}
+          show(tool);
+          try { const me = await fetchMe(u); if (me?.premium) quota.textContent = T.unlimited; } catch {}
+          sentenceEl.focus();
+        });
+      } catch { hide(loadingEl); show(gate); }
+    })();
+  }
+</script>

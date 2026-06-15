@@ -22,7 +22,7 @@ for (const a of quran.ayat) {
 }
 
 // Private/auth pages — noindex, keep out of the sitemap.
-for (const p of ['/login', '/account', '/en/login', '/en/account', '/dictionary', '/en/dictionary']) {
+for (const p of ['/login', '/account', '/en/login', '/en/account', '/dictionary', '/en/dictionary', '/practice/play', '/en/practice/play']) {
   sitemapExclude.add(`https://irab.app${p}`);
 }
 
