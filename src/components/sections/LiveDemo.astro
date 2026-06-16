@@ -1,10 +1,10 @@
 ---
 import Container from '../Container.astro';
 import Section from '../Section.astro';
-import { SPECIMEN, EXAMPLES, CASE_COLORS, TYPE_META } from '../../data/demo-examples';
 
 interface Props { lang?: 'en' | 'ar'; showHeader?: boolean; }
 const { lang = 'en', showHeader = true } = Astro.props;
+const login = lang === 'ar' ? '/login' : '/en/login';
 
 const t = lang === 'ar'
   ? {
@@ -17,6 +17,11 @@ const t = lang === 'ar'
       exampleLabel: 'مثالٌ على النتيجة — اكتب جملتك في الأعلى',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
       parse:      'أعرب',
+      analyzing:  'جارٍ الإعراب…',
+      errorMsg:   'تعذّر الإعراب الآن. حاول مرة أخرى.',
+      signTitle:  'أنشئ حسابًا مجانيًا للمتابعة',
+      signBody:   'لقد استخدمت محاولتيك المجانيتين. سجّل الدخول للمتابعة — وإن كان لديك اشتراك فيُفتح لك الإعراب غير المحدود فورًا.',
+      signCta:    'تسجيل الدخول / إنشاء حساب',
       poweredBy:  'مدعوم بالمحرّك المحمي نفسه في التطبيق',
       gateLabel:  'لقد ذُقتَ القوّة',
       gateTitle:  'الإعراب اللامحدود في التطبيق.',
@@ -41,6 +46,11 @@ const t = lang === 'ar'
       exampleLabel: 'Example output — type your own sentence above',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
       parse:      'Parse',
+      analyzing:  'Analyzing…',
+      errorMsg:   "Couldn't analyze right now. Please try again.",
+      signTitle:  'Create a free account to continue',
+      signBody:   "You've used your two free parses. Sign in to continue — and if you have a subscription, unlimited parsing unlocks instantly.",
+      signCta:    'Sign in / Create account',
       poweredBy:  'Powered by the same protected AI engine as the app',
       gateLabel:  "YOU'VE TASTED THE POWER",
       gateTitle:  'Unlimited parsing lives in the app.',
@@ -56,7 +66,6 @@ const t = lang === 'ar'
       parsedIn:   (s: string) => `Parsed in ${s}`,
     };
 
-const specimen = SPECIMEN;
 ---
 <Section id="demo" class="bg-paper-soft/40 dark:bg-coal-soft/40">
   <Container>
@@ -74,144 +83,82 @@ const specimen = SPECIMEN;
     )}
 
     {/* ── Result panel ───────────────────────────────────────────────── */}
-    <div class="max-w-5xl mx-auto" data-demo data-lang={lang}>
-      {/* ── Hero input — the tool itself, front and center ──────────────── */}
-      <div class="demo-try rounded-2xl p-5 md:p-7 mb-10">
-        <form data-demo-form class="relative">
-          <textarea data-demo-input lang="ar" dir="rtl" rows="2" maxlength="200" placeholder={t.placeholder}
-            class="demo-textarea w-full rounded-xl px-5 py-4 font-arabic text-body-lg text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
+    <div class="max-w-4xl mx-auto" data-demo data-lang={lang}>
+      {/* ── The tool: a clean, solid input card ─────────────────────────── */}
+      <div class="card p-5 md:p-7">
+        <form data-demo-form>
+          <textarea data-demo-input lang="ar" dir="rtl" rows="3" maxlength="200" placeholder={t.placeholder}
+            class="demo-textarea w-full rounded-2xl px-6 py-5 font-arabic text-[clamp(1.6rem,3.2vw,2.15rem)] leading-relaxed text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
             style="font-family: var(--font-arabic-classical);"></textarea>
-          <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
-            <span class="font-arabic text-small text-ink/45 dark:text-mist/45">✦ {t.free}</span>
-            <button type="submit" data-demo-submit
-              class="inline-flex items-center gap-2 px-7 py-3 bg-purple hover:bg-purple-deep text-white text-small font-semibold rounded-full lift disabled:opacity-50 disabled:cursor-not-allowed">
+          <div class="mt-4 flex items-center justify-between gap-3">
+            <span data-demo-quota class="font-arabic text-small text-ink/45 dark:text-mist/45"></span>
+            <button type="submit" data-demo-submit class="btn-primary text-small disabled:opacity-50 disabled:cursor-not-allowed">
+              <svg data-submit-spinner class="hidden w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
               <span data-submit-label>{t.parse}</span>
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d={lang === 'ar' ? 'M19 12H5M11 19l-7-7 7-7' : 'M5 12h14M13 5l7 7-7 7'}/>
-              </svg>
+              <svg data-submit-arrow class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={lang === 'ar' ? 'M19 12H5M11 19l-7-7 7-7' : 'M5 12h14M13 5l7 7-7 7'}/></svg>
             </button>
           </div>
         </form>
-      </div>
-
-      {/* ── Result (a live example; replaced by the user's own parse) ────── */}
-      <p class="font-arabic text-small text-ink/45 dark:text-mist/45 text-center mb-6">↓ {t.exampleLabel}</p>
-
-      {/* Source citation (editorial, no box) + quota (visual dots) */}
-      <div class="flex flex-wrap items-center justify-between gap-4 mb-8 px-1">
-        {/* Source — surah name big in display, verse in small mono */}
-        <div data-demo-source class="flex items-baseline gap-2.5 min-h-[2rem]">
-          <span data-source-main class="font-arabic-display font-bold text-[clamp(1.125rem,2vw,1.5rem)] text-purple leading-none">{(specimen.source ?? '').split('·')[0].trim()}</span>
-          {(specimen.source ?? '').includes('·') && (
-            <>
-              <span class="text-ink/25 dark:text-mist/25 text-small select-none">·</span>
-              <span data-source-sub class="font-mono text-caption text-ink/55 dark:text-mist/55 tracking-widest">{(specimen.source ?? '').split('·')[1].trim()}</span>
-            </>
-          )}
-        </div>
-
-        {/* Quota — visual dots + Arabic/English label */}
-        <div class="flex items-center gap-2.5">
-          <div class="flex gap-1" data-quota-dots>
-            <span class="quota-dot w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
-            <span class="quota-dot w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
-          </div>
-          <span data-demo-quota class="font-arabic text-small text-ink/60 dark:text-mist/60">{t.remainingN(2)}</span>
+        <div class="mt-3 flex items-center gap-1" data-quota-dots>
+          <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
+          <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
         </div>
       </div>
 
-      {/* Vocalized verse — clean, one dignified colour, no underlines */}
-      <div lang="ar" dir="rtl" class="text-center mb-6 px-4" data-demo-verse>
-        <div class="text-[clamp(2rem,5.5vw,3.75rem)] leading-[1.9] text-ink dark:text-mist" style="font-family: var(--font-quran);" data-demo-verse-inner>
-          {specimen.vocalizedSentence}
+      {/* ── Loading state ───────────────────────────────────────────────── */}
+      <div data-demo-loading class="hidden mt-10">
+        <div class="flex items-center justify-center gap-3 mb-8">
+          <svg class="w-7 h-7 text-purple animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          <p class="font-arabic text-body text-ink/65 dark:text-mist/65">{t.analyzing}</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="skel h-36 rounded-2xl"></div>
+          <div class="skel h-36 rounded-2xl"></div>
         </div>
       </div>
 
-      {/* Meaning */}
-      {specimen.meaning && (
-        <p class="text-center text-body text-ink/55 dark:text-mist/55 italic mb-8" data-demo-meaning>
-          "{specimen.meaning}"
-        </p>
-      )}
+      {/* ── Error ───────────────────────────────────────────────────────── */}
+      <p data-demo-error class="hidden mt-8 text-center font-arabic text-body text-red-600 dark:text-red-400"></p>
 
-      <div class="mb-12"></div>
+      {/* ── Result (hidden until the user parses — no specimen on load) ──── */}
+      <div data-demo-result class="hidden mt-10">
+        <div data-demo-source class="flex items-baseline gap-2.5 mb-6 px-1 min-h-[2rem]">
+          <span data-source-main class="font-arabic-display font-bold text-[clamp(1.125rem,2vw,1.5rem)] text-purple leading-none"></span>
+          <span data-source-sep class="hidden text-ink/25 dark:text-mist/25 text-small select-none">·</span>
+          <span data-source-sub class="hidden font-mono text-caption text-ink/55 dark:text-mist/55 tracking-widest"></span>
+        </div>
 
-      {/* Word cards grid */}
-      <div class="demo-cards grid grid-cols-1 md:grid-cols-2 gap-5 mb-10" data-demo-cards>
-        {specimen.words.map((w, i) => {
-          const caseColor = CASE_COLORS[w.case].hex;
-          const typeMeta = TYPE_META[w.type];
-          const showDetails = w.details && w.details !== 'لا توجد تفاصيل إضافية';
-          return (
-            <article class="demo-card word-card relative rounded-2xl p-6 md:p-7" style={`animation-delay: ${i * 80}ms;`}>
-              <div class="flex items-start justify-between gap-4 mb-4">
-                <div lang="ar" dir="rtl" class="font-bold text-[clamp(2rem,3.6vw,2.7rem)] leading-tight text-ink dark:text-mist" style="font-family: var(--font-quran);">
-                  {w.word}
-                </div>
-                <div class="flex items-center gap-2 shrink-0 pt-1.5">
-                  <span lang="ar" dir="rtl" class="font-arabic text-small text-ink/40 dark:text-mist/40">{typeMeta.ar}</span>
-                  <span lang="ar" dir="rtl" class="word-chip font-arabic text-small font-medium" style={`--chip: ${caseColor};`}>{w.caseLabel}</span>
-                </div>
-              </div>
-              <p lang="ar" dir="rtl" class="font-arabic text-body leading-loose text-ink/85 dark:text-mist/85" style="font-family: var(--font-arabic-classical);">{w.irab}</p>
-              {showDetails && (
-                <details class="word-details group/details mt-4 pt-4 border-t border-stone/60 dark:border-coal-edge/60">
-                  <summary class="inline-flex items-center gap-2 cursor-pointer list-none font-arabic text-small text-ink/55 dark:text-mist/55 hover:text-ink dark:hover:text-mist transition-colors [&::-webkit-details-marker]:hidden">
-                    <span class="group-open/details:hidden">{t.showDetails}</span>
-                    <span class="hidden group-open/details:inline">{t.hideDetails}</span>
-                    <svg class="w-3.5 h-3.5 transition-transform duration-300 group-open/details:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                  </summary>
-                  <div class="mt-3">
-                    <p lang="ar" dir="rtl" class="font-arabic text-small text-ink/75 dark:text-mist/75 leading-loose">{w.details}</p>
-                  </div>
-                </details>
-              )}
-            </article>
-          );
-        })}
-      </div>
+        <div lang="ar" dir="rtl" class="text-center mb-6 px-4" data-demo-verse>
+          <div class="text-[clamp(2rem,5.5vw,3.75rem)] leading-[1.9] text-ink dark:text-mist" style="font-family: var(--font-quran);" data-demo-verse-inner></div>
+        </div>
 
-      {/* Sentence structure explanation */}
-      {specimen.explanation && (
-        <div class="mb-6 rounded-2xl p-7 md:p-8 bg-purple/5 dark:bg-purple/10 border border-purple/20 dark:border-purple/30" data-demo-explanation>
+        <p class="hidden text-center text-body text-ink/55 dark:text-mist/55 italic mb-10" data-demo-meaning></p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8" data-demo-cards></div>
+
+        <div class="hidden card p-7 md:p-8 mb-5" data-demo-explanation>
           <p class="flex items-center gap-2 mb-4 font-arabic-display font-bold text-3xl text-purple">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             <span lang="ar" dir="rtl" class="font-arabic">{t.structure}</span>
           </p>
-          <p lang="ar" dir="rtl" class="font-arabic text-body-lg text-ink/85 dark:text-mist/85 leading-loose" style="font-family: var(--font-arabic-classical);" data-explanation-text>
-            {specimen.explanation}
-          </p>
+          <p lang="ar" dir="rtl" class="font-arabic text-body-lg text-ink/85 dark:text-mist/85 leading-loose" style="font-family: var(--font-arabic-classical);" data-explanation-text></p>
         </div>
-      )}
 
-      {/* Rhetorical / balagha note */}
-      {specimen.additionalClarification && (
-        <div class="mb-6 rounded-2xl p-6 md:p-7 bg-teal/5 dark:bg-teal/10 border border-teal/20 dark:border-teal/30" data-demo-clarification>
+        <div class="hidden card p-6 md:p-7 mb-5" data-demo-clarification>
           <p class="flex items-center gap-2 mb-3 font-arabic-display font-bold text-3xl text-teal">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
             <span lang="ar" dir="rtl" class="font-arabic">{t.rhetorical}</span>
           </p>
-          <p lang="ar" dir="rtl" class="font-arabic text-body text-ink/80 dark:text-mist/80 leading-loose" style="font-family: var(--font-arabic-classical);" data-clarification-text>
-            {specimen.additionalClarification}
-          </p>
-        </div>
-      )}
-
-    </div>
-
-    {/* Conversion gate */}
-    <div data-demo-gate class="max-w-5xl mx-auto mt-6 hidden bg-ink dark:bg-mist text-paper dark:text-coal rounded-2xl p-8 md:p-12">
-      <div class="flex flex-col md:flex-row items-start md:items-center gap-6 justify-between">
-        <div class="flex-1">
-          <p class="font-mono text-caption opacity-60 mb-2 tracking-wider">{t.gateLabel}</p>
-          <p class="font-display text-h2 leading-tight">{t.gateTitle}</p>
-          <p class="mt-3 opacity-70 max-w-lg">{t.gateBody}</p>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-          <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener" class="px-6 py-3 bg-purple hover:bg-purple-deep text-white font-medium tracking-tight rounded-full text-center">{t.googlePlay}</a>
-          <a href="https://apps.apple.com/app/id6765811277" target="_blank" rel="noopener" class="px-6 py-3 border border-paper/30 hover:border-paper dark:border-coal/30 dark:hover:border-coal font-medium tracking-tight rounded-full text-center">{t.appStore}</a>
+          <p lang="ar" dir="rtl" class="font-arabic text-body text-ink/80 dark:text-mist/80 leading-loose" style="font-family: var(--font-arabic-classical);" data-clarification-text></p>
         </div>
       </div>
+    </div>
+
+    {/* ── Sign-up gate (shown after the free parses are used) ──────────── */}
+    <div data-demo-gate class="hidden max-w-2xl mx-auto mt-10 card p-8 md:p-10 text-center">
+      <p class="font-arabic-display font-bold text-h2 leading-tight mb-3">{t.signTitle}</p>
+      <p class="font-arabic text-body text-ink/65 dark:text-mist/65 leading-loose mb-7 max-w-lg mx-auto">{t.signBody}</p>
+      <a href={login} class="btn-primary lift">{t.signCta}</a>
     </div>
   </Container>
 </Section>
@@ -219,112 +166,84 @@ const specimen = SPECIMEN;
 <style>
   /* Entrance — `backwards` fill (not forwards) so the settled transform stays
      free for the hover lift below. */
-  .word-card { animation: card-in 600ms cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+  /* These target innerHTML-injected result cards, so they must be GLOBAL —
+     Astro scoped styles never reach dynamically-inserted nodes (that was why
+     the result cards looked unstyled: plain text on the background). */
+  :global(.word-card) { animation: card-in 600ms cubic-bezier(0.16, 1, 0.3, 1) backwards; }
   @keyframes card-in {
     from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  details[open] > summary ~ * { animation: details-in 350ms ease-out; }
+  :global(.demo-card details[open] > summary ~ *) { animation: details-in 350ms ease-out; }
   @keyframes details-in {
     from { opacity: 0; transform: translateY(-4px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* Glass + soft-3D word cards. */
-  .demo-card {
-    background: color-mix(in srgb, var(--color-paper) 58%, transparent);
-    -webkit-backdrop-filter: blur(12px) saturate(1.1);
-    backdrop-filter: blur(12px) saturate(1.1);
-    border: 1px solid color-mix(in srgb, white 55%, var(--color-stone));
-    box-shadow:
-      0 14px 36px -16px color-mix(in srgb, var(--color-ink) 28%, transparent),
-      0 2px 6px -3px color-mix(in srgb, var(--color-ink) 12%, transparent),
-      inset 0 1px 0 color-mix(in srgb, white 70%, transparent);
-    transition: transform .4s var(--ease-out-quart), box-shadow .4s var(--ease-out-quart),
-                filter .4s var(--ease-out-quart), opacity .4s var(--ease-out-quart);
+  /* Word cards — clean solid surface (matches the site .card) with a case-color rail. */
+  :global(.demo-card) {
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    border-inline-start: 4px solid var(--rail, var(--color-stone-soft));
+    border-radius: 1rem;
+    box-shadow: var(--shadow-card);
+    transition: transform .25s var(--ease-out-quart), box-shadow .25s var(--ease-out-quart);
   }
-  :global(.dark) .demo-card {
-    background: color-mix(in srgb, var(--color-coal-soft) 55%, transparent);
-    border-color: color-mix(in srgb, white 8%, var(--color-coal-edge));
-    box-shadow: 0 16px 38px -16px rgb(0 0 0 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.05);
+  :global(.dark .demo-card) {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+    border-inline-start-color: var(--rail, var(--color-coal-edge));
+    box-shadow: 0 2px 8px -3px rgb(0 0 0 / 0.45), 0 14px 30px -14px rgb(0 0 0 / 0.55);
   }
-  .demo-card:hover {
-    transform: translateY(-6px) scale(1.022);
-    z-index: 2;
-    box-shadow:
-      0 28px 52px -18px color-mix(in srgb, var(--color-purple) 34%, transparent),
-      0 10px 22px -12px color-mix(in srgb, var(--color-ink) 18%, transparent),
-      inset 0 1px 0 color-mix(in srgb, white 82%, transparent);
-  }
-  :global(.dark) .demo-card:hover {
-    box-shadow: 0 30px 56px -18px color-mix(in srgb, var(--color-purple) 52%, transparent),
-                inset 0 1px 0 rgb(255 255 255 / 0.07);
-  }
-  /* Focus-on-hover: the hovered card pops, the others gently recede. */
-  .demo-cards:hover > .demo-card:not(:hover) {
-    filter: blur(2.5px);
-    opacity: 0.5;
-    transform: scale(0.97);
-  }
+  :global(.demo-card:hover) { transform: translateY(-3px); box-shadow: var(--lift-shadow); }
 
-  /* Case pill — the only place the case color lives now: a quiet status tag. */
-  .word-chip {
+  /* Case pill — a quiet status tag carrying the case color. GLOBAL (injected). */
+  :global(.word-chip) {
     padding: 0.15rem 0.7rem;
     border-radius: 9999px;
     color: var(--chip);
     background: color-mix(in srgb, var(--chip) 11%, transparent);
     border: 1px solid color-mix(in srgb, var(--chip) 22%, transparent);
   }
-  :global(.dark) .word-chip {
+  :global(.dark .word-chip) {
     color: color-mix(in srgb, var(--chip) 80%, white);
     background: color-mix(in srgb, var(--chip) 18%, transparent);
     border-color: color-mix(in srgb, var(--chip) 30%, transparent);
   }
 
-  /* Glass "try your own" panel. */
-  .demo-try {
-    background: color-mix(in srgb, var(--color-paper) 52%, transparent);
-    -webkit-backdrop-filter: blur(16px) saturate(1.1);
-    backdrop-filter: blur(16px) saturate(1.1);
-    border: 1px solid color-mix(in srgb, white 55%, var(--color-stone));
-    box-shadow:
-      0 18px 44px -20px color-mix(in srgb, var(--color-ink) 26%, transparent),
-      inset 0 1px 0 color-mix(in srgb, white 62%, transparent);
-  }
-  :global(.dark) .demo-try {
-    background: color-mix(in srgb, var(--color-coal-soft) 48%, transparent);
-    border-color: color-mix(in srgb, white 8%, var(--color-coal-edge));
-    box-shadow: 0 18px 44px -20px rgb(0 0 0 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.05);
-  }
-
-  /* Inset glass textarea + glass chips. */
+  /* Input textarea — solid, clean, clear focus ring (no shiny glass). */
   .demo-textarea {
-    background: color-mix(in srgb, var(--color-paper-soft) 70%, transparent);
-    border: 1px solid color-mix(in srgb, var(--color-stone) 85%, transparent);
-    box-shadow: inset 0 2px 8px -2px color-mix(in srgb, var(--color-ink) 10%, transparent);
+    background: var(--color-paper-soft);
+    border: 1px solid var(--color-card-edge);
     transition: border-color .2s, box-shadow .2s;
   }
   .demo-textarea:focus {
     outline: none;
     border-color: var(--color-purple);
-    box-shadow: inset 0 2px 8px -2px color-mix(in srgb, var(--color-ink) 8%, transparent),
-                0 0 0 4px color-mix(in srgb, var(--color-purple) 12%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-purple) 14%, transparent);
   }
-  :global(.dark) .demo-textarea { background: color-mix(in srgb, var(--color-coal) 65%, transparent); border-color: var(--color-coal-edge); }
+  :global(.dark) .demo-textarea { background: var(--color-coal); border-color: var(--color-coal-edge); }
 
-  .demo-chip {
-    background: color-mix(in srgb, var(--color-paper) 45%, transparent);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-    border: 1px solid color-mix(in srgb, white 50%, var(--color-stone));
-    box-shadow: inset 0 1px 0 color-mix(in srgb, white 55%, transparent);
+  /* Skeleton shimmer — the loading placeholder while the AI parses. */
+  .skel {
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--color-ink) 6%, transparent) 25%,
+      color-mix(in srgb, var(--color-ink) 12%, transparent) 37%,
+      color-mix(in srgb, var(--color-ink) 6%, transparent) 63%);
+    background-size: 400% 100%;
+    animation: skel-shimmer 1.4s ease-in-out infinite;
   }
-  :global(.dark) .demo-chip { background: color-mix(in srgb, var(--color-coal-soft) 55%, transparent); border-color: var(--color-coal-edge); }
+  :global(.dark) .skel {
+    background: linear-gradient(90deg, rgb(255 255 255 / 0.04) 25%, rgb(255 255 255 / 0.09) 37%, rgb(255 255 255 / 0.04) 63%);
+    background-size: 400% 100%;
+  }
+  @keyframes skel-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
 
   @media (prefers-reduced-motion: reduce) {
-    .word-card { animation: none; }
-    .demo-card, .demo-card:hover, .demo-cards:hover > .demo-card:not(:hover) { transform: none; filter: none; opacity: 1; }
-    details[open] > summary ~ * { animation: none; }
+    :global(.word-card) { animation: none; }
+    :global(.demo-card), :global(.demo-card:hover) { transform: none; }
+    :global(.demo-card details[open] > summary ~ *) { animation: none; }
+    .skel { animation: none; }
   }
 </style>
 
@@ -361,11 +280,11 @@ const specimen = SPECIMEN;
     const lang = (root.dataset.lang === 'ar' ? 'ar' : 'en') as 'en' | 'ar';
     const i18n = lang === 'ar'
       ? { remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
-          parsing: 'جارٍ الإعراب…', customSrc: 'جملتك', fallback: 'العرض غير متاح · عرض النموذج',
+          parsing: 'جارٍ الإعراب…', error: 'تعذّر الإعراب الآن. حاول مرة أخرى.', customSrc: 'جملتك', fallback: 'العرض غير متاح · عرض النموذج',
           irabLabel: 'الإعراب', showDetails: 'عرض التفاصيل', hideDetails: 'إخفاء التفاصيل',
           wordsCount: (n: number) => `${n} كلمات`, parsedIn: (s: string) => `أُعرِب في ${s}`, parse: 'أعرب', unlimited: 'إعراب غير محدود ⚡' }
       : { remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
-          parsing: 'Parsing…', customSrc: 'Your sentence', fallback: 'Demo offline · showing specimen',
+          parsing: 'Parsing…', error: "Couldn't analyze right now. Please try again.", customSrc: 'Your sentence', fallback: 'Demo offline · showing specimen',
           irabLabel: "I'rab", showDetails: 'Show details', hideDetails: 'Hide details',
           wordsCount: (n: number) => `${n} words`, parsedIn: (s: string) => `Parsed in ${s}`, parse: 'Parse', unlimited: 'Unlimited parsing ⚡' };
 
@@ -388,6 +307,12 @@ const specimen = SPECIMEN;
     const submitLabelEl = submitEl.querySelector<HTMLElement>('[data-submit-label]')!;
     const quotaEl      = root.querySelector<HTMLElement>('[data-demo-quota]')!;
     const gateEl       = document.querySelector<HTMLElement>('[data-demo-gate]')!;
+    const resultEl     = root.querySelector<HTMLElement>('[data-demo-result]')!;
+    const loadingEl    = root.querySelector<HTMLElement>('[data-demo-loading]')!;
+    const errorEl      = root.querySelector<HTMLElement>('[data-demo-error]')!;
+    const sourceSepEl  = root.querySelector<HTMLElement>('[data-source-sep]');
+    const submitSpinnerEl = submitEl.querySelector<HTMLElement>('[data-submit-spinner]')!;
+    const submitArrowEl   = submitEl.querySelector<HTMLElement>('[data-submit-arrow]')!;
 
     function getQuota(): number {
       try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? parseInt(raw, 10) : 0; } catch { return 0; }
@@ -426,17 +351,14 @@ const specimen = SPECIMEN;
       const sourceText = ex.source ?? i18n.customSrc;
       const parts = sourceText.split('·');
       sourceMainEl.textContent = (parts[0] ?? '').trim();
-      if (sourceSubEl) {
+      if (sourceSubEl && sourceSepEl) {
         if (parts.length > 1) {
           sourceSubEl.textContent = parts[1].trim();
           sourceSubEl.classList.remove('hidden');
-          // Show the separator dot before sub
-          const sep = sourceContainer.querySelector('span.text-ink\\/25');
-          if (sep) sep.classList.remove('hidden');
+          sourceSepEl.classList.remove('hidden');
         } else {
           sourceSubEl.classList.add('hidden');
-          const sep = sourceContainer.querySelector('span.text-ink\\/25');
-          if (sep) sep.classList.add('hidden');
+          sourceSepEl.classList.add('hidden');
         }
       }
 
@@ -470,7 +392,7 @@ const specimen = SPECIMEN;
             </div>
           </details>` : '';
         return `
-          <article class="demo-card word-card relative rounded-2xl p-6 md:p-7" style="animation-delay: ${i * 80}ms;">
+          <article class="demo-card word-card relative p-6 md:p-7" style="--rail: ${caseColor}; animation-delay: ${i * 80}ms;">
             <div class="flex items-start justify-between gap-4 mb-4">
               <div lang="ar" dir="rtl" class="font-bold text-[clamp(2rem,3.6vw,2.7rem)] leading-tight text-ink dark:text-mist" style="font-family: var(--font-quran);">${escape(w.word)}</div>
               <div class="flex items-center gap-2 shrink-0 pt-1.5">
@@ -514,16 +436,31 @@ const specimen = SPECIMEN;
       });
     });
 
+    // Loading state on the submit button (spinner swaps in for the arrow).
+    function setLoading(on: boolean) {
+      submitEl.disabled = on;
+      submitSpinnerEl.classList.toggle('hidden', !on);
+      submitArrowEl.classList.toggle('hidden', on);
+      submitLabelEl.textContent = on ? i18n.parsing : i18n.parse;
+    }
+
     // Form
     formEl.addEventListener('submit', async (e) => {
       e.preventDefault();
       const text = inputEl.value.trim();
       if (!text) return;
-      if (getQuota() >= MAX_FREE) { gateEl.classList.remove('hidden'); return; }
+      if (getQuota() >= MAX_FREE) {
+        gateEl.classList.remove('hidden');
+        gateEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
 
       const start = performance.now();
-      submitEl.disabled = true;
-      submitLabelEl.textContent = i18n.parsing;
+      errorEl.classList.add('hidden');
+      resultEl.classList.add('hidden');
+      loadingEl.classList.remove('hidden');
+      loadingEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setLoading(true);
 
       try {
         const fingerprint = await getFingerprint();
@@ -538,19 +475,20 @@ const specimen = SPECIMEN;
         if (!res.ok) throw new Error(`API ${res.status}`);
         const parsed = await res.json() as ParseExample;
         const elapsed = ((performance.now() - start) / 1000).toFixed(1) + 's';
+        loadingEl.classList.add('hidden');
         renderExample({ ...parsed, source: i18n.customSrc }, elapsed);
+        resultEl.classList.remove('hidden');
         bumpQuota();
         renderQuota();
-        root.querySelector('[data-demo-verse]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } catch (err) {
-        console.warn('Demo API unavailable, falling back to specimen', err);
-        renderExample({ ...SPECIMEN, source: i18n.fallback });
-        bumpQuota();
-        renderQuota();
-      } finally {
-        submitEl.disabled = false;
-        submitLabelEl.textContent = i18n.parse;
+        resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         inputEl.value = '';
+      } catch (err) {
+        console.warn('Demo API error', err);
+        loadingEl.classList.add('hidden');
+        errorEl.textContent = i18n.error;
+        errorEl.classList.remove('hidden');
+      } finally {
+        setLoading(false);
       }
     });
 
