@@ -1,0 +1,1808 @@
+{
+ "80:1": {
+  "surah": 80,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah Abasa Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "The verse opens with two past-tense verbs, \"He frowned\" and \"and turned away,\" linked by the connective wa. Both verbs carry a hidden third-person masculine subject, leaving the reader to identify who acted. The clause is independent (isti'naf), setting the scene before the cause is revealed in the following ayah.",
+  "translation_en": "He frowned and turned away.",
+  "transliteration": "'Abasa wa tawallaa",
+  "words_en": [
+   {
+    "token": "عَبَسَ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb with hidden subject",
+    "note_en": "A past-tense verb built on fatha; its subject is a concealed pronoun referring to a male individual."
+   },
+   {
+    "token": "وَتَوَلَّىٰٓ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined past-tense verb (ma'tuf)",
+    "note_en": "The wa is a connective particle joining this second past-tense verb, which shares the same hidden masculine subject as the first."
+   }
+  ],
+  "irab_en": "This short verse is a complete verbal sentence functioning as an independent opening clause. The first word, 'abasa (\"he frowned\"), is a past-tense verb fixed on the fatha vowel, and its doer is a hidden pronoun standing for an unnamed man. The particle wa is purely connective (harf 'atf), joining the second verb tawalla (\"and he turned away\") to the first. Tawalla is likewise a past-tense verb, but because its root ends in a weak letter, its ending appears as a fixed alif maqsura rather than an audible fatha; it carries the identical concealed subject. The two verbs together describe a single sequence of actions by one person. No object is stated; the grammatical cause of the frowning is deferred to the following verse, which begins with the particle an.",
+  "faqs_en": [
+   {
+    "q": "Why is there no visible subject in this verse?",
+    "a": "Arabic verbs encode their subject. When no noun follows, the doer is a concealed pronoun (damir mustatir) understood from the verb form; here it is a hidden \"he\" referring to a man."
+   },
+   {
+    "q": "What is the role of the wa in wa tawalla?",
+    "a": "It is a connective particle (harf 'atf) that joins the second past-tense verb to the first, so both actions are attributed to the same subject in sequence."
+   }
+  ],
+  "uthmani": "عَبَسَ وَتَوَلَّىٰٓ"
+ },
+ "80:2": {
+  "surah": 80,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah Abasa Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "This verse states the cause of the frowning. The particle an introduces a verbal clause, \"the blind man came to him,\" and the whole clause is understood as a verbal noun governed by an omitted preposition meaning \"because.\" The phrase explains the verbs of the previous ayah.",
+  "translation_en": "Because the blind man came to him.",
+  "transliteration": "An jaa'ahu al-a'maa",
+  "words_en": [
+   {
+    "token": "أَن",
+    "case_en": "indeclinable",
+    "role_en": "particle forming a verbal noun (harf masdari)",
+    "note_en": "This particle turns the following verb into an implied verbal noun, allowing the clause to function as a single grammatical unit."
+   },
+   {
+    "token": "جَآءَهُ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb with attached object pronoun",
+    "note_en": "A past-tense verb fixed on fatha; the suffixed pronoun hu is its direct object, \"to him.\""
+   },
+   {
+    "token": "ٱلْأَعْمَىٰ",
+    "case_en": "nominative",
+    "role_en": "subject of the verb (fa'il)",
+    "note_en": "The doer of \"came,\" formally nominative though its case is shown by an implied vowel on the final weak letter."
+   }
+  ],
+  "irab_en": "The verse opens with an, a particle that converts the verb after it into an implied verbal noun (masdar mu'awwal). The resulting noun-clause is in the genitive position because it is governed by a preposition that has been omitted but is understood as \"because of\"; thus the meaning is \"because of the blind man's coming to him.\" This whole phrase grammatically attaches to the two verbs of the preceding verse, supplying their cause. Within the clause, ja'a (\"came\") is a past-tense verb fixed on fatha, and the suffixed pronoun hu is its direct object. The agent al-a'ma (\"the blind man\") is the subject in the nominative; because it ends in a weak alif, its nominative marker is an estimated vowel rather than an audible one. The construction neatly explains why the frown occurred.",
+  "faqs_en": [
+   {
+    "q": "What does the particle an do here?",
+    "a": "It is a masdari particle: it converts the following verb into an implied verbal noun so the entire clause can act as one grammatical unit, here a noun in the genitive position."
+   },
+   {
+    "q": "Why is the clause in the genitive?",
+    "a": "It is governed by an omitted preposition understood as \"because of,\" so the implied verbal noun takes the genitive position and links back to the verbs of verse 1."
+   }
+  ],
+  "uthmani": "أَن جَآءَهُ ٱلْأَعْمَىٰ"
+ },
+ "80:3": {
+  "surah": 80,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah Abasa Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "A rhetorical question: \"And what would make you realize?\" The interrogative ma is a subject whose predicate is the following verb-clause. The clause \"perhaps he would purify himself\" uses the particle la'alla with an attached pronoun and a present-tense verb expressing hope.",
+  "translation_en": "And what would make you realize? Perhaps he might purify himself.",
+  "transliteration": "Wa maa yudreeka la'allahu yazzakkaa",
+  "words_en": [
+   {
+    "token": "وَمَا",
+    "case_en": "nominative",
+    "role_en": "interrogative noun as subject (mubtada')",
+    "note_en": "The wa is connective; ma is an interrogative noun in the nominative position serving as the subject, with the following verb-clause as its predicate."
+   },
+   {
+    "token": "يُدْرِيكَ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb forming the predicate",
+    "note_en": "A present-tense verb in the indicative; the suffixed ka is its object \"you,\" and the clause is the predicate of ma."
+   },
+   {
+    "token": "لَعَلَّهُۥ",
+    "case_en": "accusative",
+    "role_en": "particle of hope with its noun (ism la'alla)",
+    "note_en": "La'alla expresses expectation and governs the attached pronoun hu as its noun in the accusative position."
+   },
+   {
+    "token": "يَزَّكَّىٰٓ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb as predicate of la'alla",
+    "note_en": "A present-tense verb in the indicative whose ending is an implied vowel on the weak final letter; it is the predicate of la'alla."
+   }
+  ],
+  "irab_en": "The connective wa opens a fresh sentence. Ma is an interrogative noun occupying the nominative position as the subject (mubtada'), and its predicate is the verbal clause that follows. Yudri (\"makes realize\") is a present-tense verb in the indicative; the suffixed pronoun ka is its object, while the implied subject refers to the questioned matter. The whole clause yudrika is the predicate of ma. The second part introduces la'alla, a particle expressing hope or expectation; it functions like the \"inna\" family, taking the attached pronoun hu as its noun in the accusative position. Its predicate is the present-tense verb yazzakka (\"he purifies himself\"), which is indicative, with its case-vowel estimated on the final weak letter. The verse poses a question whose force is that the outcome was unknown to the one addressed.",
+  "faqs_en": [
+   {
+    "q": "Is ma here a negation or a question?",
+    "a": "It is interrogative, not negating. It functions as the subject (mubtada') in the nominative, with the verb-clause yudrika as its predicate, giving a rhetorical question."
+   },
+   {
+    "q": "How does la'alla affect the words after it?",
+    "a": "Like the inna-family particles, la'alla takes a noun in the accusative (here the pronoun hu) and a predicate; its predicate is the present-tense verb yazzakka."
+   }
+  ],
+  "uthmani": "وَمَا يُدْرِيكَ لَعَلَّهُۥ يَزَّكَّىٰٓ"
+ },
+ "80:4": {
+  "surah": 80,
+  "ayah": 4,
+  "h1_en": "I'rab of Surah Abasa Ayah 4 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues the hope of verse 3 with \"or he might take heed,\" then adds a result: \"so the reminder would benefit him.\" The fa here is a causal particle that puts the following verb in the subjunctive, and the implied verbal noun is linked to the earlier expectation.",
+  "translation_en": "Or he might be reminded, so the reminder would benefit him.",
+  "transliteration": "Aw yadhdhakkaru fatanfa'ahu adh-dhikraa",
+  "words_en": [
+   {
+    "token": "أَوْ",
+    "case_en": "indeclinable",
+    "role_en": "connective particle (harf 'atf)",
+    "note_en": "A coordinating particle meaning \"or,\" joining this clause to the preceding verb of verse 3."
+   },
+   {
+    "token": "يَذَّكَّرُ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb (conjoined)",
+    "note_en": "A present-tense verb in the indicative, joined by aw to yazzakka and sharing its hidden subject."
+   },
+   {
+    "token": "فَتَنفَعَهُ",
+    "case_en": "accusative",
+    "role_en": "present-tense verb in subjunctive after causal fa",
+    "note_en": "The fa is causal (fa al-sababiyya); it puts the present-tense verb in the subjunctive by means of an implied an, and hu is its object."
+   },
+   {
+    "token": "ٱلذِّكْرَىٰٓ",
+    "case_en": "nominative",
+    "role_en": "subject of tanfa' (fa'il)",
+    "note_en": "The doer of \"would benefit,\" in the nominative with an estimated vowel on its weak ending."
+   }
+  ],
+  "irab_en": "The particle aw (\"or\") is coordinating, joining this verse to verse 3 and offering an alternative outcome. Yadhdhakkaru (\"he takes heed\") is a present-tense verb in the indicative, carrying a hidden subject and conjoined to the earlier yazzakka. The fa in fatanfa'a is the fa of causation (fa al-sababiyya): it places the following present-tense verb in the subjunctive through an implied particle an, yielding an implied verbal noun. That implied noun is conjoined to a verbal noun drawn from the preceding expression of hope, as if to say \"there might be heeding, and so benefit from the reminder.\" Tanfa'a (\"would benefit\") thus takes the accusative ending; its object is the suffixed pronoun hu. Its subject is al-dhikra (\"the reminder\"), in the nominative with an estimated case-vowel on its weak final letter.",
+  "faqs_en": [
+   {
+    "q": "Why is the verb tanfa'a in the subjunctive?",
+    "a": "Because the fa before it is the fa of causation, which causes the following present-tense verb to be subjunctive through an implied an, forming an implied verbal noun of result."
+   },
+   {
+    "q": "What does aw connect to?",
+    "a": "It is a coordinating \"or\" joining yadhdhakkaru to the verb yazzakka in verse 3, presenting an alternative hoped-for outcome."
+   }
+  ],
+  "uthmani": "أَوْ يَذَّكَّرُ فَتَنفَعَهُ ٱلذِّكْرَىٰٓ"
+ },
+ "80:5": {
+  "surah": 80,
+  "ayah": 5,
+  "h1_en": "I'rab of Surah Abasa Ayah 5 — word-by-word Arabic grammar",
+  "tldr_en": "A conditional-detailing clause begins here with amma, \"as for.\" The relative noun man (\"whoever\") is the subject, and the verb istaghna (\"considered himself free of need\") forms its relative clause. The answer to amma comes in the next verse, linked by the fa.",
+  "translation_en": "As for the one who regards himself self-sufficient,",
+  "transliteration": "Ammaa mani istaghnaa",
+  "words_en": [
+   {
+    "token": "أَمَّا",
+    "case_en": "indeclinable",
+    "role_en": "particle of condition and detail (harf shart wa tafsil)",
+    "note_en": "Introduces a section detailing different cases; its answer-clause appears in the next verse joined by fa."
+   },
+   {
+    "token": "مَنِ",
+    "case_en": "nominative",
+    "role_en": "relative noun as subject (mubtada')",
+    "note_en": "A relative noun \"whoever\" in the nominative position serving as the subject, with its relative clause following."
+   },
+   {
+    "token": "ٱسْتَغْنَىٰ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb forming the relative clause (silah)",
+    "note_en": "A past-tense verb fixed on an estimated vowel over its weak ending; its hidden subject is the relative pronoun's referent."
+   }
+  ],
+  "irab_en": "The verse begins with amma, a particle combining the senses of condition and detailed elaboration; it signals that the speech will now treat distinct cases one by one. Following it, man (\"whoever\") is a relative noun standing in the nominative position as the subject (mubtada'). Its predicate is delayed until the next verse, where it is connected by the linking fa that answers amma. The verb istaghna (\"regarded himself as needing nothing\") is a past-tense verb; because its root ends in a weak letter, its ending is fixed on an estimated vowel rather than an audible fatha. The hidden subject within istaghna refers back to man, and the verb together with its subject forms the relative clause that completes the meaning of \"the one who.\" The grammatical sentence remains open, awaiting its predicate in verse 6.",
+  "faqs_en": [
+   {
+    "q": "What kind of word is amma?",
+    "a": "It is a particle of condition and detailing. It introduces a case and requires an answer-clause, which here appears in verse 6 attached by the linking fa."
+   },
+   {
+    "q": "What is the grammatical role of man?",
+    "a": "Man is a relative noun (\"whoever\") functioning as the subject in the nominative position; the verb istaghna forms its relative clause, and the predicate follows in the next verse."
+   }
+  ],
+  "uthmani": "أَمَّا مَنِ ٱسْتَغْنَىٰ"
+ },
+ "80:6": {
+  "surah": 80,
+  "ayah": 6,
+  "h1_en": "I'rab of Surah Abasa Ayah 6 — word-by-word Arabic grammar",
+  "tldr_en": "This is the answer to amma from verse 5. The fa links the response, fronted pronoun anta is the subject, lahu (\"to him\") is a prepositional phrase attached to the verb, and tasadda (\"you attend to\") forms the predicate. Fronting lahu stresses devoting attention to that person.",
+  "translation_en": "Then you attend to him,",
+  "transliteration": "Fa-anta lahu tasaddaa",
+  "words_en": [
+   {
+    "token": "فَأَنتَ",
+    "case_en": "nominative",
+    "role_en": "linking fa plus subject pronoun (mubtada')",
+    "note_en": "The fa links the answer of amma; anta is a detached pronoun in the nominative position serving as the subject."
+   },
+   {
+    "token": "لَهُۥ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase attached to the verb",
+    "note_en": "The preposition li with the pronoun hu, meaning \"to him,\" grammatically attached to the verb tasadda; its fronting gives emphasis."
+   },
+   {
+    "token": "تَصَدَّىٰ",
+    "case_en": "indeclinable",
+    "role_en": "present-tense verb as predicate",
+    "note_en": "A present-tense verb whose ending rests on an estimated vowel over its weak letter; with its hidden subject it forms the predicate of anta."
+   }
+  ],
+  "irab_en": "The fa at the start is the linking fa that supplies the answer to amma in verse 5. Anta (\"you\") is a detached pronoun in the nominative position functioning as the subject (mubtada'). The phrase lahu is a preposition li joined to the pronoun hu (\"to him\"); it is grammatically attached to the following verb tasadda, and its placement before the verb gives rhetorical emphasis to the act of turning toward that person. Tasadda (\"you attend to / devote yourself\") is a present-tense verb; because its root ends in a weak letter, its case-ending is an estimated vowel rather than an audible one, and it carries a hidden subject \"you.\" The verb together with its subject forms the predicate of anta, completing the conditional answer: as for the one who thinks himself self-sufficient, to him you give your attention. The fronting underscores the misplaced priority being gently corrected.",
+  "faqs_en": [
+   {
+    "q": "Why does lahu come before its verb?",
+    "a": "The prepositional phrase lahu is attached to the verb tasadda but is placed before it for emphasis, stressing that attention is being directed specifically to that person."
+   },
+   {
+    "q": "How does this verse complete verse 5?",
+    "a": "It supplies the answer to amma through the linking fa. The pronoun anta is the subject and the verb-clause tasadda is its predicate, completing the sentence begun with \"as for whoever.\""
+   }
+  ],
+  "uthmani": "فَأَنتَ لَهُۥ تَصَدَّىٰ"
+ },
+ "80:7": {
+  "surah": 80,
+  "ayah": 7,
+  "h1_en": "I'rab of Surah Abasa Ayah 7 — word-by-word Arabic grammar",
+  "tldr_en": "This verse softens the rebuke: it is not the Prophet's burden if the self-sufficient man refuses to be purified. Grammatically, it opens with a circumstantial waw and a negating maa, followed by a fronted predicate (alayka) and a delayed nominal subject formed from the masdar of allaa yazzakkaa.",
+  "translation_en": "And not upon you is it that he does not purify himself.",
+  "transliteration": "wa-mā ʿalayka allā yazzakkā",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "circumstantial waw (waw al-haal)",
+    "note_en": "This waw introduces a circumstantial clause describing the situation under which the self-sufficient man is being dealt with in the preceding verses."
+   },
+   {
+    "token": "مَا",
+    "case_en": "indeclinable",
+    "role_en": "particle of negation (naafiyah)",
+    "note_en": "This maa negates the nominal sentence that follows, denying any obligation upon the addressee."
+   },
+   {
+    "token": "عَلَيْكَ",
+    "case_en": "genitive",
+    "role_en": "fronted predicate (khabar muqaddam)",
+    "note_en": "The prepositional phrase 'alaa + the pronoun ka is attached to an implied predicate placed before the subject."
+   },
+   {
+    "token": "أَلَّا",
+    "case_en": "indeclinable",
+    "role_en": "infinitival particle with negation (an + laa)",
+    "note_en": "This is the subjunctive an of the masdar fused with the negative laa, producing an interpreted verbal noun."
+   },
+   {
+    "token": "يَزَّكَّىٰ",
+    "case_en": "nominative",
+    "role_en": "verb yielding the delayed subject (mubtada' mu'akhkhar)",
+    "note_en": "The interpreted masdar 'his not purifying himself' stands as the delayed subject of the nominal sentence in the nominative position."
+   }
+  ],
+  "irab_en": "The verse begins with a circumstantial waw (waw al-haal) introducing a clause that describes the state in which the self-sufficient man is being dealt with. The particle maa here is purely negating (naafiyah), denying responsibility rather than asking a question. The structure is a nominal sentence with inversion: the prepositional phrase 'alayka serves as a fronted predicate (khabar muqaddam) attached to an omitted being-verb. The delayed subject is an interpreted verbal noun: allaa is the subjunctive an combined with the negative laa, and the following verb yazzakkaa is rendered into a masdar meaning 'his failing to purify himself.' This interpreted masdar occupies the nominative place of the delayed subject (mubtada' mu'akhkhar). The whole says: such a person's refusal to be purified is no burden laid upon you.",
+  "faqs_en": [
+   {
+    "q": "Is maa here a question word or a negation?",
+    "a": "Here maa is a negating particle (naafiyah); it denies any obligation upon the addressee rather than asking a question."
+   },
+   {
+    "q": "What is the grammatical subject of this sentence?",
+    "a": "The subject is the interpreted verbal noun formed from allaa yazzakkaa, standing in the nominative as the delayed subject, while 'alayka is the fronted predicate."
+   },
+   {
+    "q": "What kind of waw opens this verse?",
+    "a": "It is a circumstantial waw (waw al-haal), introducing a clause that describes the state in which the heedless man is being addressed."
+   }
+  ],
+  "uthmani": "وَمَا عَلَيْكَ أَلَّا يَزَّكَّىٰ"
+ },
+ "80:8": {
+  "surah": 80,
+  "ayah": 8,
+  "h1_en": "I'rab of Surah Abasa Ayah 8 — word-by-word Arabic grammar",
+  "tldr_en": "By contrast, the one who came eagerly seeking guidance is highlighted. The verse opens with ammaa for detail and contrast, then a relative pronoun man as the subject, followed by the verb jaa'aka and a circumstantial verb yas'aa describing him running in earnest.",
+  "translation_en": "But as for the one who came to you striving,",
+  "transliteration": "wa-ammā man jā'aka yasʿā",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The waw joins this contrasting case to the earlier case of the man who was self-sufficient."
+   },
+   {
+    "token": "أَمَّا",
+    "case_en": "indeclinable",
+    "role_en": "particle of condition and detailing (harf shart wa tafseel)",
+    "note_en": "Ammaa introduces a new branch of the discourse, setting up a contrast and requiring a linking response later."
+   },
+   {
+    "token": "مَن",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "This relative pronoun man stands in the nominative place as the subject of the nominal sentence."
+   },
+   {
+    "token": "جَآءَكَ",
+    "case_en": "indeclinable",
+    "role_en": "verb (silah) with object pronoun",
+    "note_en": "Jaa'a is a past-tense verb forming the relative clause of man, and the attached ka is its direct object."
+   },
+   {
+    "token": "يَسْعَىٰ",
+    "case_en": "nominative",
+    "role_en": "circumstantial verb (haal)",
+    "note_en": "This present-tense verb describes the state of the one who came, namely that he was striving and hastening."
+   }
+  ],
+  "irab_en": "The verse opens with the conjunctive waw and the particle ammaa, which signals detailing and contrast and customarily demands a response clause introduced later by the fa. The relative pronoun man functions as the subject (mubtada') of the nominal sentence and stands in the nominative position. Its relative clause is the verb jaa'aka, a past-tense verb whose subject is concealed and whose object is the attached pronoun ka. The verb yas'aa is present-tense with a concealed subject referring back to man; it occupies the position of a circumstantial accusative (haal), portraying the man as actively striving and hurrying when he came. The predicate of the subject man arrives in the following verses.",
+  "faqs_en": [
+   {
+    "q": "What role does ammaa play here?",
+    "a": "Ammaa is a particle of detailing and contrast; it opens a new case opposite the earlier one and calls for a response clause beginning with fa."
+   },
+   {
+    "q": "Why is man the subject?",
+    "a": "Man is a relative pronoun standing in the nominative place as the subject (mubtada'), with its relative clause being jaa'aka and its predicate coming in the later verse."
+   },
+   {
+    "q": "What is the function of yas'aa?",
+    "a": "Yas'aa is a present-tense verb in the position of a circumstantial accusative (haal), describing the man as striving and hastening as he came."
+   }
+  ],
+  "uthmani": "وَأَمَّا مَن جَآءَكَ يَسْعَىٰ"
+ },
+ "80:9": {
+  "surah": 80,
+  "ayah": 9,
+  "h1_en": "I'rab of Surah Abasa Ayah 9 — word-by-word Arabic grammar",
+  "tldr_en": "This short verse adds a second description of the eager seeker: while he is in awe of God. It is a circumstantial nominal sentence formed by waw + the pronoun huwa as subject and the verb yakhshaa as predicate, both depicting his inner state of reverence.",
+  "translation_en": "While he fears (God).",
+  "transliteration": "wa-huwa yakhshā",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "circumstantial waw (waw al-haal)",
+    "note_en": "This waw introduces a circumstantial clause describing the state of the man who came striving."
+   },
+   {
+    "token": "هُوَ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "The detached pronoun huwa stands in the nominative place as the subject of the circumstantial nominal sentence."
+   },
+   {
+    "token": "يَخْشَىٰ",
+    "case_en": "nominative",
+    "role_en": "verb forming the predicate (khabar)",
+    "note_en": "This present-tense verb with a concealed subject forms the predicate, conveying his ongoing fear and reverence."
+   }
+  ],
+  "irab_en": "This verse is a circumstantial sentence (jumlah haaliyyah) attached to the previous one by the waw of state. The detached pronoun huwa occupies the nominative position as the subject (mubtada'). The verb yakhshaa is present-tense with a concealed subject referring to huwa; this verbal sentence stands in the place of the predicate (khabar) of the subject. Together they form a nominal sentence whose whole sits in the accusative position as a second circumstantial description of the man, adding inner reverence to the outward striving already mentioned. Thus the eager seeker is doubly portrayed: he came hastening, and he came in a state of fearing God.",
+  "faqs_en": [
+   {
+    "q": "What kind of waw begins this verse?",
+    "a": "It is the circumstantial waw (waw al-haal), which introduces a clause describing the state of the man mentioned in the previous verse."
+   },
+   {
+    "q": "What is the predicate of huwa?",
+    "a": "The predicate is the verbal sentence yakhshaa, a present-tense verb whose concealed subject refers back to huwa."
+   },
+   {
+    "q": "What is the overall position of this nominal sentence?",
+    "a": "The whole nominal sentence occupies the accusative place as a circumstantial state (haal) describing the man who came striving."
+   }
+  ],
+  "uthmani": "وَهُوَ يَخْشَىٰ"
+ },
+ "80:10": {
+  "surah": 80,
+  "ayah": 10,
+  "h1_en": "I'rab of Surah Abasa Ayah 10 — word-by-word Arabic grammar",
+  "tldr_en": "This is the response to the earlier ammaa: yet you turn away from him. The fa links the answer, anta is the subject, the fronted prepositional phrase anhu emphasizes the one neglected, and talahhaa is the verbal predicate meaning you busy yourself away from him.",
+  "translation_en": "From him you are distracted.",
+  "transliteration": "fa-anta ʿanhu talahhā",
+  "words_en": [
+   {
+    "token": "فَ",
+    "case_en": "indeclinable",
+    "role_en": "connective particle answering ammaa (raabitah)",
+    "note_en": "This fa links the response clause to the ammaa introduced in verse eight."
+   },
+   {
+    "token": "أَنتَ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "The detached pronoun anta stands in the nominative place as the subject of the response sentence."
+   },
+   {
+    "token": "عَنْهُ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase fronted before the verb",
+    "note_en": "The phrase 'an + the pronoun hu is attached to the verb talahhaa and is brought forward for emphasis."
+   },
+   {
+    "token": "تَلَهَّىٰ",
+    "case_en": "nominative",
+    "role_en": "verb forming the predicate (khabar)",
+    "note_en": "This present-tense verb with a concealed subject forms the predicate, meaning you occupy yourself and turn away."
+   }
+  ],
+  "irab_en": "This verse completes the conditional structure begun in verse eight. The fa is the connective that links the response (jawaab) to the particle ammaa. The detached pronoun anta serves as the subject (mubtada') in the nominative position. The prepositional phrase 'anhu, composed of 'an and the attached pronoun, is grammatically connected to the verb talahhaa and is fronted before it for emphasis, highlighting the very person being neglected. The verb talahhaa is present-tense (originally tatalahhaa with one taa elided) with a concealed subject referring to anta; this verbal sentence occupies the place of the predicate (khabar). The meaning: as for that earnest seeker, you allow yourself to be distracted away from him.",
+  "faqs_en": [
+   {
+    "q": "Why does the verse begin with fa?",
+    "a": "The fa is the connective particle that ties this clause to the ammaa of verse eight, supplying its required response (jawaab)."
+   },
+   {
+    "q": "Why is anhu placed before the verb?",
+    "a": "The prepositional phrase 'anhu is fronted before talahhaa for emphasis, drawing attention to the very person who was being turned away from."
+   },
+   {
+    "q": "What is the original form of talahhaa?",
+    "a": "It is originally tatalahhaa; one of the two taa letters is dropped, leaving a present-tense verb with a concealed subject referring to anta."
+   }
+  ],
+  "uthmani": "فَأَنتَ عَنْهُ تَلَهَّىٰ"
+ },
+ "80:11": {
+  "surah": 80,
+  "ayah": 11,
+  "h1_en": "I'rab of Surah Abasa Ayah 11 — word-by-word Arabic grammar",
+  "tldr_en": "A firm rebuke and a statement: never act so, for indeed this revelation is a reminder. Kallaa is a particle of deterrence, then inna with its attached pronoun ha as its noun and the predicate tadhkiratun, an indefinite nominative noun meaning a reminder.",
+  "translation_en": "No indeed! Surely it is a reminder.",
+  "transliteration": "kallā innahā tadhkiratun",
+  "words_en": [
+   {
+    "token": "كَلَّآ",
+    "case_en": "indeclinable",
+    "role_en": "particle of deterrence and rebuke (radʿ wa zajr)",
+    "note_en": "Kallaa is a rebuking particle that checks and corrects the attitude described in the preceding verses."
+   },
+   {
+    "token": "إِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "emphatic particle (harf tawkeed wa nasb)",
+    "note_en": "Inna is an emphasizing particle that puts its noun in the accusative and its predicate in the nominative."
+   },
+   {
+    "token": "هَا",
+    "case_en": "accusative",
+    "role_en": "noun of inna (ism inna)",
+    "note_en": "The attached pronoun ha stands in the accusative place as the noun of inna, referring to the revelation or these verses."
+   },
+   {
+    "token": "تَذْكِرَةٌ",
+    "case_en": "nominative",
+    "role_en": "predicate of inna (khabar inna)",
+    "note_en": "This indefinite noun is the nominative predicate of inna, meaning a reminder or admonition."
+   }
+  ],
+  "irab_en": "The verse opens with kallaa, a particle of deterrence and rebuke (radʿ wa zajr) that rejects the conduct of turning toward the heedless and away from the earnest. Then comes inna, an emphatic particle that governs a nominal sentence, placing its noun in the accusative and its predicate in the nominative. The attached pronoun ha is the noun of inna (ism inna) in the accusative position, its reference being the Qur'anic revelation or these very verses. The indefinite noun tadhkiratun is the predicate of inna (khabar inna) in the nominative, meaning a reminder and admonition. The whole sentence affirms emphatically that this revelation is nothing but a reminder for whoever wishes to heed it.",
+  "faqs_en": [
+   {
+    "q": "What does kallaa indicate here?",
+    "a": "Kallaa is a particle of deterrence and rebuke; it rejects the prior attitude of neglecting the sincere seeker and warns against repeating it."
+   },
+   {
+    "q": "What are the two parts governed by inna?",
+    "a": "Inna governs the attached pronoun ha as its noun in the accusative and the noun tadhkiratun as its predicate in the nominative."
+   },
+   {
+    "q": "What does the pronoun ha refer to?",
+    "a": "It refers to the revelation, that is, the Qur'an or these verses, which inna declares to be a reminder."
+   }
+  ],
+  "uthmani": "كَلَّآ إِنَّهَا تَذْكِرَةٌۭ"
+ },
+ "80:12": {
+  "surah": 80,
+  "ayah": 12,
+  "h1_en": "I'rab of Surah Abasa Ayah 12 — word-by-word Arabic grammar",
+  "tldr_en": "Whoever wills, let him remember it. The fa connects to the prior statement, man is a conditional pronoun acting as subject, shaa'a is the conditional verb in the jussive position, and dhakarahu is the response, the whole forming a conditional sentence that serves as the predicate of man.",
+  "translation_en": "So whoever wills may remember it.",
+  "transliteration": "fa-man shā'a dhakarahu",
+  "words_en": [
+   {
+    "token": "فَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "This fa connects the verse to the preceding statement that the revelation is a reminder."
+   },
+   {
+    "token": "مَن",
+    "case_en": "nominative",
+    "role_en": "conditional pronoun acting as subject (mubtada')",
+    "note_en": "Man is a jussive conditional pronoun standing in the nominative place as the subject of the sentence."
+   },
+   {
+    "token": "شَآءَ",
+    "case_en": "jussive",
+    "role_en": "conditional verb (fi'l al-shart)",
+    "note_en": "This past-tense verb sits in the place of the jussive as the condition, with a concealed subject referring to man."
+   },
+   {
+    "token": "ذَكَرَهُ",
+    "case_en": "jussive",
+    "role_en": "response of the condition (jawaab al-shart)",
+    "note_en": "This past-tense verb is the response of the condition, in the jussive position, with hu as its object referring to the reminder."
+   }
+  ],
+  "irab_en": "The verse begins with the connective fa joining it to the previous affirmation. Man is a conditional pronoun (ism shart jaazim) that takes two verbs; here it stands in the nominative position as the subject (mubtada'). The verb shaa'a is past-tense functioning as the condition (fi'l al-shart); though past in form, it occupies the place of the jussive, and its subject is concealed, referring to man. The verb dhakarahu is likewise past-tense functioning as the response of the condition (jawaab al-shart) in the jussive position, its attached pronoun hu being the object that refers back to the reminder. The conditional sentence as a whole, condition plus response, occupies the place of the predicate (khabar) of man.",
+  "faqs_en": [
+   {
+    "q": "What kind of word is man here?",
+    "a": "Man is a jussive conditional pronoun (ism shart jaazim); it is the subject in the nominative and governs both the condition verb and its response."
+   },
+   {
+    "q": "Why are shaa'a and dhakarahu described as jussive when they are past tense?",
+    "a": "Although they are past-tense in form, they fall in the places of the condition and its response, so they are said to be in the jussive position."
+   },
+   {
+    "q": "What completes the predicate of man?",
+    "a": "The entire conditional sentence, shaa'a dhakarahu, fills the place of the predicate (khabar) of the subject man."
+   }
+  ],
+  "uthmani": "فَمَن شَآءَ ذَكَرَهُۥ"
+ },
+ "80:13": {
+  "surah": 80,
+  "ayah": 13,
+  "h1_en": "I'rab of Surah Abasa Ayah 13 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah continues describing the Reminder mentioned just before, saying it is recorded \"in honored scrolls.\" Grammatically, the phrase \"in scrolls\" is a prepositional phrase attached to a preceding word, and \"honored\" is an adjective describing \"scrolls,\" so both \"scrolls\" and its adjective carry the genitive case after the preposition.",
+  "translation_en": "In honored scrolls,",
+  "transliteration": "Fee suhufin mukarramah",
+  "words_en": [
+   {
+    "token": "فِى",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "A preposition meaning \"in,\" which puts the following noun into the genitive case."
+   },
+   {
+    "token": "صُحُفٍ",
+    "case_en": "genitive",
+    "role_en": "object of the preposition (majrur)",
+    "note_en": "The noun \"scrolls\" is genitive because it follows the preposition \"fi,\" with tanwin showing it is indefinite."
+   },
+   {
+    "token": "مُّكَرَّمَةٍ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "An adjective \"honored\" describing \"scrolls,\" so it matches it in being genitive and indefinite."
+   }
+  ],
+  "irab_en": "The verse opens with the preposition فِى (\"in\"), which governs the noun after it in the genitive case. صُحُفٍ (\"scrolls\") is therefore the object of the preposition and appears in the genitive with tanwin, marking it as indefinite. Together فِى صُحُفٍ forms a prepositional phrase that connects back to a word in the previous verse describing where the Reminder is kept. مُّكَرَّمَةٍ (\"honored\") is an adjective qualifying صُحُفٍ; an adjective in Arabic agrees with the noun it describes in case, number, gender, and definiteness, so it too is genitive, singular, feminine, and indefinite. The pairing of a noun followed by a descriptive adjective is one of the most common structures in the Qur'an and here builds a chain of praise for these scrolls.",
+  "faqs_en": [
+   {
+    "q": "Why is صُحُفٍ in the genitive case?",
+    "a": "Because it directly follows the preposition فِى (\"in\"). Any noun governed by a preposition in Arabic takes the genitive case, which is why it ends in kasra with tanwin here."
+   },
+   {
+    "q": "What is the relationship between صُحُفٍ and مُّكَرَّمَةٍ?",
+    "a": "مُّكَرَّمَةٍ is an adjective describing صُحُفٍ. Arabic adjectives follow their noun and agree with it in case, gender, number, and definiteness, so both are genitive and indefinite."
+   }
+  ],
+  "uthmani": "فِى صُحُفٍۢ مُّكَرَّمَةٍۢ"
+ },
+ "80:14": {
+  "surah": 80,
+  "ayah": 14,
+  "h1_en": "I'rab of Surah Abasa Ayah 14 — word-by-word Arabic grammar",
+  "tldr_en": "This short ayah adds two more adjectives, \"exalted\" and \"purified,\" continuing the description of the scrolls from the previous verse. Both words are adjectives qualifying \"scrolls,\" so they share its genitive case and indefinite ending, stacking up further praise without introducing any new subject or verb.",
+  "translation_en": "Exalted and purified,",
+  "transliteration": "Marfoo'atin mutahharah",
+  "words_en": [
+   {
+    "token": "مَّرْفُوعَةٍ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "An adjective \"exalted\" describing \"scrolls\" from the previous verse, so it is genitive and indefinite to match."
+   },
+   {
+    "token": "مُّطَهَّرَةٍ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "A further adjective \"purified\" also describing \"scrolls,\" likewise genitive and indefinite in agreement."
+   }
+  ],
+  "irab_en": "Both words in this verse are adjectives that continue describing صُحُفٍ (\"scrolls\") mentioned in the preceding verse. مَّرْفُوعَةٍ (\"exalted, raised high\") is the first adjective; because it qualifies a genitive, indefinite, singular, feminine noun, it carries exactly those same features and ends in kasra with tanwin. مُّطَهَّرَةٍ (\"purified, kept pure\") is a second adjective stacked on the same noun, again agreeing in case, number, gender, and definiteness. Arabic readily allows several adjectives in a row to describe one noun, each independently agreeing with it. There is no verb or new clause here; the entire verse is a continuation of the noun phrase begun in verse 13, building an accumulating portrait of the scrolls.",
+  "faqs_en": [
+   {
+    "q": "What noun do مَّرْفُوعَةٍ and مُّطَهَّرَةٍ describe?",
+    "a": "They both describe صُحُفٍ (\"scrolls\") from verse 13. The description simply continues across the verse boundary, with each adjective agreeing with that noun."
+   },
+   {
+    "q": "Can two adjectives describe the same noun like this?",
+    "a": "Yes. Arabic allows multiple adjectives in sequence to qualify one noun, and each adjective independently agrees with it in case, gender, number, and definiteness."
+   }
+  ],
+  "uthmani": "مَّرْفُوعَةٍۢ مُّطَهَّرَةٍۭ"
+ },
+ "80:15": {
+  "surah": 80,
+  "ayah": 15,
+  "h1_en": "I'rab of Surah Abasa Ayah 15 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah says the scrolls are \"by the hands of scribes.\" Grammatically it is a prepositional phrase: \"by the hands\" attaches to the earlier adjective \"exalted,\" and \"scribes\" is a possessive complement of \"hands,\" so it takes the genitive case as the second term of a possessive construction.",
+  "translation_en": "By the hands of scribes,",
+  "transliteration": "Bi-aydee safarah",
+  "words_en": [
+   {
+    "token": "بِأَيْدِى",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jarr wa majrur)",
+    "note_en": "\"By the hands\": the prefixed بِ is a preposition putting أَيْدِى into the genitive, and the phrase links to the earlier adjective \"exalted.\""
+   },
+   {
+    "token": "سَفَرَةٍ",
+    "case_en": "genitive",
+    "role_en": "possessor (mudaf ilayh)",
+    "note_en": "\"Scribes\" is the second term of the possessive construction with \"hands,\" so it is genitive and indefinite."
+   }
+  ],
+  "irab_en": "The verse begins with بِ (\"by, with\"), a preposition fused to the following noun أَيْدِى (\"hands\"), which therefore stands in the genitive case as the object of that preposition. The whole prepositional phrase بِأَيْدِى connects back to the adjective مَّرْفُوعَةٍ (\"exalted\") in verse 14, telling us by whose hands the scrolls are handled. أَيْدِى is also the first term (mudaf) of a possessive construction, and سَفَرَةٍ (\"scribes, emissaries\") is its second term (mudaf ilayh). As the possessor in such a construction, سَفَرَةٍ is always genitive, and the tanwin shows it is indefinite. So this verse layers a preposition over a genitive construct, with two nouns both ending in the genitive but for different reasons: hands by the preposition, scribes by the possessive annexation.",
+  "faqs_en": [
+   {
+    "q": "Why is سَفَرَةٍ genitive when there is no preposition before it?",
+    "a": "It is the possessor (mudaf ilayh) in the construct phrase أَيْدِى سَفَرَةٍ (\"hands of scribes\"). The second noun in an Arabic possessive construction is always genitive."
+   },
+   {
+    "q": "What does the phrase بِأَيْدِى connect to?",
+    "a": "It links back to the adjective مَّرْفُوعَةٍ (\"exalted\") in verse 14, explaining that these honored, exalted scrolls are in the keeping of noble scribes."
+   }
+  ],
+  "uthmani": "بِأَيْدِى سَفَرَةٍۢ"
+ },
+ "80:16": {
+  "surah": 80,
+  "ayah": 16,
+  "h1_en": "I'rab of Surah Abasa Ayah 16 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah describes the scribes as \"noble and dutiful.\" Both words are adjectives qualifying \"scribes\" from the previous verse, so each carries the same genitive case and indefinite ending, continuing the chain of praise that now describes the angels who record and convey revelation.",
+  "translation_en": "Noble and dutiful.",
+  "transliteration": "Kiramin bararah",
+  "words_en": [
+   {
+    "token": "كِرَامٍ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "An adjective \"noble\" describing the \"scribes\" of the previous verse, so it is genitive and indefinite to agree with it."
+   },
+   {
+    "token": "بَرَرَةٍ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "A second adjective \"dutiful, righteous\" also describing the scribes, likewise genitive and indefinite."
+   }
+  ],
+  "irab_en": "Both words continue to describe سَفَرَةٍ (\"scribes\") from verse 15. كِرَامٍ (\"noble\") is an adjective qualifying that noun; since سَفَرَةٍ is genitive and indefinite, كِرَامٍ matches it and ends in kasra with tanwin. بَرَرَةٍ (\"dutiful, righteous\") is a second adjective stacked on the same noun, again agreeing in case and definiteness. Both adjectives are plural forms suited to the plural noun \"scribes,\" preserving full agreement. Like verse 14, this verse contains no verb and forms no new clause; it simply extends the descriptive noun phrase, piling praise upon the scribes. The cumulative effect across verses 13–16 is a richly qualified description: honored, exalted, purified scrolls carried by noble, dutiful scribes.",
+  "faqs_en": [
+   {
+    "q": "Whom do كِرَامٍ and بَرَرَةٍ describe?",
+    "a": "They describe سَفَرَةٍ (\"scribes\") in verse 15. Both are adjectives agreeing with that noun in being genitive, plural, and indefinite."
+   },
+   {
+    "q": "Why are these adjectives genitive?",
+    "a": "They follow and qualify سَفَرَةٍ, which is genitive as the possessor in the construct \"hands of scribes.\" Adjectives agree with their noun in case, so they too are genitive."
+   }
+  ],
+  "uthmani": "كِرَامٍۭ بَرَرَةٍۢ"
+ },
+ "80:17": {
+  "surah": 80,
+  "ayah": 17,
+  "h1_en": "I'rab of Surah Abasa Ayah 17 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah is an expression of strong rebuke: \"May man be destroyed; how ungrateful he is!\" It contains a passive verb with \"man\" as its subject, followed by an exclamatory construction where \"how\" is a subject and the verb \"how ungrateful he made him\" forms its predicate, conveying astonishment at human ingratitude.",
+  "translation_en": "Destroyed is man; how ungrateful he is!",
+  "transliteration": "Qutila al-insanu ma akfarah",
+  "words_en": [
+   {
+    "token": "قُتِلَ",
+    "case_en": "indeclinable",
+    "role_en": "passive verb (fi'l madi mabni lil-majhul)",
+    "note_en": "A past passive verb \"is destroyed/killed,\" used here as an expression of rebuke against man."
+   },
+   {
+    "token": "ٱلْإِنسَٰنُ",
+    "case_en": "nominative",
+    "role_en": "deputy subject (na'ib fa'il)",
+    "note_en": "\"Man\" is the deputy agent of the passive verb, so it is nominative, marked by the final damma."
+   },
+   {
+    "token": "مَآ",
+    "case_en": "nominative",
+    "role_en": "exclamatory subject (mubtada' / ma al-ta'ajjubiyya)",
+    "note_en": "An exclamatory \"how/what,\" a complete indefinite noun meaning \"something,\" standing as subject of an exclamation."
+   },
+   {
+    "token": "أَكْفَرَهُ",
+    "case_en": "indeclinable",
+    "role_en": "exclamatory verb (fi'l al-ta'ajjub) + object",
+    "note_en": "\"How ungrateful he is\": a past verb of wonder with attached pronoun هُ as its object; the verb-clause is the predicate of مَآ."
+   }
+  ],
+  "irab_en": "The verse has two parts. First, قُتِلَ is a past-tense passive verb meaning literally \"he was killed/destroyed,\" used idiomatically as a curse or strong rebuke. Because it is passive, the doer is unstated, and ٱلْإِنسَٰنُ (\"man\") steps in as the deputy subject (na'ib al-fa'il), taking the nominative case shown by the final damma. The second part is an exclamation of wonder. مَآ is the exclamatory \"ma,\" treated as a complete indefinite noun meaning roughly \"what a thing,\" and it functions as the subject (mubtada') of the exclamatory sentence, in the nominative by its grammatical position. أَكْفَرَهُ is the verb of wonder (\"how ungrateful he is!\"), an invariable past-tense form with the attached pronoun هُ as its object; this whole verbal clause serves as the predicate (khabar) of مَآ, completing the sense of astonishment at humanity's ingratitude.",
+  "faqs_en": [
+   {
+    "q": "Why is ٱلْإِنسَٰنُ nominative even though قُتِلَ describes an action done to it?",
+    "a": "Because قُتِلَ is a passive verb. In a passive sentence the noun that would have been the object becomes the deputy subject (na'ib al-fa'il), which takes the nominative case."
+   },
+   {
+    "q": "What kind of construction is مَآ أَكْفَرَهُ?",
+    "a": "It is the Arabic exclamation of wonder (ta'ajjub). مَآ acts as the subject meaning \"what a thing,\" and the verb أَكْفَرَهُ (\"how ungrateful he is!\") with its pronoun forms the predicate."
+   }
+  ],
+  "uthmani": "قُتِلَ ٱلْإِنسَٰنُ مَآ أَكْفَرَهُۥ"
+ },
+ "80:18": {
+  "surah": 80,
+  "ayah": 18,
+  "h1_en": "I'rab of Surah Abasa Ayah 18 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah poses a rhetorical question: \"From what thing did He create him?\" It is built on a fronted prepositional phrase \"from what thing,\" where the interrogative governs a following noun, attached to the verb \"He created him,\" prompting reflection on the humble origins of the human being.",
+  "translation_en": "From what thing did He create him?",
+  "transliteration": "Min ayyi shay'in khalaqah",
+  "words_en": [
+   {
+    "token": "مِنْ",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "The preposition \"from,\" introducing the interrogative phrase and putting the next noun into the genitive."
+   },
+   {
+    "token": "أَىِّ",
+    "case_en": "genitive",
+    "role_en": "interrogative noun (ism istifham), object of preposition",
+    "note_en": "\"What/which\": an interrogative noun governed by مِنْ, hence genitive, and itself the first term of a construct phrase."
+   },
+   {
+    "token": "شَىْءٍ",
+    "case_en": "genitive",
+    "role_en": "possessor (mudaf ilayh)",
+    "note_en": "\"Thing\" is the second term of the construct with أَىِّ, so it is genitive and indefinite."
+   },
+   {
+    "token": "خَلَقَهُ",
+    "case_en": "indeclinable",
+    "role_en": "verb + object (fi'l madi + maf'ul bih)",
+    "note_en": "\"He created him\": a past verb with hidden subject \"He\" and attached pronoun هُ as object; the phrase \"from what\" relates to this verb."
+   }
+  ],
+  "irab_en": "The verse opens with the preposition مِنْ (\"from\"), which governs the following interrogative noun أَىِّ (\"which/what\") in the genitive case. أَىِّ is itself the first term (mudaf) of a possessive construct, and شَىْءٍ (\"thing\") is its second term (mudaf ilayh), so شَىْءٍ is genitive and indefinite, marked by kasra with tanwin. The whole interrogative phrase مِنْ أَىِّ شَىْءٍ (\"from what thing\") is fronted before the verb for emphasis and attaches grammatically to خَلَقَهُ. That final word is a past-tense verb (\"He created\") whose subject is an implicit \"He\" (referring to the Creator), with the attached pronoun هُ functioning as its direct object (\"him,\" i.e., man). The fronting of the question word lends the verse a rhetorical, reflective force, inviting consideration of the lowly material from which the human is made.",
+  "faqs_en": [
+   {
+    "q": "Why are both أَىِّ and شَىْءٍ in the genitive case?",
+    "a": "أَىِّ is genitive because it follows the preposition مِنْ. شَىْءٍ is genitive because it is the possessor (mudaf ilayh) in the construct phrase \"which thing.\" Two different rules give the same case."
+   },
+   {
+    "q": "Where is the subject of خَلَقَهُ?",
+    "a": "The subject is a hidden pronoun \"He,\" understood from context to mean the Creator. The visible attached pronoun هُ (\"him\") is the object of the verb, referring to the human being."
+   }
+  ],
+  "uthmani": "مِنْ أَىِّ شَىْءٍ خَلَقَهُۥ"
+ },
+ "80:19": {
+  "surah": 80,
+  "ayah": 19,
+  "h1_en": "I'rab of Surah Abasa Ayah 19 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah continues the answer to the question \"From what did He create him?\" It states that God created the human being from a drop of fluid (nutfah), then proportioned and shaped him. The fronted prepositional phrase 'from a drop' attaches to the verb 'created', and the two past-tense verbs share the same divine subject.",
+  "translation_en": "From a sperm-drop He created him, then He proportioned him.",
+  "transliteration": "min nutfatin khalaqahu fa-qaddarah",
+  "words_en": [
+   {
+    "token": "مِن",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "A preposition meaning 'from', here indicating the origin or material of creation."
+   },
+   {
+    "token": "نُّطْفَةٍ",
+    "case_en": "genitive",
+    "role_en": "object of preposition (majrur)",
+    "note_en": "It is genitive after 'min', and the phrase 'min nutfatin' attaches to the verb 'khalaqahu'."
+   },
+   {
+    "token": "خَلَقَهُ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb with object pronoun",
+    "note_en": "A past-tense verb with an implied subject 'He' (God) and the attached pronoun 'hu' as direct object."
+   },
+   {
+    "token": "فَقَدَّرَهُ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined past-tense verb with object pronoun",
+    "note_en": "The 'fa' joins this verb to the previous one in sequence; it is a past-tense verb with an implied subject and 'hu' as its object."
+   }
+  ],
+  "irab_en": "The verse opens with the prepositional phrase 'min nutfatin', where 'min' is a preposition and 'nutfatin' is its genitive object; together they are linked to the verb 'khalaqahu'. The verb 'khalaqa' is past tense, built on its ending, with a hidden pronoun 'He' referring to God as its doer, and the attached 'hu' functioning as the direct object. The conjunction 'fa' in 'fa-qaddarahu' connects the second verb to the first, marking an ordered succession of acts. 'Qaddara' is likewise a past-tense verb with a concealed divine subject and the attached pronoun 'hu' as its object. The whole forms a clause answering the earlier rhetorical question about the substance of human creation.",
+  "faqs_en": [
+   {
+    "q": "Why is 'nutfatin' in the genitive case?",
+    "a": "Because it is the object of the preposition 'min', and nouns governed by a preposition take the genitive case."
+   },
+   {
+    "q": "What does the 'fa' in 'fa-qaddarahu' indicate?",
+    "a": "It is a conjunction of sequence, joining 'He proportioned him' to 'He created him' and showing that the second act followed the first in order."
+   }
+  ],
+  "uthmani": "مِن نُّطْفَةٍ خَلَقَهُۥ فَقَدَّرَهُۥ"
+ },
+ "80:20": {
+  "surah": 80,
+  "ayah": 20,
+  "h1_en": "I'rab of Surah Abasa Ayah 20 — word-by-word Arabic grammar",
+  "tldr_en": "Continuing the account of God's favors, this ayah says He then made the path easy. The noun 'al-sabil' (the way) is fronted as an accusative object, while the following verb 'yassarahu' (He eased it) explains the suppressed governing verb. This construction, called ishtighal, gives emphasis to the path itself.",
+  "translation_en": "Then He made the way easy for him.",
+  "transliteration": "thumma al-sabila yassarah",
+  "words_en": [
+   {
+    "token": "ثُمَّ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "A conjunction meaning 'then', indicating succession with a sense of interval after the previous act."
+   },
+   {
+    "token": "ٱلسَّبِيلَ",
+    "case_en": "accusative",
+    "role_en": "direct object of an implied verb (maf'ul bihi)",
+    "note_en": "It is accusative as the object of a deleted verb that the following 'yassarahu' explains, an ishtighal construction giving prominence to 'the way'."
+   },
+   {
+    "token": "يَسَّرَهُ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb explaining the implied verb",
+    "note_en": "A past-tense verb with a hidden divine subject and the attached pronoun 'hu' as object, interpreting the suppressed governing verb."
+   }
+  ],
+  "irab_en": "'Thumma' is a conjunction signaling sequence with a pause, linking this favor to the preceding ones. 'Al-sabila' stands in the accusative case because it is the object of an unexpressed verb whose meaning is supplied by the verb that follows; grammarians call this pattern ishtighal, where a noun is fronted for emphasis and a later verb busies itself with a pronoun referring back to it. 'Yassarahu' is a past-tense verb, built on its ending, with a concealed subject 'He' denoting God and the attached pronoun 'hu' as its direct object. By placing 'the way' before its verb, the structure stresses that the very path of guidance and life was made easy by God's design.",
+  "faqs_en": [
+   {
+    "q": "Why is 'al-sabil' accusative rather than nominative?",
+    "a": "Because it is the object of a deleted verb that the visible verb 'yassarahu' interprets; in this ishtighal pattern the fronted noun is the accusative object."
+   },
+   {
+    "q": "What is the function of 'thumma' here?",
+    "a": "It is a conjunction of sequence, joining this divine favor to the earlier ones and implying an interval between the stages."
+   }
+  ],
+  "uthmani": "ثُمَّ ٱلسَّبِيلَ يَسَّرَهُۥ"
+ },
+ "80:21": {
+  "surah": 80,
+  "ayah": 21,
+  "h1_en": "I'rab of Surah Abasa Ayah 21 — word-by-word Arabic grammar",
+  "tldr_en": "The verse continues the sequence of God's acts toward the human being: then He caused him to die and provided him a grave. Both verbs are past tense with a concealed divine subject and an attached object pronoun, joined by 'thumma' and 'fa' to mark ordered stages in the human life cycle.",
+  "translation_en": "Then He caused him to die and provided him a grave.",
+  "transliteration": "thumma amatahu fa-aqbarah",
+  "words_en": [
+   {
+    "token": "ثُمَّ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "A conjunction meaning 'then', linking this stage to the previous ones with a sense of succession."
+   },
+   {
+    "token": "أَمَاتَهُ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb with object pronoun",
+    "note_en": "A past-tense verb with a hidden subject 'He' (God) and the attached pronoun 'hu' as its direct object."
+   },
+   {
+    "token": "فَأَقْبَرَهُ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined past-tense verb with object pronoun",
+    "note_en": "The 'fa' joins it in sequence; it is a past-tense verb with a concealed divine subject and 'hu' as object, meaning He had him buried."
+   }
+  ],
+  "irab_en": "'Thumma' is a conjunction marking ordered succession, connecting this act to the preceding favors. 'Amatahu' is a past-tense verb, built on its ending, derived from the form-IV root meaning 'to cause to die'; its subject is a concealed pronoun 'He' referring to God, and the attached 'hu' is the direct object. The 'fa' in 'fa-aqbarahu' is a conjunction of close sequence joining the next verb to it. 'Aqbarahu' is likewise a form-IV past-tense verb meaning 'He provided a grave for him' or 'had him buried', with a hidden divine subject and the attached pronoun 'hu' as object. Together the verbs trace the divinely ordained stages of death and burial.",
+  "faqs_en": [
+   {
+    "q": "What is the subject of 'amatahu' and 'aqbarahu'?",
+    "a": "In both verbs the subject is a concealed pronoun 'He', referring back to God, while the attached 'hu' is the direct object in each."
+   },
+   {
+    "q": "How do 'thumma' and 'fa' differ as connectors here?",
+    "a": "'Thumma' joins with a sense of interval between stages, while 'fa' joins with immediate or close sequence between dying and being given a grave."
+   }
+  ],
+  "uthmani": "ثُمَّ أَمَاتَهُۥ فَأَقْبَرَهُۥ"
+ },
+ "80:22": {
+  "surah": 80,
+  "ayah": 22,
+  "h1_en": "I'rab of Surah Abasa Ayah 22 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah closes the life-cycle sequence: then, when He wills, He will raise him up. 'Thumma' continues the succession, 'idha' is a conditional time-adverb whose verb is 'sha'a', and the response to the condition is 'ansharahu' (He resurrects him), affirming the bodily resurrection by God's will.",
+  "translation_en": "Then, when He wills, He will raise him up.",
+  "transliteration": "thumma idha sha'a ansharah",
+  "words_en": [
+   {
+    "token": "ثُمَّ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "A conjunction meaning 'then', continuing the chain of divine acts with a sense of succession."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "conditional adverb of time (zarf)",
+    "note_en": "An adverb of future time carrying conditional meaning, governed by its response clause 'ansharahu'."
+   },
+   {
+    "token": "شَآءَ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb of the condition",
+    "note_en": "A past-tense verb with a hidden subject 'He' (God), forming the conditional clause attached to 'idha'."
+   },
+   {
+    "token": "أَنشَرَهُ",
+    "case_en": "indeclinable",
+    "role_en": "response of the condition (jawab) with object pronoun",
+    "note_en": "A past-tense verb serving as the answer to 'idha', with a concealed divine subject and 'hu' as object, meaning He raises him to life."
+   }
+  ],
+  "irab_en": "'Thumma' is a conjunction of sequence joining this final stage to the preceding ones. 'Idha' is an adverb denoting future time and bearing a conditional sense; it is grammatically governed by its response. 'Sha'a' is a past-tense verb, built on its ending, with a concealed subject 'He' referring to God, and it constitutes the conditional clause introduced by 'idha'. 'Ansharahu' is a form-IV past-tense verb meaning 'He raised him to life', with a hidden divine subject and the attached pronoun 'hu' as its direct object; it functions as the answer (jawab) to the conditional 'idha'. The construction asserts that resurrection is wholly contingent on God's will and timing.",
+  "faqs_en": [
+   {
+    "q": "What role does 'idha' play in this verse?",
+    "a": "It is an adverb of future time with conditional force; 'sha'a' is its condition clause and 'ansharahu' is the response that grammatically governs it."
+   },
+   {
+    "q": "Why are 'sha'a' and 'ansharahu' past tense if they refer to the future?",
+    "a": "After 'idha', past-tense verbs commonly express future events with certainty; the meaning is 'when He wills... He will raise him up'."
+   }
+  ],
+  "uthmani": "ثُمَّ إِذَا شَآءَ أَنشَرَهُۥ"
+ },
+ "80:23": {
+  "surah": 80,
+  "ayah": 23,
+  "h1_en": "I'rab of Surah Abasa Ayah 23 — word-by-word Arabic grammar",
+  "tldr_en": "This verse rebukes humanity: by no means has he yet fulfilled what God commanded him. 'Kalla' is a particle of deterrence, 'lamma' is a negating, jussive particle covering the past up to now, and 'ma' is a relative noun functioning as the object, with its referent pronoun omitted.",
+  "translation_en": "No indeed! He has not yet fulfilled what He commanded him.",
+  "transliteration": "kalla lamma yaqdi ma amarah",
+  "words_en": [
+   {
+    "token": "كَلَّا",
+    "case_en": "indeclinable",
+    "role_en": "particle of deterrence (harf rad' wa-zajr)",
+    "note_en": "A particle of rebuke and restraint, rejecting humanity's arrogance and persistent denial."
+   },
+   {
+    "token": "لَمَّا",
+    "case_en": "indeclinable",
+    "role_en": "negating jussive particle",
+    "note_en": "A particle that negates, converts the verb's time to the past extending up to the present, and puts the verb in the jussive."
+   },
+   {
+    "token": "يَقْضِ",
+    "case_en": "jussive",
+    "role_en": "present-tense verb in jussive (majzum)",
+    "note_en": "It is jussive because of 'lamma', shown by dropping the final weak letter; its subject is a hidden 'he' referring to the human being."
+   },
+   {
+    "token": "مَآ",
+    "case_en": "accusative",
+    "role_en": "relative pronoun as direct object (maf'ul bihi)",
+    "note_en": "A relative noun in the accusative as object of 'yaqdi', with the returning pronoun omitted, i.e. 'what He commanded him to do'."
+   },
+   {
+    "token": "أَمَرَهُ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb in the relative clause",
+    "note_en": "A past-tense verb with a hidden subject 'He' (God) and 'hu' as object, forming the clause that completes the relative 'ma'."
+   }
+  ],
+  "irab_en": "'Kalla' is a particle of deterrence and rebuke, rejecting the human being's ingratitude and denial. 'Lamma' is a particle that negates the verb, shifts its meaning to a past stretching to the present, and renders it jussive. 'Yaqdi' is a present-tense verb made jussive by 'lamma', its jussive marked by the elision of the final weak letter, with a concealed subject 'he' referring to the human being. 'Ma' is a relative noun standing in the accusative as the direct object of 'yaqdi'; its returning pronoun is suppressed, the sense being 'what He commanded him to do'. 'Amarahu' is a past-tense verb with a hidden divine subject and the attached pronoun 'hu' as its object, forming the relative clause that completes 'ma'.",
+  "faqs_en": [
+   {
+    "q": "Why does 'yaqdi' lose its final letter?",
+    "a": "Because the jussive particle 'lamma' governs it, and a present-tense verb ending in a weak letter shows the jussive by dropping that letter."
+   },
+   {
+    "q": "What does 'lamma' add beyond simple negation?",
+    "a": "It negates the action while implying that the action's time extends from the past up to the present moment, meaning 'he has not yet done it'."
+   }
+  ],
+  "uthmani": "كَلَّا لَمَّا يَقْضِ مَآ أَمَرَهُۥ"
+ },
+ "80:24": {
+  "surah": 80,
+  "ayah": 24,
+  "h1_en": "I'rab of Surah Abasa Ayah 24 — word-by-word Arabic grammar",
+  "tldr_en": "The verse calls the human being to reflect: so let him look at his food. The 'fa' is resumptive, the 'lam' is the imperative lam putting the verb in the jussive, and 'al-insan' is the subject of that command, with the prepositional phrase 'at his food' attaching to the verb 'look'.",
+  "translation_en": "So let the human being look at his food.",
+  "transliteration": "fal-yanzuri al-insanu ila ta'amih",
+  "words_en": [
+   {
+    "token": "فَلْيَنظُرِ",
+    "case_en": "jussive",
+    "role_en": "resumptive 'fa' + imperative lam + jussive verb",
+    "note_en": "The 'fa' resumes the discourse, the imperative 'lam' commands, and the verb 'yanzur' is jussive because of that lam, its ending broken to 'i' to ease pronunciation."
+   },
+   {
+    "token": "ٱلْإِنسَٰنُ",
+    "case_en": "nominative",
+    "role_en": "subject of the verb (fa'il)",
+    "note_en": "It is nominative as the doer of 'yanzur', the one commanded to look and reflect."
+   },
+   {
+    "token": "إِلَىٰ",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "A preposition meaning 'at' or 'toward', introducing the object of contemplation."
+   },
+   {
+    "token": "طَعَامِهِ",
+    "case_en": "genitive",
+    "role_en": "object of preposition with possessive pronoun",
+    "note_en": "It is genitive after 'ila', with the attached 'hi' as a possessive pronoun; the phrase 'ila ta'amihi' attaches to the verb 'yanzur'."
+   }
+  ],
+  "irab_en": "The 'fa' at the start is resumptive, opening a fresh appeal. The 'lam' is the imperative lam, which gives the present-tense verb the force of a command and renders it jussive. 'Yanzur' is therefore jussive; its final consonant is given the vowel 'i' (fal-yanzuri) to ease linking with the next word and avoid two unvowelled consonants meeting. 'Al-insanu' is the subject (doer) of the verb and stands in the nominative case as the one commanded to look. 'Ila' is a preposition, and 'ta'amihi' is its genitive object, carrying the attached possessive pronoun 'hi'; the prepositional phrase 'ila ta'amihi' is linked to the verb 'yanzur', specifying what the human is invited to contemplate.",
+  "faqs_en": [
+   {
+    "q": "Why does 'yanzur' end with a kasra in 'fal-yanzuri'?",
+    "a": "The verb is jussive (its base form would end without a vowel), but a kasra is added to its final letter to ease connection with the following word and avoid two consonants meeting unvowelled."
+   },
+   {
+    "q": "What kind of 'lam' is in 'falyanzur'?",
+    "a": "It is the imperative lam (lam al-amr), which turns the present-tense verb into a command and places it in the jussive case."
+   }
+  ],
+  "uthmani": "فَلْيَنظُرِ ٱلْإِنسَٰنُ إِلَىٰ طَعَامِهِۦٓ"
+ },
+ "80:25": {
+  "surah": 80,
+  "ayah": 25,
+  "h1_en": "I'rab of Surah Abasa Ayah 25 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues God's pointer to His provision: \"That We poured down the water in abundance.\" Grammatically it opens with the particle anna plus its noun and verb, forming a maṣdar (verbal-noun) clause read in the genitive place as a clarifying substitution (badal ishtimāl) from \"his food\" in the prior verse. The verb ṣababnā governs al-māʾ as direct object, and ṣabban is an absolute object stressing the manner.",
+  "translation_en": "That We poured down the water in abundant pouring.",
+  "transliteration": "Annā ṣababnā al-māʾa ṣabbā",
+  "words_en": [
+   {
+    "token": "أَنَّا",
+    "case_en": "indeclinable",
+    "role_en": "emphatic particle anna with attached subject pronoun",
+    "note_en": "Anna is a particle of emphasis that puts its noun in the accusative; here its noun is the attached pronoun -nā (\"We\"), and the whole clause forms an interpreted verbal noun (maṣdar muʾawwal)."
+   },
+   {
+    "token": "صَبَبْنَا",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb with subject pronoun (predicate of anna)",
+    "note_en": "A past-tense verb built on sukūn because of the attached subject -nā; this verb plus its clause serves as the predicate (khabar) of anna."
+   },
+   {
+    "token": "ٱلْمَآءَ",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "The thing poured, marked accusative by the fatḥah as the object of the verb ṣababnā."
+   },
+   {
+    "token": "صَبًّا",
+    "case_en": "accusative",
+    "role_en": "absolute object (maf'ul mutlaq)",
+    "note_en": "A cognate verbal noun from the same root as the verb, accusative, intensifying the act of pouring."
+   }
+  ],
+  "irab_en": "The verse is governed by أَنَّ, a particle of emphasis that takes a noun in the accusative and a predicate in the nominative position. Its noun here is the attached pronoun ـنا (\"We\"), and its predicate is the verbal clause صَبَبْنَا. The verb صَبَبْنَا is past tense, built on sukūn because the subject pronoun ـنا is attached to it, and that pronoun is the doer in the nominative place. ٱلْمَآءَ is its direct object in the accusative (fatḥah). صَبًّا is an absolute object (mafʿūl muṭlaq) from the same root, accusative, reinforcing the verb's meaning of an abundant, deliberate pouring. The entire أَنَّ-clause yields an interpreted verbal noun standing in the genitive place as a badal ishtimāl (clarifying substitution) from طَعَامِهِ in the previous verse.",
+  "faqs_en": [
+   {
+    "q": "Why is صَبًّا in the accusative?",
+    "a": "It is an absolute object (mafʿūl muṭlaq), a verbal noun from the same root as the verb, used to emphasize the action, so it takes the accusative fatḥah."
+   },
+   {
+    "q": "What role does أَنَّ play here?",
+    "a": "أَنَّ is an emphatic particle; with its noun (the pronoun -nā) and predicate (the verb clause) it forms an interpreted verbal noun (maṣdar muʾawwal) that links back to \"his food\" in the prior verse."
+   }
+  ],
+  "uthmani": "أَنَّا صَبَبْنَا ٱلْمَآءَ صَبًّۭا"
+ },
+ "80:26": {
+  "surah": 80,
+  "ayah": 26,
+  "h1_en": "I'rab of Surah Abasa Ayah 26 — word-by-word Arabic grammar",
+  "tldr_en": "\"Then We split the earth with splitting.\" The verse is joined by thumma to the preceding act of pouring water, showing a sequence in God's provision. Shaqaqnā is a past-tense verb with the attached subject -nā; al-arḍ is its direct object in the accusative, and shaqqan is an absolute object from the same root, accusative, emphasizing the thoroughness of the splitting open of the soil.",
+  "translation_en": "Then We split the earth in thorough splitting.",
+  "transliteration": "Thumma shaqaqnā al-arḍa shaqqā",
+  "words_en": [
+   {
+    "token": "ثُمَّ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction of sequence (harf 'atf)",
+    "note_en": "A connective particle indicating sequence with a delay, joining this clause to the previous verse's action."
+   },
+   {
+    "token": "شَقَقْنَا",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb with subject pronoun",
+    "note_en": "Past tense built on sukūn because the subject pronoun -nā (\"We\") is attached; the pronoun is the doer in the nominative place."
+   },
+   {
+    "token": "ٱلْأَرْضَ",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "The thing split, accusative by the fatḥah as the object of shaqaqnā."
+   },
+   {
+    "token": "شَقًّا",
+    "case_en": "accusative",
+    "role_en": "absolute object (maf'ul mutlaq)",
+    "note_en": "A cognate verbal noun from the same root, accusative, intensifying the act of splitting."
+   }
+  ],
+  "irab_en": "ثُمَّ is a coordinating conjunction expressing sequence; it joins this clause to the previous verse. شَقَقْنَا is a past-tense verb built on sukūn because of the attached subject pronoun ـنا, which is the doer in the nominative place. ٱلْأَرْضَ is the direct object in the accusative, marked by fatḥah. شَقًّا is an absolute object (mafʿūl muṭlaq), a verbal noun from the same root as the verb, in the accusative, used to emphasize and intensify the manner of splitting. The clause as a whole is coordinated by ثُمَّ onto the action described in the previous verse, continuing the catalogue of God's deliberate acts in bringing forth food from the earth.",
+  "faqs_en": [
+   {
+    "q": "What does ثُمَّ add to the meaning?",
+    "a": "ثُمَّ is a conjunction showing ordered sequence with some interval; it links the splitting of the earth after the pouring of water in an orderly chain of provision."
+   },
+   {
+    "q": "Why does شَقَقْنَا end in sukūn rather than a vowel?",
+    "a": "Past-tense verbs are built on sukūn when the attached pronoun -nā (\"we\") is the subject; the verb itself is indeclinable in this state."
+   }
+  ],
+  "uthmani": "ثُمَّ شَقَقْنَا ٱلْأَرْضَ شَقًّۭا"
+ },
+ "80:27": {
+  "surah": 80,
+  "ayah": 27,
+  "h1_en": "I'rab of Surah Abasa Ayah 27 — word-by-word Arabic grammar",
+  "tldr_en": "\"So We caused to grow therein grain.\" The verse is connected by the fāʾ to the preceding acts. Anbatnā is a past-tense causative verb with the subject -nā; fīhā is a prepositional phrase (\"in it,\" referring to the earth) attached to the verb; and ḥabban (grain) is the direct object in the accusative, the first item in a list of what God grows from the split soil.",
+  "translation_en": "So We caused grain to grow therein.",
+  "transliteration": "Fa-anbatnā fīhā ḥabbā",
+  "words_en": [
+   {
+    "token": "فَأَنۢبَتْنَا",
+    "case_en": "indeclinable",
+    "role_en": "connective fā' plus past-tense verb with subject pronoun",
+    "note_en": "The fāʾ joins this clause to the previous action; anbatnā is a past-tense causative verb built on sukūn with the attached subject -nā (\"We\")."
+   },
+   {
+    "token": "فِيهَا",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jarr wa-majrur)",
+    "note_en": "The preposition fī with the genitive pronoun -hā (\"it,\" the earth); the phrase is attached to the verb anbatnā as an adverbial of place."
+   },
+   {
+    "token": "حَبًّا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "Grain, the thing made to grow, accusative by the fatḥah as the object of anbatnā and the first of several listed crops."
+   }
+  ],
+  "irab_en": "The فَ is a coordinating particle joining this clause to the preceding verses in sequence. أَنۢبَتْنَا is a past-tense causative (form IV) verb built on sukūn because the subject pronoun ـنا is attached, and that pronoun is the doer in the nominative place. فِيهَا is a prepositional phrase: the preposition فِي governs the attached genitive pronoun ـها (referring to the earth), and the phrase is grammatically attached (mutaʿalliq) to the verb أَنۢبَتْنَا as an adverbial of place. حَبًّا is the direct object in the accusative, marked by fatḥah; it heads the list of vegetation that follows in the next verses, all sharing the accusative case as objects of \"We caused to grow.\"",
+  "faqs_en": [
+   {
+    "q": "What does فِيهَا refer to?",
+    "a": "The pronoun -hā in فِيهَا refers to ٱلْأَرْض (the earth) from the previous verse; the phrase means \"in it\" and attaches to the verb as an adverbial of place."
+   },
+   {
+    "q": "Why is حَبًّا accusative?",
+    "a": "It is the direct object (mafʿūl bihi) of the verb أَنۢبَتْنَا (\"We caused to grow\"), so it takes the accusative fatḥah, and the later crops are coordinated onto it."
+   }
+  ],
+  "uthmani": "فَأَنۢبَتْنَا فِيهَا حَبًّۭا"
+ },
+ "80:28": {
+  "surah": 80,
+  "ayah": 28,
+  "h1_en": "I'rab of Surah Abasa Ayah 28 — word-by-word Arabic grammar",
+  "tldr_en": "\"And grapes and fodder.\" This verse continues the list of what God grows, joined by the conjunction wāw. ʿInaban (grapes) and qaḍban (green fodder/herbage) are both nouns in the accusative, coordinated onto ḥabban (grain) from the previous verse as further direct objects of the verb anbatnā (\"We caused to grow\").",
+  "translation_en": "And grapes and fodder,",
+  "transliteration": "Wa-ʿinaban wa-qaḍbā",
+  "words_en": [
+   {
+    "token": "وَعِنَبًا",
+    "case_en": "accusative",
+    "role_en": "conjunction wāw plus coordinated noun (ma'tuf)",
+    "note_en": "The wāw joins this noun to the previous list; ʿinaban (grapes) is accusative, coordinated onto ḥabban as another object of \"We caused to grow.\""
+   },
+   {
+    "token": "وَقَضْبًا",
+    "case_en": "accusative",
+    "role_en": "conjunction wāw plus coordinated noun (ma'tuf)",
+    "note_en": "Qaḍban (green fodder) is accusative, joined by the wāw and coordinated onto the preceding nouns as a further object of the verb."
+   }
+  ],
+  "irab_en": "Both items in this verse are coordinated onto the direct object حَبًّا of the previous verse. The first وَ is a coordinating conjunction, and عِنَبًا (grapes) is a noun coordinated (maʿṭūf) onto حَبًّا, sharing its accusative case (fatḥah) as an object of the verb أَنۢبَتْنَا (\"We caused to grow\"). The second وَ is likewise a conjunction, and قَضْبًا (green fodder or fresh herbage) is coordinated onto عِنَبًا, also accusative. Both nouns are fully declinable (munṣarif) and bear tanwīn. The verse thus extends the catalogue of vegetation that God produces from the soil, every member of the list standing in the accusative because each is governed by the single verb of growing in verse 27.",
+  "faqs_en": [
+   {
+    "q": "Why are عِنَبًا and قَضْبًا both accusative?",
+    "a": "Each is coordinated by the wāw onto حَبًّا from verse 27, so they all share its accusative case as objects of the verb أَنۢبَتْنَا (\"We caused to grow\")."
+   },
+   {
+    "q": "What does قَضْب mean grammatically as a noun?",
+    "a": "قَضْب is a singular noun denoting green fodder or freshly cut herbage; here it functions as a coordinated direct object in the accusative."
+   }
+  ],
+  "uthmani": "وَعِنَبًۭا وَقَضْبًۭا"
+ },
+ "80:29": {
+  "surah": 80,
+  "ayah": 29,
+  "h1_en": "I'rab of Surah Abasa Ayah 29 — word-by-word Arabic grammar",
+  "tldr_en": "\"And olives and date palms.\" The list of God's produce continues, each item joined by the conjunction wāw. Zaytūnan (olives) and nakhlan (date palms) are both nouns in the accusative, coordinated onto the earlier objects (grain, grapes, fodder) as further direct objects of the verb anbatnā, \"We caused to grow.\"",
+  "translation_en": "And olives and date palms,",
+  "transliteration": "Wa-zaytūnan wa-nakhlā",
+  "words_en": [
+   {
+    "token": "وَزَيْتُونًا",
+    "case_en": "accusative",
+    "role_en": "conjunction wāw plus coordinated noun (ma'tuf)",
+    "note_en": "The wāw joins this noun to the list; zaytūnan (olives) is accusative, coordinated onto the previous objects of \"We caused to grow.\""
+   },
+   {
+    "token": "وَنَخْلًا",
+    "case_en": "accusative",
+    "role_en": "conjunction wāw plus coordinated noun (ma'tuf)",
+    "note_en": "Nakhlan (date palms) is accusative, joined by the wāw and coordinated onto the preceding nouns as a further object of the verb."
+   }
+  ],
+  "irab_en": "This verse adds two more items to the running list of vegetation. The first وَ is a coordinating conjunction, and زَيْتُونًا (olives) is a noun coordinated (maʿṭūf) onto the earlier objects such as حَبًّا and عِنَبًا, sharing the accusative case (fatḥah) as an object of أَنۢبَتْنَا (\"We caused to grow\"). The second وَ is also a conjunction, and نَخْلًا (date palms) is coordinated onto زَيْتُونًا, equally accusative. Both nouns are fully declinable and carry tanwīn. As in the preceding verses, the single verb of growing from verse 27 governs every coordinated noun, so the entire enumeration stays uniformly in the accusative throughout.",
+  "faqs_en": [
+   {
+    "q": "What governs زَيْتُونًا and نَخْلًا grammatically?",
+    "a": "Both are coordinated by the wāw onto the direct objects begun in verse 27, so they are governed by the verb أَنۢبَتْنَا (\"We caused to grow\") and take the accusative."
+   },
+   {
+    "q": "Is نَخْل singular or collective?",
+    "a": "نَخْل is a collective noun meaning date palms; grammatically here it functions as a single coordinated direct object in the accusative."
+   }
+  ],
+  "uthmani": "وَزَيْتُونًۭا وَنَخْلًۭا"
+ },
+ "80:30": {
+  "surah": 80,
+  "ayah": 30,
+  "h1_en": "I'rab of Surah Abasa Ayah 30 — word-by-word Arabic grammar",
+  "tldr_en": "\"And dense-treed gardens.\" Ḥadāʾiqa (gardens) is a coordinated noun in the accusative; it is diptote (mamnūʿ min al-ṣarf), so it takes a fatḥah without tanwīn because it follows the plural pattern fawāʿil. Ghulban (dense, thickly grown) is its adjective, also accusative, agreeing with it and completing the list of God's varied produce.",
+  "translation_en": "And gardens of dense, lofty trees,",
+  "transliteration": "Wa-ḥadāʾiqa ghulbā",
+  "words_en": [
+   {
+    "token": "وَحَدَآئِقَ",
+    "case_en": "accusative",
+    "role_en": "conjunction wāw plus coordinated noun (ma'tuf), diptote",
+    "note_en": "Ḥadāʾiqa (gardens) is coordinated onto the previous objects in the accusative, but takes a bare fatḥah without tanwīn because it is a diptote following the ultimate-plural pattern."
+   },
+   {
+    "token": "غُلْبًا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't)",
+    "note_en": "Ghulban (thick, densely grown) is an adjective describing the gardens, accusative in agreement with ḥadāʾiqa and bearing tanwīn."
+   }
+  ],
+  "irab_en": "The وَ is a coordinating conjunction, and حَدَآئِقَ (gardens) is a noun coordinated (maʿṭūf) onto the earlier direct objects, governed by the verb أَنۢبَتْنَا (\"We caused to grow\") and therefore in the accusative. Notably, حَدَآئِقَ is a diptote (mamnūʿ min al-ṣarf): it follows the plural pattern (ṣīghat muntahā al-jumūʿ, fawāʿil), so it is denied tanwīn and shows its accusative with a bare fatḥah rather than the usual fatḥatayn. غُلْبًا (dense, thickly grown trees) is an adjective (naʿt) qualifying حَدَآئِق, agreeing with it in the accusative; being fully declinable, it carries tanwīn. The verse closes the enumeration of crops with these lush, densely planted gardens.",
+  "faqs_en": [
+   {
+    "q": "Why does حَدَآئِقَ lack tanwīn while the other listed nouns have it?",
+    "a": "حَدَآئِقَ is a diptote (mamnūʿ min al-ṣarf) because it follows the ultimate-plural pattern fawāʿil; such nouns are denied tanwīn and show the accusative with a single fatḥah."
+   },
+   {
+    "q": "What is the grammatical relationship of غُلْبًا to حَدَآئِقَ?",
+    "a": "غُلْبًا is an adjective (naʿt) describing the gardens as densely grown; it agrees with حَدَآئِقَ in the accusative case."
+   }
+  ],
+  "uthmani": "وَحَدَآئِقَ غُلْبًۭا"
+ },
+ "80:31": {
+  "surah": 80,
+  "ayah": 31,
+  "h1_en": "I'rab of Surah Abasa Ayah 31 — word-by-word Arabic grammar",
+  "tldr_en": "This short verse continues the catalogue of provisions God brings forth from the split earth, adding \"fruit and fodder.\" Both nouns are accusative (manṣūb), each functioning as a direct object of the implied verb \"We made grow\" (anbatnā) carried over from the earlier verses, joined by the conjunction wāw.",
+  "translation_en": "And fruit and pasture (fodder).",
+  "transliteration": "wa-fākihatan wa-abbā",
+  "words_en": [
+   {
+    "token": "وَفَٰكِهَةً",
+    "case_en": "accusative",
+    "role_en": "conjunction + direct object (maf'ul bihi)",
+    "note_en": "The wāw is a connector, and fākihatan is accusative as another object of the understood verb \"We caused to grow,\" carried from the preceding verses."
+   },
+   {
+    "token": "وَأَبًّا",
+    "case_en": "accusative",
+    "role_en": "conjunction + direct object (maf'ul bihi)",
+    "note_en": "Joined by wāw and likewise accusative, abban (\"fodder/pasture for grazing animals\") is another object of the same implied verb of causing growth."
+   }
+  ],
+  "irab_en": "Verse 31 belongs to a string of accusative nouns (verses 27–32) that all serve as objects of the verb anbatnā (\"We caused to grow\") stated earlier in verse 27. Each item — grain, grapes, herbs, olives, palms, gardens, and here fruit and fodder — is connected to the previous one by the conjunctive wāw and takes the accusative case with fatḥah tanwīn. Thus وَفَٰكِهَةً is wāw of conjunction plus fākihatan, an accusative direct object, and وَأَبًّا is likewise a conjoined accusative object. The word abb denotes the grass and herbage on which livestock graze, which prepares for the following verse's statement that all of this is \"provision for you and your cattle.\" The clean accusative parallelism reinforces the rhetorical listing of divine bounties.",
+  "faqs_en": [
+   {
+    "q": "Why are both words in the accusative case?",
+    "a": "They are direct objects (maf'ul bihi) of the verb anbatnā, \"We caused to grow,\" which appears in verse 27 and governs this whole list of crops."
+   },
+   {
+    "q": "What does أَبًّا (abban) mean grammatically and lexically?",
+    "a": "Grammatically it is an accusative direct object; lexically it refers to pasture or fodder, the herbage that grazing animals eat, distinguished from fruit meant for people."
+   }
+  ],
+  "uthmani": "وَفَٰكِهَةًۭ وَأَبًّۭا"
+ },
+ "80:32": {
+  "surah": 80,
+  "ayah": 32,
+  "h1_en": "I'rab of Surah Abasa Ayah 32 — word-by-word Arabic grammar",
+  "tldr_en": "This verse states the purpose of the preceding bounties: \"provision for you and your livestock.\" Matā'an is an absolute/cognate accusative tied to an implied verb (\"We provided you enjoyment\"), and the two prepositional phrases lakum and li-an'āmikum attach to it, specifying the beneficiaries.",
+  "translation_en": "As provision for you and for your livestock.",
+  "transliteration": "matā'an lakum wa-li-an'āmikum",
+  "words_en": [
+   {
+    "token": "مَّتَٰعًا",
+    "case_en": "accusative",
+    "role_en": "verbal noun object (maf'ul mutlaq for an omitted verb)",
+    "note_en": "Matā'an is accusative as the object of an implied verb meaning \"We gave you enjoyment,\" summing up the purpose of all the listed crops."
+   },
+   {
+    "token": "لَّكُمْ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jarr wa majrur)",
+    "note_en": "The preposition lām with the attached pronoun kum forms a phrase attached to matā'an, identifying you (people) as beneficiaries."
+   },
+   {
+    "token": "وَلِأَنْعَٰمِكُمْ",
+    "case_en": "genitive",
+    "role_en": "conjunction + prepositional phrase (jarr wa majrur)",
+    "note_en": "Joined by wāw, the lām governs an'āmikum in the genitive, adding your grazing livestock as further beneficiaries of the provision."
+   }
+  ],
+  "irab_en": "Verse 32 closes the list of provisions with a statement of purpose. مَّتَٰعًا is an accusative verbal-noun object (maf'ul muṭlaq) of an omitted verb understood as matta'akum (\"He let you enjoy\"), so the sense is \"as a means of enjoyment for you.\" Attached to matā'an is the prepositional phrase لَّكُمْ (lām of benefit plus the pronoun kum, genitive). The conjunction wāw then joins وَلِأَنْعَٰمِكُمْ, where the same benefactive lām governs an'āmikum in the genitive, with the second-person plural pronoun in possession. The phrasing balances human and animal recipients, and grammatically both prepositional phrases hang on the single accusative matā'an, making the verse a tidy purpose-clause for the whole preceding agricultural catalogue.",
+  "faqs_en": [
+   {
+    "q": "What kind of accusative is مَّتَٰعًا?",
+    "a": "It is treated as a verbal-noun (maf'ul mutlaq) governed by an omitted verb such as matta'akum, \"He gave you to enjoy,\" expressing the purpose of the bounties."
+   },
+   {
+    "q": "Why is أَنْعَٰم in the genitive case?",
+    "a": "It is governed by the preposition lām (\"for\"), so it takes the genitive, with the pronoun -kum attached as a possessive (\"your livestock\")."
+   }
+  ],
+  "uthmani": "مَّتَٰعًۭا لَّكُمْ وَلِأَنْعَٰمِكُمْ"
+ },
+ "80:33": {
+  "surah": 80,
+  "ayah": 33,
+  "h1_en": "I'rab of Surah Abasa Ayah 33 — word-by-word Arabic grammar",
+  "tldr_en": "The verse opens a new theme with \"So when the Deafening Blast comes.\" The fā is a resumptive connector, idhā is a conditional time-adverb whose answer (jawāb) is left implied, jā'at is its past-tense verb, and aṣ-ṣākhkhah is the nominative subject — the overwhelming cry of the Day of Resurrection.",
+  "translation_en": "So when the Deafening Blast comes,",
+  "transliteration": "fa-idhā jā'ati ṣ-ṣākhkhah",
+  "words_en": [
+   {
+    "token": "فَإِذَا",
+    "case_en": "indeclinable",
+    "role_en": "resumptive particle + conditional time-adverb (zarf)",
+    "note_en": "The fā resumes a new statement, and idhā is an adverb of time carrying conditional sense whose answering clause is understood from context."
+   },
+   {
+    "token": "جَآءَتِ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb (fi'l madi)",
+    "note_en": "Jā'at is a past-tense verb (\"comes/arrives\") in the conditional clause of idhā; the final tā marks a feminine subject."
+   },
+   {
+    "token": "ٱلصَّآخَّةُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "Aṣ-ṣākhkhah is the nominative doer of jā'at, naming the deafening cry that signals the Resurrection."
+   }
+  ],
+  "irab_en": "Verse 33 begins a fresh scene. فَ is a resumptive particle (isti'nāfiyyah) starting a new clause, and إِذَا is an adverb of future time with conditional force; its answering clause (jawāb idhā) is omitted and understood from the dread that follows. جَآءَتِ is a past-tense verb whose form bears the feminine marker tā; the kasrah on the final tā is for euphony before the definite article. ٱلصَّآخَّةُ is its grammatical subject (fā'il) in the nominative with a ḍammah. The word means the deafening blast or piercing cry of the Last Day, so loud it nearly deafens. By suppressing the jawāb of idhā, the verse heightens suspense, letting the reader feel the terror before its consequence is named in the verses that follow about people fleeing one another.",
+  "faqs_en": [
+   {
+    "q": "Where is the answering clause (jawāb) of إِذَا?",
+    "a": "It is omitted and left to the listener's imagination; the suspended structure makes the horror of that Day more vivid before the following verses describe people fleeing."
+   },
+   {
+    "q": "Why does جَآءَ end in -ati here?",
+    "a": "The feminine tā is added because the subject aṣ-ṣākhkhah is feminine, and the final vowel becomes a kasrah to ease pronunciation before the definite article al-."
+   }
+  ],
+  "uthmani": "فَإِذَا جَآءَتِ ٱلصَّآخَّةُ"
+ },
+ "80:34": {
+  "surah": 80,
+  "ayah": 34,
+  "h1_en": "I'rab of Surah Abasa Ayah 34 — word-by-word Arabic grammar",
+  "tldr_en": "\"The Day a man flees from his brother\" specifies the time of the Blast. Yawma is an accusative time-adverb standing in apposition to idhā; yafirru is its present-tense verb, al-mar' the nominative subject, and min akhīhi a prepositional phrase of separation attached to the verb of fleeing.",
+  "translation_en": "the Day a man flees from his brother,",
+  "transliteration": "yawma yafirru l-mar'u min akhīh",
+  "words_en": [
+   {
+    "token": "يَوْمَ",
+    "case_en": "accusative",
+    "role_en": "time-adverb in apposition (badal) to idhā",
+    "note_en": "Yawma is an accusative adverb of time substituting for the earlier idhā, fixing precisely when the events occur."
+   },
+   {
+    "token": "يَفِرُّ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb (fi'l mudari')",
+    "note_en": "Yafirru (\"flees\") is an imperfect verb in the indicative; the clause it heads is added to the time-adverb yawma."
+   },
+   {
+    "token": "ٱلْمَرْءُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "Al-mar' is the nominative doer of yafirru — the man who flees in the terror of that Day."
+   },
+   {
+    "token": "مِنْ",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "Min is the preposition of separation \"from,\" linking the act of fleeing to what one flees."
+   },
+   {
+    "token": "أَخِيهِ",
+    "case_en": "genitive",
+    "role_en": "object of preposition (majrur)",
+    "note_en": "Akhīhi is genitive after min; being one of the \"five nouns,\" it shows genitive with yā, and -hi is the possessive pronoun \"his.\""
+   }
+  ],
+  "irab_en": "Verse 34 pinpoints the time of the Blast. يَوْمَ is an accusative adverb of time (ẓarf zamān) standing as a substitute (badal) for the earlier إِذَا, both pointing to the same dreadful moment. The clause يَفِرُّ ٱلْمَرْءُ مِنْ أَخِيهِ is annexed to yawma as its complement. يَفِرُّ is an imperfect indicative verb (\"flees\"), and ٱلْمَرْءُ is its nominative subject. The preposition مِنْ governs أَخِيهِ in the genitive; since akh (\"brother\") is one of the five special nouns, its genitive is marked by yā rather than kasrah, and the attached -hi is a possessive pronoun. The image of a person fleeing even his own brother conveys the total collapse of earthly ties on the Day of Resurrection, a theme the next two verses extend to parents, spouse, and children.",
+  "faqs_en": [
+   {
+    "q": "Why is يَوْمَ in the accusative?",
+    "a": "It is an adverb of time (zarf zaman) and stands as a badal (substitute) for idhā in the previous verse, so it takes the accusative."
+   },
+   {
+    "q": "Why does أَخِيهِ show genitive with a yā instead of a kasrah?",
+    "a": "Akh is one of the \"five nouns\" (al-asma' al-khamsa), which mark the genitive with a long yā when joined to a following pronoun, here -hi (\"his\")."
+   }
+  ],
+  "uthmani": "يَوْمَ يَفِرُّ ٱلْمَرْءُ مِنْ أَخِيهِ"
+ },
+ "80:35": {
+  "surah": 80,
+  "ayah": 35,
+  "h1_en": "I'rab of Surah Abasa Ayah 35 — word-by-word Arabic grammar",
+  "tldr_en": "\"And his mother and his father\" continues the list of those a person flees. Each noun is joined by the conjunction wāw and stays in the genitive, conjoined to akhīhi (\"his brother\") in the previous verse, since all remain objects of the preposition min governing what one flees from.",
+  "translation_en": "and his mother and his father,",
+  "transliteration": "wa-ummihi wa-abīh",
+  "words_en": [
+   {
+    "token": "وَأُمِّهِ",
+    "case_en": "genitive",
+    "role_en": "conjunction + conjoined noun (ma'tuf) in the genitive",
+    "note_en": "The wāw joins ummihi to akhīhi from the prior verse, so it remains genitive under the same preposition min, with -hi as the possessive \"his.\""
+   },
+   {
+    "token": "وَأَبِيهِ",
+    "case_en": "genitive",
+    "role_en": "conjunction + conjoined noun (ma'tuf) in the genitive",
+    "note_en": "Abīhi is likewise conjoined by wāw and genitive; as one of the five nouns it shows genitive with yā, and -hi means \"his.\""
+   }
+  ],
+  "irab_en": "Verse 35 extends the catalogue of relations a person flees on the Day of the Blast. Both words are conjoined (ma'ṭūf) by the conjunction wāw to أَخِيهِ in verse 34, so they inherit the genitive case governed by the preposition مِنْ (\"from\"). وَأُمِّهِ is genitive marked by kasrah, with the attached pronoun -hi (\"his\"). وَأَبِيهِ is also conjoined and genitive, but because ab (\"father\") is one of the five special nouns, its genitive is signaled by the long yā rather than a plain kasrah, again with -hi as the possessive. The grammatical chaining of brother, mother, and father under a single preposition tightly binds these dearest kin into one fleeing motion, dramatizing how the terror of that Day severs even the closest familial bonds.",
+  "faqs_en": [
+   {
+    "q": "Why are أُمّ and أَب in the genitive case?",
+    "a": "They are conjoined by wāw to akhīhi (\"his brother\") in the previous verse, so they share its genitive case under the preposition min, \"from.\""
+   },
+   {
+    "q": "Why is أَبِيهِ written with a yā?",
+    "a": "Ab is one of the five nouns, which take the genitive with a long yā when followed by a pronoun; here -hi (\"his\") is attached, giving abīhi."
+   }
+  ],
+  "uthmani": "وَأُمِّهِۦ وَأَبِيهِ"
+ },
+ "80:36": {
+  "surah": 80,
+  "ayah": 36,
+  "h1_en": "I'rab of Surah Abasa Ayah 36 — word-by-word Arabic grammar",
+  "tldr_en": "\"And his spouse and his sons\" closes the list of kin a person flees on the Day of the Blast. Both nouns are conjoined by wāw to akhīhi and remain in the genitive under the preposition min; banīhi is a sound masculine plural marked with yā, and each carries the possessive -hi.",
+  "translation_en": "and his spouse and his sons.",
+  "transliteration": "wa-ṣāḥibatihi wa-banīh",
+  "words_en": [
+   {
+    "token": "وَصَٰحِبَتِهِ",
+    "case_en": "genitive",
+    "role_en": "conjunction + conjoined noun (ma'tuf) in the genitive",
+    "note_en": "The wāw joins ṣāḥibatihi to the earlier chain, keeping it genitive under min, with -hi (\"his\") attached; ṣāḥibah here means wife/spouse."
+   },
+   {
+    "token": "وَبَنِيهِ",
+    "case_en": "genitive",
+    "role_en": "conjunction + conjoined noun (ma'tuf) in the genitive",
+    "note_en": "Banīhi is conjoined by wāw and genitive; as a sound masculine plural it takes yā for the genitive, with -hi meaning \"his.\""
+   }
+  ],
+  "irab_en": "Verse 36 completes the list of close relations a person flees when the Blast strikes. Both nouns are conjoined (ma'ṭūf) by the conjunction wāw to أَخِيهِ in verse 34, so they too are genitive under the preposition مِنْ. وَصَٰحِبَتِهِ is genitive marked by kasrah, with the possessive pronoun -hi (\"his\"); ṣāḥibah here denotes one's wife or spouse. وَبَنِيهِ is also conjoined and genitive, but because banūn (\"sons\") is a sound masculine plural, its genitive is shown by the yā (banī-) rather than a kasrah, again followed by -hi (\"his\"). Listing spouse and offspring last completes the inventory of the very dearest human ties — brother, mother, father, wife, children — all abandoned in the universal panic, underscoring that on that Day each soul is consumed by its own fate.",
+  "faqs_en": [
+   {
+    "q": "Why are صَٰحِبَة and بَنُون in the genitive?",
+    "a": "Both are conjoined by wāw to akhīhi in verse 34 and so remain genitive under the preposition min, \"from,\" that governs the whole list of relatives one flees."
+   },
+   {
+    "q": "Why does بَنِيهِ end in -īhi rather than -ūhi?",
+    "a": "Banūn is a sound masculine plural; in the genitive (and accusative) it takes the yā ending, giving banī-, and the attached pronoun -hi (\"his\") follows."
+   }
+  ],
+  "uthmani": "وَصَٰحِبَتِهِۦ وَبَنِيهِ"
+ },
+ "80:37": {
+  "surah": 80,
+  "ayah": 37,
+  "h1_en": "I'rab of Surah Abasa Ayah 37 — word-by-word Arabic grammar",
+  "tldr_en": "This verse states that on that Day every single person will have a concern that fully occupies him. The fronted prepositional phrase 'for every person of them' serves as an advanced predicate, while 'a concern' is the delayed subject, and 'that occupies him' is a descriptive clause modifying it.",
+  "translation_en": "For every person among them, that Day, there will be a matter that occupies him entirely.",
+  "transliteration": "Likulli imri'in minhum yawma'idhin sha'nun yughneeh",
+  "words_en": [
+   {
+    "token": "لِكُلِّ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (fronted predicate)",
+    "note_en": "The preposition 'li' governs 'kull' in the genitive, and together the phrase functions as a fronted predicate for the delayed subject."
+   },
+   {
+    "token": "ٱمْرِئٍ",
+    "case_en": "genitive",
+    "role_en": "possessed noun (mudaf ilayh)",
+    "note_en": "It is the second term of the genitive construction with 'kull,' hence genitive."
+   },
+   {
+    "token": "مِّنْهُمْ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (attribute)",
+    "note_en": "The phrase 'min-hum' attaches as a describing element to 'imri'in,' specifying 'every person of them.'"
+   },
+   {
+    "token": "يَوْمَئِذٍ",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf)",
+    "note_en": "It is an adverb of time fixed in the accusative position, linked to the meaning of the predicate."
+   },
+   {
+    "token": "شَأْنٌ",
+    "case_en": "nominative",
+    "role_en": "delayed subject (mubtada' mu'akhkhar)",
+    "note_en": "It is the delayed subject in the nominative, since its predicate (the prepositional phrase) was placed first."
+   },
+   {
+    "token": "يُغْنِيهِ",
+    "case_en": "nominative",
+    "role_en": "verb in a descriptive clause",
+    "note_en": "An imperfect verb in the nominative whose clause describes 'sha'n,' with the attached pronoun as its object."
+   }
+  ],
+  "irab_en": "The verse opens with the prepositional phrase 'li-kulli imri'in,' where 'li' is a preposition putting 'kull' in the genitive, and 'imri'in' follows as the second term of the construct, also genitive. This whole phrase is fronted to function as the predicate. 'Min-hum' is a further prepositional phrase describing 'imri'in.' 'Yawma'idhin' is an adverb of time in the accusative, tied to the predicate's sense. The actual subject, 'sha'nun,' comes afterward and is therefore the delayed subject in the nominative. 'Yughneehi' is an imperfect verb in the nominative; its sentence stands as a descriptive clause qualifying 'sha'n,' and the attached pronoun 'hi' is its direct object, conveying that this concern wholly engrosses each individual.",
+  "faqs_en": [
+   {
+    "q": "Why is 'sha'nun' nominative even though it comes after a preposition?",
+    "a": "The preposition governs 'kull,' not 'sha'n.' Because the predicate (the prepositional phrase) was placed first, 'sha'nun' is the delayed subject and stays nominative."
+   },
+   {
+    "q": "What role does 'yughneehi' play?",
+    "a": "It is an imperfect verb forming a clause that describes the indefinite noun 'sha'nun,' so the whole clause functions adjectivally, meaning 'a concern that occupies him.'"
+   },
+   {
+    "q": "What is the case of 'yawma'idhin' here?",
+    "a": "It is an adverb of time in the accusative position, connected to the meaning of the predicate, situating the statement on the Day of Resurrection."
+   }
+  ],
+  "uthmani": "لِكُلِّ ٱمْرِئٍۢ مِّنْهُمْ يَوْمَئِذٍۢ شَأْنٌۭ يُغْنِيهِ"
+ },
+ "80:38": {
+  "surah": 80,
+  "ayah": 38,
+  "h1_en": "I'rab of Surah Abasa Ayah 38 — word-by-word Arabic grammar",
+  "tldr_en": "This verse describes certain faces on that Day as bright and shining. 'Faces' is the subject, 'on that Day' is an adverb tied to the predicate, and 'shining' is the predicate describing those faces.",
+  "translation_en": "Some faces, that Day, will be bright and shining.",
+  "transliteration": "Wujoohun yawma'idhin musfirah",
+  "words_en": [
+   {
+    "token": "وُجُوهٌ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "It is the subject of the nominal sentence in the nominative, indefinite to suggest 'some faces.'"
+   },
+   {
+    "token": "يَوْمَئِذٍ",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf)",
+    "note_en": "An adverb of time in the accusative, connected to the predicate that follows."
+   },
+   {
+    "token": "مُّسْفِرَةٌ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "It is the predicate of 'wujooh' in the nominative, describing the faces as radiant."
+   }
+  ],
+  "irab_en": "This is a nominal sentence. 'Wujoohun' is the subject (mubtada') in the nominative; its indefiniteness is acceptable here because it carries a partitive sense ('some faces') and because the adverb specifying it follows. 'Yawma'idhin' is an adverb of time in the accusative, linked to the predicate, locating the description on the Day of Resurrection. 'Musfiratun' is the predicate (khabar) in the nominative, agreeing with the subject and describing those faces as bright and beaming. The sentence thus introduces one of two contrasting groups on that Day, this group marked by light and joy, the other (in verse 40) by dust and gloom.",
+  "faqs_en": [
+   {
+    "q": "How can 'wujoohun' be a subject when it is indefinite?",
+    "a": "An indefinite subject is permitted when it gains specification, here through the partitive sense ('some faces') and the following descriptive context, so it validly serves as the mubtada'."
+   },
+   {
+    "q": "What is the predicate of this verse?",
+    "a": "'Musfiratun' is the predicate, in the nominative, describing the faces as bright and shining."
+   },
+   {
+    "q": "Why is 'yawma'idhin' accusative?",
+    "a": "It is an adverb of time, which takes the accusative, and it is connected to the meaning of the predicate."
+   }
+  ],
+  "uthmani": "وُجُوهٌۭ يَوْمَئِذٍۢ مُّسْفِرَةٌۭ"
+ },
+ "80:39": {
+  "surah": 80,
+  "ayah": 39,
+  "h1_en": "I'rab of Surah Abasa Ayah 39 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues describing the bright faces as laughing and rejoicing. Both 'laughing' and 'rejoicing at good news' are further predicates or attributes of the same 'faces' from the previous verse, all in the nominative.",
+  "translation_en": "Laughing, rejoicing at good news.",
+  "transliteration": "Dahikatun mustabshirah",
+  "words_en": [
+   {
+    "token": "ضَاحِكَةٌ",
+    "case_en": "nominative",
+    "role_en": "second predicate (khabar) of 'wujooh'",
+    "note_en": "It is an additional predicate of 'wujooh' from the previous verse, in the nominative, describing the faces as laughing."
+   },
+   {
+    "token": "مُّسْتَبْشِرَةٌ",
+    "case_en": "nominative",
+    "role_en": "third predicate (khabar) of 'wujooh'",
+    "note_en": "It is a further predicate of the same subject in the nominative, describing the faces as delighted with good tidings."
+   }
+  ],
+  "irab_en": "Both words in this verse continue the description of 'wujooh' (faces) introduced in verse 38. 'Dahikatun' is an additional predicate (khabar) of that subject, in the nominative and agreeing with it, portraying the faces as laughing. 'Mustabshiratun' is yet another predicate, also nominative, depicting them as rejoicing at glad tidings. Arabic readily allows multiple predicates for a single subject, so 'wujooh' is here described in succession as bright (musfirah), laughing (dahikah), and joyful (mustabshirah). Alternatively, these may be read as successive adjectives qualifying the faces; either analysis keeps them all in the nominative in agreement with 'wujooh.'",
+  "faqs_en": [
+   {
+    "q": "Can a single subject have more than one predicate?",
+    "a": "Yes. Arabic allows a subject to take several predicates in sequence, so 'wujooh' is described as shining, then laughing, then rejoicing, each in the nominative."
+   },
+   {
+    "q": "Why are both words nominative?",
+    "a": "They agree with their subject 'wujooh,' which is nominative; whether taken as predicates or as adjectives, they follow it in case."
+   },
+   {
+    "q": "What is the subject these words describe?",
+    "a": "They describe 'wujoohun' (faces) mentioned in the preceding verse 38, continuing its description."
+   }
+  ],
+  "uthmani": "ضَاحِكَةٌۭ مُّسْتَبْشِرَةٌۭ"
+ },
+ "80:40": {
+  "surah": 80,
+  "ayah": 40,
+  "h1_en": "I'rab of Surah Abasa Ayah 40 — word-by-word Arabic grammar",
+  "tldr_en": "This verse describes another set of faces on that Day having dust upon them. 'Faces' is a subject, and the prepositional phrase 'upon them' functions as a fronted predicate before the delayed subject 'dust.'",
+  "translation_en": "And other faces, that Day, will have dust upon them.",
+  "transliteration": "Wa wujoohun yawma'idhin 'alayha ghabarah",
+  "words_en": [
+   {
+    "token": "وَوُجُوهٌ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "Preceded by the connective 'wa,' it is a subject in the nominative introducing the second, contrasting group of faces."
+   },
+   {
+    "token": "يَوْمَئِذٍ",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf)",
+    "note_en": "An adverb of time in the accusative, linked to the predicate of the sentence."
+   },
+   {
+    "token": "عَلَيْهَا",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (fronted predicate)",
+    "note_en": "The prepositional phrase 'alay-ha' is placed first to serve as the predicate of the delayed subject."
+   },
+   {
+    "token": "غَبَرَةٌ",
+    "case_en": "nominative",
+    "role_en": "delayed subject (mubtada' mu'akhkhar)",
+    "note_en": "It is the delayed subject in the nominative, since the prepositional predicate preceded it."
+   }
+  ],
+  "irab_en": "The connective 'wa' joins this sentence to the previous description. 'Wujoohun' is the subject (mubtada') in the nominative, introducing a second, contrasting group. 'Yawma'idhin' is an adverb of time in the accusative, tied to the sentence's predicate. The phrase 'alay-ha' (a preposition plus attached pronoun, in the genitive) is fronted to act as the predicate; consequently 'ghabaratun' (dust) comes after it as the delayed subject in the nominative. So the structure is a nominal sentence within the larger one: 'alay-ha ghabaratun' ('upon them is dust') itself serves as the predicate describing 'wujooh,' contrasting these dust-covered faces with the radiant ones before.",
+  "faqs_en": [
+   {
+    "q": "Why is 'ghabaratun' the delayed subject?",
+    "a": "Because its predicate, the prepositional phrase 'alay-ha,' was placed before it. When the predicate is fronted, the noun that follows becomes the delayed subject and stays nominative."
+   },
+   {
+    "q": "What does the inner sentence 'alay-ha ghabaratun' do?",
+    "a": "It is itself a nominal sentence ('upon them is dust') that serves as the predicate describing the main subject 'wujooh.'"
+   },
+   {
+    "q": "What is the function of 'wa' at the start?",
+    "a": "It is a connective joining this verse to the preceding description, introducing the contrasting second group of faces."
+   }
+  ],
+  "uthmani": "وَوُجُوهٌۭ يَوْمَئِذٍ عَلَيْهَا غَبَرَةٌۭ"
+ },
+ "80:41": {
+  "surah": 80,
+  "ayah": 41,
+  "h1_en": "I'rab of Surah Abasa Ayah 41 — word-by-word Arabic grammar",
+  "tldr_en": "This verse describes the dust-covered faces as overcast by gloom. The verb 'covers them' takes the attached pronoun as its object, and 'darkness/gloom' is its subject, the whole clause describing the faces of the previous verse.",
+  "translation_en": "Darkness will cover them.",
+  "transliteration": "Tarhaquha qatarah",
+  "words_en": [
+   {
+    "token": "تَرْهَقُهَا",
+    "case_en": "nominative",
+    "role_en": "verb with object pronoun (predicate clause)",
+    "note_en": "An imperfect verb in the nominative; its attached pronoun 'ha' is the direct object, and the clause describes the faces."
+   },
+   {
+    "token": "قَتَرَةٌ",
+    "case_en": "nominative",
+    "role_en": "subject of the verb (fa'il)",
+    "note_en": "It is the doer of the verb 'tarhaqu,' in the nominative, meaning a gloom or blackness overspreads them."
+   }
+  ],
+  "irab_en": "This verse forms a verbal sentence that continues describing the faces of verse 40. 'Tarhaquha' is an imperfect verb in the nominative (nothing makes it accusative or jussive), and the attached pronoun 'ha' is its direct object, referring back to those faces. 'Qataratun' is the subject (fa'il) of the verb, in the nominative, meaning a dark gloom or blackness. The whole verbal sentence functions as a further descriptive predicate of 'wujooh,' so the picture is completed: those faces already have dust upon them, and now a gloomy blackness covers them as well, the opposite of the shining, laughing faces described earlier.",
+  "faqs_en": [
+   {
+    "q": "What is the subject of 'tarhaqu'?",
+    "a": "'Qataratun' (gloom/blackness) is the subject, in the nominative, while the attached pronoun 'ha' is the object referring to the faces."
+   },
+   {
+    "q": "Why is the verb feminine ('tarhaqu')?",
+    "a": "The verb agrees with its feminine subject 'qataratun,' so it takes the feminine prefix even though it precedes the subject."
+   },
+   {
+    "q": "What does this clause describe?",
+    "a": "The whole verbal sentence serves as a further description of the dust-covered faces from the preceding verse, depicting gloom overspreading them."
+   }
+  ],
+  "uthmani": "تَرْهَقُهَا قَتَرَةٌ"
+ },
+ "80:42": {
+  "surah": 80,
+  "ayah": 42,
+  "h1_en": "I'rab of Surah Abasa Ayah 42 — word-by-word Arabic grammar",
+  "tldr_en": "This concluding verse identifies the owners of those gloomy faces as the disbelievers, the wicked. 'Those' is the subject, 'they' is a separating pronoun, and 'the disbelievers' is the predicate, followed by 'the wicked' as its attribute.",
+  "translation_en": "Those are the disbelievers, the wicked.",
+  "transliteration": "Ula'ika humu al-kafaratu al-fajarah",
+  "words_en": [
+   {
+    "token": "أُو۟لَٰٓئِكَ",
+    "case_en": "indeclinable",
+    "role_en": "subject (mubtada')",
+    "note_en": "A demonstrative pronoun, indeclinable, in the nominative position as the subject of the sentence."
+   },
+   {
+    "token": "هُمُ",
+    "case_en": "indeclinable",
+    "role_en": "separating pronoun (damir fasl)",
+    "note_en": "It is a pronoun of separation with no case role, emphasizing and distinguishing the subject from the predicate."
+   },
+   {
+    "token": "ٱلْكَفَرَةُ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "It is the predicate of 'ula'ika' in the nominative, identifying those faces' owners as the disbelievers."
+   },
+   {
+    "token": "ٱلْفَجَرَةُ",
+    "case_en": "nominative",
+    "role_en": "attribute (na't) of 'al-kafarah'",
+    "note_en": "It is an adjective describing 'al-kafarah' in the nominative, characterizing them further as the wicked, immoral ones."
+   }
+  ],
+  "irab_en": "This is a nominal sentence closing the sura's contrast. 'Ula'ika' is a demonstrative pronoun, indeclinable but occupying the nominative position as the subject (mubtada'). 'Humu' is a separating pronoun (damir fasl) carrying no independent case role; it adds emphasis and marks off the subject from the predicate, also stressing exclusivity. 'Al-kafaratu' is the predicate (khabar) in the nominative, identifying those people as the disbelievers. 'Al-fajaratu' follows as an attribute (na't) of 'al-kafarah,' also nominative, further describing them as the wicked and corrupt. The verse thus names the owners of the dust-covered, gloomy faces, sealing the contrast with the radiant believers.",
+  "faqs_en": [
+   {
+    "q": "What is the role of 'humu' in this verse?",
+    "a": "It is a separating pronoun (damir fasl) with no case ending of its own; it emphasizes the sentence and distinguishes the subject from the predicate, conveying exclusivity."
+   },
+   {
+    "q": "Why is 'al-fajaratu' nominative?",
+    "a": "It is an attribute (na't) describing 'al-kafarah,' so it follows that word in case, which is nominative as the predicate."
+   },
+   {
+    "q": "Is 'ula'ika' declinable?",
+    "a": "No. As a demonstrative pronoun it is indeclinable, but it occupies the nominative position functioning as the subject of the sentence."
+   }
+  ],
+  "uthmani": "أُو۟لَٰٓئِكَ هُمُ ٱلْكَفَرَةُ ٱلْفَجَرَةُ"
+ }
+}

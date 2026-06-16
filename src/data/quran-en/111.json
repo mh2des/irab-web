@@ -1,0 +1,282 @@
+{
+ "111:1": {
+  "surah": 111,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah Al-Masad Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "The verse is built on two coordinated past-tense verbal sentences. The first, تَبَّتْ يَدَا أَبِي لَهَبٍ, has the verb تَبَّتْ followed by its subject يَدَا (a dual in the nominative), which heads a two-link genitive chain (أَبِي then لَهَبٍ). The conjunction وَ then links the second clause وَتَبَّ, whose subject is hidden.",
+  "translation_en": "May the two hands of Abu Lahab perish, and may he perish.",
+  "transliteration": "Tabbat yadā abī lahabin wa tabb(a)",
+  "words_en": [
+   {
+    "token": "تَبَّتْ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb (fi'l madi)",
+    "note_en": "A past-tense verb expressing a curse or imprecation, fixed on a vowelless ending, with the attached ت being the feminine marker that agrees with its feminine dual subject."
+   },
+   {
+    "token": "يَدَا",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "The doer of the verb, a dual noun in the nominative shown by the final alif (in place of the usual ḍammah), and it loses its final nūn because it is the first term of a genitive construction."
+   },
+   {
+    "token": "أَبِي",
+    "case_en": "genitive",
+    "role_en": "genitive noun (mudaf ilayh)",
+    "note_en": "Possessor of the hands; one of the \"five nouns,\" so its genitive case is marked by the yāʾ rather than a kasrah, and it is itself prefixed to the following noun."
+   },
+   {
+    "token": "لَهَبٍ",
+    "case_en": "genitive",
+    "role_en": "second genitive noun (mudaf ilayh)",
+    "note_en": "Completes the chain as the noun governed by أَبِي, in the genitive marked by the kasrah (here tanwīn) on its end."
+   },
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "coordinating conjunction ('atf)",
+    "note_en": "A connective particle, fixed in form, joining the second verbal clause to the first."
+   },
+   {
+    "token": "تَبَّ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb with hidden subject",
+    "note_en": "A second past-tense verb of imprecation, fixed on the fatḥah, whose subject is an implied pronoun (\"he\") referring back to Abu Lahab."
+   }
+  ],
+  "irab_en": "This ayah consists of two past-tense clauses linked by the conjunction وَ. The opening word تَبَّتْ is a perfect verb carrying the sense of a curse, and the ت suffixed to it is the feminine sign required because the subject is grammatically feminine. That subject is يَدَا (the two hands), a dual noun standing in the nominative; its case appears as a final alif rather than a ḍammah, and the dual nūn drops because the word is the head of an iḍāfah (possessive construction). The chain continues with أَبِي, a member of the five nouns whose genitive is shown by the yāʾ, and it in turn governs لَهَبٍ in the genitive. After the connective وَ, the verb تَبَّ repeats the same imprecatory meaning, this time with a concealed subject pronoun referring to the man himself, so the curse falls on both his hands and his person.",
+  "faqs_en": [
+   {
+    "q": "Why does تَبَّتْ carry a feminine ending when the curse is aimed at a man?",
+    "a": "The verb agrees with its grammatical subject, which is يَدَا (the two hands), and يَد is a feminine noun. The feminine ت attaches to the verb because of that subject, not because of Abu Lahab; the second verb تَبَّ has no such ت since its hidden subject is the masculine \"he.\""
+   },
+   {
+    "q": "Why is يَدَا written without a final nūn, and how is its case shown?",
+    "a": "يَدَا is a dual noun functioning as the subject, so it is nominative — but instead of a ḍammah, duals take a final alif. The expected dual nūn is dropped because يَدَا is the first term of a genitive construction (iḍāfah) with أَبِي, and the head noun of such a construction never keeps its nūn."
+   },
+   {
+    "q": "Why does أَبِي end in yāʾ instead of a kasrah for the genitive?",
+    "a": "أَبِي belongs to the \"five nouns\" (al-asmāʾ al-khamsah), a special class whose case endings are shown by long vowels rather than short ones. In the genitive these nouns take a yāʾ, which is why \"father of\" appears as أَبِي here rather than with a plain kasrah."
+   }
+  ],
+  "uthmani": "تَبَّتْ يَدَآ أَبِى لَهَبٍۢ وَتَبَّ"
+ },
+ "111:2": {
+  "surah": 111,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah Al-Masad Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "A negative verbal sentence: the particle mā negates the past verb aghnā (\"availed nothing\"). The prepositional phrase ʿanhu attaches to that verb, and māluhū is its delayed subject. The second mā is a maṣdariyya particle forming a verbal noun (\"what he earned\"), coordinated by the wāw onto māluhū as a second subject of aghnā.",
+  "translation_en": "His wealth did not avail him, nor did what he earned.",
+  "transliteration": "mā aghnā ʿanhu māluhū wa-mā kasab(a)",
+  "words_en": [
+   {
+    "token": "مَآ",
+    "case_en": "indeclinable",
+    "role_en": "negation particle (ḥarf nafy)",
+    "note_en": "This mā is purely negating; it has no grammatical position and denies that the action of the following verb took place."
+   },
+   {
+    "token": "أَغْنَىٰ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb (fiʿl māḍin)",
+    "note_en": "A past verb meaning 'availed/benefited', fixed on an estimated fatḥa over the final weak letter; its subject comes later in the sentence."
+   },
+   {
+    "token": "عَنْهُ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jārr wa-majrūr)",
+    "note_en": "The preposition ʿan plus the attached pronoun hū (genitive) form an adverbial phrase linked to the verb aghnā."
+   },
+   {
+    "token": "مَالُهُ",
+    "case_en": "nominative",
+    "role_en": "delayed subject (fāʿil mu'akhkhar)",
+    "note_en": "Māl is the nominative doer of aghnā with a ḍamma ending, and the attached pronoun hū ('his') is a possessive in the genitive position as muḍāf ilayh."
+   },
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "coordinating conjunction (ḥarf ʿaṭf)",
+    "note_en": "The wāw joins what follows onto māluhū, adding a second item to the subject of aghnā."
+   },
+   {
+    "token": "مَا",
+    "case_en": "indeclinable",
+    "role_en": "infinitival particle (mā maṣdariyya)",
+    "note_en": "This mā converts the following verb into an implied verbal noun ('his earning / what he earned'), which functions as the coordinated element."
+   },
+   {
+    "token": "كَسَبَ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb within the maṣdar construction",
+    "note_en": "A past verb fixed on fatḥa meaning 'he earned'; with the preceding mā it yields an interpreted verbal noun standing in the nominative, coordinated onto māluhū."
+   }
+  ],
+  "irab_en": "The verse opens with mā, a particle of negation with no syntactic position, denying the action of the verb that follows. Aghnā is a past-tense verb ('it availed'), built on an estimated vowel over its weak final letter. The phrase ʿanhu — the preposition ʿan with its genitive pronoun — attaches to this verb. The verb's subject is delayed: māluhū ('his wealth') is nominative, marked by ḍamma, with the pronoun hū as its possessive annexation. The conjunction wāw then links a second subject: the particle mā here is maṣdariyya, turning kasaba ('he earned') into an interpreted verbal noun. This noun, 'what he earned', sits in the nominative position and is coordinated onto māluhū, so the negation covers both his wealth and his gains: neither availed him at all.",
+  "faqs_en": [
+   {
+    "q": "Why does the subject 'māluhū' come after the verb and the prepositional phrase?",
+    "a": "Arabic regularly allows the doer (fāʿil) to follow its verb, and other elements such as the prepositional phrase ʿanhu can intervene. So aghnā ('availed') comes first, then ʿanhu ('him'), and the delayed nominative subject māluhū ('his wealth') closes the clause."
+   },
+   {
+    "q": "Are the two occurrences of 'mā' in this verse the same word?",
+    "a": "No. The first mā is a negation particle denying that the verb happened. The second mā is maṣdariyya: it combines with kasaba to produce an interpreted verbal noun ('his earning / what he earned'), which then functions as a noun in the sentence."
+   },
+   {
+    "q": "What is the grammatical position of 'mā kasaba'?",
+    "a": "The particle mā plus the verb kasaba yields an interpreted verbal noun in the nominative, coordinated by the wāw onto māluhū. It therefore serves as a second subject of aghnā, so the verse negates that either his wealth or what he earned was of any benefit."
+   }
+  ],
+  "uthmani": "مَآ أَغْنَىٰ عَنْهُ مَالُهُۥ وَمَا كَسَبَ"
+ },
+ "111:3": {
+  "surah": 111,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah Al-Masad Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "A simple future verbal sentence. The prefix sa- marks futurity on the verb yaslaa (\"will burn in\"), whose hidden subject pronoun refers to Abu Lahab. Naaran is the accusative direct object, and dhaata is its accusative adjective in a genitive construction with lahab, which is itself the genitive second term of that annexation.",
+  "translation_en": "He will soon burn in a Fire full of flames.",
+  "transliteration": "Sa-yaslaa naaran dhaata lahab",
+  "words_en": [
+   {
+    "token": "سَيَصْلَىٰ",
+    "case_en": "nominative",
+    "role_en": "future particle + present-tense verb (fi'l mudari')",
+    "note_en": "The prefixed sa- marks future time, and the verb yaslaa is grammatically nominative (marfu') with its subject a hidden pronoun referring back to Abu Lahab."
+   },
+   {
+    "token": "نَارًۭا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "An indefinite noun in the accusative, taking fathah as the sign of its case because it is the object of the verb yaslaa."
+   },
+   {
+    "token": "ذَاتَ",
+    "case_en": "accusative",
+    "role_en": "adjective (na't) and first term of annexation (mudaf)",
+    "note_en": "It describes naaran and so follows it in the accusative, while also being the possessing term governing the noun that follows it."
+   },
+   {
+    "token": "لَهَبٍۢ",
+    "case_en": "genitive",
+    "role_en": "genitive noun of the annexation (mudaf ilayh)",
+    "note_en": "It is the second term of the construct with dhaata and therefore stands in the genitive, shown by the kasrah and tanwin."
+   }
+  ],
+  "irab_en": "This ayah is a verbal sentence built on the future. The particle sa- attached to the verb shifts it into future time, and the verb yaslaa (\"he will burn in / be roasted by\") is a present-tense verb in the nominative case; its doer is an unstated pronoun understood to refer to Abu Lahab from the preceding verses. The noun naaran (\"a fire\") is the direct object of this verb and carries the accusative, marked by fathah and tanwin since it is indefinite. The word dhaata serves as a descriptive adjective for naaran, agreeing with it in the accusative, and at the same time it heads a genitive construction (idafah). The final word lahab (\"flame\") is the second term of that construction, so it takes the genitive, indicated by kasrah and tanwin. Together dhaata lahab means \"possessing flame,\" qualifying the fire.",
+  "faqs_en": [
+   {
+    "q": "Why is the verb here translated as future even though it looks like a present-tense verb?",
+    "a": "The verb yaslaa is morphologically a present-tense verb (fi'l mudari'), but the prefixed particle sa- specializes it for future meaning, so it reads as 'he will burn' rather than 'he burns.'"
+   },
+   {
+    "q": "Where is the subject of the verb sayaslaa?",
+    "a": "There is no separate subject word. The subject is a concealed pronoun built into the verb (taqdiruhu huwa), referring back to Abu Lahab, who was named in the opening verse of the surah."
+   },
+   {
+    "q": "What is the grammatical relationship between dhaata and lahab?",
+    "a": "They form an idafah (possessive construction). Dhaata is the possessing term (mudaf) and is accusative because it describes naaran, while lahab is the possessed term (mudaf ilayh) and is therefore genitive."
+   }
+  ],
+  "uthmani": "سَيَصْلَىٰ نَارًۭا ذَاتَ لَهَبٍۢ"
+ },
+ "111:4": {
+  "surah": 111,
+  "ayah": 4,
+  "h1_en": "I'rab of Surah Al-Masad Ayah 4 — word-by-word Arabic grammar",
+  "tldr_en": "The verse opens with a connective wāw joining \"his wife\" to the implied subject of the preceding verb \"yaṣlā\" (he will burn), so she too will enter the fire. \"Ḥammālata l-ḥaṭab\" (carrier of firewood) is read in the accusative as the object of an understood verb of disparagement, and \"al-ḥaṭab\" follows as its genitive possessive complement.",
+  "translation_en": "And his wife — the carrier of firewood.",
+  "transliteration": "wa-mra’atuhu ḥammālata l-ḥaṭab(i)",
+  "words_en": [
+   {
+    "token": "وَٱمْرَأَتُهُۥ",
+    "case_en": "nominative",
+    "role_en": "conjunction (wāw) + noun joined to the hidden subject of the previous verb",
+    "note_en": "The wāw links \"his wife\" to the concealed subject of the earlier verb \"yaṣlā,\" so she shares in the burning, and the attached pronoun -hu is a genitive possessive."
+   },
+   {
+    "token": "حَمَّالَةَ",
+    "case_en": "accusative",
+    "role_en": "object (maf'ūl bihi) of an implied verb of dispraise",
+    "note_en": "It is accusative because it functions as the object of an understood disparaging verb such as \"I revile,\" and it is the first term of a genitive construction."
+   },
+   {
+    "token": "ٱلْحَطَبِ",
+    "case_en": "genitive",
+    "role_en": "genitive noun (muḍāf ilayh)",
+    "note_en": "This noun completes the possessive construction with \"ḥammālata\" and is therefore in the genitive, marked by the kasra."
+   }
+  ],
+  "irab_en": "The verse begins with the connective particle wāw, after which \"imra’atuhu\" (his wife) is joined to the hidden subject of the verb \"yaṣlā\" in the previous verse; on this reading she, like Abū Lahab, is destined for the fire, and the suffixed pronoun -hu stands in the genitive as a possessive. The phrase \"ḥammālata l-ḥaṭab\" is taken here in the accusative, not as a mere description but as the object of a suppressed verb of disparagement, roughly \"I denounce [the] carrier of firewood.\" \"Ḥammālata\" is thus the first member of an iḍāfa (possessive construction), and \"al-ḥaṭab\" follows as its second member in the genitive, its case shown by the kasra. The accusative reading heightens the tone of condemnation, though the word may also be read in the nominative as an attribute of \"imra’ah.\"",
+  "faqs_en": [
+   {
+    "q": "Why is \"ḥammālata\" in the accusative rather than agreeing with \"his wife\"?",
+    "a": "On this analysis it is the object of an unstated verb of dispraise (something like \"I revile\"), which gives it the accusative case and adds a tone of condemnation. Some readers instead take it in the nominative as a simple adjective describing the wife."
+   },
+   {
+    "q": "What does the wāw at the start of the verse connect to?",
+    "a": "It joins \"his wife\" to the concealed subject (\"he\") of the verb \"yaṣlā\" (he will burn) in the previous verse, indicating that she too will enter the fire alongside Abū Lahab."
+   },
+   {
+    "q": "What is the grammatical relationship between \"ḥammālata\" and \"al-ḥaṭab\"?",
+    "a": "They form an iḍāfa, a genitive (possessive) construction. \"Ḥammālata\" is the governing first term and \"al-ḥaṭab\" is the dependent second term, which is therefore genitive, marked by the kasra."
+   }
+  ],
+  "uthmani": "وَٱمْرَأَتُهُۥ حَمَّالَةَ ٱلْحَطَبِ"
+ },
+ "111:5": {
+  "surah": 111,
+  "ayah": 5,
+  "h1_en": "I'rab of Surah Al-Masad Ayah 5 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah is a nominal sentence with a fronted predicate. The prepositional phrase fi jidiha (\"around her neck\") serves as the advanced predicate (khabar muqaddam), while hablun (\"a rope\") is the delayed subject (mubtada' mu'akhkhar). The phrase min masadin then describes that rope, qualifying it as twisted palm-fiber.",
+  "translation_en": "Around her neck is a rope of twisted palm-fiber.",
+  "transliteration": "fī jīdihā ḥablun min masad(in)",
+  "words_en": [
+   {
+    "token": "فِى",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "An indeclinable preposition meaning \"in/around\" that governs the following noun in the genitive."
+   },
+   {
+    "token": "جِيدِهَا",
+    "case_en": "genitive",
+    "role_en": "object of preposition (majrur) + attached pronoun (mudaf ilayh)",
+    "note_en": "The noun \"neck\" is genitive after fi, and the attached pronoun -ha (\"her\") is in the place of a genitive as the second term of the idafa; together the phrase functions as the fronted predicate."
+   },
+   {
+    "token": "حَبْلٌ",
+    "case_en": "nominative",
+    "role_en": "delayed subject (mubtada' mu'akhkhar)",
+    "note_en": "An indefinite noun \"rope\" in the nominative, marked by tanwin damm, serving as the delayed subject whose predicate is the preceding prepositional phrase."
+   },
+   {
+    "token": "مِّن",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "An indeclinable preposition expressing material/source (\"made of\"), governing the next noun in the genitive."
+   },
+   {
+    "token": "مَّسَدٍ",
+    "case_en": "genitive",
+    "role_en": "object of preposition (majrur); phrase qualifies hablun",
+    "note_en": "The noun \"twisted palm-fiber\" is genitive after min, marked by tanwin kasr, and the whole phrase min masadin acts as a descriptive qualifier (na't) of hablun."
+   }
+  ],
+  "irab_en": "The verse opens with the prepositional phrase فِى جِيدِهَا, where فِى is a preposition and جِيد is its genitive object, itself joined to the attached pronoun هَا (\"her\") as the second term of a genitive construction. This whole phrase is grammatically suspended to a fronted predicate (khabar muqaddam). The noun حَبْلٌ (\"a rope\") follows in the nominative as the delayed subject (mubtada' mu'akhkhar), its indefiniteness shown by the tanwin. Fronting the predicate here is natural because the subject is indefinite. Finally, مِّن مَّسَدٍ pairs the preposition مِن with its genitive object مَّسَدٍ, and this phrase attaches as a description (na't) of حَبْلٌ, specifying the rope's material as twisted palm-fiber. The sentence as a whole is a nominal clause describing the wife mentioned earlier.",
+  "faqs_en": [
+   {
+    "q": "Why is hablun in the nominative even though it appears after the predicate?",
+    "a": "Because hablun is the actual subject (mubtada') of the nominal sentence. The predicate fi jidiha has simply been moved to the front, a common construction when the subject is indefinite, but the subject keeps its nominative case regardless of word order."
+   },
+   {
+    "q": "What is the grammatical role of the phrase min masadin?",
+    "a": "It is a descriptive qualifier (na't) of hablun. The preposition min plus its genitive noun masadin together describe the rope, telling us what it is made of (twisted palm-fiber)."
+   },
+   {
+    "q": "Why is the predicate placed before the subject in this ayah?",
+    "a": "When the subject is indefinite (hablun, \"a rope\") and the predicate is a prepositional phrase, Arabic typically fronts the predicate. Starting with an indefinite subject would be awkward, so fi jidiha comes first to provide a clear, definite anchor for the statement."
+   }
+  ],
+  "uthmani": "فِى جِيدِهَا حَبْلٌۭ مِّن مَّسَدٍۭ"
+ }
+}

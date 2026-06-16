@@ -1,0 +1,406 @@
+{
+ "1:1": {
+  "surah": 1,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is a prepositional phrase (بِ + اسْم) leading a genitive construct chain. The preposition with its noun attaches to an omitted predicate, and the subject (mubtada') is likewise understood, roughly \"my beginning is.\" اللَّه is the second term of the construct (genitive), and the two divine attributes that follow are adjectives agreeing with it in the genitive case.",
+  "translation_en": "In the name of God, the Most Merciful, the Most Compassionate.",
+  "transliteration": "Bismi llāhi r-raḥmāni r-raḥīm",
+  "words_en": [
+   {
+    "token": "بِسْمِ",
+    "case_en": "genitive",
+    "role_en": "preposition + genitive noun (jarr wa-majrur)",
+    "note_en": "The prefixed بِ is a preposition and اسْم is its object in the genitive case (shown by the kasra), and the phrase links to an implied predicate of an unstated subject (e.g. \"my beginning is in the name of...\")."
+   },
+   {
+    "token": "ٱللَّهِ",
+    "case_en": "genitive",
+    "role_en": "genitive noun of the construct (mudaf ilayh)",
+    "note_en": "The divine name is the second term of the genitive construct after اسْم, hence it is genitive, marked by the kasra."
+   },
+   {
+    "token": "ٱلرَّحْمَٰنِ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "This is an adjective qualifying the divine name and so follows it in the genitive case."
+   },
+   {
+    "token": "ٱلرَّحِيمِ",
+    "case_en": "genitive",
+    "role_en": "second adjective (na't thanin)",
+    "note_en": "A second adjective describing the divine name, likewise agreeing with it in the genitive case."
+   }
+  ],
+  "irab_en": "The verse opens with بِ, a preposition, joined to اسْم, which becomes genitive (kasra) as its object. Together they form a prepositional phrase that, on the standard analysis, attaches to a suppressed predicate while the subject itself is also left unstated and understood as something like \"my beginning,\" giving the sense \"my starting is in the name of God.\" The divine name ٱللَّه functions as the second element of a genitive construct (idafa) governed by اسْم, so it too is genitive. The two following words, ٱلرَّحْمَٰن and ٱلرَّحِيم, are descriptive adjectives (na't) of the divine name; as adjectives they match their noun in case and therefore both appear in the genitive, ٱلرَّحِيم being a second adjective added after the first.",
+  "faqs_en": [
+   {
+    "q": "Why is the word اسْم (in بِسْمِ) in the genitive case?",
+    "a": "Because it is the object of the attached preposition بِ. Any noun directly governed by a preposition takes the genitive case, here shown by the kasra under the final mim."
+   },
+   {
+    "q": "Where are the subject and predicate of this sentence?",
+    "a": "Both are omitted but understood. The prepositional phrase \"in the name of God\" attaches to an implied predicate, and the subject (mubtada') is also suppressed, estimated as something like \"my beginning,\" so the full sense is \"my beginning is in the name of God.\""
+   },
+   {
+    "q": "Why are ٱلرَّحْمَٰن and ٱلرَّحِيم genitive?",
+    "a": "They are adjectives describing the divine name ٱللَّه, which is genitive. An adjective in Arabic agrees with the noun it qualifies in case, so both attributes follow it into the genitive."
+   }
+  ],
+  "uthmani": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+ },
+ "1:2": {
+  "surah": 1,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is a nominal sentence. \"Al-hamdu\" is the subject (mubtada') in the nominative. The prepositional phrase \"lillah\" is linked to an omitted predicate (khabar). \"Rabbi\" follows the name of God as an adjective (na't) in the genitive, and \"al-'alamin\" is its possessed noun (mudaf ilayh), also genitive.",
+  "translation_en": "All praise belongs to God, the Lord of all the worlds.",
+  "transliteration": "al-ḥamdu lillāhi rabbi l-ʿālamīn",
+  "words_en": [
+   {
+    "token": "ٱلْحَمْدُ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "It opens the nominal sentence as the subject and carries the nominative ending (damma) shown by the final u."
+   },
+   {
+    "token": "لِلَّهِ",
+    "case_en": "genitive",
+    "role_en": "preposition + genitive noun forming the predicate",
+    "note_en": "The preposition li joined to the name of God puts it in the genitive, and the whole phrase is attached to an understood predicate such as 'is due' or 'belongs'."
+   },
+   {
+    "token": "رَبِّ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't) of the name of God",
+    "note_en": "It describes the preceding name of God and follows it in the genitive, its ending marked by the kasra."
+   },
+   {
+    "token": "ٱلْعَٰلَمِينَ",
+    "case_en": "genitive",
+    "role_en": "possessed noun (mudaf ilayh)",
+    "note_en": "As the second term of the construct with 'Rabb', it is genitive, marked by the ya because it patterns like a sound masculine plural."
+   }
+  ],
+  "irab_en": "This ayah is a nominal sentence (jumla ismiyya). It begins with \"al-hamdu,\" the subject (mubtada'), which is nominative, its case shown by the damma on the final letter. The prepositional phrase \"lillah\" — the preposition li attached to the genitive name of God — does not stand alone; it relates to an omitted predicate (khabar) understood as something like \"is established\" or \"is due,\" so the sense is \"all praise is due to God.\" The word \"Rabbi\" is an adjective (na't) qualifying the name of God; it agrees with it in being genitive, marked by the kasra. Finally, \"al-'alamin\" is the possessed noun (mudaf ilayh) governed by \"Rabb\"; it is genitive, but its case appears through the ya rather than a kasra, since it takes the ending pattern of the sound masculine plural.",
+  "faqs_en": [
+   {
+    "q": "Where is the predicate (khabar) in this verse?",
+    "a": "The predicate is not stated explicitly. The prepositional phrase 'lillah' points to an omitted predicate, understood as a word like 'is due' or 'belongs.' So the full sense is: 'Praise is [due] to God.'"
+   },
+   {
+    "q": "Why does 'al-'alamin' end in -in rather than a kasra?",
+    "a": "Although it is genitive as the possessed noun (mudaf ilayh) after 'Rabb,' it follows the pattern of the sound masculine plural, whose genitive is marked by the ya (-in) instead of the usual kasra."
+   },
+   {
+    "q": "What is the relationship between 'Rabbi' and the name of God?",
+    "a": "'Rabbi' is an adjective (na't) describing the name of God. An adjective matches the word it describes in case, so since the name of God is genitive here, 'Rabbi' is also genitive."
+   }
+  ],
+  "uthmani": "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ"
+ },
+ "1:3": {
+  "surah": 1,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "This short ayah consists of two adjectives, both in the genitive case. Each one describes the name of Allah mentioned in the previous verse, so they follow it in case as adjectives (na't). The whole ayah is therefore not an independent sentence but a continuation of the description begun in verse 2.",
+  "translation_en": "The Most Gracious, the Most Merciful.",
+  "transliteration": "ar-raḥmāni ar-raḥīm(i)",
+  "words_en": [
+   {
+    "token": "ٱلرَّحْمَٰنِ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "This is an adjective describing the name of Allah from verse 2, so it takes the same genitive case, marked by the kasra."
+   },
+   {
+    "token": "ٱلرَّحِيمِ",
+    "case_en": "genitive",
+    "role_en": "second adjective (na't thānin)",
+    "note_en": "A second adjective likewise describing the name of Allah, agreeing with it in the genitive case, marked by the kasra."
+   }
+  ],
+  "irab_en": "Both words in this verse are adjectives (na't) that continue describing the divine name \"Allah\" found in the previous ayah. Because an Arabic adjective must agree with the noun it qualifies in case, definiteness, gender, and number, each of these words takes the genitive case, shown by the kasra on its final letter, mirroring the genitive of the name it describes. \"Ar-Raḥmān\" is the first adjective and \"ar-Raḥīm\" is the second adjective following it. Since they are dependent descriptors rather than a fresh subject and predicate, this ayah does not form a stand-alone sentence; grammatically it is a tail attached to the structure of verse 2, deepening the praise of Allah by naming two of His attributes of mercy.",
+  "faqs_en": [
+   {
+    "q": "Why are both words in the genitive case here?",
+    "a": "They are adjectives (na't) describing the name of Allah in the previous verse, which is itself genitive. An Arabic adjective copies the case of the noun it describes, so both take the genitive, shown by the kasra."
+   },
+   {
+    "q": "Is this ayah a complete sentence on its own?",
+    "a": "No. It contains only two adjectives with no subject or predicate. Grammatically it continues the description begun in verse 2 and depends on that structure rather than forming an independent clause."
+   },
+   {
+    "q": "What is the difference in role between the two words?",
+    "a": "The first, ar-Raḥmān, is the first adjective (na't) of the divine name; the second, ar-Raḥīm, is a second adjective (na't thānin) added after it. Both qualify the same noun and so share the same genitive case."
+   }
+  ],
+  "uthmani": "ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+ },
+ "1:4": {
+  "surah": 1,
+  "ayah": 4,
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 4 — word-by-word Arabic grammar",
+  "tldr_en": "This short verse is built around one noun phrase. \"Maliki\" is an adjective (na't) describing the name \"Allah\" from the previous verses, so it takes the genitive case to agree with it. It then heads a two-step possessive chain (idafa): \"Maliki\" governs \"yawmi,\" which in turn governs \"ad-dini,\" leaving every word in the genitive.",
+  "translation_en": "Master of the Day of Judgment.",
+  "transliteration": "Maliki yawmi d-din(i)",
+  "words_en": [
+   {
+    "token": "مَٰلِكِ",
+    "case_en": "genitive",
+    "role_en": "adjective / qualifier (na't) of the divine name",
+    "note_en": "This noun describes \"Allah\" mentioned earlier and so carries the genitive case to match the word it qualifies, its ending marked by a kasra."
+   },
+   {
+    "token": "يَوْمِ",
+    "case_en": "genitive",
+    "role_en": "possessed noun in genitive construction (mudaf ilayh)",
+    "note_en": "Standing as the second term of the possessive chain after \"Malik,\" it is in the genitive with a kasra, while itself heading a further idafa with the next word."
+   },
+   {
+    "token": "ٱلدِّينِ",
+    "case_en": "genitive",
+    "role_en": "genitive noun completing the chain (mudaf ilayh)",
+    "note_en": "As the noun possessed by \"yawm,\" it closes the construction and likewise takes the genitive case shown by a kasra."
+   }
+  ],
+  "irab_en": "The verse is a single nominal unit continuing the description of \"Allah\" from the opening verses. \"Maliki\" functions as an adjective (na't) qualifying the divine name; because the qualified word is itself genitive, \"Maliki\" follows it into the genitive, its ending shown by a kasra. \"Maliki\" is also the governing term of a possessive construction (idafa): it is annexed to \"yawmi,\" which is therefore the possessed noun (mudaf ilayh) and stands in the genitive with a kasra. \"Yawmi\" in turn governs \"ad-dini\" in a second, nested annexation, so \"ad-dini\" is the possessed noun completing the chain and is likewise genitive with a kasra. The result is a tightly linked phrase in which all three words share the genitive case, layered through agreement and double annexation.",
+  "faqs_en": [
+   {
+    "q": "Why is every word in this verse genitive?",
+    "a": "Two forces stack here. \"Maliki\" is genitive because it is an adjective agreeing with the genitive divine name from the earlier verses. \"Yawmi\" and \"ad-dini\" are genitive because they are possessed nouns (mudaf ilayh) in a chained idafa, where each possessed noun takes the genitive case."
+   },
+   {
+    "q": "What is the grammatical relationship between \"yawm\" and \"ad-din\"?",
+    "a": "They form an idafa (possessive construction): \"yawm\" is the possessor (mudaf) and \"ad-din\" is the possessed noun (mudaf ilayh). This is a nested construction, since \"yawm\" is itself the possessed term of \"Malik.\""
+   },
+   {
+    "q": "Is \"Maliki\" a new sentence or part of the previous verse?",
+    "a": "Grammatically it is not a fresh sentence; it continues the description of \"Allah\" as another adjective (na't), which is why it takes no independent subject or predicate and simply agrees in the genitive."
+   }
+  ],
+  "uthmani": "مَٰلِكِ يَوْمِ ٱلدِّينِ"
+ },
+ "1:5": {
+  "surah": 1,
+  "ayah": 5,
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 5 — word-by-word Arabic grammar",
+  "tldr_en": "Two parallel verbal sentences. In each, the fronted detached pronoun إيّاك is a built-in accusative object placed before its verb for emphasis and restriction. The present-tense verbs نَعبد and نَستعين are nominative, each governed by an obligatory hidden subject \"we\" (naḥnu). The connector وَ joins the second clause to the first.",
+  "translation_en": "You alone we worship, and You alone we ask for help.",
+  "transliteration": "iyyāka naʿbudu wa-iyyāka nastaʿīn",
+  "words_en": [
+   {
+    "token": "إِيَّاكَ",
+    "case_en": "accusative",
+    "role_en": "fronted direct object (maf'ul bihi muqaddam)",
+    "note_en": "A detached pronoun built on fatḥa, holding the accusative position as the object placed before its verb to give the meaning of exclusivity (You alone)."
+   },
+   {
+    "token": "إِيَّا",
+    "case_en": "accusative",
+    "role_en": "detached object pronoun (maf'ul bihi)",
+    "note_en": "The pronoun base إيّا is fixed in form and occupies the accusative slot as the direct object of the following verb."
+   },
+   {
+    "token": "الكاف",
+    "case_en": "indeclinable",
+    "role_en": "address particle (harf khitab)",
+    "note_en": "The attached كَ is simply a letter of address that specifies the second-person masculine addressee and carries no independent grammatical case."
+   },
+   {
+    "token": "نَعْبُدُ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb (fi'l mudari') with hidden subject",
+    "note_en": "An imperfect verb in the nominative because nothing puts it in another state; its doer is a necessarily hidden pronoun understood as \"we.\""
+   },
+   {
+    "token": "الواو",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "A connecting particle that joins the second clause to the first, linking the two statements of worship and seeking help."
+   },
+   {
+    "token": "إِيَّاكَ نَسْتَعِينُ",
+    "case_en": "nominative",
+    "role_en": "parallel verbal sentence (jumla fi'liyya ma'tufa)",
+    "note_en": "This phrase is parsed exactly like the first: a fronted accusative object إيّاك followed by the nominative verb نستعين whose subject is the hidden pronoun \"we.\""
+   }
+  ],
+  "irab_en": "This verse is two matching verbal sentences joined by the conjunction وَ. In each, the detached pronoun إيّاك serves as the direct object (maf'ul bihi) and stands in the accusative position even though, as a fixed pronoun, it shows no case endings; it is built on fatḥa. What makes the structure striking is the fronting: placing the object before its verb conveys restriction, the sense that worship and reliance are directed to God alone. The attached كَ is only a particle of address marking the masculine \"you.\" The verbs نَعبد and نَستعين are present-tense and nominative, since no governing word shifts them to the subjunctive or jussive. Each verb's doer is an obligatorily concealed pronoun understood as naḥnu (\"we\"). The second clause repeats the first pattern exactly.",
+  "faqs_en": [
+   {
+    "q": "Why is إيّاك placed before the verb instead of after it?",
+    "a": "Arabic normally puts the object after the verb, so fronting it here is deliberate. Moving إيّاك ahead of نَعبد creates the meaning of exclusivity (\"You alone we worship\"), restricting worship to God and nothing else."
+   },
+   {
+    "q": "What case is the verb نَعبد, and why?",
+    "a": "It is a present-tense (mudari') verb in the nominative (marfu'). An imperfect verb stays nominative as long as no particle of subjunctive (like أن or لن) or jussive (like لم) precedes it. None do here, so it keeps its nominative ḍamma."
+   },
+   {
+    "q": "Where is the subject of نَعبد and نَستعين?",
+    "a": "There is no separate word for the subject. Each verb carries an obligatorily hidden pronoun understood as naḥnu (\"we\"), which is the doer of the action embedded in the verb form itself."
+   }
+  ],
+  "uthmani": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ"
+ },
+ "1:6": {
+  "surah": 1,
+  "ayah": 6,
+  "h1_en": "Irab of Surah Al-Fatihah Ayah 6 - word-by-word Arabic grammar",
+  "tldr_en": "This ayah is a supplicatory imperative sentence. The verb ihdi is a command form built on the dropping of its weak final letter, with a hidden you subject. The attached pronoun naa is its first object, al-sirat is its second object in the accusative, and al-mustaqim is an accusative adjective agreeing with it. The whole sentence stands independently.",
+  "translation_en": "Guide us to the straight path.",
+  "transliteration": "ihdina s-sirata l-mustaqim",
+  "words_en": [
+   {
+    "token": "ٱهْدِ",
+    "case_en": "indeclinable",
+    "role_en": "imperative verb of supplication (fil amr)",
+    "note_en": "A command verb used for petitioning God; because its root ends in a weak letter, it is built on the omission of that letter, and its subject is an implied you (anta)."
+   },
+   {
+    "token": "نَا",
+    "case_en": "accusative",
+    "role_en": "first object (maful bihi awwal)",
+    "note_en": "An attached pronoun (us) built into its form and holding the position of the verbs first direct object in the accusative."
+   },
+   {
+    "token": "ٱلصِّرَٰطَ",
+    "case_en": "accusative",
+    "role_en": "second object (maful bihi thani)",
+    "note_en": "The second direct object of the verb, in the accusative case marked by the visible fatha on its ending."
+   },
+   {
+    "token": "ٱلْمُسْتَقِيمَ",
+    "case_en": "accusative",
+    "role_en": "adjective (nat)",
+    "note_en": "An adjective describing al-sirat and following it in the accusative, likewise marked by the fatha."
+   }
+  ],
+  "irab_en": "The ayah forms a complete imperative clause of prayer. Ihdi is a command verb; since its underlying root ends in a weak vowel-letter, that letter is dropped to mark the imperative, and the verb carries a concealed subject pronoun understood as you (referring to God). The pronoun naa (us) is attached to the verb and, though indeclinable in form, occupies the grammatical slot of the first direct object in the accusative. Al-sirat then serves as the verbs second direct object, taking the accusative case shown by the fatha on its final letter. Al-mustaqim is a descriptive adjective qualifying al-sirat; it agrees with the noun it modifies and is therefore also accusative, marked by the fatha. As a whole, this sentence is grammatically independent, beginning a fresh statement with no syntactic position within a larger structure.",
+  "faqs_en": [
+   {
+    "q": "Why does the verb ihdi have no visible ending vowel or letter?",
+    "a": "Its root ends in a weak letter (originally a yaa). For verbs whose roots end in a weak letter, the imperative is formed by dropping that final letter, so the absence of the weak letter is itself the sign of the command."
+   },
+   {
+    "q": "How can one verb take two objects here?",
+    "a": "The verb guide governs two direct objects: naa (us) as the first object, attached to the verb, and al-sirat (the path) as the second object. Both are in the accusative, though only the second shows the case visibly with a fatha."
+   },
+   {
+    "q": "What is the case and role of al-mustaqim?",
+    "a": "It is an adjective (nat) describing al-sirat. An adjective matches its noun in case, so since al-sirat is accusative, al-mustaqim is also accusative, marked by the fatha on its ending."
+   }
+  ],
+  "uthmani": "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ"
+ },
+ "1:7": {
+  "surah": 1,
+  "ayah": 7,
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 7 — word-by-word Arabic grammar",
+  "tldr_en": "This verse opens with صِرَاطَ, an accusative substitution (badal) for the previous verse's \"the path,\" so it carries the accusative even though no case ending shows on the final word here. The relative pronoun الَّذِينَ is its possessive complement, introducing the relative clause أَنْعَمْتَ عَلَيْهِمْ. غَيْرِ is then a genitive substitute, with المَغْضُوبِ and الضَّالِّينَ following in the genitive.",
+  "translation_en": "The path of those whom You have blessed, not of those who earned anger, nor of those who went astray.",
+  "transliteration": "ṣirāṭa lladhīna anʿamta ʿalayhim ghayri l-maghḍūbi ʿalayhim wa-lā ḍ-ḍāllīn",
+  "words_en": [
+   {
+    "token": "صِرَاطَ",
+    "case_en": "accusative",
+    "role_en": "appositive substitution (badal)",
+    "note_en": "It stands in for \"the straight path\" mentioned in the previous verse and so takes the same accusative case, marked by the fatha."
+   },
+   {
+    "token": "ٱلَّذِينَ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (mudaf ilayh)",
+    "note_en": "A relative pronoun fixed in form on the fatha, holding the place of a genitive noun as the second term of the construct with صِرَاطَ."
+   },
+   {
+    "token": "أَنْعَمْتَ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb of the relative clause",
+    "note_en": "A past-tense verb built on a silent ending (sukun) because it is joined to the subject pronoun."
+   },
+   {
+    "token": "ٱلتَّاءُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "The attached pronoun -ta is the doer of the verb, occupying a nominative position."
+   },
+   {
+    "token": "عَلَى",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "A preposition that puts the following pronoun into the genitive."
+   },
+   {
+    "token": "ٱلْهَاءُ",
+    "case_en": "genitive",
+    "role_en": "object of the preposition",
+    "note_en": "The attached pronoun -him is in the genitive after عَلَى, and the whole phrase relates back to the verb أَنْعَمْتَ."
+   },
+   {
+    "token": "ٱلْمِيمُ",
+    "case_en": "indeclinable",
+    "role_en": "plurality marker",
+    "note_en": "The final -m is a particle marking the masculine plural of the pronoun."
+   },
+   {
+    "token": "غَيْرِ",
+    "case_en": "genitive",
+    "role_en": "appositive substitution (badal)",
+    "note_en": "It substitutes for the relative pronoun الَّذِينَ and therefore follows it in the genitive case."
+   },
+   {
+    "token": "ٱلَّذِينَ",
+    "case_en": "genitive",
+    "role_en": "the noun followed in case",
+    "note_en": "Reference point indicating that غَيْرِ takes the genitive in agreement with the preceding relative pronoun."
+   },
+   {
+    "token": "ٱلْمَغْضُوبِ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (mudaf ilayh)",
+    "note_en": "It is the second term of a construct with غَيْرِ and is therefore genitive."
+   },
+   {
+    "token": "عَلَيْهِمْ",
+    "case_en": "nominative",
+    "role_en": "deputy subject (na'ib fa'il)",
+    "note_en": "Like the earlier عَلَيْهِم, this prepositional phrase stands in for the agent of the passive participle المَغْضُوبِ, holding a nominative position."
+   },
+   {
+    "token": "ٱلْوَاوُ",
+    "case_en": "indeclinable",
+    "role_en": "coordinating conjunction",
+    "note_en": "The wa- links what follows to what precedes."
+   },
+   {
+    "token": "لَا",
+    "case_en": "indeclinable",
+    "role_en": "negation particle (extra, for emphasis)",
+    "note_en": "A redundant لَا that adds force to the negation already implied by غَيْر."
+   },
+   {
+    "token": "ٱلضَّآلِّينَ",
+    "case_en": "genitive",
+    "role_en": "coordinated noun (ma'tuf)",
+    "note_en": "Coordinated onto غَيْرِ and thus genitive, marked by the ya because it is a sound masculine plural."
+   }
+  ],
+  "irab_en": "The verse begins with صِرَاطَ, which functions as a substitution (badal) for \"the straight path\" named in verse six; it inherits that word's accusative case, shown by the fatha. The relative pronoun الَّذِينَ serves as the genitive complement of the construct, fixed in form but occupying a genitive slot. Within the relative clause, أَنْعَمْتَ is a past-tense verb built on a silent ending because it carries the attached subject pronoun -ta, which is nominative. The prepositional phrase عَلَيْهِم attaches to that verb. Next, غَيْرِ substitutes for the relative pronoun and so appears in the genitive, with المَغْضُوبِ as its genitive complement and عَلَيْهِم acting as the deputy subject of that passive participle. Finally, the conjunction wa- and the emphatic redundant لَا introduce الضَّالِّينَ, coordinated onto غَيْرِ in the genitive, marked by the ya as a sound masculine plural.",
+  "faqs_en": [
+   {
+    "q": "Why is صِرَاطَ accusative when nothing precedes it in this verse to govern it?",
+    "a": "Because it is a badal (appositive substitution) for الصِّرَاطَ المُسْتَقِيمَ in the previous verse. A badal copies the case of the word it replaces, and since that word was the accusative object of اهدِنَا, صِرَاطَ here is also accusative, marked by the fatha."
+   },
+   {
+    "q": "What case is غَيْرِ in, and why?",
+    "a": "It is genitive. غَيْرِ is a substitution for the relative pronoun الَّذِينَ, which itself stood in a genitive position as the complement of the construct with صِرَاطَ. Because a badal agrees in case with what it replaces, غَيْرِ takes the genitive."
+   },
+   {
+    "q": "What is the function of لَا before الضَّالِّينَ?",
+    "a": "It is a redundant (za'ida) particle added to reinforce the negation. The sense of negation is already present in غَيْر, so لَا does not change the grammar; it simply emphasizes that the speaker is not on the path of those who went astray. الضَّالِّينَ stays genitive as a coordinated noun onto غَيْرِ."
+   }
+  ],
+  "uthmani": "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"
+ }
+}

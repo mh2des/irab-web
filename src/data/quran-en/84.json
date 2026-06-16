@@ -1,0 +1,864 @@
+{
+ "84:1": {
+  "surah": 84,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "This opening verse begins a long conditional sentence with idha (when). It pictures the sky splitting apart on the Day of Resurrection. As-sama (the sky) is the subject of the verb inshaqqat (it split open), a past-tense verb whose feminine ending agrees with sama. The main clause (the answer to when) is left unstated until later, building dramatic suspense.",
+  "translation_en": "When the sky splits open,",
+  "transliteration": "Idha as-sama-u inshaqqat",
+  "words_en": [
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "adverb of time (zarf) governing a condition",
+    "note_en": "An adverbial particle meaning 'when' that introduces a future condition; its answer-clause is implied and supplied later in the surah."
+   },
+   {
+    "token": "ٱلسَّمَآءُ",
+    "case_en": "nominative",
+    "role_en": "subject of the verb (fa'il)",
+    "note_en": "The doer of the splitting; grammarians treat it as the agent of the verb that follows, which explains its nominative ending."
+   },
+   {
+    "token": "ٱنشَقَّتْ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb (fi'l madi)",
+    "note_en": "A past-tense verb 'it split open' carrying a silent feminine marker (ta) that agrees with the feminine noun sama."
+   }
+  ],
+  "irab_en": "The verse opens with idha, an adverb of time that sets up a condition: 'when such-and-such happens.' Idha demands an answer-clause (jawab), but here the answer is deliberately withheld and only understood from the wider passage, which heightens the suspense of the scene. The word as-sama is parsed as the subject (fa'il), and inshaqqat is its past-tense verb. Although idha is normally followed directly by a verb, classical analysis places as-sama as agent of the verb that comes after it. The feminine ending -at on inshaqqat agrees grammatically with the feminine noun sama, confirming the subject-verb relationship.",
+  "faqs_en": [
+   {
+    "q": "Why is the answer to 'when' missing here?",
+    "a": "The answer-clause (jawab) of idha is intentionally left unstated for rhetorical effect; the listener understands it from the rest of the surah, such as humankind meeting its Lord and being judged."
+   },
+   {
+    "q": "Why does the verb end in -at?",
+    "a": "The suffix -at is the feminine past-tense marker, agreeing with as-sama (the sky), which is grammatically feminine in Arabic."
+   }
+  ],
+  "uthmani": "إِذَا ٱلسَّمَآءُ ٱنشَقَّتْ"
+ },
+ "84:2": {
+  "surah": 84,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues the 'when' clause: the sky listens obediently to its Lord and is right to do so. Adhinat (it gave ear/obeyed) is a past-tense verb whose hidden subject refers back to the sky. Li-rabbiha (to its Lord) is a prepositional phrase attached to that verb. Huqqat (and it was made bound) is a passive verb whose understood subject also refers to the sky.",
+  "translation_en": "and gives ear to its Lord, as it is rightly bound to do,",
+  "transliteration": "Wa adhinat li-rabbiha wa huqqat",
+  "words_en": [
+   {
+    "token": "وَأَذِنَتْ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined past-tense verb (fi'l madi)",
+    "note_en": "Joined by the connector wa to the previous verb; means 'and it listened/obeyed,' with a hidden subject referring to the sky."
+   },
+   {
+    "token": "لِرَبِّهَا",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jar wa majrur)",
+    "note_en": "The preposition li (to/for) puts rabb in the genitive; the phrase attaches to the verb adhinat, and the suffix -ha refers to the sky."
+   },
+   {
+    "token": "وَحُقَّتْ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined passive past-tense verb",
+    "note_en": "A passive verb 'and it was made right/bound to do so,' with its understood subject (na'ib al-fa'il) referring back to the sky."
+   }
+  ],
+  "irab_en": "This verse extends the conditional scene begun in verse 1. The verb adhinat ('it listened, gave ear, obeyed') is connected by the conjunction wa to the preceding action; its subject is a concealed pronoun referring to the sky. The phrase li-rabbiha consists of the preposition li placing rabb in the genitive, with the attached pronoun -ha ('its') pointing to the sky; this phrase relates to the verb adhinat. The final word huqqat is a passive past-tense verb meaning the sky was made right and obligated to obey. Its hidden deputy-subject (na'ib al-fa'il) likewise refers to the sky, and classical commentary explains an implied possessor, as if to say its hearing and obedience were made due.",
+  "faqs_en": [
+   {
+    "q": "What does 'huqqat' add to the meaning?",
+    "a": "Huqqat is a passive verb conveying that the sky was made obligated and it was only right for it to obey; it underscores total submission to the Creator's command."
+   },
+   {
+    "q": "Where is the subject of adhinat?",
+    "a": "The subject is a hidden pronoun inside the verb that refers back to as-sama (the sky) from the previous verse."
+   }
+  ],
+  "uthmani": "وَأَذِنَتْ لِرَبِّهَا وَحُقَّتْ"
+ },
+ "84:3": {
+  "surah": 84,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "A second 'when' clause is added by the conjunction wa. The earth is flattened and stretched out on the Day of Judgment. Idha again sets a condition, al-ard (the earth) is the subject, and muddat (it was stretched out) is a passive past-tense verb. Its feminine ending agrees with the earth, and the unstated answer-clause continues to build toward the verse about humankind.",
+  "translation_en": "and when the earth is stretched out,",
+  "transliteration": "Wa idha al-ardu muddat",
+  "words_en": [
+   {
+    "token": "وَإِذَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction plus adverb of time (zarf)",
+    "note_en": "The wa joins this to the earlier condition, and idha again means 'when,' introducing a further future event."
+   },
+   {
+    "token": "ٱلْأَرْضُ",
+    "case_en": "nominative",
+    "role_en": "subject of the verb (fa'il)",
+    "note_en": "The earth is the agent of the verb that follows; its nominative ending marks it as subject."
+   },
+   {
+    "token": "مُدَّتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb (fi'l madi)",
+    "note_en": "A passive verb 'it was stretched/spread out,' with a feminine marker agreeing with al-ard."
+   }
+  ],
+  "irab_en": "Verse 3 adds a parallel condition to that of verse 1, linked by the conjunction wa. Once again idha functions as an adverb of time meaning 'when,' setting up a further scene whose answer-clause remains implied. The noun al-ard ('the earth') is the subject (fa'il), and muddat is its verb. Classical analysis treats al-ard as the agent of the verb that comes after it, which explains the nominative ending. Muddat is a passive past-tense verb meaning the earth is leveled and stretched flat; an implied active sense ('it spread out') is sometimes supplied. The feminine ending -at agrees with the feminine noun al-ard, confirming subject-verb concord just as in verse 1.",
+  "faqs_en": [
+   {
+    "q": "How does verse 3 connect to verse 1?",
+    "a": "The conjunction wa links this second 'when' clause to the first, so both the sky's splitting and the earth's stretching are part of one long conditional scene."
+   },
+   {
+    "q": "Is 'muddat' active or passive?",
+    "a": "It is passive in form (the earth is stretched out), though some commentators supply an implied active meaning such as 'it spread itself out.'"
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلْأَرْضُ مُدَّتْ"
+ },
+ "84:4": {
+  "surah": 84,
+  "ayah": 4,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 4 — word-by-word Arabic grammar",
+  "tldr_en": "Still within the 'when the earth' clause, this verse says the earth throws out its contents and empties itself. Alqat (it cast out) is a past-tense verb with a hidden subject referring to the earth. Ma fiha (what is in it) is its object. Takhallat (and it emptied itself) is joined by wa, again with a subject referring to the earth, completing the picture of the earth giving up its dead.",
+  "translation_en": "and casts out what is within it and becomes empty,",
+  "transliteration": "Wa alqat ma fiha wa takhallat",
+  "words_en": [
+   {
+    "token": "وَأَلْقَتْ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined past-tense verb (fi'l madi)",
+    "note_en": "Joined by wa to the previous verbs; means 'and it cast out,' with a hidden subject referring to the earth."
+   },
+   {
+    "token": "مَا",
+    "case_en": "indeclinable",
+    "role_en": "relative pronoun, object of the verb (maf'ul bih)",
+    "note_en": "Means 'what/that which' and serves as the thing thrown out by the earth, hence the object of alqat."
+   },
+   {
+    "token": "فِيهَا",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase forming the relative clause (sila)",
+    "note_en": "The preposition fi with the attached pronoun -ha ('in it') completes the meaning of ma, i.e. what is inside the earth."
+   },
+   {
+    "token": "وَتَخَلَّتْ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined past-tense verb (fi'l madi)",
+    "note_en": "Means 'and it emptied itself,' joined by wa, with a hidden subject again referring to the earth."
+   }
+  ],
+  "irab_en": "This verse continues the description of the earth on the Day of Resurrection. Alqat is a past-tense verb 'it cast out,' connected by wa to the earlier verbs and carrying a hidden subject that refers to the earth. The relative pronoun ma ('what') functions as its object (maf'ul bih), denoting whatever the earth holds. The prepositional phrase fiha (fi 'in' plus the pronoun -ha 'it') forms the relative clause that defines ma, so the sense is 'what is inside it.' Finally takhallat ('and it emptied itself, became void') is another past-tense verb joined by wa, with its subject likewise a concealed pronoun referring to the earth. Together the two verbs depict the earth disgorging its contents and being left bare.",
+  "faqs_en": [
+   {
+    "q": "What does the earth 'cast out'?",
+    "a": "Grammatically the object is ma fiha, 'what is within it' — understood to mean the dead and the treasures the earth contains, which it surrenders on Judgment Day."
+   },
+   {
+    "q": "What role does 'ma' play here?",
+    "a": "Ma is a relative pronoun acting as the direct object of alqat, and the following fiha is the relative clause that completes its meaning."
+   }
+  ],
+  "uthmani": "وَأَلْقَتْ مَا فِيهَا وَتَخَلَّتْ"
+ },
+ "84:5": {
+  "surah": 84,
+  "ayah": 5,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 5 — word-by-word Arabic grammar",
+  "tldr_en": "This verse repeats verse 2 but now of the earth: it listens obediently to its Lord and is right to do so. Adhinat is a past-tense verb with a hidden subject referring to the earth. Li-rabbiha is a prepositional phrase attached to it. Huqqat is a passive verb whose understood subject also refers to the earth. This repetition closes the parallel between sky and earth.",
+  "translation_en": "and gives ear to its Lord, as it is rightly bound to do.",
+  "transliteration": "Wa adhinat li-rabbiha wa huqqat",
+  "words_en": [
+   {
+    "token": "وَأَذِنَتْ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined past-tense verb (fi'l madi)",
+    "note_en": "Joined by wa; means 'and it listened/obeyed,' with a hidden subject referring this time to the earth."
+   },
+   {
+    "token": "لِرَبِّهَا",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jar wa majrur)",
+    "note_en": "The preposition li puts rabb in the genitive; it attaches to adhinat, and the suffix -ha refers to the earth."
+   },
+   {
+    "token": "وَحُقَّتْ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined passive past-tense verb",
+    "note_en": "A passive verb 'and it was made bound to obey,' with its understood subject referring back to the earth."
+   }
+  ],
+  "irab_en": "Verse 5 mirrors verse 2 exactly in structure, but its hidden pronouns now refer to the earth rather than the sky, producing a deliberate parallel between the two great signs of the cosmos. The verb adhinat ('it gave ear, obeyed') is joined by wa and carries a concealed subject pronoun referring to the earth. The phrase li-rabbiha is the preposition li placing rabb in the genitive, with the pronoun -ha ('its') referring to the earth, and the phrase relates to adhinat. The closing word huqqat is a passive past-tense verb meaning the earth was made obligated to obey, and it was only right that it do so; its deputy-subject is again a hidden pronoun pointing to the earth. The repetition seals the imagery of total cosmic submission.",
+  "faqs_en": [
+   {
+    "q": "Why does this verse repeat verse 2?",
+    "a": "Verse 2 described the sky's obedience and verse 5 describes the earth's; the deliberate repetition draws a parallel between the two and stresses that all creation submits utterly to its Lord."
+   },
+   {
+    "q": "What does the pronoun -ha refer to here?",
+    "a": "In verse 5 the attached pronoun -ha refers to al-ard (the earth) from verse 3, whereas in verse 2 the same pronoun referred to the sky."
+   }
+  ],
+  "uthmani": "وَأَذِنَتْ لِرَبِّهَا وَحُقَّتْ"
+ },
+ "84:6": {
+  "surah": 84,
+  "ayah": 6,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 6 — word-by-word Arabic grammar",
+  "tldr_en": "This is the long-awaited main clause: O man, you are laboring hard toward your Lord and will meet Him. Ya ayyuha is a vocative call, al-insan is in apposition to it. Inna with its pronoun -ka forms an emphatic sentence; kadih (toiling) is its predicate. Kadhan is an absolute object reinforcing the verb-idea, and mulaqihi (one who will meet Him) is joined to kadih.",
+  "translation_en": "O man, you are toiling hard toward your Lord, and you will surely meet Him.",
+  "transliteration": "Ya ayyuha al-insanu innaka kadihun ila rabbika kadhan fa-mulaqih",
+  "words_en": [
+   {
+    "token": "يَٰٓأَيُّهَا",
+    "case_en": "indeclinable",
+    "role_en": "vocative particle plus called noun (munada)",
+    "note_en": "Ya is the call-particle and ayyuha is the addressed term built on a damma in the place of the accusative."
+   },
+   {
+    "token": "ٱلْإِنسَٰنُ",
+    "case_en": "nominative",
+    "role_en": "appositive/explanatory substitute (badal or 'atf bayan)",
+    "note_en": "Specifies who is being called; it follows ayyuha and takes a nominative ending in pronunciation."
+   },
+   {
+    "token": "إِنَّكَ",
+    "case_en": "accusative",
+    "role_en": "emphatic particle inna with its noun (-ka)",
+    "note_en": "Inna gives emphasis ('indeed you'), and the attached pronoun -ka ('you') is its noun in the accusative position."
+   },
+   {
+    "token": "كَادِحٌ",
+    "case_en": "nominative",
+    "role_en": "predicate of inna (khabar inna)",
+    "note_en": "An active participle 'striving, toiling hard,' serving as the predicate, hence its nominative ending."
+   },
+   {
+    "token": "إِلَىٰ رَبِّكَ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jar wa majrur)",
+    "note_en": "The preposition ila puts rabb in the genitive; the phrase attaches to kadih, with an implied sense 'toward meeting your Lord.'"
+   },
+   {
+    "token": "كَدْحًۭا",
+    "case_en": "accusative",
+    "role_en": "absolute object (maf'ul mutlaq)",
+    "note_en": "A verbal noun from the same root as kadih that reinforces and intensifies the idea of toil, hence its accusative ending."
+   },
+   {
+    "token": "فَمُلَٰقِيهِ",
+    "case_en": "nominative",
+    "role_en": "participle conjoined to kadih (ma'tuf)",
+    "note_en": "The fa joins this active participle 'one who will meet Him' to kadih, so it shares the nominative; -hi means 'Him.'"
+   }
+  ],
+  "irab_en": "After the suspended conditions of verses 1-5, this verse delivers the main statement. Ya is a vocative particle and ayyuha is the called noun, built on a damma standing in the accusative position because it is a specified indefinite vocative. Al-insan is in apposition to ayyuha (a badal or explanatory substitute), following it in the nominative form. The emphatic inna takes the attached pronoun -ka as its noun, and the active participle kadih ('striving, toiling') is its predicate in the nominative. The phrase ila rabbika is genitive after the preposition ila and relates to kadih, with an implied 'toward meeting your Lord.' Kadhan is an absolute object (maf'ul mutlaq) that intensifies the toiling. Finally fa-mulaqihi is joined by the conjunction fa to kadih and shares its nominative, meaning the human being will inevitably meet his Lord.",
+  "faqs_en": [
+   {
+    "q": "Why is al-insan nominative when it follows a vocative?",
+    "a": "Al-insan is an appositive (badal or 'atf bayan) to ayyuha; because ayyuha carries a nominal damma, the noun explaining it takes the nominative form in pronunciation."
+   },
+   {
+    "q": "What is the function of 'kadhan'?",
+    "a": "Kadhan is an absolute object (maf'ul mutlaq), a verbal noun from the same root as kadih used to emphasize and intensify the act of toiling toward one's Lord."
+   },
+   {
+    "q": "How does 'fa-mulaqihi' relate to 'kadih'?",
+    "a": "The particle fa conjoins mulaqihi to kadih, so it takes the same nominative case; it states that after all his striving the human will certainly meet his Lord."
+   }
+  ],
+  "uthmani": "يَٰٓأَيُّهَا ٱلْإِنسَٰنُ إِنَّكَ كَادِحٌ إِلَىٰ رَبِّكَ كَدْحًۭا فَمُلَٰقِيهِ"
+ },
+ "84:7": {
+  "surah": 84,
+  "ayah": 7,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 7 — word-by-word Arabic grammar",
+  "tldr_en": "This verse opens the first branch of a detailed condition. The particle fa- links it to the preceding passage, and amma introduces a clause of detail and condition. Man is a conditional noun functioning as the subject (mubtada'), and the passive verb uti takes kitabahu as its object, with bi-yaminihi attached to the verb.",
+  "translation_en": "As for the one who is given his record in his right hand,",
+  "transliteration": "Fa-amma man utiya kitabahu bi-yaminih(i)",
+  "words_en": [
+   {
+    "token": "فَأَمَّا",
+    "case_en": "indeclinable",
+    "role_en": "connective particle + particle of detail and condition",
+    "note_en": "The prefixed fa- connects this passage to what precedes, and amma signals both a conditional sense and the start of a detailed enumeration."
+   },
+   {
+    "token": "مَنْ",
+    "case_en": "nominative",
+    "role_en": "conditional noun, subject (mubtada')",
+    "note_en": "Man is a conditional noun that requires a verbal response and here stands in the nominative position as the topic of the sentence."
+   },
+   {
+    "token": "أُوتِىَ",
+    "case_en": "indeclinable",
+    "role_en": "passive verb (conditional verb)",
+    "note_en": "Uti is a past-tense passive verb whose implied subject (the deputy agent) is the relative referent of man."
+   },
+   {
+    "token": "كِتَٰبَهُۥ",
+    "case_en": "accusative",
+    "role_en": "object (maf'ul bihi)",
+    "note_en": "Kitabahu is the second object of the doubly-transitive passive verb and is accusative, with the attached pronoun hu in genitive as possessor."
+   },
+   {
+    "token": "بِيَمِينِهِۦ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase attached to the verb",
+    "note_en": "Bi-yaminihi is a prepositional phrase governed in the genitive and linked to the verb uti, describing the manner of receiving."
+   }
+  ],
+  "irab_en": "The verse begins the first arm of a two-part detail introduced by amma, a particle that combines conditional force with elaboration; the prefixed fa- ties the passage to what came before. Man is a conditional noun occupying the nominative slot as the subject (mubtada'). Its conditional verb uti is a past passive form whose deputy agent is the referent of man. The accusative kitabahu serves as the object of this doubly-transitive passive verb, its pronoun hu standing in the genitive as possessor. The prepositional phrase bi-yaminihi is genitive and connects to the verb, specifying that the record is received in the right hand. The response to this condition follows in the next verse with the linking fa-.",
+  "faqs_en": [
+   {
+    "q": "Why is man considered nominative when it has no visible case ending?",
+    "a": "Man is indeclinable in form, but as a conditional noun serving as the subject (mubtada') it occupies the nominative position grammatically, even though its ending does not change."
+   },
+   {
+    "q": "What does amma add to the sentence?",
+    "a": "Amma introduces a clause of detail and condition, dividing the discourse into contrasting categories; here it begins the description of the person who receives the record in the right hand."
+   }
+  ],
+  "uthmani": "فَأَمَّا مَنْ أُوتِىَ كِتَٰبَهُۥ بِيَمِينِهِۦ"
+ },
+ "84:8": {
+  "surah": 84,
+  "ayah": 8,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 8 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is the response to the condition introduced by amma in the previous verse. The particle fa- links the answer, sawfa marks the future, and the passive verb yuhasab is followed by hisaban, an absolute object (maf'ul mutlaq), described by the adjective yasiran.",
+  "translation_en": "he will be reckoned with an easy reckoning,",
+  "transliteration": "Fa-sawfa yuhasabu hisaban yasira(n)",
+  "words_en": [
+   {
+    "token": "فَسَوْفَ",
+    "case_en": "indeclinable",
+    "role_en": "response-linking particle + future particle",
+    "note_en": "The fa- binds this clause as the answer to the preceding conditional amma, and sawfa marks futurity for the verb that follows."
+   },
+   {
+    "token": "يُحَاسَبُ",
+    "case_en": "nominative",
+    "role_en": "present passive verb",
+    "note_en": "Yuhasab is an imperfect passive verb in the nominative (indicative) mood, its deputy agent being the referent of man from the previous verse."
+   },
+   {
+    "token": "حِسَابًۭا",
+    "case_en": "accusative",
+    "role_en": "absolute object (maf'ul mutlaq)",
+    "note_en": "Hisaban is an accusative cognate object reinforcing the verb yuhasab and carrying its description."
+   },
+   {
+    "token": "يَسِيرًۭا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't) of the absolute object",
+    "note_en": "Yasiran is an accusative adjective qualifying hisaban, agreeing with it in case and indefiniteness."
+   }
+  ],
+  "irab_en": "This verse supplies the response (jawab) to the conditional amma that opened verse seven, the answer being introduced by the linking fa-. The future particle sawfa precedes and applies to the verb. Yuhasab is an imperfect passive verb in the indicative (nominative) mood, and its deputy agent is the referent of man mentioned earlier. The accusative hisaban is a cognate or absolute object (maf'ul mutlaq) that emphasizes and quantifies the verbal action of reckoning. The following yasiran is an accusative adjective (na't) describing hisaban; it agrees with its noun in case and in being indefinite, conveying that the reckoning will be light and easy.",
+  "faqs_en": [
+   {
+    "q": "What is an absolute object and why is hisaban one?",
+    "a": "An absolute object (maf'ul mutlaq) is a verbal noun placed in the accusative to emphasize or describe the verb. Hisaban derives from the same root as yuhasab and reinforces the act of reckoning."
+   },
+   {
+    "q": "Why is yasiran accusative?",
+    "a": "Yasiran is an adjective describing the accusative noun hisaban, so it follows its noun in case and takes the accusative ending as well."
+   }
+  ],
+  "uthmani": "فَسَوْفَ يُحَاسَبُ حِسَابًۭا يَسِيرًۭا"
+ },
+ "84:9": {
+  "surah": 84,
+  "ayah": 9,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 9 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues the description of the blessed person. The conjunction wa- joins the verb yanqalib to the earlier verb. The prepositional phrase ila ahlihi is attached to yanqalib, and masruran is a circumstantial accusative (hal) describing the subject of yanqalib.",
+  "translation_en": "and he will return to his people joyful.",
+  "transliteration": "Wa yanqalibu ila ahlihi masrura(n)",
+  "words_en": [
+   {
+    "token": "وَيَنقَلِبُ",
+    "case_en": "nominative",
+    "role_en": "conjunction + present verb",
+    "note_en": "The wa- joins this clause to the preceding response, and yanqalib is an imperfect verb in the indicative (nominative) mood whose subject is the same blessed person."
+   },
+   {
+    "token": "إِلَىٰٓ",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "Ila is a genitive-governing preposition introducing the destination of the returning."
+   },
+   {
+    "token": "أَهْلِهِۦ",
+    "case_en": "genitive",
+    "role_en": "object of preposition, attached to the verb",
+    "note_en": "Ahlihi is genitive after ila, and the whole phrase is linked to the verb yanqalib; the pronoun hi is genitive as possessor."
+   },
+   {
+    "token": "مَسْرُورًۭا",
+    "case_en": "accusative",
+    "role_en": "circumstantial accusative (hal)",
+    "note_en": "Masruran is an accusative hal describing the state of the subject of yanqalib, namely that he returns rejoicing."
+   }
+  ],
+  "irab_en": "The verse extends the reward described in verse eight, joined by the conjunction wa-. Yanqalib is an imperfect verb in the indicative (nominative) mood, and its subject is the implied pronoun referring back to the person given his record in the right hand. The preposition ila governs ahlihi in the genitive, and this prepositional phrase is attached to the verb yanqalib, marking the destination of his return; the suffix pronoun hi is genitive as a possessor. The final word masruran is an accusative circumstantial qualifier (hal) describing the condition of the subject as he returns, indicating that he goes back to his family in a state of joy and delight.",
+  "faqs_en": [
+   {
+    "q": "What is a hal and how does masruran function as one?",
+    "a": "A hal is a circumstantial accusative describing the state of the subject or object during the action. Masruran describes the person as joyful at the moment of returning to his family."
+   },
+   {
+    "q": "Why is yanqalib in the nominative mood?",
+    "a": "Yanqalib is an imperfect verb not preceded by any nasb or jazm particle, so it remains in the default indicative mood marked by the nominative ending."
+   }
+  ],
+  "uthmani": "وَيَنقَلِبُ إِلَىٰٓ أَهْلِهِۦ مَسْرُورًۭا"
+ },
+ "84:10": {
+  "surah": 84,
+  "ayah": 10,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 10 — word-by-word Arabic grammar",
+  "tldr_en": "This verse opens the contrasting second branch with wa-amma. As in verse seven, man is the conditional subject and uti is its passive verb with kitabahu as object. The accusative wara'a is an adverb of place attached to the verb, telling where the record is given.",
+  "translation_en": "But as for the one who is given his record from behind his back,",
+  "transliteration": "Wa amma man utiya kitabahu wara'a zahrih(i)",
+  "words_en": [
+   {
+    "token": "وَأَمَّا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + particle of detail and condition",
+    "note_en": "The wa- contrasts this branch with the previous one, and amma again introduces a conditional clause of detail."
+   },
+   {
+    "token": "مَنْ",
+    "case_en": "nominative",
+    "role_en": "conditional noun, subject (mubtada')",
+    "note_en": "Man is a conditional noun in the nominative position as subject, parallel to its use in verse seven."
+   },
+   {
+    "token": "أُوتِىَ",
+    "case_en": "indeclinable",
+    "role_en": "passive verb (conditional verb)",
+    "note_en": "Uti is a past passive verb whose deputy agent is the referent of man, mirroring the construction of the earlier branch."
+   },
+   {
+    "token": "كِتَٰبَهُۥ",
+    "case_en": "accusative",
+    "role_en": "object (maf'ul bihi)",
+    "note_en": "Kitabahu is the accusative object of the doubly-transitive passive verb, with the pronoun hu genitive as possessor."
+   },
+   {
+    "token": "وَرَآءَ",
+    "case_en": "accusative",
+    "role_en": "adverb of place (zarf makan) attached to the verb",
+    "note_en": "Wara'a is an accusative adverb of place linked to uti, specifying that the record is given from behind."
+   },
+   {
+    "token": "ظَهْرِهِۦ",
+    "case_en": "genitive",
+    "role_en": "second term of a construct (mudaf ilayhi)",
+    "note_en": "Zahrihi is genitive as the second part of the construct with wara'a; its pronoun hi is genitive as possessor."
+   }
+  ],
+  "irab_en": "This verse opens the second, contrasting branch of the detail, introduced by the conjunction wa- followed by amma, which again carries conditional and elaborating force. As in verse seven, man is a conditional noun occupying the nominative slot as the subject (mubtada'), and its conditional verb uti is a past passive whose deputy agent is the referent of man. The accusative kitabahu is the object of this doubly-transitive passive verb, its pronoun hu genitive as possessor. Wara'a is an accusative adverb of place (zarf makan) attached to the verb uti, and it forms a construct with the genitive zahrihi, so that the phrase describes the record being handed from behind his back.",
+  "faqs_en": [
+   {
+    "q": "Why is wara'a accusative rather than genitive?",
+    "a": "Wara'a is an adverb of place (zarf makan), and such adverbs take the accusative case. It links to the verb uti to show the location from which the record is received."
+   },
+   {
+    "q": "How is this verse parallel to verse seven?",
+    "a": "Both use amma plus the conditional man as subject and the passive uti with kitabahu as object. The contrast lies in the manner of receiving: the right hand versus from behind the back."
+   }
+  ],
+  "uthmani": "وَأَمَّا مَنْ أُوتِىَ كِتَٰبَهُۥ وَرَآءَ ظَهْرِهِۦ"
+ },
+ "84:11": {
+  "surah": 84,
+  "ayah": 11,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 11 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is the response to the condition of verse ten, linked by fa-. The future particle sawfa precedes the verb yad'u, and thuburan is its accusative object (maf'ul bihi), naming the destruction that the person will call upon himself.",
+  "translation_en": "he will call out for destruction,",
+  "transliteration": "Fa-sawfa yad'u thubura(n)",
+  "words_en": [
+   {
+    "token": "فَسَوْفَ",
+    "case_en": "indeclinable",
+    "role_en": "response-linking particle + future particle",
+    "note_en": "The fa- links this clause as the answer to the conditional amma of the previous verse, and sawfa marks the future tense."
+   },
+   {
+    "token": "يَدْعُوا۟",
+    "case_en": "nominative",
+    "role_en": "present verb",
+    "note_en": "Yad'u is an imperfect verb in the indicative (nominative) mood; its subject is the implied pronoun referring to the person of verse ten."
+   },
+   {
+    "token": "ثُبُورًۭا",
+    "case_en": "accusative",
+    "role_en": "object (maf'ul bihi)",
+    "note_en": "Thuburan is the accusative object of yad'u, naming the ruin and destruction that he will cry out for."
+   }
+  ],
+  "irab_en": "This verse provides the response (jawab) to the conditional amma that began verse ten, the answer linked by the prefixed fa-. The future particle sawfa precedes the verb to mark its futurity. Yad'u is an imperfect verb in the indicative (nominative) mood; because its root ends in a weak letter, the nominative is understood rather than marked by a visible damma. Its subject is the implied pronoun referring to the person who received his record from behind his back. The accusative thuburan is the direct object (maf'ul bihi) of yad'u, denoting the ruin and self-destruction he will call out for. The construction conveys that this person, in despair, will summon his own perdition.",
+  "faqs_en": [
+   {
+    "q": "Why is thuburan accusative?",
+    "a": "Thuburan is the direct object (maf'ul bihi) of the verb yad'u, and direct objects take the accusative case, here marked by the tanwin ending."
+   },
+   {
+    "q": "Why does yad'u not show a visible nominative ending?",
+    "a": "Yad'u ends in a weak final letter, so its indicative (nominative) mood is grammatically understood rather than shown by an explicit short-vowel marker."
+   }
+  ],
+  "uthmani": "فَسَوْفَ يَدْعُوا۟ ثُبُورًۭا"
+ },
+ "84:12": {
+  "surah": 84,
+  "ayah": 12,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 12 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues the fate of the wretched person, joined by wa-. The verb yasla is an imperfect indicative verb whose subject is implied, and sa'iran is its accusative object (maf'ul bihi), naming the blazing Fire he will enter.",
+  "translation_en": "and he will enter a blazing Fire.",
+  "transliteration": "Wa yasla sa'ira(n)",
+  "words_en": [
+   {
+    "token": "وَيَصْلَىٰ",
+    "case_en": "nominative",
+    "role_en": "conjunction + present verb",
+    "note_en": "The wa- joins this verb to yad'u in the previous verse, and yasla is an imperfect verb in the indicative (nominative) mood with an implied subject."
+   },
+   {
+    "token": "سَعِيرًا",
+    "case_en": "accusative",
+    "role_en": "object (maf'ul bihi)",
+    "note_en": "Sa'iran is the accusative object of yasla, naming the blazing Fire that he will be made to enter and burn in."
+   }
+  ],
+  "irab_en": "The verse continues the description of the wretched person from verse eleven and is joined to it by the conjunction wa-. Yasla is an imperfect verb in the indicative (nominative) mood; since it ends in a weak final letter, the nominative is understood rather than expressed by a visible vowel. Its subject is the implied pronoun referring back to the same person who received his record from behind his back. The accusative sa'iran functions as the direct object (maf'ul bihi) of yasla, naming the blazing Fire that he will be cast into and made to burn in. Together with the preceding verse, this completes the contrasting fate of the one who is given his record from behind his back.",
+  "faqs_en": [
+   {
+    "q": "What does the conjunction wa- connect here?",
+    "a": "The wa- connects yasla in this verse to yad'u in the previous verse, joining two consequences faced by the same person: calling for destruction and entering the blazing Fire."
+   },
+   {
+    "q": "Why is sa'iran in the accusative?",
+    "a": "Sa'iran is the direct object (maf'ul bihi) of the verb yasla, and direct objects are placed in the accusative case, here marked by the tanwin."
+   }
+  ],
+  "uthmani": "وَيَصْلَىٰ سَعِيرًا"
+ },
+ "84:19": {
+  "surah": 84,
+  "ayah": 19,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 19 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah is the answer to the preceding oaths: an emphatic statement that humanity will surely pass from one stage to another. The verb carries a double emphasis, the lam of the oath at the front and the heavy nun of emphasis at the end, framing the certainty of passing through successive states.",
+  "translation_en": "You will surely move from one stage to another.",
+  "transliteration": "Latarkabunna tabaqan 'an tabaqin",
+  "words_en": [
+   {
+    "token": "لَتَرْكَبُنَّ",
+    "case_en": "indeclinable",
+    "role_en": "emphasized imperfect verb (answer to the oath)",
+    "note_en": "The opening lam is the lam of the oath and the final shaddah-nun is the heavy nun of emphasis attached to the present-tense verb; the plural subject 'you' is contained in it."
+   },
+   {
+    "token": "طَبَقًا",
+    "case_en": "accusative",
+    "role_en": "object / state (stage)",
+    "note_en": "It is in the accusative as the thing passed onto, denoting one condition or stage after another."
+   },
+   {
+    "token": "عَن",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "This preposition conveys succession and transition, 'away from / after'."
+   },
+   {
+    "token": "طَبَقٍ",
+    "case_en": "genitive",
+    "role_en": "object of preposition",
+    "note_en": "It is genitive after the preposition and completes the image of moving from one stage past another."
+   }
+  ],
+  "irab_en": "The verse functions as the delayed answer to the oaths sworn in the previous verses. The verb لَتَرْكَبُنَّ is doubly reinforced: the prefixed لَ is the lam that introduces the response to an oath, and the final ـنّ is the heavy nun of emphasis (nun at-tawkid ath-thaqilah). Because of this nun the verb is mabni (indeclinable) on fat-h, and its plural subject is the embedded pronoun 'you all'. طَبَقًا stands in the accusative as the object/state being mounted or passed through, here meaning a condition or phase. The preposition عَن joins to طَبَقٍ, which is genitive after it. Together عَن طَبَقٍ describes movement from one stage onward, and the whole picture is of humanity ascending through successive states until the meeting with their Lord.",
+  "faqs_en": [
+   {
+    "q": "Why does the verb begin with lam and end with a doubled nun?",
+    "a": "The initial lam is the lam of the oath introducing the answer to the preceding vows, and the doubled nun is the heavy nun of emphasis; together they make the statement maximally certain."
+   },
+   {
+    "q": "What case is طَبَقًا and why?",
+    "a": "It is accusative, functioning as the state or stage that is passed through, the thing the verb acts upon."
+   }
+  ],
+  "uthmani": "لَتَرْكَبُنَّ طَبَقًا عَن طَبَقٍۢ"
+ },
+ "84:20": {
+  "surah": 84,
+  "ayah": 20,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 20 — word-by-word Arabic grammar",
+  "tldr_en": "A rhetorical question rebuking the disbelievers: what is the matter with them that they do not believe. The interrogative 'ma' serves as subject, the prepositional phrase 'lahum' supplies its predicate, and the negated verb that follows describes their state.",
+  "translation_en": "So what is the matter with them that they do not believe?",
+  "transliteration": "Fama lahum la yu'minun",
+  "words_en": [
+   {
+    "token": "فَ",
+    "case_en": "indeclinable",
+    "role_en": "connective particle",
+    "note_en": "The fa links this to an implied condition, tying the rebuke to what precedes."
+   },
+   {
+    "token": "مَا",
+    "case_en": "nominative",
+    "role_en": "interrogative subject (mubtada')",
+    "note_en": "It is an interrogative noun standing in the place of nominative as the subject of the sentence."
+   },
+   {
+    "token": "لَهُمْ",
+    "case_en": "genitive",
+    "role_en": "predicate (khabar) — prepositional phrase",
+    "note_en": "This prepositional phrase relates to the omitted predicate of the interrogative 'ma'."
+   },
+   {
+    "token": "لَا",
+    "case_en": "indeclinable",
+    "role_en": "negative particle",
+    "note_en": "It negates the following present-tense verb."
+   },
+   {
+    "token": "يُؤْمِنُونَ",
+    "case_en": "nominative",
+    "role_en": "imperfect verb (circumstantial state)",
+    "note_en": "Marfu' by the retained nun; the clause describes the condition of 'them', 'not believing'."
+   }
+  ],
+  "irab_en": "The فَ at the head links this verse to an unstated conditional sense, giving it the force of 'and so...'. مَا is an interrogative noun placed at the start as the mubtada' (subject) in the position of nominative. The prepositional phrase لَهُمْ attaches to the omitted predicate (khabar) of this interrogative, yielding 'what is with/for them?'. The particle لَا is purely negating, and the verb يُؤْمِنُونَ is marfu' (its mark of raf' being the retained final nun of the sound plural). The negated verbal clause لَا يُؤْمِنُونَ functions as a circumstantial clause (hal) describing the disbelievers' condition while the question is posed, so the sense is 'what ails them that they remain in a state of disbelief?'",
+  "faqs_en": [
+   {
+    "q": "What role does مَا play here?",
+    "a": "It is an interrogative noun acting as the subject (mubtada') in the nominative position, asking 'what is the matter'."
+   },
+   {
+    "q": "How does لَا يُؤْمِنُونَ fit into the sentence?",
+    "a": "It is a negated present-tense clause functioning as a circumstantial (hal) clause describing their state of not believing."
+   }
+  ],
+  "uthmani": "فَمَا لَهُمْ لَا يُؤْمِنُونَ"
+ },
+ "84:21": {
+  "surah": 84,
+  "ayah": 21,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 21 — word-by-word Arabic grammar",
+  "tldr_en": "A continuation of the rebuke: when the Qur'an is recited to them they do not prostrate. A time-clause introduced by 'idha' sets the scene with a passive verb, and the main answer is the negated present-tense verb describing their refusal to bow down.",
+  "translation_en": "And when the Qur'an is recited to them, they do not prostrate.",
+  "transliteration": "Wa-idha quri'a 'alayhimu l-qur'anu la yasjudun",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "connective particle",
+    "note_en": "The waw joins this verse to the preceding rebuke."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "adverb of time (conditional)",
+    "note_en": "It introduces a time-clause whose answer is the later verb 'they do not prostrate'."
+   },
+   {
+    "token": "قُرِئَ",
+    "case_en": "indeclinable",
+    "role_en": "passive past verb",
+    "note_en": "A passive verb built on fat-h; its doer is unnamed and 'the Qur'an' serves as its deputy subject."
+   },
+   {
+    "token": "عَلَيْهِمُ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (related to the verb)",
+    "note_en": "This phrase attaches to the passive verb 'is recited', meaning 'recited upon them'."
+   },
+   {
+    "token": "ٱلْقُرْءَانُ",
+    "case_en": "nominative",
+    "role_en": "deputy subject (na'ib al-fa'il)",
+    "note_en": "It is nominative as the substitute agent of the passive verb 'is recited'."
+   },
+   {
+    "token": "لَا",
+    "case_en": "indeclinable",
+    "role_en": "negative particle",
+    "note_en": "It negates the following verb, like the negation in the previous verse."
+   },
+   {
+    "token": "يَسْجُدُونَ",
+    "case_en": "nominative",
+    "role_en": "imperfect verb (answer of the time-clause)",
+    "note_en": "Marfu' by the retained nun; it is the response to 'when', stating they do not prostrate."
+   }
+  ],
+  "irab_en": "The opening وَ connects the verse to the rebuke before it. إِذَا is an adverb of time carrying conditional sense, and its content clause is the passive verb قُرِئَ, which is built on fat-h. The agent is unnamed; instead ٱلْقُرْءَانُ stands as the deputy subject (na'ib al-fa'il) in the nominative. The phrase عَلَيْهِمُ links to the passive verb, giving 'recited upon them'. The answer (jawab) to إِذَا is the clause لَا يَسْجُدُونَ: لَا negates, and يَسْجُدُونَ is marfu' with the retained nun of the sound masculine plural. The whole means that even at the moment when revelation is recited to them, they refuse to fall in prostration, which is why this is a place of recommended prostration in recitation.",
+  "faqs_en": [
+   {
+    "q": "Why is ٱلْقُرْءَانُ in the nominative even though the verb is passive?",
+    "a": "Because the verb قُرِئَ is passive and has no named doer; the Qur'an takes the role of deputy subject (na'ib al-fa'il), which is nominative."
+   },
+   {
+    "q": "What is the answer to إِذَا in this verse?",
+    "a": "The clause لَا يَسْجُدُونَ ('they do not prostrate') is the answer to the time-adverb إِذَا."
+   }
+  ],
+  "uthmani": "وَإِذَا قُرِئَ عَلَيْهِمُ ٱلْقُرْءَانُ لَا يَسْجُدُونَ ۩"
+ },
+ "84:22": {
+  "surah": 84,
+  "ayah": 22,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 22 — word-by-word Arabic grammar",
+  "tldr_en": "A turn of speech: rather, those who disbelieve actively reject the truth. The particle 'bal' shifts the discourse, a relative noun stands as subject, its relative clause names them as disbelievers, and the predicate verb states that they persist in denial.",
+  "translation_en": "Rather, those who disbelieve are denying it.",
+  "transliteration": "Bali lladhina kafaru yukadhdhibun",
+  "words_en": [
+   {
+    "token": "بَلِ",
+    "case_en": "indeclinable",
+    "role_en": "particle of transition (idrab)",
+    "note_en": "It redirects the discourse, moving from the question to a stronger assertion about the disbelievers."
+   },
+   {
+    "token": "ٱلَّذِينَ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada') — relative noun",
+    "note_en": "A relative noun in the nominative position serving as the subject of the sentence."
+   },
+   {
+    "token": "كَفَرُوا۟",
+    "case_en": "indeclinable",
+    "role_en": "verb of the relative clause (silah)",
+    "note_en": "A past-tense verb with its plural subject 'they'; the clause completes the meaning of 'those who'."
+   },
+   {
+    "token": "يُكَذِّبُونَ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar) — imperfect verb",
+    "note_en": "Marfu' by the retained nun; this verbal clause is the predicate, stating they persist in denial."
+   }
+  ],
+  "irab_en": "بَلِ is a particle of transition (idrab intiqali) that turns the discourse away from the rhetorical question toward a firmer charge. ٱلَّذِينَ is a relative noun functioning as the mubtada' (subject) in the nominative position. Its connector clause (silah) is كَفَرُوا۟, a past-tense verb whose subject is the embedded plural pronoun 'they'; this clause has no place in i'rab as it merely completes the relative noun. The predicate (khabar) of ٱلَّذِينَ is the verbal clause يُكَذِّبُونَ, where the verb is marfu' by the retained final nun of the sound masculine plural. The sentence therefore states emphatically that, far from any excuse, those characterized by disbelief are actively and continually giving the lie to the revelation.",
+  "faqs_en": [
+   {
+    "q": "What does the particle بَل do here?",
+    "a": "It is a particle of transition (idrab) that shifts the discourse from the prior question to a stronger statement about the disbelievers."
+   },
+   {
+    "q": "What is the subject and predicate of this sentence?",
+    "a": "ٱلَّذِينَ كَفَرُوا is the subject (a relative noun with its clause), and the verbal clause يُكَذِّبُونَ is the predicate."
+   }
+  ],
+  "uthmani": "بَلِ ٱلَّذِينَ كَفَرُوا۟ يُكَذِّبُونَ"
+ },
+ "84:23": {
+  "surah": 84,
+  "ayah": 23,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 23 — word-by-word Arabic grammar",
+  "tldr_en": "Allah knows best what they keep within themselves. A nominal sentence whose subject is the divine name, with 'a'lam' as a comparative-form predicate, followed by a prepositional phrase containing a relative clause that names the hidden contents Allah is fully aware of.",
+  "translation_en": "And Allah knows best what they keep within.",
+  "transliteration": "Wa-llahu a'lamu bima yu'un",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "connective particle",
+    "note_en": "The waw connects this statement to the preceding verse, or may begin a circumstantial clause."
+   },
+   {
+    "token": "ٱللَّهُ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "The divine name is nominative as the subject of this nominal sentence."
+   },
+   {
+    "token": "أَعْلَمُ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "A comparative-pattern noun ('most knowing') in the nominative as the predicate of the subject."
+   },
+   {
+    "token": "بِمَا",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase with relative noun",
+    "note_en": "The bi-preposition governs the relative noun 'ma', and the phrase relates to 'a'lam' in the sense of 'fully aware of'."
+   },
+   {
+    "token": "يُوعُونَ",
+    "case_en": "nominative",
+    "role_en": "verb of the relative clause (silah)",
+    "note_en": "Marfu' by the retained nun; with 'ma' it forms what they store or conceal within."
+   }
+  ],
+  "irab_en": "The opening وَ is connective, joining this to the previous verse, and could also be read as introducing a circumstantial sense. ٱللَّهُ is the mubtada' (subject) in the nominative, and أَعْلَمُ is its khabar (predicate), a noun on the comparative/superlative pattern meaning 'most knowing'. The prepositional phrase بِمَا relates to أَعْلَمُ, here carrying the sense of 'fully aware of'; the بِ governs the relative noun مَا, which is genitive. The verb يُوعُونَ is marfu' by the retained nun of the sound plural and forms the connector clause (silah) of مَا, with no independent place in i'rab. The implied meaning of مَا يُوعُونَ is 'that which they store up / conceal in their breasts', so the verse affirms Allah's complete knowledge of their hidden denial.",
+  "faqs_en": [
+   {
+    "q": "What kind of word is أَعْلَمُ grammatically?",
+    "a": "It is a noun on the comparative/superlative pattern meaning 'most knowing', serving here as the predicate (khabar) of the divine name."
+   },
+   {
+    "q": "What does بِمَا يُوعُونَ refer to?",
+    "a": "It refers to what the disbelievers store up or conceal within themselves, with مَا as a relative noun completed by the verb يُوعُونَ."
+   }
+  ],
+  "uthmani": "وَٱللَّهُ أَعْلَمُ بِمَا يُوعُونَ"
+ },
+ "84:24": {
+  "surah": 84,
+  "ayah": 24,
+  "h1_en": "I'rab of Surah Al-Inshiqaq Ayah 24 — word-by-word Arabic grammar",
+  "tldr_en": "A command to the Prophet to announce to them a painful punishment. The fa links the order to an implied condition, the imperative verb carries an attached object pronoun, and a prepositional phrase with its adjective specifies the painful torment being foretold.",
+  "translation_en": "So give them tidings of a painful punishment.",
+  "transliteration": "Fabashshirhum bi'adhabin alim",
+  "words_en": [
+   {
+    "token": "فَ",
+    "case_en": "indeclinable",
+    "role_en": "connective particle (answer to an implied condition)",
+    "note_en": "The fa links this command to an unstated condition, as if 'since they deny, then announce...'."
+   },
+   {
+    "token": "بَشِّرْ",
+    "case_en": "jussive",
+    "role_en": "imperative verb",
+    "note_en": "An imperative built on sukun; its subject is the implied 'you', addressed to the Prophet."
+   },
+   {
+    "token": "هُم",
+    "case_en": "accusative",
+    "role_en": "object pronoun (maf'ul bihi)",
+    "note_en": "The attached pronoun 'them' is the object of 'give tidings to'."
+   },
+   {
+    "token": "بِعَذَابٍ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (related to the verb)",
+    "note_en": "The bi-preposition governs 'punishment', and the phrase attaches to the imperative 'announce to them of...'."
+   },
+   {
+    "token": "أَلِيمٍ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "It describes 'punishment' and follows it in the genitive, meaning 'painful'."
+   }
+  ],
+  "irab_en": "The فَ at the head is connective, serving as the link to an implied conditional clause, so the meaning runs 'and since they persist in denial, then give them tidings...'. The verb بَشِّرْ is an imperative, mabni (indeclinable) on sukun, with the addressee 'you' (the Prophet) as its understood subject. The attached pronoun هُم is its direct object (maf'ul bihi) in the accusative position. The prepositional phrase بِعَذَابٍ relates to the verb, specifying the content of the announcement, with عَذَابٍ genitive after the بِ. أَلِيمٍ is an adjective (na't) qualifying عَذَابٍ and, by agreement, also genitive, meaning 'painful'. The verse thus turns the rebuke into a stern, ironic 'glad tiding' of a grievous chastisement.",
+  "faqs_en": [
+   {
+    "q": "Why is the verb بَشِّرْ (give tidings) used for a punishment?",
+    "a": "Grammatically it is a normal imperative; rhetorically it is used ironically, since 'giving good tidings' is here applied to a painful punishment for emphasis and rebuke."
+   },
+   {
+    "q": "Why is أَلِيمٍ in the genitive?",
+    "a": "It is an adjective describing عَذَابٍ and agrees with it in case; since عَذَابٍ is genitive after the preposition بِ, أَلِيمٍ is genitive too."
+   }
+  ],
+  "uthmani": "فَبَشِّرْهُم بِعَذَابٍ أَلِيمٍ"
+ }
+}

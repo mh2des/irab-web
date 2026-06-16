@@ -1,0 +1,176 @@
+{
+ "103:1": {
+  "surah": 103,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah Al-Asr Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "This single-word verse is an oath (qasam). The opening wāw is the particle of swearing (wāw al-qasam), which functions like a preposition and puts the following noun in the genitive. Al-ʿaṣr is the object sworn by, governed in the genitive. The whole phrase attaches to an implied verb \"I swear,\" and the verse it introduces forms the answer of the oath.",
+  "translation_en": "By time (the passing age).",
+  "transliteration": "wal-ʿaṣr",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "oath particle (wāw al-qasam)",
+    "note_en": "This wāw is the particle of swearing; it behaves like a preposition and governs the noun after it in the genitive."
+   },
+   {
+    "token": "ٱلْعَصْرِ",
+    "case_en": "genitive",
+    "role_en": "object of the oath / genitive noun (majrūr by wāw al-qasam)",
+    "note_en": "Placed in the genitive by the oath-wāw, this is the thing sworn by, and the oath phrase relates to an understood verb meaning \"I swear.\""
+   }
+  ],
+  "irab_en": "The verse consists of an oath built from two elements. The initial وَ is wāw al-qasam, the particle used for swearing; grammatically it operates like a preposition (ḥarf jarr) and so requires the noun following it to take the genitive case. ٱلْعَصْرِ is therefore majrūr (genitive), its genitive marked by the kasra on the final letter, and it serves as the muqsam bihi — the thing by which the oath is taken. The combined prepositional-style phrase (wāw plus its genitive noun) is linked to a deleted oath-verb whose understood meaning is \"I swear\" (uqsimu). This suppressed verb is omitted because the oath construction itself makes it clear. The clause that follows in the next verse functions as the jawāb al-qasam, the response or content of the oath being affirmed.",
+  "faqs_en": [
+   {
+    "q": "Why is ٱلْعَصْرِ in the genitive case?",
+    "a": "Because the opening wāw is the oath-particle (wāw al-qasam), which acts grammatically like a preposition. Just as a preposition puts its noun in the genitive, the oath-wāw does the same, so ٱلْعَصْرِ ends in a kasra."
+   },
+   {
+    "q": "Where is the verb in this verse?",
+    "a": "It is omitted. Oath constructions of this kind suppress the verb \"I swear\" (uqsimu); the wāw and its genitive noun attach to that understood verb. Arabic regularly deletes the oath-verb when the wāw makes the meaning obvious."
+   },
+   {
+    "q": "What is the relationship between this verse and the next one?",
+    "a": "This verse is the oath (qasam), and the statement that follows it is the jawāb al-qasam — the answer or content the oath is affirming, namely that humankind is in loss."
+   }
+  ],
+  "uthmani": "وَٱلْعَصْرِ"
+ },
+ "103:2": {
+  "surah": 103,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah Al-Asr Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah is a nominal sentence governed by the emphatic particle inna, which puts its noun (al-insan) in the accusative and its predicate in the nominative. The predicate here is the prepositional phrase la-fi khusr, where the la- is the lam of emphasis and fi khusr attaches to an understood predicate, asserting that mankind is truly in loss.",
+  "translation_en": "Indeed, mankind is in loss.",
+  "transliteration": "Inna al-insana la-fi khusrin",
+  "words_en": [
+   {
+    "token": "إِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "emphatic particle (harf tawkid wa nasb)",
+    "note_en": "This is the particle of emphasis that introduces a nominal sentence, making its noun accusative and its predicate nominative."
+   },
+   {
+    "token": "ٱلْإِنسَٰنَ",
+    "case_en": "accusative",
+    "role_en": "noun of inna (ism inna)",
+    "note_en": "This is the subject acted on by inna, so it takes the accusative, marked by the visible fatha on its end."
+   },
+   {
+    "token": "لَ",
+    "case_en": "indeclinable",
+    "role_en": "emphasis prefix (lam al-tawkid / al-muzahliqah)",
+    "note_en": "This is the emphatic lam attached to the predicate, reinforcing the certainty already expressed by inna."
+   },
+   {
+    "token": "فِى",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "This is a genitive preposition that puts the following noun in the genitive case."
+   },
+   {
+    "token": "خُسْرٍ",
+    "case_en": "genitive",
+    "role_en": "object of preposition forming the predicate (khabar inna)",
+    "note_en": "This noun is genitive after fi, and the whole phrase la-fi khusr serves as the nominative-position predicate of inna."
+   }
+  ],
+  "irab_en": "The verse opens with إِنَّ, the particle of emphasis that governs a following nominal sentence: it renders its noun accusative and its predicate nominative. ٱلْإِنسَٰنَ is the noun of inna (ism inna) and is therefore accusative, shown by the plain fatha at its end. The لَ prefixed to the predicate is the lam of emphasis (often called al-lam al-muzahliqah, \"the displaced lam\"), which adds further weight to the assertion. فِى is a preposition that places خُسْرٍ in the genitive case, marked by kasra. Grammatically, the prepositional phrase لَفِى خُسْرٍ attaches to an omitted predicate, and together they occupy the nominative position as the khabar (predicate) of inna. The full meaning conveyed is the emphatic statement that humankind is genuinely in a state of loss.",
+  "faqs_en": [
+   {
+    "q": "Why is al-insan in the accusative case?",
+    "a": "Because it is the noun of inna (ism inna). The emphatic particle inna always puts the noun that follows it into the accusative case, which is why al-insan ends in a fatha."
+   },
+   {
+    "q": "What is the predicate (khabar) of inna in this ayah?",
+    "a": "The predicate is the prepositional phrase la-fi khusr. The phrase fi khusr relates to an understood predicate (such as 'situated' or 'placed'), and this implied predicate occupies the nominative position required for the khabar of inna."
+   },
+   {
+    "q": "What is the function of the lam in la-fi?",
+    "a": "It is the lam of emphasis (lam al-tawkid), sometimes called al-muzahliqah because it shifts onto the predicate. It strengthens the certainty of the statement, working together with inna to stress that mankind is truly in loss."
+   }
+  ],
+  "uthmani": "إِنَّ ٱلْإِنسَٰنَ لَفِى خُسْرٍ"
+ },
+ "103:3": {
+  "surah": 103,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah Al-Asr Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah is an exception (istithnaa) carved out of the previous verse, introduced by \"illa.\" The excepted noun is the relative pronoun \"alladhina\" in the accusative position. It heads a relative clause built from four coordinated past-tense verbs whose subject is the connected \"waw,\" with the last two verbs each completed by a prepositional phrase.",
+  "translation_en": "Except those who believe, do righteous deeds, urge one another to truth, and urge one another to patience.",
+  "transliteration": "illā alladhīna āmanū wa-ʿamilū aṣ-ṣāliḥāti wa-tawāṣaw bi-l-ḥaqqi wa-tawāṣaw bi-ṣ-ṣabri",
+  "words_en": [
+   {
+    "token": "إِلَّا",
+    "case_en": "indeclinable",
+    "role_en": "exception particle (adat istithnaa)",
+    "note_en": "This particle introduces an exception, excluding what follows from the general loss stated in the previous verse."
+   },
+   {
+    "token": "ٱلَّذِينَ",
+    "case_en": "accusative",
+    "role_en": "excepted noun (mustathna) in the accusative position",
+    "note_en": "A masculine plural relative pronoun, indeclinable but occupying an accusative slot as the thing excepted by illa."
+   },
+   {
+    "token": "ءَامَنُوا۟",
+    "case_en": "indeclinable",
+    "role_en": "verb of the relative clause (sila) with its subject",
+    "note_en": "A past-tense verb built on the damma because of the attached waw, which is the plural subject pronoun forming the relative clause."
+   },
+   {
+    "token": "وَعَمِلُوا۟",
+    "case_en": "indeclinable",
+    "role_en": "coordinated verb (maʿtuf) with its subject",
+    "note_en": "The waw joins this past-tense verb to the first; the attached waw is again its plural subject."
+   },
+   {
+    "token": "ٱلصَّٰلِحَٰتِ",
+    "case_en": "accusative",
+    "role_en": "direct object (mafʿul bihi)",
+    "note_en": "A sound feminine plural object of ʿamilu, marked accusative by kasra in place of fatha as such plurals require."
+   },
+   {
+    "token": "وَتَوَاصَوْا۟",
+    "case_en": "indeclinable",
+    "role_en": "coordinated verb (maʿtuf) with its subject",
+    "note_en": "A third past-tense verb joined by waw, built on the damma, with the attached waw as its plural subject."
+   },
+   {
+    "token": "بِٱلْحَقِّ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase attached to (mutaʿalliq bi) tawasaw",
+    "note_en": "The preposition bi governs al-haqq in the genitive, and the phrase connects to the preceding verb tawasaw."
+   },
+   {
+    "token": "وَتَوَاصَوْا۟",
+    "case_en": "indeclinable",
+    "role_en": "coordinated verb (maʿtuf) with its subject",
+    "note_en": "The fourth past-tense verb, joined by waw and parsed exactly like the previous tawasaw."
+   },
+   {
+    "token": "بِٱلصَّبْرِ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase attached to (mutaʿalliq bi) the second tawasaw",
+    "note_en": "The preposition bi puts al-sabr in the genitive, the phrase linking to the second occurrence of tawasaw."
+   }
+  ],
+  "irab_en": "The verse opens with \"illa,\" a particle of exception that carves a group out of the sweeping claim of loss made in verse 2. What is excepted is \"alladhina,\" a masculine plural relative pronoun; though indeclinable in form, it sits in the accusative position as the excepted noun (mustathna). This pronoun then heads a relative clause whose connecting content is a series of four coordinated past-tense verbs: \"amanu,\" \"wa-amilu,\" \"wa-tawasaw,\" and \"wa-tawasaw.\" Each verb is built on the damma because of the attached subject \"waw,\" which serves as its plural doer. \"Al-salihati\" is the accusative object of \"amilu,\" taking kasra in place of fatha as a sound feminine plural. The two final verbs are each completed by a prepositional phrase, \"bi-l-haqqi\" and \"bi-l-sabri,\" both in the genitive and attached to their respective verbs.",
+  "faqs_en": [
+   {
+    "q": "Why is الَّذِينَ described as accusative when relative pronouns do not change endings?",
+    "a": "الَّذِينَ is indeclinable, so its ending never changes, but grammar still assigns it a syntactic position. Here it functions as the excepted noun after إلا, so it is said to be in the accusative position (fi mahall nasb) even though its form stays fixed."
+   },
+   {
+    "q": "What connects this ayah grammatically to the verse before it?",
+    "a": "The particle إلا makes this verse an exception (istithnaa) to verse 2, which declared that mankind is in loss. The exception removes the believers described here from that general statement, so the two verses form one continuous sentence."
+   },
+   {
+    "q": "Why does ٱلصَّٰلِحَٰتِ end in kasra if it is an object and objects are accusative?",
+    "a": "It is a sound feminine plural (jamʿ muʾannath salim). This class of nouns shows the accusative case with a kasra instead of the usual fatha, so the kasra here is the accusative marker, not a genitive one."
+   }
+  ],
+  "uthmani": "إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ وَتَوَاصَوْا۟ بِٱلْحَقِّ وَتَوَاصَوْا۟ بِٱلصَّبْرِ"
+ }
+}

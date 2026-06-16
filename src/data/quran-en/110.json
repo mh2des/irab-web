@@ -1,0 +1,218 @@
+{
+ "110:1": {
+  "surah": 110,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah An-Nasr Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "This verse opens with the time-conditional particle إِذَا, which introduces a condition awaiting its answer in a later verse. Its verb is the past-tense جَاءَ, whose subject نَصْرُ heads a possessive construction with ٱللَّهِ. The noun ٱلْفَتْحُ is then joined to that subject by وَ, sharing its nominative case.",
+  "translation_en": "When the help of God comes, along with the victory,",
+  "transliteration": "Idhā jāʾa naṣru llāhi wal-fatḥ(u)",
+  "words_en": [
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "adverb of time governing a condition (ẓarf li-mā yustaqbal)",
+    "note_en": "A fixed (mabni) time-adverb that points to the future and carries a conditional sense; it is attached to its answering clause, which appears later in the surah."
+   },
+   {
+    "token": "جَآءَ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb of the condition (fi'l al-shart)",
+    "note_en": "A perfect verb built on fatḥah; it forms the condition clause governed by إِذَا and takes the following noun as its subject."
+   },
+   {
+    "token": "نَصْرُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il) and first term of the iḍāfah (muḍāf)",
+    "note_en": "The doer of جَآءَ, nominative with a ḍammah, and it is the possessed noun leading into the genitive that follows."
+   },
+   {
+    "token": "ٱللَّهِ",
+    "case_en": "genitive",
+    "role_en": "possessor / genitive noun (muḍāf ilayh)",
+    "note_en": "The majestic name in the genitive with a kasrah, completing the possessive phrase 'the help of God.'"
+   },
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "coordinating conjunction (ḥarf 'aṭf)",
+    "note_en": "A connective particle joining what follows to the subject نَصْرُ and passing on its nominative case."
+   },
+   {
+    "token": "ٱلْفَتْحُ",
+    "case_en": "nominative",
+    "role_en": "noun coordinated to the subject (ma'ṭuf 'ala al-fa'il)",
+    "note_en": "Linked by وَ to نَصْرُ, so it shares the subject role and is nominative with a ḍammah."
+   }
+  ],
+  "irab_en": "The verse begins with إِذَا, a fixed time-adverb that looks toward the future and sets up a condition whose answer comes in a later verse. Its condition-verb is جَآءَ, a perfect verb built on fatḥah. The subject of this verb is نَصْرُ, which is nominative by a ḍammah and simultaneously functions as the first part of a possessive construction (iḍāfah). The second part is ٱللَّهِ, the majestic name, genitive by a kasrah, so the phrase reads \"the help of God.\" The conjunction وَ then joins ٱلْفَتْحُ to the subject نَصْرُ; because it is coordinated to a nominative subject, ٱلْفَتْحُ is itself nominative with a ḍammah. The whole clause \"when the help of God and the victory come\" remains incomplete in sense until its answering clause arrives.",
+  "faqs_en": [
+   {
+    "q": "Why is نَصْرُ nominative and ٱللَّهِ genitive when they sit side by side?",
+    "a": "They form a possessive pair (iḍāfah). نَصْرُ is the subject of جَآءَ, so it is nominative, while ٱللَّهِ is the possessor in second position, which must be genitive. Together they mean 'the help of God.'"
+   },
+   {
+    "q": "What does إِذَا do at the start of the verse?",
+    "a": "إِذَا is a future-leaning time-adverb that also carries a conditional meaning. It needs both a condition clause (here جَآءَ نَصْرُ ٱللَّهِ) and an answering clause, which does not appear until later in the surah."
+   },
+   {
+    "q": "Why is ٱلْفَتْحُ nominative?",
+    "a": "It is joined by the conjunction وَ to نَصْرُ, the nominative subject. A coordinated noun matches the case of the word it is linked to, so ٱلْفَتْحُ takes the same nominative ending."
+   }
+  ],
+  "uthmani": "إِذَا جَآءَ نَصْرُ ٱللَّهِ وَٱلْفَتْحُ"
+ },
+ "110:2": {
+  "surah": 110,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah An-Nasr Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "This verse opens with the conjunction wa joining a past-tense verb ra'ayta (you saw) whose subject is the attached pronoun \"you.\" Its object is al-nas (the people), followed by the present-tense clause yadkhuluna (they enter) functioning as a second object/state. The prepositional phrase fi dini-llah links to \"enter,\" and afwajan is an accusative circumstantial state (hal).",
+  "translation_en": "And you saw the people entering the religion of God in crowds.",
+  "transliteration": "wa ra'ayta n-nasa yadkhuluna fi dini llahi afwaja",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The connecting particle wa joins this verb to the preceding verb ja'a in ayah 1, both governed by the same conditional idha."
+   },
+   {
+    "token": "رَأَيْتَ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb with attached subject pronoun (fi'l madi)",
+    "note_en": "A past-tense verb built on a quiescent ending because it is joined to the subject pronoun ta, which stands as the nominative-position subject \"you.\""
+   },
+   {
+    "token": "ٱلنَّاسَ",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "The accusative direct object of ra'ayta, marked by the fatha, naming the people who were seen."
+   },
+   {
+    "token": "يَدْخُلُونَ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb heading the clause that serves as a state/second object",
+    "note_en": "A present-tense verb in the nominative (its sign being the retained nun), with the waw of the plural as its subject; the whole clause describes the people as entering."
+   },
+   {
+    "token": "فِى",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "The preposition fi governs the following noun in the genitive and, together with it, attaches to the verb yadkhuluna."
+   },
+   {
+    "token": "دِينِ",
+    "case_en": "genitive",
+    "role_en": "genitive noun governed by the preposition, first term of an idafa",
+    "note_en": "Governed in the genitive by fi (sign: kasra), and itself in construct with the following word as a possessive phrase."
+   },
+   {
+    "token": "ٱللَّهِ",
+    "case_en": "genitive",
+    "role_en": "possessive noun (mudaf ilayh)",
+    "note_en": "The majestic name in the genitive as the second term of the construct, marked by the kasra: \"the religion of God.\""
+   },
+   {
+    "token": "أَفْوَاجًۭا",
+    "case_en": "accusative",
+    "role_en": "circumstantial accusative (hal)",
+    "note_en": "An accusative circumstantial qualifier describing how the subject of yadkhuluna entered — namely \"in crowds/throngs,\" marked by the fatha."
+   }
+  ],
+  "irab_en": "The verse begins with wa, a conjunction tying this clause to the previous one, both still dependent on the conditional particle idha. Ra'ayta is a past-tense verb resting on a quiescent ending because of the attached pronoun ta, which functions as its nominative subject. Al-nas is the accusative direct object, marked by the fatha. The present-tense verb yadkhuluna, nominative with the plural waw as its subject, heads a clause that functions as a circumstantial state describing the people. The phrase fi dini-llah is a preposition plus a genitive noun in construct with the majestic name, the whole attaching to yadkhuluna. Finally, afwajan is an accusative hal explaining the manner of their entering — in successive crowds.",
+  "faqs_en": [
+   {
+    "q": "What is the grammatical role of yadkhuluna in this verse?",
+    "a": "It is a nominative present-tense verb whose subject is the plural waw. The clause it heads (yadkhuluna fi dini-llah) functions as a circumstantial state describing al-nas, or it can be analyzed as a second complement after the verb of perception ra'ayta — \"you saw the people [in the state of] entering.\""
+   },
+   {
+    "q": "Why is afwajan in the accusative case?",
+    "a": "It is a hal, a circumstantial accusative, marked by the fatha. It describes the condition of the people while entering — group after group, in crowds — and answers \"how\" they entered the religion."
+   },
+   {
+    "q": "What kind of construction is dini-llah?",
+    "a": "It is an idafa (possessive construct). Dini is governed in the genitive by the preposition fi, and the majestic name Allah follows it as mudaf ilayh, also genitive, yielding \"the religion of God.\""
+   }
+  ],
+  "uthmani": "وَرَأَيْتَ ٱلنَّاسَ يَدْخُلُونَ فِى دِينِ ٱللَّهِ أَفْوَاجًۭا"
+ },
+ "110:3": {
+  "surah": 110,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah An-Nasr Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "The verse opens with the connective fa- linking it to the conditional clause as its answer, followed by two imperative verbs (sabbih, istaghfir-hu) addressed to the Prophet. It closes with an emphatic nominal sentence introduced by inna, whose predicate is the past-tense verb kana plus its accusative predicate tawwaban.",
+  "translation_en": "So glorify your Lord with praise and ask Him for forgiveness; indeed He is ever-accepting of repentance.",
+  "transliteration": "Fa-sabbih bi-hamdi rabbika wa-staghfirhu, innahu kana tawwaban",
+  "words_en": [
+   {
+    "token": "فَ",
+    "case_en": "indeclinable",
+    "role_en": "connective particle (rabitat al-jawab)",
+    "note_en": "This particle joins the verse to the preceding condition and marks the clause that begins here as the answer to that condition."
+   },
+   {
+    "token": "سَبِّحْ",
+    "case_en": "jussive",
+    "role_en": "imperative verb (fi'l amr)",
+    "note_en": "A command verb built on a silent ending, with its subject an obligatorily hidden pronoun referring to 'you' (the Prophet)."
+   },
+   {
+    "token": "بِحَمْدِ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jarr wa-majrur)",
+    "note_en": "The preposition bi- governs hamd in the genitive, and the phrase attaches to a circumstantial state, meaning 'while praising.'"
+   },
+   {
+    "token": "رَبِّكَ",
+    "case_en": "genitive",
+    "role_en": "genitive noun (mudaf ilayh)",
+    "note_en": "Rabb is the second term of a possessive construction with hamd and is itself made definite by the attached pronoun ka 'your.'"
+   },
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "This particle coordinates the second command onto the first, joining the two imperatives."
+   },
+   {
+    "token": "ٱسْتَغْفِرْهُ",
+    "case_en": "jussive",
+    "role_en": "imperative verb with object (fi'l amr + maf'ul bih)",
+    "note_en": "Another command verb with a hidden 'you' subject; the attached pronoun hu is its direct object in the accusative position."
+   },
+   {
+    "token": "إِنَّهُ",
+    "case_en": "accusative",
+    "role_en": "emphatic particle + noun of inna (ism inna)",
+    "note_en": "Inna asserts emphasis and places the attached pronoun hu as its noun in the accusative position."
+   },
+   {
+    "token": "كَانَ",
+    "case_en": "indeclinable",
+    "role_en": "defective past verb (kana al-naqisah)",
+    "note_en": "This past-tense verb takes a hidden subject pronoun referring to Him, and the whole kana clause serves as the predicate of inna."
+   },
+   {
+    "token": "تَوَّابًۢا",
+    "case_en": "accusative",
+    "role_en": "predicate of kana (khabar kana)",
+    "note_en": "This intensive adjective is the predicate of kana and shows the accusative case through the visible fathah."
+   }
+  ],
+  "irab_en": "The verse begins with the particle fa-, which connects this sentence to the preceding conditional and marks it as that condition's answer. Sabbih is an imperative verb resting on a silent ending, its doer a concealed pronoun meaning 'you.' The phrase bi-hamdi is a preposition-plus-genitive unit describing the manner of glorifying, with rabbi-ka forming a possessive construction completed by the pronoun 'your.' The conjunction wa- then attaches the second imperative istaghfir-hu, whose suffixed hu is its accusative object. The closing clause is governed by inna for emphasis: the pronoun hu is its accusative noun, and the predicate is the verbal phrase kana tawwaban. Within it, kana carries a hidden subject 'He,' while tawwaban stands as kana's predicate in the accusative, marked by a visible fathah.",
+  "faqs_en": [
+   {
+    "q": "Why does the verse start with the particle fa-?",
+    "a": "The fa- here is a linking particle (rabitat al-jawab). The surah's earlier verse set up a condition ('when the help of God comes...'), and this verse is its answer. The fa- ties the answer to that condition and signals the response."
+   },
+   {
+    "q": "What grammatical role does the kana clause play after inna?",
+    "a": "After inna, the pronoun hu (in innahu) is the noun of inna. The full predicate of inna is the verbal sentence kana tawwaban. Inside it, kana holds a hidden subject pronoun 'He,' and tawwaban is kana's own predicate."
+   },
+   {
+    "q": "Why is tawwaban in the accusative case?",
+    "a": "Tawwaban is the predicate of the defective verb kana, and kana places its predicate in the accusative. The accusative is shown by the visible fathah ending, and the final nunation reflects that the word is indefinite."
+   }
+  ],
+  "uthmani": "فَسَبِّحْ بِحَمْدِ رَبِّكَ وَٱسْتَغْفِرْهُ ۚ إِنَّهُۥ كَانَ تَوَّابًۢا"
+ }
+}

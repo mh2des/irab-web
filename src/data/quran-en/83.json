@@ -1,0 +1,896 @@
+{
+ "83:7": {
+  "surah": 83,
+  "ayah": 7,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 7 — word-by-word Arabic grammar",
+  "tldr_en": "This verse opens with the rebuke particle kallaa, then introduces an emphatic statement with inna: indeed the record of the wicked is in Sijjin. The phrase fi sijjin is the predicate of inna, and the la- is the emphatic lam added for stress, underscoring the certainty of where the corrupt people's deeds are recorded.",
+  "translation_en": "No indeed! The record of the wicked is in Sijjin.",
+  "transliteration": "Kallaa inna kitaaba l-fujjaari lafee sijjeen",
+  "words_en": [
+   {
+    "token": "كَلَّآ",
+    "case_en": "indeclinable",
+    "role_en": "particle of rebuke and restraint",
+    "note_en": "It is a particle of deterrence rebuking the fraudsters for cheating in measure and for their heedlessness of the resurrection."
+   },
+   {
+    "token": "إِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "particle of emphasis (harf tawkid)",
+    "note_en": "It is the emphatic particle inna which puts its noun in the accusative and its predicate in the nominative."
+   },
+   {
+    "token": "كِتَٰبَ",
+    "case_en": "accusative",
+    "role_en": "noun of inna (ism inna)",
+    "note_en": "It is the noun of inna, accusative, and it is in a genitive construct with what follows."
+   },
+   {
+    "token": "ٱلْفُجَّارِ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (mudaf ilayh)",
+    "note_en": "It is the second term of the construct, genitive, naming the wicked whose record is meant."
+   },
+   {
+    "token": "لَ",
+    "case_en": "indeclinable",
+    "role_en": "emphatic prefix lam (al-lam al-muzahlaqa)",
+    "note_en": "It is the displaced lam of emphasis attached to the predicate to reinforce the statement."
+   },
+   {
+    "token": "فِى",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "It is a preposition governing the following noun in the genitive."
+   },
+   {
+    "token": "سِجِّينٍۢ",
+    "case_en": "genitive",
+    "role_en": "object of preposition forming the predicate of inna",
+    "note_en": "Together with fi it forms the prepositional phrase that serves as the predicate of inna."
+   }
+  ],
+  "irab_en": "The verse begins with kallaa, a particle of stern rebuke and deterrence, dismissing the attitude of the fraudsters and their denial of the resurrection. Then comes inna, the particle of emphasis, which renders its noun accusative and its predicate nominative in position. Its noun is kitaaba, accusative, standing as the first term of a genitive construct (idafa) with al-fujjaar, which is genitive as the possessive complement. The predicate of inna is the prepositional phrase fi sijjin, where fi governs sijjin in the genitive; this phrase relates to the omitted predicate of inna. The lam attached before fi is the lam al-muzahlaqa, the emphatic displaced lam, intensifying the assertion that the wicked people's record is indeed lodged in Sijjin.",
+  "faqs_en": [
+   {
+    "q": "What grammatical function does fi sijjin serve?",
+    "a": "The prepositional phrase fi sijjin stands in place of the predicate of inna, conveying where the record is located."
+   },
+   {
+    "q": "Why is kitaaba accusative?",
+    "a": "It is the noun of inna (ism inna), and inna places its noun in the accusative case."
+   }
+  ],
+  "uthmani": "كَلَّآ إِنَّ كِتَٰبَ ٱلْفُجَّارِ لَفِى سِجِّينٍۢ"
+ },
+ "83:8": {
+  "surah": 83,
+  "ayah": 8,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 8 — word-by-word Arabic grammar",
+  "tldr_en": "A rhetorical question magnifying Sijjin: 'And what can make you know what Sijjin is?' The wa- begins a new sentence, maa is an interrogative noun acting as subject, and the verb adraaka with its object forms the predicate. The inner maa sijjin is itself a subject-predicate clause that is the second object of adraaka.",
+  "translation_en": "And what can make you know what Sijjin is?",
+  "transliteration": "Wa maa adraaka maa sijjeen",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "resumptive particle (waw isti'naf)",
+    "note_en": "It begins a new, independent sentence and is not connected grammatically to the previous clause."
+   },
+   {
+    "token": "مَآ",
+    "case_en": "nominative",
+    "role_en": "interrogative noun as subject (mubtada')",
+    "note_en": "It is an interrogative noun in the nominative position as the subject, with the following verbal clause as its predicate."
+   },
+   {
+    "token": "أَدْرَىٰكَ",
+    "case_en": "indeclinable",
+    "role_en": "verb with attached object pronoun forming the predicate",
+    "note_en": "The past-tense verb with the object pronoun -ka makes up the predicate clause of the interrogative subject."
+   },
+   {
+    "token": "مَا",
+    "case_en": "nominative",
+    "role_en": "second interrogative noun as subject of an inner clause",
+    "note_en": "This interrogative noun is the subject of the embedded question that follows."
+   },
+   {
+    "token": "سِجِّينٌۭ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar) of the inner clause",
+    "note_en": "It is the predicate of the inner subject maa, and the whole clause stands as the second object of adraaka."
+   }
+  ],
+  "irab_en": "The waw here is resumptive (isti'nafiyya), opening a fresh sentence rather than linking to verse 7. Maa is an interrogative noun placed in the nominative as a subject (mubtada'), and its predicate is the verbal clause adraaka. The verb adraa is past tense whose unstated agent refers back to the divine address, and the attached pronoun -ka (you) is its first object. The clause maa sijjin is an independent interrogative sentence: the second maa is an interrogative subject and sijjin is its nominative predicate. This entire clause occupies the position of the second object of adraaka. The construction is a rhetorical device that magnifies the awe and severity of Sijjin by suggesting its reality lies beyond ordinary comprehension.",
+  "faqs_en": [
+   {
+    "q": "What is the role of the first maa in the verse?",
+    "a": "It is an interrogative noun functioning as the subject (mubtada'), and the verbal clause adraaka is its predicate."
+   },
+   {
+    "q": "How does the clause maa sijjin function?",
+    "a": "It is a self-contained subject-predicate question that occupies the place of the second object of the verb adraaka."
+   }
+  ],
+  "uthmani": "وَمَآ أَدْرَىٰكَ مَا سِجِّينٌۭ"
+ },
+ "83:9": {
+  "surah": 83,
+  "ayah": 9,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 9 — word-by-word Arabic grammar",
+  "tldr_en": "A two-word descriptive answer: 'a written record.' Kitaab is the predicate of an omitted subject understood as 'it,' so the meaning is 'It is a written record.' Marqum is an adjective qualifying kitaab, agreeing with it in being nominative and indefinite.",
+  "translation_en": "It is a written record.",
+  "transliteration": "Kitaabun marqoom",
+  "words_en": [
+   {
+    "token": "كِتَٰبٌۭ",
+    "case_en": "nominative",
+    "role_en": "predicate of an omitted subject (khabar li-mubtada' mahdhuf)",
+    "note_en": "It is the predicate of an unstated subject understood as 'it,' so the sense is 'it is a record.'"
+   },
+   {
+    "token": "مَّرْقُومٌۭ",
+    "case_en": "nominative",
+    "role_en": "adjective (na't) qualifying kitaab",
+    "note_en": "It is an adjective describing kitaab as inscribed, agreeing with it as nominative and indefinite."
+   }
+  ],
+  "irab_en": "This verse answers the rhetorical question of verse 8 with a concise nominal description. Kitaab is nominative, serving as the predicate (khabar) of a subject that has been omitted; the implied subject is the pronoun 'it' (huwa), so the full sense is 'It is a written record.' The deletion of the subject is common in answers where the referent is clear from context. Marqum, also nominative and indefinite, is an adjective (na't) describing kitaab; it agrees with its noun in case, number, gender, and definiteness, conveying that the record is sealed and clearly inscribed. The whole sentence functions as the explanatory reply that defines what was magnified in the preceding verse.",
+  "faqs_en": [
+   {
+    "q": "Where is the subject of this nominal sentence?",
+    "a": "The subject is omitted and understood as the pronoun 'it' (huwa); kitaab is the stated predicate."
+   },
+   {
+    "q": "What is the relationship between kitaab and marqum?",
+    "a": "Marqum is an adjective describing kitaab and therefore matches it in case (nominative), number, gender, and indefiniteness."
+   }
+  ],
+  "uthmani": "كِتَٰبٌۭ مَّرْقُومٌۭ"
+ },
+ "83:10": {
+  "surah": 83,
+  "ayah": 10,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 10 — word-by-word Arabic grammar",
+  "tldr_en": "'Woe, that Day, to the deniers.' Wayl is a subject parallel to the opening of the surah, yawma'idhin is an adverb of time, and li-l-mukadhdhibin is the prepositional phrase forming the predicate. The structure mirrors 'woe to the defrauders' from verse 1.",
+  "translation_en": "Woe, that Day, to the deniers.",
+  "transliteration": "Waylun yawma'idhin lil-mukadhdhibeen",
+  "words_en": [
+   {
+    "token": "وَيْلٌۭ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "It is a subject in the nominative, parsed like waylun lil-mutaffifin at the start of the surah."
+   },
+   {
+    "token": "يَوْمَئِذٍۢ",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf zaman)",
+    "note_en": "It is an adverb of time specifying 'on that Day,' related to the sense of the woe pronounced; some also parse it as a substitute (badal) for 'the Day people stand.'"
+   },
+   {
+    "token": "لِّ",
+    "case_en": "indeclinable",
+    "role_en": "preposition (lam al-jarr)",
+    "note_en": "It is the prefixed preposition governing the following noun in the genitive."
+   },
+   {
+    "token": "لْمُكَذِّبِينَ",
+    "case_en": "genitive",
+    "role_en": "object of preposition forming the predicate",
+    "note_en": "Together with the lam it forms the prepositional phrase serving as the predicate of wayl."
+   }
+  ],
+  "irab_en": "The verse parallels the opening verse of the surah grammatically. Wayl is a subject (mubtada') in the nominative, even though it is indefinite, because it carries the sense of an invocation of woe and is permissible as a subject when followed by a qualifying phrase. The prepositional phrase li-l-mukadhdhibin, where the lam governs al-mukadhdhibin in the genitive, serves as the predicate. Between them stands yawma'idhin, accusative as an adverb of time (zarf) meaning 'on that Day,' which relates to the meaning of the woe being declared; some parse it instead as a substitute (badal) for 'the Day people stand' in the earlier verse. The construction thus pronounces doom upon the deniers specifically on the Day of Judgment, echoing the earlier condemnation of the fraudsters.",
+  "faqs_en": [
+   {
+    "q": "How can wayl be a subject when it is indefinite?",
+    "a": "Although indefinite, wayl functions as a subject (mubtada') because it carries the meaning of an invocation and is specified by the following prepositional phrase."
+   },
+   {
+    "q": "What case is yawma'idhin and why?",
+    "a": "It is accusative as an adverb of time (zarf zaman), pointing to 'that Day' on which the woe falls; it may also be read as a substitute (badal) for the earlier 'Day people stand,' which is likewise accusative."
+   }
+  ],
+  "uthmani": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ"
+ },
+ "83:11": {
+  "surah": 83,
+  "ayah": 11,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 11 — word-by-word Arabic grammar",
+  "tldr_en": "This describes the deniers: 'those who deny the Day of Judgment.' Alladhina is a relative pronoun in the genitive as an adjective for al-mukadhdhibin, yukadhdhibun is the relative-clause verb, and bi-yawm is a prepositional phrase attached to that verb.",
+  "translation_en": "Those who deny the Day of Recompense.",
+  "transliteration": "Alladheena yukadhdhiboona bi-yawmi d-deen",
+  "words_en": [
+   {
+    "token": "ٱلَّذِينَ",
+    "case_en": "genitive",
+    "role_en": "relative pronoun as adjective (na't) of al-mukadhdhibin",
+    "note_en": "It is a relative pronoun in the genitive position, qualifying al-mukadhdhibin from the previous verse."
+   },
+   {
+    "token": "يُكَذِّبُونَ",
+    "case_en": "indeclinable",
+    "role_en": "verb of the relative clause (sila)",
+    "note_en": "It is the present-tense verb forming the relative clause that explains who the deniers are."
+   },
+   {
+    "token": "بِ",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "It is a preposition governing the following noun and connected to the verb yukadhdhibun."
+   },
+   {
+    "token": "يَوْمِ",
+    "case_en": "genitive",
+    "role_en": "object of preposition (majrur)",
+    "note_en": "It is genitive after the preposition and is the first term of a construct with al-din."
+   },
+   {
+    "token": "ٱلدِّينِ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (mudaf ilayh)",
+    "note_en": "It is the second term of the construct, genitive, completing the phrase 'the Day of Recompense.'"
+   }
+  ],
+  "irab_en": "Alladhina is a relative pronoun standing in the genitive position as an adjective (na't) describing al-mukadhdhibin in the preceding verse, since adjectives follow their noun in case. Its relative clause (sila) is the verbal sentence yukadhdhibun, a present-tense verb whose plural subject pronoun refers to the deniers. The prepositional phrase bi-yawm is attached to this verb, with bi governing yawm in the genitive; yawm in turn is the first term of a genitive construct (idafa) with al-din, which is genitive as the possessive complement. The whole expression identifies the deniers as precisely those who reject the Day of Judgment, giving the content of their denial.",
+  "faqs_en": [
+   {
+    "q": "Why is alladhina in the genitive position?",
+    "a": "It serves as an adjective (na't) for al-mukadhdhibin, and an adjective matches its noun in case, which here is genitive."
+   },
+   {
+    "q": "What does the phrase bi-yawmi d-din connect to?",
+    "a": "It is attached to the verb yukadhdhibun, specifying what is being denied: the Day of Recompense."
+   }
+  ],
+  "uthmani": "ٱلَّذِينَ يُكَذِّبُونَ بِيَوْمِ ٱلدِّينِ"
+ },
+ "83:12": {
+  "surah": 83,
+  "ayah": 12,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 12 — word-by-word Arabic grammar",
+  "tldr_en": "'And none denies it except every sinful transgressor.' The wa- may be circumstantial or resumptive, maa is negating, the verb is yukadhdhib, illa is a restriction particle, and kull is the delayed subject qualified by mu'tad and athim.",
+  "translation_en": "And none denies it except every sinful transgressor.",
+  "transliteration": "Wa maa yukadhdhibu bihee illaa kullu mu'tadin atheem",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "circumstantial or resumptive particle (waw)",
+    "note_en": "It may begin a circumstantial clause or be resumptive, opening this statement about who denies."
+   },
+   {
+    "token": "مَا",
+    "case_en": "indeclinable",
+    "role_en": "particle of negation (maa nafiya)",
+    "note_en": "It is the negating particle, denying the act of denial except for the restricted party."
+   },
+   {
+    "token": "يُكَذِّبُ",
+    "case_en": "nominative",
+    "role_en": "verb (in the indicative)",
+    "note_en": "It is a present-tense verb in the indicative (marfu'), with its agent coming after the exception."
+   },
+   {
+    "token": "بِ",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "It is a preposition governing the pronoun and connected to the verb yukadhdhib."
+   },
+   {
+    "token": "هِۦٓ",
+    "case_en": "genitive",
+    "role_en": "object of preposition (majrur)",
+    "note_en": "The attached pronoun is genitive after bi, referring back to the Day of Recompense."
+   },
+   {
+    "token": "إِلَّا",
+    "case_en": "indeclinable",
+    "role_en": "particle of restriction (hasr)",
+    "note_en": "It restricts the act of denying to the one party named after it."
+   },
+   {
+    "token": "كُلُّ",
+    "case_en": "nominative",
+    "role_en": "subject of the verb (fa'il)",
+    "note_en": "It is the agent of yukadhdhib, nominative, and the first term of a construct with what follows."
+   },
+   {
+    "token": "مُعْتَدٍ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (mudaf ilayh)",
+    "note_en": "It is genitive as the second term of the construct, describing a transgressor."
+   },
+   {
+    "token": "أَثِيمٍ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't) of mu'tad",
+    "note_en": "It is an adjective qualifying mu'tad, agreeing with it as genitive and indefinite."
+   }
+  ],
+  "irab_en": "The waw at the start may be circumstantial (haliyya), tying this to the previous scene, or resumptive, beginning a new statement. Maa is a particle of negation, and yukadhdhib is a present-tense verb in the indicative mood (marfu'). The prepositional phrase bihi, with bi governing the genitive pronoun -hi (referring to the Day of Recompense), is attached to the verb. Illa is a particle of restriction (hasr) that limits the denial to a single category. Kull is the subject (fa'il) of the verb, nominative, and the first term of a genitive construct with mu'tad, which is genitive as the possessive complement. Athim is an adjective (na't) qualifying mu'tad, agreeing with it as genitive and indefinite. The verse thus confines denial of the Judgment to every brazen, sinful transgressor.",
+  "faqs_en": [
+   {
+    "q": "Why is kull in the nominative case?",
+    "a": "Kull is the subject (fa'il) of the verb yukadhdhib, which requires its agent to be nominative."
+   },
+   {
+    "q": "What is the function of illa here?",
+    "a": "Illa is a particle of restriction (hasr) that limits the act of denial exclusively to the sinful transgressor named after it."
+   }
+  ],
+  "uthmani": "وَمَا يُكَذِّبُ بِهِۦٓ إِلَّا كُلُّ مُعْتَدٍ أَثِيمٍ"
+ },
+ "83:19": {
+  "surah": 83,
+  "ayah": 19,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 19 — word-by-word Arabic grammar",
+  "tldr_en": "This verse poses a rhetorical question to magnify the matter of 'Illiyyun. The conjunction wa links it to the previous statement, ma functions as an interrogative subject, and adraka is the past verb whose object is the second ma followed by 'Illiyyun, all underscoring how far this register lies beyond human reach to grasp on one's own.",
+  "translation_en": "And what can make you know what 'Illiyyun is?",
+  "transliteration": "Wa maa adraaka maa 'illiyyoon",
+  "words_en": [
+   {
+    "token": "وَمَآ",
+    "case_en": "nominative",
+    "role_en": "conjunction plus subject (mubtada')",
+    "note_en": "The wa joins this verse to the preceding one, and ma is an interrogative noun in the nominative as the subject of the sentence."
+   },
+   {
+    "token": "أَدْرَىٰكَ",
+    "case_en": "indeclinable",
+    "role_en": "past verb with attached object pronoun (predicate)",
+    "note_en": "Adra is a past-tense verb meaning 'to make aware,' with the attached kaf as its first object, and the whole verbal clause serves as the predicate of the interrogative ma."
+   },
+   {
+    "token": "مَا",
+    "case_en": "nominative",
+    "role_en": "interrogative subject (mubtada') of inner clause",
+    "note_en": "This second ma is an interrogative noun beginning a nested clause that fills the place of the second object of adraka."
+   },
+   {
+    "token": "عِلِّيُّونَ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "'Illiyyun is the predicate of the inner interrogative ma, taking the sound-masculine-plural nominative ending in waw and nun."
+   }
+  ],
+  "irab_en": "The verse opens with the connective wa, after which ma stands as an interrogative noun in the nominative functioning as the subject (mubtada'). The verbal clause adraka — a past verb carrying the attached pronoun kaf as its direct object — forms the predicate of that subject. Within this construction a second interrogative ma launches a subordinate nominal clause: it is itself a nominative subject, and the proper noun 'Illiyyun, ending in the sound-masculine-plural waw-nun, is its predicate. This nested interrogative clause occupies the syntactic slot of the second object of adraka. The rhetorical force of the doubled ma is to exalt the subject and signal that its true nature exceeds ordinary human knowledge.",
+  "faqs_en": [
+   {
+    "q": "Why does ma appear twice in this verse?",
+    "a": "The first ma is the main interrogative subject asking 'what,' while the second ma starts an embedded interrogative clause that completes the meaning of the verb adraka. The repetition heightens the sense of awe."
+   },
+   {
+    "q": "Why does 'Illiyyun end in waw and nun?",
+    "a": "It carries the sound-masculine-plural nominative ending (waw and nun). Here it is the predicate of the inner clause and therefore takes the nominative case marked by that ending."
+   }
+  ],
+  "uthmani": "وَمَآ أَدْرَىٰكَ مَا عِلِّيُّونَ"
+ },
+ "83:20": {
+  "surah": 83,
+  "ayah": 20,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 20 — word-by-word Arabic grammar",
+  "tldr_en": "This brief verse answers the wonder raised before it. Kitab is the predicate of an omitted subject understood as 'it is,' standing in the nominative, and marqum is its adjective, also nominative, agreeing with it in case, number, and indefiniteness, describing the record as inscribed and sealed.",
+  "translation_en": "It is a written record.",
+  "transliteration": "Kitaabum marqoom",
+  "words_en": [
+   {
+    "token": "كِتَٰبٌۭ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar) of an omitted subject",
+    "note_en": "Kitab is nominative as the predicate of a deleted subject understood as 'it,' so the sense is 'it is a record.'"
+   },
+   {
+    "token": "مَّرْقُومٌۭ",
+    "case_en": "nominative",
+    "role_en": "adjective (na't)",
+    "note_en": "Marqum is a passive participle in the nominative describing kitab, agreeing with it in case, indefiniteness, and number."
+   }
+  ],
+  "irab_en": "This verse functions as the reply to the rhetorical question of the previous ayah. Kitab is in the nominative case because it serves as the predicate (khabar) of a suppressed subject (mubtada'), the implied pronoun being 'it,' giving the reading 'it is a record.' Such omission of the obvious subject is common after a preceding interrogative that has set up the topic. Marqum, a passive participle meaning 'written' or 'inscribed,' follows as an adjective (na't) qualifying kitab; it matches its noun in being nominative, indefinite, and singular. Together the two words form a concise nominal description, identifying the register named earlier and emphasizing that it is a fixed, recorded document.",
+  "faqs_en": [
+   {
+    "q": "Where is the subject of this sentence?",
+    "a": "The subject is omitted but understood as the pronoun 'it,' referring back to what was asked about. Kitab then stands as the predicate, so the clause means 'it is a written record.'"
+   },
+   {
+    "q": "What is the relationship between kitab and marqum?",
+    "a": "Marqum is an adjective describing kitab. As an adjective it follows its noun in case, number, and definiteness, so both are nominative, singular, and indefinite."
+   }
+  ],
+  "uthmani": "كِتَٰبٌۭ مَّرْقُومٌۭ"
+ },
+ "83:21": {
+  "surah": 83,
+  "ayah": 21,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 21 — word-by-word Arabic grammar",
+  "tldr_en": "A single verbal sentence describing the written record: yashhaduhu is a present verb carrying an attached object pronoun referring to the record, and al-muqarrabun is its subject in the nominative, marked by the sound-masculine-plural ending, telling us that those brought near witness this register.",
+  "translation_en": "Those brought near bear witness to it.",
+  "transliteration": "Yash-haduhul-muqarraboon",
+  "words_en": [
+   {
+    "token": "يَشْهَدُهُ",
+    "case_en": "indeclinable",
+    "role_en": "present verb with attached object pronoun",
+    "note_en": "Yashhadu is a present-tense verb in the indicative, and the attached hu is its direct object referring to the written record."
+   },
+   {
+    "token": "ٱلْمُقَرَّبُونَ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "Al-muqarrabun is the subject of the verb in the nominative, marked by the sound-masculine-plural ending waw and nun."
+   }
+  ],
+  "irab_en": "This verse is a verbal sentence built on the present-tense verb yashhadu, which is in the indicative mood as nothing precedes it to change its ending. Attached to it is the object pronoun hu, which functions as the direct object and refers back to the written record (kitab) mentioned in the previous ayah. The agent of the action is al-muqarrabun, 'those brought near,' which stands as the subject (fa'il) in the nominative case, its case shown by the sound-masculine-plural suffix waw and nun. The clause as a whole can be read as a further adjective for kitab or as an independent description, conveying that the noble register is attended and witnessed by those drawn close to God.",
+  "faqs_en": [
+   {
+    "q": "What does the pronoun hu in yashhaduhu refer to?",
+    "a": "It refers to the written record (kitab) mentioned in the preceding verse. It is the direct object of the verb, so the meaning is 'they witness it.'"
+   },
+   {
+    "q": "Why is al-muqarrabun in the nominative case?",
+    "a": "Because it is the subject (fa'il) performing the action of witnessing. Its nominative case appears through the sound-masculine-plural ending, the letters waw and nun."
+   }
+  ],
+  "uthmani": "يَشْهَدُهُ ٱلْمُقَرَّبُونَ"
+ },
+ "83:22": {
+  "surah": 83,
+  "ayah": 22,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 22 — word-by-word Arabic grammar",
+  "tldr_en": "This verse uses the emphatic particle inna with its noun al-abrar in the accusative, then the lightened lam of emphasis on the prepositional phrase fi na'im, which forms the predicate of inna. The construction firmly affirms that the righteous are in delight, with two layers of emphasis reinforcing the promise.",
+  "translation_en": "Indeed, the righteous will be in bliss.",
+  "transliteration": "Innal-abraara lafee na'eem",
+  "words_en": [
+   {
+    "token": "إِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "particle of emphasis (harf tawkid)",
+    "note_en": "Inna is an emphatic particle that puts its noun in the accusative and its predicate in the nominative."
+   },
+   {
+    "token": "ٱلْأَبْرَارَ",
+    "case_en": "accusative",
+    "role_en": "noun of inna (ism inna)",
+    "note_en": "Al-abrar is the noun of inna in the accusative, shown by the fatha ending."
+   },
+   {
+    "token": "لَفِى",
+    "case_en": "indeclinable",
+    "role_en": "emphatic lam plus preposition",
+    "note_en": "The lam is the lightened lam of emphasis prefixed for stress, and fi is a preposition introducing the location."
+   },
+   {
+    "token": "نَعِيمٍ",
+    "case_en": "genitive",
+    "role_en": "object of preposition forming the predicate of inna",
+    "note_en": "Na'im is genitive after the preposition fi, and the prepositional phrase together stands in the place of the predicate of inna."
+   }
+  ],
+  "irab_en": "The verse begins with inna, an emphatic particle that governs a nominal sentence by placing its noun in the accusative and its predicate in the nominative. Al-abrar, 'the righteous,' is therefore the noun of inna (ism inna) in the accusative, indicated by the fatha. The predicate is supplied by the prepositional phrase la-fi na'im: the lam attached to fi is the lightened lam of emphasis (lam al-muzahlaqa), added for further stress, while fi is a preposition and na'im its genitive object. This prepositional phrase occupies the place of the predicate (khabar) of inna. With the double emphasis of inna and the emphatic lam, the verse strongly affirms the abode of bliss reserved for the righteous.",
+  "faqs_en": [
+   {
+    "q": "Why is al-abrar in the accusative case?",
+    "a": "Because it is the noun governed by the emphatic particle inna, which puts its noun in the accusative. The case is marked here by the fatha ending."
+   },
+   {
+    "q": "What is the function of the lam in lafi?",
+    "a": "It is the lightened lam of emphasis (lam al-muzahlaqa) that attaches to the predicate of inna for additional stress, reinforcing the certainty of the statement."
+   }
+  ],
+  "uthmani": "إِنَّ ٱلْأَبْرَارَ لَفِى نَعِيمٍ"
+ },
+ "83:23": {
+  "surah": 83,
+  "ayah": 23,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 23 — word-by-word Arabic grammar",
+  "tldr_en": "This verse pictures the righteous at ease: the prepositional phrase 'ala al-ara'ik relates to a circumstantial state of the doers of yanzurun, and yanzurun is a present verb whose hidden plural subject refers to the righteous, describing them reclining on couches as they gaze.",
+  "translation_en": "On couches, gazing.",
+  "transliteration": "'Alal-araa'iki yanzuroon",
+  "words_en": [
+   {
+    "token": "عَلَى",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "'Ala is a preposition introducing the place upon which the righteous recline."
+   },
+   {
+    "token": "ٱلْأَرَآئِكِ",
+    "case_en": "genitive",
+    "role_en": "object of preposition",
+    "note_en": "Al-ara'ik is genitive after the preposition 'ala, and the phrase relates to a circumstantial state of the subject of yanzurun."
+   },
+   {
+    "token": "يَنظُرُونَ",
+    "case_en": "indeclinable",
+    "role_en": "present verb with its subject pronoun",
+    "note_en": "Yanzuruna is a present verb in the indicative whose attached waw is the plural subject referring to the righteous."
+   }
+  ],
+  "irab_en": "This verse continues the description of the righteous from the previous ayah. The prepositional phrase 'ala al-ara'ik consists of the preposition 'ala and its genitive object al-ara'ik, 'the couches.' This phrase is connected to (muta'alliq) a circumstantial expression (hal) describing the state of the subject of the following verb. That verb, yanzuruna, is a present-tense verb in the indicative mood, marked by the retained nun; its attached waw serves as the plural subject (fa'il) referring back to the righteous. The whole clause portrays them reclining upon adorned couches while gazing, the prepositional phrase setting the scene of their repose and the verb conveying their serene contemplation in the gardens of bliss.",
+  "faqs_en": [
+   {
+    "q": "What does the phrase 'ala al-ara'ik connect to grammatically?",
+    "a": "It relates to an implied circumstantial state (hal) describing the subject of the verb yanzurun, meaning the righteous gaze while seated upon the couches."
+   },
+   {
+    "q": "Who is the subject of yanzurun?",
+    "a": "The subject is the attached plural waw, which refers to the righteous (al-abrar) mentioned in the previous verse. The verb is indicative and means 'they gaze.'"
+   }
+  ],
+  "uthmani": "عَلَى ٱلْأَرَآئِكِ يَنظُرُونَ"
+ },
+ "83:24": {
+  "surah": 83,
+  "ayah": 24,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 24 — word-by-word Arabic grammar",
+  "tldr_en": "Here a present verb ta'rif takes an unstated 'you' as its subject; the prepositional phrase fi wujuhihim relates to that verb, and nadrata is its direct object in the accusative, governing al-na'im as a genitive possessive. The verse says one will recognize on their faces the radiance of bliss.",
+  "translation_en": "You will recognize in their faces the radiance of bliss.",
+  "transliteration": "Ta'rifu fee wujoohihim nadratan-na'eem",
+  "words_en": [
+   {
+    "token": "تَعْرِفُ",
+    "case_en": "indeclinable",
+    "role_en": "present verb with concealed subject",
+    "note_en": "Ta'rif is a present verb in the indicative whose subject is a hidden 'you,' addressing any observer."
+   },
+   {
+    "token": "فِى",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "Fi is a preposition introducing the place where the radiance is perceived."
+   },
+   {
+    "token": "وُجُوهِهِمْ",
+    "case_en": "genitive",
+    "role_en": "object of preposition with possessive pronoun",
+    "note_en": "Wujuh is genitive after fi, and the attached him is a possessive pronoun referring to the righteous; the phrase relates to the verb ta'rif."
+   },
+   {
+    "token": "نَضْرَةَ",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "Nadra is the direct object of ta'rif in the accusative, shown by the fatha, and it stands as the first term of a possessive construction."
+   },
+   {
+    "token": "ٱلنَّعِيمِ",
+    "case_en": "genitive",
+    "role_en": "second term of construct (mudaf ilayhi)",
+    "note_en": "Al-na'im is genitive as the second term of the construct phrase with nadra, meaning 'the radiance of bliss.'"
+   }
+  ],
+  "irab_en": "This verse is a verbal sentence opening with ta'rif, a present-tense verb in the indicative whose subject is a concealed pronoun 'you,' addressing any onlooker. The prepositional phrase fi wujuhihim — the preposition fi, its genitive object wujuh, and the attached possessive pronoun him referring to the righteous — relates to the verb ta'rif and specifies where the recognition takes place. Nadra is the direct object (maf'ul bihi) of the verb in the accusative, marked by the fatha, and it forms the first term of a genitive construct (idafa). Al-na'im is the second term of that construct (mudaf ilayhi) in the genitive, yielding 'the radiance of bliss.' The sentence thus conveys that an observer will perceive on the faces of the righteous the visible glow of their delight.",
+  "faqs_en": [
+   {
+    "q": "Who is the subject of the verb ta'rif?",
+    "a": "The subject is a hidden pronoun meaning 'you,' addressing any observer in general. The verb is indicative and means 'you recognize' or 'you perceive.'"
+   },
+   {
+    "q": "Why is nadrata in the accusative while al-na'im is genitive?",
+    "a": "Nadra is the direct object of ta'rif, so it takes the accusative. It then forms a construct phrase with al-na'im, which becomes genitive as the second term, giving 'the radiance of bliss.'"
+   }
+  ],
+  "uthmani": "تَعْرِفُ فِى وُجُوهِهِمْ نَضْرَةَ ٱلنَّعِيمِ"
+ },
+ "83:31": {
+  "surah": 83,
+  "ayah": 31,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 31 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues the description of the sinners who mocked believers: when they returned to their own families, they returned amused and gloating. Grammatically it opens with a conditional clause introduced by 'idhaa, whose verb is the past 'inqalaboo', and the main clause repeats 'inqalaboo' followed by the circumstantial accusative 'fakihiina', describing the state in which they returned.",
+  "translation_en": "And when they returned to their families, they returned jesting and delighted.",
+  "transliteration": "Wa idhā inqalabū ilā ahlihimu inqalabū fakihīn",
+  "words_en": [
+   {
+    "token": "وَإِذَا",
+    "case_en": "indeclinable",
+    "role_en": "connective particle plus adverb of condition",
+    "note_en": "The waaw joins this to the previous verses, and 'idhaa is an adverbial particle of future time carrying conditional meaning."
+   },
+   {
+    "token": "ٱنقَلَبُوٓا۟",
+    "case_en": "indeclinable",
+    "role_en": "verb of the conditional clause with its subject",
+    "note_en": "A past-tense verb built on the silent end-vowel, with the attached waaw acting as its subject (they) referring to the sinners."
+   },
+   {
+    "token": "إِلَىٰٓ",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "This preposition governs the following noun and links the returning to its destination."
+   },
+   {
+    "token": "أَهْلِهِمُ",
+    "case_en": "genitive",
+    "role_en": "object of the preposition (with possessive)",
+    "note_en": "Made genitive by 'ilaa, and the attached pronoun 'him' is a possessive completing the construct 'their families'."
+   },
+   {
+    "token": "ٱنقَلَبُوا۟",
+    "case_en": "indeclinable",
+    "role_en": "verb of the main clause (answer to the condition)",
+    "note_en": "The same past-tense form is repeated as the response to 'idhaa, again with the waaw as its subject."
+   },
+   {
+    "token": "فَكِهِينَ",
+    "case_en": "accusative",
+    "role_en": "circumstantial accusative (haal)",
+    "note_en": "An accusative state-word describing the subject of 'inqalaboo' as amused and self-satisfied while returning."
+   }
+  ],
+  "irab_en": "The verse begins with the connective waaw and the conditional adverb 'idhaa, which sets up a time-clause whose verb is 'inqalaboo' (they turned back), a past-tense verb with the attached waaw as its subject. The phrase 'ilaa ahlihim' is a prepositional phrase—'ilaa' governing 'ahli' in the genitive, with the pronoun 'him' as a possessive—indicating the destination of their return. The second 'inqalaboo' serves as the answer to the condition, repeating the verb for emphasis on the act of returning. The final word fakihiina is an accusative haal (circumstantial qualifier) describing the subject of the second verb: they returned in a state of jesting, delight, and gloating. The doubled verb heightens the contrast between their public mockery and their private merriment.",
+  "faqs_en": [
+   {
+    "q": "Why is 'fakihiina' in the accusative case?",
+    "a": "It is a haal, a circumstantial accusative that describes the condition of the subject of 'inqalaboo'—they returned while being amused and delighted—so it takes the accusative ending."
+   },
+   {
+    "q": "Why is the verb 'inqalaboo' repeated?",
+    "a": "The first occurrence is the verb of the 'idhaa conditional clause, and the second is its answer (jawaab). Repeating it emphasizes and completes the conditional structure."
+   }
+  ],
+  "uthmani": "وَإِذَا ٱنقَلَبُوٓا۟ إِلَىٰٓ أَهْلِهِمُ ٱنقَلَبُوا۟ فَكِهِينَ"
+ },
+ "83:32": {
+  "surah": 83,
+  "ayah": 32,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 32 — word-by-word Arabic grammar",
+  "tldr_en": "When the sinners saw the believers, they declared them to be astray. The verse uses an 'idhaa conditional whose verb is 'ra'aw', a main clause verb 'qaaloo' introducing their speech, and that speech is an emphatic 'inna' sentence: 'Indeed these people are surely astray', with the emphatic laam on the predicate 'daalloon'.",
+  "translation_en": "And when they saw them, they said, 'Indeed these people are surely astray.'",
+  "transliteration": "Wa idhā ra'awhum qālū inna hā'ulā'i laḍāllūn",
+  "words_en": [
+   {
+    "token": "وَإِذَا",
+    "case_en": "indeclinable",
+    "role_en": "connective particle plus adverb of condition",
+    "note_en": "The waaw connects to the prior verse, and 'idhaa is the conditional time-adverb governing the verb that follows."
+   },
+   {
+    "token": "رَأَوْهُمْ",
+    "case_en": "indeclinable",
+    "role_en": "verb of the conditional clause with subject and object",
+    "note_en": "A past-tense verb whose attached waaw is the subject and whose pronoun 'hum' (them) is the direct object, the believers."
+   },
+   {
+    "token": "قَالُوٓا۟",
+    "case_en": "indeclinable",
+    "role_en": "verb answering the condition",
+    "note_en": "A past-tense verb, the answer to 'idhaa, with the waaw as subject; it introduces the reported speech that follows."
+   },
+   {
+    "token": "إِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "emphatic particle governing the noun clause",
+    "note_en": "An accusative-inducing particle of emphasis that puts its noun in the accusative and its predicate in the nominative."
+   },
+   {
+    "token": "هَٰٓؤُلَآءِ",
+    "case_en": "accusative",
+    "role_en": "noun of 'inna (ism inna)",
+    "note_en": "A demonstrative pronoun, indeclinable in form but in the accusative position as the subject governed by 'inna."
+   },
+   {
+    "token": "لَضَآلُّونَ",
+    "case_en": "nominative",
+    "role_en": "predicate of 'inna with emphatic laam",
+    "note_en": "The laam is the displaced laam of emphasis, and 'daalloon' is the nominative plural predicate meaning 'surely astray'."
+   }
+  ],
+  "irab_en": "This verse parallels the structure of the previous one. The waaw is connective and 'idhaa is a conditional adverb of time governing the verb ra'aw (they saw), a past-tense verb with the attached waaw as subject and the pronoun hum as direct object. The answer to the condition is qaaloo (they said), again with the waaw as subject, which introduces the reported speech. That speech is an emphatic nominal sentence opened by 'inna, which places its noun haa'ulaa'i (a demonstrative, indeclinable but in the accusative slot) as the noun of 'inna. The predicate is la-daalloon, where the laam is the muzahliqah (displaced) laam of emphasis and daalloon is the sound masculine plural in the nominative, the predicate of 'inna. The construction conveys their confident, emphatic accusation that the believers are misguided.",
+  "faqs_en": [
+   {
+    "q": "What is the function of the laam in 'laḍāllūn'?",
+    "a": "It is the laam al-muzahliqah, the emphatic laam normally attached to the noun of 'inna but displaced onto the predicate; it reinforces the certainty of the statement."
+   },
+   {
+    "q": "Why is 'hā'ulā'i' described as accusative when it does not change form?",
+    "a": "Demonstratives are indeclinable, but as the noun of 'inna it occupies the accusative position grammatically, even though its written form stays the same."
+   }
+  ],
+  "uthmani": "وَإِذَا رَأَوْهُمْ قَالُوٓا۟ إِنَّ هَٰٓؤُلَآءِ لَضَآلُّونَ"
+ },
+ "83:33": {
+  "surah": 83,
+  "ayah": 33,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 33 — word-by-word Arabic grammar",
+  "tldr_en": "A circumstantial clause noting that the sinners were never sent as guardians over the believers. It opens with a haal waaw, the negative particle 'maa', the passive verb 'ursiloo', a prepositional phrase 'alayhim, and the accusative haal 'haafiziina' describing the subject of the passive verb.",
+  "translation_en": "Yet they had not been sent as keepers over them.",
+  "transliteration": "Wa mā ursilū 'alayhim ḥāfiẓīn",
+  "words_en": [
+   {
+    "token": "وَمَآ",
+    "case_en": "indeclinable",
+    "role_en": "circumstantial particle plus negation",
+    "note_en": "The waaw introduces a circumstantial clause and 'maa' is a particle negating the passive verb that follows."
+   },
+   {
+    "token": "أُرْسِلُوا۟",
+    "case_en": "indeclinable",
+    "role_en": "passive verb with deputy-subject",
+    "note_en": "A passive past-tense verb whose attached waaw is the deputy-subject (na'ib faa'il), referring to the sinners."
+   },
+   {
+    "token": "عَلَيْهِمْ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase linked to the haal",
+    "note_en": "The preposition 'alaa with the genitive pronoun 'him' attaches to 'haafiziina' and means 'over them'."
+   },
+   {
+    "token": "حَٰفِظِينَ",
+    "case_en": "accusative",
+    "role_en": "circumstantial accusative (haal)",
+    "note_en": "An accusative state-word qualifying the deputy-subject of 'ursiloo', meaning they were not sent as guardians."
+   }
+  ],
+  "irab_en": "The opening waaw is the waaw of the haal (circumstance), introducing a clause that comments on the sinners' attitude in the previous verses. The particle maa is a negator working on the verb ursiloo, a past-tense passive verb; because it is passive, its attached waaw functions as the na'ib al-faa'il (deputy subject standing in for the unnamed agent). The prepositional phrase 'alayhim—'alaa governing the genitive pronoun him—relates to the following word and means 'over them', i.e., over the believers. The final word haafiziina is an accusative haal describing the deputy-subject of ursiloo: they were not dispatched in the capacity of keepers or overseers of the believers. The clause refutes any claim that the mockers had authority to judge or supervise the faithful.",
+  "faqs_en": [
+   {
+    "q": "Why is 'ursilū' called a passive verb?",
+    "a": "Its form indicates that the agent is unstated; the action 'were sent' is attributed to the doers without naming who sent them, and the waaw becomes the deputy subject."
+   },
+   {
+    "q": "What does the waaw at the start signal here?",
+    "a": "It is the waaw of haal, opening a circumstantial clause that adds the comment that the sinners had no commission to act as guardians over the believers."
+   }
+  ],
+  "uthmani": "وَمَآ أُرْسِلُوا۟ عَلَيْهِمْ حَٰفِظِينَ"
+ },
+ "83:34": {
+  "surah": 83,
+  "ayah": 34,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 34 — word-by-word Arabic grammar",
+  "tldr_en": "The tables turn: on the Day of Judgment the believers laugh at the disbelievers. The faa' answers an implied condition, 'al-yawma' is an adverb of time, the relative 'alladhiina' is the subject, 'aamanoo' is its relative-clause verb, 'min al-kuffaar' attaches to the later verb, and 'yadhakoon' is the predicate verb.",
+  "translation_en": "So today it is the believers who laugh at the disbelievers,",
+  "transliteration": "Fal-yawma alladhīna āmanū mina al-kuffāri yaḍḥakūn",
+  "words_en": [
+   {
+    "token": "فَٱلْيَوْمَ",
+    "case_en": "accusative",
+    "role_en": "connective faa' plus adverb of time",
+    "note_en": "The faa' ties this to an implied condition, and 'al-yawma' is an accusative adverb of time governed by the coming verb 'yadhakoon'."
+   },
+   {
+    "token": "ٱلَّذِينَ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "A relative pronoun in the nominative position serving as the topic of the sentence, referring to the believers."
+   },
+   {
+    "token": "ءَامَنُوا۟",
+    "case_en": "indeclinable",
+    "role_en": "verb of the relative clause",
+    "note_en": "A past-tense verb with the attached waaw as subject, forming the relative clause that defines 'those who'."
+   },
+   {
+    "token": "مِنَ",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "This preposition governs the following noun in the genitive and links to the verb 'yadhakoon'."
+   },
+   {
+    "token": "ٱلْكُفَّارِ",
+    "case_en": "genitive",
+    "role_en": "object of the preposition",
+    "note_en": "Made genitive by 'min'; the phrase 'at the disbelievers' attaches to the verb 'yadhakoon' that follows."
+   },
+   {
+    "token": "يَضْحَكُونَ",
+    "case_en": "indeclinable",
+    "role_en": "predicate verb (khabar)",
+    "note_en": "A present-tense verb with the waaw as subject, serving as the predicate of 'alladhiina' and meaning 'they laugh'."
+   }
+  ],
+  "irab_en": "The faa' here is the faa' that links to an implied conditional (i.e., now that this is so, then...). Al-yawma is an accusative adverb of time (zarf zamaan) attached to the later verb yadhakoon, meaning 'today/on that Day'. The relative pronoun alladhiina is the mubtada' (topic) in the nominative position, and its relative clause is aamanoo (they believed), a past-tense verb with the waaw as subject. The prepositional phrase min al-kuffaar—min governing al-kuffaar in the genitive—does not relate to aamanoo but to the predicate verb that comes after it, conveying 'laugh at the disbelievers'. The predicate of the topic is yadhakoon (they laugh), a present-tense verb with the waaw as subject. The nominal sentence thus states emphatically that it is precisely the believers who now laugh at the disbelievers, reversing the earlier mockery.",
+  "faqs_en": [
+   {
+    "q": "Why is 'al-yawma' in the accusative case?",
+    "a": "It is a zarf zamaan, an adverb of time, which by nature takes the accusative; it is linked to the verb 'yadhakoon' and means 'on this Day'."
+   },
+   {
+    "q": "Does 'min al-kuffaar' connect to 'āmanū'?",
+    "a": "No. Although it stands near 'aamanoo', it grammatically relates to the predicate verb 'yadhakoon', giving the meaning 'laugh at the disbelievers'."
+   }
+  ],
+  "uthmani": "فَٱلْيَوْمَ ٱلَّذِينَ ءَامَنُوا۟ مِنَ ٱلْكُفَّارِ يَضْحَكُونَ"
+ },
+ "83:35": {
+  "surah": 83,
+  "ayah": 35,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 35 — word-by-word Arabic grammar",
+  "tldr_en": "The believers in Paradise watch from raised couches. The prepositional phrase 'alaa al-araa'ik attaches to a circumstantial state of the subject of 'yanzuroon', and 'yanzuroon' is the present-tense verb meaning 'they look on', completing the scene of the rewarded believers observing.",
+  "translation_en": "On adorned couches, looking on.",
+  "transliteration": "'Alā al-arā'iki yanẓurūn",
+  "words_en": [
+   {
+    "token": "عَلَى",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "This preposition governs the following noun in the genitive and connects to a circumstantial state."
+   },
+   {
+    "token": "ٱلْأَرَآئِكِ",
+    "case_en": "genitive",
+    "role_en": "object of the preposition",
+    "note_en": "Made genitive by 'alaa; the phrase 'on the couches' relates to a haal from the subject of 'yanzuroon'."
+   },
+   {
+    "token": "يَنظُرُونَ",
+    "case_en": "indeclinable",
+    "role_en": "present-tense verb with its subject",
+    "note_en": "A present-tense verb with the attached waaw as subject, meaning the believers 'look on' or 'gaze'."
+   }
+  ],
+  "irab_en": "This short verse completes the picture begun in the previous one. The prepositional phrase 'alaa al-araa'ik consists of the preposition 'alaa governing al-araa'ik (the adorned couches) in the genitive; this phrase relates to a haal (circumstantial qualifier) drawn from the subject of the verb yanzuroon, meaning the believers are reclining upon couches as they watch. The verb yanzuroon (they look) is a present-tense verb whose attached waaw is its subject. The implied scene is that the believers, having entered bliss, observe—perhaps the fate of the disbelievers or the reward around them—from their elevated seats. Grammatically the verse functions as a continuation of the believers' description, with the prepositional phrase fronted for vividness before the verb.",
+  "faqs_en": [
+   {
+    "q": "What does 'alā al-arā'ik' grammatically attach to?",
+    "a": "It attaches to a haal (circumstantial state) taken from the subject of 'yanzuroon', describing the believers as being upon couches while they look on."
+   },
+   {
+    "q": "Why is the prepositional phrase placed before the verb?",
+    "a": "Fronting 'alaa al-araa'ik before 'yanzuroon' draws attention to the setting—the adorned couches—giving prominence to the believers' restful, honored position."
+   }
+  ],
+  "uthmani": "عَلَى ٱلْأَرَآئِكِ يَنظُرُونَ"
+ },
+ "83:36": {
+  "surah": 83,
+  "ayah": 36,
+  "h1_en": "I'rab of Surah Al-Mutaffifin Ayah 36 — word-by-word Arabic grammar",
+  "tldr_en": "A rhetorical closing question: have the disbelievers been repaid for what they used to do? It uses the interrogative 'hal', the passive verb 'thuwwiba', the deputy-subject 'al-kuffaar', and a maa-clause in the accusative slot meaning 'for what they used to do', understood after a dropped preposition.",
+  "translation_en": "Have the disbelievers been repaid for what they used to do?",
+  "transliteration": "Hal thuwwiba al-kuffāru mā kānū yaf'alūn",
+  "words_en": [
+   {
+    "token": "هَلْ",
+    "case_en": "indeclinable",
+    "role_en": "interrogative particle",
+    "note_en": "A particle that turns the sentence into a question, here carrying a tone of confirmation or rhetorical triumph."
+   },
+   {
+    "token": "ثُوِّبَ",
+    "case_en": "indeclinable",
+    "role_en": "passive verb",
+    "note_en": "A past-tense passive verb meaning 'has been rewarded/repaid', whose agent is unnamed and whose deputy-subject follows."
+   },
+   {
+    "token": "ٱلْكُفَّارُ",
+    "case_en": "nominative",
+    "role_en": "deputy-subject (na'ib al-fa'il)",
+    "note_en": "In the nominative as the deputy-subject of the passive verb 'thuwwiba', meaning 'the disbelievers' who are repaid."
+   },
+   {
+    "token": "مَا",
+    "case_en": "accusative",
+    "role_en": "noun clause in the accusative slot",
+    "note_en": "Here 'maa' (with its clause) stands in the accusative after a dropped preposition, meaning 'for what (they did)'."
+   },
+   {
+    "token": "كَانُوا۟",
+    "case_en": "indeclinable",
+    "role_en": "incomplete verb (kaana) with its noun",
+    "note_en": "A past-tense 'kaana' whose attached waaw is its noun, setting up a continuous past action with the following verb."
+   },
+   {
+    "token": "يَفْعَلُونَ",
+    "case_en": "indeclinable",
+    "role_en": "present-tense verb forming the predicate of kaana",
+    "note_en": "A present-tense verb with the waaw as subject; as the predicate of 'kaanoo' it conveys 'they used to do'."
+   }
+  ],
+  "irab_en": "The verse opens with the interrogative particle hal, posing a rhetorical question of confirmation. Thuwwiba is a past-tense passive verb ('has been repaid/rewarded'), so its agent is omitted and al-kuffaar takes the nominative as the na'ib al-faa'il (deputy subject), the ones who are recompensed. The word maa, together with the verbal clause attached to it, stands in the accusative position because of a dropped preposition (originally 'for what'), giving the meaning 'repaid for what they used to do'. Within that clause, kaanoo is the deficient verb kaana with the waaw as its noun (ism kaana), and yaf'aloon is a present-tense verb with the waaw as its subject, serving as the predicate (khabar) of kaana and expressing habitual past action 'they used to do'. The verse closes the surah by affirming that the disbelievers receive the fitting consequence of their deeds.",
+  "faqs_en": [
+   {
+    "q": "Why is 'al-kuffār' in the nominative if it is the one being acted upon?",
+    "a": "Because 'thuwwiba' is passive, the affected party becomes the na'ib al-faa'il (deputy subject), which takes the nominative case in place of the omitted agent."
+   },
+   {
+    "q": "How is the 'mā' clause analyzed grammatically?",
+    "a": "The 'maa' clause sits in the accusative position after a dropped preposition (originally 'for'), meaning 'for what they used to do', and within it 'kaanoo... yaf'aloon' expresses habitual past action."
+   }
+  ],
+  "uthmani": "هَلْ ثُوِّبَ ٱلْكُفَّارُ مَا كَانُوا۟ يَفْعَلُونَ"
+ }
+}

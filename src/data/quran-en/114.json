@@ -1,0 +1,284 @@
+{
+ "114:1": {
+  "surah": 114,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah An-Nas Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "The verse opens with the command verb قُلْ, whose subject is a hidden \"you.\" The reported speech is the verbal sentence أَعُوذُ — a present-tense verb with a hidden \"I\" subject. The prepositional phrase بِرَبِّ attaches to that verb, and ٱلنَّاسِ is its genitive possessive complement, the whole forming an iḍāfah construction.",
+  "translation_en": "Say: I seek refuge in the Lord of mankind.",
+  "transliteration": "Qul aʿūdhu bi-rabbi an-nās",
+  "words_en": [
+   {
+    "token": "قُلْ",
+    "case_en": "indeclinable (jussive form)",
+    "role_en": "command verb (fiʿl amr)",
+    "note_en": "An imperative verb fixed on a silent ending, with its subject being an implied \"you\" addressed to the Prophet."
+   },
+   {
+    "token": "أَعُوذُ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb (fiʿl muḍāriʿ)",
+    "note_en": "An indicative present verb in the nominative because nothing governs it otherwise, with a concealed obligatory subject pronoun \"I\"; the clause is the object of \"say.\""
+   },
+   {
+    "token": "بِرَبِّ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase attached to the verb (jārr wa majrūr)",
+    "note_en": "The preposition بِ puts رَبِّ in the genitive, and this phrase links to the verb أَعُوذُ to convey \"I take refuge in.\""
+   },
+   {
+    "token": "ٱلنَّاسِ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (muḍāf ilayh)",
+    "note_en": "Genitive as the second term of the iḍāfah after رَبِّ, marked by the kasrah, giving the meaning \"Lord of mankind.\""
+   }
+  ],
+  "irab_en": "The ayah begins with قُلْ, an imperative verb built on a sukūn; its doer is an understood \"you\" directed at the Prophet. What follows is the quoted speech functioning as the object of \"say.\" Within that quote, أَعُوذُ is an indicative present verb, kept in the nominative as its default state, and its subject is a necessarily hidden pronoun meaning \"I.\" The preposition بِ governs رَبِّ in the genitive, and together بِرَبِّ attaches grammatically to the verb أَعُوذُ, expressing the place of refuge sought. The word ٱلنَّاسِ is the second element of a possessive (iḍāfah) construction with رَبِّ, so it stands in the genitive, its case shown by the kasrah, and yields the meaning \"the Lord of mankind.\"",
+  "faqs_en": [
+   {
+    "q": "Why is قُلْ considered to have no visible subject?",
+    "a": "قُلْ is an imperative, and Arabic imperatives carry a built-in, unexpressed subject pronoun meaning \"you.\" Here it refers to the person being addressed, the Prophet, so no separate subject word appears."
+   },
+   {
+    "q": "What does بِرَبِّ connect to grammatically?",
+    "a": "The prepositional phrase بِرَبِّ attaches to the verb أَعُوذُ. The preposition بِ places رَبِّ in the genitive and completes the verb's meaning of seeking refuge \"in\" or \"with\" the Lord."
+   },
+   {
+    "q": "Why is ٱلنَّاسِ in the genitive case?",
+    "a": "ٱلنَّاسِ is the muḍāf ilayh — the second noun in a possessive construction with رَبِّ. The second term of such a construction is always genitive, here marked by the kasrah, producing \"Lord of mankind.\""
+   }
+  ],
+  "uthmani": "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
+ },
+ "114:2": {
+  "surah": 114,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah An-Nas Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "This short ayah is a two-word genitive construct (idafah). \"Malik\" is in the genitive case because it stands in apposition to the earlier word \"Rabb\" from ayah 1 (as a substitute, an adjective, or an explanatory appositive). \"an-Nas\" follows as the second term of the construct, also genitive.",
+  "translation_en": "The King of mankind.",
+  "transliteration": "Maliki n-nas",
+  "words_en": [
+   {
+    "token": "مَلِكِ",
+    "case_en": "genitive",
+    "role_en": "apposition to Rabb (badal / na't / 'atf bayan)",
+    "note_en": "This word is genitive because it parallels the earlier noun Rabb from ayah 1, functioning as a substitute, descriptive adjective, or explanatory appositive, and it is itself the first term of a genitive construct."
+   },
+   {
+    "token": "ٱلنَّاسِ",
+    "case_en": "genitive",
+    "role_en": "genitive noun (mudaf ilayh)",
+    "note_en": "As the second term of the idafah it takes the genitive case, shown by the kasra, completing the phrase 'King of mankind.'"
+   }
+  ],
+  "irab_en": "Ayah 2 continues the chain of descriptions begun in ayah 1, where refuge is sought \"with the Rabb (Lord) of mankind.\" The word \"Malik\" (King) appears in the genitive case because it is grammatically linked to that earlier noun \"Rabb\": grammarians treat it either as a substitute (badal), an adjective (na't), or an explanatory appositive ('atf bayan), all of which require it to match Rabb's genitive case. \"Malik\" is at the same time the first member (mudaf) of a possessive construct. The following word \"an-Nas\" (mankind) is therefore the second member (mudaf ilayh), pulled into the genitive and marked by the visible kasra. The two words together read \"the King of mankind,\" reinforcing the divine attribute already introduced and preparing for the third description, \"Ilah (God) of mankind.\"",
+  "faqs_en": [
+   {
+    "q": "Why is مَلِكِ (Malik) in the genitive case here?",
+    "a": "Because it is grammatically tied to the word Rabb in ayah 1. It can be parsed as a substitute (badal), an adjective (na't), or an explanatory appositive ('atf bayan) for Rabb, and in each of these roles it must follow Rabb in case — and Rabb is genitive after the preposition bi-, so Malik is genitive too."
+   },
+   {
+    "q": "What kind of grammatical structure is مَلِكِ ٱلنَّاسِ?",
+    "a": "It is an idafah (a possessive or genitive construct). Malik is the first term (mudaf) and an-Nas is the second term (mudaf ilayh). The second term is always genitive, here marked by the kasra, giving the meaning 'King of mankind.'"
+   },
+   {
+    "q": "How does this ayah connect to the verse before it?",
+    "a": "It extends the series of attributes attached to 'mankind' that began in ayah 1 with 'Rabb (Lord) of mankind.' Malik is in apposition to that Rabb, so the three ayat together form a parallel sequence: Lord, King, and God of mankind."
+   }
+  ],
+  "uthmani": "مَلِكِ ٱلنَّاسِ"
+ },
+ "114:3": {
+  "surah": 114,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah An-Nas Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "This short ayah is a two-word genitive construct (idafah). The noun \"ilahi\" (God) stands in apposition to the earlier \"Rabb\" / \"Malik\" as a substitute (badal), so it carries the same genitive case driven by the preposition \"bi\" back in ayah 1. \"an-nas\" is the second term of the construct (mudaf ilayh) and is therefore genitive too.",
+  "translation_en": "God of mankind.",
+  "transliteration": "ilāhi n-nās(i)",
+  "words_en": [
+   {
+    "token": "إِلَٰهِ",
+    "case_en": "genitive",
+    "role_en": "substitute (badal) / appositive to the preceding noun",
+    "note_en": "It is a substitute (badal) for \"Malik\" (and ultimately \"Rabb\") and so takes the same genitive case, marked by the kasra, that the preposition \"bi\" assigned earlier in the surah."
+   },
+   {
+    "token": "ٱلنَّاسِ",
+    "case_en": "genitive",
+    "role_en": "genitive noun (mudaf ilayh)",
+    "note_en": "It is the second term of the construct phrase, made genitive by being possessed by \"ilahi,\" its genitive shown by the kasra."
+   }
+  ],
+  "irab_en": "The verse إِلَٰهِ ٱلنَّاسِ is a single genitive construction (idafah) that continues the chain of divine names begun in ayah 1. The word إِلَٰهِ (God) is not the start of a new sentence; grammatically it functions as a substitute (badal) standing in for the earlier nouns مَلِكِ and رَبِّ. Because a badal copies the case of the word it replaces, إِلَٰهِ inherits the genitive case originally produced by the preposition بِ in بِرَبِّ, its ending shown by a visible kasra. إِلَٰهِ is also the first term (mudaf) of a construct phrase. The following word ٱلنَّاسِ (mankind) is the second term (mudaf ilayh) and is therefore genitive, again marked by the kasra. The two words together mean \"God of mankind,\" reinforcing the preceding attributes of lordship and sovereignty.",
+  "faqs_en": [
+   {
+    "q": "Why is إِلَٰهِ in the genitive case here?",
+    "a": "It is a substitute (badal) for the earlier words مَلِكِ and رَبِّ, and a badal must agree in case with the noun it replaces. Those nouns were already genitive because of the preposition بِ in بِرَبِّ النَّاسِ (ayah 1), so إِلَٰهِ follows suit, with its genitive marked by the kasra."
+   },
+   {
+    "q": "What is the grammatical relationship between إِلَٰهِ and ٱلنَّاسِ?",
+    "a": "They form a genitive construct (idafah). إِلَٰهِ is the possessed first term (mudaf) and ٱلنَّاسِ is the possessor second term (mudaf ilayh), which is why ٱلنَّاسِ is genitive."
+   },
+   {
+    "q": "Is this ayah a complete sentence on its own?",
+    "a": "No. It has no verb or predicate of its own; it is a noun phrase in apposition to the divine names mentioned in the previous verses, so it depends on them grammatically rather than forming an independent clause."
+   }
+  ],
+  "uthmani": "إِلَٰهِ ٱلنَّاسِ"
+ },
+ "114:4": {
+  "surah": 114,
+  "ayah": 4,
+  "h1_en": "I'rab of Surah An-Nas Ayah 4 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is a prepositional phrase: min (\"from\") governs the genitive noun sharri (\"evil\"), which is the first term of an idafa (possessive) construction. Al-waswasi (\"the whisperer\") is the second term in the genitive, and al-khannasi (\"the one who retreats\") is an adjective describing it, also genitive. The whole phrase attaches back to the verb a'udhu (\"I seek refuge\") in verse 1.",
+  "translation_en": "From the evil of the sneaking whisperer.",
+  "transliteration": "min sharri l-waswasi l-khannas(i)",
+  "words_en": [
+   {
+    "token": "مِن",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "A preposition meaning \"from\" that puts the following noun into the genitive case and connects this phrase to the verb a'udhu (\"I seek refuge\") in verse 1."
+   },
+   {
+    "token": "شَرِّ",
+    "case_en": "genitive",
+    "role_en": "genitive noun governed by the preposition (majrur), first term of idafa (mudaf)",
+    "note_en": "Governed in the genitive by min, and it is also the first term of a possessive construction, so the noun after it is its mudaf ilayh."
+   },
+   {
+    "token": "ٱلْوَسْوَاسِ",
+    "case_en": "genitive",
+    "role_en": "second term of idafa (mudaf ilayh)",
+    "note_en": "The possessed noun completing the construction with sharri, marked genitive by the kasra and meaning \"the whisperer.\""
+   },
+   {
+    "token": "ٱلْخَنَّاسِ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't) of al-waswas",
+    "note_en": "An adjective describing al-waswas (\"the one who withdraws/retreats\"), so it follows it in the genitive case."
+   }
+  ],
+  "irab_en": "The ayah opens with the preposition مِن (\"from\"), which is indeclinable and casts the next word into the genitive. شَرِّ (\"evil\") is therefore genitive, governed by the preposition; at the same time it heads a possessive (idafa) construction, making it the first term. The whole phrase مِن شَرِّ links back grammatically to the verb أَعُوذُ (\"I seek refuge\") at the start of the surah, completing the sense of what refuge is sought from. ٱلْوَسْوَاسِ (\"the whisperer\") is the second term of the idafa, genitive by a visible kasra, and tells us whose evil is meant. Finally, ٱلْخَنَّاسِ (\"the one who slinks back\") is an adjective qualifying ٱلْوَسْوَاسِ, and as a describing word it matches its noun in case, so it too is genitive.",
+  "faqs_en": [
+   {
+    "q": "Why is شَرِّ (sharr) in the genitive case?",
+    "a": "It is genitive for two compatible reasons: it directly follows the preposition مِن, which always governs the genitive, and it is also the first term of an idafa (possessive) construction. Both factors call for the genitive, shown by the kasra ending."
+   },
+   {
+    "q": "What is the relationship between ٱلْوَسْوَاسِ and ٱلْخَنَّاسِ?",
+    "a": "ٱلْوَسْوَاسِ (\"the whisperer\") is the second term of the possessive construction with شَرِّ, while ٱلْخَنَّاسِ (\"the one who retreats\") is an adjective (na't) describing it. As an adjective, it agrees with its noun in case, so both are genitive."
+   },
+   {
+    "q": "What does the phrase مِن شَرِّ connect to grammatically?",
+    "a": "It attaches to the verb أَعُوذُ (\"I seek refuge\") found in the first ayah of the surah. The preposition phrase specifies the thing from which refuge is sought, so this verse grammatically depends on that earlier verb rather than standing as an independent sentence."
+   }
+  ],
+  "uthmani": "مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ"
+ },
+ "114:5": {
+  "surah": 114,
+  "ayah": 5,
+  "h1_en": "I'rab of Surah An-Nas Ayah 5 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is a relative clause modifying al-waswas from the previous ayah. The relative pronoun alladhi sits in the genitive position as an adjective. Its connecting clause is the present-tense verb yuwaswisu with a hidden subject, followed by the prepositional phrase fi suduri, where sudur governs al-nas as a possessive complement.",
+  "translation_en": "The one who whispers into the hearts of people.",
+  "transliteration": "alladhi yuwaswisu fi suduri n-nas",
+  "words_en": [
+   {
+    "token": "ٱلَّذِى",
+    "case_en": "genitive",
+    "role_en": "relative pronoun, adjective (na't) to al-waswas",
+    "note_en": "An indeclinable relative pronoun occupying a genitive slot because it describes al-waswas from the preceding verse."
+   },
+   {
+    "token": "يُوَسْوِسُ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb with hidden subject, relative clause (silat al-mawsul)",
+    "note_en": "A nominative imperfect verb whose subject is a concealed pronoun (he), forming the clause that completes the relative pronoun."
+   },
+   {
+    "token": "فِى",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "A genitive-governing particle attached to the verb yuwaswisu to express where the whispering occurs."
+   },
+   {
+    "token": "صُدُورِ",
+    "case_en": "genitive",
+    "role_en": "noun governed by the preposition (majrur), first term of an idafa",
+    "note_en": "Pulled into the genitive by fi and serving as the possessed term of a construct chain with al-nas."
+   },
+   {
+    "token": "ٱلنَّاسِ",
+    "case_en": "genitive",
+    "role_en": "genitive noun (mudaf ilayh)",
+    "note_en": "The possessor completing the construct, in the genitive marked by the kasra."
+   }
+  ],
+  "irab_en": "The ayah opens with alladhi, an indeclinable relative pronoun that takes a genitive position because it functions as an adjective describing al-waswas (the whisperer) mentioned in the previous verse. The verb yuwaswisu is a present-tense (imperfect) verb in the nominative, since nothing causes it to take the subjunctive or jussive; its subject is a concealed pronoun understood as he. This verb together with what follows forms the relative clause (silat al-mawsul) that completes the meaning of alladhi and has no independent grammatical position. The preposition fi governs the genitive and links to yuwaswisu. Suduri is in the genitive after the preposition and is itself the first term of a possessive construct (idafa), with al-nas as its genitive complement (mudaf ilayh), marked by the kasra.",
+  "faqs_en": [
+   {
+    "q": "Why is alladhi described as genitive when relative pronouns do not change their endings?",
+    "a": "Alladhi is indeclinable, so its actual ending never changes. We say it is in the genitive position because it works as an adjective for al-waswas, which is itself genitive; the pronoun therefore occupies a genitive slot in the sentence even though its form stays fixed."
+   },
+   {
+    "q": "What is the role of the verb yuwaswisu in the sentence?",
+    "a": "It is a nominative imperfect verb carrying a hidden subject (he). Along with the words after it, it forms the relative clause that completes the relative pronoun alladhi, and as a connecting clause it holds no separate case position of its own."
+   },
+   {
+    "q": "How are suduri and al-nas related grammatically?",
+    "a": "They form an idafa (possessive construct). Suduri is the possessed term, pulled into the genitive by the preposition fi, while al-nas is the possessor (mudaf ilayh), also genitive and marked by the kasra, giving the sense the hearts of people."
+   }
+  ],
+  "uthmani": "ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ"
+ },
+ "114:6": {
+  "surah": 114,
+  "ayah": 6,
+  "h1_en": "I'rab of Surah An-Nas Ayah 6 — word-by-word Arabic grammar",
+  "tldr_en": "This short ayah is built from two prepositional phrases. The preposition min governs the genitive noun al-jinnah, and this phrase attaches back to an earlier element (a circumstantial state of the one who whispers, or an explanation of \"the people\"). The conjunction wa then links al-nas to al-jinnah, so it shares the same genitive case.",
+  "translation_en": "From among the jinn and humankind.",
+  "transliteration": "mina l-jinnati wa-n-nāsi",
+  "words_en": [
+   {
+    "token": "مِنَ",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "A preposition that puts the following noun in the genitive and here introduces the source or category being specified."
+   },
+   {
+    "token": "ٱلْجِنَّةِ",
+    "case_en": "genitive",
+    "role_en": "genitive noun governed by the preposition (majrur bi-harf al-jarr)",
+    "note_en": "It is genitive because of the preposition min, and the whole phrase relates back to the earlier verb/description, clarifying that the whisperer comes from among the jinn."
+   },
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "coordinating conjunction (harf 'atf)",
+    "note_en": "The connective waw joins what follows to the preceding genitive noun al-jinnah."
+   },
+   {
+    "token": "ٱلنَّاسِ",
+    "case_en": "genitive",
+    "role_en": "noun coordinated to al-jinnah (ma'tuf)",
+    "note_en": "Being linked by the conjunction to al-jinnah, it follows it in the genitive case, marked by the kasrah."
+   }
+  ],
+  "irab_en": "The ayah opens with the preposition min, which is indeclinable and casts the noun after it into the genitive. The noun al-jinnah is therefore genitive, its case shown by the kasrah ending; the prepositional phrase \"min al-jinnah\" does not stand alone but connects to an element in the previous verse — either as a circumstantial qualifier of the one who whispers, or as a clarification of who \"the people\" referred to are. The waw is a coordinating conjunction that links the next noun to al-jinnah. As a result, al-nas is grammatically coordinated to al-jinnah and shares its genitive case, again marked by the kasrah. Together the two nouns enumerate the two categories from which the whispering can originate, jinn and human beings.",
+  "faqs_en": [
+   {
+    "q": "Why are both al-jinnah and al-nas in the genitive case?",
+    "a": "Al-jinnah is genitive because it directly follows the preposition min, which always governs the genitive. Al-nas is genitive because the conjunction waw coordinates it to al-jinnah, and a coordinated noun takes the same case as the noun it is linked to."
+   },
+   {
+    "q": "What does the phrase 'min al-jinnah wa-l-nas' attach to grammatically?",
+    "a": "It does not form an independent sentence. It relates back to the preceding ayah, functioning either as a circumstantial state describing the source of the one who whispers, or as an explanatory specification of who is meant, indicating that the whisperer may be from the jinn or from human beings."
+   },
+   {
+    "q": "What is the role of the waw here?",
+    "a": "The waw is a coordinating conjunction (harf 'atf). Its job is to connect al-nas to al-jinnah so that the two nouns are treated as a linked pair and carry matching grammatical case."
+   }
+  ],
+  "uthmani": "مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ"
+ }
+}

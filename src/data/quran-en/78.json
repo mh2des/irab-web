@@ -1,0 +1,2036 @@
+{
+ "78:1": {
+  "surah": 78,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah An-Naba Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "This opening verse is a rhetorical question: \"About what are they questioning one another?\" The interrogative noun 'amma (originally 'an + ma) is fronted, attached to the verb yatasa'aluna. The construction signals astonishment at the disbelievers' disputes over the resurrection, drawing the listener in by asking and then immediately answering across the following verses.",
+  "translation_en": "About what are they asking one another?",
+  "transliteration": "ʿamma yatasāʾalūn(a)",
+  "words_en": [
+   {
+    "token": "عَمَّ",
+    "case_en": "genitive",
+    "role_en": "interrogative phrase (preposition + question word)",
+    "note_en": "Originally 'an (about) plus ma (what); the final alif of ma is dropped because it is governed by a preposition, and the whole phrase is grammatically attached to the verb that follows."
+   },
+   {
+    "token": "يَتَسَآءَلُونَ",
+    "case_en": "nominative",
+    "role_en": "verb with attached subject",
+    "note_en": "An imperfect verb in the indicative (marfu'), with the attached pronoun waw as its subject, meaning \"they question one another.\""
+   }
+  ],
+  "irab_en": "The verse is built on a single interrogative clause. The word 'amma is a contraction of the preposition 'an (\"about\") and the interrogative pronoun ma (\"what\"); when ma follows a preposition in a question, its final long vowel is dropped, leaving 'amma. Because it is the object of a preposition, the phrase stands in the genitive position and is linked syntactically to the verb. The verb yatasa'aluna is imperfect and indicative, marked by the retained nun, and its subject is the attached plural pronoun (the waw of the group). The fronting of the question word ahead of the verb is normal Arabic word order for questions and lends the verse its rhetorical, attention-seizing force.",
+  "faqs_en": [
+   {
+    "q": "Why is it written 'amma and not 'an ma?",
+    "a": "When the interrogative ma follows a preposition, its long alif is usually deleted and it merges with the preposition; so 'an + ma becomes 'amma."
+   },
+   {
+    "q": "What is the subject of yatasa'aluna?",
+    "a": "The subject is the attached pronoun waw, referring to the people who are questioning one another."
+   }
+  ],
+  "uthmani": "عَمَّ يَتَسَآءَلُونَ"
+ },
+ "78:2": {
+  "surah": 78,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah An-Naba Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "This verse answers the question of verse 1: \"About the tremendous tiding.\" The preposition 'an governs al-naba' in the genitive, and al-'azim is its adjective, also genitive. The phrase clarifies the object of their disputing, namely the momentous news of resurrection and judgment.",
+  "translation_en": "About the great tiding,",
+  "transliteration": "ʿani n-nabaʾi l-ʿaẓīm(i)",
+  "words_en": [
+   {
+    "token": "عَنِ",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "A preposition meaning \"about\"; its noun follows in the genitive, and the phrase explains the subject of the questioning."
+   },
+   {
+    "token": "ٱلنَّبَإِ",
+    "case_en": "genitive",
+    "role_en": "object of the preposition (majrur)",
+    "note_en": "Governed by the preposition 'an and therefore genitive; it names \"the tiding\" they dispute about."
+   },
+   {
+    "token": "ٱلْعَظِيمِ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "An adjective describing al-naba', agreeing with it in being genitive, definite, and singular."
+   }
+  ],
+  "irab_en": "This verse provides the implied answer to the question posed in verse 1, with the preposition 'an introducing the matter being questioned. The noun al-naba' (\"the tiding\") is in the genitive because it is the object of the preposition, its kasra being the visible sign of that case. The following word al-'azim (\"the tremendous\") is an adjective qualifying al-naba'; it agrees with its noun in case (genitive), definiteness (carrying the definite article), gender, and number. Grammarians often understand this whole prepositional phrase to relate to an unstated repetition of the verb \"they question,\" so the sense is \"they are questioning about the tremendous tiding.\" The adjective intensifies the gravity of the subject under dispute.",
+  "faqs_en": [
+   {
+    "q": "Why is al-naba' in the genitive case?",
+    "a": "Because it is the object of the preposition 'an; nouns governed by a preposition take the genitive (majrur)."
+   },
+   {
+    "q": "What does al-'azim modify?",
+    "a": "It is an adjective modifying al-naba', agreeing with it in case, definiteness, gender, and number."
+   }
+  ],
+  "uthmani": "عَنِ ٱلنَّبَإِ ٱلْعَظِيمِ"
+ },
+ "78:3": {
+  "surah": 78,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah An-Naba Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "This verse describes the great tiding: \"about which they are in disagreement.\" Al-ladhi is a relative pronoun functioning as a second adjective of al-naba', occupying a genitive position. Its relative clause is a nominal sentence: hum (subject), the predicate being mukhtalifun, with fihi linked to it. The verse pinpoints that people differ over this news.",
+  "translation_en": "Concerning which they are in disagreement.",
+  "transliteration": "alladhī hum fīhi mukhtalifūn(a)",
+  "words_en": [
+   {
+    "token": "ٱلَّذِى",
+    "case_en": "genitive",
+    "role_en": "relative pronoun, second adjective (na't thani)",
+    "note_en": "A relative pronoun standing in the genitive position as a second description of al-naba'; it introduces the clause that follows."
+   },
+   {
+    "token": "هُمْ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "A detached pronoun \"they\" serving as the subject of the nominal sentence inside the relative clause."
+   },
+   {
+    "token": "فِيهِ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jar wa majrur)",
+    "note_en": "The preposition fi with the attached pronoun hi (\"about it\"); it is connected to the predicate mukhtalifun."
+   },
+   {
+    "token": "مُخْتَلِفُونَ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "The predicate of hum, an active participle in the sound masculine plural marked by waw and nun, meaning \"differing.\""
+   }
+  ],
+  "irab_en": "The relative pronoun al-ladhi functions as a second adjective describing al-naba' from the previous verse; since the described noun is genitive, al-ladhi is treated as occupying a genitive position, though it is itself indeclinable in form. The relative clause that gives it meaning is a complete nominal sentence: hum is the subject (mubtada'), a detached pronoun referring to the disputants, and mukhtalifun is the predicate (khabar), an active participle in the sound masculine plural, marked nominative by the waw. The prepositional phrase fihi (\"about it\") attaches to that predicate, indicating the matter of their disagreement. Together the verse identifies the great tiding precisely as the thing over which people are divided.",
+  "faqs_en": [
+   {
+    "q": "What grammatical role does al-ladhi play here?",
+    "a": "It is a relative pronoun acting as a second adjective (na't) of al-naba', so it shares its genitive position."
+   },
+   {
+    "q": "What is the structure inside the relative clause?",
+    "a": "It is a nominal sentence: hum is the subject, mukhtalifun is the predicate, and fihi attaches to that predicate."
+   }
+  ],
+  "uthmani": "ٱلَّذِى هُمْ فِيهِ مُخْتَلِفُونَ"
+ },
+ "78:4": {
+  "surah": 78,
+  "ayah": 4,
+  "h1_en": "I'rab of Surah An-Naba Ayah 4 — word-by-word Arabic grammar",
+  "tldr_en": "A stern rebuttal: \"No! They will come to know.\" Kalla is a particle of deterrence and rebuke, checking their questioning. The sin prefixed to the verb is the future particle, and ya'lamuna is an imperfect indicative verb with its plural subject pronoun. The verse warns that certainty about the resurrection is coming.",
+  "translation_en": "No! They will soon know.",
+  "transliteration": "kallā sa-yaʿlamūn(a)",
+  "words_en": [
+   {
+    "token": "كَلَّا",
+    "case_en": "indeclinable",
+    "role_en": "particle of deterrence (radʿ wa zajr)",
+    "note_en": "A particle that rebukes and restrains, here checking the disbelievers from their doubtful questioning."
+   },
+   {
+    "token": "سَيَعْلَمُونَ",
+    "case_en": "nominative",
+    "role_en": "future particle + verb with subject",
+    "note_en": "The prefixed sin marks near future; ya'lamuna is an imperfect indicative verb whose subject is the attached plural pronoun waw."
+   }
+  ],
+  "irab_en": "The verse opens with kalla, an indeclinable particle expressing deterrence and rebuke; it cuts off the disbelievers' doubtful questioning with a firm \"No!\" It carries no case and governs nothing grammatically. The following word combines two elements: the particle sa- (the sin of futurity) prefixed to the verb, indicating that the coming event is near, and the verb ya'lamuna (\"they will know\"), an imperfect verb in the indicative mood, marked by the retained nun, with the attached plural pronoun (the waw) as its subject. The threat is deliberately left unspecified, intensifying the warning: they will indeed come to know the reality they now dispute.",
+  "faqs_en": [
+   {
+    "q": "What does kalla mean grammatically?",
+    "a": "It is an indeclinable particle of rebuke and deterrence, used to firmly reject or check the preceding attitude."
+   },
+   {
+    "q": "What is the sin attached to ya'lamuna?",
+    "a": "It is the particle of futurity (sin al-istiqbal), showing the knowing will occur in the near future."
+   }
+  ],
+  "uthmani": "كَلَّا سَيَعْلَمُونَ"
+ },
+ "78:5": {
+  "surah": 78,
+  "ayah": 5,
+  "h1_en": "I'rab of Surah An-Naba Ayah 5 — word-by-word Arabic grammar",
+  "tldr_en": "An emphatic repetition: \"Again, no! They will come to know.\" Thumma is a connective particle adding sequence and emphasis, kalla again deters, and sa-ya'lamuna repeats the future warning. The doubling intensifies the threat against those who deny the resurrection.",
+  "translation_en": "Then, no! They will surely know.",
+  "transliteration": "thumma kallā sa-yaʿlamūn(a)",
+  "words_en": [
+   {
+    "token": "ثُمَّ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "A connective particle conveying sequence and, here, added emphasis by linking this verse to the previous warning."
+   },
+   {
+    "token": "كَلَّا",
+    "case_en": "indeclinable",
+    "role_en": "particle of deterrence (radʿ wa zajr)",
+    "note_en": "Repeated for emphasis, again rebuking and restraining the deniers from their questioning."
+   },
+   {
+    "token": "سَيَعْلَمُونَ",
+    "case_en": "nominative",
+    "role_en": "future particle + verb with subject",
+    "note_en": "The sin marks the near future and ya'lamuna is an imperfect indicative verb with its attached plural subject pronoun waw."
+   }
+  ],
+  "irab_en": "This verse repeats the warning of verse 4 with added force. It begins with thumma, a connective particle that ordinarily marks sequence with some interval, here joining the two warnings and reinforcing the emphasis. Next comes kalla, the same indeclinable particle of rebuke and deterrence, restated to drive home the rejection of their doubt. The final element again pairs the futurity particle sa- with the imperfect indicative verb ya'lamuna, marked by the retained nun, its subject the attached plural pronoun. The repetition of the entire admonition is a rhetorical device of intensification in Arabic, leaving no doubt that the deniers will face the reality they dispute.",
+  "faqs_en": [
+   {
+    "q": "Why is the warning repeated in verses 4 and 5?",
+    "a": "The repetition, joined by thumma, is for emphasis, stressing the certainty of the coming knowledge and threat."
+   },
+   {
+    "q": "What kind of particle is thumma?",
+    "a": "It is a conjunction (harf 'atf) indicating sequence, used here to connect and intensify the two parallel warnings."
+   }
+  ],
+  "uthmani": "ثُمَّ كَلَّا سَيَعْلَمُونَ"
+ },
+ "78:6": {
+  "surah": 78,
+  "ayah": 6,
+  "h1_en": "I'rab of Surah An-Naba Ayah 6 — word-by-word Arabic grammar",
+  "tldr_en": "A rhetorical question affirming God's power: \"Have We not made the earth a resting place?\" The hamza is an interrogative seeking acknowledgment, lam negates with the jussive, naj'al is the verb, al-arda its first object, and mihadan its second object in the accusative. The verse begins a list of divine favors as proofs of resurrection.",
+  "translation_en": "Have We not made the earth a resting place,",
+  "transliteration": "a-lam najʿali l-arḍa mihādā(n)",
+  "words_en": [
+   {
+    "token": "أَلَمْ",
+    "case_en": "indeclinable",
+    "role_en": "interrogative hamza + negation/jussive particle",
+    "note_en": "The hamza is a rhetorical question seeking affirmation, and lam negates the verb and puts it in the jussive."
+   },
+   {
+    "token": "نَجْعَلِ",
+    "case_en": "jussive",
+    "role_en": "verb (governed by lam)",
+    "note_en": "An imperfect verb in the jussive because of lam, with an implied subject \"We\"; its ending takes a kasra to ease pronunciation before the next word."
+   },
+   {
+    "token": "ٱلْأَرْضَ",
+    "case_en": "accusative",
+    "role_en": "first object (maf'ul bihi awwal)",
+    "note_en": "The first object of naj'al, in the accusative; \"the earth\" is what was made into something."
+   },
+   {
+    "token": "مِهَٰدًۭا",
+    "case_en": "accusative",
+    "role_en": "second object (maf'ul bihi thani)",
+    "note_en": "The second object of naj'al, accusative with tanwin; it states what the earth was made into, namely a resting place."
+   }
+  ],
+  "irab_en": "The verse opens with a compound interrogative: the hamza is an interrogative particle used here for affirmation, prompting the listener to acknowledge the truth, while lam is a particle that both negates and places the following imperfect verb in the jussive mood. The verb naj'al (\"We make\") is therefore jussive; its original sukun ending shifts to a kasra to avoid two unvowelled consonants meeting before the next word, and its subject is the implied pronoun \"We.\" Because ja'ala here carries the sense of \"to make X into Y,\" it takes two objects: al-arda (\"the earth\") is the first object in the accusative, and mihadan (\"a resting place\") is the second object, also accusative with tanwin. The verse opens a sequence of rhetorical proofs of God's creative power.",
+  "faqs_en": [
+   {
+    "q": "Why does naj'al take two objects?",
+    "a": "Because ja'ala here means \"to make something into something,\" it governs two accusative objects: al-arda and mihadan."
+   },
+   {
+    "q": "Why does naj'al end with a kasra instead of a sukun?",
+    "a": "It is jussive (so its base ending is sukun), but the sukun shifts to a kasra to avoid two consecutive unvowelled consonants before the following word."
+   }
+  ],
+  "uthmani": "أَلَمْ نَجْعَلِ ٱلْأَرْضَ مِهَٰدًۭا"
+ },
+ "78:7": {
+  "surah": 78,
+  "ayah": 7,
+  "h1_en": "I'rab of Surah An-Naba Ayah 7 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues the rhetorical questioning that began with \"Have We not made...\" The earth was made a resting place, and here the mountains are mentioned as stakes or pegs that steady it. Grammatically, \"the mountains\" is joined by the conjunction waw onto \"the earth,\" and \"as stakes\" functions as a second object describing what the mountains were made into.",
+  "translation_en": "And the mountains as stakes?",
+  "transliteration": "Wal-jibala awtada",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "This connecting waw joins what follows onto the earlier object \"the earth\" in the previous verse."
+   },
+   {
+    "token": "ٱلْجِبَالَ",
+    "case_en": "accusative",
+    "role_en": "object joined by conjunction (ma'tuf)",
+    "note_en": "It is accusative because it is joined onto the earlier accusative object \"the earth,\" still governed by the implied verb \"made.\""
+   },
+   {
+    "token": "أَوْتَادًۭا",
+    "case_en": "accusative",
+    "role_en": "second object (maf'ul bihi thani)",
+    "note_en": "It is the accusative second object of the doubly-transitive verb \"to make,\" describing what the mountains were made into."
+   }
+  ],
+  "irab_en": "This verse is grammatically tied to the preceding one, where the rhetorical interrogative hamza and the verb \"made\" set up a doubly-transitive structure. The conjunction waw at the start links \"the mountains\" (al-jibal) onto the earlier object \"the earth.\" Because the thing it is joined to was accusative, \"the mountains\" takes the accusative case as well, remaining the direct object of the implied or carried-over verb \"made.\" The final word \"as stakes\" (awtadan) is accusative as the second object of this doubly-transitive verb, since verbs of making take two objects: the thing made and what it is made into. The whole verse thus parallels \"the earth a resting place,\" presenting the mountains as pegs that hold the earth firm.",
+  "faqs_en": [
+   {
+    "q": "Why is \"the mountains\" in the accusative case here?",
+    "a": "It is accusative because it is joined by the conjunction waw onto \"the earth\" in the previous verse, which was the accusative object of the verb \"made.\" Items joined by a conjunction take the same case as the word they are joined to."
+   },
+   {
+    "q": "What grammatical role does \"as stakes\" play?",
+    "a": "It is the second object of a doubly-transitive verb. Verbs meaning \"to make\" take two objects: the first is the thing acted upon (the mountains), and the second states what it becomes (stakes)."
+   }
+  ],
+  "uthmani": "وَٱلْجِبَالَ أَوْتَادًۭا"
+ },
+ "78:8": {
+  "surah": 78,
+  "ayah": 8,
+  "h1_en": "I'rab of Surah An-Naba Ayah 8 — word-by-word Arabic grammar",
+  "tldr_en": "Here the address shifts to humankind: \"And We created you in pairs.\" The conjunction waw connects this statement to the preceding list of creative acts. The verb carries an attached subject pronoun (We) and an attached object pronoun (you), while \"in pairs\" functions as a circumstantial accusative describing the state in which people were created.",
+  "translation_en": "And We created you in pairs,",
+  "transliteration": "Wa khalaqnakum azwaja",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The connecting waw joins this sentence onto the previous acts of creation in the list."
+   },
+   {
+    "token": "خَلَقْنَٰكُمْ",
+    "case_en": "indeclinable",
+    "role_en": "verb with attached subject and object pronouns",
+    "note_en": "A past-tense verb whose attached \"na\" is the subject (We) and attached \"kum\" is the direct object (you)."
+   },
+   {
+    "token": "أَزْوَٰجًۭا",
+    "case_en": "accusative",
+    "role_en": "circumstantial accusative (hal)",
+    "note_en": "It is an accusative describing the state of the object pronoun \"you,\" meaning created as pairs or kinds."
+   }
+  ],
+  "irab_en": "The verse opens with the conjunction waw, joining it to the chain of divine acts of creation described before. The verb \"We created\" (khalaqna) is a past-tense verb; its attached pronoun \"na\" serves as the doer (We), and the attached pronoun \"kum\" is the direct object (you). The closing word \"pairs\" (azwajan) is in the accusative case and functions as a circumstantial qualifier (hal), describing the state or manner in which the object \"you\" were created, namely as paired kinds, male and female. The sentence as a whole is connected by the conjunction to the list of God's signs and remains within the rhetorical reminder of His power and provision.",
+  "faqs_en": [
+   {
+    "q": "Is \"in pairs\" an object or a description here?",
+    "a": "It is best read as a circumstantial accusative (hal) describing the state of the object pronoun \"you.\" It explains the manner of creation, telling us people were brought into being as pairs or kinds rather than naming a second thing made."
+   },
+   {
+    "q": "How does one verb contain both \"We\" and \"you\"?",
+    "a": "Arabic verbs can carry attached pronouns. In khalaqnakum, the \"na\" attached after the verb stem is the subject (We), and the \"kum\" at the end is the object (you), so a single word expresses subject, verb, and object together."
+   }
+  ],
+  "uthmani": "وَخَلَقْنَٰكُمْ أَزْوَٰجًۭا"
+ },
+ "78:9": {
+  "surah": 78,
+  "ayah": 9,
+  "h1_en": "I'rab of Surah An-Naba Ayah 9 — word-by-word Arabic grammar",
+  "tldr_en": "This verse states that sleep was made a means of rest. The conjunction waw links it to the surrounding acts of creation. The verb \"We made\" takes two objects: \"your sleep\" as the first object and \"a rest\" as the second, since verbs of making are doubly transitive in Arabic.",
+  "translation_en": "And We made your sleep a rest,",
+  "transliteration": "Wa ja'alna nawmakum subata",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The connecting waw joins this verse onto the previous statement in the chain of God's acts."
+   },
+   {
+    "token": "جَعَلْنَا",
+    "case_en": "indeclinable",
+    "role_en": "verb with attached subject pronoun",
+    "note_en": "A past-tense verb of making whose attached \"na\" is the subject (We); it governs two objects."
+   },
+   {
+    "token": "نَوْمَكُمْ",
+    "case_en": "accusative",
+    "role_en": "first object (maf'ul bihi awwal)",
+    "note_en": "\"Sleep\" is the accusative first object, with the attached \"kum\" as a possessive (your) in the genitive by annexation."
+   },
+   {
+    "token": "سُبَاتًۭا",
+    "case_en": "accusative",
+    "role_en": "second object (maf'ul bihi thani)",
+    "note_en": "It is the accusative second object of the doubly-transitive verb, stating what sleep was made into: a rest."
+   }
+  ],
+  "irab_en": "The verse begins with the conjunction waw, continuing the list of God's creative favors. The verb \"We made\" (ja'alna) is past tense with the attached pronoun \"na\" as its subject (We). Because ja'ala in this sense means \"to render\" or \"to make into,\" it is doubly transitive and takes two objects. The first object is \"your sleep\" (nawmakum), in the accusative; the attached pronoun \"kum\" is a genitive possessive joined to \"sleep\" by annexation (idafa), meaning \"your.\" The second object is \"a rest\" (subatan), also accusative, expressing what sleep was made to be, a cessation and repose for the body. Together the two objects complete the meaning of the doubly-transitive verb.",
+  "faqs_en": [
+   {
+    "q": "Why does the verb \"We made\" take two objects?",
+    "a": "The verb ja'ala in the sense of \"to render\" or \"to turn into\" is doubly transitive. The first object names the thing acted upon (your sleep), and the second names what it becomes (a rest), so both are needed to complete the meaning."
+   },
+   {
+    "q": "What is the role of the \"kum\" attached to \"sleep\"?",
+    "a": "The \"kum\" is a possessive pronoun in the genitive, joined to \"sleep\" by annexation (idafa). It gives the meaning \"your sleep,\" so the noun and pronoun form a single possessive phrase that serves as the first object."
+   }
+  ],
+  "uthmani": "وَجَعَلْنَا نَوْمَكُمْ سُبَاتًۭا"
+ },
+ "78:10": {
+  "surah": 78,
+  "ayah": 10,
+  "h1_en": "I'rab of Surah An-Naba Ayah 10 — word-by-word Arabic grammar",
+  "tldr_en": "This verse declares that night was made a covering. Joined by the conjunction waw to the surrounding favors, the verb \"We made\" again takes two objects: \"the night\" as the first object and \"a covering\" as the second, picturing night as something that wraps around and conceals like a garment.",
+  "translation_en": "And We made the night a covering,",
+  "transliteration": "Wa ja'alnal-layla libasa",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The connecting waw joins this verse onto the preceding statements of creation."
+   },
+   {
+    "token": "جَعَلْنَا",
+    "case_en": "indeclinable",
+    "role_en": "verb with attached subject pronoun",
+    "note_en": "A past-tense verb of making whose attached \"na\" is the subject (We); it governs two objects."
+   },
+   {
+    "token": "ٱلَّيْلَ",
+    "case_en": "accusative",
+    "role_en": "first object (maf'ul bihi awwal)",
+    "note_en": "\"The night\" is the accusative first object, the thing that was made into something."
+   },
+   {
+    "token": "لِبَاسًۭا",
+    "case_en": "accusative",
+    "role_en": "second object (maf'ul bihi thani)",
+    "note_en": "It is the accusative second object, stating that night was made a covering or garment that conceals."
+   }
+  ],
+  "irab_en": "The verse opens with the conjunction waw, continuing the catalogue of divine signs. The verb \"We made\" (ja'alna) is past tense with the attached pronoun \"na\" as subject (We), and in the sense of \"to render\" it is doubly transitive. The first object is \"the night\" (al-layl), in the accusative as the thing acted upon. The second object is \"a covering\" (libasan), also accusative, telling us what the night was made into. The imagery is that night functions like a garment, enveloping and concealing people so they may rest. Both accusative objects together complete the doubly-transitive verb, paralleling the structure of the surrounding verses about sleep and day.",
+  "faqs_en": [
+   {
+    "q": "Why are both \"the night\" and \"a covering\" in the accusative?",
+    "a": "They are the two objects of the doubly-transitive verb \"We made.\" The first object (the night) is the thing acted upon, and the second object (a covering) states what it becomes; both objects of such verbs take the accusative case."
+   },
+   {
+    "q": "What does calling night a \"covering\" suggest grammatically and in meaning?",
+    "a": "Grammatically \"covering\" is the second object describing what night was made into. In meaning it likens night to a garment that wraps over people, concealing and sheltering them, which is why the metaphor is expressed through this object construction."
+   }
+  ],
+  "uthmani": "وَجَعَلْنَا ٱلَّيْلَ لِبَاسًۭا"
+ },
+ "78:11": {
+  "surah": 78,
+  "ayah": 11,
+  "h1_en": "I'rab of Surah An-Naba Ayah 11 — word-by-word Arabic grammar",
+  "tldr_en": "This verse states that day was made a time for livelihood. Connected by the conjunction waw to the preceding favors, the verb \"We made\" once more takes two objects: \"the day\" as the first object and \"a means of livelihood\" as the second, presenting daytime as the period appointed for seeking sustenance.",
+  "translation_en": "And We made the day for livelihood,",
+  "transliteration": "Wa ja'alnan-nahara ma'asha",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The connecting waw joins this verse onto the previous acts of creation."
+   },
+   {
+    "token": "جَعَلْنَا",
+    "case_en": "indeclinable",
+    "role_en": "verb with attached subject pronoun",
+    "note_en": "A past-tense verb of making whose attached \"na\" is the subject (We); it governs two objects."
+   },
+   {
+    "token": "ٱلنَّهَارَ",
+    "case_en": "accusative",
+    "role_en": "first object (maf'ul bihi awwal)",
+    "note_en": "\"The day\" is the accusative first object, the thing that was made into something."
+   },
+   {
+    "token": "مَعَاشًۭا",
+    "case_en": "accusative",
+    "role_en": "second object (maf'ul bihi thani)",
+    "note_en": "It is the accusative second object, stating that day was made a time of livelihood and earning."
+   }
+  ],
+  "irab_en": "The verse begins with the conjunction waw, continuing the sequence of God's favors. The verb \"We made\" (ja'alna) is past tense with the attached \"na\" as subject (We), and in the sense of \"to render\" it is doubly transitive. The first object is \"the day\" (al-nahar), accusative as the thing acted upon. The second object is \"a means of livelihood\" (ma'ashan), also accusative, stating what the day was made to serve as: a time for seeking sustenance and earning a living. The verbal noun ma'ash denotes the period or means of living. Both accusative objects complete the doubly-transitive verb, balancing the previous verse where night was made a covering for rest.",
+  "faqs_en": [
+   {
+    "q": "What does \"ma'ashan\" mean grammatically and how is it used here?",
+    "a": "It is a verbal noun meaning a time or means of living. Grammatically it is the accusative second object of \"We made,\" telling us the day was appointed as a period for earning and seeking provision."
+   },
+   {
+    "q": "How does this verse parallel the one before it?",
+    "a": "Both use the same doubly-transitive verb \"We made\" with two accusative objects. The previous verse made the night a covering for rest, and this verse makes the day a time for livelihood, contrasting rest by night with work by day."
+   }
+  ],
+  "uthmani": "وَجَعَلْنَا ٱلنَّهَارَ مَعَاشًۭا"
+ },
+ "78:12": {
+  "surah": 78,
+  "ayah": 12,
+  "h1_en": "I'rab of Surah An-Naba Ayah 12 — word-by-word Arabic grammar",
+  "tldr_en": "This verse says God built above mankind seven firm heavens. The verb \"We built\" governs an adverbial of place \"above you\" and an object \"seven,\" which stands for an omitted noun \"heavens.\" The final word \"firm\" is an adjective describing those seven, all in the accusative.",
+  "translation_en": "And We built above you seven strong ones,",
+  "transliteration": "Wa banayna fawqakum sab'an shidada",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The connecting waw joins this verse onto the chain of divine acts of creation."
+   },
+   {
+    "token": "بَنَيْنَا",
+    "case_en": "indeclinable",
+    "role_en": "verb with attached subject pronoun",
+    "note_en": "A past-tense verb \"we built\" whose attached \"na\" is the subject (We)."
+   },
+   {
+    "token": "فَوْقَكُمْ",
+    "case_en": "accusative",
+    "role_en": "adverbial of place (zarf makan)",
+    "note_en": "\"Above\" is an accusative locative tied to the verb, with attached \"kum\" (you) as a genitive possessive."
+   },
+   {
+    "token": "سَبْعًۭا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "\"Seven\" is the accusative object standing in for an omitted described noun, namely \"seven heavens.\""
+   },
+   {
+    "token": "شِدَادًۭا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't)",
+    "note_en": "\"Firm\" is an accusative adjective describing \"seven,\" agreeing with it in case."
+   }
+  ],
+  "irab_en": "The verse opens with the conjunction waw, continuing the list of God's creative works. The verb \"We built\" (banayna) is past tense with the attached \"na\" as its subject (We). The word \"above you\" (fawqakum) is an accusative adverbial of place attached to the verb, with the pronoun \"kum\" (you) as a genitive possessive joined by annexation. The numeral \"seven\" (sab'an) is the accusative direct object; it stands in place of an omitted noun that it describes, the intended sense being \"seven heavens.\" The closing adjective \"firm\" or \"strong\" (shidadan) is an accusative qualifier (na't) describing \"seven,\" agreeing with it in case. The structure thus presents the heavens as a firmly built canopy above humankind.",
+  "faqs_en": [
+   {
+    "q": "Why is the numeral \"seven\" the object when no noun for what is counted appears?",
+    "a": "The counted noun \"heavens\" is omitted but understood, and the adjective \"seven\" stands in its place as the accusative object. Arabic often allows such an omission when the meaning is clear from context, so \"seven\" carries the sense of \"seven heavens.\""
+   },
+   {
+    "q": "What is the case and role of \"above you\"?",
+    "a": "It is an accusative adverbial of place (zarf makan) connected to the verb \"We built,\" indicating where the building occurred. The attached pronoun \"you\" is a genitive possessive joined to it by annexation."
+   }
+  ],
+  "uthmani": "وَبَنَيْنَا فَوْقَكُمْ سَبْعًۭا شِدَادًۭا"
+ },
+ "78:13": {
+  "surah": 78,
+  "ayah": 13,
+  "h1_en": "I'rab of Surah An-Naba Ayah 13 — word-by-word Arabic grammar",
+  "tldr_en": "Allah continues listing His favors and proofs of power. He says He has placed a blazing lamp, meaning the sun, which gives heat and light. The noun 'a lamp' is accusative as the object of the verb 'We made/placed,' and 'blazing' is its adjective, agreeing with it in case and indefiniteness, describing its intense radiance.",
+  "translation_en": "And We made a blazing lamp.",
+  "transliteration": "Wa ja'alnā sirājan wahhājā",
+  "words_en": [
+   {
+    "token": "وَجَعَلْنَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + past verb with attached subject",
+    "note_en": "The wāw connects to the preceding verses, and 'ja'alnā' is a past-tense verb meaning 'We made/placed,' with the attached pronoun 'nā' as its subject."
+   },
+   {
+    "token": "سِرَاجًا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "This is the direct object of 'ja'alnā,' here carrying the sense of 'We created,' and it refers to the sun."
+   },
+   {
+    "token": "وَهَّاجًا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't)",
+    "note_en": "An intensive adjective describing 'lamp,' meaning intensely blazing or radiant, agreeing with it in case and indefiniteness."
+   }
+  ],
+  "irab_en": "The verse opens with the conjunction wāw linking it to the prior list of divine favors, followed by the past-tense verb ja'alnā ('We made'), whose subject is the attached pronoun nā. The verb here conveys the sense of creating or placing. Its direct object is sirājan ('a lamp'), in the accusative case as required of an object, and it denotes the sun. The final word wahhājan is an intensive adjective qualifying sirājan; it is accusative because an adjective follows its noun in case, and it is indefinite to match the indefinite noun. The pattern fa''āl signals intensity, so the meaning is a fiercely burning, brightly radiating lamp.",
+  "faqs_en": [
+   {
+    "q": "Why is سِرَاجًا in the accusative case?",
+    "a": "Because it is the direct object of the verb جَعَلْنَا ('We made/placed'), and direct objects in Arabic take the accusative case."
+   },
+   {
+    "q": "What does وَهَّاجًا describe and why is it accusative?",
+    "a": "It is an adjective describing سِرَاجًا ('lamp'). Adjectives follow their noun in case, definiteness, gender, and number, so it is accusative and indefinite to match."
+   }
+  ],
+  "uthmani": "وَجَعَلْنَا سِرَاجًۭا وَهَّاجًۭا"
+ },
+ "78:14": {
+  "surah": 78,
+  "ayah": 14,
+  "h1_en": "I'rab of Surah An-Naba Ayah 14 — word-by-word Arabic grammar",
+  "tldr_en": "Allah states that He sends down from the rain-laden clouds water pouring abundantly. The prepositional phrase 'from the clouds' attaches to the verb 'We sent down.' 'Water' is the accusative object, and 'pouring' is its adjective, agreeing in case and indefiniteness and stressing the heavy, gushing flow of the rain.",
+  "translation_en": "And We sent down from the rain clouds water pouring abundantly.",
+  "transliteration": "Wa anzalnā mina l-mu'ṣirāti mā'an thajjājā",
+  "words_en": [
+   {
+    "token": "وَأَنزَلْنَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + past verb with attached subject",
+    "note_en": "The wāw connects to the previous verse, and 'anzalnā' is a past verb meaning 'We sent down,' with the attached pronoun 'nā' as its subject."
+   },
+   {
+    "token": "مِنَ",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "A preposition meaning 'from,' governing the following noun in the genitive case."
+   },
+   {
+    "token": "ٱلْمُعْصِرَٰتِ",
+    "case_en": "genitive",
+    "role_en": "object of preposition (majrur)",
+    "note_en": "Genitive after the preposition 'min'; the phrase attaches to 'anzalnā' and refers to rain-bearing clouds."
+   },
+   {
+    "token": "مَآءً",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "The direct object of 'anzalnā,' in the accusative and indefinite, meaning 'water.'"
+   },
+   {
+    "token": "ثَجَّاجًا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't)",
+    "note_en": "An intensive adjective describing 'water,' meaning pouring forth abundantly, agreeing with it in case and indefiniteness."
+   }
+  ],
+  "irab_en": "The verse begins with the connective wāw and the past verb anzalnā ('We sent down'), whose subject is the attached pronoun nā. The prepositional phrase mina l-mu'ṣirāti ('from the rain clouds') is grammatically linked to the verb, with al-mu'ṣirāt in the genitive because it follows the preposition min. The direct object is mā'an ('water'), accusative as objects are, and indefinite. The closing word thajjājan is an intensive adjective of the fa''āl pattern qualifying mā'an; it is accusative and indefinite to agree with its noun, and it emphasizes the copious, gushing manner in which the rain falls. The whole conveys the sending down of heavily pouring rain from the clouds.",
+  "faqs_en": [
+   {
+    "q": "Why is ٱلْمُعْصِرَٰتِ in the genitive case?",
+    "a": "Because it is governed by the preposition مِنَ ('from'). Nouns following a preposition take the genitive case, and the phrase as a whole connects to the verb أَنزَلْنَا."
+   },
+   {
+    "q": "What is the function of ثَجَّاجًا?",
+    "a": "It is an intensive adjective (fa''āl pattern) describing مَآءً ('water'), meaning abundantly pouring. It is accusative and indefinite to agree with the noun it modifies."
+   }
+  ],
+  "uthmani": "وَأَنزَلْنَا مِنَ ٱلْمُعْصِرَٰتِ مَآءًۭ ثَجَّاجًۭا"
+ },
+ "78:15": {
+  "surah": 78,
+  "ayah": 15,
+  "h1_en": "I'rab of Surah An-Naba Ayah 15 — word-by-word Arabic grammar",
+  "tldr_en": "This verse states the purpose of sending the rain: so that Allah may bring forth grain and vegetation. The lām is a particle of purpose, and the present verb 'We bring forth' is accusative because of an implied 'an' after it. The prepositional phrase 'with it' attaches to the verb, and the two objects 'grain' and 'plants' are accusative.",
+  "translation_en": "That We may bring forth thereby grain and vegetation,",
+  "transliteration": "Linukhrija bihi ḥabban wa nabātā",
+  "words_en": [
+   {
+    "token": "لِّنُخْرِجَ",
+    "case_en": "accusative",
+    "role_en": "particle of purpose + subjunctive present verb",
+    "note_en": "The lām indicates purpose ('so that'), and 'nukhrij' is a present verb in the accusative (subjunctive) mood due to an implied 'an' after the lām, with an understood 'We' as subject."
+   },
+   {
+    "token": "بِهِ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jārr wa majrur)",
+    "note_en": "The preposition 'bi' ('with/by') plus the attached pronoun 'hi' (referring to the water); the phrase attaches to the verb 'nukhrij.'"
+   },
+   {
+    "token": "حَبًّا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "The direct object of 'nukhrij,' accusative and indefinite, meaning 'grain.'"
+   },
+   {
+    "token": "وَنَبَاتًا",
+    "case_en": "accusative",
+    "role_en": "conjunction + noun joined to the object",
+    "note_en": "The wāw conjoins 'nabāt' ('vegetation') to 'ḥabb,' so it shares the accusative case of the object."
+   }
+  ],
+  "irab_en": "The verse opens with the lām of purpose prefixed to the present verb nukhrij ('We bring forth'). This verb is in the subjunctive (manṣūb) mood because of an implicitly understood particle an following the lām; together they form a verbal-noun construction (maṣdar mu'awwal) that, governed by the lām, attaches to anzalnā in the previous verse, expressing the goal of sending the rain. The subject of nukhrij is an implied 'We.' The prepositional phrase bihi ('with it,' the pronoun referring to the water) connects to the verb. The direct object is ḥabban ('grain'), accusative and indefinite, and nabātan ('vegetation') is joined to it by the conjunction wāw, sharing its accusative case.",
+  "faqs_en": [
+   {
+    "q": "Why is نُخْرِجَ in the subjunctive (accusative) mood?",
+    "a": "Because of an implied particle أن ('that') after the lām of purpose. This لام causes the following present verb to take the subjunctive mood, ending in fatḥa."
+   },
+   {
+    "q": "What does the prepositional phrase بِهِ refer back to?",
+    "a": "The pronoun هِ ('it') refers to the water (مَآء) mentioned in the previous verse, meaning grain and plants are brought forth by means of that rain."
+   }
+  ],
+  "uthmani": "لِّنُخْرِجَ بِهِۦ حَبًّۭا وَنَبَاتًۭا"
+ },
+ "78:16": {
+  "surah": 78,
+  "ayah": 16,
+  "h1_en": "I'rab of Surah An-Naba Ayah 16 — word-by-word Arabic grammar",
+  "tldr_en": "Continuing the products of the rain, Allah mentions gardens of dense, intertwined growth. 'Gardens' is joined by the conjunction wāw to the preceding objects 'grain' and 'vegetation,' so it shares their accusative case. 'Luxuriant' is its adjective, agreeing in case and indefiniteness, describing thickly entangled foliage.",
+  "translation_en": "And gardens of dense foliage.",
+  "transliteration": "Wa jannātin alfāfā",
+  "words_en": [
+   {
+    "token": "وَجَنَّٰتٍ",
+    "case_en": "accusative",
+    "role_en": "conjunction + noun joined to the object",
+    "note_en": "The wāw conjoins 'jannāt' ('gardens') to the earlier objects; it takes the accusative case but, as a sound feminine plural, shows it with kasra as its marker."
+   },
+   {
+    "token": "أَلْفَافًا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't)",
+    "note_en": "An adjective describing 'gardens,' meaning densely intertwined and luxuriant, agreeing in case and indefiniteness."
+   }
+  ],
+  "irab_en": "The verse is grammatically a continuation of the objects begun in the previous verse. The conjunction wāw links jannātin ('gardens') to ḥabban and nabātan, so it is among the direct objects of nukhrij and is therefore in the accusative case. Because jannāt is a sound feminine plural, its accusative is marked by kasra (-in) rather than fatḥa, which is the regular rule for this class of plural. The following word alfāfan is an adjective qualifying jannāt, meaning thickly clustered, intertwined foliage. It is accusative and indefinite to agree with the noun it describes. The image completes the list of what the rain produces: grain, plants, and luxuriant gardens.",
+  "faqs_en": [
+   {
+    "q": "Why does جَنَّٰتٍ end in kasra if it is accusative?",
+    "a": "Because it is a sound feminine plural (jam' mu'annath sālim). This class of noun takes kasra instead of fatḥa as its marker in the accusative case, while still functioning as accusative."
+   },
+   {
+    "q": "What is جَنَّٰتٍ connected to grammatically?",
+    "a": "It is joined by the conjunction wāw to حَبًّا and نَبَاتًا in the previous verse, making it another direct object of the verb نُخْرِجَ ('We bring forth')."
+   }
+  ],
+  "uthmani": "وَجَنَّٰتٍ أَلْفَافًا"
+ },
+ "78:17": {
+  "surah": 78,
+  "ayah": 17,
+  "h1_en": "I'rab of Surah An-Naba Ayah 17 — word-by-word Arabic grammar",
+  "tldr_en": "Allah affirms that the Day of Decision is an appointed time. 'Inna' is an emphatic particle whose subject is 'the Day of Decision,' which is accusative. Its predicate is the verbal sentence 'was an appointed time,' where 'kāna' takes its subject as a hidden pronoun and 'an appointed time' as its accusative predicate.",
+  "translation_en": "Indeed, the Day of Decision is an appointed time,",
+  "transliteration": "Inna yawma l-faṣli kāna mīqātā",
+  "words_en": [
+   {
+    "token": "إِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "emphatic particle (ḥarf tawkīd wa naṣb)",
+    "note_en": "An emphatic particle meaning 'indeed' that puts its noun in the accusative and its predicate in the nominative."
+   },
+   {
+    "token": "يَوْمَ",
+    "case_en": "accusative",
+    "role_en": "subject of inna (ism inna)",
+    "note_en": "The noun of 'inna,' in the accusative; it is in a construct (iḍāfa) with the following noun."
+   },
+   {
+    "token": "ٱلْفَصْلِ",
+    "case_en": "genitive",
+    "role_en": "second term of construct (muḍāf ilayhi)",
+    "note_en": "Genitive as the second term of the iḍāfa with 'yawm,' giving 'the Day of Decision/Separation.'"
+   },
+   {
+    "token": "كَانَ",
+    "case_en": "indeclinable",
+    "role_en": "defective past verb (kāna)",
+    "note_en": "A past verb of being whose subject here is a hidden pronoun referring to the Day; the whole 'kāna' sentence is the predicate of 'inna.'"
+   },
+   {
+    "token": "مِيقَٰتًا",
+    "case_en": "accusative",
+    "role_en": "predicate of kāna (khabar kāna)",
+    "note_en": "The predicate of 'kāna,' in the accusative, meaning 'an appointed time/fixed term.'"
+   }
+  ],
+  "irab_en": "The verse begins with inna, an emphatic particle that governs its noun in the accusative and its predicate in the nominative. Its noun is yawma ('Day'), accusative, standing as the first term of a construct with al-faṣli ('the Decision/Separation'), which is genitive as the second term. The predicate of inna is the verbal sentence kāna mīqātan. The verb kāna ('was/is') takes as its subject a concealed pronoun referring back to the Day of Decision, and its predicate is mīqātan ('an appointed time'), in the accusative. This entire kāna-clause occupies the syntactic position of the nominative predicate of inna. The verse thus emphatically declares that the Day of Decision is a fixed, predetermined moment.",
+  "faqs_en": [
+   {
+    "q": "What is the noun (ism) and predicate (khabar) of إِنَّ here?",
+    "a": "The noun of إِنَّ is يَوْمَ ('Day'), in the accusative. The predicate is the verbal sentence كَانَ مِيقَٰتًا ('was an appointed time'), which sits in the position of a nominative predicate."
+   },
+   {
+    "q": "Why is مِيقَٰتًا in the accusative case?",
+    "a": "Because it is the predicate (khabar) of the verb كَانَ. The verb كَانَ raises its subject to the nominative and puts its predicate in the accusative."
+   }
+  ],
+  "uthmani": "إِنَّ يَوْمَ ٱلْفَصْلِ كَانَ مِيقَٰتًۭا"
+ },
+ "78:18": {
+  "surah": 78,
+  "ayah": 18,
+  "h1_en": "I'rab of Surah An-Naba Ayah 18 — word-by-word Arabic grammar",
+  "tldr_en": "This verse specifies the appointed time: the Day the Trumpet is blown, and people come forth in throngs. 'The Day' is an adverbial substitute for the earlier 'appointed time.' The passive verb 'is blown' has 'in the Trumpet' as its grammatical subject-substitute, and 'in throngs' is a circumstantial accusative describing how people come.",
+  "translation_en": "The Day the Trumpet is blown, and you come forth in crowds,",
+  "transliteration": "Yawma yunfakhu fī ṣ-ṣūri fa-ta'tūna afwājā",
+  "words_en": [
+   {
+    "token": "يَوْمَ",
+    "case_en": "accusative",
+    "role_en": "adverb of time / substitute (badal)",
+    "note_en": "An accusative adverb of time that stands as a substitute (badal) for 'an appointed time' in the previous verse; it is in construct with the following verbal clause."
+   },
+   {
+    "token": "يُنفَخُ",
+    "case_en": "indeclinable",
+    "role_en": "passive present verb",
+    "note_en": "A passive present-tense verb meaning 'is blown'; its subject is named the agent's substitute (nā'ib al-fā'il)."
+   },
+   {
+    "token": "فِى",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "A preposition meaning 'in/into,' governing the following noun in the genitive."
+   },
+   {
+    "token": "ٱلصُّورِ",
+    "case_en": "genitive",
+    "role_en": "subject-substitute via preposition (nā'ib al-fā'il)",
+    "note_en": "Genitive after 'fī'; the prepositional phrase stands in for the agent of the passive verb 'is blown.'"
+   },
+   {
+    "token": "فَتَأْتُونَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + present verb with subject",
+    "note_en": "The fā connects in sequence, and 'ta'tūna' is a present verb meaning 'you come,' with the attached wāw as its plural subject."
+   },
+   {
+    "token": "أَفْوَاجًا",
+    "case_en": "accusative",
+    "role_en": "circumstantial accusative (ḥāl)",
+    "note_en": "An accusative ḥāl describing the state of the subject of 'ta'tūna,' meaning they come 'in throngs/groups.'"
+   }
+  ],
+  "irab_en": "The verse opens with yawma ('the Day'), an accusative adverb of time functioning as a substitute (badal) for mīqātan in the previous verse, and it governs the following sentence as its construct. The passive present verb yunfakhu ('is blown') follows; since it is passive, it has no named agent, and the prepositional phrase fī ṣ-ṣūri ('into the Trumpet') stands in the place of the agent (nā'ib al-fā'il), with al-ṣūr genitive after fī. Then the fā of sequence introduces ta'tūna ('you come forth'), a present verb whose subject is the attached plural wāw. The final word afwājan ('in throngs') is a circumstantial accusative (ḥāl) describing the manner in which the subject comes, namely group after group. The verse pictures the resurrection on the Day the Trumpet sounds.",
+  "faqs_en": [
+   {
+    "q": "Why is يَوْمَ in the accusative and what is it linked to?",
+    "a": "It is an accusative adverb of time serving as a badal (substitute) for مِيقَٰتًا ('appointed time') in the previous verse, identifying exactly which day is meant."
+   },
+   {
+    "q": "How does a passive verb like يُنفَخُ have a subject?",
+    "a": "Passive verbs have no stated doer, so a substitute (nā'ib al-fā'il) takes the subject's role. Here the prepositional phrase فِى ٱلصُّورِ ('into the Trumpet') fills that role."
+   },
+   {
+    "q": "What is the grammatical role of أَفْوَاجًا?",
+    "a": "It is a ḥāl (circumstantial accusative) describing the state of those addressed in تَأْتُونَ, meaning they will come forth in successive crowds or groups."
+   }
+  ],
+  "uthmani": "يَوْمَ يُنفَخُ فِى ٱلصُّورِ فَتَأْتُونَ أَفْوَاجًۭا"
+ },
+ "78:19": {
+  "surah": 78,
+  "ayah": 19,
+  "h1_en": "I'rab of Surah An-Naba Ayah 19 — word-by-word Arabic grammar",
+  "tldr_en": "This verse describes a cosmic event of the Last Day: the sky is opened so that it becomes, as it were, doorways. The opening verb is passive, with 'the sky' as its deputy-subject, and the following clause joined by faa expresses an immediate result, with 'doorways' as the predicate of the defective verb 'became'.",
+  "translation_en": "And the sky is opened and becomes gateways.",
+  "transliteration": "Wa futihati s-samaa'u fa kaanat abwaaba",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "connecting particle (harf 'atf)",
+    "note_en": "This waw links the verse to the preceding events of the Day, here introducing one of two parallel happenings."
+   },
+   {
+    "token": "فُتِحَتِ",
+    "case_en": "indeclinable",
+    "role_en": "past passive verb (fi'l madi mabni lil-majhul)",
+    "note_en": "A passive past-tense verb meaning 'was opened,' built on the fath, with the taa marking a feminine deputy-subject."
+   },
+   {
+    "token": "ٱلسَّمَآءُ",
+    "case_en": "nominative",
+    "role_en": "deputy-subject (na'ib al-fa'il)",
+    "note_en": "Being the deputy-subject of the passive verb, 'the sky' takes the nominative case with a visible damma."
+   },
+   {
+    "token": "فَ",
+    "case_en": "indeclinable",
+    "role_en": "result/sequence particle (faa)",
+    "note_en": "This faa joins the next clause and signals an immediate consequence of the sky being opened."
+   },
+   {
+    "token": "كَانَتْ",
+    "case_en": "indeclinable",
+    "role_en": "defective past verb (kana naqisa)",
+    "note_en": "The verb 'became' raises a noun as its subject and puts a following noun in the accusative as its predicate; the taa is the feminine marker."
+   },
+   {
+    "token": "أَبْوَٰبًۭا",
+    "case_en": "accusative",
+    "role_en": "predicate of kana (khabar kana)",
+    "note_en": "As the predicate of 'became,' 'doorways' is accusative with tanwin, picturing the sky riven into many openings."
+   }
+  ],
+  "irab_en": "The verse begins with the connective waw tying it to the surrounding scenes of the Day of Judgment. 'Futihat' is a past-tense passive verb, so its doer is suppressed and 'al-samaa'' steps in as the deputy-subject, taking the nominative with a clear damma. The feminine taa on the verb agrees with this feminine noun. The faa then introduces a clause of immediate result: 'fa kaanat.' 'Kana' here is the defective verb meaning 'became,' whose subject is the implied pronoun 'it' (the sky). Its predicate is 'abwaaban,' standing in the accusative with tanwin. The image is that the sky is so thoroughly opened that it appears as nothing but gateways, the accusative predicate completing the sense of 'became.'",
+  "faqs_en": [
+   {
+    "q": "Why is 'al-samaa'' in the nominative if no doer is mentioned?",
+    "a": "Because 'futihat' is passive: the original doer is dropped and the thing acted upon, the sky, is promoted to deputy-subject, which always takes the nominative case."
+   },
+   {
+    "q": "What role does 'abwaaban' play after 'kaanat'?",
+    "a": "It is the predicate (khabar) of the defective verb 'kana.' Such predicates are accusative, here shown by the accusative ending with tanwin."
+   },
+   {
+    "q": "What does the faa before 'kaanat' add?",
+    "a": "It connects the clauses and conveys that the sky's turning into gateways follows immediately upon its being opened, expressing swift sequence."
+   }
+  ],
+  "uthmani": "وَفُتِحَتِ ٱلسَّمَآءُ فَكَانَتْ أَبْوَٰبًۭا"
+ },
+ "78:20": {
+  "surah": 78,
+  "ayah": 20,
+  "h1_en": "I'rab of Surah An-Naba Ayah 20 — word-by-word Arabic grammar",
+  "tldr_en": "Parallel to the previous verse, this one says the mountains are set in motion and become a mirage. The verb is again past passive with 'the mountains' as deputy-subject in the nominative, and the faa-joined clause uses 'became' with 'a mirage' as its accusative predicate, depicting their dissolution.",
+  "translation_en": "And the mountains are moved and become a mirage.",
+  "transliteration": "Wa suyyirati l-jibaalu fa kaanat saraaba",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "connecting particle (harf 'atf)",
+    "note_en": "This waw joins the verse to the previous cosmic upheaval, continuing the list of Day-of-Judgment events."
+   },
+   {
+    "token": "سُيِّرَتِ",
+    "case_en": "indeclinable",
+    "role_en": "past passive verb (fi'l madi mabni lil-majhul)",
+    "note_en": "A passive past verb meaning 'were set moving,' built on the fath, with the feminine taa agreeing with its deputy-subject."
+   },
+   {
+    "token": "ٱلْجِبَالُ",
+    "case_en": "nominative",
+    "role_en": "deputy-subject (na'ib al-fa'il)",
+    "note_en": "As deputy-subject of the passive verb, 'the mountains' takes the nominative with a visible damma."
+   },
+   {
+    "token": "فَ",
+    "case_en": "indeclinable",
+    "role_en": "result/sequence particle (faa)",
+    "note_en": "This faa links the following clause and marks the mountains' transformation as a direct consequence."
+   },
+   {
+    "token": "كَانَتْ",
+    "case_en": "indeclinable",
+    "role_en": "defective past verb (kana naqisa)",
+    "note_en": "The verb 'became' takes an implied subject (the mountains) and an accusative predicate to follow."
+   },
+   {
+    "token": "سَرَابًا",
+    "case_en": "accusative",
+    "role_en": "predicate of kana (khabar kana)",
+    "note_en": "As the predicate of 'became,' 'a mirage' is accusative with tanwin, portraying the mountains as illusory, dissolved shapes."
+   }
+  ],
+  "irab_en": "Mirroring the previous verse, the waw connects this scene to the unfolding events of the Day. 'Suyyirat' is a past passive verb, so its agent is omitted and 'al-jibaal' becomes the deputy-subject in the nominative with a clear damma; the feminine taa agrees with this plural-as-feminine noun. The faa then introduces the consequence: 'fa kaanat saraaban.' 'Kana' is the defective verb 'became,' whose subject is the implied pronoun standing for the mountains, while 'saraaban' is its accusative predicate marked by tanwin. The structure exactly parallels the foregoing verse, reinforcing the picture of solid mountains rendered into a shimmering, insubstantial mirage on that Day.",
+  "faqs_en": [
+   {
+    "q": "Why does the feminine taa appear on 'suyyirat' for 'mountains'?",
+    "a": "Broken plurals such as 'al-jibaal' are treated grammatically as feminine singular, so the verb takes the feminine marker taa in agreement."
+   },
+   {
+    "q": "What case is 'saraaban' and why?",
+    "a": "It is accusative, shown by the ending with tanwin, because it is the predicate (khabar) of the defective verb 'kana' ('became')."
+   },
+   {
+    "q": "How is this verse parallel to verse 19?",
+    "a": "Both use a past passive verb with a nominative deputy-subject, followed by a faa-clause with 'kana' and an accusative predicate, listing successive transformations on the Day."
+   }
+  ],
+  "uthmani": "وَسُيِّرَتِ ٱلْجِبَالُ فَكَانَتْ سَرَابًا"
+ },
+ "78:21": {
+  "surah": 78,
+  "ayah": 21,
+  "h1_en": "I'rab of Surah An-Naba Ayah 21 — word-by-word Arabic grammar",
+  "tldr_en": "This verse affirms that Hell is, and has always been, a place of ambush. 'Inna' emphatically governs 'Jahannam' as its noun, while the predicate is the clause 'kaanat mirsaadan,' with 'a place of ambush' standing as the accusative predicate of the defective verb 'was.'",
+  "translation_en": "Indeed, Hell is lying in wait.",
+  "transliteration": "Inna jahannama kaanat mirsaada",
+  "words_en": [
+   {
+    "token": "إِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "emphatic particle (harf tawkid wa nasb)",
+    "note_en": "'Inna' stresses the statement and puts the following noun in the accusative as its subject."
+   },
+   {
+    "token": "جَهَنَّمَ",
+    "case_en": "accusative",
+    "role_en": "noun of inna (ism inna)",
+    "note_en": "As the subject governed by 'inna,' it is accusative; being a diptote proper noun, it takes a fatha without tanwin."
+   },
+   {
+    "token": "كَانَتْ",
+    "case_en": "indeclinable",
+    "role_en": "defective past verb (kana naqisa)",
+    "note_en": "The verb 'was/has been' takes an implied subject referring to Hell, and its predicate that follows is accusative."
+   },
+   {
+    "token": "مِرْصَادًۭا",
+    "case_en": "accusative",
+    "role_en": "predicate of kana (khabar kana)",
+    "note_en": "As the predicate of 'was,' 'a place of ambush' is accusative with tanwin; the whole 'kaanat' clause serves as the predicate of inna."
+   }
+  ],
+  "irab_en": "'Inna' is the emphatic particle that introduces a strengthened nominal sentence; it places its noun in the accusative. 'Jahannama' is the noun of 'inna,' accusative, but because it is a diptote (forbidden full tanwin), its accusative shows as a bare fatha. The predicate of 'inna' is the verbal sentence 'kaanat mirsaadan.' 'Kana' is the defective verb 'was,' its subject an understood pronoun returning to Jahannam, while 'mirsaadan' is its accusative predicate carrying tanwin. This entire 'kaanat' clause occupies the place of the predicate of 'inna,' so the sentence states emphatically that Hell has always stood in readiness, an ambush awaiting those who pass.",
+  "faqs_en": [
+   {
+    "q": "Why does 'Jahannam' not take tanwin in the accusative?",
+    "a": "It is a diptote (mamnu' min al-sarf), a proper noun that refuses full tanwin, so its accusative is marked only by a single fatha."
+   },
+   {
+    "q": "What is the predicate of 'inna' in this verse?",
+    "a": "The predicate is the whole verbal clause 'kaanat mirsaadan,' which sits in the place of the predicate of 'inna.'"
+   },
+   {
+    "q": "What case is 'mirsaadan' and why?",
+    "a": "It is accusative with tanwin because it is the predicate (khabar) of the defective verb 'kana' ('was')."
+   }
+  ],
+  "uthmani": "إِنَّ جَهَنَّمَ كَانَتْ مِرْصَادًۭا"
+ },
+ "78:22": {
+  "surah": 78,
+  "ayah": 22,
+  "h1_en": "I'rab of Surah An-Naba Ayah 22 — word-by-word Arabic grammar",
+  "tldr_en": "Continuing the description of Hell, this verse calls it a destination for the transgressors. The phrase 'for the transgressors' is grammatically attached to 'mirsaadan' of the previous verse, and 'a place of return' is a second predicate of the defective verb 'was,' both in accusative or genitive roles accordingly.",
+  "translation_en": "For the transgressors a place of return.",
+  "transliteration": "Lit-taagheena ma'aaba",
+  "words_en": [
+   {
+    "token": "لِّ",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "The laam of attachment introduces the following noun in the genitive, conveying 'for/belonging to.'"
+   },
+   {
+    "token": "ٱلطَّٰغِينَ",
+    "case_en": "genitive",
+    "role_en": "object of preposition (majrur bil-harf)",
+    "note_en": "Governed by the laam, 'the transgressors' is genitive marked by yaa (sound masculine plural), and the phrase relates to 'mirsaadan' before it."
+   },
+   {
+    "token": "مَـَٔابًۭا",
+    "case_en": "accusative",
+    "role_en": "second predicate of kana (khabar kana thaani)",
+    "note_en": "As a second predicate of the earlier 'kaanat,' 'a place of return' is accusative with tanwin, restating Hell as their final resort."
+   }
+  ],
+  "irab_en": "This verse continues verse 21. The prepositional phrase 'lit-taagheena' is formed by the laam of attachment governing 'al-taagheena,' which is genitive shown by the yaa of the sound masculine plural. This phrase is grammatically connected to 'mirsaadan' from the previous verse, specifying for whom Hell lies in wait. 'Ma'aaban' is a second predicate of the defective verb 'kaanat' encountered in verse 21, so it stands in the accusative with tanwin. The defective verb thus carries two predicates: 'mirsaadan' (an ambush) and 'ma'aaban' (a place of return). Together the verses portray Hell both as an ambush set against the transgressors and as the destination to which they ultimately return.",
+  "faqs_en": [
+   {
+    "q": "What does the phrase 'lit-taagheena' attach to grammatically?",
+    "a": "It is attached (muta'alliq) to 'mirsaadan' in the previous verse, clarifying that Hell lies in ambush specifically for the transgressors."
+   },
+   {
+    "q": "Why is 'al-taagheena' genitive?",
+    "a": "It is the object of the preposition laam; as a sound masculine plural, its genitive case is marked by the yaa."
+   },
+   {
+    "q": "How can there be two predicates for one 'kana'?",
+    "a": "A defective verb like 'kana' may take more than one predicate; here 'mirsaadan' and 'ma'aaban' are both accusative predicates describing Hell."
+   }
+  ],
+  "uthmani": "لِّلطَّٰغِينَ مَـَٔابًۭا"
+ },
+ "78:23": {
+  "surah": 78,
+  "ayah": 23,
+  "h1_en": "I'rab of Surah An-Naba Ayah 23 — word-by-word Arabic grammar",
+  "tldr_en": "The verse states that the transgressors remain in Hell for ages. 'Abiding' is a circumstantial accusative describing them, 'in it' attaches to that participle, and 'ages' functions as an accusative adverb of time, all completing the dreadful picture of their endless stay.",
+  "translation_en": "Remaining therein for ages.",
+  "transliteration": "Laabitheena feehaa ahqaaba",
+  "words_en": [
+   {
+    "token": "لَّٰبِثِينَ",
+    "case_en": "accusative",
+    "role_en": "circumstantial accusative (hal)",
+    "note_en": "An active participle 'abiding,' it is a hal describing the transgressors, accusative by the yaa of the sound masculine plural."
+   },
+   {
+    "token": "فِيهَآ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jarr wa majrur)",
+    "note_en": "'Fii' governs the attached pronoun 'haa' (Hell) in the genitive; the phrase attaches to the participle 'abiding.'"
+   },
+   {
+    "token": "أَحْقَابًۭا",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf zaman)",
+    "note_en": "'Ages' is an accusative adverb of time with tanwin, attached to 'abiding,' marking the duration of their stay."
+   }
+  ],
+  "irab_en": "'Laabitheena' is the active participle meaning 'those abiding,' functioning as a circumstantial accusative (hal) that describes the transgressors mentioned in the previous verse; being a sound masculine plural, its accusative shows through the yaa. 'Feehaa' is the preposition 'fii' joined to the pronoun 'haa,' which refers to Hell and is genitive as the object of the preposition; this phrase attaches grammatically to the participle 'laabitheena.' 'Ahqaaban' is an accusative adverb of time bearing tanwin, also attached to 'laabitheena,' indicating the long ages during which they remain. The verse thus draws a single, vivid scene of the transgressors lingering within the Fire for vast, successive stretches of time.",
+  "faqs_en": [
+   {
+    "q": "What grammatical role does 'laabitheena' play?",
+    "a": "It is a hal, a circumstantial accusative describing the state of the transgressors as 'abiding,' marked accusative by the plural yaa."
+   },
+   {
+    "q": "Why is 'ahqaaban' in the accusative?",
+    "a": "It is an adverb of time (zarf zaman) indicating duration, attached to 'laabitheena,' and such adverbs take the accusative case."
+   },
+   {
+    "q": "To what does 'feehaa' refer and attach?",
+    "a": "The pronoun 'haa' refers to Hell; the phrase 'in it' attaches to the participle 'laabitheena,' specifying where they abide."
+   }
+  ],
+  "uthmani": "لَّٰبِثِينَ فِيهَآ أَحْقَابًۭا"
+ },
+ "78:24": {
+  "surah": 78,
+  "ayah": 24,
+  "h1_en": "I'rab of Surah An-Naba Ayah 24 — word-by-word Arabic grammar",
+  "tldr_en": "Here the punishment is detailed: the transgressors taste neither coolness nor any drink. The negating 'laa' introduces the present-tense verb, 'in it' attaches to a circumstantial sense, 'coolness' is the direct object, and 'drink' is joined to it by the waw, with the second 'laa' added to strengthen the negation.",
+  "translation_en": "They taste therein neither coolness nor any drink.",
+  "transliteration": "Laa yadhooqoona feehaa bardan wa laa sharaaba",
+  "words_en": [
+   {
+    "token": "لَّا",
+    "case_en": "indeclinable",
+    "role_en": "negation particle (harf nafi)",
+    "note_en": "This 'laa' negates the present-tense verb that follows, denying that they taste anything refreshing."
+   },
+   {
+    "token": "يَذُوقُونَ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb (fi'l mudari')",
+    "note_en": "An imperfect verb in the nominative (no nasib or jazim present), with the waw of the plural as its subject, 'they.'"
+   },
+   {
+    "token": "فِيهَا",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jarr wa majrur)",
+    "note_en": "'Fii' governs the pronoun 'haa' (Hell) in the genitive; it attaches to a circumstantial state of the verb's subject."
+   },
+   {
+    "token": "بَرْدًۭا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "'Coolness' is the accusative direct object of 'taste,' marked with tanwin, denying any relief from the heat."
+   },
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "connecting particle (harf 'atf)",
+    "note_en": "This waw joins the following noun onto the direct object 'bardan' in the same accusative role."
+   },
+   {
+    "token": "لَا",
+    "case_en": "indeclinable",
+    "role_en": "extra negation particle (laa za'ida lit-tawkid)",
+    "note_en": "This second 'laa' is added to reinforce the negation, emphasizing the total absence of relief."
+   },
+   {
+    "token": "شَرَابًا",
+    "case_en": "accusative",
+    "role_en": "noun joined by 'atf (ma'tuf)",
+    "note_en": "'Drink' is joined by the waw onto 'bardan' and takes the same accusative case with tanwin."
+   }
+  ],
+  "irab_en": "The verse opens with the negating 'laa,' which denies the present-tense verb 'yadhooqoona' ('they taste'). This imperfect verb stands in the nominative, since no accusative-inducing or jussive particle precedes it, and its subject is the attached waw of the masculine plural, 'they.' 'Feehaa' is 'fii' plus the pronoun 'haa' referring to Hell, genitive as object of the preposition, attached to a circumstantial state of the subject. 'Bardan' is the accusative direct object of the verb, marked by tanwin, denying them any coolness. The waw then joins 'sharaaban' onto 'bardan' in the same accusative role, while the second 'laa' is added merely to strengthen the negation. The sense is that they will taste nothing cool and no drink at all.",
+  "faqs_en": [
+   {
+    "q": "Why is 'yadhooqoona' in the nominative despite the preceding 'laa'?",
+    "a": "This 'laa' is purely negating, not jussive; it does not change the verb's ending, so the imperfect verb keeps its nominative form with the plural nun."
+   },
+   {
+    "q": "What is the function of the second 'laa' before 'sharaaban'?",
+    "a": "It is an extra particle added to emphasize and confirm the negation, stressing that they taste absolutely nothing refreshing."
+   },
+   {
+    "q": "What case is 'sharaaban' and how is it linked to 'bardan'?",
+    "a": "It is accusative with tanwin, joined by the waw of conjunction onto 'bardan,' sharing its role as object of 'taste.'"
+   }
+  ],
+  "uthmani": "لَّا يَذُوقُونَ فِيهَا بَرْدًۭا وَلَا شَرَابًا"
+ },
+ "78:25": {
+  "surah": 78,
+  "ayah": 25,
+  "h1_en": "I'rab of Surah An-Naba Ayah 25 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah completes the exception begun in the previous verse: the wrongdoers will taste nothing in Hell except boiling water and a putrid, freezing fluid. The particle illa introduces the exception, and hamiman wa-ghassaqan are accusative, with hamiman read as a substitute (badal) for the earlier object \"drink\" and ghassaqan joined to it.",
+  "translation_en": "Except scalding water and a dark, putrid fluid,",
+  "transliteration": "illā ḥamīman wa-ghassāqā(n)",
+  "words_en": [
+   {
+    "token": "إِلَّا",
+    "case_en": "indeclinable",
+    "role_en": "particle of exception (istithna')",
+    "note_en": "This particle introduces an exception to the preceding negation, restricting the meaning to what comes after it."
+   },
+   {
+    "token": "حَمِيمًا",
+    "case_en": "accusative",
+    "role_en": "substitute (badal) for the earlier object \"drink\"",
+    "note_en": "It is a substitute (badal) for the negated accusative object \"drink\" in the previous verse, so it takes the accusative as the thing exempted from the negation."
+   },
+   {
+    "token": "وَغَسَّاقًا",
+    "case_en": "accusative",
+    "role_en": "conjoined noun (ma'tuf)",
+    "note_en": "Joined by the connective waw to hamiman, it shares its accusative case and its role within the exception."
+   }
+  ],
+  "irab_en": "Grammatically this verse hangs on the verb \"they taste\" from verse 24, which was negated. The particle illa breaks that negation and introduces the only exceptions. Hamiman (\"scalding water\") is accusative because, on the standard reading, it is a substitute (badal) for the earlier accusative object \"drink\": it stands in for that object and inherits its accusative case. The connective waw then attaches ghassaqan (\"a foul, freezing liquid\") to it, so the second noun is conjoined to hamiman and carries the same accusative case and the same syntactic standing. Together the two nouns specify, by exception, the wretched substances the wrongdoers will receive, sharpening the contrast with the comfort denied to them.",
+  "faqs_en": [
+   {
+    "q": "Why are hamiman and ghassaqan in the accusative case?",
+    "a": "Hamiman is a substitute (badal) for the earlier accusative object \"drink\" that was negated, so it takes the accusative; ghassaqan is conjoined to it by the waw and therefore shares the same accusative case."
+   },
+   {
+    "q": "What is the function of illa here?",
+    "a": "Illa is a particle of exception. It cancels part of the preceding negation, marking out the only things the wrongdoers will actually receive."
+   }
+  ],
+  "uthmani": "إِلَّا حَمِيمًۭا وَغَسَّاقًۭا"
+ },
+ "78:26": {
+  "surah": 78,
+  "ayah": 26,
+  "h1_en": "I'rab of Surah An-Naba Ayah 26 — word-by-word Arabic grammar",
+  "tldr_en": "A two-word verse describing the punishment as a fitting recompense. Jaza'an is an absolute object of an implied verb, and wifaqan is its descriptive adjective. Both are accusative, conveying that the penalty exactly matches the wrongdoers' deeds.",
+  "translation_en": "A recompense perfectly fitting.",
+  "transliteration": "jazā'an wifāqā(n)",
+  "words_en": [
+   {
+    "token": "جَزَاءً",
+    "case_en": "accusative",
+    "role_en": "absolute object (maf'ul mutlaq)",
+    "note_en": "It is the verbal noun of an understood verb, accusative, expressing that the punishment is given as a recompense."
+   },
+   {
+    "token": "وِفَاقًا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't)",
+    "note_en": "It describes jaza'an and agrees with it in the accusative, conveying that the recompense is exactly matched to the deeds."
+   }
+  ],
+  "irab_en": "This concise verse is grammatically governed by an omitted verb whose verbal noun appears explicitly. Jaza'an (\"a recompense\") functions as an absolute object: it is the cognate masdar of an implied verb such as \"they are recompensed,\" and therefore takes the accusative. The following word wifaqan (\"fitting, matching\") is an adjective qualifying jaza'an, so it agrees with its noun in case and is likewise accusative. The pairing produces a tight, balanced phrase: the suffering described in the preceding verses is not arbitrary but is a measured repayment, precisely proportionate to the disbelief and denial the wrongdoers practiced.",
+  "faqs_en": [
+   {
+    "q": "What does it mean that jaza'an is an absolute object?",
+    "a": "It is the verbal noun of an implied verb. Arabic often drops the verb and keeps its masdar in the accusative to emphasize the action itself, here the act of recompensing."
+   },
+   {
+    "q": "Why is wifaqan accusative?",
+    "a": "It is an adjective describing jaza'an and must agree with it in case, so it carries the same accusative ending."
+   }
+  ],
+  "uthmani": "جَزَآءًۭ وِفَاقًا"
+ },
+ "78:27": {
+  "surah": 78,
+  "ayah": 27,
+  "h1_en": "I'rab of Surah An-Naba Ayah 27 — word-by-word Arabic grammar",
+  "tldr_en": "This verse gives the reason for the punishment: the wrongdoers used not to expect any reckoning. Inna is an emphatic particle, kanu is an incomplete past verb, and the negated present clause la yarjuna serves as its predicate, with hisaban as the accusative object.",
+  "translation_en": "Indeed, they used not to expect any reckoning,",
+  "transliteration": "innahum kānū lā yarjūna ḥisābā(n)",
+  "words_en": [
+   {
+    "token": "إِنَّهُمْ",
+    "case_en": "accusative",
+    "role_en": "emphatic particle inna with attached pronoun (its noun)",
+    "note_en": "Inna stresses the statement, and its attached pronoun \"them\" is its noun in the accusative position."
+   },
+   {
+    "token": "كَانُوا",
+    "case_en": "indeclinable",
+    "role_en": "incomplete past verb (kana) with subject pronoun",
+    "note_en": "This past-tense verb of being takes the pronoun \"they\" as its subject and needs a predicate to complete the meaning."
+   },
+   {
+    "token": "لَا",
+    "case_en": "indeclinable",
+    "role_en": "negative particle",
+    "note_en": "It negates the following present-tense verb, denying that they expected a reckoning."
+   },
+   {
+    "token": "يَرْجُونَ",
+    "case_en": "nominative",
+    "role_en": "present verb forming the predicate of kana",
+    "note_en": "This present-tense verb keeps its nominative form and, with its subject, makes up the predicate of kanu."
+   },
+   {
+    "token": "حِسَابًا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "It is the object of \"they expect,\" taking the accusative as the thing they did not anticipate."
+   }
+  ],
+  "irab_en": "The verse opens with inna, the particle of emphasis, whose attached pronoun \"them\" takes the accusative as inna's noun. The verb kanu is an incomplete past verb (kana and its sisters): it carries the subject pronoun \"they\" and requires a predicate. That predicate is the negated present clause la yarjuna (\"they do not expect\"), where la negates the verb and yarjuna remains nominative in form. The clause as a whole stands in the place of the predicate of kanu. Finally, hisaban (\"a reckoning\") is the direct object of the verb, in the accusative, naming exactly what they failed to anticipate. The structure explains their guilt: persistent, settled denial of accountability.",
+  "faqs_en": [
+   {
+    "q": "Why is the pronoun in innahum considered accusative?",
+    "a": "Inna places its noun in the accusative. The attached pronoun \"hum\" (them) is that noun, so it occupies the accusative position even though pronouns do not change their visible form."
+   },
+   {
+    "q": "What completes the verb kanu in this verse?",
+    "a": "The negated present clause la yarjuna serves as the predicate of kanu, expressing a habitual past state: they used not to expect any reckoning."
+   }
+  ],
+  "uthmani": "إِنَّهُمْ كَانُوا۟ لَا يَرْجُونَ حِسَابًۭا"
+ },
+ "78:28": {
+  "surah": 78,
+  "ayah": 28,
+  "h1_en": "I'rab of Surah An-Naba Ayah 28 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues the indictment: they utterly denied Our signs. The waw connects it to the previous statement, bi-ayatina is a prepositional phrase linked to the verb of denial, and kidhdhaban is an absolute object intensifying how thoroughly they rejected the signs.",
+  "translation_en": "And they denied Our signs with utter denial,",
+  "transliteration": "wa-kadhdhabū bi-āyātinā kidhdhābā(n)",
+  "words_en": [
+   {
+    "token": "وَكَذَّبُوا",
+    "case_en": "indeclinable",
+    "role_en": "connective waw plus past verb with subject",
+    "note_en": "The waw links this clause to the previous one, and \"they denied\" is a past verb with \"they\" as its subject."
+   },
+   {
+    "token": "بِآيَاتِنَا",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase linked to the verb (jar wa-majrur)",
+    "note_en": "The preposition bi puts \"Our signs\" in the genitive, and the phrase attaches to the verb \"they denied.\""
+   },
+   {
+    "token": "كِذَّابًا",
+    "case_en": "accusative",
+    "role_en": "absolute object (maf'ul mutlaq)",
+    "note_en": "This verbal noun reinforces the verb \"denied,\" taking the accusative to emphasize the intensity of their denial."
+   }
+  ],
+  "irab_en": "The verse begins with a connective waw joining it to the preceding indictment, followed by the past verb kadhdhabu (\"they denied\") with its subject pronoun \"they.\" The prepositional phrase bi-ayatina (\"in Our signs\") is governed by the preposition bi, which places \"signs\" in the genitive; this whole phrase is linked to the verb of denial, identifying what they rejected. The closing word kidhdhaban is an absolute object: it is the intensive verbal noun of the same verb kadhdhaba, set in the accusative to emphasize the thoroughness of their rejection. Grammatically the verse stacks the verb, its object of denial, and an intensifier, painting their disbelief as deliberate and emphatic.",
+  "faqs_en": [
+   {
+    "q": "Why is ayatina in the genitive?",
+    "a": "The preposition bi governs it, and any noun following a preposition takes the genitive case, so \"Our signs\" is genitive within the prepositional phrase."
+   },
+   {
+    "q": "What is the role of kidhdhaban at the end?",
+    "a": "It is an absolute object, the verbal noun of the verb \"denied,\" used in the accusative to intensify and stress how completely they rejected the signs."
+   }
+  ],
+  "uthmani": "وَكَذَّبُوا۟ بِـَٔايَٰتِنَا كِذَّابًۭا"
+ },
+ "78:29": {
+  "surah": 78,
+  "ayah": 29,
+  "h1_en": "I'rab of Surah An-Naba Ayah 29 — word-by-word Arabic grammar",
+  "tldr_en": "This verse affirms God's total record-keeping: everything has been enumerated in writing. Kulla shay'in is the fronted object of an implied verb explained by the following verb, ahsaynahu is the verb \"We have counted it,\" and kitaban is an absolute object meaning \"as a written record.\"",
+  "translation_en": "And everything We have recorded in a book.",
+  "transliteration": "wa-kulla shay'in aḥṣaynāhu kitābā(n)",
+  "words_en": [
+   {
+    "token": "وَكُلَّ",
+    "case_en": "accusative",
+    "role_en": "fronted object (maf'ul bihi) of an implied verb",
+    "note_en": "It is the object of an understood verb explained by the following \"We have counted it,\" placed in the accusative in the busy-object construction."
+   },
+   {
+    "token": "شَيْءٍ",
+    "case_en": "genitive",
+    "role_en": "second term of a genitive construction (mudaf ilayhi)",
+    "note_en": "It is in a possessive construction with kulla, taking the genitive as \"every thing.\""
+   },
+   {
+    "token": "أَحْصَيْنَاهُ",
+    "case_en": "indeclinable",
+    "role_en": "past verb with subject and object pronoun",
+    "note_en": "The verb \"We have counted\" carries the subject \"We\" and the object pronoun \"it,\" which refers back to \"every thing.\""
+   },
+   {
+    "token": "كِتَابًا",
+    "case_en": "accusative",
+    "role_en": "absolute object standing for the verbal noun",
+    "note_en": "It takes the accusative as a substitute for the verbal noun, meaning the counting was done thoroughly, as a written record."
+   }
+  ],
+  "irab_en": "This verse uses the well-known \"busy verb\" (ishtighal) construction. Kulla (\"every\") is the fronted object of an implied verb whose meaning is supplied by the explicit verb that follows; it stands in the accusative, and shay'in (\"thing\") completes it as the second term of a genitive construction, hence genitive. The verb ahsaynahu (\"We have counted it\") then appears with the subject \"We\" and the object pronoun \"it\" referring back to \"everything.\" The final word kitaban is an absolute object substituting for the verbal noun, in the accusative, conveying that the enumeration is fixed and recorded \"as writing.\" The whole verse asserts that nothing escapes God's precise, written reckoning.",
+  "faqs_en": [
+   {
+    "q": "Why is kulla accusative rather than nominative?",
+    "a": "It is the object of an implied verb that the following verb ahsaynahu explains. This \"busy verb\" pattern fronts the object in the accusative, then restates the action with a pronoun."
+   },
+   {
+    "q": "What does kitaban add to the meaning?",
+    "a": "As an absolute object standing in for the verbal noun, it stresses that the counting is complete and permanent, recorded as a written register."
+   }
+  ],
+  "uthmani": "وَكُلَّ شَىْءٍ أَحْصَيْنَٰهُ كِتَٰبًۭا"
+ },
+ "78:30": {
+  "surah": 78,
+  "ayah": 30,
+  "h1_en": "I'rab of Surah An-Naba Ayah 30 — word-by-word Arabic grammar",
+  "tldr_en": "A stern command and warning: taste the punishment, for We will only increase you in torment. The fa links to an implied condition, dhuqu is an imperative, fa-lan nazidakum negates and intensifies the future, and illa restricts the increase to nothing but punishment.",
+  "translation_en": "So taste, for We will increase you only in punishment.",
+  "transliteration": "fa-dhūqū fa-lan nazīdakum illā ʿadhābā(n)",
+  "words_en": [
+   {
+    "token": "فَذُوقُوا",
+    "case_en": "indeclinable",
+    "role_en": "connective fa plus imperative verb",
+    "note_en": "The fa links to an understood condition, and \"taste\" is a command addressed to the wrongdoers with \"you\" as its subject."
+   },
+   {
+    "token": "فَلَن",
+    "case_en": "indeclinable",
+    "role_en": "connective fa plus particle of future negation",
+    "note_en": "The particle lan firmly negates the coming verb, denying any future increase except what follows."
+   },
+   {
+    "token": "نَزِيدَكُمْ",
+    "case_en": "accusative",
+    "role_en": "present verb in the subjunctive with object pronoun",
+    "note_en": "Lan puts this present verb in the subjunctive (manṣūb), and \"you\" is its object; the subject \"We\" is understood."
+   },
+   {
+    "token": "إِلَّا",
+    "case_en": "indeclinable",
+    "role_en": "particle of restriction (hasr)",
+    "note_en": "It limits the increase to one thing only, excluding everything else."
+   },
+   {
+    "token": "عَذَابًا",
+    "case_en": "accusative",
+    "role_en": "second direct object (maf'ul bihi thani)",
+    "note_en": "It is the second object of \"We will increase you,\" in the accusative, naming the only thing they will be given more of."
+   }
+  ],
+  "irab_en": "The verse opens with the particle fa connecting to an implied condition, followed by the imperative dhuqu (\"taste\"), a command directed at the wrongdoers with \"you\" as its built-in subject. The second fa introduces lan, the particle of emphatic future negation, which both negates and governs the verb nazidakum (\"We will increase you\"), putting it in the subjunctive; \"you\" is its object and the divine \"We\" is the understood subject. The particle illa then functions for restriction, narrowing the outcome to a single result. That result is ʿadhaban (\"punishment\"), the second direct object of the verb, in the accusative. The combined effect is a crushing finality: their only future portion is increased torment.",
+  "faqs_en": [
+   {
+    "q": "Why is nazidakum in the subjunctive?",
+    "a": "The particle lan negates a future action and also governs the following present verb, placing it in the subjunctive mood with a fatha ending."
+   },
+   {
+    "q": "What is the effect of illa with ʿadhaban?",
+    "a": "Illa here restricts the meaning. After the negation by lan, it excludes every outcome except one, so the single thing they receive more of is punishment."
+   }
+  ],
+  "uthmani": "فَذُوقُوا۟ فَلَن نَّزِيدَكُمْ إِلَّا عَذَابًا"
+ },
+ "78:31": {
+  "surah": 78,
+  "ayah": 31,
+  "h1_en": "I'rab of Surah An-Naba Ayah 31 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah opens with the emphatic particle inna, then states that for the God-conscious there is a place of triumph. The phrase lil-muttaqin is a prepositional phrase functioning as the fronted predicate of inna, while mafazan is its delayed noun in the accusative case.",
+  "translation_en": "Indeed, for the righteous is a place of success.",
+  "transliteration": "Inna lil-muttaqina mafazan",
+  "words_en": [
+   {
+    "token": "إِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "emphatic particle (harf tawkid)",
+    "note_en": "It is a particle of emphasis that places its noun in the accusative and its predicate in the nominative."
+   },
+   {
+    "token": "لِلْمُتَّقِينَ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase as fronted predicate of inna",
+    "note_en": "The preposition li- governs al-muttaqin in the genitive, and the whole phrase serves as the advanced predicate of inna."
+   },
+   {
+    "token": "مَفَازًا",
+    "case_en": "accusative",
+    "role_en": "delayed noun of inna (ism inna)",
+    "note_en": "It is the noun of inna placed after its predicate and accordingly carries the accusative ending."
+   }
+  ],
+  "irab_en": "The verse begins with inna, an emphatic particle that demands a noun in the accusative and a predicate in the nominative. Because the predicate here is a prepositional phrase (lil-muttaqin), it is brought forward, a common pattern when the predicate is a quasi-sentence. The preposition li- attaches to al-muttaqin, which takes the genitive ya' because it is a sound masculine plural. The actual noun of inna, mafazan, is delayed and therefore appears in the accusative with tanwin. Fronting the predicate creates emphasis and a sense of restriction, underscoring that this triumph is specifically reserved for the God-conscious. The sentence as a whole forms a complete nominal statement governed by inna.",
+  "faqs_en": [
+   {
+    "q": "Why is lil-muttaqin placed before mafazan?",
+    "a": "When the predicate of inna is a prepositional phrase, it is commonly fronted; this also adds emphasis, stressing that the triumph belongs to the righteous."
+   },
+   {
+    "q": "What case does mafazan carry and why?",
+    "a": "It is accusative because it is the delayed noun of inna, and inna always renders its noun accusative."
+   }
+  ],
+  "uthmani": "إِنَّ لِلْمُتَّقِينَ مَفَازًا"
+ },
+ "78:32": {
+  "surah": 78,
+  "ayah": 32,
+  "h1_en": "I'rab of Surah An-Naba Ayah 32 — word-by-word Arabic grammar",
+  "tldr_en": "The ayah specifies the place of triumph as gardens and grapevines. Hada'iq is a substitution (badal) for mafazan in the previous verse and is accusative, while a'naban is joined to it by the conjunction wa, sharing the same accusative case.",
+  "translation_en": "Gardens and grapevines,",
+  "transliteration": "Hada'iqa wa a'naban",
+  "words_en": [
+   {
+    "token": "حَدَآئِقَ",
+    "case_en": "accusative",
+    "role_en": "substitute (badal) for mafazan",
+    "note_en": "It stands in for mafazan from the preceding verse and is accusative, but takes a fatha without tanwin because it is a diptote (forbidden from full nunation)."
+   },
+   {
+    "token": "وَأَعْنَٰبًۭا",
+    "case_en": "accusative",
+    "role_en": "noun joined by conjunction (ma'tuf)",
+    "note_en": "The wa is a connector and a'naban is linked to hada'iq, sharing its accusative case with normal tanwin."
+   }
+  ],
+  "irab_en": "This verse expands on the mafazan mentioned in the previous ayah. Hada'iq functions as a badal (substitution), clarifying what the triumph consists of, and it therefore matches mafazan in being accusative. However, hada'iq does not take tanwin because it is a diptote (mamnu' min as-sarf), following the pattern of broken plurals that end in a long alif followed by two letters; such words take a bare fatha in the accusative rather than the usual nunated fathatan. The conjunction wa then joins a'naban to hada'iq, and as a fully declinable noun it shows the accusative with regular tanwin. Together the two nouns detail the gardens and vineyards prepared for the righteous.",
+  "faqs_en": [
+   {
+    "q": "Why does hada'iq not have tanwin?",
+    "a": "It is a diptote (mamnu' min as-sarf) because it follows the ultimate-plural pattern, so it takes a plain fatha in the accusative without nunation."
+   },
+   {
+    "q": "What is the grammatical link between this verse and mafazan?",
+    "a": "Hada'iq is a badal (substitution) for mafazan, which is why it carries the accusative case."
+   }
+  ],
+  "uthmani": "حَدَآئِقَ وَأَعْنَٰبًۭا"
+ },
+ "78:33": {
+  "surah": 78,
+  "ayah": 33,
+  "h1_en": "I'rab of Surah An-Naba Ayah 33 — word-by-word Arabic grammar",
+  "tldr_en": "The verse continues the list of rewards with full-breasted companions of equal age. Kawa'ib is joined by the conjunction to the earlier accusative nouns, and atraban is its adjective, agreeing with it in the accusative case.",
+  "translation_en": "And full-breasted companions of equal age,",
+  "transliteration": "Wa kawa'iba atraban",
+  "words_en": [
+   {
+    "token": "وَكَوَاعِبَ",
+    "case_en": "accusative",
+    "role_en": "noun joined by conjunction (ma'tuf)",
+    "note_en": "It is connected by the wa to the preceding accusative nouns and is a diptote, so it takes a bare fatha without tanwin."
+   },
+   {
+    "token": "أَتْرَابًۭا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't) of kawa'ib",
+    "note_en": "It describes kawa'ib and agrees with it in the accusative, showing tanwin as a fully declinable noun."
+   }
+  ],
+  "irab_en": "Kawa'ib is linked by the conjunction wa to the earlier accusative items in the catalogue of rewards, so it shares their accusative status. Like hada'iq in the previous verse, kawa'ib is a diptote barred from full nunation because of its plural pattern; it therefore takes a plain fatha rather than the usual accusative tanwin. The following word, atraban, is an adjective (na't) qualifying kawa'ib and must agree with it in case, hence the accusative. Atraban is a regular declinable noun, so it carries the accusative with tanwin. The pairing describes companions matched in youthfulness, continuing the description of the garden's blessings.",
+  "faqs_en": [
+   {
+    "q": "Is kawa'ib a diptote?",
+    "a": "Yes, it follows a broken-plural pattern that prevents full nunation, so it shows the accusative with a bare fatha."
+   },
+   {
+    "q": "What role does atraban play?",
+    "a": "It is an adjective (na't) describing kawa'ib and therefore agrees with it in the accusative case."
+   }
+  ],
+  "uthmani": "وَكَوَاعِبَ أَتْرَابًۭا"
+ },
+ "78:34": {
+  "surah": 78,
+  "ayah": 34,
+  "h1_en": "I'rab of Surah An-Naba Ayah 34 — word-by-word Arabic grammar",
+  "tldr_en": "The list of delights closes with a brimming cup. Ka'san is joined by the conjunction wa to the preceding accusative nouns, and dihaqan is its adjective, agreeing with it in the accusative case.",
+  "translation_en": "And a cup filled to the brim.",
+  "transliteration": "Wa ka'san dihaqan",
+  "words_en": [
+   {
+    "token": "وَكَأْسًۭa",
+    "case_en": "accusative",
+    "role_en": "noun joined by conjunction (ma'tuf)",
+    "note_en": "The wa connects ka'san to the earlier accusative nouns in the list, and it takes the accusative with tanwin."
+   },
+   {
+    "token": "دِهَاقًۭا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't) of ka'san",
+    "note_en": "It describes the cup as brimming full and agrees with ka'san in the accusative case."
+   }
+  ],
+  "irab_en": "This verse completes the enumeration of the rewards. Ka'san is joined by the conjunction wa to the chain of accusative nouns running back to mafazan, and being a regular declinable noun it shows the accusative case with tanwin. The following word, dihaqan, is an adjective (na't) describing the cup as filled to the brim, and as an adjective it must match its noun in case, definiteness, number and gender; it therefore takes the accusative with tanwin as well. The whole sequence from verse 32 onward depends grammatically on the badal relationship with mafazan, so each item in the list keeps the accusative ending.",
+  "faqs_en": [
+   {
+    "q": "Why is ka'san accusative?",
+    "a": "It is joined by the conjunction wa to the earlier accusative nouns that substitute for mafazan, so it inherits the accusative case."
+   },
+   {
+    "q": "What does dihaqan modify?",
+    "a": "It is an adjective describing ka'san (the cup) as brimming full, agreeing with it in the accusative."
+   }
+  ],
+  "uthmani": "وَكَأْسًۭا دِهَاقًۭا"
+ },
+ "78:35": {
+  "surah": 78,
+  "ayah": 35,
+  "h1_en": "I'rab of Surah An-Naba Ayah 35 — word-by-word Arabic grammar",
+  "tldr_en": "This verse states that in paradise the people hear no idle talk or lying. La is a negating particle on the verb yasma'un, fiha is an adverbial phrase, and laghwan and kidhaban are accusative objects, the second negation being added for emphasis.",
+  "translation_en": "They will hear no idle talk therein, nor any lying.",
+  "transliteration": "La yasma'una fiha laghwan wa la kidhaba",
+  "words_en": [
+   {
+    "token": "لَّا",
+    "case_en": "indeclinable",
+    "role_en": "particle of negation (harf nafy)",
+    "note_en": "It negates the present-tense verb yasma'un; the second la later in the verse is added to reinforce the negation."
+   },
+   {
+    "token": "يَسْمَعُونَ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb with its subject",
+    "note_en": "It is a present-tense verb in the indicative (marfu'), and the attached waw is the plural subject pronoun."
+   },
+   {
+    "token": "فِيهَا",
+    "case_en": "genitive",
+    "role_en": "adverbial phrase (jar wa majrur)",
+    "note_en": "The preposition fi with the pronoun -ha is linked to a circumstantial state of the verb's subject."
+   },
+   {
+    "token": "لَغْوًۭا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "It is the object of yasma'un and takes the accusative with tanwin."
+   },
+   {
+    "token": "وَلَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction wa with extra negating la",
+    "note_en": "The wa joins the next noun, and the second la is added to strengthen the negation already present."
+   },
+   {
+    "token": "كِذَّٰبًۭا",
+    "case_en": "accusative",
+    "role_en": "noun joined by conjunction (ma'tuf)",
+    "note_en": "It is linked to laghwan and shares its accusative case as a further object of the verb."
+   }
+  ],
+  "irab_en": "The verse is a verbal sentence opened by the negating particle la, which simply negates the indicative present verb yasma'un without changing its ending. Yasma'un is marfu' with the retained nun, and its attached waw is the plural subject. The prepositional phrase fiha (in it) attaches to a circumstantial clause describing the subject's state. Laghwan is the direct object of the verb and takes the accusative with tanwin. The conjunction wa then joins kidhaban to laghwan, with a second la inserted purely to reinforce the negation; this extra la is not a separate operative particle but an emphatic repetition. Kidhaban accordingly remains accusative as a coordinated object, so the verse denies both vain speech and falsehood in paradise.",
+  "faqs_en": [
+   {
+    "q": "Does the negating la change the verb's ending?",
+    "a": "No, this la merely negates the meaning; the present verb yasma'un stays in the indicative (marfu')."
+   },
+   {
+    "q": "Why is there a second la before kidhaban?",
+    "a": "The second la is added to emphasize and reinforce the negation; it does not introduce a new grammatical operation."
+   }
+  ],
+  "uthmani": "لَّا يَسْمَعُونَ فِيهَا لَغْوًۭا وَلَا كِذَّٰبًۭا"
+ },
+ "78:36": {
+  "surah": 78,
+  "ayah": 36,
+  "h1_en": "I'rab of Surah An-Naba Ayah 36 — word-by-word Arabic grammar",
+  "tldr_en": "The verse describes the reward as a recompense from the Lord, a sufficient gift. Jaza'an is a verbal noun object of an implied verb, min rabbika is a genitive phrase, ata'an is a substitution for jaza', and hisaban is its adjective.",
+  "translation_en": "A recompense from your Lord, a sufficient gift,",
+  "transliteration": "Jaza'an min rabbika 'ata'an hisaban",
+  "words_en": [
+   {
+    "token": "جَزَآءًۭ",
+    "case_en": "accusative",
+    "role_en": "absolute object of an implied verb (maf'ul mutlaq)",
+    "note_en": "It is accusative as the verbal-noun object of an understood verb and was parsed the same way earlier in the surah."
+   },
+   {
+    "token": "مِّن",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "It governs the following noun rabbika in the genitive case."
+   },
+   {
+    "token": "رَّبِّكَ",
+    "case_en": "genitive",
+    "role_en": "noun in genitive after the preposition",
+    "note_en": "It is genitive because of min, and the attached -ka is a possessive pronoun in the genitive."
+   },
+   {
+    "token": "عَطَآءً",
+    "case_en": "accusative",
+    "role_en": "substitute (badal) for jaza'",
+    "note_en": "It stands in for jaza' and therefore shares its accusative case with tanwin."
+   },
+   {
+    "token": "حِسَابًۭا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't) of 'ata'",
+    "note_en": "It describes the gift as ample and sufficient and agrees with 'ata' in the accusative case."
+   }
+  ],
+  "irab_en": "Jaza'an is an absolute object (maf'ul mutlaq), the verbal-noun complement of an implied verb, and so it takes the accusative; the same parsing applied earlier in the surah at jaza'an wifaqan. The preposition min governs rabbika in the genitive, and the attached -ka is a possessive pronoun also in the genitive position. Ata'an then serves as a badal (substitution) for jaza', clarifying that the recompense is a freely given gift, and it shares the accusative case of the word it replaces. Finally, hisaban is an adjective (na't) qualifying 'ata', describing it as an ample, fully sufficient bestowal, and it agrees with 'ata' in the accusative with tanwin. The verse thus stacks an object, a substitution and an adjective in the accusative.",
+  "faqs_en": [
+   {
+    "q": "Why is jaza'an accusative?",
+    "a": "It is a maf'ul mutlaq, the verbal-noun object of an implied verb, and such objects take the accusative case."
+   },
+   {
+    "q": "What is the relationship between 'ata' and jaza'?",
+    "a": "'Ata' is a badal (substitution) for jaza', so it carries the same accusative case, and hisaban then describes 'ata' as a sufficient gift."
+   }
+  ],
+  "uthmani": "جَزَآءًۭ مِّن رَّبِّكَ عَطَآءً حِسَابًۭا"
+ },
+ "78:37": {
+  "surah": 78,
+  "ayah": 37,
+  "h1_en": "I'rab of Surah An-Naba Ayah 37 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah identifies the Lord as the Sustainer of the heavens, the earth, and all that lies between them, calling Him the Most Merciful. It then states that on that Day no one will have the power to address Him. \"Rabb\" is in apposition to the earlier \"your Lord,\" \"al-Rahman\" is an adjective describing Him, and \"khitaban\" is the object of the negated verb.",
+  "translation_en": "The Lord of the heavens and the earth and whatever is between them, the Most Merciful; they will have no power to address Him.",
+  "transliteration": "Rabbi as-samawati wal-ardi wama baynahuma ar-Rahmani la yamlikuna minhu khitaba",
+  "words_en": [
+   {
+    "token": "رَّبِّ",
+    "case_en": "genitive",
+    "role_en": "appositive (badal)",
+    "note_en": "It stands in apposition to the earlier \"your Lord,\" taking the genitive case in agreement."
+   },
+   {
+    "token": "ٱلسَّمَٰوَٰتِ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (mudaf ilayhi)",
+    "note_en": "It is the second term of a possessive construction, hence genitive, meaning \"of the heavens.\""
+   },
+   {
+    "token": "وَٱلْأَرْضِ",
+    "case_en": "genitive",
+    "role_en": "conjoined noun (ma'tuf)",
+    "note_en": "Joined by \"and\" to \"the heavens,\" so it shares the genitive case."
+   },
+   {
+    "token": "وَمَا",
+    "case_en": "genitive",
+    "role_en": "relative pronoun conjoined (ma'tuf)",
+    "note_en": "This relative pronoun is in the genitive position, joined by \"and\" to \"the heavens.\""
+   },
+   {
+    "token": "بَيْنَهُمَا",
+    "case_en": "accusative",
+    "role_en": "adverb of place (zarf)",
+    "note_en": "An adverb of place meaning \"between the two of them,\" with the attached pronoun referring to heavens and earth."
+   },
+   {
+    "token": "ٱلرَّحْمَٰنِ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "It describes the Lord and takes the genitive case in agreement with the word it qualifies."
+   },
+   {
+    "token": "لَا",
+    "case_en": "indeclinable",
+    "role_en": "negative particle (nafiya)",
+    "note_en": "A particle of negation that gives the verb a negated meaning."
+   },
+   {
+    "token": "يَمْلِكُونَ",
+    "case_en": "indeclinable",
+    "role_en": "verb with subject (fi'l wa fa'il)",
+    "note_en": "A present-tense verb whose plural subject is the embedded \"they,\" meaning \"they have power.\""
+   },
+   {
+    "token": "مِنْهُ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jarr wa majrur)",
+    "note_en": "It attaches to the verb \"have power,\" understood here in the sense of \"obtaining from Him.\""
+   },
+   {
+    "token": "خِطَابًۭا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "The accusative direct object of the negated verb, meaning \"any address\" or \"any speech.\""
+   }
+  ],
+  "irab_en": "The verse opens with a chain of appositives describing the Lord: \"Rabb\" is in apposition (badal) to \"your Lord\" mentioned earlier, so it is genitive. \"Al-samawat\" follows as the second term of a possessive construction and is therefore genitive, with \"al-ard\" and the relative \"ma\" joined to it by the conjunction \"and.\" \"Baynahuma\" is an adverb of place. \"Al-Rahman\" is an adjective (na't) qualifying the Lord and matches it in the genitive case. The second sentence begins with \"la,\" a particle of negation, followed by the verb \"yamlikuna\" with its embedded plural subject. \"Minhu\" attaches to that verb, carrying the nuance of obtaining from Him, while \"khitaban\" is the accusative direct object, meaning that on that Day none will have power to address Him.",
+  "faqs_en": [
+   {
+    "q": "Why is \"Rabb\" in the genitive case here?",
+    "a": "It is an appositive (badal) standing in for \"your Lord\" mentioned in the previous verse, so it inherits that word's genitive case."
+   },
+   {
+    "q": "What role does \"al-Rahman\" play grammatically?",
+    "a": "It is an adjective (na't) describing the Lord, and it agrees with the qualified noun by also being genitive."
+   },
+   {
+    "q": "Why is \"khitaban\" accusative?",
+    "a": "It is the direct object (maf'ul bihi) of the negated verb \"yamlikuna,\" so it takes the accusative case, meaning \"any address.\""
+   }
+  ],
+  "uthmani": "رَّبِّ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ٱلرَّحْمَٰنِ ۖ لَا يَمْلِكُونَ مِنْهُ خِطَابًۭا"
+ },
+ "78:38": {
+  "surah": 78,
+  "ayah": 38,
+  "h1_en": "I'rab of Surah An-Naba Ayah 38 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah describes the Day when the Spirit and the angels stand in ranks; none will speak except whom the Most Merciful permits, and that one speaks only what is right. \"Yawma\" is an adverb of time, \"saffan\" is an absolute object, \"man\" is a nominative substitution from the subject of \"speak,\" and \"sawaban\" is an accusative object qualifying an omitted noun.",
+  "translation_en": "The Day when the Spirit and the angels stand in ranks, they will not speak except for one whom the Most Merciful permits, and who says what is right.",
+  "transliteration": "Yawma yaqumu ar-ruhu wal-mala'ikatu saffan la yatakallamuna illa man adhina lahu ar-Rahmanu waqala sawaba",
+  "words_en": [
+   {
+    "token": "يَوْمَ",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf zaman)",
+    "note_en": "An accusative adverb of time linked to the earlier negated verb \"yamlikuna,\" meaning \"on the Day.\""
+   },
+   {
+    "token": "يَقُومُ",
+    "case_en": "indeclinable",
+    "role_en": "verb (fi'l)",
+    "note_en": "A present-tense verb meaning \"stands,\" forming a clause that defines the adverb \"Day.\""
+   },
+   {
+    "token": "ٱلرُّوحُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "The nominative subject of \"stands,\" referring to the Spirit."
+   },
+   {
+    "token": "وَٱلْمَلَٰٓئِكَةُ",
+    "case_en": "nominative",
+    "role_en": "conjoined subject (ma'tuf)",
+    "note_en": "Joined by \"and\" to \"the Spirit,\" sharing the nominative case as part of the subject."
+   },
+   {
+    "token": "صَفًّۭا",
+    "case_en": "accusative",
+    "role_en": "absolute object (maf'ul mutlaq)",
+    "note_en": "An accusative absolute object of an omitted verb, conveying that they stand arrayed in ranks."
+   },
+   {
+    "token": "لَّا",
+    "case_en": "indeclinable",
+    "role_en": "negative particle (nafiya)",
+    "note_en": "A particle of negation giving the following verb a negated sense."
+   },
+   {
+    "token": "يَتَكَلَّمُونَ",
+    "case_en": "indeclinable",
+    "role_en": "verb with subject (fi'l wa fa'il)",
+    "note_en": "A present-tense verb meaning \"they speak,\" with its embedded plural subject."
+   },
+   {
+    "token": "إِلَّا",
+    "case_en": "indeclinable",
+    "role_en": "exceptive particle (istithna')",
+    "note_en": "A particle of exception introducing what is excluded from the negation."
+   },
+   {
+    "token": "مَنْ",
+    "case_en": "nominative",
+    "role_en": "appositive substitute (badal)",
+    "note_en": "A relative pronoun in the nominative position, standing as a substitute from the subject of \"they speak.\""
+   },
+   {
+    "token": "أَذِنَ",
+    "case_en": "indeclinable",
+    "role_en": "verb (fi'l madi)",
+    "note_en": "A past-tense verb meaning \"permitted,\" forming the relative clause of \"man.\""
+   },
+   {
+    "token": "لَهُ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jarr wa majrur)",
+    "note_en": "It attaches to the verb \"permitted,\" meaning \"for him.\""
+   },
+   {
+    "token": "ٱلرَّحْمَٰنُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "The nominative subject of \"permitted,\" naming the Most Merciful."
+   },
+   {
+    "token": "وَقَالَ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined verb (ma'tuf)",
+    "note_en": "A past-tense verb \"and says/said,\" joined to \"permitted\" within the relative clause."
+   },
+   {
+    "token": "صَوَابًۭا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "The accusative object qualifying an omitted noun, the sense being \"says correct speech.\""
+   }
+  ],
+  "irab_en": "\"Yawma\" is an accusative adverb of time tied to the negated verb \"yamlikuna\" of the previous verse. Its clause is formed by \"yaqumu\" (stands), whose nominative subject is \"al-ruh,\" with \"al-mala'ika\" conjoined to it and likewise nominative. \"Saffan\" is an accusative absolute object of an implied verb, picturing them ranged in ranks. The next clause begins with the negation \"la\" and the verb \"yatakallamuna\" with its plural subject. \"Illa\" introduces an exception, and \"man\" is a nominative relative pronoun functioning as a substitute (badal) from the subject of \"speak.\" Its clause is \"adhina lahu al-Rahman,\" with \"al-Rahman\" the nominative subject. \"Wa qala\" is conjoined within that clause, and \"sawaban\" is its accusative object, qualifying an omitted noun, meaning \"correct speech.\"",
+  "faqs_en": [
+   {
+    "q": "Why is \"yawma\" in the accusative case?",
+    "a": "It is an adverb of time (zarf zaman) connected to the negated verb \"yamlikuna\" from the previous verse, so it carries the accusative case."
+   },
+   {
+    "q": "What is the grammatical role of \"man\" in this verse?",
+    "a": "It is a relative pronoun in the nominative position acting as a substitute (badal) from the subject of the verb \"they speak.\""
+   },
+   {
+    "q": "Why is \"saffan\" accusative?",
+    "a": "It is an absolute object (maf'ul mutlaq) of an omitted verb, describing how they stand arranged in ranks."
+   }
+  ],
+  "uthmani": "يَوْمَ يَقُومُ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّۭا ۖ لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ صَوَابًۭا"
+ },
+ "78:39": {
+  "surah": 78,
+  "ayah": 39,
+  "h1_en": "I'rab of Surah An-Naba Ayah 39 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah declares that Day to be the True Day, and whoever wills may take a path back to his Lord. \"Al-yawm\" is a nominative substitute for the demonstrative, \"man\" is a conditional pronoun functioning as subject, \"sha'a\" is the condition verb, and \"ila rabbihi\" relates to the omitted object of \"takes.\"",
+  "translation_en": "That is the True Day; so whoever wills may take a way back to his Lord.",
+  "transliteration": "Dhalika al-yawmu al-haqqu faman sha'a ittakhadha ila rabbihi ma'aba",
+  "words_en": [
+   {
+    "token": "ذَٰلِكَ",
+    "case_en": "indeclinable",
+    "role_en": "subject (mubtada')",
+    "note_en": "A demonstrative pronoun in the nominative position serving as the subject, meaning \"that.\""
+   },
+   {
+    "token": "ٱلْيَوْمُ",
+    "case_en": "nominative",
+    "role_en": "appositive substitute (badal)",
+    "note_en": "A nominative substitute for the demonstrative, or an explanatory apposition to it."
+   },
+   {
+    "token": "ٱلْحَقُّ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "The nominative predicate completing the sentence, meaning \"the True (Day).\""
+   },
+   {
+    "token": "فَمَن",
+    "case_en": "nominative",
+    "role_en": "conditional subject (mubtada')",
+    "note_en": "\"Fa\" links to an implied conditional answer, and \"man\" is a conditional pronoun in the nominative position as subject."
+   },
+   {
+    "token": "شَآءَ",
+    "case_en": "jussive",
+    "role_en": "condition verb (fi'l ash-shart)",
+    "note_en": "A past-tense verb in the jussive position as the verb of the condition, its subject referring back to \"man.\""
+   },
+   {
+    "token": "ٱتَّخَذَ",
+    "case_en": "jussive",
+    "role_en": "answer of condition (jawab ash-shart)",
+    "note_en": "A past-tense verb in the jussive position serving as the answer of the condition, meaning \"takes/took.\""
+   },
+   {
+    "token": "إِلَىٰ",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "A preposition meaning \"to/toward,\" governing the following noun in the genitive."
+   },
+   {
+    "token": "رَبِّهِۦ",
+    "case_en": "genitive",
+    "role_en": "object of preposition (majrur)",
+    "note_en": "It is governed by \"to\" in the genitive; the phrase relates to a circumstantial state (hal) of \"ma'aba,\" the second object of \"takes.\""
+   },
+   {
+    "token": "مَـَٔابًا",
+    "case_en": "accusative",
+    "role_en": "second object (maf'ul thani)",
+    "note_en": "The accusative second object of \"takes,\" meaning \"a return/refuge,\" the first object being omitted (i.e., faith)."
+   }
+  ],
+  "irab_en": "The verse begins with the demonstrative \"dhalika\" as the subject (mubtada'). \"Al-yawm\" follows as a nominative substitute (badal) for the demonstrative, or as an explanatory apposition, and \"al-haqq\" is the nominative predicate. The second sentence opens with \"fa,\" which links to an implied conditional structure, and \"man\" is a conditional pronoun in the nominative position serving as subject. \"Sha'a\" is a past-tense verb in the jussive position as the condition's verb, its subject referring to \"man.\" \"Ittakhadha\" is likewise in the jussive position as the answer of the condition. \"Ila rabbihi\" is genitive and relates to a circumstantial state of \"ma'aba,\" which is the accusative second object of \"takes\"; its first object is omitted, the implied sense being \"takes faith as a way back to his Lord.\"",
+  "faqs_en": [
+   {
+    "q": "Why is \"al-yawm\" in the nominative case?",
+    "a": "It is a substitute (badal) for the nominative demonstrative \"dhalika,\" or an explanatory apposition to it, so it shares the nominative case."
+   },
+   {
+    "q": "What is the function of \"man\" after \"fa\"?",
+    "a": "It is a conditional pronoun in the nominative position acting as the subject (mubtada'), with \"sha'a\" as its condition and \"ittakhadha\" as the answer."
+   },
+   {
+    "q": "Why is \"ma'aba\" accusative?",
+    "a": "It is the second object (maf'ul thani) of \"ittakhadha,\" while the first object is omitted, giving the sense \"took [faith] as a return to his Lord.\""
+   }
+  ],
+  "uthmani": "ذَٰلِكَ ٱلْيَوْمُ ٱلْحَقُّ ۖ فَمَن شَآءَ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ مَـَٔابًا"
+ },
+ "78:40": {
+  "surah": 78,
+  "ayah": 40,
+  "h1_en": "I'rab of Surah An-Naba Ayah 40 — word-by-word Arabic grammar",
+  "tldr_en": "This concluding ayah warns of a near punishment, on a Day when each person sees what his hands have sent forth, and the disbeliever cries out wishing he were dust. \"Adhaban\" is the second object of \"warned,\" \"yawma\" is an adverb of time, \"ma\" is the object of \"sees,\" and \"ya\" is a particle of alerting.",
+  "translation_en": "Indeed, We have warned you of a near punishment, on the Day a person will see what his hands have sent ahead, and the disbeliever will say, \"O, I wish I were dust!\"",
+  "transliteration": "Inna andharnakum 'adhaban qariban yawma yanzuru al-mar'u ma qaddamat yadahu wayaqulu al-kafiru ya laytani kuntu turaba",
+  "words_en": [
+   {
+    "token": "إِنَّآ",
+    "case_en": "accusative",
+    "role_en": "emphatic particle with noun (inna wa ismuha)",
+    "note_en": "The particle \"inna\" with its attached pronoun \"we\" as its noun, giving emphasis to the statement."
+   },
+   {
+    "token": "أَنذَرْنَٰكُمْ",
+    "case_en": "indeclinable",
+    "role_en": "verb, subject and first object (fi'l, fa'il, maf'ul)",
+    "note_en": "A past-tense verb \"we warned\" with the suffixed \"you\" as its first object; the clause is the predicate of \"inna.\""
+   },
+   {
+    "token": "عَذَابًۭا",
+    "case_en": "accusative",
+    "role_en": "second object (maf'ul thani)",
+    "note_en": "The accusative second object of \"warned,\" meaning \"a punishment.\""
+   },
+   {
+    "token": "قَرِيبًۭا",
+    "case_en": "accusative",
+    "role_en": "adjective (na't)",
+    "note_en": "An adjective describing \"punishment,\" agreeing in the accusative case, meaning \"near.\""
+   },
+   {
+    "token": "يَوْمَ",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf zaman)",
+    "note_en": "An accusative adverb of time linked to \"punishment,\" meaning \"on the Day.\""
+   },
+   {
+    "token": "يَنظُرُ",
+    "case_en": "indeclinable",
+    "role_en": "verb (fi'l)",
+    "note_en": "A present-tense verb \"sees/looks,\" here carrying the sense of perceiving, forming the clause of the adverb \"Day.\""
+   },
+   {
+    "token": "ٱلْمَرْءُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "The nominative subject of \"sees,\" meaning \"the person.\""
+   },
+   {
+    "token": "مَا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "A relative pronoun in the accusative position as the object of \"sees,\" since the verb carries the sense of \"perceives.\""
+   },
+   {
+    "token": "قَدَّمَتْ",
+    "case_en": "indeclinable",
+    "role_en": "verb (fi'l madi)",
+    "note_en": "A past-tense verb \"sent forth/put forward,\" forming the relative clause of \"ma.\""
+   },
+   {
+    "token": "يَدَاهُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "The nominative subject of \"sent forth,\" a dual noun meaning \"his two hands.\""
+   },
+   {
+    "token": "وَيَقُولُ",
+    "case_en": "indeclinable",
+    "role_en": "conjoined verb (ma'tuf)",
+    "note_en": "A present-tense verb \"and says,\" joined by \"and\" to the preceding clause."
+   },
+   {
+    "token": "ٱلْكَافِرُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "The nominative subject of \"says,\" meaning \"the disbeliever.\""
+   },
+   {
+    "token": "يَٰلَيْتَنِى",
+    "case_en": "indeclinable",
+    "role_en": "particle of alerting with wishing particle (ya wa layta)",
+    "note_en": "\"Ya\" is a particle of alerting, and \"layta\" expresses a wish, with the attached \"me\" as its noun."
+   },
+   {
+    "token": "كُنتُ",
+    "case_en": "indeclinable",
+    "role_en": "defective verb with subject (kana wa ismuha)",
+    "note_en": "The verb \"I was\" with its attached subject pronoun, functioning as the predicate of \"layta.\""
+   },
+   {
+    "token": "تُرَٰبًۢا",
+    "case_en": "accusative",
+    "role_en": "predicate of kana (khabar kana)",
+    "note_en": "The accusative predicate of \"I was,\" meaning \"dust,\" expressing the wish to be mere dust."
+   }
+  ],
+  "irab_en": "The verse opens with \"inna\" and its attached pronoun \"we\" as its noun. The clause \"andharnakum\" (we warned you) is its predicate, the suffixed \"you\" being the first object. \"Adhaban\" is the accusative second object, qualified by the adjective \"qariban\" (near), also accusative. \"Yawma\" is an accusative adverb of time tied to \"punishment,\" and its clause is \"yanzuru al-mar'u,\" with \"al-mar'u\" the nominative subject; the verb carries the sense of perceiving, so \"ma\" is a relative pronoun in the accusative position as its object. \"Qaddamat\" forms the relative clause, with the dual \"yadahu\" (his two hands) as its nominative subject. \"Wa yaqulu al-kafiru\" is conjoined, \"al-kafir\" being its subject. \"Ya\" is a particle of alerting, \"layta\" a wishing particle with attached \"me,\" \"kuntu\" the defective verb \"I was,\" and \"turaban\" its accusative predicate.",
+  "faqs_en": [
+   {
+    "q": "Why is \"ma\" in the accusative position in this verse?",
+    "a": "Because the verb \"yanzuru\" here carries the meaning of \"perceives/sees,\" so \"ma\" functions as its direct object (maf'ul bihi) in the accusative position."
+   },
+   {
+    "q": "What is the grammatical role of \"yadahu\"?",
+    "a": "It is the nominative subject (fa'il) of the verb \"qaddamat,\" and being a dual noun it is marked by the alif, meaning \"his two hands.\""
+   },
+   {
+    "q": "Why is \"turaban\" in the accusative case?",
+    "a": "It is the predicate (khabar) of the defective verb \"kuntu\" (I was), which puts its predicate in the accusative, expressing the wish \"I were dust.\""
+   }
+  ],
+  "uthmani": "إِنَّآ أَنذَرْنَٰكُمْ عَذَابًۭا قَرِيبًۭا يَوْمَ يَنظُرُ ٱلْمَرْءُ مَا قَدَّمَتْ يَدَاهُ وَيَقُولُ ٱلْكَافِرُ يَٰلَيْتَنِى كُنتُ تُرَٰبًۢا"
+ }
+}

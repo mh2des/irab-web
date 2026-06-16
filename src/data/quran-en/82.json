@@ -1,0 +1,658 @@
+{
+ "82:7": {
+  "surah": 82,
+  "ayah": 7,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 7 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah continues describing the generous Lord with a relative clause: \"the One who created you, then proportioned you, then balanced you.\" The relative pronoun الَّذِي functions as a further description of \"your Lord,\" and three past-tense verbs (created, fashioned, balanced) are joined by the connecting particle fa to show ordered sequence, each governing the object \"you.\"",
+  "translation_en": "Who created you, then proportioned you, then balanced you.",
+  "transliteration": "Alladhī khalaqaka fa-sawwāka fa-ʿadalak(a)",
+  "words_en": [
+   {
+    "token": "ٱلَّذِى",
+    "case_en": "indeclinable",
+    "role_en": "relative pronoun (description of \"your Lord\")",
+    "note_en": "A relative pronoun serving as a second adjectival description of \"your Lord\" mentioned in the previous ayah, fixed in form and not changing its ending."
+   },
+   {
+    "token": "خَلَقَكَ",
+    "case_en": "indeclinable",
+    "role_en": "verb + object (relative clause)",
+    "note_en": "A past-tense verb \"He created\" whose hidden subject refers to the Lord, with the attached pronoun ka as its direct object, forming the relative clause with no grammatical position."
+   },
+   {
+    "token": "فَسَوَّىٰكَ",
+    "case_en": "indeclinable",
+    "role_en": "connected verb + object",
+    "note_en": "The particle fa connects in sequence, joining the past-tense verb \"He proportioned/fashioned\" to the previous verb, again with ka as its object."
+   },
+   {
+    "token": "فَعَدَلَكَ",
+    "case_en": "indeclinable",
+    "role_en": "connected verb + object",
+    "note_en": "Again fa marks ordered succession, joining the past-tense verb \"He balanced/made symmetrical\" with the object pronoun ka."
+   }
+  ],
+  "irab_en": "The ayah opens with the relative pronoun ٱلَّذِي, which is indeclinable and serves as a further qualifying description of \"your Lord\" from the preceding verse. It introduces a relative clause built from three coordinated past-tense verbs. خَلَقَ (\"He created\") carries a concealed subject pronoun referring to the Lord, while the attached كَ is its direct object in the accusative position. The connecting particle فَ in فَسَوَّىٰ and فَعَدَلَ indicates ordered sequence, joining \"He fashioned\" and \"He balanced\" to the first verb. Each verb governs the same object pronoun كَ. The entire relative clause has no independent case position because it completes the description of the noun it modifies.",
+  "faqs_en": [
+   {
+    "q": "What does ٱلَّذِي refer back to?",
+    "a": "It refers back to \"your Lord\" (rabbika) in the previous ayah, adding a second description of Him through the relative clause that follows."
+   },
+   {
+    "q": "Why is the particle فَ used three times?",
+    "a": "The فَ here is a connecting particle indicating sequence; it links the three acts of creating, fashioning, and balancing in their natural order of occurrence."
+   },
+   {
+    "q": "What is the role of كَ at the end of each verb?",
+    "a": "Each كَ is an attached pronoun acting as the direct object of its verb, all referring to the human being addressed."
+   }
+  ],
+  "uthmani": "ٱلَّذِى خَلَقَكَ فَسَوَّىٰكَ فَعَدَلَكَ"
+ },
+ "82:8": {
+  "surah": 82,
+  "ayah": 8,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 8 — word-by-word Arabic grammar",
+  "tldr_en": "\"In whatever form He willed, He assembled you.\" The prepositional phrase \"in whatever form\" is fronted and connects to the verb \"assembled.\" The particle مَا here is extra (emphatic), شَآءَ is the past-tense verb of choosing, and رَكَّبَكَ (\"He assembled/composed you\") is the main verb with its object pronoun, completing the description of the Creator's act.",
+  "translation_en": "In whatever form He willed, He assembled you.",
+  "transliteration": "Fī ayyi ṣūratin mā shāʾa rakkabak(a)",
+  "words_en": [
+   {
+    "token": "فِىٓ",
+    "case_en": "indeclinable",
+    "role_en": "preposition",
+    "note_en": "A preposition meaning \"in,\" forming a phrase that grammatically attaches to the later verb \"He assembled.\""
+   },
+   {
+    "token": "أَىِّ",
+    "case_en": "genitive",
+    "role_en": "object of preposition",
+    "note_en": "A noun in the genitive case as the object of the preposition fi, and it governs the following word as its possessive complement."
+   },
+   {
+    "token": "صُورَةٍۢ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (mudaf ilayh)",
+    "note_en": "A noun in the genitive case as the possessive complement of ayy, meaning \"of form,\" so the phrase reads \"in whatever form.\""
+   },
+   {
+    "token": "مَّا",
+    "case_en": "indeclinable",
+    "role_en": "extra particle (emphasis)",
+    "note_en": "Here ma is an extra particle adding emphasis without a grammatical position, not negating or relating."
+   },
+   {
+    "token": "شَآءَ",
+    "case_en": "indeclinable",
+    "role_en": "verb (He willed)",
+    "note_en": "A past-tense verb \"He willed/chose\" with a hidden subject referring to the Lord, fixed in its ending."
+   },
+   {
+    "token": "رَكَّبَكَ",
+    "case_en": "indeclinable",
+    "role_en": "main verb + object",
+    "note_en": "The main past-tense verb \"He assembled/composed you,\" carrying a hidden subject and the object pronoun ka."
+   }
+  ],
+  "irab_en": "The verse begins with the fronted prepositional phrase فِي أَيِّ صُورَةٍ. The preposition فِي governs أَيِّ, which stands in the genitive as its object; أَيِّ in turn governs صُورَةٍ as its possessive complement, also genitive, yielding \"in whatever form.\" This whole phrase is attached in meaning to the verb رَكَّبَ. The particle مَّا is extra and serves only to add emphasis, holding no grammatical position. شَآءَ is a past-tense verb (\"He willed\") with a concealed subject pronoun for the Lord. رَكَّبَكَ is the principal verb, \"He assembled you,\" again with a hidden subject and the attached كَ as its direct object, completing the description of the Creator's deliberate fashioning.",
+  "faqs_en": [
+   {
+    "q": "Why is صُورَةٍ in the genitive case?",
+    "a": "It is the possessive complement of أَيِّ, and the second term of such a construction always takes the genitive ending."
+   },
+   {
+    "q": "What kind of مَا appears in this ayah?",
+    "a": "It is an extra (redundant) particle used for emphasis; it neither negates nor introduces a clause and has no syntactic position."
+   },
+   {
+    "q": "Which verb does the phrase \"in whatever form\" connect to?",
+    "a": "It connects in meaning to رَكَّبَ (\"He assembled\"), describing the manner in which the human form was composed."
+   }
+  ],
+  "uthmani": "فِىٓ أَىِّ صُورَةٍۢ مَّا شَآءَ رَكَّبَكَ"
+ },
+ "82:9": {
+  "surah": 82,
+  "ayah": 9,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 9 — word-by-word Arabic grammar",
+  "tldr_en": "\"No! Rather, you deny the Recompense.\" كَلَّا is a particle of rebuke, بَلْ shifts to a new point, تُكَذِّبُونَ is a present-tense verb with the plural \"you\" as its subject, and بِٱلدِّينِ is a prepositional phrase attaching to that verb. The verse rebukes denial of the Day of Judgment.",
+  "translation_en": "No! Rather, you deny the Recompense.",
+  "transliteration": "Kallā bal tukadhdhibūna bid-dīn(i)",
+  "words_en": [
+   {
+    "token": "كَلَّا",
+    "case_en": "indeclinable",
+    "role_en": "particle of rebuke",
+    "note_en": "A particle of deterrence and rebuke, indeclinable, used to check and rebuke the addressee's attitude."
+   },
+   {
+    "token": "بَلْ",
+    "case_en": "indeclinable",
+    "role_en": "particle of transition (idrab)",
+    "note_en": "A particle of transition that turns from one statement to another, here moving to the real point being made."
+   },
+   {
+    "token": "تُكَذِّبُونَ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb + subject",
+    "note_en": "A present-tense verb in the nominative \"you deny,\" with the attached plural waw as its subject, addressing the deniers."
+   },
+   {
+    "token": "بِٱلدِّينِ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (object of denial)",
+    "note_en": "The preposition bi with al-din in the genitive forms a phrase attaching to \"you deny,\" indicating what is denied: the Recompense."
+   }
+  ],
+  "irab_en": "كَلَّا is an indeclinable particle of rebuke and deterrence, checking the human being's heedlessness described earlier. بَلْ is a particle of transition (idrab) that moves the discourse from the preceding rhetorical question to the actual indictment. تُكَذِّبُونَ is a present-tense verb marked nominative because no nullifying agent precedes it; the attached plural و is its subject (\"you all\"), and the verb addresses the deniers. The prepositional phrase بِٱلدِّينِ consists of the preposition بِ governing ٱلدِّينِ in the genitive, and it attaches in meaning to the verb تُكَذِّبُونَ, specifying the object of their denial as ad-din, the Day of Recompense and its reality.",
+  "faqs_en": [
+   {
+    "q": "What is the function of كَلَّا?",
+    "a": "It is a particle of rebuke and deterrence, rejecting the heedless attitude of the human being and warning against it."
+   },
+   {
+    "q": "Why is تُكَذِّبُونَ in the nominative?",
+    "a": "Present-tense verbs default to the nominative when no particle of nullification or jussive governance precedes them, as is the case here."
+   },
+   {
+    "q": "What does بِٱلدِّينِ attach to grammatically?",
+    "a": "It attaches to the verb تُكَذِّبُونَ, naming ad-din (the Recompense) as the thing being denied."
+   }
+  ],
+  "uthmani": "كَلَّا بَلْ تُكَذِّبُونَ بِٱلدِّينِ"
+ },
+ "82:10": {
+  "surah": 82,
+  "ayah": 10,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 10 — word-by-word Arabic grammar",
+  "tldr_en": "\"And indeed, over you are guardians.\" The particle إِنَّ emphasizes the statement, عَلَيْكُمْ is a fronted prepositional phrase functioning as the predicate, the لَ is an emphatic lam, and حَافِظِينَ is the noun of إِنَّ in the accusative, naming the recording angels who watch over people.",
+  "translation_en": "And indeed, over you are guardians.",
+  "transliteration": "Wa-inna ʿalaykum la-ḥāfiẓīn(a)",
+  "words_en": [
+   {
+    "token": "وَإِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + emphatic particle",
+    "note_en": "The waw connects this sentence to the previous, and inna is an emphatic particle that puts its noun in the accusative and its predicate in the nominative."
+   },
+   {
+    "token": "عَلَيْكُمْ",
+    "case_en": "indeclinable",
+    "role_en": "fronted predicate of inna",
+    "note_en": "The preposition ala with the attached pronoun kum forms a phrase that serves as the fronted predicate of inna, \"over you.\""
+   },
+   {
+    "token": "لَحَٰفِظِينَ",
+    "case_en": "accusative",
+    "role_en": "emphatic lam + noun of inna",
+    "note_en": "The introductory lam adds emphasis, and hafizin is the noun of inna in the accusative (sound masculine plural ending in -in), meaning \"guardians.\""
+   }
+  ],
+  "irab_en": "The verse is joined to what precedes by the conjunction وَ. إِنَّ is a particle of emphasis and one of its sisters; it puts its noun in the accusative and its predicate in the nominative. The prepositional phrase عَلَيْكُمْ, made of the preposition عَلَى and the attached pronoun كُمْ, serves as the fronted predicate of إِنَّ in meaning (\"over you there are…\"). The لَ prefixed to حَافِظِينَ is the emphatic, displaced lam (al-muzahlaqa), reinforcing the assertion. حَافِظِينَ is the delayed noun of إِنَّ, in the accusative case shown by the يـن ending of the sound masculine plural, denoting the watchful guardian angels.",
+  "faqs_en": [
+   {
+    "q": "Why is حَافِظِينَ in the accusative case?",
+    "a": "It is the noun of إِنَّ, and إِنَّ places its noun in the accusative; the plural marker here is the يـن ending."
+   },
+   {
+    "q": "What is the role of the لَ before حَافِظِينَ?",
+    "a": "It is the emphatic, displaced lam (lam al-muzahlaqa), added for emphasis after إِنَّ."
+   },
+   {
+    "q": "Where is the predicate of إِنَّ in this sentence?",
+    "a": "The predicate is the fronted prepositional phrase عَلَيْكُمْ, which comes before the noun for emphasis and focus."
+   }
+  ],
+  "uthmani": "وَإِنَّ عَلَيْكُمْ لَحَٰفِظِينَ"
+ },
+ "82:11": {
+  "surah": 82,
+  "ayah": 11,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 11 — word-by-word Arabic grammar",
+  "tldr_en": "\"Noble, recording.\" Both words are adjectives describing the guardians mentioned in the previous ayah. كِرَامًا (\"noble\") and كَاتِبِينَ (\"recording/writing\") are in the accusative to agree with حَافِظِينَ, the noun of إِنَّ, which is also accusative.",
+  "translation_en": "Noble, recording.",
+  "transliteration": "Kirāman kātibīn(a)",
+  "words_en": [
+   {
+    "token": "كِرَامًۭا",
+    "case_en": "accusative",
+    "role_en": "adjective of \"guardians\"",
+    "note_en": "An adjective in the accusative \"noble,\" agreeing with hafizin (the noun of inna) from the previous ayah, marked by tanwin fath."
+   },
+   {
+    "token": "كَٰتِبِينَ",
+    "case_en": "accusative",
+    "role_en": "adjective of \"guardians\"",
+    "note_en": "A second adjective \"recording/writing,\" also accusative to agree with hafizin, shown by the sound masculine plural ending -in."
+   }
+  ],
+  "irab_en": "This short verse provides two adjectives describing حَافِظِينَ, the noun of إِنَّ from the previous ayah. كِرَامًا (\"noble, honorable\") is an adjective in the accusative case, its ending shown by the doubled fatha (tanwin), agreeing in case with the noun it qualifies. كَاتِبِينَ (\"writing, recording\") is a second adjective, likewise accusative, its case marked by the يـن ending of the sound masculine plural. Both follow حَافِظِينَ in case because adjectives agree with their described noun in case, number, and definiteness. Together they characterize the guardian angels as honorable scribes who faithfully record the deeds of every person.",
+  "faqs_en": [
+   {
+    "q": "What do كِرَامًا and كَاتِبِينَ describe?",
+    "a": "They are adjectives describing حَافِظِينَ (\"guardians\") from the preceding ayah, portraying them as noble, recording angels."
+   },
+   {
+    "q": "Why are both words in the accusative case?",
+    "a": "Adjectives match their described noun in case; since حَافِظِينَ is accusative as the noun of إِنَّ, its adjectives are accusative too."
+   },
+   {
+    "q": "Why does كِرَامًا end in tanwin but كَاتِبِينَ in -in?",
+    "a": "كِرَامًا is a broken plural taking regular case endings with tanwin, while كَاتِبِينَ is a sound masculine plural whose accusative is marked by the يـن ending."
+   }
+  ],
+  "uthmani": "كِرَامًۭا كَٰتِبِينَ"
+ },
+ "82:12": {
+  "surah": 82,
+  "ayah": 12,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 12 — word-by-word Arabic grammar",
+  "tldr_en": "\"They know whatever you do.\" يَعْلَمُونَ is a present-tense verb describing the guardians, with the plural \"they\" as subject. مَا is an infinitival particle introducing the object, and تَفْعَلُونَ is a present-tense verb \"you do.\" The clause forms the object: \"what you do.\"",
+  "translation_en": "They know whatever you do.",
+  "transliteration": "Yaʿlamūna mā tafʿalūn(a)",
+  "words_en": [
+   {
+    "token": "يَعْلَمُونَ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb + subject (adjective clause)",
+    "note_en": "A present-tense verb in the nominative \"they know,\" with the attached plural waw as subject, referring to the recording guardians."
+   },
+   {
+    "token": "مَا",
+    "case_en": "indeclinable",
+    "role_en": "infinitival particle (object)",
+    "note_en": "Here ma is an infinitival (masdari) particle; with the following verb it forms the verbal-noun meaning, occupying the accusative object position of \"they know.\""
+   },
+   {
+    "token": "تَفْعَلُونَ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb + subject",
+    "note_en": "A present-tense verb in the nominative \"you do,\" with the attached plural waw as subject, addressing the people whose deeds are recorded."
+   }
+  ],
+  "irab_en": "يَعْلَمُونَ is a present-tense verb in the nominative because no nullifying agent precedes it; the attached plural و is its subject, referring back to the noble recording guardians, and the whole clause functions as a further description of them. مَا here is an infinitival (masdari) particle; taken with the following verb it yields the meaning \"that which you do,\" and this construction occupies the accusative position as the direct object of يَعْلَمُونَ. تَفْعَلُونَ is likewise a present-tense verb in the nominative, with its attached plural و as subject, addressing humankind. The sentence affirms that the angels comprehensively know and record every deed people perform.",
+  "faqs_en": [
+   {
+    "q": "What is the subject of يَعْلَمُونَ?",
+    "a": "Its subject is the attached plural و (\"they\"), which refers to the noble recording guardian angels mentioned earlier."
+   },
+   {
+    "q": "What grammatical position does مَا تَفْعَلُونَ occupy?",
+    "a": "Together it stands in the accusative position as the direct object of the verb يَعْلَمُونَ, meaning \"what you do.\""
+   },
+   {
+    "q": "Why are both يَعْلَمُونَ and تَفْعَلُونَ in the nominative?",
+    "a": "Both are present-tense verbs with nothing preceding them to cause accusative or jussive endings, so they remain in the default nominative, marked by the retained ن."
+   }
+  ],
+  "uthmani": "يَعْلَمُونَ مَا تَفْعَلُونَ"
+ },
+ "82:13": {
+  "surah": 82,
+  "ayah": 13,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 13 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is an emphatic nominal sentence introduced by the particle inna. \"The righteous\" is its noun in the accusative, and the predicate is the prepositional phrase \"in bliss,\" strengthened by the emphatic lam (lam al-muzahlaqa). It plainly declares the final state of the virtuous: lasting delight and reward.",
+  "translation_en": "Indeed, the righteous will be in bliss.",
+  "transliteration": "Inna al-abrara la-fi na'im",
+  "words_en": [
+   {
+    "token": "إِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "emphasis particle (harf tawkid)",
+    "note_en": "A particle of emphasis that governs the following noun in the accusative and its predicate in the nominative."
+   },
+   {
+    "token": "ٱلْأَبْرَارَ",
+    "case_en": "accusative",
+    "role_en": "noun of inna (ism inna)",
+    "note_en": "The subject of the sentence governed by inna, placed in the accusative case as its noun."
+   },
+   {
+    "token": "لَفِى",
+    "case_en": "indeclinable",
+    "role_en": "emphatic lam + preposition",
+    "note_en": "The shifted emphatic lam (lam al-muzahlaqa) is prefixed to the preposition fi for added stress."
+   },
+   {
+    "token": "نَعِيمٍۢ",
+    "case_en": "genitive",
+    "role_en": "object of preposition forming the predicate",
+    "note_en": "Governed in the genitive by fi, and this prepositional phrase serves as the predicate of inna."
+   }
+  ],
+  "irab_en": "The verse opens with inna, a particle of emphasis that places the noun after it in the accusative and the predicate in the nominative position (in meaning). Al-abrar (\"the righteous\") is its noun, marked accusative. The predicate is not a single explicit word but the prepositional phrase fi na'im (\"in bliss\"): na'im is genitive after the preposition fi, and the phrase as a whole functions as the predicate of inna, indicating place or state. The lam attached to fi is the shifted emphatic lam (lam al-muzahlaqa), which adds a second layer of certainty on top of inna. The construction thus stresses with double assurance that the righteous are settled in enduring delight.",
+  "faqs_en": [
+   {
+    "q": "What is the predicate of inna in this verse?",
+    "a": "The predicate is the prepositional phrase fi na'im (\"in bliss\"), since there is no single explicit predicate word; the whole phrase fills that role."
+   },
+   {
+    "q": "Why is there a lam before fi?",
+    "a": "It is the shifted emphatic lam (lam al-muzahlaqa), which normally precedes the predicate of inna to reinforce the certainty of the statement."
+   }
+  ],
+  "uthmani": "إِنَّ ٱلْأَبْرَارَ لَفِى نَعِيمٍۢ"
+ },
+ "82:14": {
+  "surah": 82,
+  "ayah": 14,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 14 — word-by-word Arabic grammar",
+  "tldr_en": "Parallel to the previous verse, this is another emphatic nominal sentence with inna, joined by the connective waw. \"The wicked\" is the accusative noun of inna, and the predicate is the prepositional phrase \"in a blazing Fire,\" reinforced by the shifted emphatic lam. It states their opposite destiny.",
+  "translation_en": "And indeed, the wicked will be in a blazing Fire.",
+  "transliteration": "Wa-inna al-fujjara la-fi jahim",
+  "words_en": [
+   {
+    "token": "وَإِنَّ",
+    "case_en": "indeclinable",
+    "role_en": "connective waw + emphasis particle",
+    "note_en": "The waw joins this sentence to the previous one, and inna again governs an accusative noun and a nominative predicate."
+   },
+   {
+    "token": "ٱلْفُجَّارَ",
+    "case_en": "accusative",
+    "role_en": "noun of inna (ism inna)",
+    "note_en": "The subject governed by inna, marked in the accusative as its noun."
+   },
+   {
+    "token": "لَفِى",
+    "case_en": "indeclinable",
+    "role_en": "emphatic lam + preposition",
+    "note_en": "The shifted emphatic lam joined to the preposition fi adds emphasis to the predicate."
+   },
+   {
+    "token": "جَحِيمٍۢ",
+    "case_en": "genitive",
+    "role_en": "object of preposition forming the predicate",
+    "note_en": "Governed in the genitive by fi, and the prepositional phrase functions as the predicate of inna."
+   }
+  ],
+  "irab_en": "This verse mirrors the preceding one and is linked to it by the connective waw. Inna once more introduces an emphatic nominal sentence: al-fujjar (\"the wicked\") is its noun in the accusative. The predicate is the prepositional phrase fi jahim (\"in a blazing Fire\"), in which jahim is genitive after the preposition fi, the phrase as a whole standing in for the predicate of inna. The lam preceding fi is again the shifted emphatic lam (lam al-muzahlaqa), which intensifies the assertion. The grammatical symmetry with verse 13 sharpens the contrast: the same structure delivers two opposite outcomes, the righteous in bliss and the wicked in fire.",
+  "faqs_en": [
+   {
+    "q": "How does this verse connect to verse 13?",
+    "a": "The opening waw is a connective particle joining it to the previous statement, producing a balanced contrast between the righteous and the wicked."
+   },
+   {
+    "q": "What case is jahim in and why?",
+    "a": "It is genitive because it is the object of the preposition fi, and the whole phrase fi jahim serves as the predicate of inna."
+   }
+  ],
+  "uthmani": "وَإِنَّ ٱلْفُجَّارَ لَفِى جَحِيمٍۢ"
+ },
+ "82:15": {
+  "surah": 82,
+  "ayah": 15,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 15 — word-by-word Arabic grammar",
+  "tldr_en": "A descriptive clause about the wicked: a present-tense verb with its attached subject and object pronoun, followed by an accusative adverb of time, \"the Day of Judgment.\" The clause states when they will enter and burn in the Fire mentioned in the previous verse.",
+  "translation_en": "They will burn in it on the Day of Judgment.",
+  "transliteration": "Yaslawnaha yawma ad-din",
+  "words_en": [
+   {
+    "token": "يَصْلَوْنَهَا",
+    "case_en": "indeclinable",
+    "role_en": "present verb with subject pronoun and object pronoun",
+    "note_en": "A present-tense verb; the attached waw is the subject (they) and the ha is the object pronoun referring to the Fire."
+   },
+   {
+    "token": "يَوْمَ",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf zaman)",
+    "note_en": "An accusative adverb of time linked to the verb yaslawnaha, specifying when the burning occurs."
+   },
+   {
+    "token": "ٱلدِّينِ",
+    "case_en": "genitive",
+    "role_en": "second term of a genitive construct (mudaf ilayh)",
+    "note_en": "Governed in the genitive as the possessed element of the construct yawm ad-din (\"the Day of Judgment\")."
+   }
+  ],
+  "irab_en": "The clause yaslawnaha (\"they burn in it\") is a present-tense verbal sentence describing the wicked. The verb carries an attached subject pronoun (the plural waw, \"they\") and an attached object pronoun ha referring back to the jahim (Fire) of the previous verse. The word yawm is an accusative adverb of time (zarf zaman) attached grammatically to this verb, fixing the time of the action. It heads a genitive construct: ad-din is the second term (mudaf ilayh), genitive, so that yawm ad-din means \"the Day of Judgment/Recompense.\" As a whole, the verse functions as a descriptive complement to the preceding statement about the wicked, telling us precisely when their burning takes place.",
+  "faqs_en": [
+   {
+    "q": "What does the ha attached to the verb refer to?",
+    "a": "It is the object pronoun referring to the jahim (blazing Fire) mentioned in the preceding verse."
+   },
+   {
+    "q": "Why is yawm in the accusative case?",
+    "a": "It is an adverb of time (zarf zaman) connected to the verb yaslawnaha, and adverbs of time take the accusative."
+   }
+  ],
+  "uthmani": "يَصْلَوْنَهَا يَوْمَ ٱلدِّينِ"
+ },
+ "82:16": {
+  "surah": 82,
+  "ayah": 16,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 16 — word-by-word Arabic grammar",
+  "tldr_en": "A negating nominal sentence joined by the waw. The particle ma works like laysa: \"they\" is its subject, and \"absent from it\" is its predicate. Though the predicate-word is genitive in form (after the preposition bi), it holds the accusative position of laysa's predicate, stressing that they cannot escape the Fire.",
+  "translation_en": "And they will not be absent from it.",
+  "transliteration": "Wa-ma hum 'anha bi-gha'ibin",
+  "words_en": [
+   {
+    "token": "وَمَا",
+    "case_en": "indeclinable",
+    "role_en": "connective waw + negating particle (ma working like laysa)",
+    "note_en": "The waw connects, and ma is a negating particle that operates like laysa, taking a subject and predicate."
+   },
+   {
+    "token": "هُمْ",
+    "case_en": "nominative",
+    "role_en": "subject of ma (ism ma)",
+    "note_en": "The detached pronoun \"they\" is the subject of ma, in the nominative position."
+   },
+   {
+    "token": "عَنْهَا",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase linked to the predicate",
+    "note_en": "The preposition 'an with its pronoun ha (the Fire) is connected to the predicate gha'ibin."
+   },
+   {
+    "token": "بِغَآئِبِينَ",
+    "case_en": "accusative",
+    "role_en": "predicate of ma (khabar ma)",
+    "note_en": "The extra particle bi makes it genitive in form, but it holds the accusative position as the predicate of ma."
+   }
+  ],
+  "irab_en": "Joined by the connective waw, this is a negating nominal sentence. The particle ma here functions like laysa (\"is/are not\"), governing a subject in the nominative and a predicate in the accusative. Hum (\"they\") is its subject. The prepositional phrase 'anha (with ha referring to the Fire) is attached to the predicate. The predicate is gha'ibin (\"absent\"): the redundant preposition bi (ba zaida) draws it into the genitive in outward form, yet it occupies the accusative position required for the predicate of ma. The extra bi adds emphasis to the negation, so the sense is forceful: they are by no means absent from the Fire, that is, they will never escape it.",
+  "faqs_en": [
+   {
+    "q": "Why is bi-gha'ibin genitive in form but called the predicate?",
+    "a": "The bi here is a redundant emphatic preposition; it makes the word genitive in form while it still holds the accusative position of the predicate of ma."
+   },
+   {
+    "q": "How does ma function in this verse?",
+    "a": "It is a negating particle working like laysa, so it takes a nominative subject (hum) and a predicate (gha'ibin)."
+   }
+  ],
+  "uthmani": "وَمَا هُمْ عَنْهَا بِغَآئِبِينَ"
+ },
+ "82:17": {
+  "surah": 82,
+  "ayah": 17,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 17 — word-by-word Arabic grammar",
+  "tldr_en": "An exclamatory question. The waw is resumptive; ma is an interrogative noun acting as subject, and the verb \"made you know\" with its object pronoun is the predicate. A second ma introduces an inner question whose subject and predicate (\"the Day of Judgment\") together complete the object of the verb.",
+  "translation_en": "And what can make you realize what the Day of Judgment is?",
+  "transliteration": "Wa-ma adraka ma yawmu ad-din",
+  "words_en": [
+   {
+    "token": "وَمَآ",
+    "case_en": "nominative",
+    "role_en": "resumptive waw + interrogative noun as subject (mubtada')",
+    "note_en": "The waw is resumptive; ma is an interrogative noun standing as the subject, with the following verbal clause as its predicate."
+   },
+   {
+    "token": "أَدْرَىٰكَ",
+    "case_en": "indeclinable",
+    "role_en": "past verb with object pronoun forming the predicate",
+    "note_en": "A past-tense verb (\"made you know\") with the attached object pronoun ka; the clause is the predicate of the interrogative ma."
+   },
+   {
+    "token": "مَا",
+    "case_en": "nominative",
+    "role_en": "interrogative noun as subject of the inner question",
+    "note_en": "A second interrogative noun functioning as subject (mubtada') of the embedded question."
+   },
+   {
+    "token": "يَوْمُ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar) of the inner question",
+    "note_en": "Nominative as the predicate of the second ma, heading the construct yawm ad-din."
+   },
+   {
+    "token": "ٱلدِّينِ",
+    "case_en": "genitive",
+    "role_en": "second term of genitive construct (mudaf ilayh)",
+    "note_en": "Governed in the genitive as the possessed element of the construct \"the Day of Judgment.\""
+   }
+  ],
+  "irab_en": "The opening waw is resumptive, beginning a new statement. The first ma is an interrogative noun standing in the nominative as subject (mubtada'); its predicate is the verbal clause adraka (\"made you know\"), a past-tense verb carrying the attached object pronoun ka (\"you\"). This verb takes a further object in the form of an embedded question: the second ma is again an interrogative noun in the nominative as subject (mubtada'), and yawm is its predicate (khabar), nominative, heading the genitive construct yawm ad-din, where ad-din is the genitive second term. The whole inner clause ma yawmu ad-din stands in the place of the object of adraka. The rhetorical effect is to magnify the Day of Judgment as something beyond ordinary comprehension.",
+  "faqs_en": [
+   {
+    "q": "How many interrogative ma's are in this verse and what do they do?",
+    "a": "There are two: the first is the subject of the main exclamatory question, and the second is the subject of the embedded question \"what the Day of Judgment is.\""
+   },
+   {
+    "q": "What completes the object of the verb adraka?",
+    "a": "The embedded clause ma yawmu ad-din (\"what the Day of Judgment is\") fills the object position of the verb."
+   }
+  ],
+  "uthmani": "وَمَآ أَدْرَىٰكَ مَا يَوْمُ ٱلدِّينِ"
+ },
+ "82:18": {
+  "surah": 82,
+  "ayah": 18,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 18 — word-by-word Arabic grammar",
+  "tldr_en": "A repetition of the previous question with thumma (\"then, again\") for added emphasis. Ma is an interrogative subject, the verb \"made you know\" with its pronoun is the predicate, and an inner question with ma as subject and \"the Day of Judgment\" as predicate fills the verb's object, heightening the awe of that Day.",
+  "translation_en": "Then again, what can make you realize what the Day of Judgment is?",
+  "transliteration": "Thumma ma adraka ma yawmu ad-din",
+  "words_en": [
+   {
+    "token": "ثُمَّ",
+    "case_en": "indeclinable",
+    "role_en": "connective particle (harf 'atf)",
+    "note_en": "A connective particle meaning \"then/again,\" linking this verse to the previous one for emphatic repetition."
+   },
+   {
+    "token": "مَآ",
+    "case_en": "nominative",
+    "role_en": "interrogative noun as subject (mubtada')",
+    "note_en": "An interrogative noun standing as the subject, with the following verbal clause as its predicate."
+   },
+   {
+    "token": "أَدْرَىٰكَ",
+    "case_en": "indeclinable",
+    "role_en": "past verb with object pronoun forming the predicate",
+    "note_en": "A past-tense verb (\"made you know\") with the attached object pronoun ka; the clause is the predicate of the interrogative ma."
+   },
+   {
+    "token": "مَا",
+    "case_en": "nominative",
+    "role_en": "interrogative noun as subject of the inner question",
+    "note_en": "A second interrogative noun functioning as subject (mubtada') of the embedded question."
+   },
+   {
+    "token": "يَوْمُ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar) of the inner question",
+    "note_en": "Nominative as the predicate of the second ma, heading the construct yawm ad-din."
+   },
+   {
+    "token": "ٱلدِّينِ",
+    "case_en": "genitive",
+    "role_en": "second term of genitive construct (mudaf ilayh)",
+    "note_en": "Governed in the genitive as the possessed element of the construct \"the Day of Judgment.\""
+   }
+  ],
+  "irab_en": "This verse repeats the previous one, introduced by thumma, a connective particle (\"then, again\") that links the two and signals emphatic reiteration. The first ma is an interrogative noun in the nominative as subject (mubtada'), and the verbal clause adraka (\"made you know\"), a past-tense verb with the attached object pronoun ka, is its predicate. The verb then takes an embedded question as its object: the second ma is an interrogative noun as subject (mubtada'), and yawm is its predicate (khabar) in the nominative, heading the construct yawm ad-din, with ad-din in the genitive as the second term. The repetition with thumma intensifies the rhetorical magnification of the Day of Judgment, underscoring that its gravity surpasses human grasp.",
+  "faqs_en": [
+   {
+    "q": "What is the role of thumma here?",
+    "a": "It is a connective particle meaning \"then/again\" that repeats and emphasizes the question of the previous verse for greater effect."
+   },
+   {
+    "q": "Why is the question repeated in verses 17 and 18?",
+    "a": "The repetition, grammatically marked by thumma, magnifies the awe and seriousness of the Day of Judgment beyond ordinary understanding."
+   }
+  ],
+  "uthmani": "ثُمَّ مَآ أَدْرَىٰكَ مَا يَوْمُ ٱلدِّينِ"
+ },
+ "82:19": {
+  "surah": 82,
+  "ayah": 19,
+  "h1_en": "I'rab of Surah Al-Infitar Ayah 19 — word-by-word Arabic grammar",
+  "tldr_en": "This verse names the Day when no soul will have any power to benefit another soul; on that Day all command and authority belong to Allah alone. \"Yawma\" is an adverb of time, \"la tamliku\" is a negated verb with \"nafs\" as its subject, and the closing nominal sentence places \"the command\" with Allah on that Day.",
+  "translation_en": "The Day when no soul will have power to do anything for another soul; and the command, that Day, belongs entirely to Allah.",
+  "transliteration": "Yawma laa tamliku nafsun li-nafsin shay'an, wal-amru yawma'idhin lillah",
+  "words_en": [
+   {
+    "token": "يَوْمَ",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf zaman)",
+    "note_en": "An accusative adverb of time, \"the Day,\" that ties this verse to the preceding mention of the Day of Recompense."
+   },
+   {
+    "token": "لَا",
+    "case_en": "indeclinable",
+    "role_en": "negative particle (harf nafy)",
+    "note_en": "A particle of negation that negates the present-tense verb following it."
+   },
+   {
+    "token": "تَمْلِكُ",
+    "case_en": "nominative",
+    "role_en": "imperfect verb (fi'l mudari')",
+    "note_en": "A present-tense verb in the nominative (indicative) state meaning \"has power\" or \"controls,\" governed by no canceling particle."
+   },
+   {
+    "token": "نَفْسٌۭ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "The doer of the verb \"tamliku,\" nominative and indefinite, meaning \"a soul\" or \"any soul.\""
+   },
+   {
+    "token": "لِّنَفْسٍۢ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (jar wa majrur)",
+    "note_en": "The preposition \"li\" with the genitive noun \"nafs\" attaches to the verb, conveying \"for another soul.\""
+   },
+   {
+    "token": "شَيْـًۭٔا",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "The accusative object of \"tamliku,\" meaning \"anything,\" indicating that no soul controls a single thing for another."
+   },
+   {
+    "token": "وَٱلْأَمْرُ",
+    "case_en": "nominative",
+    "role_en": "subject of nominal sentence (mubtada')",
+    "note_en": "The \"wa\" begins a new clause and \"al-amr,\" the command or authority, is the nominative topic of the sentence."
+   },
+   {
+    "token": "يَوْمَئِذٍۢ",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf)",
+    "note_en": "An adverb of time built upon kasrah, meaning \"on that Day,\" specifying when the command belongs to Allah."
+   },
+   {
+    "token": "لِّلَّهِ",
+    "case_en": "genitive",
+    "role_en": "predicate (khabar)",
+    "note_en": "The phrase \"li-llah\" serves as the predicate of \"al-amr,\" affirming that the command belongs wholly to Allah."
+   }
+  ],
+  "irab_en": "The verse opens with \"yawma,\" an accusative adverb of time linking back to the Day of Recompense. The negative particle \"la\" negates the indicative imperfect verb \"tamliku\" (\"has power\"), whose subject is the indefinite nominative \"nafs\" (a soul). The prepositional phrase \"li-nafs\" (for another soul) attaches to the verb, while the accusative \"shay'an\" (anything) is its direct object, so the clause states that no soul controls anything at all for another. The conjunction \"wa\" then introduces a nominal sentence: \"al-amr\" (the command) is the nominative subject, \"yawma'idhin\" (on that Day) is an adverb of time built on kasrah, and \"li-llah\" is the predicate, declaring that all authority on that Day belongs to Allah alone.",
+  "faqs_en": [
+   {
+    "q": "Why is \"yawma\" in the accusative case?",
+    "a": "It is an adverb of time (zarf zaman), and such adverbs take the accusative; here it means \"the Day\" and connects this verse to the previously mentioned Day of Recompense."
+   },
+   {
+    "q": "What is the grammatical role of \"li-llah\" at the end?",
+    "a": "It is the predicate (khabar) of the subject \"al-amr.\" The nominal sentence affirms that the command and authority on that Day belong entirely to Allah."
+   },
+   {
+    "q": "Why does \"yawma'idhin\" carry a kasrah ending?",
+    "a": "It is an adverb of time built (mabni) upon kasrah because it is annexed to \"idh,\" which stands in for an elided, understood time-clause; it functions to specify \"on that Day.\""
+   }
+  ],
+  "uthmani": "يَوْمَ لَا تَمْلِكُ نَفْسٌۭ لِّنَفْسٍۢ شَيْـًۭٔا ۖ وَٱلْأَمْرُ يَوْمَئِذٍۢ لِّلَّهِ"
+ }
+}

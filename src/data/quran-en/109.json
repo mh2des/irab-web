@@ -1,0 +1,344 @@
+{
+ "109:1": {
+  "surah": 109,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah Al-Kafirun Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah is an imperative sentence: the verb \"qul\" (say) commands the addressee, with its subject an implied \"you.\" What follows is the quoted speech — a vocative call introduced by the particle \"ya.\" The vocative noun \"ayyuha\" is built on damma in an accusative position, and \"al-kafirun\" follows it as an explanatory appositive in nominative form.",
+  "translation_en": "Say: O you disbelievers.",
+  "transliteration": "Qul yā ayyuhā al-kāfirūn",
+  "words_en": [
+   {
+    "token": "قُلْ",
+    "case_en": "indeclinable",
+    "role_en": "imperative verb (fi'l amr)",
+    "note_en": "A command verb built on a silent ending (sukun), whose subject is a hidden pronoun meaning \"you\" (singular masculine)."
+   },
+   {
+    "token": "يَٰٓ",
+    "case_en": "indeclinable",
+    "role_en": "vocative particle (harf nida')",
+    "note_en": "A particle of calling that introduces the one being addressed and has no grammatical case of its own."
+   },
+   {
+    "token": "أَيُّهَا",
+    "case_en": "accusative (in position)",
+    "role_en": "vocative noun (munada)",
+    "note_en": "The called noun, a definite-by-intent term built on damma but occupying an accusative slot, with \"ha\" attached for emphasis."
+   },
+   {
+    "token": "ٱلْكَٰفِرُونَ",
+    "case_en": "nominative",
+    "role_en": "appositive / explanatory substitute (badal / 'atf bayan)",
+    "note_en": "It clarifies who is meant by \"ayyuha\" and takes the nominative ending (waw) to follow it in its outward form."
+   }
+  ],
+  "irab_en": "The ayah opens with \"qul,\" an imperative verb built on a silent ending, directed at the Prophet; its subject is a concealed pronoun understood as \"you.\" Everything after it forms the quoted statement that the verb introduces. That statement is a direct address: the particle \"ya\" signals a call and carries no case. The noun \"ayyuha\" is the one being summoned (munada); because it is a generic noun intended for a specific group, it is built on damma yet stands in an accusative position, and the suffixed \"ha\" reinforces the appeal. Finally, \"al-kafirun\" names the intended audience and functions as an appositive or explanatory clarifier of \"ayyuha,\" carrying the nominative marker (waw of the sound masculine plural) to agree with the outward form of the word it explains.",
+  "faqs_en": [
+   {
+    "q": "Why is \"al-kafirun\" in the nominative when the vocative is usually accusative?",
+    "a": "The actual called noun is \"ayyuha,\" which holds the accusative slot. \"Al-kafirun\" is not the called noun itself but an appositive that explains it; in this construction the explanatory noun after \"ayyuha\" follows the outward nominative form of \"ayy,\" so it takes the nominative waw."
+   },
+   {
+    "q": "What is the subject of the verb \"qul\"?",
+    "a": "There is no visible subject. The doer is a hidden (implied) pronoun understood as \"you,\" addressed to a single male listener — the standard pattern for a masculine singular imperative."
+   },
+   {
+    "q": "What grammatical role does the rest of the verse play after \"qul\"?",
+    "a": "Everything from \"ya ayyuha al-kafirun\" onward is the content of the command — the speech that is to be said. Functionally it stands as the object of \"qul,\" since an imperative of saying introduces the words to be uttered."
+   }
+  ],
+  "uthmani": "قُلْ يَٰٓأَيُّهَا ٱلْكَٰفِرُونَ"
+ },
+ "109:2": {
+  "surah": 109,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah Al-Kafirun Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "A short verbal sentence negated by laa: the imperfect verb a'budu carries a hidden \"I\" subject, and the relative noun maa serves as its fronted object. Maa heads a relative clause whose verb ta'buduna (\"you worship\") contains the omitted returning pronoun, completing the meaning \"what you worship.\"",
+  "translation_en": "I do not worship what you worship.",
+  "transliteration": "lā aʿbudu mā taʿbudūn",
+  "words_en": [
+   {
+    "token": "لَآ",
+    "case_en": "indeclinable",
+    "role_en": "negation particle (harf nafy)",
+    "note_en": "A particle of negation that has no grammatical case and simply negates the verb that follows it."
+   },
+   {
+    "token": "أَعْبُدُ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb with hidden subject",
+    "note_en": "An imperfect verb in the indicative (marfu') because nothing governs it otherwise, with its subject a concealed pronoun meaning \"I\"."
+   },
+   {
+    "token": "مَا",
+    "case_en": "accusative",
+    "role_en": "relative noun as object (maf'ul bih)",
+    "note_en": "An indeclinable relative noun fixed in the accusative place as the direct object of a'budu, with its returning pronoun omitted."
+   },
+   {
+    "token": "تَعْبُدُونَ",
+    "case_en": "nominative",
+    "role_en": "verb of the relative clause",
+    "note_en": "An imperfect verb kept in the indicative by the retained nun, with the attached waw as its subject, forming the relative clause of maa."
+   }
+  ],
+  "irab_en": "The verse is a verbal sentence opened by laa, a particle of pure negation that takes no case. The verb a'budu is imperfect and indicative (marfu'), since no nasb- or jazm-particle acts on it; its subject is a hidden pronoun understood as \"I.\" The relative noun maa is indeclinable but occupies the accusative position as the direct object of a'budu. The clause attached to maa is ta'buduna, an imperfect verb in the indicative marked by the surviving nun of the five verbs (al-af'al al-khamsa); the attached waw is its subject (\"you all\"). This clause is the relative clause (silat al-mawsul) and has no independent place in i'rab. The pronoun that should refer back to maa is suppressed, the meaning being \"what you worship.\"",
+  "faqs_en": [
+   {
+    "q": "Why is مَا treated as accusative when its ending never changes?",
+    "a": "مَا is a relative noun and is mabni (indeclinable), so its form is fixed. Grammarians describe it as being \"in the place of\" the accusative because it functions as the direct object of أَعْبُدُ, even though no visible case ending appears on it."
+   },
+   {
+    "q": "What keeps أَعْبُدُ and تَعْبُدُونَ in the indicative (marfu')?",
+    "a": "An imperfect verb stays indicative unless a nasb particle (like أَنْ) or a jazm particle (like لَمْ) governs it. Here لا is only negation and has no such effect on أَعْبُدُ, while تَعْبُدُونَ shows its indicative through the retained final nun of the five verbs."
+   },
+   {
+    "q": "What is the role of the clause مَا تَعْبُدُونَ together?",
+    "a": "تَعْبُدُونَ forms the relative clause (silat al-mawsul) that completes the meaning of مَا. The returning pronoun (the 'a'id) linking the clause back to مَا is omitted, so the phrase means \"what you worship\" and serves as one object of أَعْبُدُ."
+   }
+  ],
+  "uthmani": "لَآ أَعْبُدُ مَا تَعْبُدُونَ"
+ },
+ "109:3": {
+  "surah": 109,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah Al-Kafirun Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is a nominal sentence joined by the conjunction wa. The negative laa here is non-governing (muhmalah), so it has no grammatical effect. Antum is the subject (mubtada'), and the active participle 'aabiduuna is its predicate (khabar). The relative noun maa functions as the object of 'aabiduuna, with its own verbal clause following.",
+  "translation_en": "And you are not worshippers of what I worship.",
+  "transliteration": "wa laa antum 'aabiduuna maa a'bud",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "This is the connecting particle wa, linking this sentence to the previous verse."
+   },
+   {
+    "token": "لَآ",
+    "case_en": "indeclinable",
+    "role_en": "negating particle (laa naafiyah muhmalah)",
+    "note_en": "A negating particle that here exerts no grammatical effect on what follows, simply negating the nominal sentence."
+   },
+   {
+    "token": "أَنتُمْ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "A detached pronoun built on the sukun, occupying the place of nominative as the subject of the nominal sentence."
+   },
+   {
+    "token": "عَٰبِدُونَ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "An active participle serving as the predicate, marked nominative by the letter waaw because it is a sound masculine plural."
+   },
+   {
+    "token": "مَآ",
+    "case_en": "accusative",
+    "role_en": "direct object (maf'ul bihi)",
+    "note_en": "A relative noun built on the sukun, in the place of accusative as the object of the participle 'aabiduuna."
+   },
+   {
+    "token": "أَعْبُدُ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb in the relative clause (silah)",
+    "note_en": "An imperfect verb marked nominative, with a concealed subject (I); the relative clause has no place in i'rab."
+   }
+  ],
+  "irab_en": "The verse opens with the conjunction wa, joining it to the preceding statement, followed by the negating particle laa. This laa is non-governing (muhmalah): it negates the sentence but does not alter the endings of the words after it. The sentence is therefore nominal. The detached pronoun antum is the subject (mubtada'), built on the sukun and standing in the place of nominative. The active participle 'aabiduuna is its predicate (khabar), taking nominative form through the letter waaw since it is a sound masculine plural. The relative noun maa, built on the sukun and in the place of accusative, is the direct object governed by the participle. The imperfect verb a'bud (nominative, with an implied I as subject) forms the relative clause that completes the meaning of maa and has no grammatical place of its own.",
+  "faqs_en": [
+   {
+    "q": "Why does laa in this verse not change the case of the words after it?",
+    "a": "The laa here is laa naafiyah muhmalah, a non-governing negating particle. Unlike laa of absolute negation (laa naafiyah lil-jins) or a verb-negating laa, this one simply negates the nominal sentence and leaves the subject and predicate in their normal nominative state."
+   },
+   {
+    "q": "What is the predicate (khabar) of this nominal sentence?",
+    "a": "The predicate is the active participle 'aabiduuna (worshippers). Because it is a sound masculine plural, it shows the nominative case through the letter waaw rather than a dammah, agreeing with the subject antum."
+   },
+   {
+    "q": "What role does maa play and how is it parsed?",
+    "a": "Maa is a relative noun (ism mawsul) functioning as the direct object of the participle 'aabiduuna. It is built on the sukun and stands in the place of accusative; the verb a'bud after it forms its relative clause (silah)."
+   }
+  ],
+  "uthmani": "وَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ"
+ },
+ "109:4": {
+  "surah": 109,
+  "ayah": 4,
+  "h1_en": "Irab of Surah Al-Kafirun Ayah 4 - word-by-word Arabic grammar",
+  "tldr_en": "This verse is a negated nominal sentence. The particle la negates, ana is the subject (mubtada), and the active participle abidun is the predicate (khabar). The relative noun ma functions as the object of that participle, and the past-tense verb abadtum with its attached subject pronoun forms the relative clause, whose returning pronoun is omitted.",
+  "translation_en": "And I am not a worshipper of what you have worshipped.",
+  "transliteration": "wa la ana abidun ma abadtum",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "coordinating conjunction (harf atf)",
+    "note_en": "The waw joins this sentence to the preceding verse, continuing the parallel sequence of negations."
+   },
+   {
+    "token": "لَآ",
+    "case_en": "indeclinable",
+    "role_en": "negating particle (harf nafy)",
+    "note_en": "This la negates the nominal sentence and, being non-operative here, leaves the following nouns in their normal state."
+   },
+   {
+    "token": "أَنَا۠",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada)",
+    "note_en": "A detached first-person pronoun, built on sukun but holding the place of nominative as the subject of the sentence."
+   },
+   {
+    "token": "عَابِدٌۭ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar) - active participle",
+    "note_en": "An active participle serving as the predicate, marked nominative by the visible dammah and governing the following object like a verb."
+   },
+   {
+    "token": "مَّا",
+    "case_en": "accusative",
+    "role_en": "object of the participle (maful bihi)",
+    "note_en": "A relative noun built on sukun, occupying an accusative position as the object governed by the participle abid."
+   },
+   {
+    "token": "عَبَدتُّمْ",
+    "case_en": "indeclinable",
+    "role_en": "verb + subject of the relative clause (silat al-mawsul)",
+    "note_en": "A past-tense verb built on sukun because it is joined to the subject pronoun tum; the clause is the relatives link, its returning pronoun omitted."
+   }
+  ],
+  "irab_en": "The verse opens with the conjunction waw, tying it to the previous ayah and sustaining the rhythm of repeated denial. The particle la is purely negating and, unlike inna or its sisters, exerts no grammatical effect on what follows. Ana is a detached pronoun functioning as the subject (mubtada); though built on sukun, it stands in the nominative position. The active participle abidun is the predicate (khabar), clearly nominative by its dammah, and like a verb it takes an object. That object is the relative noun ma, which sits in an accusative position even while built on sukun. The past-tense verb abadtum carries an attached subject pronoun (tum), and together they form the relative clause completing ma; the pronoun referring back to ma is understood and dropped for concision.",
+  "faqs_en": [
+   {
+    "q": "Why does the negating particle la not change the case of ana and abidun?",
+    "a": "This is the ordinary negating la used before a nominal sentence; here it is non-operative, so it simply negates the meaning while the subject and predicate keep their normal nominative state. It is not la of absolute negation, which would build a following indefinite noun on fathah."
+   },
+   {
+    "q": "How can abidun (a noun) take ma as a direct object?",
+    "a": "Abidun is an active participle (ism al-fail), and an active participle behaves like its underlying verb: it can govern an object. So just as the verb I worship would take an object, the participle a worshipper (of) governs ma in the accusative position."
+   },
+   {
+    "q": "Where is the returning pronoun (aid) in the relative clause abadtum?",
+    "a": "The relative noun ma needs a pronoun in its clause referring back to it; the full sense is what you have worshipped (it). That pronoun, the object of abadtum, is omitted for brevity, which is common and permissible when the meaning is clear."
+   }
+  ],
+  "uthmani": "وَلَآ أَنَا۠ عَابِدٌۭ مَّا عَبَدتُّمْ"
+ },
+ "109:5": {
+  "surah": 109,
+  "ayah": 5,
+  "h1_en": "I'rab of Surah Al-Kafirun Ayah 5 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is a nominal sentence introduced by a connecting waw. After a non-operative negative laa, \"antum\" is the subject (mubtada') and the active participle \"aabidoona\" is its predicate (khabar). The relative noun \"maa\" sits in the accusative as the object of that participle, and \"a'budu\" forms its relative clause.",
+  "translation_en": "And you are not worshippers of what I worship.",
+  "transliteration": "Wa laa antum 'aabidoona maa a'bud.",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "coordinating conjunction (harf 'atf)",
+    "note_en": "This connecting waw links the verse to the preceding statement, joining one negation to another."
+   },
+   {
+    "token": "لَآ",
+    "case_en": "indeclinable",
+    "role_en": "negative particle (harf nafy muhmal)",
+    "note_en": "A negating laa that here has no governing effect on the words after it, simply denying the predication."
+   },
+   {
+    "token": "أَنتُمْ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "A detached pronoun built on sukun, occupying the place of nominative as the subject of the nominal sentence."
+   },
+   {
+    "token": "عَٰبِدُونَ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "An active participle serving as the predicate, marked nominative by the waw because it is a sound masculine plural."
+   },
+   {
+    "token": "مَآ",
+    "case_en": "accusative",
+    "role_en": "object of the participle (maf'ul bihi)",
+    "note_en": "A relative noun fixed in form, holding the place of accusative as the object governed by the participle 'aabidoona."
+   },
+   {
+    "token": "أَعْبُدُ",
+    "case_en": "nominative",
+    "role_en": "verb of the relative clause (sila)",
+    "note_en": "An imperfect verb in the indicative with a hidden subject (I), forming the relative clause of maa with an omitted returning pronoun."
+   }
+  ],
+  "irab_en": "The verse opens with the conjunction waw, joining it to the prior negation, followed by the negating laa, which here is non-operative and merely denies what comes next. \"Antum\" is a detached pronoun fixed on sukun, standing in the nominative position as the subject (mubtada') of a nominal sentence. \"Aabidoona,\" an active participle, is its predicate (khabar) and takes nominative marking through the waw, since it is a sound masculine plural. The relative noun \"maa\" stands in the accusative position as the object of the participle, which, like a verb, governs an object. \"A'budu\" is an indicative imperfect verb whose doer is a concealed pronoun (I); this verb and its hidden returning pronoun form the relative clause completing \"maa.\" The wording exactly mirrors ayah three.",
+  "faqs_en": [
+   {
+    "q": "Why does the negative particle laa not change the ending of antum?",
+    "a": "Here laa is muhmala, meaning non-operative. Unlike laa of absolute negation, it carries no governing power; it simply negates the nominal sentence while antum stays nominative as the ordinary subject."
+   },
+   {
+    "q": "How can the participle 'aabidoona take an object like a verb?",
+    "a": "An active participle (ism faa'il) shares the action-meaning of its verb, so it can govern an object. Thus 'aabidoona puts the relative noun maa in the accusative as its object, just as the verb 'to worship' would."
+   },
+   {
+    "q": "What is the grammatical role of maa and a'budu together?",
+    "a": "Maa is a relative noun in the accusative as the object of the participle. The verb a'budu, with its hidden subject and an omitted returning pronoun, forms the relative clause (sila) that completes the meaning of maa."
+   }
+  ],
+  "uthmani": "وَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ"
+ },
+ "109:6": {
+  "surah": 109,
+  "ayah": 6,
+  "h1_en": "I'rab of Surah Al-Kafirun Ayah 6 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is two parallel nominal sentences. In each, a fronted prepositional phrase (lakum / liya) serves as a preposed predicate (khabar muqaddam), and the following noun (dinukum / din) is the delayed subject (mubtada' mu'akhkhar). The waw joins the two clauses. The fronting gives the sense of specification and contrast.",
+  "translation_en": "For you is your religion, and for me is my religion.",
+  "transliteration": "Lakum dīnukum wa-liya dīn(i)",
+  "words_en": [
+   {
+    "token": "لَكُمْ",
+    "case_en": "genitive",
+    "role_en": "preposed predicate (khabar muqaddam)",
+    "note_en": "The preposition lam plus the attached pronoun kum forms a prepositional phrase that stands as the fronted predicate of the nominal sentence."
+   },
+   {
+    "token": "دِينُكُمْ",
+    "case_en": "nominative",
+    "role_en": "delayed subject (mubtada' mu'akhkhar)",
+    "note_en": "This is the delayed subject in the nominative, marked by the damma, and it is in a genitive construct (idafa) with the attached pronoun kum meaning 'your'."
+   },
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The waw is a coordinating particle linking the second nominal sentence to the first."
+   },
+   {
+    "token": "لِيَ",
+    "case_en": "genitive",
+    "role_en": "preposed predicate (khabar muqaddam)",
+    "note_en": "The preposition lam with the first-person pronoun ya forms a prepositional phrase serving as the fronted predicate of the second clause."
+   },
+   {
+    "token": "دِينِ",
+    "case_en": "nominative",
+    "role_en": "delayed subject (mubtada' mu'akhkhar)",
+    "note_en": "This is the delayed subject, formally nominative; its damma is estimated on the consonant before the lightened (dropped) ya of possession ('my religion')."
+   }
+  ],
+  "irab_en": "The verse consists of two balanced nominal sentences joined by the conjunction waw. In the first, لَكُمْ — the preposition lam with the attached pronoun kum — is a prepositional phrase functioning as a fronted predicate (khabar muqaddam), while دِينُكُمْ is the delayed subject (mubtada' mu'akhkhar) in the nominative, marked by a clear damma, and joined to the pronoun kum in a genitive construct. The second clause mirrors the first: لِيَ is the fronted predicate, and دِينِ is the delayed subject, nominative in status though its ending is not pronounced — the original ya of possession is dropped for lightness, so the damma is merely estimated on the preceding letter. Fronting the predicates conveys restriction and emphatic contrast between the two parties.",
+  "faqs_en": [
+   {
+    "q": "Why is the prepositional phrase placed before the subject in this verse?",
+    "a": "In both clauses the predicate (lakum, liya) is a prepositional phrase brought forward before the subject. This fronting is deliberate: it produces the sense of restriction and sharp contrast — 'yours alone for you, mine alone for me' — which fits the verse's theme of separating the two faiths."
+   },
+   {
+    "q": "Why does دِينِ not show a visible case ending?",
+    "a": "دِينِ is grammatically the nominative subject, but it originally ended in the possessive ya ('my'). That ya has been dropped for lightness, leaving only a kasra to indicate it. The nominative damma is therefore not pronounced; it is an estimated (muqaddar) ending on the letter before the omitted ya."
+   },
+   {
+    "q": "What is the role of the waw in the middle of the verse?",
+    "a": "The waw is a coordinating conjunction (harf 'atf). It links the second complete nominal sentence (liya din) to the first (lakum dinukum), placing the two statements in parallel and reinforcing the contrast between them."
+   }
+  ],
+  "uthmani": "لَكُمْ دِينُكُمْ وَلِىَ دِينِ"
+ }
+}

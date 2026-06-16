@@ -1,0 +1,1324 @@
+{
+ "81:1": {
+  "surah": 81,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "This opening verse begins a long chain of conditional clauses describing the Day of Judgment. The adverb idha sets up the condition, ash-shams (the sun) is the grammatical subject of an implied verb explained by the following verb kuwwirat (was wound up/folded), which is a passive past-tense verb. The full answer to all these conditions arrives later in verse 14.",
+  "translation_en": "When the sun is wrapped up and darkened,",
+  "transliteration": "Idha ash-shamsu kuwwirat",
+  "words_en": [
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "future time adverb (zarf) of condition",
+    "note_en": "A conditional time adverb in the accusative place, governed by the delayed main answer (jawab) that comes in verse 14."
+   },
+   {
+    "token": "ٱلشَّمْسُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il) of an implied verb",
+    "note_en": "It stands as the doer of an omitted verb that the following passive verb explains and interprets."
+   },
+   {
+    "token": "كُوِّرَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb with the tied feminine ta",
+    "note_en": "A passive past verb meaning the sun was wound up and its light extinguished; the attached ta marks a feminine subject."
+   }
+  ],
+  "irab_en": "The verse opens with idha, a time adverb pointing to the future and carrying conditional force; grammarians treat it as fixed in an accusative position linked to the long-delayed main clause (the answer) that appears in verse 14. After this adverb the noun ash-shams appears in the nominative. Because Arabic idiom expects a verb directly after idha, the noun is parsed as the subject (fa'il) of an unstated verb, and the explicit passive verb that follows interprets that hidden verb. Kuwwirat is a passive past-tense verb built on the pattern fu''ila, conveying that the sun is wound up like a turban and its light removed. The tied feminine ta agrees with the feminine subject. The whole sentence is interpretive and holds no place in i'rab itself.",
+  "faqs_en": [
+   {
+    "q": "Why is ash-shams nominative rather than the object of idha?",
+    "a": "Idha governs verbs, not nouns, so the noun after it is read as the subject of a hidden verb; the visible passive verb kuwwirat then explains that omitted verb."
+   },
+   {
+    "q": "Where is the main clause that answers idha?",
+    "a": "All the conditional clauses from verses 1 to 13 share one answer, which is delayed until verse 14: 'each soul shall know what it has brought.'"
+   }
+  ],
+  "uthmani": "إِذَا ٱلشَّمْسُ كُوِّرَتْ"
+ },
+ "81:2": {
+  "surah": 81,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "Joined by the conjunction wa to the previous condition, this verse follows the identical pattern. Idha is a future time adverb of condition, an-nujum (the stars) is the nominative subject of an implied verb interpreted by inkadarat (fell, lost their light). All these clauses await their single answer in verse 14.",
+  "translation_en": "and when the stars fall and lose their light,",
+  "transliteration": "Wa idha an-nujumu ankadarat",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The conjunction wa links this conditional clause to the one before it."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "future time adverb (zarf) of condition",
+    "note_en": "A conditional time adverb in the accusative place, attached to the same delayed answer as the previous verse."
+   },
+   {
+    "token": "ٱلنُّجُومُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il) of an implied verb",
+    "note_en": "It is the doer of an omitted verb that the following verb explains."
+   },
+   {
+    "token": "ٱنكَدَرَتْ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb with the tied feminine ta",
+    "note_en": "A past verb of the inkadara pattern meaning the stars fell scattered and dimmed; the ta agrees with the feminine subject."
+   }
+  ],
+  "irab_en": "The verse begins with the conjunction wa, which joins this conditional clause to the chain started in verse 1. Idha again functions as a future time adverb carrying conditional meaning, fixed in an accusative position connected to the shared answer in verse 14. The noun an-nujum is nominative and, following the rule that idha is followed by verbs, is parsed as the subject of an unstated verb interpreted by what comes after. Inkadarat is an active intransitive past-tense verb on the form VII (infa'ala) pattern, describing the stars falling, scattering, and being effaced. The tied feminine ta agrees with the feminine plural noun treated as a single feminine entity. The interpreting sentence has no grammatical position of its own.",
+  "faqs_en": [
+   {
+    "q": "What does the wa at the start signal?",
+    "a": "It is a conjunction joining this idha clause to the previous one, so all the conditions accumulate before reaching their one answer in verse 14."
+   },
+   {
+    "q": "Is inkadarat passive like kuwwirat?",
+    "a": "No; inkadarat is built on an active intransitive pattern (the stars themselves fell and dimmed), unlike the passive kuwwirat in verse 1."
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلنُّجُومُ ٱنكَدَرَتْ"
+ },
+ "81:3": {
+  "surah": 81,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "Continuing the chain with the conjunction wa, this verse keeps the same grammatical shape. Idha is a future conditional time adverb, al-jibal (the mountains) is the nominative subject of an implied verb made explicit by the passive verb suyyirat (were set in motion). The single answer to the whole sequence still lies ahead in verse 14.",
+  "translation_en": "and when the mountains are set moving,",
+  "transliteration": "Wa idha al-jibalu suyyirat",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The conjunction wa connects this condition to the preceding ones."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "future time adverb (zarf) of condition",
+    "note_en": "A conditional time adverb in the accusative place, tied to the same delayed answer."
+   },
+   {
+    "token": "ٱلْجِبَالُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il) of an implied verb",
+    "note_en": "It is the doer of an omitted verb explained by the verb that follows."
+   },
+   {
+    "token": "سُيِّرَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb with the tied feminine ta",
+    "note_en": "A passive past verb meaning the mountains were made to move and pass away; the ta agrees with the feminine subject."
+   }
+  ],
+  "irab_en": "The verse is linked by wa to the running list of conditions. Idha serves as a future-pointing time adverb with conditional force, held in an accusative position and connected to the answer delayed to verse 14. Al-jibal stands in the nominative; since idha calls for a verb, the noun is analyzed as the subject of an omitted verb that the following passive verb interprets. Suyyirat is a passive past-tense verb on the fu''ila pattern, conveying that the mountains are set moving, uprooted, and scattered like dust. The tied feminine ta agrees with the broken-plural noun treated as feminine. As with its sister clauses, the explanatory sentence carries no independent place in parsing and simply unpacks the hidden verb.",
+  "faqs_en": [
+   {
+    "q": "Why is the verb suyyirat passive?",
+    "a": "The doubled middle root with the fu''ila vowel pattern marks it passive: the mountains do not move themselves but are made to move by an unnamed agent."
+   },
+   {
+    "q": "Why does the verb end in a silent feminine ta?",
+    "a": "Al-jibal is a broken plural treated grammatically as a single feminine noun, so the verb takes the feminine ta of agreement."
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلْجِبَالُ سُيِّرَتْ"
+ },
+ "81:4": {
+  "surah": 81,
+  "ayah": 4,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 4 — word-by-word Arabic grammar",
+  "tldr_en": "Another link in the conditional chain joined by wa. Idha is a future conditional time adverb, al-'ishar (the pregnant she-camels) is the nominative subject of an implied verb interpreted by the passive verb 'uttilat (were left untended). The shared answer for all these conditions still comes in verse 14.",
+  "translation_en": "and when the pregnant she-camels are left untended,",
+  "transliteration": "Wa idha al-'isharu 'uttilat",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The conjunction wa joins this clause to the earlier conditions."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "future time adverb (zarf) of condition",
+    "note_en": "A conditional time adverb in the accusative place, linked to the same delayed answer."
+   },
+   {
+    "token": "ٱلْعِشَارُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il) of an implied verb",
+    "note_en": "Referring to ten-month pregnant she-camels, it is the doer of an omitted verb made explicit by what follows."
+   },
+   {
+    "token": "عُطِّلَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb with the tied feminine ta",
+    "note_en": "A passive past verb meaning the prized she-camels were abandoned and left unattended; the ta agrees with the feminine subject."
+   }
+  ],
+  "irab_en": "The verse opens with the conjunction wa, continuing the chain of conditions. Idha is a future time adverb carrying conditional meaning, fixed in an accusative position connected to the answer that arrives only in verse 14. Al-'ishar, the most valuable of pregnant she-camels, appears in the nominative and is parsed as the subject of an unstated verb because idha is normally followed by a verb; the explicit passive verb then interprets that hidden verb. 'Uttilat is a passive past-tense verb on the fu''ila pattern, conveying that these treasured animals are neglected and left without a herder, an image of total upheaval when even the most prized property is forsaken. The tied feminine ta agrees with the plural noun treated as feminine, and the explanatory clause has no place in i'rab.",
+  "faqs_en": [
+   {
+    "q": "What grammatical role does al-'ishar play?",
+    "a": "It is the subject (fa'il) of an omitted verb; the following passive verb 'uttilat explains that hidden verb and shows the camels are the ones left untended."
+   },
+   {
+    "q": "Does the imagery affect the grammar?",
+    "a": "No; regardless of the vivid meaning, the parsing follows the fixed idha pattern: time adverb, nominative subject of a hidden verb, then the interpreting passive verb."
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلْعِشَارُ عُطِّلَتْ"
+ },
+ "81:5": {
+  "surah": 81,
+  "ayah": 5,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 5 — word-by-word Arabic grammar",
+  "tldr_en": "Joined again by wa, this verse repeats the established pattern. Idha is a future conditional time adverb, al-wuhush (the wild beasts) is the nominative subject of an implied verb interpreted by the passive verb hushirat (were gathered together). The single answer for the whole sequence still waits in verse 14.",
+  "translation_en": "and when the wild beasts are gathered together,",
+  "transliteration": "Wa idha al-wuhushu hushirat",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The conjunction wa connects this condition to the previous ones."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "future time adverb (zarf) of condition",
+    "note_en": "A conditional time adverb in the accusative place, tied to the same delayed answer."
+   },
+   {
+    "token": "ٱلْوُحُوشُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il) of an implied verb",
+    "note_en": "It is the doer of an omitted verb that the following verb explains."
+   },
+   {
+    "token": "حُشِرَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb with the tied feminine ta",
+    "note_en": "A passive past verb meaning the wild animals were gathered and herded together; the ta agrees with the feminine subject."
+   }
+  ],
+  "irab_en": "The verse is joined by wa to the accumulating conditions. Idha again acts as a future-oriented time adverb with conditional force, held in an accusative position linked to the answer delayed until verse 14. Al-wuhush, the wild beasts, is nominative and, by the rule that idha is followed by a verb, is read as the subject of an omitted verb interpreted by what comes next. Hushirat is a passive past-tense verb on the fu'ila pattern, meaning the wild animals are mustered and driven together, an extraordinary scene since such creatures normally scatter from one another. The tied feminine ta agrees with the broken-plural noun treated as a single feminine subject. The interpreting sentence, like the others in this passage, carries no grammatical position of its own.",
+  "faqs_en": [
+   {
+    "q": "Why is hushirat parsed as passive?",
+    "a": "Its vowel pattern (hushirat, not hasharat) is the passive of the verb hashara; the beasts are gathered by an unnamed agent rather than gathering themselves."
+   },
+   {
+    "q": "Why does the noun precede the explanatory verb here?",
+    "a": "Idha grammatically requires a verb after it, so the noun is taken as the subject of a hidden verb, and the visible passive verb then interprets that hidden verb."
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلْوُحُوشُ حُشِرَتْ"
+ },
+ "81:6": {
+  "surah": 81,
+  "ayah": 6,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 6 — word-by-word Arabic grammar",
+  "tldr_en": "The conditional chain continues with wa. Idha is a future conditional time adverb, al-bihar (the seas) is the nominative subject of an implied verb interpreted by the passive verb sujjirat (were set ablaze or made to overflow). The whole sequence of conditions still points forward to its single answer in verse 14.",
+  "translation_en": "and when the seas are set ablaze and made to surge,",
+  "transliteration": "Wa idha al-biharu sujjirat",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "The conjunction wa links this condition to the preceding chain."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "future time adverb (zarf) of condition",
+    "note_en": "A conditional time adverb in the accusative place, connected to the same delayed answer."
+   },
+   {
+    "token": "ٱلْبِحَارُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il) of an implied verb",
+    "note_en": "It is the doer of an omitted verb explained by the verb that follows."
+   },
+   {
+    "token": "سُجِّرَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb with the tied feminine ta",
+    "note_en": "A passive past verb meaning the seas were kindled into fire or made to swell and overflow; the ta agrees with the feminine subject."
+   }
+  ],
+  "irab_en": "The verse begins with wa, continuing the running list of conditions that describe the Day of Judgment. Idha is a future time adverb carrying conditional meaning, fixed in an accusative position connected to the answer that finally appears in verse 14. Al-bihar is nominative and, following the principle that idha is followed by a verb, is parsed as the subject of an omitted verb interpreted by the verb after it. Sujjirat is a passive past-tense verb on the fu''ila pattern; commentators read it as the seas being set ablaze with fire or made to swell, overflow, and merge. The tied feminine ta agrees with the broken-plural noun treated as feminine. This is the last of the first block of conditions, and like its sisters the explanatory clause has no independent place in parsing.",
+  "faqs_en": [
+   {
+    "q": "What does sujjirat mean grammatically and lexically?",
+    "a": "Grammatically it is a passive past verb (fu''ila pattern); lexically it carries the senses of being set on fire and of being made to swell or overflow."
+   },
+   {
+    "q": "Have all six conditions shared one answer?",
+    "a": "Yes; verses 1 through 13 are parallel idha clauses, and they all hang on the single answer delivered in verse 14, 'a soul will know what it has prepared.'"
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلْبِحَارُ سُجِّرَتْ"
+ },
+ "81:7": {
+  "surah": 81,
+  "ayah": 7,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 7 — word-by-word Arabic grammar",
+  "tldr_en": "This is the seventh in a long chain of conditional clauses introduced by idha (\"when\"). The verb zuwwijat is a passive past-tense verb meaning \"are paired/joined.\" Grammatically, an-nufus (\"the souls\") functions as the doer (na'ib al-fa'il) of this passive verb. The whole idha-clause is adverbial, attached to the eventual main answer in verse 14.",
+  "translation_en": "And when the souls are paired up,",
+  "transliteration": "wa-idha n-nufusu zuwwijat",
+  "words_en": [
+   {
+    "token": "وَإِذَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + adverbial time particle (zarf)",
+    "note_en": "The wa is a connector linking this clause to the previous conditions, and idha is a future-time adverb attached to the delayed main answer of the passage."
+   },
+   {
+    "token": "ٱلنُّفُوسُ",
+    "case_en": "nominative",
+    "role_en": "subject / doer of the upcoming verb (na'ib al-fa'il)",
+    "note_en": "A noun in the nominative that grammarians treat as the doer of the passive verb that follows it within the idha-clause."
+   },
+   {
+    "token": "زُوِّجَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb",
+    "note_en": "A built (mabni) past-tense passive verb with an-nufus as its grammatical subject; the final ta' marks feminine agreement."
+   }
+  ],
+  "irab_en": "Verse 7 is one link in the extended series of idha-clauses that runs from verse 1 to verse 13, all awaiting the answer in verse 14. The wa is a coordinating particle (harf 'atf) tying this condition to those before it. Idha is an adverb of future time (zarf li-l-mustaqbal), built and held in the accusative position, and it is ultimately linked to the main clause that the whole sequence anticipates. The noun an-nufus stands in the nominative as the doer (here the deputy-doer of a passive verb). The verb zuwwijat is a past-tense passive: it is built (mabni) on its ending, the doubled middle radical signals the intensive pattern, and the trailing ta' as-sakinah indicates feminine agreement with an-nufus. The verbal clause as a whole carries no case position because it explains the time-frame.",
+  "faqs_en": [
+   {
+    "q": "Why is زُوِّجَتْ called a passive verb?",
+    "a": "Its internal vowel pattern (with a damma on the first letter and kasra before the last) is the standard sign of the passive (al-mabni li-l-majhul); the original active doer is unnamed, so the object an-nufus is promoted to grammatical subject."
+   },
+   {
+    "q": "What does the idha-clause connect to grammatically?",
+    "a": "It is adverbial and attached to the eventual main answer of the passage, which arrives in verse 14 ('a soul will know what it has brought forward'); all the idha-clauses from verses 1-13 share that single answer."
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلنُّفُوسُ زُوِّجَتْ"
+ },
+ "81:8": {
+  "surah": 81,
+  "ayah": 8,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 8 — word-by-word Arabic grammar",
+  "tldr_en": "Another idha-conditional in the chain. The noun al-maw'udah (\"the buried infant girl\") is the grammatical subject (deputy-doer) of the passive verb su'ilat (\"is asked\"). The whole clause remains adverbial, still pointing forward to the delayed main answer in verse 14, like every idha-clause before it.",
+  "translation_en": "And when the buried infant girl is asked,",
+  "transliteration": "wa-idha l-maw'udatu su'ilat",
+  "words_en": [
+   {
+    "token": "وَإِذَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + adverbial time particle (zarf)",
+    "note_en": "The wa coordinates this condition with the preceding ones, and idha is a future-time adverb linked to the passage's delayed main answer."
+   },
+   {
+    "token": "ٱلْمَوْءُۥدَةُ",
+    "case_en": "nominative",
+    "role_en": "subject / deputy-doer (na'ib al-fa'il)",
+    "note_en": "A nominative noun (a passive participle used as a noun, 'the one buried alive') serving as the grammatical subject of the passive verb that follows."
+   },
+   {
+    "token": "سُئِلَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb",
+    "note_en": "A built past-tense passive verb meaning 'was/is asked,' with al-maw'udah as its subject and the final ta' marking feminine agreement."
+   }
+  ],
+  "irab_en": "This verse repeats the structure of the surrounding idha-clauses. The wa is a coordinating particle joining this condition to those that precede it. Idha is a future-time adverb (zarf li-l-mustaqbal), built and occupying the accusative position, and it is linked to the delayed main answer of the whole passage. Al-maw'udah is a noun in the nominative serving as the deputy-doer (na'ib al-fa'il) of the passive verb that follows; it is itself a passive participle (the female infant who was buried alive in pre-Islamic Arabia) functioning here as a definite noun. The verb su'ilat is a past-tense passive, built on its ending, with the kasra on the second radical signaling the passive voice, and the trailing quiescent ta' indicating feminine agreement. The verbal clause has no syntactic case position; it merely fills out the time-frame of the condition.",
+  "faqs_en": [
+   {
+    "q": "What is the grammatical role of ٱلْمَوْءُۥدَةُ?",
+    "a": "It is the deputy-doer (na'ib al-fa'il) of the passive verb su'ilat, standing in the nominative case as the one to whom the questioning is directed."
+   },
+   {
+    "q": "Is ٱلْمَوْءُۥدَةُ a verb or a noun?",
+    "a": "It is a passive participle (ism maf'ul) used as a definite noun, meaning 'the buried-alive girl,' and it takes the nominative as the subject of the clause."
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلْمَوْءُۥدَةُ سُئِلَتْ"
+ },
+ "81:9": {
+  "surah": 81,
+  "ayah": 9,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 9 — word-by-word Arabic grammar",
+  "tldr_en": "This is the quoted question put to the buried girl in verse 8. The prepositional phrase bi-ayyi dhanb (\"for what sin\") attaches to the passive verb qutilat (\"she was killed\"). The ba' here conveys cause (\"because of\"). The whole verse forms the content of what is asked, so it has no independent case position.",
+  "translation_en": "for what sin she was killed.",
+  "transliteration": "bi-ayyi dhanbin qutilat",
+  "words_en": [
+   {
+    "token": "بِأَىِّ",
+    "case_en": "genitive",
+    "role_en": "preposition + interrogative noun governed in the genitive",
+    "note_en": "The ba' is a causal preposition and ayy is an interrogative noun in the genitive after it; the phrase links to the verb qutilat."
+   },
+   {
+    "token": "ذَنۢبٍۢ",
+    "case_en": "genitive",
+    "role_en": "second term of the construct (mudaf ilayh)",
+    "note_en": "A noun in the genitive completing the construct with ayy, giving the sense 'what (kind of) sin.'"
+   },
+   {
+    "token": "قُتِلَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb",
+    "note_en": "A built past-tense passive verb meaning 'she was killed,' with the final ta' agreeing with the feminine subject of the previous verse."
+   }
+  ],
+  "irab_en": "This verse states the very question posed to the buried infant girl in verse 8. The ba' is a preposition here carrying a causal sense (sababiyyah), 'because of / for the sake of.' Ayy is an interrogative noun (ism istifham), placed in the genitive as the object of the preposition, and the whole prepositional phrase bi-ayyi dhanb is attached to the verb qutilat at the end. Dhanb is in the genitive as the second term of the construct (mudaf ilayh) governed by ayy. The verb qutilat is a past-tense passive ('she was killed'), built on its ending, with the kasra before the final radical marking the passive and the quiescent ta' indicating feminine agreement with the subject understood from al-maw'udah. The clause reports the content of the questioning and so carries no independent case position.",
+  "faqs_en": [
+   {
+    "q": "What does the ba' in بِأَىِّ mean here?",
+    "a": "It is causal (sababiyyah), conveying 'for what reason / because of what sin'; it governs the interrogative ayy in the genitive and connects the question to the verb qutilat."
+   },
+   {
+    "q": "Why does قُتِلَتْ end in ta'?",
+    "a": "The quiescent feminine ta' (ta' at-ta'nith as-sakinah) shows agreement with the feminine subject carried over from verse 8, the buried infant girl."
+   }
+  ],
+  "uthmani": "بِأَىِّ ذَنۢبٍۢ قُتِلَتْ"
+ },
+ "81:10": {
+  "surah": 81,
+  "ayah": 10,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 10 — word-by-word Arabic grammar",
+  "tldr_en": "Back to the idha-chain. The noun as-suhuf (\"the scrolls/records\") is the grammatical subject (deputy-doer) of the passive verb nushirat (\"are spread open\"). The clause remains adverbial, still awaiting the single main answer that closes the sequence in verse 14.",
+  "translation_en": "And when the scrolls are laid open,",
+  "transliteration": "wa-idha s-suhufu nushirat",
+  "words_en": [
+   {
+    "token": "وَإِذَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + adverbial time particle (zarf)",
+    "note_en": "The wa coordinates this condition with the others, and idha is a future-time adverb linked to the delayed main answer of the passage."
+   },
+   {
+    "token": "ٱلصُّحُفُ",
+    "case_en": "nominative",
+    "role_en": "subject / deputy-doer (na'ib al-fa'il)",
+    "note_en": "A nominative plural noun ('the scrolls/records') functioning as the grammatical subject of the passive verb that follows."
+   },
+   {
+    "token": "نُشِرَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb",
+    "note_en": "A built past-tense passive verb meaning 'are spread/laid open,' with as-suhuf as its subject and the final ta' marking feminine agreement with the plural."
+   }
+  ],
+  "irab_en": "This verse continues the long sequence of idha-clauses. The wa is a coordinating particle tying this condition to those before it. Idha is a future-time adverb (zarf li-l-mustaqbal), built and held in the accusative position, linked to the delayed main answer of the whole passage. As-suhuf is a noun in the nominative serving as the deputy-doer (na'ib al-fa'il) of the passive verb that follows it; it is a broken plural of sahifah, 'a page or record.' The verb nushirat is a past-tense passive ('are unrolled / spread open'), built on its ending, with the damma on the first letter and kasra before the last marking the passive, and the trailing quiescent ta' showing feminine agreement, which Arabic regularly applies to non-human plurals. The verbal clause carries no case position; it completes the adverbial condition.",
+  "faqs_en": [
+   {
+    "q": "Why does نُشِرَتْ take a feminine ending for a plural subject?",
+    "a": "Arabic treats non-human (broken) plurals like as-suhuf as grammatically feminine singular, so the verb takes the feminine ta' rather than a masculine-plural form."
+   },
+   {
+    "q": "What is as-suhuf the subject of?",
+    "a": "It is the deputy-doer (na'ib al-fa'il) of the passive verb nushirat, standing in the nominative as the thing that is spread open."
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلصُّحُفُ نُشِرَتْ"
+ },
+ "81:11": {
+  "surah": 81,
+  "ayah": 11,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 11 — word-by-word Arabic grammar",
+  "tldr_en": "Another idha-conditional. The noun as-sama' (\"the sky\") is the grammatical subject (deputy-doer) of the passive verb kushitat (\"is stripped away\"). Like all its companions, the clause is adverbial and points forward to the single answer that finally arrives in verse 14.",
+  "translation_en": "And when the sky is stripped away,",
+  "transliteration": "wa-idha s-sama'u kushitat",
+  "words_en": [
+   {
+    "token": "وَإِذَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + adverbial time particle (zarf)",
+    "note_en": "The wa joins this condition to the preceding ones, and idha is a future-time adverb linked to the delayed main answer of the passage."
+   },
+   {
+    "token": "ٱلسَّمَآءُ",
+    "case_en": "nominative",
+    "role_en": "subject / deputy-doer (na'ib al-fa'il)",
+    "note_en": "A nominative noun ('the sky/heaven') serving as the grammatical subject of the passive verb that follows."
+   },
+   {
+    "token": "كُشِطَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb",
+    "note_en": "A built past-tense passive verb meaning 'is stripped/peeled away,' with as-sama' as its subject and the final ta' marking feminine agreement."
+   }
+  ],
+  "irab_en": "This verse is yet another link in the idha-chain. The wa is a coordinating particle connecting this condition to those before it. Idha is a future-time adverb (zarf li-l-mustaqbal), built and standing in the accusative position, attached to the delayed main answer of the whole passage. As-sama' is a noun in the nominative functioning as the deputy-doer (na'ib al-fa'il) of the passive verb that follows; the word is grammatically feminine. The verb kushitat is a past-tense passive ('is stripped off / peeled away'), built on its ending, with the damma-then-kasra vowelling marking the passive voice and the trailing quiescent ta' showing feminine agreement with as-sama'. The verbal clause has no independent case position; it completes the adverbial condition that the whole sequence shares.",
+  "faqs_en": [
+   {
+    "q": "Why is ٱلسَّمَآءُ in the nominative?",
+    "a": "It is the deputy-doer (na'ib al-fa'il) of the passive verb kushitat; in a passive sentence the noun that would have been the object is promoted to the nominative subject position."
+   },
+   {
+    "q": "Is كُشِطَتْ active or passive?",
+    "a": "It is passive (mabni li-l-majhul); its vowel pattern with damma on the first radical and kasra before the last is the standard passive sign, so the meaning is 'is stripped away' rather than 'strips.'"
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلسَّمَآءُ كُشِطَتْ"
+ },
+ "81:12": {
+  "surah": 81,
+  "ayah": 12,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 12 — word-by-word Arabic grammar",
+  "tldr_en": "The last of the cosmic idha-clauses before the answer. The noun al-jahim (\"the blazing Fire\") is the grammatical subject (deputy-doer) of the passive verb su''irat (\"is set ablaze\"). The clause is adverbial and, with all its companions, points forward to the main answer in verse 14.",
+  "translation_en": "And when the Blaze is set ablaze,",
+  "transliteration": "wa-idha l-jahimu su''irat",
+  "words_en": [
+   {
+    "token": "وَإِذَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + adverbial time particle (zarf)",
+    "note_en": "The wa coordinates this final condition with the earlier ones, and idha is a future-time adverb linked to the delayed main answer of the passage."
+   },
+   {
+    "token": "ٱلْجَحِيمُ",
+    "case_en": "nominative",
+    "role_en": "subject / deputy-doer (na'ib al-fa'il)",
+    "note_en": "A nominative noun ('the blazing Fire') serving as the grammatical subject of the passive verb that follows."
+   },
+   {
+    "token": "سُعِّرَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past-tense verb",
+    "note_en": "A built past-tense passive verb meaning 'is kindled/set ablaze,' with al-jahim as its subject and the final ta' marking feminine agreement."
+   }
+  ],
+  "irab_en": "This verse closes the cosmic upheaval clauses and immediately precedes the upcoming clause about Paradise and then the answer in verse 14. The wa is a coordinating particle joining this condition to the preceding sequence. Idha is a future-time adverb (zarf li-l-mustaqbal), built and held in the accusative position, attached to the delayed main answer of the whole passage. Al-jahim is a noun in the nominative serving as the deputy-doer (na'ib al-fa'il) of the passive verb that follows; although it names a fire, it is treated as feminine in agreement. The verb su''irat is a past-tense passive ('is kindled / set blazing'), built on its ending, with the doubled middle radical giving an intensive sense and the damma-kasra vowelling marking the passive, while the trailing quiescent ta' shows feminine agreement with al-jahim. The verbal clause has no case position; it fills out the adverbial condition.",
+  "faqs_en": [
+   {
+    "q": "What does the doubled middle letter in سُعِّرَتْ add?",
+    "a": "The shadda on the middle radical puts the verb in the intensive (form II) pattern, conveying that the Fire is made to blaze fiercely, beyond a simple 'is lit.'"
+   },
+   {
+    "q": "Why is the verb after ٱلْجَحِيمُ feminine?",
+    "a": "Al-jahim is grammatically treated as feminine here, so the passive verb su''irat carries the feminine quiescent ta' to agree with it as its deputy-doer."
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلْجَحِيمُ سُعِّرَتْ"
+ },
+ "81:13": {
+  "surah": 81,
+  "ayah": 13,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 13 — word-by-word Arabic grammar",
+  "tldr_en": "This is the last of a long chain of time clauses opening the surah. \"And when Paradise is brought near\" begins with the connective wa and the conditional adverb idha. Al-jannah is the doer of the passive verb uzlifat (\"is brought near\"), and the whole clause adds to the previous \"when\" clauses that all await one answer in verse 14.",
+  "translation_en": "And when Paradise is brought near.",
+  "transliteration": "Wa idha al-jannatu uzlifat",
+  "words_en": [
+   {
+    "token": "وَإِذَا",
+    "case_en": "indeclinable",
+    "role_en": "connective particle plus time adverb (zarf)",
+    "note_en": "The prefixed wa joins this clause to the earlier \"when\" clauses, while idha is a future-time adverb pointing to the answer clause in verse 14."
+   },
+   {
+    "token": "ٱلْجَنَّةُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il) of an implied verb explained by what follows",
+    "note_en": "Al-jannah is nominative as the doer of an understood verb that the following passive verb interprets and clarifies."
+   },
+   {
+    "token": "أُزْلِفَتْ",
+    "case_en": "indeclinable",
+    "role_en": "passive past verb with hidden pronoun subject",
+    "note_en": "Uzlifat is a passive past-tense verb meaning \"is brought near,\" its concealed subject referring back to al-jannah, and the taa is the feminine marker."
+   }
+  ],
+  "irab_en": "Verse 13 is one more link in the series of conditional time clauses that have run since verse 1, each introduced by idha and each still waiting for a single answer. The wa is a connective tying this clause to its predecessors. Idha functions as a future-time adverb (zarf) whose governing element is the deferred answer found in verse 14, \"a soul will know.\" The noun al-jannah is nominative because Arabic grammar treats a noun after idha as the subject (fa'il) of a verb that is omitted but explained by the verb that follows it; here that verb is the passive uzlifat, \"is brought near.\" Uzlifat is built for the passive, its agent unnamed, and its hidden pronoun subject points back to Paradise. The feminine taa agrees with al-jannah. The clause as a whole is interpretive, carrying no separate grammatical position.",
+  "faqs_en": [
+   {
+    "q": "Why is al-jannah nominative rather than accusative after idha?",
+    "a": "Because grammarians parse the noun following idha as the subject of an omitted verb that the visible verb (here uzlifat) explains. As a subject it takes the nominative case, shown by the final damma."
+   },
+   {
+    "q": "What does the passive verb uzlifat tell us grammatically?",
+    "a": "Uzlifat is a passive past verb, so its agent is unnamed and its subject is a hidden pronoun standing for al-jannah. The feminine taa at the end agrees with the feminine noun Paradise."
+   }
+  ],
+  "uthmani": "وَإِذَا ٱلْجَنَّةُ أُزْلِفَتْ"
+ },
+ "81:14": {
+  "surah": 81,
+  "ayah": 14,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 14 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is the long-awaited answer to all the preceding \"when\" clauses. \"A soul will know what it has put forward.\" The verb 'alimat governs nafsun as its nominative subject, and the relative maa serves as its object, meaning the deeds each soul sent ahead. This is the grammatical climax of the opening section.",
+  "translation_en": "Every soul will know what it has brought forward.",
+  "transliteration": "'Alimat nafsun maa ahdarat",
+  "words_en": [
+   {
+    "token": "عَلِمَتْ",
+    "case_en": "indeclinable",
+    "role_en": "main verb and answer of the conditional (jawab)",
+    "note_en": "'Alimat is a past-tense verb that serves as the answer to every preceding idha clause; the feminine taa agrees with its subject nafs."
+   },
+   {
+    "token": "نَفْسٌ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il)",
+    "note_en": "Nafsun is the doer of 'alimat and takes the nominative; its indefinite form (tanwin) carries the sense of \"every soul.\""
+   },
+   {
+    "token": "مَّآ",
+    "case_en": "accusative",
+    "role_en": "relative pronoun as direct object (maf'ul bihi)",
+    "note_en": "Maa is a relative pronoun in the accusative position as the object of 'alimat, with its returning pronoun omitted."
+   },
+   {
+    "token": "أَحْضَرَتْ",
+    "case_en": "indeclinable",
+    "role_en": "verb of the relative clause (silah)",
+    "note_en": "Ahdarat is a past verb whose hidden subject is the soul; the clause completes the meaning of maa, \"what it has brought forward.\""
+   }
+  ],
+  "irab_en": "Verse 14 supplies the answer (jawab) that all the earlier idha clauses required. The verb 'alimat, \"will know,\" is a past-tense form whose feminine taa agrees with its subject. That subject is nafsun, \"a soul,\" in the nominative as the doer (fa'il); its indefinite tanwin gives a distributive sense, \"every soul.\" The object of knowing is the relative pronoun maa, which occupies the accusative position as the direct object (maf'ul bihi). The clause that follows, ahdarat, is the relative clause (silah) completing maa; its verb is past tense with a concealed pronoun subject again referring to the soul. The returning pronoun (the 'a'id) that would link the relative clause back to maa is omitted but understood, so the meaning is \"what it has put forward\" of deeds. Together the verse delivers the grammatical and rhetorical resolution of the entire opening passage.",
+  "faqs_en": [
+   {
+    "q": "What is the grammatical role of this whole verse?",
+    "a": "It is the answer clause (jawab) to the long chain of idha conditions in verses 1 to 13. All those \"when\" clauses point forward to this statement that every soul will then know its record."
+   },
+   {
+    "q": "Why is maa parsed as accusative when it has no visible case ending?",
+    "a": "Maa is an indeclinable relative pronoun, so it shows no ending, but it occupies the accusative slot as the direct object of 'alimat. Its omitted returning pronoun is understood within ahdarat."
+   }
+  ],
+  "uthmani": "عَلِمَتْ نَفْسٌۭ مَّآ أَحْضَرَتْ"
+ },
+ "81:15": {
+  "surah": 81,
+  "ayah": 15,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 15 — word-by-word Arabic grammar",
+  "tldr_en": "A new section begins with an oath. \"So I swear by the receding stars.\" The faa restarts the discourse, laa is an emphatic extra particle, and uqsimu is the verb of swearing. Bi-l-khunnas is the prepositional phrase naming what is sworn by, attached to the verb uqsimu.",
+  "translation_en": "So I swear by the stars that recede.",
+  "transliteration": "Fa-laa uqsimu bil-khunnas",
+  "words_en": [
+   {
+    "token": "فَ",
+    "case_en": "indeclinable",
+    "role_en": "resumptive particle (isti'naf)",
+    "note_en": "The faa opens a fresh statement, marking the start of the oath section rather than connecting to a prior clause grammatically."
+   },
+   {
+    "token": "لَآ",
+    "case_en": "indeclinable",
+    "role_en": "extra particle for emphasis (zaa'ida)",
+    "note_en": "This laa is additional and does not negate; it strengthens the oath rather than denying it."
+   },
+   {
+    "token": "أُقْسِمُ",
+    "case_en": "indeclinable",
+    "role_en": "present-tense verb of swearing",
+    "note_en": "Uqsimu is a present verb meaning \"I swear,\" with the speaker as its implied subject and laam-less oath emphasis."
+   },
+   {
+    "token": "بِٱلْخُنَّسِ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase (object of the oath)",
+    "note_en": "The bi governs al-khunnas in the genitive, and the whole phrase is attached to uqsimu as the thing sworn by."
+   }
+  ],
+  "irab_en": "This verse begins the oath section of the surah. The faa is resumptive (isti'nafiyya), launching a new statement rather than linking grammatically to the verses before it. The laa here is an extra particle (zaa'ida); it carries no negation but adds emphasis to the oath, a recognized usage in oath formulas. Uqsimu is a present-tense verb, \"I swear,\" whose subject is the implied first-person pronoun. The prepositional phrase bi-l-khunnas consists of the preposition bi plus al-khunnas in the genitive; the whole phrase is grammatically attached (muta'alliq) to the verb uqsimu and names the object sworn by. Al-khunnas refers to the stars that recede or hide by day. The structure sets up a series of sworn-by items that continue through the next verses, all building toward the oath's response about the truthfulness of the revelation.",
+  "faqs_en": [
+   {
+    "q": "Does laa here negate the act of swearing?",
+    "a": "No. This laa is an extra (zaa'ida) particle used in oath constructions for emphasis. The verb uqsimu still means \"I swear,\" and laa simply intensifies the statement rather than negating it."
+   },
+   {
+    "q": "What does bi-l-khunnas attach to grammatically?",
+    "a": "The prepositional phrase bi plus al-khunnas (genitive) is linked to the verb uqsimu. It identifies what the oath is sworn by, namely the receding stars."
+   }
+  ],
+  "uthmani": "فَلَآ أُقْسِمُ بِٱلْخُنَّسِ"
+ },
+ "81:16": {
+  "surah": 81,
+  "ayah": 16,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 16 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues the oath, describing the stars sworn by. Al-jawar is in apposition (badal) to al-khunnas, and al-kunnas is its adjective. Both are genitive, following al-khunnas of the previous verse, picturing the stars as they run their courses and then disappear into hiding.",
+  "translation_en": "Those that run their course and hide away.",
+  "transliteration": "Al-jawaril-kunnas",
+  "words_en": [
+   {
+    "token": "ٱلْجَوَارِ",
+    "case_en": "genitive",
+    "role_en": "substitution / appositive (badal)",
+    "note_en": "Al-jawar stands in apposition to al-khunnas and is genitive; its case marker is an implied kasra on the dropped final yaa in connected recitation."
+   },
+   {
+    "token": "ٱلْكُنَّسِ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "Al-kunnas is an adjective qualifying al-jawar and agrees with it in the genitive case, meaning those that retreat into hiding."
+   }
+  ],
+  "irab_en": "Verse 16 extends the description of the celestial bodies sworn by in verse 15. Al-jawar, \"those that run their courses,\" is a substitution or appositive (badal) for al-khunnas of the previous verse, and so it inherits the genitive case. Its case ending is special: the kasra is estimated on the deleted final yaa, dropped in the connected reading (qira'at al-wasl) for the sake of recitation. Al-kunnas, \"those that hide,\" is an adjective (na't) describing al-jawar and agrees with it in the genitive. The two words together complete the imagery of the stars: they sweep across the sky in their orbits (jawar) and then withdraw and disappear, like animals retreating into their dens (kunnas). Grammatically the pair simply follows and qualifies the noun governed by bi in the oath of the preceding verse, with no independent clausal position.",
+  "faqs_en": [
+   {
+    "q": "Why is al-jawar genitive without a visible kasra?",
+    "a": "Al-jawar ends in a yaa that is dropped in connected recitation. The genitive kasra is therefore estimated (muqaddar) on the deleted yaa, so the case is genitive even though the ending is not pronounced."
+   },
+   {
+    "q": "What is the relationship between al-jawar and al-khunnas?",
+    "a": "Al-jawar is a badal, a substitution or appositive, for al-khunnas in the previous verse. It takes the same genitive case and is further described by the adjective al-kunnas."
+   }
+  ],
+  "uthmani": "ٱلْجَوَارِ ٱلْكُنَّسِ"
+ },
+ "81:17": {
+  "surah": 81,
+  "ayah": 17,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 17 — word-by-word Arabic grammar",
+  "tldr_en": "The oath adds the night as a sworn-by item. \"And by the night as it departs.\" Al-layl is joined by wa to al-khunnas and is genitive. Idha is a time adverb stripped of conditional force and attached to uqsimu, while 'as'asa is its verb meaning the night drawing on or away.",
+  "translation_en": "And by the night as it departs.",
+  "transliteration": "Wal-layli idha 'as'asa",
+  "words_en": [
+   {
+    "token": "وَٱلَّيْلِ",
+    "case_en": "genitive",
+    "role_en": "connective particle plus noun joined to the oath",
+    "note_en": "The wa joins al-layl to al-khunnas, so al-layl is genitive as a coordinated object of the oath."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "time adverb (zarf) attached to the verb of swearing",
+    "note_en": "Here idha is a mere time adverb stripped of its conditional meaning and linked to uqsimu, marking when the oath points to."
+   },
+   {
+    "token": "عَسْعَسَ",
+    "case_en": "indeclinable",
+    "role_en": "past verb within the adverbial clause",
+    "note_en": "'As'asa is a past-tense verb meaning the night advances or departs; its hidden subject refers to al-layl."
+   }
+  ],
+  "irab_en": "Verse 17 continues the oath by adding the night. The wa is a coordinating conjunction, and al-layl is genitive because it is joined (ma'tuf) to al-khunnas, the earlier object of the oath governed by bi. Idha appears here as a pure time adverb (zarf), but stripped of its usual conditional sense; rather than introducing a condition with an answer, it is attached (muta'alliq) directly to the verb uqsimu and simply specifies the time being pointed to. The verb 'as'asa, \"as it departs\" or \"draws on,\" is a past-tense verb whose concealed pronoun subject refers to al-layl. The clause idha 'as'asa thus modifies the night, fixing the oath on the night in its departing or oncoming state. The whole construction keeps the chain of sworn-by items moving toward the oath's eventual response in verse 19.",
+  "faqs_en": [
+   {
+    "q": "Is idha here a conditional particle?",
+    "a": "Not in the usual sense. In this verse idha is treated as a plain time adverb stripped of conditional force. Instead of requiring an answer clause, it is attached to the verb uqsimu and marks the time the oath refers to."
+   },
+   {
+    "q": "Why is al-layl genitive?",
+    "a": "Al-layl is coordinated by wa to al-khunnas, the object of the oath in verse 15. Coordinated nouns share the case of what they are joined to, so al-layl is genitive."
+   }
+  ],
+  "uthmani": "وَٱلَّيْلِ إِذَا عَسْعَسَ"
+ },
+ "81:18": {
+  "surah": 81,
+  "ayah": 18,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 18 — word-by-word Arabic grammar",
+  "tldr_en": "The final sworn-by item is the dawn. \"And by the morning as it breathes.\" Al-subh is joined by wa to the earlier oath nouns and is genitive. Idha is a time adverb attached to uqsimu, and tanaffasa is its verb, picturing the dawn as it breaks and breathes out light, parallel to the night verse before it.",
+  "translation_en": "And by the morning as it breathes out light.",
+  "transliteration": "Was-subhi idha tanaffas",
+  "words_en": [
+   {
+    "token": "وَٱلصُّبْحِ",
+    "case_en": "genitive",
+    "role_en": "connective particle plus noun joined to the oath",
+    "note_en": "The wa joins al-subh to the preceding oath nouns, so al-subh is genitive as another coordinated object of the oath."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "time adverb (zarf) attached to the verb of swearing",
+    "note_en": "As in the previous verse, idha here is a time adverb without conditional force, linked to uqsimu to mark the time meant."
+   },
+   {
+    "token": "تَنَفَّسَ",
+    "case_en": "indeclinable",
+    "role_en": "past verb within the adverbial clause",
+    "note_en": "Tanaffasa is a past-tense verb meaning the dawn breathes out or breaks; its hidden subject refers to al-subh."
+   }
+  ],
+  "irab_en": "Verse 18 closes the list of sworn-by phenomena with the dawn, and its structure mirrors the night verse before it. The wa is a coordinating conjunction joining al-subh to the earlier objects of the oath, so al-subh is genitive as a coordinated noun (ma'tuf) governed ultimately by bi. Idha is again a time adverb (zarf) without its conditional sense, attached to the verb uqsimu and specifying the time the oath points to. The verb tanaffasa, \"as it breathes,\" is past tense with a concealed pronoun subject referring to al-subh; the image is of the morning exhaling its light as it breaks. Grammatically the verse is parallel to verse 17, \"and by the night as it departs,\" forming a balanced pair of night and dawn. With this the oath's series of sworn-by items is complete, and the response of the oath follows in verse 19.",
+  "faqs_en": [
+   {
+    "q": "How does this verse parallel the previous one grammatically?",
+    "a": "Both verses coordinate a genitive noun (al-layl, then al-subh) to the oath, follow it with idha as a plain time adverb attached to uqsimu, and then a past verb ('as'asa, then tanaffasa) describing the noun. The structures are deliberately matched."
+   },
+   {
+    "q": "What is the subject of tanaffasa?",
+    "a": "Tanaffasa has a hidden pronoun subject that refers back to al-subh, the morning. The verb pictures the dawn breathing out, that is, breaking and spreading its light."
+   }
+  ],
+  "uthmani": "وَٱلصُّبْحِ إِذَا تَنَفَّسَ"
+ },
+ "81:19": {
+  "surah": 81,
+  "ayah": 19,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 19 — word-by-word Arabic grammar",
+  "tldr_en": "This verse opens the answer to the preceding oaths. The particle inna with its attached pronoun affirms the truth being asserted, and the predicate begins with the emphatic lam followed by qawl in the nominative as a possessive head. Rasul is the genitive possessed noun, and karim is its adjective, also genitive.",
+  "translation_en": "Indeed it is the word of a noble messenger.",
+  "transliteration": "Innahu la-qawlu rasulin karim",
+  "words_en": [
+   {
+    "token": "إِنَّهُۥ",
+    "case_en": "accusative (for the pronoun) / indeclinable particle",
+    "role_en": "emphatic particle inna with its noun (the attached pronoun)",
+    "note_en": "Inna is a particle of emphasis that puts its noun in the accusative, and the attached pronoun -hu serves as its noun referring to the Qur'an."
+   },
+   {
+    "token": "لَقَوْلُ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar) of inna, preceded by emphatic lam",
+    "note_en": "The lam is the emphatic lam of inna, and qawl is the nominative predicate functioning as the head of a possessive construction."
+   },
+   {
+    "token": "رَسُولٍۢ",
+    "case_en": "genitive",
+    "role_en": "possessed noun (mudaf ilayh)",
+    "note_en": "Rasul is genitive because it is the second term of the idafa governed by qawl."
+   },
+   {
+    "token": "كَرِيمٍۢ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't) of rasul",
+    "note_en": "Karim describes rasul and follows it in the genitive case as an agreeing attribute."
+   }
+  ],
+  "irab_en": "The verse begins with inna, an emphatic particle that governs its noun in the accusative; here the noun is the attached pronoun -hu, referring back to the Qur'an. The predicate of inna is qawl, which carries the emphatic lam (lam al-muzahlaqa) and stands in the nominative. Qawl is also the head term of a genitive construction (idafa), so the following noun rasul takes the genitive as the possessed element. Finally, karim is an adjective qualifying rasul and therefore matches it in the genitive case. The whole sentence forms the answer to the oaths sworn in the preceding verses, affirming the noble origin of the revelation.",
+  "faqs_en": [
+   {
+    "q": "Why does qawl carry a lam at its start?",
+    "a": "That lam is the emphatic lam associated with inna, added to the predicate to strengthen the affirmation; it does not change the noun's nominative case."
+   },
+   {
+    "q": "Why is rasulin in the genitive?",
+    "a": "Because qawl and rasul form a possessive construction (idafa); the possessed noun stays nominative as predicate while the possessor noun rasul becomes genitive."
+   },
+   {
+    "q": "What does the pronoun in innahu refer to?",
+    "a": "It refers to the Qur'an, the subject being affirmed as the speech delivered by a noble messenger."
+   }
+  ],
+  "uthmani": "إِنَّهُۥ لَقَوْلُ رَسُولٍۢ كَرِيمٍۢ"
+ },
+ "81:20": {
+  "surah": 81,
+  "ayah": 20,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 20 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues describing the noble messenger. Dhi quwwah is a genitive adjective phrase qualifying rasul, with dhi as a noun of the 'five nouns' inflected by the ya. The adverb 'inda is an accusative adverb of time attached to makin, and makin itself is a further genitive adjective of rasul.",
+  "translation_en": "Possessor of strength, secure with the Lord of the Throne.",
+  "transliteration": "Dhi quwwatin 'inda dhi al-'arshi makin",
+  "words_en": [
+   {
+    "token": "ذِى",
+    "case_en": "genitive",
+    "role_en": "adjective (na't) of rasul",
+    "note_en": "Dhi means 'possessor of' and qualifies rasul from the previous verse; as one of the five nouns it shows genitive case by the letter ya."
+   },
+   {
+    "token": "قُوَّةٍ",
+    "case_en": "genitive",
+    "role_en": "possessed noun (mudaf ilayh)",
+    "note_en": "Quwwah is genitive as the second term of the idafa governed by dhi."
+   },
+   {
+    "token": "عِندَ",
+    "case_en": "accusative",
+    "role_en": "adverb of time (zarf zaman)",
+    "note_en": "'Inda is an accusative adverb (zarf zaman) linked to the adjective makin, indicating the messenger's standing and nearness."
+   },
+   {
+    "token": "ذِى",
+    "case_en": "genitive",
+    "role_en": "possessed noun (mudaf ilayh) of 'inda",
+    "note_en": "This second dhi is genitive as the possessed term after the adverb 'inda."
+   },
+   {
+    "token": "ٱلْعَرْشِ",
+    "case_en": "genitive",
+    "role_en": "possessed noun (mudaf ilayh)",
+    "note_en": "Al-'arsh is genitive as the second term of the idafa governed by dhi."
+   },
+   {
+    "token": "مَكِينٍۢ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't) of rasul",
+    "note_en": "Makin is a further attribute of rasul and matches it in the genitive case."
+   }
+  ],
+  "irab_en": "This verse supplies more adjectives for rasul from the preceding verse. Dhi is one of the 'five nouns', so it is inflected with the letter ya for the genitive, and it heads a possessive construction whose possessed noun is quwwah, also genitive. The adverb 'inda is an accusative adverb (zarf zaman) that is linked semantically to the later adjective makin; it heads its own idafa, where the following dhi is genitive, and that dhi in turn governs al-'arsh in the genitive. Finally, makin is another adjective describing rasul and therefore stands in the genitive to agree with it. All these descriptive terms keep the genitive because they ultimately qualify the genitive noun rasul.",
+  "faqs_en": [
+   {
+    "q": "Why is dhi spelled and inflected with ya here?",
+    "a": "Dhi belongs to the 'five nouns', which take the letter ya as their marker of the genitive case instead of the ordinary kasra."
+   },
+   {
+    "q": "What does the accusative adverb 'inda attach to?",
+    "a": "It attaches to the adjective makin, meaning the messenger is firmly stationed and honored 'with' the Lord of the Throne."
+   },
+   {
+    "q": "Why are quwwah and al-'arsh genitive?",
+    "a": "Each is the possessed second term of a possessive construction (idafa), so each takes the genitive case."
+   }
+  ],
+  "uthmani": "ذِى قُوَّةٍ عِندَ ذِى ٱلْعَرْشِ مَكِينٍۢ"
+ },
+ "81:21": {
+  "surah": 81,
+  "ayah": 21,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 21 — word-by-word Arabic grammar",
+  "tldr_en": "The description of the noble messenger continues. Muta' is a genitive adjective qualifying rasul, the indeclinable adverb thamma fixed on fatha occupies an accusative place linked to muta', and amin is another genitive adjective of rasul. All attributes keep the genitive to agree with their qualified noun.",
+  "translation_en": "Obeyed there, and trustworthy.",
+  "transliteration": "Muta'in thamma amin",
+  "words_en": [
+   {
+    "token": "مُّطَاعٍۢ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't) of rasul",
+    "note_en": "Muta' ('obeyed') is a further adjective of rasul and stays genitive to agree with it."
+   },
+   {
+    "token": "ثَمَّ",
+    "case_en": "accusative (in place; indeclinable on fatha)",
+    "role_en": "adverb of place (zarf makan)",
+    "note_en": "Thamma is an indeclinable adverb built on the fatha, occupying an accusative position and linked to muta'."
+   },
+   {
+    "token": "أَمِينٍۢ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't) of rasul",
+    "note_en": "Amin ('trustworthy') is another genitive attribute of rasul, agreeing with it in case."
+   }
+  ],
+  "irab_en": "This verse adds two more adjectives describing the noble messenger of the earlier verse. Muta', meaning 'obeyed', is an attribute of rasul and therefore keeps the genitive to agree with its qualified noun. Thamma is an adverb of place, 'there', that is indeclinable and fixed on the fatha; grammatically it holds an accusative position and is connected to muta', indicating where the obedience is rendered. Amin, 'trustworthy', is yet another adjective of rasul, again genitive in agreement. Together with the previous verse these adjectives build a cumulative portrait of the messenger who conveys the revelation, with every descriptive word matching the genitive of rasul.",
+  "faqs_en": [
+   {
+    "q": "Why is thamma not inflected like other nouns?",
+    "a": "Thamma is an indeclinable adverb of place built on the fatha; it cannot show ordinary case endings, but it occupies an accusative grammatical position."
+   },
+   {
+    "q": "Why do muta' and amin stay genitive?",
+    "a": "Both are adjectives qualifying the noun rasul from verse 19, and an adjective agrees with its noun in case, here the genitive."
+   },
+   {
+    "q": "What does the adverb thamma link to?",
+    "a": "It links to the adjective muta', specifying the place where the messenger is obeyed."
+   }
+  ],
+  "uthmani": "مُّطَاعٍۢ ثَمَّ أَمِينٍۢ"
+ },
+ "81:22": {
+  "surah": 81,
+  "ayah": 22,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 22 — word-by-word Arabic grammar",
+  "tldr_en": "This verse defends the Prophet against the charge of madness. Ma functions like laysa to negate, sahibukum is its noun in the nominative, and the predicate majnun is preceded by a redundant ba; it is genitive in form but holds the accusative place as the predicate of ma.",
+  "translation_en": "And your companion is not mad.",
+  "transliteration": "Wa ma sahibukum bi-majnun",
+  "words_en": [
+   {
+    "token": "وَمَا",
+    "case_en": "indeclinable particle",
+    "role_en": "connective waw plus negating ma (acting like laysa)",
+    "note_en": "The waw connects this statement, and ma is a negating particle that works like the verb laysa, raising a subject and giving a predicate."
+   },
+   {
+    "token": "صَاحِبُكُم",
+    "case_en": "nominative",
+    "role_en": "noun of ma / subject",
+    "note_en": "Sahib is the nominative noun of ma (its subject), and the attached pronoun -kum ('your') is the possessor in the genitive."
+   },
+   {
+    "token": "بِمَجْنُونٍۢ",
+    "case_en": "genitive in form, accusative in place",
+    "role_en": "predicate (khabar) of ma",
+    "note_en": "The ba is a redundant particle added for emphasis; majnun is genitive in wording because of the ba but occupies the accusative position as the predicate of ma."
+   }
+  ],
+  "irab_en": "The connecting waw joins this statement to the preceding affirmations about the revelation. Ma here is the negating particle that operates like the defective verb laysa, so it raises a noun and assigns a predicate. Its noun is sahib, in the nominative, and the attached pronoun -kum is a genitive possessor meaning 'your companion'. The predicate is majnun, but it is preceded by ba, a redundant (zaidah) preposition added for emphasis. Because of this ba, majnun is genitive in its outward form, yet its true grammatical position is accusative, since the predicate of this kind of ma takes the accusative. The verse thus negates that the Prophet is afflicted with madness.",
+  "faqs_en": [
+   {
+    "q": "Why does ma behave like laysa here?",
+    "a": "This ma is the Hijazi negating ma, which grammatically resembles laysa: it raises a noun as its subject and puts the predicate in the accusative."
+   },
+   {
+    "q": "Why is majnun written with a kasra after ba if it is the predicate?",
+    "a": "The ba is a redundant emphatic preposition that forces a genitive ending in form, but the word still functions in the accusative place as the predicate of ma."
+   },
+   {
+    "q": "What is the role of -kum in sahibukum?",
+    "a": "It is an attached genitive pronoun meaning 'your', making sahib a possessive phrase, 'your companion'."
+   }
+  ],
+  "uthmani": "وَمَا صَاحِبُكُم بِمَجْنُونٍۢ"
+ },
+ "81:23": {
+  "surah": 81,
+  "ayah": 23,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 23 — word-by-word Arabic grammar",
+  "tldr_en": "This verse affirms that the Prophet truly saw the angel. The waw connects, the lam is the lam of the oath, and qad is a particle of certainty. The phrase bi al-ufuq is linked to a circumstantial state of the object pronoun in ra'ahu, locating the vision at the clear horizon.",
+  "translation_en": "And he certainly saw him on the clear horizon.",
+  "transliteration": "Wa la-qad ra'ahu bil-ufuqi al-mubin",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable particle",
+    "role_en": "connective particle (waw al-'atf)",
+    "note_en": "The waw connects this clause to the preceding statements about the revelation and its messenger."
+   },
+   {
+    "token": "اللام",
+    "case_en": "indeclinable particle",
+    "role_en": "lam of the oath (lam al-qasam)",
+    "note_en": "This lam is the lam of an implied oath, used to strengthen the assertion that follows."
+   },
+   {
+    "token": "قَدْ",
+    "case_en": "indeclinable particle",
+    "role_en": "particle of certainty (harf tahqiq)",
+    "note_en": "Qad before a past-tense verb confirms and emphasizes that the action definitely occurred."
+   },
+   {
+    "token": "بِٱلْأُفُقِ",
+    "case_en": "genitive (object of preposition)",
+    "role_en": "prepositional phrase linked to a circumstantial state (hal)",
+    "note_en": "The ba governs al-ufuq in the genitive, and the phrase is attached to a circumstantial state of the object pronoun in ra'ahu, showing where the seeing took place."
+   }
+  ],
+  "irab_en": "The verse opens with the connective waw, followed by the lam of the oath, which prepares an emphatic assertion. Qad is a particle of verification placed before the past-tense verb ra'a ('he saw') to confirm decisively that the action happened. Although not all words are listed individually, the verb ra'a carries an attached object pronoun -hu ('him', the angel). The prepositional phrase bi al-ufuq has the ba governing al-ufuq in the genitive, and this phrase is connected to a circumstantial state (hal) of the object pronoun, describing the situation of what was seen as being at the horizon. Al-mubin ('the clear') is an adjective of al-ufuq, agreeing with it in the genitive. The verse thus emphatically affirms the reality of the vision.",
+  "faqs_en": [
+   {
+    "q": "What is the function of la-qad at the start?",
+    "a": "The lam is the oath particle adding emphasis, and qad is a certainty particle confirming that the past action definitely occurred."
+   },
+   {
+    "q": "Why is al-ufuq in the genitive?",
+    "a": "It is governed by the preposition ba, which puts its object in the genitive case."
+   },
+   {
+    "q": "What does the phrase bil-ufuq attach to?",
+    "a": "It attaches to a circumstantial state of the object pronoun in ra'ahu, indicating that the one seen was at the clear horizon."
+   }
+  ],
+  "uthmani": "وَلَقَدْ رَءَاهُ بِٱلْأُفُقِ ٱلْمُبِينِ"
+ },
+ "81:24": {
+  "surah": 81,
+  "ayah": 24,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 24 — word-by-word Arabic grammar",
+  "tldr_en": "This verse defends the Prophet's reliability with revelation. The waw may connect or introduce a circumstantial clause, ma negates like laysa with the pronoun huwa as its subject, the phrase 'ala al-ghayb links to danin, and danin is genitive in form but holds the accusative place as predicate of ma.",
+  "translation_en": "And he is not withholding concerning the unseen.",
+  "transliteration": "Wa ma huwa 'ala al-ghaybi bi-danin",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable particle",
+    "role_en": "connective or circumstantial waw",
+    "note_en": "The waw may join this clause to the preceding statement or introduce a circumstantial (hal) clause about the messenger."
+   },
+   {
+    "token": "مَا",
+    "case_en": "indeclinable particle",
+    "role_en": "negating particle (acting like laysa)",
+    "note_en": "Ma is the Hijazi negating particle that works like laysa, raising a subject and assigning a predicate."
+   },
+   {
+    "token": "هُوَ",
+    "case_en": "nominative (in place; indeclinable pronoun)",
+    "role_en": "noun of ma / subject",
+    "note_en": "Huwa is the detached pronoun serving as the subject of ma, referring to the Prophet."
+   },
+   {
+    "token": "عَلَى ٱلْغَيْبِ",
+    "case_en": "genitive (object of preposition)",
+    "role_en": "prepositional phrase linked to danin",
+    "note_en": "The preposition 'ala governs al-ghayb in the genitive, and the phrase is connected to the predicate danin."
+   },
+   {
+    "token": "بِضَنِينٍۢ",
+    "case_en": "genitive in form, accusative in place",
+    "role_en": "predicate (khabar) of ma",
+    "note_en": "The ba is a redundant emphatic preposition; danin is genitive in wording but occupies the accusative position as the predicate of ma."
+   }
+  ],
+  "irab_en": "The verse begins with the waw, which may be a simple connective or may introduce a circumstantial clause describing the messenger. Ma is the negating particle that operates like laysa, so it raises a subject and assigns a predicate. The subject is the detached pronoun huwa, referring to the Prophet. The prepositional phrase 'ala al-ghayb has 'ala governing al-ghayb in the genitive, and it is linked to the predicate danin, indicating the matter about which he is not withholding. The predicate is danin, preceded by the redundant emphatic ba; because of that ba it is genitive in outward form, while its real grammatical position is accusative as the predicate of ma. The verse affirms that the Prophet conveys the unseen revelation faithfully.",
+  "faqs_en": [
+   {
+    "q": "What does huwa refer to in this verse?",
+    "a": "It refers to the Prophet, who is the subject of the negating ma, affirming his trustworthiness with the revelation."
+   },
+   {
+    "q": "Why is danin genitive when it is the predicate?",
+    "a": "The redundant emphatic ba precedes it, giving a genitive ending in form, but danin truly occupies the accusative position as the predicate of ma."
+   },
+   {
+    "q": "What are the two possible roles of the opening waw?",
+    "a": "It can be a connective waw joining this to the previous statement, or a circumstantial waw introducing a clause describing the messenger's state."
+   }
+  ],
+  "uthmani": "وَمَا هُوَ عَلَى ٱلْغَيْبِ بِضَنِينٍۢ"
+ },
+ "81:25": {
+  "surah": 81,
+  "ayah": 25,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 25 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues defending the Qur'an's source: it is not the speech of an accursed devil. The structure parallels verse 22, using the negating particle 'ma' working like 'laysa', with 'huwa' as its subject and the genitive phrase 'bi-qawli' carrying its predicate. The pronoun 'huwa' refers back to the Qur'an itself.",
+  "translation_en": "And it is not the word of an accursed devil.",
+  "transliteration": "Wa mā huwa bi-qawli shayṭānin rajīm",
+  "words_en": [
+   {
+    "token": "وَمَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + negating particle (ma working like laysa)",
+    "note_en": "The waw joins this clause to the previous denial, and 'ma' negates while functioning grammatically like the defective verb 'laysa'."
+   },
+   {
+    "token": "هُوَ",
+    "case_en": "nominative",
+    "role_en": "subject (ism ma / noun of ma)",
+    "note_en": "The detached pronoun 'huwa' is the subject of 'ma' and refers back to the Qur'an."
+   },
+   {
+    "token": "بِقَوْلِ",
+    "case_en": "genitive",
+    "role_en": "predicate of ma (carried by the extra 'bi')",
+    "note_en": "The redundant preposition 'bi' makes 'qawl' genitive in form while it stands as the predicate of 'ma' in meaning."
+   },
+   {
+    "token": "شَيْطَٰنٍ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (mudaf ilayh)",
+    "note_en": "'Shaytan' is in the genitive as the second term of the construct 'qawli shaytanin'."
+   },
+   {
+    "token": "رَّجِيمٍ",
+    "case_en": "genitive",
+    "role_en": "adjective (na't)",
+    "note_en": "'Rajim' (accursed) describes 'shaytan' and follows it in the genitive case."
+   }
+  ],
+  "irab_en": "Verse 25 mirrors the grammatical shape of verse 22 ('And your companion is not mad'). The opening 'wa' is a connective joining this negation to the preceding ones. 'Ma' here is the Hijazi 'ma' that operates like 'laysa', taking a subject in the nominative and a predicate. Its subject is the pronoun 'huwa', understood as referring to the Qur'an. The predicate is the prepositional phrase 'bi-qawli shaytanin', where the 'bi' is an extra (zaa'idah) preposition added for emphasis; it pulls 'qawl' into the genitive form, yet semantically 'qawl' remains the predicate of 'ma'. 'Shaytanin' is the genitive second part of the construct, and 'rajim' is its adjective, also genitive in agreement.",
+  "faqs_en": [
+   {
+    "q": "Why is 'qawl' in the genitive if it is the predicate?",
+    "a": "The 'bi' attached to it is a redundant preposition that adds rhetorical force. It forces the genitive ending on the word's form, but the word still functions as the predicate of 'ma' in the sentence's meaning."
+   },
+   {
+    "q": "What does the pronoun 'huwa' refer to?",
+    "a": "It points back to the Qur'an, which is the subject under discussion in this passage — the verse affirms that the revelation is not a devil's utterance."
+   }
+  ],
+  "uthmani": "وَمَا هُوَ بِقَوْلِ شَيْطَٰنٍۢ رَّجِيمٍۢ"
+ },
+ "81:26": {
+  "surah": 81,
+  "ayah": 26,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 26 — word-by-word Arabic grammar",
+  "tldr_en": "A short rhetorical question: 'So where are you going?' The 'fa' links it as the response to an implied condition. 'Ayna' is an interrogative noun fixed in place as an adverb of place, and 'tadhhabuna' is the present-tense verb with its attached subject pronoun. The phrasing rebukes those who turn away from the clear message.",
+  "translation_en": "So where are you going?",
+  "transliteration": "Fa-ayna tadhhabūn",
+  "words_en": [
+   {
+    "token": "فَأَيْنَ",
+    "case_en": "accusative",
+    "role_en": "connective fa + interrogative adverb of place",
+    "note_en": "The 'fa' links the clause as the answer to an unstated condition, and 'ayna' is an interrogative noun fixed in the accusative position as an adverb of place."
+   },
+   {
+    "token": "تَذْهَبُونَ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb with subject pronoun",
+    "note_en": "'Tadhhabuna' is a present-tense (marfu') verb; the attached 'waw' is its subject, and 'ayna' relates to it as the place toward which they go."
+   }
+  ],
+  "irab_en": "This concise verse is a rhetorical rebuke. The 'fa' at the start is connective, treated as binding the sentence to an implied conditional sense ('If this is so, then where...'). 'Ayna' is an interrogative noun built (mabni) on the fatha and holding the grammatical position of an accusative adverb of place. It relates to the verb 'tadhhabuna' with an implied preposition 'ila' ('to where'), since one 'goes to' a place. 'Tadhhabuna' is a present-tense verb kept in the indicative (marfu') with the preserved nun; the attached 'waw al-jama'ah' is its subject pronoun standing for the addressees. The whole question challenges those who stray from the plain reminder just described.",
+  "faqs_en": [
+   {
+    "q": "Why is 'ayna' described as accusative when it has no visible case ending?",
+    "a": "'Ayna' is a built-in (indeclinable) word, so it does not change endings. It occupies the grammatical slot of an accusative adverb of place, which is why we call its position accusative."
+   },
+   {
+    "q": "What is the function of the 'fa' here?",
+    "a": "It is a connective particle understood as tying this question to an implied condition — roughly 'given all this, then where are you heading?' — giving the rebuke its logical force."
+   }
+  ],
+  "uthmani": "فَأَيْنَ تَذْهَبُونَ"
+ },
+ "81:27": {
+  "surah": 81,
+  "ayah": 27,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 27 — word-by-word Arabic grammar",
+  "tldr_en": "A restrictive statement: the Qur'an is nothing but a reminder for all the worlds. 'In' is a negating particle and 'illa' restricts, so the meaning is exclusive. 'Huwa' is the subject, 'dhikr' the predicate, and 'lil-'alamina' a prepositional phrase relating to 'dhikr'. The construction limits the Qur'an's nature purely to that of a reminder.",
+  "translation_en": "It is nothing but a reminder to all the worlds.",
+  "transliteration": "In huwa illā dhikrun lil-'ālamīn",
+  "words_en": [
+   {
+    "token": "إِنْ",
+    "case_en": "indeclinable",
+    "role_en": "negating particle",
+    "note_en": "Here 'in' is a particle of negation, equivalent in sense to 'ma' (not)."
+   },
+   {
+    "token": "هُوَ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "The pronoun 'huwa' is the subject, referring to the Qur'an."
+   },
+   {
+    "token": "إِلَّا",
+    "case_en": "indeclinable",
+    "role_en": "restrictive particle",
+    "note_en": "'Illa' restricts the predicate, producing the exclusive sense 'nothing but'."
+   },
+   {
+    "token": "ذِكْرٌ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "'Dhikr' (a reminder) is the nominative predicate of the subject 'huwa'."
+   },
+   {
+    "token": "لِّلْعَٰلَمِينَ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase relating to the predicate",
+    "note_en": "The 'lam' makes 'al-'alamin' genitive; the phrase attaches to 'dhikr', specifying for whom the reminder is."
+   }
+  ],
+  "irab_en": "This verse forms a restrictive nominal sentence. 'In' is a negating particle carrying the meaning of 'ma' (not), and it has no grammatical effect on what follows. The pronoun 'huwa' is the subject (mubtada') in the nominative, referring to the Qur'an. 'Illa' is the particle of exception used here for restriction (hasr), confining the predicate strictly to what comes next. 'Dhikrun' is the predicate (khabar), nominative and indefinite. The prepositional phrase 'lil-'alamina' consists of the 'lam' of attachment governing 'al-'alamin' in the genitive (its sign being the 'ya' since it is a sound masculine plural); the phrase relates to 'dhikr', clarifying that the reminder is directed to all the worlds. The negation-plus-restriction structure asserts that the Qur'an is purely and exclusively a reminder.",
+  "faqs_en": [
+   {
+    "q": "How do 'in' and 'illa' combine to create meaning here?",
+    "a": "'In' negates the sentence and 'illa' restricts it, so together they produce an exclusive statement: 'It is nothing except a reminder.' This pattern of negation followed by exception is a common way Arabic expresses limitation."
+   },
+   {
+    "q": "Why is 'al-'alamin' in the genitive case?",
+    "a": "It is governed by the preposition 'lam' (li-), which always puts the following noun in the genitive. As a sound masculine plural, its genitive marker is the 'ya', seen in the ending '-in'."
+   }
+  ],
+  "uthmani": "إِنْ هُوَ إِلَّا ذِكْرٌۭ لِّلْعَٰلَمِينَ"
+ },
+ "81:28": {
+  "surah": 81,
+  "ayah": 28,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 28 — word-by-word Arabic grammar",
+  "tldr_en": "This verse specifies who benefits from the reminder: whoever among you wills to walk straight. 'Liman' is a substitute (badal) for 'the worlds' with the preposition repeated. 'Sha'a' is the relative clause's verb, 'minkum' relates to its subject, and 'an yastaqima' forms a verbal-noun object meaning 'to be upright'.",
+  "translation_en": "For whoever among you wills to be upright.",
+  "transliteration": "Liman shā'a minkum an yastaqīm",
+  "words_en": [
+   {
+    "token": "لِمَن",
+    "case_en": "genitive",
+    "role_en": "substitute (badal) with repeated preposition",
+    "note_en": "'Li' + 'man' (whoever) stands as a substitute for 'al-'alamin' in verse 27, with the preposition repeated for clarity, so 'man' is in the genitive position."
+   },
+   {
+    "token": "شَآءَ",
+    "case_en": "indeclinable",
+    "role_en": "verb of the relative clause",
+    "note_en": "'Sha'a' (wills) is a past-tense verb whose subject is a hidden pronoun referring back to 'man'."
+   },
+   {
+    "token": "مِنكُمْ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase relating to a state (hal)",
+    "note_en": "'Minkum' (among you) relates to an implied circumstantial state of the subject of 'sha'a'."
+   },
+   {
+    "token": "أَن",
+    "case_en": "indeclinable",
+    "role_en": "subordinating particle (masdariyyah) of subjunctive",
+    "note_en": "'An' introduces a verbal-noun clause and puts the following verb in the subjunctive."
+   },
+   {
+    "token": "يَسْتَقِيمَ",
+    "case_en": "accusative",
+    "role_en": "subjunctive verb (object via the implied verbal noun)",
+    "note_en": "'Yastaqima' is in the subjunctive because of 'an'; together 'an yastaqima' acts as the object of 'sha'a' ('to become upright')."
+   }
+  ],
+  "irab_en": "This verse refines the scope of verse 27. The phrase 'liman' is composed of the preposition 'li' and the relative noun 'man'; it functions as a substitute (badal) for 'al-'alamin', with the preposition repeated to renew the link, so 'man' takes the genitive position. 'Sha'a' is a past-tense verb forming the relative clause, its subject a concealed pronoun pointing back to 'man'. 'Minkum' is a prepositional phrase relating to an implied circumstantial state (hal) of that subject. 'An' is a subordinating particle that turns the following clause into an interpreted verbal noun and renders the verb subjunctive. 'Yastaqima' is therefore in the subjunctive (mansub) with a fatha. The interpreted verbal noun 'an yastaqima' ('to be upright') occupies the place of the object of 'sha'a'.",
+  "faqs_en": [
+   {
+    "q": "What does 'liman' substitute for?",
+    "a": "It is a substitute (badal) for 'al-'alamin' (the worlds) from the previous verse, narrowing the audience to those who actually choose to be guided. The preposition 'li' is repeated to make the link explicit."
+   },
+   {
+    "q": "Why is 'yastaqima' in the subjunctive?",
+    "a": "The particle 'an' before it requires the subjunctive mood. The 'an' plus the verb together form an interpreted verbal noun ('being upright') that serves as the grammatical object of 'sha'a' (he willed)."
+   }
+  ],
+  "uthmani": "لِمَن شَآءَ مِنكُمْ أَن يَسْتَقِيمَ"
+ },
+ "81:29": {
+  "surah": 81,
+  "ayah": 29,
+  "h1_en": "I'rab of Surah At-Takwir Ayah 29 — word-by-word Arabic grammar",
+  "tldr_en": "The surah closes by anchoring all human willing in God's will: you cannot will unless God wills. 'Ma' negates, 'illa' restricts, and 'an yasha'a' is an interpreted verbal noun tied to an implied preposition. 'Allah' is the subject of 'yasha'a', and 'rabbu' is His attribute, the Lord of the worlds.",
+  "translation_en": "And you do not will unless God, the Lord of the worlds, wills.",
+  "transliteration": "Wa mā tashā'ūna illā an yashā'a Allāhu rabbu-l-'ālamīn",
+  "words_en": [
+   {
+    "token": "وَمَا",
+    "case_en": "indeclinable",
+    "role_en": "conjunction + negating particle",
+    "note_en": "The 'waw' begins a new clause and 'ma' is a simple negating particle here."
+   },
+   {
+    "token": "تَشَآءُونَ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb with subject pronoun",
+    "note_en": "'Tasha'una' is an indicative present verb; the attached 'waw' is its subject pronoun standing for the addressees."
+   },
+   {
+    "token": "إِلَّآ",
+    "case_en": "indeclinable",
+    "role_en": "restrictive particle",
+    "note_en": "'Illa' provides restriction, giving the sense 'except / unless'."
+   },
+   {
+    "token": "أَن",
+    "case_en": "indeclinable",
+    "role_en": "subordinating particle (masdariyyah) of subjunctive",
+    "note_en": "'An' introduces a verbal-noun clause and makes the following verb subjunctive."
+   },
+   {
+    "token": "يَشَآءَ",
+    "case_en": "accusative",
+    "role_en": "subjunctive verb (within the interpreted verbal noun)",
+    "note_en": "'Yasha'a' is subjunctive because of 'an'; the interpreted verbal noun stands in the genitive after an implied preposition 'bi' relating to 'tasha'una'."
+   },
+   {
+    "token": "ٱللَّهُ",
+    "case_en": "nominative",
+    "role_en": "subject (fa'il) of yasha'a",
+    "note_en": "The name 'Allah' is the nominative subject of the verb 'yasha'a'."
+   },
+   {
+    "token": "رَبُّ",
+    "case_en": "nominative",
+    "role_en": "adjective / apposition (na't)",
+    "note_en": "'Rabb' describes the name 'Allah' and agrees with it in the nominative."
+   },
+   {
+    "token": "ٱلْعَٰلَمِينَ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (mudaf ilayh)",
+    "note_en": "'Al-'alamin' is the genitive second term of the construct 'rabbu-l-'alamin' (Lord of the worlds)."
+   }
+  ],
+  "irab_en": "The final verse subordinates human will to divine will. The opening 'waw' starts a fresh sentence and 'ma' is a plain negating particle. 'Tasha'una' is an indicative present verb (marfu' with the preserved nun), its attached 'waw' being the subject pronoun of the addressees. 'Illa' is the restrictive particle giving the sense of 'unless'. 'An' is a subordinating particle that forms an interpreted verbal noun and renders the next verb subjunctive; 'yasha'a' is thus subjunctive (mansub). The interpreted verbal noun 'an yasha'a' stands in the genitive after an implied preposition 'bi', and that phrase relates to 'tasha'una'. The name 'Allah' is the nominative subject of 'yasha'a', 'rabbu' is its adjective in apposition (nominative), and 'al-'alamin' is the genitive construct complement, naming Him as Lord of all the worlds.",
+  "faqs_en": [
+   {
+    "q": "How does 'an yasha'a' fit into the sentence?",
+    "a": "'An' plus 'yasha'a' forms an interpreted verbal noun ('God's willing'). It sits in the genitive after an implied preposition 'bi', and the whole phrase relates back to the verb 'tasha'una', producing the meaning 'you do not will except by God's willing'."
+   },
+   {
+    "q": "What is the relationship between 'Allah' and 'rabbu'?",
+    "a": "'Allah' is the subject of the verb 'yasha'a', and 'rabbu' is its describing word (na't) in apposition, also nominative. 'Rabbu-l-'alamin' then forms a construct phrase meaning 'the Lord of the worlds'."
+   }
+  ],
+  "uthmani": "وَمَا تَشَآءُونَ إِلَّآ أَن يَشَآءَ ٱللَّهُ رَبُّ ٱلْعَٰلَمِينَ"
+ }
+}

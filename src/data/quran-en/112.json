@@ -1,0 +1,208 @@
+{
+ "112:1": {
+  "surah": 112,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "This verse opens with the imperative verb \"qul\" (say), whose object is the entire sentence that follows. That reported sentence is nominal: the pronoun \"huwa\" is the subject, the divine name \"Allah\" is a second subject, and \"ahad\" is its predicate. The inner nominal clause as a whole serves as predicate to \"huwa\".",
+  "translation_en": "Say: He, Allah, is One.",
+  "transliteration": "Qul huwa Allāhu aḥad(un)",
+  "words_en": [
+   {
+    "token": "قُلْ",
+    "case_en": "indeclinable",
+    "role_en": "imperative verb (fi'l amr)",
+    "note_en": "A command verb built on a silent ending (sukun); its doer is a hidden pronoun \"you\" understood from the form."
+   },
+   {
+    "token": "هُوَ",
+    "case_en": "indeclinable",
+    "role_en": "subject (mubtada')",
+    "note_en": "A detached pronoun fixed on the fatha vowel, standing in the nominative position as the topic of the reported sentence."
+   },
+   {
+    "token": "ٱللَّهُ",
+    "case_en": "nominative",
+    "role_en": "second subject (mubtada' thani)",
+    "note_en": "The divine name functions as a further topic, nominative with a damma, and together with its predicate forms the comment on \"huwa\"."
+   },
+   {
+    "token": "أَحَدٌ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "Nominative with tanwin damma; it reports about \"Allah\", and this second nominal clause as a whole is the predicate of the first subject \"huwa\"."
+   }
+  ],
+  "irab_en": "The verse begins with قُلْ, an imperative verb resting on a silent ending, its agent a concealed pronoun \"you\" addressed to the Prophet. Everything after it is the speech being commanded, so the following sentence occupies the accusative slot as the verb's object. That object is a nominal sentence: هُوَ is a detached pronoun, fixed on fatha, occupying the nominative position as the first topic (mubtada'). The divine name ٱللَّهُ is nominative and serves as a second topic, while أَحَدٌ is its predicate, nominative with tanwin. The clause \"Allāhu aḥad\" — a complete subject-plus-predicate unit — then functions as the predicate of the opening pronoun هُوَ. This layered structure (a pronoun whose comment is itself a full nominal sentence) gives the verse its emphatic, declarative force.",
+  "faqs_en": [
+   {
+    "q": "Why is the sentence after \"qul\" considered an object?",
+    "a": "The verb \"qul\" (say) reports speech, and the spoken content takes the place of a direct object. So the whole sentence \"He, Allah, is One\" stands in the accusative position as what is being said, even though its internal words carry nominative endings."
+   },
+   {
+    "q": "What is the role of \"huwa\" here?",
+    "a": "\"Huwa\" is a detached pronoun fixed on fatha, placed in the nominative position as the first topic (mubtada'). Its predicate is not a single word but the entire following clause \"Allāhu aḥad\", which is itself a complete subject-and-predicate sentence."
+   },
+   {
+    "q": "Why are both \"Allah\" and \"ahad\" nominative?",
+    "a": "They form an inner nominal sentence: \"Allah\" is a second subject (mubtada' thani) and \"ahad\" is its predicate (khabar). Subjects and their predicates both take the nominative case, marked here by the damma."
+   }
+  ],
+  "uthmani": "قُلْ هُوَ ٱللَّهُ أَحَدٌ"
+ },
+ "112:2": {
+  "surah": 112,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah is a complete nominal sentence (jumla ismiyya) built from just two words. The proper name \"Allah\" serves as the subject (mubtada') in the nominative, and \"al-Samad\" is its predicate (khabar), also nominative. Both carry the explicit damma ending. The whole clause continues the description begun in ayah 1.",
+  "translation_en": "Allah is the Eternal, Self-Sufficient One, upon whom all depend.",
+  "transliteration": "Allāhu al-Ṣamad",
+  "words_en": [
+   {
+    "token": "ٱللَّهُ",
+    "case_en": "nominative",
+    "role_en": "subject (mubtada')",
+    "note_en": "The majestic name Allah is the subject of this nominal sentence, marked nominative by the visible damma on its final letter."
+   },
+   {
+    "token": "ٱلصَّمَدُ",
+    "case_en": "nominative",
+    "role_en": "predicate (khabar)",
+    "note_en": "Al-Samad is the predicate that informs about the subject, also nominative with a visible damma, completing the sentence's meaning."
+   }
+  ],
+  "irab_en": "Ayah 2 forms one self-contained nominal sentence (jumla ismiyya) made of a subject and a predicate. The word ٱللَّهُ is the mubtada' (subject), and because it is a fully declinable noun it takes the nominative case with a clearly pronounced damma on its last letter. The word ٱلصَّمَدُ functions as the khabar (predicate); it reports something about the subject and therefore agrees with it in the nominative, again shown by a visible damma. Together the two nouns yield a complete, declarative statement requiring no verb. In terms of the surah's flow, this sentence stands as a fresh, independent statement (jumla isti'nafiyya) that elaborates on the description of God introduced in the opening ayah, so it has no formal grammatical position within a larger clause.",
+  "faqs_en": [
+   {
+    "q": "Why is there no verb in this ayah?",
+    "a": "Arabic forms complete statements without a verb through the nominal sentence (jumla ismiyya), which simply pairs a subject (mubtada') with a predicate (khabar). Here ٱللَّهُ and ٱلصَّمَدُ together mean \"Allah is al-Samad,\" with the linking \"is\" understood rather than written."
+   },
+   {
+    "q": "What case are both words in, and how do we know?",
+    "a": "Both ٱللَّهُ and ٱلصَّمَدُ are in the nominative (marfu') case. Each ends in a clearly pronounced damma, which is the standard nominative marker for fully declinable singular nouns, signaling their roles as subject and predicate."
+   },
+   {
+    "q": "Does this sentence connect grammatically to ayah 1?",
+    "a": "Meaning-wise it continues the theme of describing God, but grammatically it is treated as an independent restarting sentence (isti'nafiyya). That means it carries no syntactic position (no i'rab slot) inside another clause; it stands on its own."
+   }
+  ],
+  "uthmani": "ٱللَّهُ ٱلصَّمَدُ"
+ },
+ "112:3": {
+  "surah": 112,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 3 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah joins two parallel negated verbal clauses with the particle wāw. In each, the particle lam negates a present-tense verb and forces it into the jussive (majzūm) mood, shown by a sukūn on the final letter. The first verb is active (\"does not beget\"), the second passive (\"nor is begotten\"), each with a hidden subject referring back to Allah.",
+  "translation_en": "He does not beget, nor is He begotten.",
+  "transliteration": "lam yalid wa lam yūlad",
+  "words_en": [
+   {
+    "token": "لَمْ",
+    "case_en": "indeclinable",
+    "role_en": "negative jussive particle (ḥarf nafy wa jazm wa qalb)",
+    "note_en": "This particle negates the verb, pushes its meaning into the past, and governs it in the jussive mood."
+   },
+   {
+    "token": "يَلِدْ",
+    "case_en": "jussive",
+    "role_en": "present-tense verb made jussive by lam (fiʿl muḍāriʿ majzūm)",
+    "note_en": "An active present verb put into the jussive by lam, its sukūn ending marking the mood, with a hidden subject ('He') referring to Allah."
+   },
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "coordinating conjunction (ḥarf ʿaṭf)",
+    "note_en": "The wāw links the second clause to the first, joining the two negations in parallel."
+   },
+   {
+    "token": "لَمْ",
+    "case_en": "indeclinable",
+    "role_en": "negative jussive particle (ḥarf nafy wa jazm wa qalb)",
+    "note_en": "A second occurrence of lam that likewise negates and governs the following verb in the jussive."
+   },
+   {
+    "token": "يُولَدْ",
+    "case_en": "jussive",
+    "role_en": "passive present-tense verb made jussive by lam (fiʿl muḍāriʿ mabnī lil-majhūl majzūm)",
+    "note_en": "A passive present verb in the jussive because of lam, ending in sukūn, with a hidden deputy-subject ('He') standing in for the omitted agent."
+   }
+  ],
+  "irab_en": "The verse is built from two coordinated negative verbal sentences of identical structure. In the first, لَمْ is a particle that does three things at once: it negates, it shifts the verb's sense to the past, and it forces the following imperfect verb into the jussive mood. يَلِدْ is therefore a present-tense verb in the jussive, its mood signalled by the sukūn on the final dāl; its subject is a concealed pronoun meaning \"He,\" pointing back to Allah. The wāw then coordinates a second clause of the same pattern: لَمْ again negates and governs the jussive, while يُولَدْ is the passive counterpart, \"is begotten,\" also jussive with a sukūn ending. Its deputy-subject is a hidden pronoun replacing the unnamed agent, so the meaning is that He is not brought into being by anyone.",
+  "faqs_en": [
+   {
+    "q": "Why do the verbs يَلِدْ and يُولَدْ end in a sukūn instead of a ḍammah?",
+    "a": "Because the particle لَمْ is a jussive operator: it puts the present-tense verb into the jussive (majzūm) mood, and the default sign of the jussive on a sound verb is a sukūn on its last letter, replacing the ḍammah of the indicative."
+   },
+   {
+    "q": "What is the difference between يَلِدْ and يُولَدْ grammatically?",
+    "a": "يَلِدْ is active voice ('does not beget'), with a hidden subject ('He') doing the action. يُولَدْ is passive voice ('is not begotten'); the doer is omitted and a hidden deputy-subject takes the subject's place, so the focus is on the action received rather than performed."
+   },
+   {
+    "q": "What is the role of the wāw between the two clauses?",
+    "a": "The wāw is a coordinating conjunction (ḥarf ʿaṭf) that links the second negated sentence to the first, presenting the two denials—begetting and being begotten—as a balanced, parallel pair."
+   }
+  ],
+  "uthmani": "لَمْ يَلِدْ وَلَمْ يُولَدْ"
+ },
+ "112:4": {
+  "surah": 112,
+  "ayah": 4,
+  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 4 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is a negated past-tense sentence built on كان. The negative particle لم turns the present-tense verb يكن into a jussive expressing the past. كان has a postponed subject أحد and a fronted predicate كفوًا (accusative), while the prepositional phrase له attaches to that predicate. Both له and كفوًا precede the subject for emphasis. The whole clause is coordinated to the preceding verse by و.",
+  "translation_en": "And there has never been anyone equal to Him.",
+  "transliteration": "wa-lam yakun lahū kufuwan aḥad",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "coordinating conjunction (harf 'atf)",
+    "note_en": "This connective و links the verse to the previous statement, adding it as a further description of God."
+   },
+   {
+    "token": "لَمْ",
+    "case_en": "indeclinable",
+    "role_en": "negative jussive particle (harf nafy wa-jazm wa-qalb)",
+    "note_en": "This particle negates, governs the jussive mood, and shifts the meaning of the following present-tense verb into the past."
+   },
+   {
+    "token": "يَكُن",
+    "case_en": "jussive",
+    "role_en": "defective verb of 'to be' (kana wa-akhawatuha) made jussive by lam",
+    "note_en": "This present-tense form of كان is in the jussive because of لم, with its sukun appearing as the absence of the final vowel."
+   },
+   {
+    "token": "لَّهُۥ",
+    "case_en": "genitive",
+    "role_en": "prepositional phrase attached to the predicate of kana (muta'alliq bi-khabar yakun)",
+    "note_en": "The preposition لـ joins to the genitive pronoun هـ (referring to God) and attaches to the fronted predicate كُفُوًا, not standing as the predicate itself."
+   },
+   {
+    "token": "كُفُوًا",
+    "case_en": "accusative",
+    "role_en": "fronted predicate of kana (khabar kana muqaddam)",
+    "note_en": "This noun is accusative as the predicate of كان, brought forward before the subject, meaning 'an equal' or 'a peer'."
+   },
+   {
+    "token": "أَحَدٌۢ",
+    "case_en": "nominative",
+    "role_en": "delayed subject of kana (ism kana mu'akhkhar)",
+    "note_en": "This noun is the nominative subject of كان, postponed after the predicate, with tanwin marking its raf' (nominative case)."
+   }
+  ],
+  "irab_en": "The sentence opens with the conjunction و, joining it to the previous verse. The particle لم both negates and places the verb in the jussive mood while turning its tense to the past. يَكُن is the present-tense form of the defective verb كان, made jussive by لم, its mood shown by the dropped final vowel. كان needs a subject and a predicate. Its predicate is كُفُوًا (\"an equal\"), accusative and brought forward before the subject. The prepositional phrase لَّهُ (\"to Him\"), a preposition with an attached genitive pronoun referring to God, attaches to that fronted predicate. The subject of كان, أَحَدٌ (\"anyone\"), is nominative and comes at the very end, postponed for emphasis. Fronting كفوًا and له before the subject stresses the total denial of any peer.",
+  "faqs_en": [
+   {
+    "q": "Why is يَكُن in the jussive mood here?",
+    "a": "Because the particle لم precedes it. لم is a negative particle that both negates the verb and forces it into the jussive mood, shifting its meaning into the past. The jussive shows itself through the absence of the final vowel (sukun) on the verb."
+   },
+   {
+    "q": "Why is أَحَدٌ nominative when it comes at the very end?",
+    "a": "أَحَدٌ is the subject (ism) of the verb كان, and the subject of كان is always nominative. Although it normally comes earlier, here it is postponed after the predicate for rhetorical emphasis, but its case remains nominative, marked by the tanwin damma."
+   },
+   {
+    "q": "What is the predicate (khabar) of كان in this verse?",
+    "a": "The accusative noun كُفُوًا is the predicate (khabar) of كان, brought forward before the subject. The prepositional phrase لَّهُ (\"to Him\") attaches to this predicate rather than serving as the predicate itself. Placing both before the subject أَحَدٌ highlights the meaning: there exists no equal whatsoever belonging to God."
+   }
+  ],
+  "uthmani": "وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ"
+ }
+}

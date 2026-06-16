@@ -4,7 +4,6 @@
  * produced from the Quran text + factual grammar anchors — NOT a translation
  * of الجدول (which is copyrighted). Pairs with quran.ts for surah metadata.
  */
-import data from '../data/quran-en.json';
 import { caseHex, surahById, type SurahMeta } from './quran';
 
 export interface EnWord {
@@ -27,7 +26,16 @@ export interface AyahEn {
   faqs_en: { q: string; a: string }[];
 }
 
-export const AYAT_EN = data as unknown as Record<string, AyahEn>;
+// Load every per-surah shard (src/data/quran-en/<surah>.json) and merge. Sharding
+// keeps the build fast as the corpus grows toward all 6,236 ayat.
+const shards = import.meta.glob('../data/quran-en/*.json', { eager: true }) as Record<
+  string,
+  { default: Record<string, AyahEn> }
+>;
+const merged: Record<string, AyahEn> = {};
+for (const m of Object.values(shards)) Object.assign(merged, m.default);
+
+export const AYAT_EN = merged;
 export const EN_KEYS = new Set(Object.keys(AYAT_EN));
 
 export const enEntries = (): AyahEn[] => Object.values(AYAT_EN);

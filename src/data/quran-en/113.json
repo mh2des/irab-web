@@ -1,0 +1,294 @@
+{
+ "113:1": {
+  "surah": 113,
+  "ayah": 1,
+  "h1_en": "I'rab of Surah Al-Falaq Ayah 1 — word-by-word Arabic grammar",
+  "tldr_en": "The verse opens with the imperative verb qul (\"say\") whose subject is a hidden \"you.\" Its unstated object is the whole quoted sentence that follows: a'udhu (\"I seek refuge\"), a present-tense verb with a concealed \"I.\" The preposition bi plus rabbi forms a phrase attached to a'udhu, and rabbi governs al-falaq as its genitive possessive complement.",
+  "translation_en": "Say: I seek refuge with the Lord of the daybreak.",
+  "transliteration": "Qul aʿūdhu bi-rabbi l-falaq(i)",
+  "words_en": [
+   {
+    "token": "قُلْ",
+    "case_en": "indeclinable (jussive form)",
+    "role_en": "imperative verb (fi'l amr)",
+    "note_en": "A command verb built on a silent ending, with an implied subject pronoun \"you\" (anta); its spoken object is the entire sentence that follows."
+   },
+   {
+    "token": "أَعُوذُ",
+    "case_en": "nominative",
+    "role_en": "present-tense verb (fi'l mudari') with concealed subject",
+    "note_en": "An indicative present-tense verb marked nominative by a damma, its subject being a hidden \"I\" (ana), and the clause functions as the quoted speech."
+   },
+   {
+    "token": "بِ",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "A genitive particle that, together with its noun, forms a prepositional phrase linked to the verb a'udhu."
+   },
+   {
+    "token": "رَبِّ",
+    "case_en": "genitive",
+    "role_en": "genitive noun governed by the preposition (majrur), also possessor (mudaf)",
+    "note_en": "Made genitive by the preceding preposition with a kasra, and it is the first term of a possessive construction with al-falaq."
+   },
+   {
+    "token": "ٱلْفَلَقِ",
+    "case_en": "genitive",
+    "role_en": "possessive complement (mudaf ilayh)",
+    "note_en": "The second term of the construct, put in the genitive with a kasra to complete the phrase \"Lord of the daybreak.\""
+   }
+  ],
+  "irab_en": "The verse begins with qul, an imperative verb fixed on a silent ending; its doer is a hidden pronoun \"you,\" addressing the Prophet, and its object is the quoted statement that follows. That statement is aʿūdhu, an indicative present-tense verb in the nominative (shown by the damma), whose subject is a concealed \"I.\" The particle bi is a preposition governing the genitive; with the noun it forms a prepositional phrase that attaches to the verb aʿūdhu, conveying the one in whom refuge is sought. Rabbi is dragged into the genitive by this preposition (marked by a kasra) and simultaneously serves as the first member of a possessive construct (mudaf). Al-falaq is its possessive complement (mudaf ilayh), also genitive with a kasra, completing the phrase \"the Lord of the daybreak.\"",
+  "faqs_en": [
+   {
+    "q": "What is the grammatical object of the verb qul in this verse?",
+    "a": "Its object is not a single noun but the entire sentence spoken after it — \"aʿūdhu bi-rabbi l-falaq.\" In Arabic, a quoted statement following \"say\" occupies the accusative position as the object of qul, even though the words inside that quote keep their own internal grammar."
+   },
+   {
+    "q": "Why are both rabbi and al-falaq in the genitive case?",
+    "a": "They are genitive for two linked reasons. Rabbi is genitive because the preposition bi governs it, and it is also the first term of a possessive construct. Al-falaq is genitive as the possessive complement (mudaf ilayh) of rabbi. Both endings appear as a kasra, giving \"the Lord of the daybreak.\""
+   },
+   {
+    "q": "Where do the subjects of qul and aʿūdhu come from if no pronouns are written?",
+    "a": "Both subjects are concealed (mustatir) pronouns. The imperative qul carries an implied \"you\" (anta), since commands inherently address a listener. The present-tense aʿūdhu carries an implied \"I\" (ana), because verbs beginning with the hamza prefix in the present tense signal a first-person singular doer."
+   }
+  ],
+  "uthmani": "قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ"
+ },
+ "113:2": {
+  "surah": 113,
+  "ayah": 2,
+  "h1_en": "I'rab of Surah Al-Falaq Ayah 2 — word-by-word Arabic grammar",
+  "tldr_en": "This verse is a prepositional phrase (min sharri) that attaches grammatically to the verb a'udhu (I seek refuge) in the previous ayah. Sharr is a noun in the genitive governed by min, and it is the first term of a genitive construction (idafa) whose second term is the relative noun ma (what), which takes a genitive position. The verb khalaqa forms the relative clause with an omitted returning pronoun.",
+  "translation_en": "From the evil of what He created.",
+  "transliteration": "min sharri mā khalaq(a)",
+  "words_en": [
+   {
+    "token": "مِن",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "A preposition meaning from that introduces the source of evil and governs the following noun in the genitive."
+   },
+   {
+    "token": "شَرِّ",
+    "case_en": "genitive",
+    "role_en": "genitive noun (majrur bi-min) and first term of idafa (mudaf)",
+    "note_en": "A noun put into the genitive by the preposition min; together with it the phrase links back to the verb a'udhu (I seek refuge) in the opening verse, and it heads a possessive construction."
+   },
+   {
+    "token": "مَا",
+    "case_en": "genitive",
+    "role_en": "relative noun in genitive position (mudaf ilayh)",
+    "note_en": "An indeclinable relative pronoun (what / that which) occupying the genitive slot as the second term of the construction with sharr."
+   },
+   {
+    "token": "خَلَقَ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb forming the relative clause (silat al-mawsul)",
+    "note_en": "A past-tense verb built on fatha with a hidden subject pronoun (He, i.e. the Lord); it forms the relative clause whose omitted returning pronoun (that which He created [it]) completes the meaning of ma."
+   }
+  ],
+  "irab_en": "The verse opens with the preposition min (from), which places the noun sharr (evil) in the genitive. This prepositional phrase does not stand alone; it connects grammatically to the verb a'udhu (I seek refuge) stated in ayah 1, specifying what one seeks protection from. Sharr then functions as the first element of a genitive construction (idafa). Its second element is ma (what / that which), an indeclinable relative noun that holds the genitive position as the possessed-to term. The relative clause attached to ma is built on the verb khalaqa (He created), a past-tense verb fixed on fatha, with its subject an implied pronoun referring to the Lord. The returning pronoun linking the clause back to ma is omitted but understood, giving what He created [it].",
+  "faqs_en": [
+   {
+    "q": "What does the prepositional phrase min sharri connect to grammatically?",
+    "a": "It attaches to the verb a'udhu (I seek refuge) found in the previous verse (113:1). The phrase tells us the thing being sought refuge from, so the meaning runs continuously: I seek refuge... from the evil of what He created."
+   },
+   {
+    "q": "Why is sharr in the genitive case?",
+    "a": "It is genitive for two reasons working together: it is the object of the preposition min, which always puts its noun in the genitive, and it is also the first term (mudaf) of a possessive construction with ma following it."
+   },
+   {
+    "q": "How does ma khalaqa work as a relative construction?",
+    "a": "Ma is a relative noun meaning that which. The verb khalaqa (He created) forms its relative clause (silat al-mawsul). The pronoun that would refer back to ma is dropped but implied, so the sense is that which He created."
+   }
+  ],
+  "uthmani": "مِن شَرِّ مَا خَلَقَ"
+ },
+ "113:3": {
+  "surah": 113,
+  "ayah": 3,
+  "h1_en": "I'rab of Surah Al-Falaq Ayah 3 - word-by-word Arabic grammar",
+  "tldr_en": "This verse opens with a coordinating wa- joining a prepositional phrase (min sharri) that attaches to the earlier verb a'udhu (I seek refuge). Sharr governs the indefinite ghasiq as a genitive possessed construction. The adverbial idha then introduces a conditional-type time clause whose verb is waqaba, the whole clause qualifying ghasiq.",
+  "translation_en": "And from the evil of the darkening night when it settles in.",
+  "transliteration": "wa min sharri ghaasiqin idhaa waqaba",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "coordinating conjunction (harf atf)",
+    "note_en": "The wa- links this phrase to the preceding min sharri ma khalaq in verse 2, repeating the request for refuge."
+   },
+   {
+    "token": "مِن",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "This particle puts the following noun in the genitive and, with it, attaches to the verb a'udhu (I seek refuge) from verse 1."
+   },
+   {
+    "token": "شَرِّ",
+    "case_en": "genitive",
+    "role_en": "noun governed by min (majrur), first term of an idafa",
+    "note_en": "Made genitive by min and shown by the kasra; it is also the possessed term in a genitive construction with the noun that follows."
+   },
+   {
+    "token": "غَاسِقٍ",
+    "case_en": "genitive",
+    "role_en": "possessor noun (mudaf ilayh)",
+    "note_en": "This indefinite noun is genitive as the second term of the idafa with sharr, its tanwin kasra marking the case."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "adverb of time (zarf) in the accusative position",
+    "note_en": "An indeclinable time adverb, here stripped of full conditional force, occupying an accusative slot and linked to the implied meaning of the verbal noun (the evil)."
+   },
+   {
+    "token": "وَقَبَ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb (fi'l madi) within the idha clause",
+    "note_en": "A past-tense verb built on fatha; its agent is a hidden pronoun (it) referring back to the darkening night, and the clause defines when its evil is feared."
+   }
+  ],
+  "irab_en": "The verse begins with the conjunction wa-, which ties it to the previous appeals for refuge, followed by the preposition min. The genitive sharrin (evil) is governed by min and forms the head of a possessive (idafa) construction, while the indefinite ghasiqin (darkening night) stands as its genitive second term, marked by tanwin kasra. Together, min sharri ghasiqin reattaches to the verb a'udhu (I seek refuge) stated at the start of the surah. The adverb idha is an indeclinable particle of time set in an accusative slot; although it normally carries conditional sense, here it functions chiefly as a time marker. Its clause contains the past verb waqaba (it settled in), built on fatha, whose unspoken subject it points back to the night. This whole idha-clause restricts the verse: the evil sought refuge from is specifically that of the night as it descends.",
+  "faqs_en": [
+   {
+    "q": "Why is ghasiq in the genitive case?",
+    "a": "It is the second term (mudaf ilayh) of the possessive construction sharri ghasiqin, the evil of a darkening night. Nouns in this possessor position always take the genitive, here shown by the tanwin kasra on an indefinite noun."
+   },
+   {
+    "q": "What does the preposition min sharri attach to grammatically?",
+    "a": "The phrase min sharri attaches to the verb a'udhu (I seek refuge) in verse 1. This same verb governs the parallel min sharri phrases in verses 2, 3, 4, and 5, each adding another source of evil sought refuge from."
+   },
+   {
+    "q": "How does idha function in this verse?",
+    "a": "Idha is an indeclinable adverb of time placed in an accusative position. Though it can introduce conditions, here it mainly marks the moment, and its verb waqaba (settles in) specifies the time at which the night's evil is feared."
+   }
+  ],
+  "uthmani": "وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ"
+ },
+ "113:4": {
+  "surah": 113,
+  "ayah": 4,
+  "h1_en": "I'rab of Surah Al-Falaq Ayah 4 — word-by-word Arabic grammar",
+  "tldr_en": "This verse continues the chain of things sought refuge from. The conjunction wa links it to the earlier \"from the evil of.\" The prepositional phrase min sharri attaches to the verb a'udhu (I seek refuge) in verse 1. Sharr is a noun in the genitive governing the following genitive construct, and fi al-'uqad is a prepositional phrase modifying al-naffathat.",
+  "translation_en": "And from the evil of those who blow on knots.",
+  "transliteration": "wa min sharri an-naffathati fi al-'uqad",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "An indeclinable connective particle that joins this clause to the preceding object of seeking refuge."
+   },
+   {
+    "token": "مِن",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "An indeclinable preposition meaning 'from' that puts the following noun into the genitive and links to the verb a'udhu in verse 1."
+   },
+   {
+    "token": "شَرِّ",
+    "case_en": "genitive",
+    "role_en": "genitive noun governed by min (majrur), and first term of an idafa",
+    "note_en": "It is genitive because of the preposition min, and it is itself the possessed term of a construct phrase governing the next word."
+   },
+   {
+    "token": "ٱلنَّفَّاثَاتِ",
+    "case_en": "genitive",
+    "role_en": "genitive noun (mudaf ilayh)",
+    "note_en": "This noun completes the construct after sharr and is genitive, its kasrah marking the genitive on a sound feminine plural."
+   },
+   {
+    "token": "فِى",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "An indeclinable preposition 'in/on' whose phrase attaches to al-naffathat, specifying where the blowing occurs."
+   },
+   {
+    "token": "ٱلْعُقَدِ",
+    "case_en": "genitive",
+    "role_en": "genitive noun governed by fi (majrur)",
+    "note_en": "It is genitive because of the preposition fi, with the kasrah as its case marker."
+   }
+  ],
+  "irab_en": "The verse opens with wa, an indeclinable conjunction connecting it to the previous appeals for refuge. The preposition min ('from') is likewise indeclinable and renders the following noun genitive; together min sharr forms a prepositional phrase that relates back to the verb a'udhu ('I seek refuge') in the opening verse. Sharr ('evil') is genitive after min and simultaneously functions as the head of a possessive construct (idafa), so the noun that follows, al-naffathat ('the women who blow'), stands as the second term of the construct (mudaf ilayh) and is genitive, marked by a kasrah on this sound feminine plural. The phrase fi al-'uqad ('on the knots') consists of the indeclinable preposition fi plus al-'uqad in the genitive; this phrase modifies al-naffathat, telling us what the blowing is directed at.",
+  "faqs_en": [
+   {
+    "q": "Why is the word شَرِّ in the genitive case?",
+    "a": "Two factors converge: it directly follows the preposition مِن, which always makes its noun genitive, and it is also the head term of a construct phrase (idafa) with النفّاثات. Either reason alone accounts for the kasrah on its ending."
+   },
+   {
+    "q": "What does the prepositional phrase فِى ٱلْعُقَدِ connect to grammatically?",
+    "a": "It attaches to النفّاثات, the active participle describing those who blow. The phrase specifies the location or object of the blowing — 'on the knots' — functioning as an adverbial complement of that participle rather than relating to the main verb."
+   },
+   {
+    "q": "How is the opening وَ in this verse parsed?",
+    "a": "It is a coordinating conjunction (harf 'atf), an indeclinable particle. It joins this whole 'from the evil of...' phrase to the parallel phrases in the surrounding verses, all of which ultimately depend on the verb أَعُوذُ in verse 1."
+   }
+  ],
+  "uthmani": "وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ"
+ },
+ "113:5": {
+  "surah": 113,
+  "ayah": 5,
+  "h1_en": "I'rab of Surah Al-Falaq Ayah 5 — word-by-word Arabic grammar",
+  "tldr_en": "This ayah is coordinated by the conjunction wa onto the earlier \"min sharri\" phrases, so \"min sharri hasidin\" is again a prepositional phrase tied to the verb \"a'udhu\" in ayah 1. \"Hasidin\" is an indefinite genitive added to \"sharr.\" The clause \"idha hasada\" is an adverbial of time governing a following conditional-style verb.",
+  "translation_en": "And from the evil of an envier when he envies.",
+  "transliteration": "Wa min sharri hasidin idha hasad(a)",
+  "words_en": [
+   {
+    "token": "وَ",
+    "case_en": "indeclinable",
+    "role_en": "conjunction (harf 'atf)",
+    "note_en": "This is the connecting particle wa, joining this phrase to the previous \"min sharr\" phrases in the surah."
+   },
+   {
+    "token": "مِن",
+    "case_en": "indeclinable",
+    "role_en": "preposition (harf jarr)",
+    "note_en": "The preposition min puts the noun after it in the genitive and, with its object, attaches back to the verb a'udhu in ayah 1."
+   },
+   {
+    "token": "شَرِّ",
+    "case_en": "genitive",
+    "role_en": "noun governed by the preposition (majrur bi-min)",
+    "note_en": "Sharr is genitive because of the preceding min, and it is itself the first term of a possessive (idafa) construction."
+   },
+   {
+    "token": "حَاسِدٍ",
+    "case_en": "genitive",
+    "role_en": "genitive noun / second term of idafa (mudaf ilayh)",
+    "note_en": "Hasidin is an indefinite genitive noun completing the idafa with sharr, its tanwin kasra marking the genitive case."
+   },
+   {
+    "token": "إِذَا",
+    "case_en": "indeclinable",
+    "role_en": "adverb of time (zarf)",
+    "note_en": "Idha is a fixed time adverb in the accusative position, here functioning adverbially and linked to the verbal idea of envying."
+   },
+   {
+    "token": "حَسَدَ",
+    "case_en": "indeclinable",
+    "role_en": "past-tense verb (fi'l madi)",
+    "note_en": "Hasada is a past-tense verb built on fatha, with its subject a hidden pronoun \"he\" referring back to the envier."
+   }
+  ],
+  "irab_en": "The verse opens with the conjunction wa, which links the whole phrase to the parallel \"min sharr\" expressions running through Surah Al-Falaq. The preposition min governs sharr in the genitive, and this prepositional phrase relates back to the main verb a'udhu (\"I seek refuge\") stated in the first ayah. Sharr then heads a possessive (idafa) construction: hasidin is its second term, an indefinite genitive noun marked by the kasra of its tanwin. The word idha is an indeclinable adverb of time occupying an accusative position; it points to the moment of the action rather than functioning as a full conditional here. Finally, hasada is a past-tense verb fixed on fatha, whose doer is an implied pronoun referring to the envier. The clause idha hasada thus specifies when the envier's harm is feared.",
+  "faqs_en": [
+   {
+    "q": "Why is hasidin in the genitive case?",
+    "a": "Hasidin is genitive because it is the second term (mudaf ilayh) of the possessive construction with sharr; an idafa always places its second noun in the genitive, shown here by the kasra of the tanwin."
+   },
+   {
+    "q": "What does the wa at the start of the ayah connect to?",
+    "a": "It is a coordinating conjunction joining this \"min sharr\" phrase to the earlier \"min sharr\" phrases in the surah, all of which ultimately depend on the verb a'udhu in ayah 1."
+   },
+   {
+    "q": "How is idha hasada analyzed grammatically?",
+    "a": "Idha is an indeclinable adverb of time in an accusative position pointing to the moment of action, and hasada is a past-tense verb built on fatha with a hidden subject pronoun referring back to the envier."
+   }
+  ],
+  "uthmani": "وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ"
+ }
+}
