@@ -1,0 +1,99 @@
+---
+/**
+ * /pricing — public pricing page for Irab Plus (Arabic).
+ *
+ * Doubles as the page Paddle's verification (and reviewers/AEO) read to learn
+ * what we sell. Shows the two plans + what's included, notes Paddle as Merchant
+ * of Record and that tax is added at checkout. Indexed (SEO).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Container from '../components/Container.astro';
+import Section from '../components/Section.astro';
+import Footer from '../components/sections/Footer.astro';
+
+const included = [
+  'محلّل الإعراب بالذكاء الاصطناعي — بلا حدود',
+  'تمارين الإعراب مع تقييمٍ فوري على جُملك الخاصة',
+  'المعجم الذكي — بحثٌ غير محدود',
+  'إدخال صوتي + تصوير النص (OCR)',
+  'المعاجم التقليدية ومعجم اللهجات ومكتبة الكتب الكلاسيكية',
+  'إعراب القرآن — مكتبة مرجعية',
+  'شهادات الإتقان (للخطة السنوية)',
+  'يعمل على الويب والتطبيق بحسابٍ واحد',
+];
+
+const offerSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Irab Plus',
+  description: 'اشتراك إعراب بلس: يفتح كلّ ميزات إعراب على الويب والتطبيق بحسابٍ واحد.',
+  brand: { '@type': 'Brand', name: 'Irab' },
+  offers: [
+    { '@type': 'Offer', name: 'شهري', price: '4.99', priceCurrency: 'USD', url: 'https://irab.app/pricing', availability: 'https://schema.org/InStock' },
+    { '@type': 'Offer', name: 'سنوي', price: '39.99', priceCurrency: 'USD', url: 'https://irab.app/pricing', availability: 'https://schema.org/InStock' },
+  ],
+};
+---
+<BaseLayout
+  lang="ar"
+  title="الأسعار · إعراب بلس"
+  description="اشترك في إعراب بلس: ٤٫٩٩$ شهريًّا أو ٣٩٫٩٩$ سنويًّا (تجربة مجانية ٧ أيام). يفتح كلّ الميزات على الويب والتطبيق بحسابٍ واحد. الدفع عبر Paddle."
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(offerSchema)} is:inline />
+
+  <Nav lang="ar" />
+
+  <Section>
+    <Container size="narrow">
+      <div class="text-center mb-12">
+        <p class="eyebrow mb-4">الأسعار</p>
+        <h1 class="font-arabic-display text-[clamp(2rem,5vw,3.2rem)] leading-tight tracking-tight mb-4">اشتراكٌ واحد، في كلّ مكان</h1>
+        <p class="text-body text-ink/65 dark:text-mist/65 max-w-xl mx-auto leading-loose">
+          ابدأ مجانًا. عند الاشتراك في إعراب بلس يُفتح كلّ شيء — على الموقع وفي التطبيق — بالحساب نفسه.
+        </p>
+      </div>
+
+      {/* Plans */}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
+        {/* Monthly */}
+        <div class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-7 flex flex-col">
+          <p class="font-arabic-display text-h3 mb-1">شهري</p>
+          <p class="mb-1"><span class="font-arabic-display text-[2.5rem] leading-none">٤٫٩٩$</span> <span class="text-ink/55 dark:text-mist/55 text-small">/ شهريًّا</span></p>
+          <p class="text-caption text-ink/45 dark:text-mist/45 mb-6">يُجدَّد شهريًّا، ألغِ في أي وقت.</p>
+          <a href="/app" class="mt-auto inline-flex items-center justify-center px-5 py-3 rounded-full border border-purple/40 text-purple hover:bg-purple/10 font-medium transition-colors">ابدأ شهريًّا</a>
+        </div>
+
+        {/* Annual — highlighted */}
+        <div class="relative rounded-2xl border-2 border-purple bg-purple/[0.05] p-7 flex flex-col">
+          <span class="absolute -top-3 start-6 text-caption px-3 py-1 rounded-full bg-purple text-white font-medium">الأفضل قيمة · وفّر ٣٣٪</span>
+          <p class="font-arabic-display text-h3 mb-1">سنوي</p>
+          <p class="mb-1"><span class="font-arabic-display text-[2.5rem] leading-none">٣٩٫٩٩$</span> <span class="text-ink/55 dark:text-mist/55 text-small">/ سنويًّا</span></p>
+          <p class="text-caption text-purple mb-6">تجربة مجانية ٧ أيام · يشمل شهادات الإتقان</p>
+          <a href="/app" class="mt-auto inline-flex items-center justify-center px-5 py-3 rounded-full bg-purple hover:bg-purple-deep text-white font-medium transition-colors">ابدأ التجربة المجانية</a>
+        </div>
+      </div>
+
+      <p class="text-caption text-ink/45 dark:text-mist/45 text-center mt-5 max-w-xl mx-auto leading-relaxed">
+        أسعار إقليمية قد تختلف، وتُضاف الضرائب عند الدفع حسب بلدك. تتمّ معالجة الدفع على الويب عبر <strong>Paddle</strong> (بائع التسجيل). راجع
+        <a href="/refund" class="text-purple hover:text-purple-deep underline underline-offset-2">سياسة الاسترداد</a> و
+        <a href="/terms" class="text-purple hover:text-purple-deep underline underline-offset-2">الشروط</a>.
+      </p>
+
+      {/* What's included */}
+      <div class="mt-14 max-w-xl mx-auto">
+        <h2 class="font-arabic-display text-h3 text-center mb-6">ماذا يفتح لك إعراب بلس</h2>
+        <ul class="grid grid-cols-1 gap-3">
+          {included.map((item) => (
+            <li class="flex items-start gap-3 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft px-4 py-3">
+              <span class="text-teal shrink-0 mt-0.5" aria-hidden="true">✓</span>
+              <span class="text-body text-ink/80 dark:text-mist/80 leading-relaxed">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Container>
+  </Section>
+
+  <Footer lang="ar" />
+</BaseLayout>

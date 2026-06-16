@@ -13,7 +13,7 @@ import Footer from './sections/Footer.astro';
 import Container from './Container.astro';
 
 interface Props {
-  kind: 'privacy' | 'terms';
+  kind: 'privacy' | 'terms' | 'refund';
   body: string;
 }
 const { kind, body } = Astro.props;
@@ -26,6 +26,10 @@ const meta = {
   terms: {
     titleAr: 'شروط الخدمة', titleEn: 'Terms of Service',
     other: { href: '/privacy', ar: 'سياسة الخصوصية', en: 'Privacy Policy' },
+  },
+  refund: {
+    titleAr: 'سياسة الاسترداد', titleEn: 'Refund Policy',
+    other: { href: '/terms', ar: 'شروط الخدمة', en: 'Terms of Service' },
   },
 }[kind];
 

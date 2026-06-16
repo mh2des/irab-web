@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+import body from '../data/legal/refund.html?raw';
+---
+<BaseLayout
+  lang="ar"
+  title="سياسة الاسترداد · إعراب"
+  description="سياسة استرداد اشتراك إعراب بلس: ضمان ١٤ يومًا، التجديد والإلغاء، وكيفية طلب الاسترداد عبر Paddle."
+>
+  <LegalDoc kind="refund" body={body} />
+</BaseLayout>

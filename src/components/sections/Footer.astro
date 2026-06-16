@@ -16,7 +16,7 @@ const t = lang === 'ar'
       links: {
         demo: 'التجربة المباشرة', features: 'المميزات', pricing: 'الأسعار', faq: 'الأسئلة',
         irab: 'ما هو الإعراب؟', nahw: 'ما هو النحو؟', quran: 'إعراب القرآن', teachers: 'للمعلمين',
-        privacy: 'الخصوصية', terms: 'الشروط', contact: 'تواصل',
+        privacy: 'الخصوصية', terms: 'الشروط', refund: 'الاسترداد', contact: 'تواصل',
       },
       built: '© ٢٠٢٦ إعراب. كلّ الحقوق محفوظة.',
     }
@@ -28,7 +28,7 @@ const t = lang === 'ar'
       links: {
         demo: 'Live demo', features: 'Features', pricing: 'Pricing', faq: 'FAQ',
         irab: "What is i'rab?", nahw: 'What is nahw?', quran: 'Parse the Quran', teachers: 'For teachers',
-        privacy: 'Privacy', terms: 'Terms', contact: 'Contact',
+        privacy: 'Privacy', terms: 'Terms', refund: 'Refund', contact: 'Contact',
       },
       built: '© 2026 Irab. All rights reserved.',
     };
@@ -54,7 +54,7 @@ const p = (path: string) => (lang === 'ar' ? path : `/en${path}`);
           <li><a href="/quran" class="text-teal hover:text-teal-deep dark:text-teal font-bold transition-colors duration-200">{lang === 'ar' ? 'إعراب القرآن الكريم' : "Quran i'rab (full)"}</a></li>
           <li><a href={`${home}#demo`}     class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.demo}</a></li>
           <li><a href={`${home}#features`} class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.features}</a></li>
-          <li><a href={`${home}#pricing`}  class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.pricing}</a></li>
+          <li><a href="/pricing"          class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.pricing}</a></li>
           <li><a href={`${home}#faq`}      class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.faq}</a></li>
         </ul>
       </div>
@@ -74,6 +74,7 @@ const p = (path: string) => (lang === 'ar' ? path : `/en${path}`);
         <ul class="space-y-2 text-small">
           <li><a href="/privacy" class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.privacy}</a></li>
           <li><a href="/terms"   class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.terms}</a></li>
+          <li><a href="/refund"  class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.refund}</a></li>
           <li><a href="mailto:hello@irab.app" class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.contact}</a></li>
         </ul>
       </div>
