@@ -11,6 +11,7 @@
  * public demo quota (not /api/usage) and Quran is public, so those carry no
  * daily badge.
  */
+import { PADDLE_ENABLED } from '../lib/paddle';
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const login = lang === 'ar' ? '/login' : '/en/login';
@@ -37,17 +38,19 @@ const t = lang === 'ar'
       hi: 'أهلاً', tools: 'أدواتك', loading: 'جارٍ التحميل…',
       planFree: 'مجاني', planPlus: 'إعراب بلس',
       upgradeTitle: 'افتح كلّ الميزات بلا حدود',
-      upgradeBody: 'اشترك في إعراب بلس من التطبيق ليُفتح كلّ شيء على الويب والتطبيق — بالحساب نفسه.',
+      upgradeBody: 'اشترك في إعراب بلس ليُفتح كلّ شيء على الويب والتطبيق — بالحساب نفسه.',
       upgradeCta: 'حمّل التطبيق', manage: 'إدارة الحساب', signOut: 'تسجيل الخروج',
       open: 'افتح',
+      subAnnual: 'اشترك سنويًّا — الأفضل قيمة', subMonthly: 'اشترك شهريًّا', orGetApp: 'أو احصل عليه من التطبيق',
     }
   : {
       hi: 'Welcome', tools: 'Your tools', loading: 'Loading…',
       planFree: 'Free', planPlus: 'Irab Plus',
       upgradeTitle: 'Unlock everything, unlimited',
-      upgradeBody: 'Subscribe to Irab Plus in the app and it unlocks across web and app — on the same account.',
+      upgradeBody: 'Subscribe to Irab Plus and it unlocks across web and app — on the same account.',
       upgradeCta: 'Get the app', manage: 'Manage account', signOut: 'Sign out',
       open: 'Open',
+      subAnnual: 'Subscribe yearly — best value', subMonthly: 'Subscribe monthly', orGetApp: 'or get it in the app',
     };
 const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
 ---
@@ -76,7 +79,17 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
     <div data-hub-upgrade class="hidden mb-8 rounded-2xl border border-purple/25 bg-purple/[0.06] p-5 md:p-6">
       <p class:list={[titleClass, 'text-h3 leading-tight mb-1']}>{t.upgradeTitle}</p>
       <p class="text-small text-ink/65 dark:text-mist/65 mb-4">{t.upgradeBody}</p>
-      <a href={`${home}#cta`} class="inline-flex items-center px-5 py-2.5 rounded-full bg-purple hover:bg-purple-deep text-white text-small font-medium transition-colors">{t.upgradeCta}</a>
+      {PADDLE_ENABLED ? (
+        <Fragment>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button type="button" data-paddle-plan="annual" class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-purple hover:bg-purple-deep text-white text-small font-medium transition-colors">{t.subAnnual}</button>
+            <button type="button" data-paddle-plan="monthly" class="inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-purple/40 text-purple hover:bg-purple/10 text-small font-medium transition-colors">{t.subMonthly}</button>
+          </div>
+          <a href={`${home}#cta`} class="inline-block mt-3 text-caption text-ink/50 dark:text-mist/50 hover:text-purple transition-colors">{t.orGetApp}</a>
+        </Fragment>
+      ) : (
+        <a href={`${home}#cta`} class="inline-flex items-center px-5 py-2.5 rounded-full bg-purple hover:bg-purple-deep text-white text-small font-medium transition-colors">{t.upgradeCta}</a>
+      )}
     </div>
 
     {/* Tool grid */}
@@ -165,6 +178,22 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
           } else {
             planEl.textContent = T.free;
             upgradeEl.classList.remove('hidden');
+            // Web checkout buttons (only rendered when PADDLE_ENABLED) — tag the
+            // purchase with this user's UID so the webhook grants their entitlement.
+            root!.querySelectorAll<HTMLButtonElement>('[data-paddle-plan]').forEach((btn) => {
+              btn.addEventListener('click', async () => {
+                const plan = btn.dataset.paddlePlan === 'monthly' ? 'monthly' : 'annual';
+                btn.disabled = true;
+                try {
+                  const { openCheckout } = await import('../lib/paddle');
+                  await openCheckout({ plan, firebaseUid: u.uid, email: u.email || undefined, lang });
+                } catch (e) {
+                  console.error('paddle checkout failed', e);
+                } finally {
+                  btn.disabled = false;
+                }
+              });
+            });
           }
 
           // Today's usage (truthful badges only — practice + dictionary)
