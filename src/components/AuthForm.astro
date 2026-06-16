@@ -39,7 +39,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
   data-lang={lang}
   data-account={account}
   dir={dir}
-  class="w-full max-w-md mx-auto"
+  class="w-full max-w-md mx-auto relative"
 >
   <div class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-7 md:p-9 shadow-sm">
     {/* Tabs */}
@@ -103,6 +103,14 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
     <button type="button" data-switch
       class="block mx-auto mt-6 text-small text-ink/60 dark:text-mist/60 hover:text-ink dark:hover:text-mist transition-colors"></button>
   </div>
+
+  {/* Loading overlay — covers the card during sign-in / sign-up so it's clear something's happening */}
+  <div data-auth-loading class="hidden absolute inset-0 rounded-2xl bg-paper/85 dark:bg-coal/85 backdrop-blur-sm grid place-items-center z-10">
+    <div class="text-center">
+      <svg class="w-9 h-9 mx-auto text-purple animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+      <p class="mt-4 font-arabic text-small text-ink/70 dark:text-mist/70" data-auth-loading-text></p>
+    </div>
+  </div>
 </div>
 
 <style>
@@ -128,6 +136,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       reset: lang === 'ar' ? 'أرسلنا رابط إعادة التعيين إلى بريدك.' : 'We sent a reset link to your email.',
       needEmail: lang === 'ar' ? 'اكتب بريدك أولاً لإعادة التعيين.' : 'Enter your email first to reset.',
       working: lang === 'ar' ? 'جارٍ…' : 'Working…',
+      signingIn: lang === 'ar' ? 'جارٍ تسجيل الدخول…' : 'Signing you in…',
     };
 
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
@@ -142,6 +151,8 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
     const forgot = q<HTMLButtonElement>('[data-forgot]');
     const msg = q<HTMLElement>('[data-msg]');
     const form = q<HTMLFormElement>('[data-auth-form]');
+    const loadingEl = q<HTMLElement>('[data-auth-loading]');
+    const loadingTextEl = q<HTMLElement>('[data-auth-loading-text]');
 
     let mode: 'in' | 'up' = 'in';
 
@@ -177,11 +188,14 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       submit.disabled = true;
       const prev = submitLabel.textContent;
       submitLabel.textContent = T.working;
+      loadingTextEl.textContent = T.signingIn;
+      loadingEl.classList.remove('hidden');
       try {
         await fn();
         rememberSignedIn();
-        window.location.assign(account);
+        window.location.assign(account); // keep the overlay up through the redirect
       } catch (e: any) {
+        loadingEl.classList.add('hidden');
         showMsg(authError(e?.code || '', lang), 'err');
         submit.disabled = false;
         submitLabel.textContent = prev;
