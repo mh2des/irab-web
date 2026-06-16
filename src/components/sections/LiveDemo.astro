@@ -3,8 +3,8 @@ import Container from '../Container.astro';
 import Section from '../Section.astro';
 import { SPECIMEN, EXAMPLES, CASE_COLORS, TYPE_META } from '../../data/demo-examples';
 
-interface Props { lang?: 'en' | 'ar'; }
-const { lang = 'en' } = Astro.props;
+interface Props { lang?: 'en' | 'ar'; showHeader?: boolean; }
+const { lang = 'en', showHeader = true } = Astro.props;
 
 const t = lang === 'ar'
   ? {
@@ -13,6 +13,8 @@ const t = lang === 'ar'
       sub:        'إعراب كامل بمستوى تطبيق إعراب نفسه. الأمثلة التالية مجانية بلا حدود. لديك تحليلان مجانيّان لجملك الخاصة.',
       remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
       tryYour:    'جرّب جملتك',
+      free:       'مجاني · بلا تسجيل',
+      exampleLabel: 'مثالٌ على النتيجة — اكتب جملتك في الأعلى',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
       parse:      'أعرب',
       poweredBy:  'مدعوم بالمحرّك المحمي نفسه في التطبيق',
@@ -35,6 +37,8 @@ const t = lang === 'ar'
       sub:        "Full app-grade i'rab — same depth as the app itself. Examples below are free and unlimited. Two free parses for your own sentences.",
       remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
       tryYour:    'Try your own',
+      free:       'Free · no signup',
+      exampleLabel: 'Example output — type your own sentence above',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
       parse:      'Parse',
       poweredBy:  'Powered by the same protected AI engine as the app',
@@ -53,26 +57,46 @@ const t = lang === 'ar'
     };
 
 const specimen = SPECIMEN;
-const chipPreviews = EXAMPLES.map((ex) => ({
-  id: ex.id,
-  preview: ex.text.split(' ').slice(0, 3).join(' '),
-}));
 ---
 <Section id="demo" class="bg-paper-soft/40 dark:bg-coal-soft/40">
   <Container>
-    {/* ── Section header ─────────────────────────────────────────────── */}
-    <div class="text-center max-w-2xl mx-auto mb-14">
-      <p class="eyebrow mb-4" data-reveal>{t.eyebrow}</p>
-      <h2 class="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.1] tracking-tight" data-reveal data-reveal-delay="100">
-        {t.headline}
-      </h2>
-      <p class="mt-6 text-body-lg text-ink/70 dark:text-mist/70" data-reveal data-reveal-delay="200">
-        {t.sub}
-      </p>
-    </div>
+    {/* ── Section header (hidden when the page provides its own hero) ──── */}
+    {showHeader && (
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <p class="eyebrow mb-4" data-reveal>{t.eyebrow}</p>
+        <h2 class="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.1] tracking-tight" data-reveal data-reveal-delay="100">
+          {t.headline}
+        </h2>
+        <p class="mt-6 text-body-lg text-ink/70 dark:text-mist/70" data-reveal data-reveal-delay="200">
+          {t.sub}
+        </p>
+      </div>
+    )}
 
     {/* ── Result panel ───────────────────────────────────────────────── */}
     <div class="max-w-5xl mx-auto" data-demo data-lang={lang}>
+      {/* ── Hero input — the tool itself, front and center ──────────────── */}
+      <div class="demo-try rounded-2xl p-5 md:p-7 mb-10">
+        <form data-demo-form class="relative">
+          <textarea data-demo-input lang="ar" dir="rtl" rows="2" maxlength="200" placeholder={t.placeholder}
+            class="demo-textarea w-full rounded-xl px-5 py-4 font-arabic text-body-lg text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
+            style="font-family: var(--font-arabic-classical);"></textarea>
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <span class="font-arabic text-small text-ink/45 dark:text-mist/45">✦ {t.free}</span>
+            <button type="submit" data-demo-submit
+              class="inline-flex items-center gap-2 px-7 py-3 bg-purple hover:bg-purple-deep text-white text-small font-semibold rounded-full lift disabled:opacity-50 disabled:cursor-not-allowed">
+              <span data-submit-label>{t.parse}</span>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d={lang === 'ar' ? 'M19 12H5M11 19l-7-7 7-7' : 'M5 12h14M13 5l7 7-7 7'}/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* ── Result (a live example; replaced by the user's own parse) ────── */}
+      <p class="font-arabic text-small text-ink/45 dark:text-mist/45 text-center mb-6">↓ {t.exampleLabel}</p>
+
       {/* Source citation (editorial, no box) + quota (visual dots) */}
       <div class="flex flex-wrap items-center justify-between gap-4 mb-8 px-1">
         {/* Source — surah name big in display, verse in small mono */}
@@ -173,32 +197,6 @@ const chipPreviews = EXAMPLES.map((ex) => ({
         </div>
       )}
 
-      {/* Try your own */}
-      <div class="demo-try mt-12 rounded-2xl p-7 md:p-9">
-        <p class="eyebrow mb-4">{t.tryYour}</p>
-        <form data-demo-form class="relative">
-          <textarea data-demo-input lang="ar" dir="rtl" rows="2" maxlength="200" placeholder={t.placeholder}
-            class="demo-textarea w-full rounded-xl px-5 py-4 font-arabic text-body-lg text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
-            style="font-family: var(--font-arabic-classical);"></textarea>
-          <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
-            <div class="flex flex-wrap gap-2">
-              {chipPreviews.map((c) => (
-                <button type="button" data-demo-chip data-example-id={c.id}
-                  class="demo-chip px-4 py-2 text-ink dark:text-mist text-small rounded-full lift">
-                  <span lang="ar" dir="rtl" class="font-arabic">{c.preview}…</span>
-                </button>
-              ))}
-            </div>
-            <button type="submit" data-demo-submit
-              class="inline-flex items-center gap-2 px-6 py-2.5 bg-purple hover:bg-purple-deep text-white text-small font-medium rounded-full lift disabled:opacity-50 disabled:cursor-not-allowed">
-              <span data-submit-label>{t.parse}</span>
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d={lang === 'ar' ? 'M19 12H5M11 19l-7-7 7-7' : 'M5 12h14M13 5l7 7-7 7'}/>
-              </svg>
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
 
     {/* Conversion gate */}

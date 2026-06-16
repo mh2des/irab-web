@@ -63,6 +63,12 @@
   --color-mist: #F5F5F0;         /* off-white text on dark */
   --color-mist-soft: #C8C5BC;
 
+  /* Elevated card surface — deliberately BRIGHTER than the paper canvas so cards
+     read as lifted off the lattice, with a crisp visible edge (the old cards used
+     bg-paper === body bg + a hairline, so they disappeared). */
+  --color-card: #FFFFFF;
+  --color-card-edge: #E0DBCF;    /* stronger than --color-stone — a border you can see */
+
   /* Grammatical case colors (used in i'rab demo) */
   --color-marfu: #7C4DFF;        /* purple = nominative case */
   --color-mansub: #173847;       /* ink = accusative case */
@@ -259,6 +265,53 @@
   @media (prefers-reduced-motion: reduce) {
     .lift:hover, .lift:active { transform: none; }
   }
+
+  /* ── Elevated surface card ──────────────────────────────────────────────
+     The standard SaaS card: a clear surface, a crisp visible border, and a real
+     shadow so it sits ABOVE the lattice canvas instead of blending into it. */
+  .card {
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-card);
+  }
+  .dark .card {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+    box-shadow: 0 2px 8px -3px rgb(0 0 0 / 0.45), 0 14px 30px -14px rgb(0 0 0 / 0.55);
+  }
+  /* Clickable card — soft 3D lift + brand-tinted edge on hover. */
+  .card-interactive {
+    transition: transform .25s var(--ease-out-quart), box-shadow .25s var(--ease-out-quart), border-color .2s;
+  }
+  .card-interactive:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--lift-shadow);
+    border-color: color-mix(in srgb, var(--color-purple) 35%, var(--color-card-edge));
+  }
+  .dark .card-interactive:hover { border-color: color-mix(in srgb, var(--color-purple) 45%, var(--color-coal-edge)); }
+  @media (prefers-reduced-motion: reduce) { .card-interactive:hover { transform: none; } }
+
+  /* ── Buttons — solid brand, soft depth, lift on hover ─────────────────── */
+  .btn-primary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
+    padding: 0.9rem 1.7rem; border-radius: 9999px; font-weight: 600; white-space: nowrap;
+    background: var(--color-purple); color: #fff;
+    box-shadow: 0 6px 16px -6px color-mix(in srgb, var(--color-purple) 60%, transparent), 0 1px 2px rgb(23 56 71 / 0.10);
+    transition: transform .22s var(--ease-out-quart), box-shadow .22s var(--ease-out-quart), background-color .2s;
+  }
+  .btn-primary:hover { background: var(--color-purple-deep); transform: translateY(-2px); box-shadow: 0 14px 28px -8px color-mix(in srgb, var(--color-purple) 65%, transparent); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
+    padding: 0.9rem 1.7rem; border-radius: 9999px; font-weight: 600; white-space: nowrap;
+    color: var(--color-ink); background: var(--color-card); border: 1px solid var(--color-card-edge);
+    transition: transform .22s var(--ease-out-quart), box-shadow .22s var(--ease-out-quart), border-color .2s, color .2s;
+  }
+  .dark .btn-ghost { color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .btn-ghost:hover { border-color: var(--color-purple); color: var(--color-purple-deep); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+  .dark .btn-ghost:hover { color: color-mix(in srgb, var(--color-purple) 80%, white); }
+  @media (prefers-reduced-motion: reduce) { .btn-primary:hover, .btn-ghost:hover { transform: none; } }
 
   /* Hairline divider — used between sections sparingly */
   .hairline {
