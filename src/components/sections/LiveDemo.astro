@@ -5,6 +5,7 @@ import Section from '../Section.astro';
 interface Props { lang?: 'en' | 'ar'; showHeader?: boolean; }
 const { lang = 'en', showHeader = true } = Astro.props;
 const login = lang === 'ar' ? '/login' : '/en/login';
+const appHref = lang === 'ar' ? '/app' : '/en/app';
 
 const t = lang === 'ar'
   ? {
@@ -20,8 +21,11 @@ const t = lang === 'ar'
       analyzing:  'جارٍ الإعراب…',
       errorMsg:   'تعذّر الإعراب الآن. حاول مرة أخرى.',
       signTitle:  'أنشئ حسابًا مجانيًا للمتابعة',
-      signBody:   'لقد استخدمت محاولتيك المجانيتين. سجّل الدخول للمتابعة — وإن كان لديك اشتراك فيُفتح لك الإعراب غير المحدود فورًا.',
+      signBody:   'لقد استخدمت محاولتيك المجانيتين. سجّل الدخول لتحصل على ٣ محاولات يوميًّا — وإن كان لديك اشتراك فيُفتح لك الإعراب غير المحدود فورًا.',
       signCta:    'تسجيل الدخول / إنشاء حساب',
+      upTitle:    'بلغت حدّك اليومي المجاني',
+      upBody:     'لديك ٣ محاولات مجانية يوميًّا. اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.',
+      upCta:      'اشترك في إعراب بلس',
       poweredBy:  'مدعوم بالمحرّك المحمي نفسه في التطبيق',
       gateLabel:  'لقد ذُقتَ القوّة',
       gateTitle:  'الإعراب اللامحدود في التطبيق.',
@@ -49,8 +53,11 @@ const t = lang === 'ar'
       analyzing:  'Analyzing…',
       errorMsg:   "Couldn't analyze right now. Please try again.",
       signTitle:  'Create a free account to continue',
-      signBody:   "You've used your two free parses. Sign in to continue — and if you have a subscription, unlimited parsing unlocks instantly.",
+      signBody:   "You've used your two free parses. Sign in to get 3 a day — and if you have a subscription, unlimited parsing unlocks instantly.",
       signCta:    'Sign in / Create account',
+      upTitle:    "You've reached your daily free limit",
+      upBody:     'You get 3 free parses a day. Subscribe to Irab Plus for unlimited, or come back tomorrow.',
+      upCta:      'Subscribe to Irab Plus',
       poweredBy:  'Powered by the same protected AI engine as the app',
       gateLabel:  "YOU'VE TASTED THE POWER",
       gateTitle:  'Unlimited parsing lives in the app.',
@@ -83,7 +90,7 @@ const t = lang === 'ar'
     )}
 
     {/* ── Result panel ───────────────────────────────────────────────── */}
-    <div class="max-w-4xl mx-auto" data-demo data-lang={lang}>
+    <div class="max-w-4xl mx-auto" data-demo data-lang={lang} data-login={login} data-app={appHref}>
       {/* ── The tool: a clean, solid input card ─────────────────────────── */}
       <div class="card p-5 md:p-7">
         <form data-demo-form>
@@ -156,9 +163,9 @@ const t = lang === 'ar'
 
     {/* ── Sign-up gate (shown after the free parses are used) ──────────── */}
     <div data-demo-gate class="hidden max-w-2xl mx-auto mt-10 card p-8 md:p-10 text-center">
-      <p class="font-arabic-display font-bold text-h2 leading-tight mb-3">{t.signTitle}</p>
-      <p class="font-arabic text-body text-ink/65 dark:text-mist/65 leading-loose mb-7 max-w-lg mx-auto">{t.signBody}</p>
-      <a href={login} class="btn-primary lift">{t.signCta}</a>
+      <p data-gate-title class="font-arabic-display font-bold text-h2 leading-tight mb-3">{t.signTitle}</p>
+      <p data-gate-body class="font-arabic text-body text-ink/65 dark:text-mist/65 leading-loose mb-7 max-w-lg mx-auto">{t.signBody}</p>
+      <a data-gate-cta href={login} class="btn-primary lift">{t.signCta}</a>
     </div>
   </Container>
 </Section>
@@ -282,11 +289,15 @@ const t = lang === 'ar'
       ? { remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
           parsing: 'جارٍ الإعراب…', error: 'تعذّر الإعراب الآن. حاول مرة أخرى.', customSrc: 'جملتك', fallback: 'العرض غير متاح · عرض النموذج',
           irabLabel: 'الإعراب', showDetails: 'عرض التفاصيل', hideDetails: 'إخفاء التفاصيل',
-          wordsCount: (n: number) => `${n} كلمات`, parsedIn: (s: string) => `أُعرِب في ${s}`, parse: 'أعرب', unlimited: 'إعراب غير محدود ⚡' }
+          wordsCount: (n: number) => `${n} كلمات`, parsedIn: (s: string) => `أُعرِب في ${s}`, parse: 'أعرب', unlimited: 'إعراب غير محدود ⚡',
+          signTitle: 'أنشئ حسابًا مجانيًا للمتابعة', signBody: 'سجّل الدخول لتحصل على ٣ محاولات يوميًّا.', signCta: 'تسجيل الدخول / إنشاء حساب',
+          upTitle: 'بلغت حدّك اليومي المجاني', upBody: 'لديك ٣ محاولات مجانية يوميًّا. اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.', upCta: 'اشترك في إعراب بلس' }
       : { remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
           parsing: 'Parsing…', error: "Couldn't analyze right now. Please try again.", customSrc: 'Your sentence', fallback: 'Demo offline · showing specimen',
           irabLabel: "I'rab", showDetails: 'Show details', hideDetails: 'Hide details',
-          wordsCount: (n: number) => `${n} words`, parsedIn: (s: string) => `Parsed in ${s}`, parse: 'Parse', unlimited: 'Unlimited parsing ⚡' };
+          wordsCount: (n: number) => `${n} words`, parsedIn: (s: string) => `Parsed in ${s}`, parse: 'Parse', unlimited: 'Unlimited parsing ⚡',
+          signTitle: 'Create a free account to continue', signBody: 'Sign in to get 3 free parses a day.', signCta: 'Sign in / Create account',
+          upTitle: "You've reached your daily free limit", upBody: 'You get 3 free parses a day. Subscribe to Irab Plus for unlimited, or come back tomorrow.', upCta: 'Subscribe to Irab Plus' };
 
     const sourceMainEl = root.querySelector<HTMLElement>('[data-source-main]')!;
     const sourceSubEl  = root.querySelector<HTMLElement>('[data-source-sub]');
@@ -313,23 +324,50 @@ const t = lang === 'ar'
     const sourceSepEl  = root.querySelector<HTMLElement>('[data-source-sep]');
     const submitSpinnerEl = submitEl.querySelector<HTMLElement>('[data-submit-spinner]')!;
     const submitArrowEl   = submitEl.querySelector<HTMLElement>('[data-submit-arrow]')!;
+    const gateTitleEl  = gateEl.querySelector<HTMLElement>('[data-gate-title]')!;
+    const gateBodyEl   = gateEl.querySelector<HTMLElement>('[data-gate-body]')!;
+    const gateCtaEl    = gateEl.querySelector<HTMLAnchorElement>('[data-gate-cta]')!;
+    const loginHref    = root.dataset.login || '/login';
+    const appHref      = root.dataset.app || '/app';
+
+    let isSignedIn = false;
+    let isPremium = false;
+
+    // The gate has two modes: 'signin' (anonymous, used 2 free) and 'upgrade'
+    // (signed-in, hit the daily limit). NEVER show 'signin' to a signed-in user.
+    function showGate(kind: 'signin' | 'upgrade') {
+      gateTitleEl.textContent = kind === 'upgrade' ? i18n.upTitle : i18n.signTitle;
+      gateBodyEl.textContent  = kind === 'upgrade' ? i18n.upBody  : i18n.signBody;
+      gateCtaEl.textContent   = kind === 'upgrade' ? i18n.upCta   : i18n.signCta;
+      gateCtaEl.href          = kind === 'upgrade' ? appHref      : loginHref;
+      gateEl.classList.remove('hidden');
+      gateEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
     function getQuota(): number {
       try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? parseInt(raw, 10) : 0; } catch { return 0; }
     }
     function bumpQuota() { try { localStorage.setItem(STORAGE_KEY, String(getQuota() + 1)); } catch {} }
     function renderQuota() {
-      // Signed-in premium: no cap, no gate — show an "unlimited" badge instead.
-      if (!isFinite(MAX_FREE)) {
+      // Premium: unlimited — badge, no dots, no gate.
+      if (isPremium) {
         quotaEl.textContent = i18n.unlimited;
         quotaDots.forEach((dot) => dot.classList.add('hidden'));
         gateEl.classList.add('hidden');
         submitEl.disabled = false;
         return;
       }
+      // Signed-in (free): the SERVER enforces 3/day. No anonymous dots/gate here —
+      // the daily-limit ("upgrade") gate appears only on a 429 from the server.
+      if (isSignedIn) {
+        quotaEl.textContent = '';
+        quotaDots.forEach((dot) => dot.classList.add('hidden'));
+        submitEl.disabled = false;
+        return;
+      }
+      // Anonymous: 2 lifetime tries, then the sign-in gate.
       const remaining = Math.max(0, MAX_FREE - getQuota());
       quotaEl.textContent = i18n.remainingN(remaining);
-      // Fill dots = remaining, hollow dots = used
       quotaDots.forEach((dot, i) => {
         if (i < remaining) {
           dot.classList.add('bg-purple');
@@ -339,7 +377,7 @@ const t = lang === 'ar'
           dot.classList.add('bg-transparent', 'border', 'border-purple/30');
         }
       });
-      if (remaining === 0) { submitEl.disabled = true; gateEl.classList.remove('hidden'); }
+      if (remaining === 0) { submitEl.disabled = true; showGate('signin'); }
     }
 
     function escape(s: string): string {
@@ -449,15 +487,14 @@ const t = lang === 'ar'
       e.preventDefault();
       const text = inputEl.value.trim();
       if (!text) return;
-      if (getQuota() >= MAX_FREE) {
-        gateEl.classList.remove('hidden');
-        gateEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
+      // Anonymous client-side pre-check (saves a call). Signed-in users rely on
+      // the server's 3/day, so they're never pre-blocked here (kills the loop).
+      if (!isSignedIn && getQuota() >= MAX_FREE) { showGate('signin'); return; }
 
       const start = performance.now();
       errorEl.classList.add('hidden');
       resultEl.classList.add('hidden');
+      gateEl.classList.add('hidden');
       loadingEl.classList.remove('hidden');
       loadingEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setLoading(true);
@@ -472,13 +509,18 @@ const t = lang === 'ar'
           },
           body: JSON.stringify({ text, fingerprint }),
         });
+        loadingEl.classList.add('hidden');
+        if (res.status === 429) {
+          // Limit reached: signed-in → daily-limit/upgrade; anonymous → sign in.
+          showGate(isSignedIn ? 'upgrade' : 'signin');
+          return;
+        }
         if (!res.ok) throw new Error(`API ${res.status}`);
         const parsed = await res.json() as ParseExample;
         const elapsed = ((performance.now() - start) / 1000).toFixed(1) + 's';
-        loadingEl.classList.add('hidden');
         renderExample({ ...parsed, source: i18n.customSrc }, elapsed);
         resultEl.classList.remove('hidden');
-        bumpQuota();
+        if (!isSignedIn) bumpQuota();
         renderQuota();
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         inputEl.value = '';
@@ -507,14 +549,11 @@ const t = lang === 'ar'
             const unsub = onAuth(async (u) => {
               unsub();
               if (u) {
-                try {
-                  idToken = await u.getIdToken();
-                  const me = await fetchMe(u);
-                  if (me?.premium) {
-                    MAX_FREE = Infinity;
-                    inputEl.maxLength = 600; // premium can parse longer sentences
-                  }
-                } catch { /* ignore — stay on free path */ }
+                isSignedIn = true;
+                try { idToken = await u.getIdToken(); } catch { /* ignore */ }
+                try { const me = await fetchMe(u); if (me?.premium) isPremium = true; } catch { /* ignore */ }
+                MAX_FREE = Infinity; // no anonymous lifetime cap once signed in; server enforces 3/day
+                if (isPremium) inputEl.maxLength = 600;
               }
               resolve();
             });
