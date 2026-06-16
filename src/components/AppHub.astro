@@ -42,6 +42,7 @@ const t = lang === 'ar'
       upgradeCta: 'حمّل التطبيق', manage: 'إدارة الحساب', signOut: 'تسجيل الخروج',
       open: 'افتح',
       subAnnual: 'اشترك سنويًّا — الأفضل قيمة', subMonthly: 'اشترك شهريًّا', orGetApp: 'أو احصل عليه من التطبيق',
+      activatingTitle: '✓ تمّ الدفع — جارٍ تفعيل اشتراكك…', activatingBody: 'لحظات من فضلك، سيُفتح كلّ شيء تلقائيًّا.',
     }
   : {
       hi: 'Welcome', tools: 'Your tools', loading: 'Loading…',
@@ -51,6 +52,7 @@ const t = lang === 'ar'
       upgradeCta: 'Get the app', manage: 'Manage account', signOut: 'Sign out',
       open: 'Open',
       subAnnual: 'Subscribe yearly — best value', subMonthly: 'Subscribe monthly', orGetApp: 'or get it in the app',
+      activatingTitle: '✓ Payment received — activating your subscription…', activatingBody: 'One moment — everything unlocks automatically.',
     };
 const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
 ---
@@ -66,6 +68,12 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
 
   {/* Hub */}
   <div data-hub class="hidden">
+    {/* Activating banner — shown after a successful checkout while entitlement syncs */}
+    <div data-hub-activating class="hidden mb-6 rounded-2xl border border-teal/30 bg-teal/[0.06] p-5 text-center">
+      <p class:list={[titleClass, 'text-h3 text-teal leading-tight mb-1']}>{t.activatingTitle}</p>
+      <p class="text-small text-ink/65 dark:text-mist/65">{t.activatingBody}</p>
+    </div>
+
     {/* Header: greeting + plan */}
     <div class="flex items-center justify-between gap-4 mb-8">
       <div class="min-w-0">
@@ -186,7 +194,21 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
                 btn.disabled = true;
                 try {
                   const { openCheckout } = await import('../lib/paddle');
-                  await openCheckout({ plan, firebaseUid: u.uid, email: u.email || undefined, lang });
+                  await openCheckout({
+                    plan, firebaseUid: u.uid, email: u.email || undefined, lang,
+                    onComplete: async () => {
+                      const act = q<HTMLElement>('[data-hub-activating]');
+                      act.classList.remove('hidden');
+                      upgradeEl.classList.add('hidden');
+                      act.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      // Poll entitlement until RevenueCat reflects the Paddle purchase, then refresh.
+                      for (let i = 0; i < 12; i++) {
+                        await new Promise((r) => setTimeout(r, 3000));
+                        try { const me2 = await fetchMe(u); if (me2?.premium) break; } catch {}
+                      }
+                      window.location.reload();
+                    },
+                  });
                 } catch (e) {
                   console.error('paddle checkout failed', e);
                 } finally {
