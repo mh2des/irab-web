@@ -1,0 +1,90 @@
+---
+/**
+ * WordGridEn — the English word-by-word i'rab grid. Each row: the Arabic token
+ * (RTL) with a case-coloured rail, then its English role, a one-line note, and
+ * a case chip. The English mirror of WordGrid.astro.
+ */
+import { enCaseHex, type EnWord } from '../../lib/quran-en';
+
+interface Props { words: EnWord[]; }
+const { words } = Astro.props;
+---
+<div class="wg">
+  {words.map((w) => {
+    const hex = enCaseHex(w.case_en);
+    return (
+      <div class="wg-row" style={`--case:${hex ?? 'var(--color-stone-soft)'}`}>
+        <div class="wg-tok quran-text" lang="ar" dir="rtl">{w.token}</div>
+        <div class="wg-body">
+          <p class="wg-role">{w.role_en}</p>
+          <p class="wg-note">{w.note_en}</p>
+          {w.case_en && <span class="wg-chip">{w.case_en}</span>}
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+<style>
+  .wg {
+    border: 1px solid var(--color-stone);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--color-paper-soft);
+  }
+  :global(.dark) .wg { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+
+  .wg-row {
+    display: grid;
+    grid-template-columns: minmax(6rem, 10rem) 1fr;
+    gap: 1.25rem;
+    align-items: start;
+    padding: 1.1rem 1.3rem;
+    border-bottom: 1px solid var(--color-stone);
+    border-inline-start: 4px solid var(--case);
+  }
+  :global(.dark) .wg-row { border-bottom-color: var(--color-coal-edge); }
+  .wg-row:last-child { border-bottom: 0; }
+
+  .wg-tok {
+    font-size: 2.2rem;
+    line-height: 1.6;
+    font-weight: 700;
+    color: var(--color-ink);
+    text-align: right;
+  }
+  :global(.dark) .wg-tok { color: var(--color-mist); }
+
+  .wg-body { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+  .wg-role {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-ink);
+    line-height: 1.4;
+  }
+  :global(.dark) .wg-role { color: var(--color-mist); }
+  .wg-note {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-ink) 75%, transparent);
+  }
+  :global(.dark) .wg-note { color: color-mix(in srgb, var(--color-mist) 75%, transparent); }
+
+  .wg-chip {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    color: var(--case);
+    background: color-mix(in srgb, var(--case) 13%, transparent);
+  }
+
+  @media (max-width: 480px) {
+    .wg-row { grid-template-columns: 1fr; gap: 0.5rem; }
+    .wg-tok { text-align: start; }
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+/**
+ * /en/quran/[surah] — English surah landing. Lists the surah's verses that have
+ * English i'rab, each linking to its ayah page.
+ */
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Nav from '../../../../components/Nav.astro';
+import Footer from '../../../../components/sections/Footer.astro';
+import Container from '../../../../components/Container.astro';
+import { surahById, plainVerse, type SurahMeta } from '../../../../lib/quran';
+import { enSurahIds, enAyatOfSurah } from '../../../../lib/quran-en';
+
+export function getStaticPaths() {
+  return enSurahIds().map((id) => {
+    const s = surahById(id)!;
+    return { params: { surah: s.slug }, props: { surahId: id } };
+  });
+}
+
+const { surahId } = Astro.props as { surahId: number };
+const surah = surahById(surahId) as SurahMeta;
+const ayat = enAyatOfSurah(surahId);
+const place = surah.place === 'makki' ? 'Meccan' : 'Medinan';
+const SITE = 'https://irab.app';
+
+const title = `I'rab of Surah ${surah.en} — Word-by-Word Arabic Grammar in English | Irab`;
+const description = `Verse-by-verse English i'rab of Surah ${surah.en} (${surah.name}): the case, role, and explanation of every word. Original grammatical analysis, free to read.`;
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: "Quran I'rab", item: `${SITE}/en/quran` },
+    { '@type': 'ListItem', position: 2, name: `Surah ${surah.en}`, item: `${SITE}/en/quran/${surah.slug}` },
+  ],
+};
+---
+<BaseLayout lang="en" title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumb)} is:inline />
+  <Nav lang="en" />
+
+  <main>
+    <article class="py-12 md:py-16">
+      <Container size="narrow">
+        <nav class="bc" aria-label="Breadcrumb">
+          <a href="/en/quran">Quran i'rab</a><span aria-hidden="true">›</span>
+          <span class="bc-cur">Surah {surah.en}</span>
+        </nav>
+
+        <h1 class="font-display text-[clamp(1.9rem,4.2vw,2.8rem)] leading-tight tracking-tight mb-2">I'rab of Surah {surah.en}</h1>
+        <p class="text-body text-ink/60 dark:text-mist/60 mb-10">
+          <span class="quran-text" lang="ar" dir="rtl">{surah.name}</span> · {place} · {ayat.length} verses analyzed
+        </p>
+
+        <div class="a-list">
+          {ayat.map((a) => (
+            <a class="a-card" href={`/en/quran/${surah.slug}/${a.ayah}`}>
+              <span class="a-num">{a.ayah}</span>
+              <span class="a-verse quran-text" lang="ar" dir="rtl">{plainVerse(a.uthmani)}</span>
+            </a>
+          ))}
+        </div>
+      </Container>
+    </article>
+  </main>
+
+  <Footer lang="en" />
+</BaseLayout>
+
+<style>
+  .bc {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+    font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); margin-bottom: 1.5rem;
+  }
+  :global(.dark) .bc { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .bc a { color: inherit; text-decoration: none; }
+  .bc a:hover { color: var(--color-purple); }
+  .bc-cur { color: var(--color-ink); font-weight: 600; }
+  :global(.dark) .bc-cur { color: var(--color-mist); }
+
+  .a-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .a-card {
+    display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; align-items: center;
+    border: 1px solid var(--color-stone); border-radius: 12px; padding: 1rem 1.2rem;
+    text-decoration: none; background: var(--color-paper-soft);
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+  }
+  :global(.dark) .a-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .a-card:hover { border-color: var(--color-purple); transform: translateY(-2px); box-shadow: var(--lift-shadow); }
+  .a-num {
+    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--color-purple);
+    background: color-mix(in srgb, var(--color-purple) 12%, transparent);
+    width: 2.4rem; height: 2.4rem; border-radius: 999px; display: grid; place-items: center;
+  }
+  .a-verse {
+    font-size: 1.6rem; line-height: 1.9; color: var(--color-ink); text-align: right;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  :global(.dark) .a-verse { color: var(--color-mist); }
+</style>

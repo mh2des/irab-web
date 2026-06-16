@@ -1,0 +1,88 @@
+---
+/**
+ * /en/quran — English Quran-i'rab hub. Lists the surahs with English word-by-word
+ * grammatical analysis. Original English content (not a translation of الجدول).
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import Container from '../../../components/Container.astro';
+import { enSurahs, enAyatOfSurah } from '../../../lib/quran-en';
+
+const surahs = enSurahs();
+const SITE = 'https://irab.app';
+const title = "Quran I'rab in English — Word-by-Word Arabic Grammar | Irab";
+const description = "Word-by-word i'rab (Arabic grammatical analysis) of the Quran, in clear English: case, role, and explanation for every word. Original analysis, free to read.";
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: "Quran I'rab in English",
+  itemListElement: surahs.map((s, i) => ({
+    '@type': 'ListItem', position: i + 1, name: `Surah ${s.en}`, url: `${SITE}/en/quran/${s.slug}`,
+  })),
+};
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [{ '@type': 'ListItem', position: 1, name: "Quran I'rab", item: `${SITE}/en/quran` }],
+};
+---
+<BaseLayout lang="en" title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(itemList)} is:inline />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumb)} is:inline />
+  <Nav lang="en" />
+
+  <main>
+    <article class="py-12 md:py-16">
+      <Container size="narrow">
+        <p class="eyebrow mb-4">Quran i'rab · English</p>
+        <h1 class="font-display text-[clamp(2rem,5vw,3.2rem)] leading-tight tracking-tight mb-4">The Quran, parsed word by word — in English.</h1>
+        <p class="text-body text-ink/65 dark:text-mist/65 leading-loose max-w-2xl mb-10">
+          Original English i'rab (Arabic grammatical analysis) for each verse: the case, syntactic role, and a clear note for every word — plus a plain-English meaning. Free to read; deeper study and practice live in the Irab app.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {surahs.map((s) => (
+            <a href={`/en/quran/${s.slug}`} class="s-card">
+              <div class="s-top">
+                <span class="s-num">{s.id}</span>
+                <span class="s-ar quran-text" lang="ar" dir="rtl">{s.name}</span>
+              </div>
+              <p class="s-en">Surah {s.en}</p>
+              <p class="s-meta">{s.place === 'makki' ? 'Meccan' : 'Medinan'} · {enAyatOfSurah(s.id).length} verses analyzed</p>
+            </a>
+          ))}
+        </div>
+
+        <p class="more">More surahs are being added.</p>
+      </Container>
+    </article>
+  </main>
+
+  <Footer lang="en" />
+</BaseLayout>
+
+<style>
+  .s-card {
+    display: block; border: 1px solid var(--color-stone); border-radius: 16px;
+    padding: 1.3rem 1.4rem; text-decoration: none;
+    background: var(--color-paper-soft); transition: border-color .2s, transform .2s, box-shadow .2s;
+  }
+  :global(.dark) .s-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .s-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
+  .s-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
+  .s-num {
+    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600;
+    color: var(--color-purple); background: color-mix(in srgb, var(--color-purple) 12%, transparent);
+    width: 2rem; height: 2rem; border-radius: 999px; display: grid; place-items: center;
+  }
+  .s-ar { font-size: 1.9rem; color: var(--color-ink); }
+  :global(.dark) .s-ar { color: var(--color-mist); }
+  .s-en { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--color-ink); }
+  :global(.dark) .s-en { color: var(--color-mist); }
+  .s-meta { font-size: 0.9rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); margin-top: 0.15rem; }
+  :global(.dark) .s-meta { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .more { text-align: center; margin-top: 2.5rem; font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 50%, transparent); }
+  :global(.dark) .more { color: color-mix(in srgb, var(--color-mist) 50%, transparent); }
+</style>

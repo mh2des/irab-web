@@ -41,7 +41,7 @@ const t = lang === 'ar'
 // Arabic at root, English under /en
 const home = lang === 'ar' ? '/' : '/en';
 const teachersHref = lang === 'ar' ? '/teachers' : '/en/teachers';
-const quranHref = '/quran'; // the full Quran-i'rab section (Arabic corpus)
+const quranHref = lang === 'ar' ? '/quran' : '/en/quran'; // Quran-i'rab section (en mirror = pilot)
 const toolHref = lang === 'ar' ? '/tool' : '/en/tool'; // the AI analyzer landing page
 const practiceHref = lang === 'ar' ? '/practice' : '/en/practice'; // do-it-yourself + AI feedback
 const dictionaryHref = lang === 'ar' ? '/dictionary' : '/en/dictionary'; // smart dictionary tool

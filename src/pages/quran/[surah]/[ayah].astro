@@ -15,6 +15,7 @@ import {
   AYAT, surahById, ayatOfSurah, toArabicDigits, renderIrab, plainVerse, type Ayah,
 } from '../../../lib/quran';
 import { INTROS } from '../../../data/ayah-intros';
+import { hasEnAyah } from '../../../lib/quran-en';
 
 export function getStaticPaths() {
   return AYAT.map((a) => {
@@ -61,8 +62,10 @@ const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
 // valuable, indexable page — don't suppress it.
 const thin = ayah.isBackfilled || (!ayah.irab && ayah.words.length === 0);
 const fnId = (m: string) => `fn-${m.replace(/[^0-9]/g, '')}`;
+// hreflang: only advertise the English twin when one actually exists for this ayah.
+const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
 ---
-<BaseLayout lang="ar" title={title} description={description} noindex={thin} canonicalOverride={canonical}>
+<BaseLayout lang="ar" title={title} description={description} noindex={thin} canonicalOverride={canonical} hasEn={hasEnTwin}>
   <AyahSchema slot="head" ayah={ayah} surah={surah} canonical={canonical} title={h1} description={description} faqs={faqs} />
   <Nav lang="ar" />
 

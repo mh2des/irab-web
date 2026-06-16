@@ -1,0 +1,232 @@
+---
+/**
+ * English ayah i'rab page — the English spoke. Verse → transliteration →
+ * meaning → TL;DR → word-by-word grid → prose i'rab → FAQ → related → CTA.
+ * Content is ORIGINAL English (generated from the Quran text + grammar anchors),
+ * not a translation of the copyrighted الجدول. hreflang twins the Arabic page.
+ */
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Nav from '../../../../components/Nav.astro';
+import Footer from '../../../../components/sections/Footer.astro';
+import Container from '../../../../components/Container.astro';
+import ArticleCta from '../../../../components/ArticleCta.astro';
+import WordGridEn from '../../../../components/quran/WordGridEn.astro';
+import AyahSchemaEn from '../../../../components/quran/AyahSchemaEn.astro';
+import { surahById, type SurahMeta } from '../../../../lib/quran';
+import { enEntries, enAyatOfSurah, type AyahEn } from '../../../../lib/quran-en';
+
+export function getStaticPaths() {
+  return enEntries().map((a) => {
+    const s = surahById(a.surah)!;
+    return { params: { surah: s.slug, ayah: String(a.ayah) }, props: { ayah: a } };
+  });
+}
+
+const { ayah } = Astro.props as { ayah: AyahEn };
+const surah = surahById(ayah.surah) as SurahMeta;
+
+const h1 = ayah.h1_en;
+const title = `${h1} | Irab`;
+const description = `${ayah.translation_en} — word-by-word English i'rab (Arabic grammar) of Surah ${surah.en} ayah ${ayah.ayah}.`;
+const selfUrl = `https://irab.app/en/quran/${surah.slug}/${ayah.ayah}`;
+const place = surah.place === 'makki' ? 'Meccan' : 'Medinan';
+
+const inSurah = enAyatOfSurah(ayah.surah);
+const idx = inSurah.findIndex((a) => a.ayah === ayah.ayah);
+const prev = idx > 0 ? inSurah[idx - 1] : null;
+const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
+---
+<BaseLayout lang="en" title={title} description={description} canonicalOverride={selfUrl}>
+  <AyahSchemaEn slot="head" surah={surah} ayah={ayah.ayah} canonical={selfUrl} title={h1} description={description} faqs={ayah.faqs_en} />
+  <Nav lang="en" />
+
+  <main>
+    <article class="py-10 md:py-14">
+      <Container size="narrow">
+        <nav class="bc" aria-label="Breadcrumb">
+          <a href="/en/quran">Quran i'rab</a><span aria-hidden="true">›</span>
+          <a href={`/en/quran/${surah.slug}`}>Surah {surah.en}</a><span aria-hidden="true">›</span>
+          <span class="bc-cur">Ayah {ayah.ayah}</span>
+        </nav>
+
+        <h1 class="ayah-h1 font-display">{h1}</h1>
+        <p class="ayah-sub">Surah {surah.en} ({surah.name}) · {place} · Ayah {ayah.ayah}</p>
+
+        <blockquote class="verse quran-text" lang="ar" dir="rtl">
+          <span class="verse-text">{ayah.uthmani}</span>
+          <span class="verse-num" aria-hidden="true">{ayah.ayah}</span>
+        </blockquote>
+
+        {ayah.transliteration && <p class="translit"><span class="lbl">Transliteration</span>{ayah.transliteration}</p>}
+        {ayah.translation_en && <p class="meaning"><span class="lbl">Meaning</span>{ayah.translation_en}</p>}
+
+        {ayah.tldr_en && (
+          <div class="tldr">
+            <span class="eyebrow eyebrow-ink">Grammar in brief</span>
+            <p>{ayah.tldr_en}</p>
+          </div>
+        )}
+
+        {ayah.words_en.length > 0 && (
+          <section class="blk">
+            <h2>Word-by-word i'rab</h2>
+            <WordGridEn words={ayah.words_en} />
+          </section>
+        )}
+
+        {ayah.irab_en && (
+          <section class="blk">
+            <h2>Detailed i'rab</h2>
+            <p class="irab-prose">{ayah.irab_en}</p>
+          </section>
+        )}
+
+        {ayah.faqs_en.length > 0 && (
+          <section class="blk">
+            <h2>Frequently asked</h2>
+            <div class="faq">
+              {ayah.faqs_en.map((f) => (
+                <details class="exp"><summary>{f.q}</summary><p class="faq-a">{f.a}</p></details>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {(prev || next) && (
+          <section class="blk">
+            <h2>Related verses</h2>
+            <div class="rel">
+              {next && (
+                <a class="rel-card" href={`/en/quran/${surah.slug}/${next.ayah}`}>
+                  <span>Next ayah</span><b>{surah.en} · {next.ayah}</b>
+                </a>
+              )}
+              {prev && (
+                <a class="rel-card" href={`/en/quran/${surah.slug}/${prev.ayah}`}>
+                  <span>Previous ayah</span><b>{surah.en} · {prev.ayah}</b>
+                </a>
+              )}
+              <a class="rel-card" href={`/en/quran/${surah.slug}`}>
+                <span>All verses</span><b>Surah {surah.en}</b>
+              </a>
+            </div>
+          </section>
+        )}
+      </Container>
+
+      <ArticleCta lang="en">
+        <span slot="title">Study the full i'rab in the app.</span>
+        Word-by-word grammar for every ayah, with practice and instant feedback, in the Irab app on iOS and Android.
+      </ArticleCta>
+    </article>
+  </main>
+
+  <Footer lang="en" />
+</BaseLayout>
+
+<style>
+  .bc {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+    font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+    margin-bottom: 1.5rem;
+  }
+  :global(.dark) .bc { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .bc a { color: inherit; text-decoration: none; }
+  .bc a:hover { color: var(--color-purple); }
+  .bc-cur { color: var(--color-ink); font-weight: 600; }
+  :global(.dark) .bc-cur { color: var(--color-mist); }
+
+  .ayah-h1 {
+    font-size: clamp(1.9rem, 4.2vw, 2.8rem); line-height: 1.15; font-weight: 700;
+    color: var(--color-ink); margin-bottom: 0.5rem; letter-spacing: -0.01em;
+  }
+  :global(.dark) .ayah-h1 { color: var(--color-mist); }
+  .ayah-sub {
+    font-size: 1.05rem; color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+    margin-bottom: 1.75rem;
+  }
+  :global(.dark) .ayah-sub { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+
+  .verse {
+    position: relative; text-align: center;
+    font-size: clamp(2.3rem, 5.5vw, 3.2rem); line-height: 2.15;
+    color: var(--color-ink);
+    background: var(--color-paper-soft);
+    border: 1px solid var(--color-stone);
+    border-top: 3px solid var(--color-purple);
+    border-radius: 18px;
+    padding: 2rem 1.75rem 2.25rem;
+    margin: 0 0 1.25rem;
+  }
+  :global(.dark) .verse {
+    color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge);
+  }
+  .verse-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.1em; height: 2.1em; margin-inline-start: 0.4em;
+    font-size: 0.5em; font-family: var(--font-mono); color: var(--color-purple);
+    border: 1.5px solid color-mix(in srgb, var(--color-purple) 45%, transparent);
+    border-radius: 999px; vertical-align: middle;
+  }
+
+  .translit, .meaning {
+    font-size: 1.1rem; line-height: 1.7; margin: 0 0 0.75rem;
+    color: color-mix(in srgb, var(--color-ink) 80%, transparent);
+  }
+  :global(.dark) .translit, :global(.dark) .meaning { color: color-mix(in srgb, var(--color-mist) 80%, transparent); }
+  .translit { font-style: italic; }
+  .lbl {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.08em; font-style: normal;
+    color: var(--color-purple); margin-inline-end: 0.6rem;
+  }
+  .meaning { margin-bottom: 2rem; }
+
+  .tldr {
+    background: color-mix(in srgb, var(--color-purple) 6%, var(--color-paper));
+    border: 1px solid color-mix(in srgb, var(--color-purple) 18%, transparent);
+    border-radius: 16px; padding: 1.4rem 1.5rem; margin-bottom: 2.5rem;
+  }
+  :global(.dark) .tldr { background: color-mix(in srgb, var(--color-purple) 12%, var(--color-coal)); }
+  .tldr .eyebrow { margin-bottom: 0.6rem; }
+  .tldr p { font-size: 1.1rem; line-height: 1.8; color: var(--color-ink); }
+  :global(.dark) .tldr p { color: var(--color-mist); }
+
+  .blk { margin-top: 2.75rem; }
+  .blk h2 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(1.4rem, 3vw, 1.9rem); color: var(--color-ink);
+    margin-bottom: 1.1rem; letter-spacing: -0.01em;
+  }
+  :global(.dark) .blk h2 { color: var(--color-mist); }
+
+  .irab-prose {
+    font-size: 1.15rem; line-height: 1.9;
+    color: color-mix(in srgb, var(--color-ink) 88%, transparent);
+  }
+  :global(.dark) .irab-prose { color: color-mix(in srgb, var(--color-mist) 85%, transparent); }
+
+  .exp {
+    border: 1px solid var(--color-stone); border-radius: 12px;
+    padding: 0.4rem 1rem; margin-bottom: 0.75rem; background: var(--color-paper-soft);
+  }
+  :global(.dark) .exp { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .exp summary { cursor: pointer; font-weight: 600; padding: 0.6rem 0; font-size: 1.05rem; color: var(--color-ink); }
+  :global(.dark) .exp summary { color: var(--color-mist); }
+  .exp[open] summary { color: var(--color-purple); }
+  .faq-a { padding: 0.2rem 0 0.9rem; line-height: 1.8; font-size: 1.05rem; color: color-mix(in srgb, var(--color-ink) 80%, transparent); }
+  :global(.dark) .faq-a { color: color-mix(in srgb, var(--color-mist) 80%, transparent); }
+
+  .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 0.75rem; }
+  .rel-card {
+    display: flex; flex-direction: column; gap: 0.3rem;
+    border: 1px solid var(--color-stone); border-radius: 12px;
+    padding: 1rem 1.1rem; text-decoration: none; transition: border-color .2s, transform .2s;
+  }
+  :global(.dark) .rel-card { border-color: var(--color-coal-edge); }
+  .rel-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
+  .rel-card span { font-size: 0.85rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
+  :global(.dark) .rel-card span { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .rel-card b { font-size: 1.1rem; color: var(--color-ink); font-weight: 700; }
+  :global(.dark) .rel-card b { color: var(--color-mist); }
+</style>
