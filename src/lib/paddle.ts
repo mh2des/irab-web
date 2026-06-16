@@ -16,12 +16,12 @@
  *                            while false, UIs keep the App Store CTA, nothing breaks)
  *  Webhook + secrets are configured separately on the Cloud Function side.
  */
-export const PADDLE_ENABLED = false; // ← flip to true once the values below are real
-export const PADDLE_ENV: 'sandbox' | 'production' = 'sandbox';
-export const PADDLE_CLIENT_TOKEN = 'REPLACE_WITH_PADDLE_CLIENT_TOKEN';
+export const PADDLE_ENABLED = false; // ← flip to true once Paddle account is APPROVED + RC products mapped to 'premium' entitlement
+export const PADDLE_ENV: 'sandbox' | 'production' = 'production';
+export const PADDLE_CLIENT_TOKEN = 'live_00476d502201e331cada092493f';
 export const PADDLE_PRICES = {
-  monthly: 'pri_REPLACE_WITH_MONTHLY_PRICE_ID',
-  annual: 'pri_REPLACE_WITH_ANNUAL_PRICE_ID',
+  monthly: 'pri_01kv74grvszv7sebpxqcgfw8ad',
+  annual: 'pri_01kv74kx212adkg0xfvjxb4s92',
 } as const;
 
 export type PaddlePlan = keyof typeof PADDLE_PRICES;
