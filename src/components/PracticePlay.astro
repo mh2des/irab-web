@@ -389,6 +389,7 @@ const t = lang === 'ar'
     let selectedTopic: any = null;
     let selectedSentence: any = null;
     let customSentence = '';
+    let lastMode: 'curated' | 'custom' | null = null; // so "another practice" stays in the same mode
 
     // ── Curated ────────────────────────────────────────────────
     const chipsEl = q<HTMLElement>('[data-topic-chips]');
@@ -499,6 +500,7 @@ const t = lang === 'ar'
     }
 
     function openSolve(sentence: any) {
+      lastMode = 'curated';
       selectedSentence = sentence;
       q<HTMLElement>('[data-solve-topic]').textContent = `${selectedTopic?.name || ''} · ${T.level} ${selectedTopic?.level ?? 1}`;
       q<HTMLElement>('[data-solve-sentence]').textContent = sentence.sentence || '';
@@ -580,6 +582,7 @@ const t = lang === 'ar'
     const customSolve = q<HTMLElement>('[data-custom-solve]');
 
     function openCustom() {
+      lastMode = 'custom';
       customWrite.classList.remove('hidden');
       customSolve.classList.add('hidden');
       q<HTMLTextAreaElement>('[data-custom-input]').value = '';
@@ -711,7 +714,13 @@ const t = lang === 'ar'
     q<HTMLButtonElement>('[data-custom-split]').addEventListener('click', splitCustom);
     q<HTMLButtonElement>('[data-custom-grade]').addEventListener('click', gradeCustom);
     q<HTMLButtonElement>('[data-solve-check]').addEventListener('click', checkCurated);
-    q<HTMLButtonElement>('[data-again]').addEventListener('click', () => showPhase('choose'));
+    q<HTMLButtonElement>('[data-again]').addEventListener('click', () => {
+      // Stay in the same mode: curated → back to the sentence list (pick another);
+      // custom → a fresh write screen. Only fall back to the chooser if unknown.
+      if (lastMode === 'curated') showPhase('browse');
+      else if (lastMode === 'custom') openCustom();
+      else showPhase('choose');
+    });
 
     // ── Auth boot (runs once; no flicker) ──────────────────────
     let booted = false;
