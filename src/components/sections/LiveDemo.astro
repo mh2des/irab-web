@@ -362,6 +362,7 @@ const t = lang === 'ar'
       if (isSignedIn) {
         quotaEl.textContent = '';
         quotaDots.forEach((dot) => dot.classList.add('hidden'));
+        gateEl.classList.add('hidden');   // ← the bug: signed-in users must never see the gate on load
         submitEl.disabled = false;
         return;
       }
@@ -377,7 +378,9 @@ const t = lang === 'ar'
           dot.classList.add('bg-transparent', 'border', 'border-purple/30');
         }
       });
-      if (remaining === 0) { submitEl.disabled = true; showGate('signin'); }
+      // Only gate truly-anonymous visitors. If the signed-in flag is present, auth
+      // is resolving and the signed-in branch will run in a moment — don't flash the gate.
+      if (remaining === 0 && !maybeSignedIn()) { submitEl.disabled = true; showGate('signin'); }
     }
 
     function escape(s: string): string {
