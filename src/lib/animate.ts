@@ -9,14 +9,18 @@ import { animate, stagger, inView } from 'motion';
 const reduce = (): boolean => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /** Springy staggered reveal of a set of elements (works on injected nodes — pass live refs). */
-export function revealStagger(els: ArrayLike<Element>, delayStep = 0.06): void {
+export function revealStagger(els: ArrayLike<Element>, delayStep = 0.07): void {
   const list = Array.from(els);
   if (!list.length) return;
-  if (reduce()) { list.forEach((el) => ((el as HTMLElement).style.opacity = '1')); return; }
+  if (reduce()) {
+    // Reduced motion: gentle opacity-only fade (no movement) — still feels alive, stays accessible.
+    animate(list as Element[], { opacity: [0, 1] }, { duration: 0.4, delay: stagger(0.05) } as any);
+    return;
+  }
   animate(
     list as Element[],
-    { opacity: [0, 1], y: [16, 0] },
-    { type: 'spring', visualDuration: 0.5, bounce: 0.22, delay: stagger(delayStep) } as any,
+    { opacity: [0, 1], y: [28, 0], scale: [0.96, 1] },
+    { type: 'spring', visualDuration: 0.55, bounce: 0.34, delay: stagger(delayStep) } as any,
   );
 }
 

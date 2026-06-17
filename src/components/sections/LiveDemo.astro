@@ -130,7 +130,7 @@ const t = lang === 'ar'
       <p data-demo-error class="hidden mt-8 text-center font-arabic text-body text-red-600 dark:text-red-400"></p>
 
       {/* ── Result actions (copy / share / pdf) — sit outside the captured card ── */}
-      <div data-demo-actions class="hidden mt-10 mb-2 flex items-center justify-end gap-2">
+      <div data-demo-actions class="hidden mt-8 mb-3 flex items-center justify-center flex-wrap gap-3">
         <button type="button" data-act-copy class="act-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           <span data-act-copy-label>{t.copy}</span>
@@ -185,6 +185,19 @@ const t = lang === 'ar'
       </div>
     </div>
 
+    {/* ── Off-screen branded share card — captured for share-image / PDF ── */}
+    <div data-export-card lang="ar" dir="rtl" aria-hidden="true" class="export-card">
+      <div class="ec-top">
+        <img src="/brand-mark.png" alt="" width="40" height="40" class="ec-logo" />
+        <span class="ec-brand">إعراب</span>
+        <span class="ec-tag">تحليل نحوي بالذكاء الاصطناعي</span>
+      </div>
+      <div class="ec-verse quran-text" data-ec-verse></div>
+      <div class="ec-meaning" data-ec-meaning></div>
+      <div class="ec-words" data-ec-words></div>
+      <div class="ec-foot">أُعرِب على irab.app · حلّل أيّ جملة عربية</div>
+    </div>
+
     {/* ── Sign-up gate (shown after the free parses are used) ──────────── */}
     <div data-demo-gate class="hidden max-w-2xl mx-auto mt-10 card p-8 md:p-10 text-center">
       <p data-gate-title class="font-arabic-display font-bold text-h2 leading-tight mb-3">{t.signTitle}</p>
@@ -200,11 +213,7 @@ const t = lang === 'ar'
   /* These target innerHTML-injected result cards, so they must be GLOBAL —
      Astro scoped styles never reach dynamically-inserted nodes (that was why
      the result cards looked unstyled: plain text on the background). */
-  :global(.word-card) { animation: card-in 600ms cubic-bezier(0.16, 1, 0.3, 1) backwards; }
-  @keyframes card-in {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  /* Word-card reveal is driven by Motion (revealStagger) — springy stagger. */
   :global(.demo-card details[open] > summary ~ *) { animation: details-in 350ms ease-out; }
   @keyframes details-in {
     from { opacity: 0; transform: translateY(-4px); }
@@ -255,18 +264,19 @@ const t = lang === 'ar'
   }
   :global(.dark) .demo-textarea { background: var(--color-coal); border-color: var(--color-coal-edge); }
 
-  /* Result action pills (copy / share / pdf). */
+  /* Result action buttons (copy / share / pdf) — big, clear, with depth + lift. */
   .act-btn {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.4rem 0.95rem; border-radius: 9999px;
-    font-family: var(--font-arabic); font-size: 0.95rem; line-height: 1;
-    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
-    background: var(--color-card); border: 1px solid var(--color-card-edge);
-    cursor: pointer; transition: color .2s, border-color .2s, transform .2s var(--ease-out-quart);
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    padding: 0.8rem 1.6rem; border-radius: 9999px;
+    font-family: var(--font-arabic); font-size: 1.2rem; font-weight: 600; line-height: 1;
+    color: var(--color-ink);
+    background: var(--color-card); border: 1.5px solid var(--color-card-edge);
+    cursor: pointer; box-shadow: var(--shadow-card);
+    transition: color .2s, border-color .2s, transform .22s var(--ease-out-quart), box-shadow .22s var(--ease-out-quart);
   }
-  :global(.dark) .act-btn { color: color-mix(in srgb, var(--color-mist) 70%, transparent); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
-  .act-btn:hover { color: var(--color-purple); border-color: color-mix(in srgb, var(--color-purple) 40%, var(--color-card-edge)); }
-  .act-btn svg { width: 1rem; height: 1rem; }
+  :global(.dark) .act-btn { color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .act-btn:hover { color: var(--color-purple); border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
+  .act-btn svg { width: 1.35rem; height: 1.35rem; }
 
   /* Skeleton shimmer — the loading placeholder while the AI parses. */
   .skel {
@@ -289,6 +299,39 @@ const t = lang === 'ar'
     :global(.demo-card details[open] > summary ~ *) { animation: none; }
     .skel { animation: none; }
   }
+</style>
+
+<style is:global>
+  /* Branded share card — global because its word rows are injected via innerHTML.
+     Rendered off-screen (left:-10000px) and captured by snapdom for share/PDF. */
+  .export-card {
+    position: fixed; left: -10000px; top: 0; z-index: -1;
+    width: 640px; box-sizing: border-box; padding: 2.5rem 2.25rem;
+    background: var(--color-paper); border: 1px solid var(--color-stone);
+    border-radius: 24px; border-top: 6px solid var(--color-purple);
+    font-family: var(--font-arabic);
+  }
+  .dark .export-card { background: var(--color-coal); border-color: var(--color-coal-edge); }
+  .export-card .ec-top { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 1.6rem; }
+  .export-card .ec-logo { width: 40px; height: 40px; border-radius: 9px; }
+  .export-card .ec-brand { font-family: var(--font-arabic-display); font-weight: 700; font-size: 2rem; color: var(--color-ink); }
+  .dark .export-card .ec-brand { color: var(--color-mist); }
+  .export-card .ec-tag { margin-inline-start: auto; font-size: 1rem; color: var(--color-purple); background: color-mix(in srgb, var(--color-purple) 12%, transparent); padding: 0.35rem 0.85rem; border-radius: 999px; }
+  .export-card .ec-verse { font-family: var(--font-quran); font-size: 2.7rem; line-height: 2; text-align: center; color: var(--color-ink); margin-bottom: 0.6rem; }
+  .dark .export-card .ec-verse { color: var(--color-mist); }
+  .export-card .ec-meaning { text-align: center; font-style: italic; font-size: 1.2rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); margin-bottom: 1.8rem; }
+  .dark .export-card .ec-meaning { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .export-card .ec-words { display: flex; flex-direction: column; gap: 0.8rem; }
+  .export-card .ec-word { border: 1px solid var(--color-stone); border-inline-start: 5px solid var(--rail, var(--color-stone-soft)); border-radius: 16px; background: #fff; padding: 1rem 1.2rem; box-shadow: 0 2px 8px -3px rgb(23 56 71 / 0.08); }
+  .dark .export-card .ec-word { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .export-card .ec-w-head { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 0.4rem; }
+  .export-card .ec-tok { font-family: var(--font-quran); font-size: 1.85rem; font-weight: 700; color: var(--color-ink); }
+  .dark .export-card .ec-tok { color: var(--color-mist); }
+  .export-card .ec-chip { font-size: 0.9rem; font-weight: 600; color: var(--rail, var(--color-purple)); background: color-mix(in srgb, var(--rail, var(--color-purple)) 13%, transparent); padding: 0.2rem 0.7rem; border-radius: 999px; }
+  .export-card .ec-irab { font-family: var(--font-arabic-classical); font-size: 1.25rem; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 88%, transparent); }
+  .dark .export-card .ec-irab { color: color-mix(in srgb, var(--color-mist) 88%, transparent); }
+  .export-card .ec-foot { margin-top: 1.9rem; padding-top: 1.3rem; border-top: 1px solid var(--color-stone); text-align: center; font-size: 1.1rem; font-weight: 600; color: var(--color-purple); }
+  .dark .export-card .ec-foot { border-color: var(--color-coal-edge); }
 </style>
 
 <script>
@@ -372,6 +415,7 @@ const t = lang === 'ar'
     const pdfBtn        = root.querySelector<HTMLButtonElement>('[data-act-pdf]');
     const loadingStepEl = root.querySelector<HTMLElement>('[data-loading-step]');
     let lastEx: ParseExample | null = null;
+    const exportCardEl  = root.querySelector<HTMLElement>('[data-export-card]')!;
     const gateTitleEl  = gateEl.querySelector<HTMLElement>('[data-gate-title]')!;
     const gateBodyEl   = gateEl.querySelector<HTMLElement>('[data-gate-body]')!;
     const gateCtaEl    = gateEl.querySelector<HTMLAnchorElement>('[data-gate-cta]')!;
@@ -437,6 +481,7 @@ const t = lang === 'ar'
 
     function renderExample(ex: ParseExample, parsedSeconds: string | null = null) {
       lastEx = ex; // keep the latest result for copy/share/pdf
+      fillExportCard(ex); // populate the branded share card
       // Update source as main + sub split by "·"
       const sourceText = ex.source ?? i18n.customSrc;
       const parts = sourceText.split('·');
@@ -482,7 +527,7 @@ const t = lang === 'ar'
             </div>
           </details>` : '';
         return `
-          <article class="demo-card word-card relative p-6 md:p-7" style="--rail: ${caseColor}; animation-delay: ${i * 80}ms;">
+          <article class="demo-card word-card relative p-6 md:p-7" style="--rail: ${caseColor}; opacity: 0;">
             <div class="flex items-start justify-between gap-4 mb-4">
               <div lang="ar" dir="rtl" class="font-bold text-[clamp(2rem,3.6vw,2.7rem)] leading-tight text-ink dark:text-mist" style="font-family: var(--font-quran);">${escape(w.word)}</div>
               <div class="flex items-center gap-2 shrink-0 pt-1.5">
@@ -495,13 +540,6 @@ const t = lang === 'ar'
           </article>`;
       }).join('');
 
-      // Re-trigger card animation
-      cardsEl.querySelectorAll<HTMLElement>('.word-card').forEach((c, i) => {
-        c.style.animation = 'none';
-        void c.offsetWidth;
-        c.style.animation = '';
-        c.style.animationDelay = `${i * 80}ms`;
-      });
 
       // Sentence explanation
       if (explanationEl && explanationTextEl) {
@@ -544,6 +582,20 @@ const t = lang === 'ar'
       stepTimer = window.setInterval(() => { i = (i + 1) % steps.length; loadingStepEl.textContent = steps[i]; }, 1100);
     }
     function stopNarration() { if (stepTimer !== null) { clearInterval(stepTimer); stepTimer = null; } }
+
+    function fillExportCard(ex: ParseExample) {
+      const v = exportCardEl.querySelector<HTMLElement>('[data-ec-verse]');
+      if (v) v.textContent = ex.vocalizedSentence || ex.words.map((w) => w.word).join(' ');
+      const m = exportCardEl.querySelector<HTMLElement>('[data-ec-meaning]');
+      if (m) { if (ex.meaning) { m.textContent = `"${ex.meaning}"`; m.style.display = ''; } else { m.style.display = 'none'; } }
+      const wrap = exportCardEl.querySelector<HTMLElement>('[data-ec-words]');
+      if (wrap) {
+        wrap.innerHTML = ex.words.map((wd) => {
+          const hex = CASE_COLORS[wd.case].hex;
+          return `<div class="ec-word" style="--rail:${hex}"><div class="ec-w-head"><span class="ec-tok">${escape(wd.word)}</span><span class="ec-chip" style="--rail:${hex}">${escape(wd.caseLabel)}</span></div><div class="ec-irab">${escape(wd.irab)}</div></div>`;
+        }).join('');
+      }
+    }
 
     function buildCopyText(ex: ParseExample): string {
       const lines: string[] = [];
@@ -628,8 +680,8 @@ const t = lang === 'ar'
         if (copyLabelEl) { copyLabelEl.textContent = i18n.copied; window.setTimeout(() => { copyLabelEl.textContent = copyDefault; }, 1600); }
       } catch { /* clipboard blocked — ignore */ }
     });
-    shareBtn?.addEventListener('click', () => { shareImage(resultEl, { filename: 'irab.png', title: 'إعراب · irab.app', text: lastEx?.vocalizedSentence }).catch(() => {}); });
-    pdfBtn?.addEventListener('click', () => { downloadPdf(resultEl, 'irab.pdf').catch(() => {}); });
+    shareBtn?.addEventListener('click', () => { shareImage(exportCardEl, { filename: 'irab.png', title: 'إعراب · irab.app', text: lastEx?.vocalizedSentence }).catch(() => {}); });
+    pdfBtn?.addEventListener('click', () => { downloadPdf(exportCardEl, 'irab.pdf').catch(() => {}); });
 
     // Spring micro-interactions on the primary + action buttons
     springPress([submitEl, ...Array.from(actionsEl.querySelectorAll('button'))]);
