@@ -22,15 +22,6 @@ const collection = {
   url: 'https://irab.app/library',
 };
 
-const coverPalettes = [
-  { bg: '#173847', ink: '#F8F6F1', edge: '#C8B26B' },
-  { bg: '#F8F6F1', ink: '#173847', edge: '#7C4DFF' },
-  { bg: '#1F789B', ink: '#FFFFFF', edge: '#D8C06B' },
-  { bg: '#3F2A62', ink: '#FFFFFF', edge: '#C8B26B' },
-  { bg: '#F2EFE8', ink: '#173847', edge: '#C2603C' },
-];
-
-const coverFor = (i: number) => coverPalettes[i % coverPalettes.length];
 ---
 <BaseLayout
   lang="ar"
@@ -55,17 +46,19 @@ const coverFor = (i: number) => coverPalettes[i % coverPalettes.length];
             </p>
           </div>
 
-          <div class="shelf-preview" aria-hidden="true" data-reveal data-reveal-delay="220">
-            {BOOKS.slice(0, 5).map((b, i) => {
-              const m = categoryMeta(b.category);
-              const p = coverFor(i);
-              return (
-                <div class="preview-book" style={`--c:${m.color};--cover-bg:${p.bg};--cover-ink:${p.ink};--cover-edge:${p.edge};--rot:${i % 2 === 0 ? '-2deg' : '2deg'};`}>
-                  <span>{b.category}</span>
-                  <strong>{b.title}</strong>
+          <div class="library-panel" data-reveal data-reveal-delay="220">
+            <div class="panel-head">
+              <span>فهرس منظّم</span>
+              <strong>{toArabicDigits(BOOKS.length)} كتاب</strong>
+            </div>
+            <div class="panel-list">
+              {CATEGORIES.map((c) => (
+                <div style={`--c:${c.color}`}>
+                  <span>{c.key}</span>
+                  <strong>{toArabicDigits(counts[c.key] ?? 0)} كتاب</strong>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
 
@@ -128,20 +121,14 @@ const coverFor = (i: number) => coverPalettes[i % coverPalettes.length];
         </div>
 
         <div class="library-grid" data-lib-grid>
-          {BOOKS.map((b, i) => {
+          {BOOKS.map((b) => {
             const m = categoryMeta(b.category);
-            const p = coverFor(i);
             const author = b.author && b.author !== 'غير معروف' ? b.author : 'مرجع عربي كلاسيكي';
             return (
               <a href={reader(b.id)} class="book-card"
                  data-book data-cat={b.category}
                  data-title={b.title} data-author={b.author} data-level={b.level}
-                 style={`--c:${m.color};--cover-bg:${p.bg};--cover-ink:${p.ink};--cover-edge:${p.edge};`}>
-                <div class="book-cover" lang="ar" dir="rtl">
-                  <div class="cover-mark">{b.category}</div>
-                  <h2>{b.title}</h2>
-                  <p>{author}</p>
-                </div>
+                 style={`--c:${m.color};`}>
                 <div class="book-info">
                   <div class="book-meta">
                     <span class="book-badge">{b.category}</span>
@@ -202,50 +189,69 @@ const coverFor = (i: number) => coverPalettes[i % coverPalettes.length];
   }
   :global(.dark) .library-lead { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
 
-  .shelf-preview {
-    min-height: 22rem;
-    display: flex;
-    align-items: end;
-    justify-content: center;
-    gap: 0.7rem;
-    padding: 2rem 1.4rem 1.2rem;
+  .library-panel {
+    padding: clamp(1.2rem, 3vw, 1.7rem);
     border: 1px solid var(--color-card-edge);
     background: var(--color-card);
     border-radius: 1rem;
     box-shadow: var(--shadow-lift);
   }
-  :global(.dark) .shelf-preview {
+  :global(.dark) .library-panel {
     background: var(--color-coal-soft);
     border-color: var(--color-coal-edge);
   }
-  .preview-book {
-    width: clamp(3.3rem, 6vw, 5rem);
-    height: clamp(12rem, 22vw, 17rem);
-    transform: rotate(var(--rot));
-    border-radius: 0.45rem 0.75rem 0.75rem 0.45rem;
-    background: var(--cover-bg);
-    color: var(--cover-ink);
-    border: 1px solid color-mix(in srgb, var(--cover-edge) 70%, black);
-    border-inline-start: 0.55rem solid var(--cover-edge);
-    box-shadow: 0 18px 34px -22px rgb(23 56 71 / 0.55);
-    writing-mode: vertical-rl;
+  .panel-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.9rem 0.45rem;
-    font-family: var(--font-arabic);
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-stone);
   }
-  .preview-book strong {
-    max-height: 10.5rem;
-    overflow: hidden;
-    font-size: clamp(0.95rem, 1.45vw, 1.1rem);
-    line-height: 1.35;
+  :global(.dark) .panel-head { border-bottom-color: var(--color-coal-edge); }
+  .panel-head span,
+  .panel-list span {
+    color: color-mix(in srgb, var(--color-ink) 58%, transparent);
+    font-size: var(--text-caption);
     font-weight: 800;
   }
-  .preview-book span {
+  :global(.dark) .panel-head span,
+  :global(.dark) .panel-list span {
+    color: color-mix(in srgb, var(--color-mist) 62%, transparent);
+  }
+  .panel-head strong {
     font-family: var(--font-arabic);
-    font-size: 0.9rem;
-    opacity: 0.86;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
+    color: var(--color-ink);
+  }
+  :global(.dark) .panel-head strong { color: var(--color-mist); }
+  .panel-list {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  .panel-list div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0.95rem;
+    border-radius: 0.75rem;
+    background: color-mix(in srgb, var(--c) 8%, var(--color-paper));
+    border: 1px solid color-mix(in srgb, var(--c) 18%, transparent);
+  }
+  :global(.dark) .panel-list div {
+    background: color-mix(in srgb, var(--c) 13%, var(--color-coal-soft));
+    border-color: color-mix(in srgb, var(--c) 24%, transparent);
+  }
+  .panel-list strong {
+    color: var(--color-ink);
+    font-family: var(--font-arabic);
+    font-size: 1.05rem;
+  }
+  :global(.dark) .panel-list strong {
+    color: var(--color-mist);
   }
 
   .library-stats {
@@ -279,7 +285,13 @@ const coverFor = (i: number) => coverPalettes[i % coverPalettes.length];
   }
   :global(.dark) .library-stats span { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
 
-  .library-browse { padding: 2rem 0 5rem; }
+  .library-browse {
+    padding: 2rem 0 5rem;
+    background: color-mix(in srgb, var(--color-paper) 94%, white);
+  }
+  :global(.dark) .library-browse {
+    background: var(--color-coal);
+  }
   .library-toolbar {
     display: grid;
     grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1fr);
@@ -408,11 +420,9 @@ const coverFor = (i: number) => coverPalettes[i % coverPalettes.length];
   }
   @keyframes lib-grid-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
   .book-card {
-    display: grid;
-    grid-template-columns: 7.2rem minmax(0, 1fr);
-    gap: 1.05rem;
-    min-height: 15.5rem;
-    padding: 1rem;
+    display: flex;
+    min-height: 13rem;
+    padding: 1.25rem;
     border-radius: 0.9rem;
     text-decoration: none;
     background: var(--color-card);
@@ -429,66 +439,11 @@ const coverFor = (i: number) => coverPalettes[i % coverPalettes.length];
     border-color: color-mix(in srgb, var(--c) 62%, var(--color-card-edge));
     box-shadow: var(--shadow-lift);
   }
-  .book-cover {
-    position: relative;
-    min-height: 13.5rem;
-    padding: 0.9rem 0.72rem 0.85rem;
-    border-radius: 0.45rem 0.8rem 0.8rem 0.45rem;
-    background: var(--cover-bg);
-    color: var(--cover-ink);
-    border: 1px solid color-mix(in srgb, var(--cover-edge) 72%, black);
-    border-inline-start: 0.55rem solid var(--cover-edge);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cover-ink) 10%, transparent);
-    overflow: hidden;
-  }
-  .book-cover::before,
-  .book-cover::after {
-    content: "";
-    position: absolute;
-    inset-inline: 0.7rem;
-    height: 1px;
-    background: color-mix(in srgb, var(--cover-edge) 76%, transparent);
-  }
-  .book-cover::before { top: 3.2rem; }
-  .book-cover::after { bottom: 2.6rem; }
-  .cover-mark {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 2.6rem;
-    min-height: 2rem;
-    padding: 0.1rem 0.55rem;
-    border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--cover-edge) 78%, transparent);
-    font-size: 0.9rem;
-    font-weight: 900;
-  }
-  .book-cover h2 {
-    max-height: 7.4rem;
-    margin-top: 1.1rem;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-    font-family: var(--font-arabic);
-    font-size: clamp(1.02rem, 1.6vw, 1.24rem);
-    line-height: 1.42;
-    font-weight: 800;
-    text-wrap: balance;
-  }
-  .book-cover p {
-    position: absolute;
-    inset-inline: 0.85rem;
-    bottom: 0.75rem;
-    font-size: 0.85rem;
-    line-height: 1.4;
-    opacity: 0.82;
-  }
   .book-info {
     min-width: 0;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 0.15rem 0 0.1rem;
   }
   .book-meta {
     display: flex;
@@ -566,18 +521,11 @@ const coverFor = (i: number) => coverPalettes[i % coverPalettes.length];
   }
   @media (max-width: 720px) {
     .library-hero { padding-top: 2.5rem; }
-    .shelf-preview { min-height: 17rem; padding-inline: 0.8rem; }
-    .preview-book { width: 3.25rem; height: 12rem; }
     .library-stats,
     .library-band,
     .library-grid { grid-template-columns: 1fr; }
-    .book-card { grid-template-columns: 6.8rem minmax(0, 1fr); min-height: 14rem; }
-    .book-cover { min-height: 12rem; }
+    .book-card { min-height: 12rem; }
     .library-toolbar { gap: 0.75rem; }
-  }
-  @media (max-width: 430px) {
-    .book-card { grid-template-columns: 1fr; }
-    .book-cover { min-height: 14rem; }
   }
 </style>
 
