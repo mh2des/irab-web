@@ -18,6 +18,7 @@ const t = lang === 'ar'
       exampleLabel: 'مثالٌ على النتيجة — اكتب جملتك في الأعلى',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
       parse:      'أعرب',
+      copy:       'نسخ', share: 'مشاركة', pdf: 'PDF', madeWith: 'أُعرِب على irab.app',
       analyzing:  'جارٍ الإعراب…',
       errorMsg:   'تعذّر الإعراب الآن. حاول مرة أخرى.',
       signTitle:  'أنشئ حسابًا مجانيًا للمتابعة',
@@ -50,6 +51,7 @@ const t = lang === 'ar'
       exampleLabel: 'Example output — type your own sentence above',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
       parse:      'Parse',
+      copy:       'Copy', share: 'Share', pdf: 'PDF', madeWith: 'Parsed on irab.app',
       analyzing:  'Analyzing…',
       errorMsg:   "Couldn't analyze right now. Please try again.",
       signTitle:  'Create a free account to continue',
@@ -116,7 +118,7 @@ const t = lang === 'ar'
       <div data-demo-loading class="hidden mt-10">
         <div class="flex items-center justify-center gap-3 mb-8">
           <svg class="w-7 h-7 text-purple animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-          <p class="font-arabic text-body text-ink/65 dark:text-mist/65">{t.analyzing}</p>
+          <p data-loading-step class="font-arabic text-body text-ink/65 dark:text-mist/65">{t.analyzing}</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div class="skel h-36 rounded-2xl"></div>
@@ -126,6 +128,22 @@ const t = lang === 'ar'
 
       {/* ── Error ───────────────────────────────────────────────────────── */}
       <p data-demo-error class="hidden mt-8 text-center font-arabic text-body text-red-600 dark:text-red-400"></p>
+
+      {/* ── Result actions (copy / share / pdf) — sit outside the captured card ── */}
+      <div data-demo-actions class="hidden mt-10 mb-2 flex items-center justify-end gap-2">
+        <button type="button" data-act-copy class="act-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span data-act-copy-label>{t.copy}</span>
+        </button>
+        <button type="button" data-act-share class="act-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          <span>{t.share}</span>
+        </button>
+        <button type="button" data-act-pdf class="act-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>{t.pdf}</span>
+        </button>
+      </div>
 
       {/* ── Result (hidden until the user parses — no specimen on load) ──── */}
       <div data-demo-result class="hidden mt-10">
@@ -157,6 +175,12 @@ const t = lang === 'ar'
             <span lang="ar" dir="rtl" class="font-arabic">{t.rhetorical}</span>
           </p>
           <p lang="ar" dir="rtl" class="font-arabic text-body text-ink/80 dark:text-mist/80 leading-loose" style="font-family: var(--font-arabic-classical);" data-clarification-text></p>
+        </div>
+
+        {/* Branded footer — part of the shared image/PDF */}
+        <div class="flex items-center justify-center gap-2 pt-6 mt-2 border-t border-stone dark:border-coal-edge">
+          <img src="/brand-mark.png" alt="" width="20" height="20" class="w-5 h-5 rounded-md" />
+          <span class="font-arabic text-small text-ink/45 dark:text-mist/45">{t.madeWith}</span>
         </div>
       </div>
     </div>
@@ -231,6 +255,19 @@ const t = lang === 'ar'
   }
   :global(.dark) .demo-textarea { background: var(--color-coal); border-color: var(--color-coal-edge); }
 
+  /* Result action pills (copy / share / pdf). */
+  .act-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.4rem 0.95rem; border-radius: 9999px;
+    font-family: var(--font-arabic); font-size: 0.95rem; line-height: 1;
+    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+    background: var(--color-card); border: 1px solid var(--color-card-edge);
+    cursor: pointer; transition: color .2s, border-color .2s, transform .2s var(--ease-out-quart);
+  }
+  :global(.dark) .act-btn { color: color-mix(in srgb, var(--color-mist) 70%, transparent); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .act-btn:hover { color: var(--color-purple); border-color: color-mix(in srgb, var(--color-purple) 40%, var(--color-card-edge)); }
+  .act-btn svg { width: 1rem; height: 1rem; }
+
   /* Skeleton shimmer — the loading placeholder while the AI parses. */
   .skel {
     background: linear-gradient(90deg,
@@ -257,6 +294,8 @@ const t = lang === 'ar'
 <script>
   import { EXAMPLES, SPECIMEN, CASE_COLORS, TYPE_META, type ParseExample } from '../../data/demo-examples';
   import { maybeSignedIn } from '../../lib/session';
+  import { revealStagger, springPress } from '../../lib/animate';
+  import { shareImage, downloadPdf } from '../../lib/share';
 
   const STORAGE_KEY = 'irab-demo-quota';
   const FP_KEY = 'irab-fp';
@@ -291,13 +330,15 @@ const t = lang === 'ar'
           irabLabel: 'الإعراب', showDetails: 'عرض التفاصيل', hideDetails: 'إخفاء التفاصيل',
           wordsCount: (n: number) => `${n} كلمات`, parsedIn: (s: string) => `أُعرِب في ${s}`, parse: 'أعرب', unlimited: 'إعراب غير محدود ⚡',
           signTitle: 'أنشئ حسابًا مجانيًا للمتابعة', signBody: 'سجّل الدخول لتحصل على ٣ محاولات يوميًّا.', signCta: 'تسجيل الدخول / إنشاء حساب',
-          upTitle: 'بلغت حدّك اليومي المجاني', upBody: 'لديك ٣ محاولات مجانية يوميًّا. اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.', upCta: 'اشترك في إعراب بلس' }
+          upTitle: 'بلغت حدّك اليومي المجاني', upBody: 'لديك ٣ محاولات مجانية يوميًّا. اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.', upCta: 'اشترك في إعراب بلس',
+          copied: 'تم النسخ ✓', loadSteps: ['نقرأ الجملة…', 'نحدّد أنواع الكلمات…', 'نحدّد المواقع الإعرابية…', 'نجهّز الشرح…'] }
       : { remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
           parsing: 'Parsing…', error: "Couldn't analyze right now. Please try again.", customSrc: 'Your sentence', fallback: 'Demo offline · showing specimen',
           irabLabel: "I'rab", showDetails: 'Show details', hideDetails: 'Hide details',
           wordsCount: (n: number) => `${n} words`, parsedIn: (s: string) => `Parsed in ${s}`, parse: 'Parse', unlimited: 'Unlimited parsing ⚡',
           signTitle: 'Create a free account to continue', signBody: 'Sign in to get 3 free parses a day.', signCta: 'Sign in / Create account',
-          upTitle: "You've reached your daily free limit", upBody: 'You get 3 free parses a day. Subscribe to Irab Plus for unlimited, or come back tomorrow.', upCta: 'Subscribe to Irab Plus' };
+          upTitle: "You've reached your daily free limit", upBody: 'You get 3 free parses a day. Subscribe to Irab Plus for unlimited, or come back tomorrow.', upCta: 'Subscribe to Irab Plus',
+          copied: 'Copied ✓', loadSteps: ['Reading the sentence…', 'Identifying word types…', 'Determining grammatical roles…', 'Preparing the explanation…'] };
 
     const sourceMainEl = root.querySelector<HTMLElement>('[data-source-main]')!;
     const sourceSubEl  = root.querySelector<HTMLElement>('[data-source-sub]');
@@ -324,6 +365,13 @@ const t = lang === 'ar'
     const sourceSepEl  = root.querySelector<HTMLElement>('[data-source-sep]');
     const submitSpinnerEl = submitEl.querySelector<HTMLElement>('[data-submit-spinner]')!;
     const submitArrowEl   = submitEl.querySelector<HTMLElement>('[data-submit-arrow]')!;
+    const actionsEl     = root.querySelector<HTMLElement>('[data-demo-actions]')!;
+    const copyBtn       = root.querySelector<HTMLButtonElement>('[data-act-copy]');
+    const copyLabelEl   = root.querySelector<HTMLElement>('[data-act-copy-label]');
+    const shareBtn      = root.querySelector<HTMLButtonElement>('[data-act-share]');
+    const pdfBtn        = root.querySelector<HTMLButtonElement>('[data-act-pdf]');
+    const loadingStepEl = root.querySelector<HTMLElement>('[data-loading-step]');
+    let lastEx: ParseExample | null = null;
     const gateTitleEl  = gateEl.querySelector<HTMLElement>('[data-gate-title]')!;
     const gateBodyEl   = gateEl.querySelector<HTMLElement>('[data-gate-body]')!;
     const gateCtaEl    = gateEl.querySelector<HTMLAnchorElement>('[data-gate-cta]')!;
@@ -388,6 +436,7 @@ const t = lang === 'ar'
     }
 
     function renderExample(ex: ParseExample, parsedSeconds: string | null = null) {
+      lastEx = ex; // keep the latest result for copy/share/pdf
       // Update source as main + sub split by "·"
       const sourceText = ex.source ?? i18n.customSrc;
       const parts = sourceText.split('·');
@@ -485,6 +534,28 @@ const t = lang === 'ar'
       submitLabelEl.textContent = on ? i18n.parsing : i18n.parse;
     }
 
+    // Narrated loading — rotate the "thinking" steps while the AI parses.
+    let stepTimer: number | null = null;
+    function startNarration() {
+      if (!loadingStepEl) return;
+      const steps = i18n.loadSteps;
+      let i = 0;
+      loadingStepEl.textContent = steps[0];
+      stepTimer = window.setInterval(() => { i = (i + 1) % steps.length; loadingStepEl.textContent = steps[i]; }, 1100);
+    }
+    function stopNarration() { if (stepTimer !== null) { clearInterval(stepTimer); stepTimer = null; } }
+
+    function buildCopyText(ex: ParseExample): string {
+      const lines: string[] = [];
+      if (ex.vocalizedSentence) lines.push(ex.vocalizedSentence);
+      if (ex.meaning) lines.push(`"${ex.meaning}"`);
+      lines.push('');
+      ex.words.forEach((w) => lines.push(`${w.word} — ${w.irab}`));
+      if (ex.explanation) { lines.push(''); lines.push(ex.explanation); }
+      lines.push('', '— irab.app');
+      return lines.join('\n');
+    }
+
     // Form
     formEl.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -498,9 +569,11 @@ const t = lang === 'ar'
       errorEl.classList.add('hidden');
       resultEl.classList.add('hidden');
       gateEl.classList.add('hidden');
+      actionsEl.classList.add('hidden');
       loadingEl.classList.remove('hidden');
       loadingEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setLoading(true);
+      startNarration();
 
       try {
         const fingerprint = await getFingerprint();
@@ -513,6 +586,7 @@ const t = lang === 'ar'
           body: JSON.stringify({ text, fingerprint }),
         });
         loadingEl.classList.add('hidden');
+        stopNarration();
         if (res.status === 429) {
           // Limit reached: signed-in → daily-limit/upgrade; anonymous → sign in.
           showGate(isSignedIn ? 'upgrade' : 'signin');
@@ -523,6 +597,8 @@ const t = lang === 'ar'
         const elapsed = ((performance.now() - start) / 1000).toFixed(1) + 's';
         renderExample({ ...parsed, source: i18n.customSrc }, elapsed);
         resultEl.classList.remove('hidden');
+        actionsEl.classList.remove('hidden');
+        revealStagger(cardsEl.querySelectorAll('.demo-card'));
         if (!isSignedIn) bumpQuota();
         renderQuota();
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -534,8 +610,29 @@ const t = lang === 'ar'
         errorEl.classList.remove('hidden');
       } finally {
         setLoading(false);
+        stopNarration();
       }
     });
+
+    // ⌘ / Ctrl + Enter to analyze
+    inputEl.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); formEl.requestSubmit(); }
+    });
+
+    // Result actions — copy / share-as-image / PDF
+    const copyDefault = copyLabelEl?.textContent ?? '';
+    copyBtn?.addEventListener('click', async () => {
+      if (!lastEx) return;
+      try {
+        await navigator.clipboard.writeText(buildCopyText(lastEx));
+        if (copyLabelEl) { copyLabelEl.textContent = i18n.copied; window.setTimeout(() => { copyLabelEl.textContent = copyDefault; }, 1600); }
+      } catch { /* clipboard blocked — ignore */ }
+    });
+    shareBtn?.addEventListener('click', () => { shareImage(resultEl, { filename: 'irab.png', title: 'إعراب · irab.app', text: lastEx?.vocalizedSentence }).catch(() => {}); });
+    pdfBtn?.addEventListener('click', () => { downloadPdf(resultEl, 'irab.pdf').catch(() => {}); });
+
+    // Spring micro-interactions on the primary + action buttons
+    springPress([submitEl, ...Array.from(actionsEl.querySelectorAll('button'))]);
 
     renderQuota();
 
