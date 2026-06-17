@@ -1,0 +1,150 @@
+---
+/**
+ * /en/library — the classical grammar library (English chrome, Arabic books).
+ * Targets the English long-tail for classical Arabic grammar references.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import Container from '../../components/Container.astro';
+import Section from '../../components/Section.astro';
+import { BOOKS, TOTAL_CHAPTERS, CATEGORIES, categoryCounts, categoryMeta } from '../../lib/library';
+
+const counts = categoryCounts();
+const reader = (id: string) => `/en/library/read?b=${encodeURIComponent(id)}`;
+
+const collection = {
+  '@context': 'https://schema.org', '@type': 'CollectionPage',
+  name: 'Classical Arabic Grammar Library — Irab',
+  description: '47 classical works on Arabic grammar, morphology, rhetoric, and i\'rab, free to read on Irab.',
+  url: 'https://irab.app/en/library',
+};
+---
+<BaseLayout
+  lang="en"
+  title="Classical Arabic Grammar Library — 47 Works | Irab"
+  description="Read 47 classical Arabic works on nahw, sarf, balagha, and i'rab free on Irab — Ibn Hisham, Ibn Aqil, al-Ajurrumiyya and more, chapter by chapter with search and categories."
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(collection)} is:inline />
+  <Nav lang="en" />
+
+  <main>
+    <Section size="sm">
+      <Container>
+        <div class="max-w-3xl mb-10">
+          <p class="eyebrow mb-4" data-reveal>Library</p>
+          <h1 class="font-display text-[clamp(2.2rem,5.5vw,3.6rem)] leading-[1.15] tracking-tight" data-reveal data-reveal-delay="80">
+            The classical grammar library
+          </h1>
+          <p class="mt-6 text-body-lg text-ink/80 dark:text-mist/80 leading-relaxed" data-reveal data-reveal-delay="160">
+            The foundational works of Arabic — nahw, sarf, balagha, and i'rab — chapter by chapter, free to read in full. The same library that's in the Irab app.
+          </p>
+
+          <div class="flex flex-wrap gap-x-10 gap-y-4 mt-8" data-reveal data-reveal-delay="220">
+            <div><div class="stat-num text-purple">{BOOKS.length}</div><div class="stat-label mt-1">books</div></div>
+            <div><div class="stat-num text-teal">{TOTAL_CHAPTERS.toLocaleString('en')}</div><div class="stat-label mt-1">chapters</div></div>
+            <div><div class="stat-num">{CATEGORIES.length}</div><div class="stat-label mt-1">branches</div></div>
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-center gap-4 mb-8">
+          <div class="flex flex-wrap gap-2" data-lib-filters>
+            <button type="button" class="lib-chip is-active" data-cat="all">All <span class="lib-chip-n">{BOOKS.length}</span></button>
+            {CATEGORIES.map((c) => (
+              <button type="button" class="lib-chip" data-cat={c.key} style={`--c:${c.color}`}>
+                {c.en} <span class="lib-chip-n">{counts[c.key] ?? 0}</span>
+              </button>
+            ))}
+          </div>
+          <div class="md:ms-auto md:w-72">
+            <input type="search" data-lib-search placeholder="Search a book or author…" class="input" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-lib-grid>
+          {BOOKS.map((b, i) => {
+            const m = categoryMeta(b.category);
+            return (
+              <a href={reader(b.id)} class="lib-card card card-interactive p-6 flex flex-col"
+                 data-book data-cat={b.category}
+                 data-title={b.title} data-author={b.author}
+                 data-reveal data-reveal-delay={String(Math.min(i, 8) * 40)}
+                 style={`--c:${m.color}`}>
+                <div class="flex items-center justify-between gap-3 mb-3">
+                  <span class="lib-badge">{m.en}</span>
+                  <span class="font-mono text-caption text-ink/60 dark:text-mist/60">{b.totalChapters} ch.</span>
+                </div>
+                <h3 lang="ar" dir="rtl" class="font-arabic-display text-h3 leading-tight mb-1">{b.title}</h3>
+                {b.author && b.author !== 'غير معروف' && (
+                  <p lang="ar" dir="rtl" class="font-arabic text-small text-ink/65 dark:text-mist/65 mb-2">{b.author}</p>
+                )}
+                <span class="mt-auto pt-4 inline-flex items-center gap-1.5 text-small font-semibold text-purple">
+                  Read the book <span aria-hidden="true">→</span>
+                </span>
+              </a>
+            );
+          })}
+        </div>
+
+        <p data-lib-empty class="hidden text-center py-16 text-body text-ink/60 dark:text-mist/60">No matching books.</p>
+      </Container>
+    </Section>
+  </main>
+
+  <Footer lang="en" />
+</BaseLayout>
+
+<style>
+  .lib-chip {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: var(--text-caption);
+    background: var(--color-card); border: 1px solid var(--color-card-edge); color: var(--color-ink);
+    transition: border-color .2s, color .2s, background-color .2s, transform .2s;
+  }
+  :global(.dark) .lib-chip { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
+  .lib-chip:hover { transform: translateY(-2px); border-color: var(--c, var(--color-purple)); }
+  .lib-chip.is-active { background: var(--c, var(--color-purple)); border-color: var(--c, var(--color-purple)); color: #fff; }
+  .lib-chip-n { font-family: var(--font-mono); font-size: 0.85em; opacity: 0.75; }
+
+  .lib-badge {
+    display: inline-flex; align-items: center; padding: 0.3rem 0.8rem; border-radius: 9999px;
+    font-weight: 700; font-size: 0.95rem; line-height: 1.2;
+    color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent);
+  }
+  .lib-card { border-top: 3px solid var(--c); }
+</style>
+
+<script>
+  const root = document;
+  const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-book]'));
+  const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('.lib-chip'));
+  const search = root.querySelector<HTMLInputElement>('[data-lib-search]');
+  const empty = root.querySelector<HTMLElement>('[data-lib-empty]');
+  let activeCat = 'all';
+
+  const norm = (s: string) => (s || '')
+    .replace(/[ً-ْٰـ]/g, '')
+    .replace(/[إأآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه')
+    .toLowerCase().trim();
+
+  function apply() {
+    const qv = norm(search?.value || '');
+    let shown = 0;
+    cards.forEach((c) => {
+      const okCat = activeCat === 'all' || c.dataset.cat === activeCat;
+      const hay = norm((c.dataset.title || '') + ' ' + (c.dataset.author || ''));
+      const okSearch = !qv || hay.includes(qv);
+      const show = okCat && okSearch;
+      c.style.display = show ? '' : 'none';
+      if (show) shown++;
+    });
+    if (empty) empty.classList.toggle('hidden', shown > 0);
+  }
+
+  chips.forEach((chip) => chip.addEventListener('click', () => {
+    activeCat = chip.dataset.cat || 'all';
+    chips.forEach((c) => c.classList.toggle('is-active', c === chip));
+    apply();
+  }));
+  search?.addEventListener('input', apply);
+</script>
