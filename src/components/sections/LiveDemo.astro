@@ -415,7 +415,7 @@ const t = lang === 'ar'
     const pdfBtn        = root.querySelector<HTMLButtonElement>('[data-act-pdf]');
     const loadingStepEl = root.querySelector<HTMLElement>('[data-loading-step]');
     let lastEx: ParseExample | null = null;
-    const exportCardEl  = root.querySelector<HTMLElement>('[data-export-card]')!;
+    const exportCardEl  = document.querySelector<HTMLElement>('[data-export-card]'); // sibling of [data-demo], not a child
     const gateTitleEl  = gateEl.querySelector<HTMLElement>('[data-gate-title]')!;
     const gateBodyEl   = gateEl.querySelector<HTMLElement>('[data-gate-body]')!;
     const gateCtaEl    = gateEl.querySelector<HTMLAnchorElement>('[data-gate-cta]')!;
@@ -584,6 +584,7 @@ const t = lang === 'ar'
     function stopNarration() { if (stepTimer !== null) { clearInterval(stepTimer); stepTimer = null; } }
 
     function fillExportCard(ex: ParseExample) {
+      if (!exportCardEl) return; // never let a missing share card break parsing
       const v = exportCardEl.querySelector<HTMLElement>('[data-ec-verse]');
       if (v) v.textContent = ex.vocalizedSentence || ex.words.map((w) => w.word).join(' ');
       const m = exportCardEl.querySelector<HTMLElement>('[data-ec-meaning]');
@@ -680,8 +681,8 @@ const t = lang === 'ar'
         if (copyLabelEl) { copyLabelEl.textContent = i18n.copied; window.setTimeout(() => { copyLabelEl.textContent = copyDefault; }, 1600); }
       } catch { /* clipboard blocked — ignore */ }
     });
-    shareBtn?.addEventListener('click', () => { shareImage(exportCardEl, { filename: 'irab.png', title: 'إعراب · irab.app', text: lastEx?.vocalizedSentence }).catch(() => {}); });
-    pdfBtn?.addEventListener('click', () => { downloadPdf(exportCardEl, 'irab.pdf').catch(() => {}); });
+    shareBtn?.addEventListener('click', () => { if (exportCardEl) shareImage(exportCardEl, { filename: 'irab.png', title: 'إعراب · irab.app', text: lastEx?.vocalizedSentence }).catch(() => {}); });
+    pdfBtn?.addEventListener('click', () => { if (exportCardEl) downloadPdf(exportCardEl, 'irab.pdf').catch(() => {}); });
 
     // Spring micro-interactions on the primary + action buttons
     springPress([submitEl, ...Array.from(actionsEl.querySelectorAll('button'))]);
