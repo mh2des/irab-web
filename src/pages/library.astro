@@ -9,7 +9,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/sections/Footer.astro';
 import Container from '../components/Container.astro';
-import Section from '../components/Section.astro';
 import { BOOKS, TOTAL_CHAPTERS, CATEGORIES, categoryCounts, categoryMeta } from '../lib/library';
 import { toArabicDigits } from '../lib/quran';
 
@@ -22,6 +21,16 @@ const collection = {
   description: 'مكتبة من ٤٧ كتابًا كلاسيكيًّا في النحو والصرف والبلاغة والإعراب، تُقرأ مجانًا على إعراب.',
   url: 'https://irab.app/library',
 };
+
+const coverPalettes = [
+  { bg: '#173847', ink: '#F8F6F1', edge: '#C8B26B' },
+  { bg: '#F8F6F1', ink: '#173847', edge: '#7C4DFF' },
+  { bg: '#1F789B', ink: '#FFFFFF', edge: '#D8C06B' },
+  { bg: '#3F2A62', ink: '#FFFFFF', edge: '#C8B26B' },
+  { bg: '#F2EFE8', ink: '#173847', edge: '#C2603C' },
+];
+
+const coverFor = (i: number) => coverPalettes[i % coverPalettes.length];
 ---
 <BaseLayout
   lang="ar"
@@ -32,98 +41,533 @@ const collection = {
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(collection)} is:inline />
   <Nav lang="ar" />
 
-  <main>
-    <Section size="sm">
-      <Container>
-        <div class="max-w-3xl mb-10">
-          <p class="eyebrow mb-4" data-reveal>المكتبة</p>
-          <h1 class="font-arabic-display text-[clamp(2.2rem,5.5vw,3.6rem)] leading-[1.2] tracking-tight" data-reveal data-reveal-delay="80">
-            مكتبة النحو والصرف والبلاغة
-          </h1>
-          <p class="mt-6 font-arabic text-body-lg text-ink/80 dark:text-mist/80 leading-loose" data-reveal data-reveal-delay="160">
-            أمّهات كتب العربية، مفصّلة بابًا بابًا وقابلة للقراءة كاملةً على الموقع: نفس مكتبة تطبيق إعراب.
-          </p>
+  <main class="library-page">
+    <section class="library-hero">
+      <Container size="wide">
+        <div class="library-hero-grid">
+          <div class="library-copy">
+            <p class="eyebrow mb-4" data-reveal>المكتبة</p>
+            <h1 class="font-arabic-display library-title" data-reveal data-reveal-delay="80">
+              مكتبة كتب العربية
+            </h1>
+            <p class="library-lead" data-reveal data-reveal-delay="160">
+              مجموعة مختارة من كتب النحو والصرف والبلاغة والإعراب، مرتّبة بوضوح لتقرأ الكتاب كاملًا أو تصل إلى مرجعك بسرعة.
+            </p>
+          </div>
 
-          {/* Stats */}
-          <div class="flex flex-wrap gap-x-10 gap-y-4 mt-8" data-reveal data-reveal-delay="220">
-            <div><div class="stat-num text-purple">{toArabicDigits(BOOKS.length)}</div><div class="stat-label mt-1">كتاب</div></div>
-            <div><div class="stat-num text-teal">{toArabicDigits(TOTAL_CHAPTERS)}</div><div class="stat-label mt-1">فصل</div></div>
-            <div><div class="stat-num">{toArabicDigits(CATEGORIES.length)}</div><div class="stat-label mt-1">فروع</div></div>
+          <div class="shelf-preview" aria-hidden="true" data-reveal data-reveal-delay="220">
+            {BOOKS.slice(0, 5).map((b, i) => {
+              const m = categoryMeta(b.category);
+              const p = coverFor(i);
+              return (
+                <div class="preview-book" style={`--c:${m.color};--cover-bg:${p.bg};--cover-ink:${p.ink};--cover-edge:${p.edge};--rot:${i % 2 === 0 ? '-2deg' : '2deg'};`}>
+                  <span>{b.category}</span>
+                  <strong>{b.title}</strong>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Controls */}
-        <div class="flex flex-col md:flex-row md:items-center gap-4 mb-8" data-lib-controls>
-          <div class="flex flex-wrap gap-2" data-lib-filters>
-            <button type="button" class="lib-chip is-active" data-cat="all">الكل <span class="lib-chip-n">{toArabicDigits(BOOKS.length)}</span></button>
+        <div class="library-stats" data-reveal data-reveal-delay="280">
+          <div>
+            <strong>{toArabicDigits(BOOKS.length)}</strong>
+            <span>كتاب كلاسيكي</span>
+          </div>
+          <div>
+            <strong>{toArabicDigits(TOTAL_CHAPTERS)}</strong>
+            <span>فصل قابل للقراءة</span>
+          </div>
+          <div>
+            <strong>{toArabicDigits(CATEGORIES.length)}</strong>
+            <span>فروع علمية</span>
+          </div>
+          <div>
+            <strong>مجاني</strong>
+            <span>يفتح مباشرة في المتصفّح</span>
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <section class="library-browse">
+      <Container size="wide">
+        <div class="library-toolbar" data-lib-controls>
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.3-4.3"/><circle cx="11" cy="11" r="7"/></svg>
+            <input type="search" data-lib-search placeholder="ابحث عن كتاب أو مؤلّف..." dir="rtl" />
+          </div>
+
+          <div class="filter-row" data-lib-filters aria-label="تصنيف الكتب">
+            <button type="button" class="lib-chip is-active" data-cat="all">
+              <span>كل الكتب</span>
+              <em>{toArabicDigits(BOOKS.length)}</em>
+            </button>
             {CATEGORIES.map((c) => (
               <button type="button" class="lib-chip" data-cat={c.key} style={`--c:${c.color}`}>
-                {c.key} <span class="lib-chip-n">{toArabicDigits(counts[c.key] ?? 0)}</span>
+                <span>{c.key}</span>
+                <em>{toArabicDigits(counts[c.key] ?? 0)}</em>
               </button>
             ))}
           </div>
-          <div class="md:ms-auto md:w-72">
-            <input type="search" data-lib-search placeholder="ابحث عن كتاب أو مؤلّف…" class="input" dir="rtl" />
+        </div>
+
+        <div class="library-band" data-reveal>
+          <div>
+            <span>مصادر موثوقة</span>
+            <p>كتب نحوية وبلاغية وصرفية من أمهات المراجع.</p>
+          </div>
+          <div>
+            <span>قراءة مرتّبة</span>
+            <p>كل كتاب مفصول إلى أبواب وفصول داخل القارئ.</p>
+          </div>
+          <div>
+            <span>وصول سريع</span>
+            <p>بحث وتصنيف واضح بدل قائمة طويلة مربكة.</p>
           </div>
         </div>
 
-        {/* Grid */}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-lib-grid>
+        <div class="library-grid" data-lib-grid>
           {BOOKS.map((b, i) => {
             const m = categoryMeta(b.category);
+            const p = coverFor(i);
+            const author = b.author && b.author !== 'غير معروف' ? b.author : 'مرجع عربي كلاسيكي';
             return (
-              <a href={reader(b.id)} class="lib-card card card-interactive p-6 flex flex-col"
+              <a href={reader(b.id)} class="book-card"
                  data-book data-cat={b.category}
-                 data-title={b.title} data-author={b.author}
-                 data-reveal data-reveal-delay={String(Math.min(i, 8) * 40)}
-                 style={`--c:${m.color}`}>
-                <div class="flex items-center justify-between gap-3 mb-3">
-                  <span class="lib-badge">{b.category}</span>
-                  <span class="font-mono text-caption text-ink/60 dark:text-mist/60">{toArabicDigits(b.totalChapters)} فصل</span>
+                 data-title={b.title} data-author={b.author} data-level={b.level}
+                 data-reveal data-reveal-delay={String(Math.min(i, 8) * 35)}
+                 style={`--c:${m.color};--cover-bg:${p.bg};--cover-ink:${p.ink};--cover-edge:${p.edge};`}>
+                <div class="book-cover" lang="ar" dir="rtl">
+                  <div class="cover-mark">{b.category}</div>
+                  <h2>{b.title}</h2>
+                  <p>{author}</p>
                 </div>
-                <h3 class="font-arabic-display text-h3 leading-tight mb-1">{b.title}</h3>
-                {b.author && b.author !== 'غير معروف' && (
-                  <p class="font-arabic text-small text-ink/65 dark:text-mist/65 mb-2">{b.author}</p>
-                )}
-                <span class="mt-auto pt-4 inline-flex items-center gap-1.5 text-small font-semibold text-purple">
-                  اقرأ الكتاب <span aria-hidden="true">←</span>
-                </span>
+                <div class="book-info">
+                  <div class="book-meta">
+                    <span class="book-badge">{b.category}</span>
+                    <span>{toArabicDigits(b.totalChapters)} فصل</span>
+                  </div>
+                  <h3 lang="ar" dir="rtl">{b.title}</h3>
+                  <p lang="ar" dir="rtl">{author}</p>
+                  <div class="book-foot">
+                    <span>{b.level}</span>
+                    <strong>اقرأ الكتاب <span aria-hidden="true">←</span></strong>
+                  </div>
+                </div>
               </a>
             );
           })}
         </div>
 
-        <p data-lib-empty class="hidden text-center py-16 text-body text-ink/60 dark:text-mist/60">لا توجد كتب مطابقة.</p>
+        <p data-lib-empty class="hidden library-empty">لا توجد كتب مطابقة.</p>
       </Container>
-    </Section>
+    </section>
   </main>
 
   <Footer lang="ar" />
 </BaseLayout>
 
 <style>
-  .lib-chip {
-    display: inline-flex; align-items: center; gap: 0.45rem;
-    padding: 0.5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: var(--text-caption);
-    background: var(--color-card); border: 1px solid var(--color-card-edge); color: var(--color-ink);
-    transition: border-color .2s, color .2s, background-color .2s, transform .2s;
+  .library-page { overflow: clip; }
+  .library-hero {
+    position: relative;
+    padding: clamp(3.5rem, 8vw, 6.5rem) 0 2rem;
+    border-bottom: 1px solid var(--color-stone);
+    background: color-mix(in srgb, var(--color-paper) 78%, white);
   }
-  :global(.dark) .lib-chip { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
-  .lib-chip:hover { transform: translateY(-2px); border-color: var(--c, var(--color-purple)); }
-  .lib-chip.is-active { background: var(--c, var(--color-purple)); border-color: var(--c, var(--color-purple)); color: #fff; }
-  .lib-chip-n { font-family: var(--font-mono); font-size: 0.85em; opacity: 0.75; }
+  :global(.dark) .library-hero {
+    background: color-mix(in srgb, var(--color-coal) 82%, var(--color-coal-soft));
+    border-bottom-color: var(--color-coal-edge);
+  }
+  .library-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(21rem, 0.8fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .library-copy { max-width: 44rem; }
+  .library-title {
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1.04;
+    color: var(--color-ink);
+    letter-spacing: 0;
+  }
+  :global(.dark) .library-title { color: var(--color-mist); }
+  .library-lead {
+    max-width: 42rem;
+    margin-top: 1.4rem;
+    font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+    line-height: 1.9;
+    color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  }
+  :global(.dark) .library-lead { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
 
-  .lib-badge {
-    display: inline-flex; align-items: center; padding: 0.3rem 0.8rem; border-radius: 9999px;
-    font-weight: 700; font-size: 1rem; line-height: 1.2;
-    color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent);
+  .shelf-preview {
+    min-height: 22rem;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    gap: 0.7rem;
+    padding: 2rem 1.4rem 1.2rem;
+    border: 1px solid var(--color-card-edge);
+    background: var(--color-card);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-lift);
   }
-  .lib-card { border-top: 3px solid var(--c); }
+  :global(.dark) .shelf-preview {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+  }
+  .preview-book {
+    width: clamp(3.3rem, 6vw, 5rem);
+    height: clamp(12rem, 22vw, 17rem);
+    transform: rotate(var(--rot));
+    border-radius: 0.45rem 0.75rem 0.75rem 0.45rem;
+    background: var(--cover-bg);
+    color: var(--cover-ink);
+    border: 1px solid color-mix(in srgb, var(--cover-edge) 70%, black);
+    border-inline-start: 0.55rem solid var(--cover-edge);
+    box-shadow: 0 18px 34px -22px rgb(23 56 71 / 0.55);
+    writing-mode: vertical-rl;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 0.45rem;
+    font-family: var(--font-arabic-display);
+  }
+  .preview-book strong {
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    line-height: 1.25;
+    font-weight: 700;
+  }
+  .preview-book span {
+    font-family: var(--font-arabic);
+    font-size: 0.9rem;
+    opacity: 0.86;
+  }
+
+  .library-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+  .library-stats div {
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    border-radius: 0.75rem;
+    padding: 1.05rem 1.2rem;
+  }
+  :global(.dark) .library-stats div {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+  }
+  .library-stats strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    line-height: 1;
+    color: var(--color-purple);
+  }
+  .library-stats span {
+    display: block;
+    margin-top: 0.45rem;
+    font-size: var(--text-caption);
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+  }
+  :global(.dark) .library-stats span { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
+
+  .library-browse { padding: 2rem 0 5rem; }
+  .library-toolbar {
+    display: grid;
+    grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+  .search-wrap {
+    min-height: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0 1.1rem;
+    border-radius: 0.9rem;
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    box-shadow: var(--shadow-card);
+  }
+  :global(.dark) .search-wrap {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+  }
+  .search-wrap svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+    stroke: color-mix(in srgb, var(--color-ink) 55%, transparent);
+    stroke-width: 2;
+    fill: none;
+  }
+  :global(.dark) .search-wrap svg { stroke: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .search-wrap input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--color-ink);
+    font-size: var(--text-small);
+  }
+  :global(.dark) .search-wrap input { color: var(--color-mist); }
+  .search-wrap input::placeholder { color: color-mix(in srgb, var(--color-ink) 42%, transparent); }
+  :global(.dark) .search-wrap input::placeholder { color: color-mix(in srgb, var(--color-mist) 42%, transparent); }
+
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.55rem;
+  }
+  .lib-chip {
+    min-height: 3.4rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.8rem;
+    color: var(--color-ink);
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    box-shadow: var(--shadow-soft);
+    transition: transform .18s, border-color .18s, background-color .18s, color .18s;
+  }
+  :global(.dark) .lib-chip {
+    color: var(--color-mist);
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+  }
+  .lib-chip:hover { transform: translateY(-2px); border-color: var(--c, var(--color-purple)); }
+  .lib-chip.is-active {
+    color: #fff;
+    background: var(--c, var(--color-purple));
+    border-color: var(--c, var(--color-purple));
+  }
+  .lib-chip span { font-size: var(--text-caption); font-weight: 800; }
+  .lib-chip em {
+    min-width: 1.7rem;
+    height: 1.7rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+  }
+
+  .library-band {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border-radius: 0.9rem;
+    border: 1px solid var(--color-card-edge);
+    background: var(--color-card-edge);
+    margin: 1.25rem 0 1.6rem;
+  }
+  :global(.dark) .library-band {
+    border-color: var(--color-coal-edge);
+    background: var(--color-coal-edge);
+  }
+  .library-band div {
+    background: color-mix(in srgb, var(--color-card) 86%, var(--color-paper));
+    padding: 1.1rem 1.2rem;
+  }
+  :global(.dark) .library-band div { background: var(--color-coal-soft); }
+  .library-band span {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--color-purple);
+    font-weight: 900;
+    font-size: var(--text-caption);
+  }
+  .library-band p {
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    font-size: var(--text-caption);
+    line-height: 1.55;
+  }
+  :global(.dark) .library-band p { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+
+  .library-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .book-card {
+    display: grid;
+    grid-template-columns: 7.2rem minmax(0, 1fr);
+    gap: 1.05rem;
+    min-height: 15.5rem;
+    padding: 1rem;
+    border-radius: 0.9rem;
+    text-decoration: none;
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    box-shadow: var(--shadow-card);
+    transition: transform .18s, border-color .18s, box-shadow .18s;
+  }
+  :global(.dark) .book-card {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+  }
+  .book-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--c) 62%, var(--color-card-edge));
+    box-shadow: var(--shadow-lift);
+  }
+  .book-cover {
+    position: relative;
+    min-height: 13.5rem;
+    padding: 1rem 0.72rem 0.85rem;
+    border-radius: 0.45rem 0.8rem 0.8rem 0.45rem;
+    background: var(--cover-bg);
+    color: var(--cover-ink);
+    border: 1px solid color-mix(in srgb, var(--cover-edge) 72%, black);
+    border-inline-start: 0.55rem solid var(--cover-edge);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cover-ink) 10%, transparent);
+    overflow: hidden;
+  }
+  .book-cover::before,
+  .book-cover::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0.7rem;
+    height: 1px;
+    background: color-mix(in srgb, var(--cover-edge) 76%, transparent);
+  }
+  .book-cover::before { top: 3.2rem; }
+  .book-cover::after { bottom: 2.6rem; }
+  .cover-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.6rem;
+    min-height: 2rem;
+    padding: 0.1rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--cover-edge) 78%, transparent);
+    font-size: 0.9rem;
+    font-weight: 900;
+  }
+  .book-cover h2 {
+    margin-top: 1.35rem;
+    font-family: var(--font-arabic-display);
+    font-size: clamp(1.35rem, 2.8vw, 1.9rem);
+    line-height: 1.28;
+    font-weight: 700;
+  }
+  .book-cover p {
+    position: absolute;
+    inset-inline: 0.85rem;
+    bottom: 0.75rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    opacity: 0.82;
+  }
+  .book-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0.15rem 0 0.1rem;
+  }
+  .book-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.7rem;
+    color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+    font-size: var(--text-caption);
+    line-height: 1.4;
+  }
+  :global(.dark) .book-meta { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .book-badge {
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 24%, transparent);
+    border-radius: 999px;
+    padding: 0.2rem 0.65rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+  .book-info h3 {
+    color: var(--color-ink);
+    font-family: var(--font-arabic-display);
+    font-size: clamp(1.55rem, 2.5vw, 2rem);
+    line-height: 1.32;
+  }
+  :global(.dark) .book-info h3 { color: var(--color-mist); }
+  .book-info p {
+    margin-top: 0.25rem;
+    color: color-mix(in srgb, var(--color-ink) 58%, transparent);
+    font-size: var(--text-caption);
+    line-height: 1.55;
+  }
+  :global(.dark) .book-info p { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+  .book-foot {
+    margin-top: auto;
+    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-top: 1px solid var(--color-stone);
+  }
+  :global(.dark) .book-foot { border-top-color: var(--color-coal-edge); }
+  .book-foot span {
+    color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+    font-size: var(--text-caption);
+  }
+  :global(.dark) .book-foot span { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
+  .book-foot strong {
+    color: var(--color-purple);
+    font-size: var(--text-caption);
+    white-space: nowrap;
+  }
+  .library-empty {
+    padding: 4rem 1rem;
+    text-align: center;
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    font-size: var(--text-body);
+  }
+  :global(.dark) .library-empty { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+
+  @media (max-width: 1080px) {
+    .library-hero-grid,
+    .library-toolbar { grid-template-columns: 1fr; }
+    .filter-row { justify-content: flex-start; }
+    .library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 720px) {
+    .library-hero { padding-top: 2.5rem; }
+    .shelf-preview { min-height: 17rem; padding-inline: 0.8rem; }
+    .preview-book { width: 3.25rem; height: 12rem; }
+    .library-stats,
+    .library-band,
+    .library-grid { grid-template-columns: 1fr; }
+    .book-card { grid-template-columns: 6.8rem minmax(0, 1fr); min-height: 14rem; }
+    .book-cover { min-height: 12rem; }
+    .library-toolbar { gap: 0.75rem; }
+  }
+  @media (max-width: 430px) {
+    .book-card { grid-template-columns: 1fr; }
+    .book-cover { min-height: 14rem; }
+  }
 </style>
 
 <script>
   const root = document;
-  const grid = root.querySelector<HTMLElement>('[data-lib-grid]');
   const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-book]'));
   const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('.lib-chip'));
   const search = root.querySelector<HTMLInputElement>('[data-lib-search]');
@@ -140,7 +584,7 @@ const collection = {
     let shown = 0;
     cards.forEach((c) => {
       const okCat = activeCat === 'all' || c.dataset.cat === activeCat;
-      const hay = norm((c.dataset.title || '') + ' ' + (c.dataset.author || ''));
+      const hay = norm((c.dataset.title || '') + ' ' + (c.dataset.author || '') + ' ' + (c.dataset.level || ''));
       const okSearch = !qv || hay.includes(qv);
       const show = okCat && okSearch;
       c.style.display = show ? '' : 'none';
