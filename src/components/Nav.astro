@@ -51,6 +51,10 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const otherUrl = lang === 'ar'
   ? (path === '/' ? '/en' : `/en${path}`)
   : (path === '/en' ? '/' : path.replace(/^\/en/, ''));
+
+// A nav tab is "active" on its own page and any sub-page (e.g. /practice/play
+// keeps Practice active, /quran/al-fatihah keeps Quran active).
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
 ---
 <nav class="sticky top-0 z-50 bg-paper/85 dark:bg-coal/85 backdrop-blur-md border-b border-stone/60 dark:border-coal-edge/60">
   <Container>
@@ -63,11 +67,11 @@ const otherUrl = lang === 'ar'
 
       {/* Desktop links: segmented pill bar, soft fill + shadow lift on hover */}
       <div class="nav-bar hidden md:flex items-center gap-1 text-small">
-        <a href={toolHref}           class="nav-link">{t.tryDemo}</a>
-        <a href={practiceHref}       class="nav-link">{t.practice}</a>
-        <a href={dictionaryHref}     class="nav-link">{t.dictionary}</a>
-        <a href={quranHref}          class="nav-link nav-link-feature">{t.quran}</a>
-        <a href={libraryHref}        class="nav-link">{t.library}</a>
+        <a href={toolHref}           class:list={['nav-link', { 'is-active': isActive(toolHref) }]}       aria-current={isActive(toolHref) ? 'page' : undefined}>{t.tryDemo}</a>
+        <a href={practiceHref}       class:list={['nav-link', { 'is-active': isActive(practiceHref) }]}   aria-current={isActive(practiceHref) ? 'page' : undefined}>{t.practice}</a>
+        <a href={dictionaryHref}     class:list={['nav-link', { 'is-active': isActive(dictionaryHref) }]} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
+        <a href={quranHref}          class:list={['nav-link', { 'is-active': isActive(quranHref) }]}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
+        <a href={libraryHref}        class:list={['nav-link', { 'is-active': isActive(libraryHref) }]}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
         <a href={`${home}#features`} class="nav-link">{t.features}</a>
       </div>
 
@@ -136,12 +140,12 @@ const otherUrl = lang === 'ar'
   >
     <Container>
       <div class="py-6 flex flex-col gap-1">
-        <a href={toolHref}           class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.tryDemo}</a>
-        <a href={practiceHref}       class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.practice}</a>
-        <a href={dictionaryHref}     class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.dictionary}</a>
-        <a href={quranHref}          class="block py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.quran}</a>
-        <a href={libraryHref}        class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.library}</a>
-        <a href={`${home}#features`} class="block py-3 font-display text-h3 tracking-tight text-ink dark:text-mist hover:text-purple dark:hover:text-purple transition-colors">{t.features}</a>
+        <a href={toolHref}           class:list={['nav-mlink', isActive(toolHref) && 'is-active']}       aria-current={isActive(toolHref) ? 'page' : undefined}>{t.tryDemo}</a>
+        <a href={practiceHref}       class:list={['nav-mlink', isActive(practiceHref) && 'is-active']}   aria-current={isActive(practiceHref) ? 'page' : undefined}>{t.practice}</a>
+        <a href={dictionaryHref}     class:list={['nav-mlink', isActive(dictionaryHref) && 'is-active']} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
+        <a href={quranHref}          class:list={['nav-mlink', isActive(quranHref) && 'is-active']}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
+        <a href={libraryHref}        class:list={['nav-mlink', isActive(libraryHref) && 'is-active']}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
+        <a href={`${home}#features`} class="nav-mlink">{t.features}</a>
         <a href={signinHref} data-signin-link class="block py-3 font-display text-h3 tracking-tight text-purple hover:text-purple-deep transition-colors">{t.signin}</a>
         <a href={appHref} data-app-link class="hidden py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.myApp}</a>
 
@@ -206,6 +210,20 @@ const otherUrl = lang === 'ar'
     box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--color-purple) 60%, transparent);
   }
 
+  /* Active tab: the same lift treatment, kept on the current page's tab. */
+  .nav-link.is-active {
+    color: var(--color-purple-deep);
+    background: var(--color-paper);
+    box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--color-purple) 50%, transparent),
+                0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent);
+    transform: translateY(-1.5px);
+  }
+  :global(.dark) .nav-link.is-active {
+    color: var(--color-mist);
+    background: var(--color-coal-soft);
+    box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--color-purple) 60%, transparent);
+  }
+
   /* The Quran-i'rab feature: teal accent so it stands out as the key feature. */
   .nav-link-feature { color: var(--color-teal); font-weight: 700; }
   :global(.dark) .nav-link-feature { color: color-mix(in srgb, var(--color-teal) 88%, white); }
@@ -216,6 +234,17 @@ const otherUrl = lang === 'ar'
                 0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent);
   }
   :global(.dark) .nav-link-feature:hover { color: color-mix(in srgb, var(--color-teal) 88%, white); background: var(--color-coal-soft); }
+
+  /* Mobile menu links — large display rows; active page is highlighted. */
+  .nav-mlink {
+    display: block; padding: 0.75rem 0;
+    font-family: var(--font-display); font-size: var(--text-h3); line-height: 1.3;
+    color: var(--color-ink); transition: color .2s;
+  }
+  :global(.dark) .nav-mlink { color: var(--color-mist); }
+  .nav-mlink:hover { color: var(--color-purple); }
+  .nav-mlink.is-active { color: var(--color-purple-deep); font-weight: 700; }
+  :global(.dark) .nav-mlink.is-active { color: color-mix(in srgb, var(--color-purple) 85%, white); }
 </style>
 
 <script>
