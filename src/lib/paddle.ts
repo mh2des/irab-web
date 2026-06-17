@@ -1,17 +1,17 @@
 /**
- * Paddle (Billing) web checkout — the web payment path.
+ * Paddle (Billing) web checkout: the web payment path.
  *
  * Paddle is the Merchant of Record. A successful checkout is ingested by
  * RevenueCat's NATIVE Paddle integration, which reads the Firebase UID from the
  * checkout's custom_data field (RC "custom field" App-User-ID mapping = firebaseUid)
- * and grants the `premium` entitlement for that UID — so the purchase unlocks
+ * and grants the `premium` entitlement for that UID: so the purchase unlocks
  * premium EVERYWHERE (web + app + worker) through the same entitlement App Store /
  * Play purchases use. RevenueCat stays the single source of truth; Paddle just bills.
  *
  * Requires in the Paddle dashboard: Checkout settings → default payment link +
  * approved domain (irab.app) so Paddle.js can open checkout on the live site.
  */
-export const PADDLE_ENABLED = true; // LIVE — account verified, prices + token set, RC mapping done
+export const PADDLE_ENABLED = true; // LIVE: account verified, prices + token set, RC mapping done
 export const PADDLE_ENV: 'sandbox' | 'production' = 'production';
 export const PADDLE_CLIENT_TOKEN = 'live_00476d502201e331cada092493f';
 export const PADDLE_PRICES = {

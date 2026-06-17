@@ -1,5 +1,5 @@
 /**
- * Tiny signed-in marker — NO Firebase import, so it's safe to load on every
+ * Tiny signed-in marker: NO Firebase import, so it's safe to load on every
  * page (incl. the high-traffic homepage). Set at login / cleared at logout.
  * The analyzer reads this synchronously and only lazy-loads the Firebase SDK
  * when a user is actually signed in, keeping anonymous pages Firebase-free.

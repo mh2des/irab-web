@@ -10,7 +10,7 @@ import ArticleFaq from '../../components/ArticleFaq.astro';
 const faqs = [
   {
     q: 'Can I paste any Quran ayah?',
-    a: "Yes. Paste any ayah into the analyzer and Irab will return word-by-word i'rab. The current app does not include a built-in Quran browser, surah navigation, or one-click whole-surah export.",
+    a: "Yes. Paste any ayah into the analyzer and Irab will return word by word i'rab. The current app does not include a built-in Quran browser, surah navigation, or one-click whole-surah export.",
   },
   {
     q: 'Is the parsing accurate for classical Arabic?',
@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: 'Does it handle the seven qira\'at (variant readings)?',
-    a: 'No dedicated qira\'at mode is shipped. The parser is best treated as a general classical-Arabic i\'rab helper for pasted text, not as a specialist qira\'at comparison tool.',
+    a: 'No dedicated qira\'at mode is shipped. The parser is best treated as a general classical Arabic i\'rab helper for pasted text, not as a specialist qira\'at comparison tool.',
   },
   {
     q: 'Can I parse a whole surah at once?',
@@ -35,20 +35,20 @@ const faqs = [
 ];
 ---
 <BaseLayout
-lang="en"   title="Parse any Quran ayah for free · AI-powered i'rab analysis · Irab"
-  description="Free word-by-word i'rab for pasted Quran ayat. AI-powered grammatical analysis for classical Arabic study, with honest limits and no qira'at comparison mode."
+lang="en"   title="Parse any Quran ayah for free · AI powered i'rab analysis · Irab"
+  description="Free word by word i'rab for pasted Quran ayat. AI powered grammatical analysis for classical Arabic study, with honest limits and no qira'at comparison mode."
 >
   <Nav lang="en" />
 
   <ArticleHero
     eyebrow="Quran tools"
     title="Parse any Quran ayah, for free."
-    summary="Irab gives you instant word-by-word i'rab analysis for pasted Quran text. Paste an ayah and get each word's type, function, i'rab, case marker, details, vocalized sentence, and explanation. It is built for serious classical Arabic study, with honest limits: no qira'at mode, no surah browser, and no bulk surah export."
+    summary="Irab gives you instant word by word i'rab analysis for pasted Quran text. Paste an ayah and get each word's type, function, i'rab, case marker, details, vocalized sentence, and explanation. It is built for serious classical Arabic study, with honest limits: no qira'at mode, no surah browser, and no bulk surah export."
   />
 
   <ArticleCta>
     <span slot="title">Start with the demo.</span>
-    The homepage demo runs the live i'rab parser. Try Surah al-Fatiha or paste any ayah, you'll see the system in action immediately.
+    The homepage demo runs the live i'rab parser. Try Surah al Fatiha or paste any ayah, you'll see the system in action immediately.
   </ArticleCta>
 
   <ArticleSection
@@ -56,15 +56,15 @@ lang="en"   title="Parse any Quran ayah for free · AI-powered i'rab analysis ·
     title="Why parsing the Quran is harder than parsing modern Arabic"
     lead="Quranic Arabic is classical, not modern: older vocabulary, denser construction, ellipsis, fronted objects, and rhetorical emphasis appear constantly. Generic Arabic tools built for news or simple MSA often miss these relationships. A useful study helper must make the grammatical structure explicit instead of returning a shallow translation."
   >
-    <p>Take Surah al-Baqara verse 2: <span class="ar">ذَٰلِكَ ٱلْكِتَـٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ</span>. The structure includes a fronted demonstrative, a negative phrase, a prepositional phrase, and an indefinite predicate. A useful i'rab helper should surface those relationships clearly so you or your teacher can review them.</p>
+    <p>Take Surah al Baqara verse 2: <span class="ar">ذَٰلِكَ ٱلْكِتَـٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ</span>. The structure includes a fronted demonstrative, a negative phrase, a prepositional phrase, and an indefinite predicate. A useful i'rab helper should surface those relationships clearly so you or your teacher can review them.</p>
 
-    <p>Irab's output is structured for classical-Arabic analysis: word type, i'rab, case/function details, hidden pronouns, attached phrase relationships, vocalization, and a sentence-level explanation. That makes it useful for Quran study while keeping the result reviewable by a human teacher.</p>
+    <p>Irab's output is structured for classical Arabic analysis: word type, i'rab, case/function details, hidden pronouns, attached phrase relationships, vocalization, and a sentence level explanation. That makes it useful for Quran study while keeping the result reviewable by a human teacher.</p>
   </ArticleSection>
 
   <ArticleSection
     id="examples"
     title="Examples of what you'll get"
-    lead="Submit Surah al-Fatiha verse 2 (ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ) and Irab returns: ٱلْحَمْدُ as mubtada marfu', لِلَّهِ as a prepositional phrase forming the predicate, رَبِّ as badal majrur, and ٱلْعَـٰلَمِينَ as mudaf ilayh majrur. Every word has its function, case, and explanation."
+    lead="Submit Surah al Fatiha verse 2 (ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ) and Irab returns: ٱلْحَمْدُ as mubtada marfu', لِلَّهِ as a prepositional phrase forming the predicate, رَبِّ as badal majrur, and ٱلْعَـٰلَمِينَ as mudaf ilayh majrur. Every word has its function, case, and explanation."
   >
     <p>The output for each parsed word includes:</p>
     <ul>
@@ -80,7 +80,7 @@ lang="en"   title="Parse any Quran ayah for free · AI-powered i'rab analysis ·
   <ArticleSection
     id="who-uses-it"
     title="Who this is for"
-    lead="Quran students who want to read with comprehension, not just decode. Teachers reviewing i'rab attempts. Translators and tafsir researchers cross-checking edge cases. Hifz parents helping their children understand what they recite. Anyone serious about engaging with Arabic scripture."
+    lead="Quran students who want to read with comprehension, not just decode. Teachers reviewing i'rab attempts. Translators and tafsir researchers cross checking edge cases. Hifz parents helping their children understand what they recite. Anyone serious about engaging with Arabic scripture."
   >
     <ul>
       <li><strong>Quran students</strong>, drill on any ayah and get instant structural feedback</li>
@@ -95,7 +95,7 @@ lang="en"   title="Parse any Quran ayah for free · AI-powered i'rab analysis ·
   <ArticleSection
     id="getting-started"
     title="How to start parsing the Quran today"
-    lead="Open the homepage demo, paste any ayah, and submit. You'll see word-by-word analysis instantly. For higher daily limits, practice, challenges, dictionaries, the grammar library, OCR, PDF export, analytics, and annual mastery certificates, install the Irab app on iOS or Android."
+    lead="Open the homepage demo, paste any ayah, and submit. You'll see word by word analysis instantly. For higher daily limits, practice, challenges, dictionaries, the grammar library, OCR, PDF export, analytics, and annual mastery certificates, install the Irab app on iOS or Android."
   >
     <ol>
       <li><strong>Try the demo first.</strong> No signup. <a href="/en#demo">Click here</a> to try the live i'rab parser on the homepage.</li>

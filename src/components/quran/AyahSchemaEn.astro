@@ -1,6 +1,6 @@
 ---
 /**
- * AyahSchemaEn — JSON-LD for an English ayah page: ScholarlyArticle (inLanguage
+ * AyahSchemaEn: JSON-LD for an English ayah page: ScholarlyArticle (inLanguage
  * en, ORIGINAL analysis so it cites no copyrighted source), BreadcrumbList, and
  * FAQPage when Q&A exist. English mirror of AyahSchema.astro.
  */
@@ -25,7 +25,7 @@ const article = {
   description,
   inLanguage: 'en',
   url: canonical,
-  about: `Surah ${surah.en} (${surah.name}) Ayah ${ayah} — Arabic grammar (i'rab)`,
+  about: `Surah ${surah.en} (${surah.name}) Ayah ${ayah}: Arabic grammar (i'rab)`,
   isPartOf: { '@type': 'WebPage', name: `I'rab of Surah ${surah.en}`, url: surahUrl },
   author: { '@type': 'Organization', name: 'Irab', url: SITE },
   publisher: {

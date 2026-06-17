@@ -1,10 +1,10 @@
 ---
 /**
- * AppHub — signed-in product dashboard for /app and /en/app.
+ * AppHub: signed in product dashboard for /app and /en/app.
  *
  * This is intentionally a product surface, not a marketing section: plan state,
  * upgrade choice, daily usage, and tools are visible at a glance. Firebase still
- * loads lazily only after the local signed-in hint passes.
+ * loads lazily only after the local signed in hint passes.
  */
 import { PADDLE_ENABLED } from '../lib/paddle';
 
@@ -25,11 +25,11 @@ const tools = lang === 'ar'
       { key: 'library', title: 'المكتبة النحوية', desc: '٤٧ كتابًا في النحو والصرف والبلاغة، تُقرأ كاملةً.', href: '/library', usageKey: '', accent: 'purple', cta: 'افتح المكتبة' },
     ]
   : [
-      { key: 'analyzer', title: "I'rab analyzer", desc: "Full word-by-word i'rab for Arabic sentences, with the marker and why.", href: '/en/tool', usageKey: '', accent: 'purple', cta: 'Analyze now' },
+      { key: 'analyzer', title: "I'rab analyzer", desc: "Full word by word i'rab for Arabic sentences, with the marker and why.", href: '/en/tool', usageKey: '', accent: 'purple', cta: 'Analyze now' },
       { key: 'practice', title: 'Practice', desc: 'Do the parsing yourself, then get correction and explanation per word.', href: '/en/practice/play', usageKey: 'customPractice', accent: 'teal', cta: 'Start practice' },
       { key: 'dictionary', title: 'Smart dictionary', desc: 'Meaning, root, pattern, examples, and translation for any word.', href: '/en/dictionary', usageKey: 'smartDictionary', accent: 'purple', cta: 'Open dictionary' },
       { key: 'quran', title: "Quran i'rab", desc: "Browse structured i'rab pages for Quranic verses.", href: '/en/quran', usageKey: '', accent: 'teal', cta: 'Browse' },
-      { key: 'library', title: 'Grammar library', desc: '47 works on nahw, sarf, and balagha — read in full.', href: '/en/library', usageKey: '', accent: 'purple', cta: 'Open library' },
+      { key: 'library', title: 'Grammar library', desc: '47 works on nahw, sarf, and balagha: read in full.', href: '/en/library', usageKey: '', accent: 'purple', cta: 'Open library' },
     ];
 
 const t = lang === 'ar'
@@ -65,7 +65,7 @@ const t = lang === 'ar'
       monthlyCta: 'اشترك شهريًّا',
       secure: 'دفع آمن عبر Paddle. قد تُضاف الضريبة حسب بلدك.',
       appFallback: 'أو اشترك من التطبيق',
-      activatingTitle: 'تم الدفع — جارٍ تفعيل اشتراكك',
+      activatingTitle: 'تم الدفع: جارٍ تفعيل اشتراكك',
       activatingBody: 'سيُفتح كل شيء تلقائيًّا خلال لحظات.',
       leftToday: (n: number) => `${n} متبقٍ`,
       unlimited: 'غير محدود',
@@ -76,7 +76,7 @@ const t = lang === 'ar'
       statAvg: 'متوسّط الدقّة',
       statStreak: 'يوم متتالٍ',
       recentTitle: 'النشاط الأخير',
-      recentEmpty: 'لا نشاط بعد — ابدأ بتحليل جملة أو تمرين، وسيظهر هنا.',
+      recentEmpty: 'لا نشاط بعد: ابدأ بتحليل جملة أو تمرين، وسيظهر هنا.',
       seeAll: 'عرض الكل',
     }
   : {
@@ -104,14 +104,14 @@ const t = lang === 'ar'
       monthly: 'Monthly',
       annualPrice: '$37.99',
       monthlyPrice: '$4.99',
-      annualMeta: '7-day free trial',
+      annualMeta: '7 day free trial',
       monthlyMeta: 'Flexible monthly access',
       save: 'Save 37%',
       annualCta: 'Start free trial',
       monthlyCta: 'Subscribe monthly',
       secure: 'Secure checkout by Paddle. Tax may be added for your country.',
       appFallback: 'or subscribe in the app',
-      activatingTitle: 'Payment received — activating your subscription',
+      activatingTitle: 'Payment received: activating your subscription',
       activatingBody: 'Everything unlocks automatically in a few moments.',
       leftToday: (n: number) => `${n} left`,
       unlimited: 'Unlimited',
@@ -122,7 +122,7 @@ const t = lang === 'ar'
       statAvg: 'avg accuracy',
       statStreak: 'day streak',
       recentTitle: 'Recent activity',
-      recentEmpty: 'No activity yet — analyze a sentence or practice, and it shows up here.',
+      recentEmpty: 'No activity yet: analyze a sentence or practice, and it shows up here.',
       seeAll: 'See all',
     };
 const historyHref = lang === 'ar' ? '/history' : '/en/history';
@@ -174,7 +174,7 @@ const premiumFeatures = lang === 'ar'
     <section class="app-stats" aria-label={t.statsKicker}>
       <div class="stat-tile stat-tile-purple"><span class="stat-tile-num" data-stat="analyze">0</span><span class="stat-tile-label">{t.statAnalyzed}</span></div>
       <div class="stat-tile stat-tile-teal"><span class="stat-tile-num" data-stat="practice">0</span><span class="stat-tile-label">{t.statPracticed}</span></div>
-      <div class="stat-tile"><span class="stat-tile-num" data-stat="avg">—</span><span class="stat-tile-label">{t.statAvg}</span></div>
+      <div class="stat-tile"><span class="stat-tile-num" data-stat="avg">0%</span><span class="stat-tile-label">{t.statAvg}</span></div>
       <div class="stat-tile"><span class="stat-tile-num" data-stat="streak">0</span><span class="stat-tile-label">{t.statStreak}</span></div>
     </section>
 
@@ -240,11 +240,11 @@ const premiumFeatures = lang === 'ar'
           <div class="usage-grid">
             <div class="usage-card">
               <span class="usage-label">{t.practice}</span>
-              <strong data-usage-summary="customPractice">—</strong>
+              <strong data-usage-summary="customPractice">0</strong>
             </div>
             <div class="usage-card">
               <span class="usage-label">{t.dictionary}</span>
-              <strong data-usage-summary="smartDictionary">—</strong>
+              <strong data-usage-summary="smartDictionary">0</strong>
             </div>
           </div>
         </section>
@@ -706,7 +706,7 @@ const premiumFeatures = lang === 'ar'
       const set = (k: string, v: string) => { const el = root!.querySelector<HTMLElement>(`[data-stat="${k}"]`); if (el) el.textContent = v; };
       set('analyze', String(stats.analyzeCount));
       set('practice', String(stats.practiceCount));
-      set('avg', stats.avgScore == null ? '—' : `${stats.avgScore}%`);
+      set('avg', stats.avgScore == null ? '0%' : `${stats.avgScore}%`);
       set('streak', String(stats.streak));
     }
 

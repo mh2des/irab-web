@@ -1,6 +1,6 @@
 ---
 /**
- * /en/library — the classical grammar library (English chrome, Arabic books).
+ * /en/library: the classical grammar library (English chrome, Arabic books).
  * Targets the English long-tail for classical Arabic grammar references.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -15,15 +15,15 @@ const reader = (id: string) => `/en/library/read?b=${encodeURIComponent(id)}`;
 
 const collection = {
   '@context': 'https://schema.org', '@type': 'CollectionPage',
-  name: 'Classical Arabic Grammar Library — Irab',
+  name: 'Classical Arabic Grammar Library: Irab',
   description: '47 classical works on Arabic grammar, morphology, rhetoric, and i\'rab, free to read on Irab.',
   url: 'https://irab.app/en/library',
 };
 ---
 <BaseLayout
   lang="en"
-  title="Classical Arabic Grammar Library — 47 Works | Irab"
-  description="Read 47 classical Arabic works on nahw, sarf, balagha, and i'rab free on Irab — Ibn Hisham, Ibn Aqil, al-Ajurrumiyya and more, chapter by chapter with search and categories."
+  title="Classical Arabic Grammar Library: 47 Works | Irab"
+  description="Read 47 classical Arabic works on nahw, sarf, balagha, and i'rab free on Irab: Ibn Hisham, Ibn Aqil, al-Ajurrumiyya and more, chapter by chapter with search and categories."
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(collection)} is:inline />
   <Nav lang="en" />
@@ -37,7 +37,7 @@ const collection = {
             The classical grammar library
           </h1>
           <p class="mt-6 text-body-lg text-ink/80 dark:text-mist/80 leading-relaxed" data-reveal data-reveal-delay="160">
-            The foundational works of Arabic — nahw, sarf, balagha, and i'rab — chapter by chapter, free to read in full. The same library that's in the Irab app.
+            The foundational works of Arabic: nahw, sarf, balagha, and i'rab: chapter by chapter, free to read in full. The same library that's in the Irab app.
           </p>
 
           <div class="flex flex-wrap gap-x-10 gap-y-4 mt-8" data-reveal data-reveal-delay="220">

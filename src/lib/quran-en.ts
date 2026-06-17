@@ -1,7 +1,7 @@
 /**
- * quran-en.ts — build-time access to the GENERATED English i'rab content
+ * quran-en.ts: build-time access to the GENERATED English i'rab content
  * (src/data/quran-en.json). This is ORIGINAL English grammatical analysis
- * produced from the Quran text + factual grammar anchors — NOT a translation
+ * produced from the Quran text + factual grammar anchors: NOT a translation
  * of الجدول (which is copyrighted). Pairs with quran.ts for surah metadata.
  */
 import { caseHex, surahById, type SurahMeta } from './quran';

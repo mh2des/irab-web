@@ -1,8 +1,8 @@
 ---
 /**
- * DictionarySearch — the smart (AI) Arabic dictionary as a web tool.
+ * DictionarySearch: the smart (AI) Arabic dictionary as a web tool.
  * Login-gated (the worker /api/dictionary needs a Firebase token); free users
- * get their daily quota, premium unlimited — enforced server-side, same engine
+ * get their daily quota, premium unlimited: enforced server side, same engine
  * as the app. Firebase loads only on this tool page, never on content pages.
  */
 interface Props { lang?: 'ar' | 'en'; }
@@ -27,7 +27,7 @@ const t = lang === 'ar'
       signedOutBody: 'The smart dictionary is for account holders. Sign in free to start.',
       signIn: 'Sign in',
       root: 'Root', pos: 'Type', meanings: 'Meanings', examples: 'Examples',
-      translations: 'Translation', noResult: 'No result for that word — check the spelling.',
+      translations: 'Translation', noResult: 'No result for that word: check the spelling.',
       limit: "You've reached your free daily limit. Subscribe in the app for unlimited search.",
       error: 'Something went wrong. Please try again.', unlimited: 'Unlimited search ⚡',
     };
@@ -87,7 +87,7 @@ const t = lang === 'ar'
           noResult: 'لم نجد نتيجة لهذه الكلمة. تأكّد من الإملاء.', limit: 'بلغت حدّك اليومي المجاني. اشترك من التطبيق لبحثٍ غير محدود.',
           error: 'حدث خطأ. حاول مرة أخرى.', unlimited: 'بحث غير محدود ⚡' }
       : { searching: 'Searching…', search: 'Search', root: 'Root', meanings: 'Meanings', examples: 'Examples', translations: 'Translation',
-          noResult: 'No result for that word — check the spelling.', limit: "You've reached your free daily limit. Subscribe in the app for unlimited search.",
+          noResult: 'No result for that word: check the spelling.', limit: "You've reached your free daily limit. Subscribe in the app for unlimited search.",
           error: 'Something went wrong. Please try again.', unlimited: 'Unlimited search ⚡' };
 
     let idToken: string | null = null;
@@ -183,7 +183,7 @@ const t = lang === 'ar'
 
     form.addEventListener('submit', (e) => { e.preventDefault(); search(input.value.trim()); });
 
-    // Auth gate — Firebase only loads here (a tool page), never on content pages.
+    // Auth gate: Firebase only loads here (a tool page), never on content pages.
     (async () => {
       if (!maybeSignedIn()) { loadingEl.classList.add('hidden'); gate.classList.remove('hidden'); return; }
       try {

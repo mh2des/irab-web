@@ -1,6 +1,6 @@
 ---
 /**
- * Ayah i'rab page — the spoke. Answer-first: verse → source → (TL;DR) →
+ * Ayah i'rab page: the spoke. Answer-first: verse → source → (TL;DR) →
  * word-by-word grid → detailed i'rab → sarf/balagha/fawaid → footnotes →
  * related → FAQ → app CTA. Pure static; JSON-LD via AyahSchema.
  */
@@ -41,7 +41,7 @@ const isHead = ayah.ayah === ayah.ayahStart;
 const placeAr = surah.place === 'makki' ? 'مكية' : 'مدنية';
 const shared = ayah.ayahStart !== ayah.ayahEnd;
 // A multi-ayah group shares ONE i'rab block. Consolidate non-head members to
-// the head's URL so we don't ship thousands of duplicate-content pages — the
+// the head's URL so we don't ship thousands of duplicate-content pages: the
 // member page still exists (own verse + own word grid) but ranking flows to
 // the head, whose H1 enumerates the covered ayat.
 const canonical = shared && ayah.isShared && !isHead ? headUrl : selfUrl;
@@ -59,7 +59,7 @@ const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
 
 // Index gate: noindex only GENUINELY empty/backfilled ayat. A concise but real
 // analysis (e.g. a multi-ayah group head with few of its own words) is still a
-// valuable, indexable page — don't suppress it.
+// valuable, indexable page: don't suppress it.
 const thin = ayah.isBackfilled || (!ayah.irab && ayah.words.length === 0);
 const fnId = (m: string) => `fn-${m.replace(/[^0-9]/g, '')}`;
 // hreflang: only advertise the English twin when one actually exists for this ayah.
@@ -87,7 +87,7 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
         </blockquote>
 
         <p class="source">
-          المصدر: <span class="source-book">الجدول في إعراب القرآن</span>، تأليف محمود صافي{shared ? `، يشمل الآيات ${toArabicDigits(ayah.ayahStart)}–${toArabicDigits(ayah.ayahEnd)}` : ''}
+          المصدر: <span class="source-book">الجدول في إعراب القرآن</span>، تأليف محمود صافي{shared ? `، يشمل الآيات ${toArabicDigits(ayah.ayahStart)} إلى ${toArabicDigits(ayah.ayahEnd)}` : ''}
         </p>
 
         {intro.tldr && (
@@ -99,7 +99,7 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
 
         {shared && ayah.isShared && !isHead && (
           <p class="shared-note">
-            هذا الإعراب مشترك للآيات {toArabicDigits(ayah.ayahStart)}–{toArabicDigits(ayah.ayahEnd)}.
+            هذا الإعراب مشترك للآيات {toArabicDigits(ayah.ayahStart)} إلى {toArabicDigits(ayah.ayahEnd)}.
             <a href={`/quran/${surah.slug}/${ayah.ayahStart}`}>انظر الإعراب الكامل في الآية {toArabicDigits(ayah.ayahStart)}</a>.
           </p>
         )}
@@ -313,7 +313,7 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
 </style>
 
 <style is:global>
-  /* Injected i'rab HTML (set:html) — global because scoped attrs aren't added. */
+  /* Injected i'rab HTML (set:html): global because scoped attrs aren't added. */
   .irab-html { font-size: 1.7rem; line-height: 2.2; color: color-mix(in srgb, var(--color-ink) 92%, transparent); }
   :global(.dark) .irab-html { color: color-mix(in srgb, var(--color-mist) 90%, transparent); }
   .irab-html p { margin: 0 0 1rem; }

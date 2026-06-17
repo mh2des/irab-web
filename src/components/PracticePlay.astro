@@ -1,9 +1,9 @@
 ---
 /**
- * PracticePlay — the hero wedge as a web tool: type a sentence, do the i'rab
- * YOURSELF (free text per word), get AI-graded word-by-word feedback.
+ * PracticePlay: the hero wedge as a web tool: type a sentence, do the i'rab
+ * YOURSELF (free text per word), get AI-graded word by word feedback.
  * Login-gated (worker /api/grade-custom-irab needs a Firebase token); free
- * daily quota vs premium unlimited, enforced server-side. The one thing no
+ * daily quota vs premium unlimited, enforced server side. The one thing no
  * competitor offers. Firebase loads only here, never on content pages.
  */
 interface Props { lang?: 'ar' | 'en'; }
@@ -210,7 +210,7 @@ const t = lang === 'ar'
         head.appendChild(word);
         head.appendChild(el('span', ok ? 'text-teal text-lg' : 'text-red-500 text-lg', ok ? '✓' : '✗'));
         c.appendChild(head);
-        const yours = el('p', 'text-small text-ink/70 dark:text-mist/70'); yours.setAttribute('dir','rtl'); yours.textContent = `${T.yourAnswer}: ${w?.userIrab || '—'}`;
+        const yours = el('p', 'text-small text-ink/70 dark:text-mist/70'); yours.setAttribute('dir','rtl'); yours.textContent = `${T.yourAnswer}: ${w?.userIrab || T.yourIrab}`;
         c.appendChild(yours);
         if (!ok && w?.correctIrab) { const corr = el('p', 'text-small text-teal mt-1'); corr.setAttribute('dir','rtl'); corr.textContent = `${T.correct}: ${w.correctIrab}`; c.appendChild(corr); }
         if (w?.explanation) { const ex = el('p', 'text-small text-ink/70 dark:text-mist/70 mt-2 leading-relaxed'); ex.setAttribute('dir','rtl'); ex.textContent = String(w.explanation); c.appendChild(ex); }
@@ -226,7 +226,7 @@ const t = lang === 'ar'
       sentenceEl.focus();
     });
 
-    // Auth gate (Firebase lazy — tool pages only)
+    // Auth gate (Firebase lazy: tool pages only)
     (async () => {
       if (!maybeSignedIn()) { hide(loadingEl); show(gate); return; }
       try {

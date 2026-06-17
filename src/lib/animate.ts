@@ -1,5 +1,5 @@
 /**
- * animate.ts — tiny Motion (motion.dev) helpers for premium, RTL-safe entrances
+ * animate.ts: tiny Motion (motion.dev) helpers for premium, RTL-safe entrances
  * and micro-interactions. Vanilla; used inside Astro <script> islands. Direction-
  * neutral (y + opacity + scale) so it reads identically in Arabic RTL and LTR.
  * Everything honours prefers-reduced-motion.
@@ -8,12 +8,12 @@ import { animate, stagger, inView } from 'motion';
 
 const reduce = (): boolean => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/** Springy staggered reveal of a set of elements (works on injected nodes — pass live refs). */
+/** Springy staggered reveal of a set of elements (works on injected nodes: pass live refs). */
 export function revealStagger(els: ArrayLike<Element>, delayStep = 0.07): void {
   const list = Array.from(els);
   if (!list.length) return;
   if (reduce()) {
-    // Reduced motion: gentle opacity-only fade (no movement) — still feels alive, stays accessible.
+    // Reduced motion: gentle opacity-only fade (no movement): still feels alive, stays accessible.
     animate(list as Element[], { opacity: [0, 1] }, { duration: 0.4, delay: stagger(0.05) } as any);
     return;
   }

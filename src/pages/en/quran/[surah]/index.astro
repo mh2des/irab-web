@@ -1,6 +1,6 @@
 ---
 /**
- * /en/quran/[surah] — English surah landing. Lists the surah's verses that have
+ * /en/quran/[surah]: English surah landing. Lists the surah's verses that have
  * English i'rab, each linking to its ayah page.
  */
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
@@ -23,7 +23,7 @@ const ayat = enAyatOfSurah(surahId);
 const place = surah.place === 'makki' ? 'Meccan' : 'Medinan';
 const SITE = 'https://irab.app';
 
-const title = `I'rab of Surah ${surah.en} — Word-by-Word Arabic Grammar in English | Irab`;
+const title = `I'rab of Surah ${surah.en}: Word-by-Word Arabic Grammar in English | Irab`;
 const description = `Verse-by-verse English i'rab of Surah ${surah.en} (${surah.name}): the case, role, and explanation of every word. Original grammatical analysis, free to read.`;
 
 const breadcrumb = {

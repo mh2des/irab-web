@@ -1,13 +1,13 @@
 ---
 /**
- * /en/library/read?b=<bookId>[&c=<chapterIndex>] — book reader (English chrome,
+ * /en/library/read?b=<bookId>[&c=<chapterIndex>]: book reader (English chrome,
  * Arabic content). Streams the book bundle client-side, TOC + chapter, last-read.
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import { LIBRARY_BASE } from '../../../lib/library';
 ---
-<BaseLayout lang="en" noindex title="Book reader — Grammar Library | Irab" description="Read classical Arabic grammar books on Irab.">
+<BaseLayout lang="en" noindex title="Book reader: Grammar Library | Irab" description="Read classical Arabic grammar books on Irab.">
   <Nav lang="en" />
 
   <main data-reader data-lang="en" data-base={LIBRARY_BASE} class="reader">
@@ -215,7 +215,7 @@ import { LIBRARY_BASE } from '../../../lib/library';
           if (!chapters.length) { fail("Couldn't load this book's chapters."); return; }
           titleEl.textContent = bundle.title || '';
           authorEl.textContent = bundle.author && bundle.author !== 'غير معروف' ? bundle.author : '';
-          document.title = `${bundle.title || 'Book'} — Grammar Library | Irab`;
+          document.title = `${bundle.title || 'Book'}: Grammar Library | Irab`;
           buildToc();
           loadingEl.classList.add('hidden');
           gridEl.classList.remove('hidden');

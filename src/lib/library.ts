@@ -1,5 +1,5 @@
 /**
- * library.ts — the classical grammar library (same data as the app's i'rab
+ * library.ts: the classical grammar library (same data as the app's i'rab
  * library). The 47-book summary is snapshotted into the repo (src/data/
  * library-books.json) so the index renders at build time with no network
  * dependency; each book's chapters are streamed client-side from the public
@@ -32,7 +32,7 @@ export const BOOKS: BookSummary[] = ((raw as { books: BookSummary[] }).books ?? 
 
 export const TOTAL_CHAPTERS = BOOKS.reduce((n, b) => n + (b.totalChapters || 0), 0);
 
-/** Category metadata — Arabic source label, English label, and an accent hex
+/** Category metadata: Arabic source label, English label, and an accent hex
  *  chosen to stay legible on both the light paper and dark coal surfaces. */
 export const CATEGORIES = [
   { key: 'نحو',   en: 'Grammar (Naḥw)',     color: '#7C4DFF' },

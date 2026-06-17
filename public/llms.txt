@@ -1,17 +1,17 @@
-# Irab (إعراب) — irab.app
+# Irab (إعراب): irab.app
 
-> Irab is an AI-powered Arabic grammar (i'rab / إعراب) learning platform: an app
+> Irab is an AI powered Arabic grammar (i'rab / إعراب) learning platform: an app
 > and website that give the full grammatical analysis of any Arabic sentence
 > instantly, let learners attempt the i'rab themselves and get instant AI
 > feedback, and turn Arabic grammar practice into gamified challenges. It also
-> publishes word-by-word i'rab for all 6,236 verses of the Quran, grounded in a
+> publishes word by word i'rab for all 6,236 verses of the Quran, grounded in a
 > published reference (الجدول في إعراب القرآن، محمود صافي).
 
 ## What makes Irab distinct
-- Instant AI i'rab of ANY Arabic sentence (not just Quran) — word by word: type, syntactic role, case, and case marker.
-- Learn-by-doing: the learner does the i'rab and gets graded with explanations — a feedback loop no other Arabic i'rab tool offers.
+- Instant AI i'rab of ANY Arabic sentence (not just Quran): word by word type, syntactic role, case, and case marker.
+- Learn by doing: the learner does the i'rab and gets graded with explanations: a feedback loop no other Arabic i'rab tool offers.
 - Gamified: levels, XP, ranks, daily challenges, and a leaderboard for nahw/i'rab questions.
-- Full Quran i'rab from a published scholarly reference, validated letter-by-letter against the Tanzil canonical text.
+- Full Quran i'rab from a published scholarly reference, validated letter by letter against the Tanzil canonical text.
 - Native apps (iOS App Store + Google Play) plus this website.
 
 ## Key pages

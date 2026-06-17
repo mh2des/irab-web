@@ -1,9 +1,9 @@
 ---
 /**
- * /en/tool — the free AI i'rab analyzer landing page (English).
+ * /en/tool: the free AI i'rab analyzer landing page (English).
  *
  * Targets the near-empty English SERP for "Arabic sentence parser / i'rab
- * analyzer / Arabic grammar analyzer" — an audience (learners, Islamic-studies
+ * analyzer / Arabic grammar analyzer": an audience (learners, Islamic-studies
  * students) that the Arabic-only competitors don't serve at all.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -18,8 +18,8 @@ import Footer from '../../components/sections/Footer.astro';
 
 const faqs = [
   { q: "What is the Arabic i'rab analyzer?", a: "A free tool from Irab that takes any Arabic sentence and returns its full i'rab (grammatical analysis) word by word with AI: each word's type, syntactic role, case, case marker, full diacritics, and a plain explanation of the sentence. Paste a sentence above and press Parse." },
-  { q: 'Is it free?', a: "Yes. You get two free parses instantly with no sign-up, and signing in gives you 3 a day — all with the same full i'rab. For unlimited parsing, the full practice bank, and graded feedback on your own i'rab, subscribe to Irab Plus on the web or get the Irab app on iOS and Android." },
-  { q: 'Does it parse any sentence or only Quran?', a: 'Any Classical/Modern Standard Arabic text you paste — an ordinary sentence, a line of poetry, or a Quranic verse. The analyzer is general; full Quran i\'rab is also available as a reference library on the site.' },
+  { q: 'Is it free?', a: "Yes. You get two free parses instantly with no sign-up, and signing in gives you 3 a day: all with the same full i'rab. For unlimited parsing, the full practice bank, and graded feedback on your own i'rab, subscribe to Irab Plus on the web or get the Irab app on iOS and Android." },
+  { q: 'Does it parse any sentence or only Quran?', a: 'Any Classical/Modern Standard Arabic text you paste: an ordinary sentence, a line of poetry, or a Quranic verse. The analyzer is general; full Quran i\'rab is also available as a reference library on the site.' },
   { q: 'How accurate is the AI parsing?', a: 'The engine is purpose-built for Arabic grammar and is detailed and accurate in most cases, but AI can err on ambiguous constructions. Treat it as a fast study aid to check your own i\'rab, not a replacement for a qualified teacher on subtle points.' },
   { q: 'Do I need an account?', a: 'No. Try it right here, no sign-up. For more analyses and learn-by-doing practice with instant feedback, download the free Irab app.' },
 ];
@@ -27,29 +27,29 @@ const faqs = [
 const webApp = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
-  name: "Irab — AI Arabic i'rab analyzer",
+  name: "Irab: AI Arabic i'rab analyzer",
   alternateName: ['Arabic sentence parser', 'أداة إعراب'],
   url: 'https://irab.app/en/tool',
   applicationCategory: 'EducationApplication',
   operatingSystem: 'Web',
   inLanguage: ['ar', 'en'],
   description:
-    "A free AI tool that gives the full word-by-word i'rab (grammatical analysis) of any Arabic sentence: type, role, case, case marker, and full diacritics.",
+    "A free AI tool that gives the full word by word i'rab (grammatical analysis) of any Arabic sentence: type, role, case, case marker, and full diacritics.",
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   publisher: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
 };
 
 const whys = [
-  { t: 'Full i\'rab, not just a tag', b: "Word type, syntactic role, i'rab, the case marker and why, and full diacritics — with elision, ʿilla, and alternative parses when they exist." },
+  { t: 'Full i\'rab, not just a tag', b: "Word type, syntactic role, i'rab, the case marker and why, and full diacritics: with elision, ʿilla, and alternative parses when they exist." },
   { t: "A scholar's depth, instantly", b: 'An engine purpose-built for Classical Arabic grammar on the prevailing school, parsing your own sentences in seconds.' },
-  { t: 'Grounded in a real reference', b: 'The Quran i\'rab on the site is built on a published, verified scholarly reference — checked letter-by-letter — not guesswork.' },
-  { t: 'Part of a complete app', b: "After analyzing, do the i'rab yourself with instant feedback, then take on challenges and level up — on iOS and Android." },
+  { t: 'Grounded in a real reference', b: 'The Quran i\'rab on the site is built on a published, verified scholarly reference: checked letter-by-letter: not guesswork.' },
+  { t: 'Part of a complete app', b: "After analyzing, do the i'rab yourself with instant feedback, then take on challenges and level up: on iOS and Android." },
 ];
 ---
 <BaseLayout
   lang="en"
-  title="Free AI Arabic i'rab Analyzer — Parse Any Sentence · Irab"
-  description="Free AI tool: paste any Arabic sentence and get its full i'rab word by word instantly — type, role, case, the case marker and why, and full diacritics, with a sentence explanation."
+  title="Free AI Arabic i'rab Analyzer: Parse Any Sentence · Irab"
+  description="Free AI tool: paste any Arabic sentence and get its full i'rab word by word instantly: type, role, case, the case marker and why, and full diacritics, with a sentence explanation."
 >
   <Schema slot="head" />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(webApp)} is:inline />
@@ -59,10 +59,10 @@ const whys = [
   <ArticleHero
     lang="en"
     title="AI Arabic i'rab analyzer"
-    summary="Parse any Arabic sentence into full word-by-word i'rab: type, role, i'rab, the case marker and why, and full diacritics — with an explanation of the whole sentence. A scholar's depth, at machine speed."
+    summary="Parse any Arabic sentence into full word by word i'rab: type, role, i'rab, the case marker and why, and full diacritics: with an explanation of the whole sentence. A scholar's depth, at machine speed."
   />
 
-  {/* The live analyzer (its own header is suppressed — the hero above is the page header) */}
+  {/* The live analyzer (its own header is suppressed: the hero above is the page header) */}
   <LiveDemo lang="en" showHeader={false} />
 
   <Section>

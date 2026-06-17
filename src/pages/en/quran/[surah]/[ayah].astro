@@ -1,7 +1,7 @@
 ---
 /**
- * English ayah i'rab page — the English spoke. Verse → transliteration →
- * meaning → TL;DR → word-by-word grid → prose i'rab → FAQ → related → CTA.
+ * English ayah i'rab page: the English spoke. Verse → transliteration →
+ * meaning → TL;DR → word by word grid → prose i'rab → FAQ → related → CTA.
  * Content is ORIGINAL English (generated from the Quran text + grammar anchors),
  * not a translation of the copyrighted الجدول. hreflang twins the Arabic page.
  */
@@ -27,7 +27,7 @@ const surah = surahById(ayah.surah) as SurahMeta;
 
 const h1 = ayah.h1_en;
 const title = `${h1} | Irab`;
-const description = `${ayah.translation_en} — word-by-word English i'rab (Arabic grammar) of Surah ${surah.en} ayah ${ayah.ayah}.`;
+const description = `${ayah.translation_en}: word by word English i'rab (Arabic grammar) of Surah ${surah.en} ayah ${ayah.ayah}.`;
 const selfUrl = `https://irab.app/en/quran/${surah.slug}/${ayah.ayah}`;
 const place = surah.place === 'makki' ? 'Meccan' : 'Medinan';
 
@@ -69,7 +69,7 @@ const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
 
         {ayah.words_en.length > 0 && (
           <section class="blk">
-            <h2>Word-by-word i'rab</h2>
+            <h2>Word by word i'rab</h2>
             <WordGridEn words={ayah.words_en} />
           </section>
         )}
@@ -116,7 +116,7 @@ const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
 
       <ArticleCta lang="en">
         <span slot="title">Study the full i'rab in the app.</span>
-        Word-by-word grammar for every ayah, with practice and instant feedback, in the Irab app on iOS and Android.
+        Word by word grammar for every ayah, with practice and instant feedback, in the Irab app on iOS and Android.
       </ArticleCta>
     </article>
   </main>

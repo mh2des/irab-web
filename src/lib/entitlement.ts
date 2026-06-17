@@ -3,7 +3,7 @@
  *
  * The worker checks RevenueCat by the SAME Firebase uid the mobile app uses,
  * so a subscription bought on ANY platform (App Store / Play / web) unlocks
- * the web. No web-billing setup needed to *read* entitlement — only to *sell*.
+ * the web. No web-billing setup needed to *read* entitlement: only to *sell*.
  */
 import type { User } from 'firebase/auth';
 

@@ -1,6 +1,6 @@
 ---
 /**
- * /library — the classical grammar library (Arabic). Browse all 47 reference
+ * /library: the classical grammar library (Arabic). Browse all 47 reference
  * works (nahw, sarf, balagha, i'rab) by category + search; each opens in a
  * client-side reader that streams the book's chapters from the same source the
  * app uses. Indexed for SEO (the long-tail "كتاب ... pdf/قراءة" intent).
@@ -18,7 +18,7 @@ const reader = (id: string) => `/library/read?b=${encodeURIComponent(id)}`;
 
 const collection = {
   '@context': 'https://schema.org', '@type': 'CollectionPage',
-  name: 'المكتبة النحوية — إعراب',
+  name: 'المكتبة النحوية: إعراب',
   description: 'مكتبة من ٤٧ كتابًا كلاسيكيًّا في النحو والصرف والبلاغة والإعراب، تُقرأ مجانًا على إعراب.',
   url: 'https://irab.app/library',
 };
@@ -26,8 +26,8 @@ const collection = {
 <BaseLayout
   lang="ar"
   hasEn
-  title="المكتبة النحوية — ٤٧ كتابًا في النحو والصرف والبلاغة | إعراب"
-  description="اقرأ ٤٧ كتابًا كلاسيكيًّا في النحو والصرف والبلاغة والإعراب مجانًا على إعراب: ابن هشام، ابن عقيل، الآجرومية، وغيرها — مفصّلة بابًا بابًا مع بحث وتصنيف."
+  title="المكتبة النحوية: ٤٧ كتابًا في النحو والصرف والبلاغة | إعراب"
+  description="اقرأ ٤٧ كتابًا كلاسيكيًّا في النحو والصرف والبلاغة والإعراب مجانًا على إعراب: ابن هشام، ابن عقيل، الآجرومية، وغيرها: مفصّلة بابًا بابًا مع بحث وتصنيف."
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(collection)} is:inline />
   <Nav lang="ar" />
@@ -41,7 +41,7 @@ const collection = {
             مكتبة النحو والصرف والبلاغة
           </h1>
           <p class="mt-6 font-arabic text-body-lg text-ink/80 dark:text-mist/80 leading-loose" data-reveal data-reveal-delay="160">
-            أمّهات كتب العربية، مفصّلة بابًا بابًا وقابلة للقراءة كاملةً على الموقع — نفس مكتبة تطبيق إعراب.
+            أمّهات كتب العربية، مفصّلة بابًا بابًا وقابلة للقراءة كاملةً على الموقع: نفس مكتبة تطبيق إعراب.
           </p>
 
           {/* Stats */}

@@ -1,5 +1,5 @@
-# Irab — robots.txt
-# All crawlers welcome. We want to be found — and cited.
+# Irab robots.txt
+# All crawlers welcome. We want to be found and cited.
 
 User-agent: *
 Allow: /

@@ -2,7 +2,7 @@
  "1:1": {
   "surah": 1,
   "ayah": 1,
-  "h1_en": "I'rab of Surah Al-Fatihah Ayah 1 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 1: word by word Arabic grammar",
   "tldr_en": "This verse is a prepositional phrase (بِ + اسْم) leading a genitive construct chain. The preposition with its noun attaches to an omitted predicate, and the subject (mubtada') is likewise understood, roughly \"my beginning is.\" اللَّه is the second term of the construct (genitive), and the two divine attributes that follow are adjectives agreeing with it in the genitive case.",
   "translation_en": "In the name of God, the Most Merciful, the Most Compassionate.",
   "transliteration": "Bismi llāhi r-raḥmāni r-raḥīm",
@@ -52,7 +52,7 @@
  "1:2": {
   "surah": 1,
   "ayah": 2,
-  "h1_en": "I'rab of Surah Al-Fatihah Ayah 2 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 2: word by word Arabic grammar",
   "tldr_en": "This verse is a nominal sentence. \"Al-hamdu\" is the subject (mubtada') in the nominative. The prepositional phrase \"lillah\" is linked to an omitted predicate (khabar). \"Rabbi\" follows the name of God as an adjective (na't) in the genitive, and \"al-'alamin\" is its possessed noun (mudaf ilayh), also genitive.",
   "translation_en": "All praise belongs to God, the Lord of all the worlds.",
   "transliteration": "al-ḥamdu lillāhi rabbi l-ʿālamīn",
@@ -82,7 +82,7 @@
     "note_en": "As the second term of the construct with 'Rabb', it is genitive, marked by the ya because it patterns like a sound masculine plural."
    }
   ],
-  "irab_en": "This ayah is a nominal sentence (jumla ismiyya). It begins with \"al-hamdu,\" the subject (mubtada'), which is nominative, its case shown by the damma on the final letter. The prepositional phrase \"lillah\" — the preposition li attached to the genitive name of God — does not stand alone; it relates to an omitted predicate (khabar) understood as something like \"is established\" or \"is due,\" so the sense is \"all praise is due to God.\" The word \"Rabbi\" is an adjective (na't) qualifying the name of God; it agrees with it in being genitive, marked by the kasra. Finally, \"al-'alamin\" is the possessed noun (mudaf ilayh) governed by \"Rabb\"; it is genitive, but its case appears through the ya rather than a kasra, since it takes the ending pattern of the sound masculine plural.",
+  "irab_en": "This ayah is a nominal sentence (jumla ismiyya). It begins with \"al-hamdu,\" the subject (mubtada'), which is nominative, its case shown by the damma on the final letter. The prepositional phrase \"lillah\": the preposition li attached to the genitive name of God: does not stand alone; it relates to an omitted predicate (khabar) understood as something like \"is established\" or \"is due,\" so the sense is \"all praise is due to God.\" The word \"Rabbi\" is an adjective (na't) qualifying the name of God; it agrees with it in being genitive, marked by the kasra. Finally, \"al-'alamin\" is the possessed noun (mudaf ilayh) governed by \"Rabb\"; it is genitive, but its case appears through the ya rather than a kasra, since it takes the ending pattern of the sound masculine plural.",
   "faqs_en": [
    {
     "q": "Where is the predicate (khabar) in this verse?",
@@ -102,7 +102,7 @@
  "1:3": {
   "surah": 1,
   "ayah": 3,
-  "h1_en": "I'rab of Surah Al-Fatihah Ayah 3 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 3: word by word Arabic grammar",
   "tldr_en": "This short ayah consists of two adjectives, both in the genitive case. Each one describes the name of Allah mentioned in the previous verse, so they follow it in case as adjectives (na't). The whole ayah is therefore not an independent sentence but a continuation of the description begun in verse 2.",
   "translation_en": "The Most Gracious, the Most Merciful.",
   "transliteration": "ar-raḥmāni ar-raḥīm(i)",
@@ -140,7 +140,7 @@
  "1:4": {
   "surah": 1,
   "ayah": 4,
-  "h1_en": "I'rab of Surah Al-Fatihah Ayah 4 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 4: word by word Arabic grammar",
   "tldr_en": "This short verse is built around one noun phrase. \"Maliki\" is an adjective (na't) describing the name \"Allah\" from the previous verses, so it takes the genitive case to agree with it. It then heads a two-step possessive chain (idafa): \"Maliki\" governs \"yawmi,\" which in turn governs \"ad-dini,\" leaving every word in the genitive.",
   "translation_en": "Master of the Day of Judgment.",
   "transliteration": "Maliki yawmi d-din(i)",
@@ -184,7 +184,7 @@
  "1:5": {
   "surah": 1,
   "ayah": 5,
-  "h1_en": "I'rab of Surah Al-Fatihah Ayah 5 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 5: word by word Arabic grammar",
   "tldr_en": "Two parallel verbal sentences. In each, the fronted detached pronoun إيّاك is a built-in accusative object placed before its verb for emphasis and restriction. The present-tense verbs نَعبد and نَستعين are nominative, each governed by an obligatory hidden subject \"we\" (naḥnu). The connector وَ joins the second clause to the first.",
   "translation_en": "You alone we worship, and You alone we ask for help.",
   "transliteration": "iyyāka naʿbudu wa-iyyāka nastaʿīn",
@@ -246,7 +246,7 @@
  "1:6": {
   "surah": 1,
   "ayah": 6,
-  "h1_en": "Irab of Surah Al-Fatihah Ayah 6 - word-by-word Arabic grammar",
+  "h1_en": "Irab of Surah Al-Fatihah Ayah 6 - word by word Arabic grammar",
   "tldr_en": "This ayah is a supplicatory imperative sentence. The verb ihdi is a command form built on the dropping of its weak final letter, with a hidden you subject. The attached pronoun naa is its first object, al-sirat is its second object in the accusative, and al-mustaqim is an accusative adjective agreeing with it. The whole sentence stands independently.",
   "translation_en": "Guide us to the straight path.",
   "transliteration": "ihdina s-sirata l-mustaqim",
@@ -296,7 +296,7 @@
  "1:7": {
   "surah": 1,
   "ayah": 7,
-  "h1_en": "I'rab of Surah Al-Fatihah Ayah 7 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Fatihah Ayah 7: word by word Arabic grammar",
   "tldr_en": "This verse opens with صِرَاطَ, an accusative substitution (badal) for the previous verse's \"the path,\" so it carries the accusative even though no case ending shows on the final word here. The relative pronoun الَّذِينَ is its possessive complement, introducing the relative clause أَنْعَمْتَ عَلَيْهِمْ. غَيْرِ is then a genitive substitute, with المَغْضُوبِ and الضَّالِّينَ following in the genitive.",
   "translation_en": "The path of those whom You have blessed, not of those who earned anger, nor of those who went astray.",
   "transliteration": "ṣirāṭa lladhīna anʿamta ʿalayhim ghayri l-maghḍūbi ʿalayhim wa-lā ḍ-ḍāllīn",

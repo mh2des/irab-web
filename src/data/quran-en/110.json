@@ -2,7 +2,7 @@
  "110:1": {
   "surah": 110,
   "ayah": 1,
-  "h1_en": "I'rab of Surah An-Nasr Ayah 1 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah An-Nasr Ayah 1: word by word Arabic grammar",
   "tldr_en": "This verse opens with the time-conditional particle إِذَا, which introduces a condition awaiting its answer in a later verse. Its verb is the past-tense جَاءَ, whose subject نَصْرُ heads a possessive construction with ٱللَّهِ. The noun ٱلْفَتْحُ is then joined to that subject by وَ, sharing its nominative case.",
   "translation_en": "When the help of God comes, along with the victory,",
   "transliteration": "Idhā jāʾa naṣru llāhi wal-fatḥ(u)",
@@ -64,7 +64,7 @@
  "110:2": {
   "surah": 110,
   "ayah": 2,
-  "h1_en": "I'rab of Surah An-Nasr Ayah 2 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah An-Nasr Ayah 2: word by word Arabic grammar",
   "tldr_en": "This verse opens with the conjunction wa joining a past-tense verb ra'ayta (you saw) whose subject is the attached pronoun \"you.\" Its object is al-nas (the people), followed by the present-tense clause yadkhuluna (they enter) functioning as a second object/state. The prepositional phrase fi dini-llah links to \"enter,\" and afwajan is an accusative circumstantial state (hal).",
   "translation_en": "And you saw the people entering the religion of God in crowds.",
   "transliteration": "wa ra'ayta n-nasa yadkhuluna fi dini llahi afwaja",
@@ -115,18 +115,18 @@
     "token": "أَفْوَاجًۭا",
     "case_en": "accusative",
     "role_en": "circumstantial accusative (hal)",
-    "note_en": "An accusative circumstantial qualifier describing how the subject of yadkhuluna entered — namely \"in crowds/throngs,\" marked by the fatha."
+    "note_en": "An accusative circumstantial qualifier describing how the subject of yadkhuluna entered: namely \"in crowds/throngs,\" marked by the fatha."
    }
   ],
-  "irab_en": "The verse begins with wa, a conjunction tying this clause to the previous one, both still dependent on the conditional particle idha. Ra'ayta is a past-tense verb resting on a quiescent ending because of the attached pronoun ta, which functions as its nominative subject. Al-nas is the accusative direct object, marked by the fatha. The present-tense verb yadkhuluna, nominative with the plural waw as its subject, heads a clause that functions as a circumstantial state describing the people. The phrase fi dini-llah is a preposition plus a genitive noun in construct with the majestic name, the whole attaching to yadkhuluna. Finally, afwajan is an accusative hal explaining the manner of their entering — in successive crowds.",
+  "irab_en": "The verse begins with wa, a conjunction tying this clause to the previous one, both still dependent on the conditional particle idha. Ra'ayta is a past-tense verb resting on a quiescent ending because of the attached pronoun ta, which functions as its nominative subject. Al-nas is the accusative direct object, marked by the fatha. The present-tense verb yadkhuluna, nominative with the plural waw as its subject, heads a clause that functions as a circumstantial state describing the people. The phrase fi dini-llah is a preposition plus a genitive noun in construct with the majestic name, the whole attaching to yadkhuluna. Finally, afwajan is an accusative hal explaining the manner of their entering: in successive crowds.",
   "faqs_en": [
    {
     "q": "What is the grammatical role of yadkhuluna in this verse?",
-    "a": "It is a nominative present-tense verb whose subject is the plural waw. The clause it heads (yadkhuluna fi dini-llah) functions as a circumstantial state describing al-nas, or it can be analyzed as a second complement after the verb of perception ra'ayta — \"you saw the people [in the state of] entering.\""
+    "a": "It is a nominative present-tense verb whose subject is the plural waw. The clause it heads (yadkhuluna fi dini-llah) functions as a circumstantial state describing al-nas, or it can be analyzed as a second complement after the verb of perception ra'ayta: \"you saw the people [in the state of] entering.\""
    },
    {
     "q": "Why is afwajan in the accusative case?",
-    "a": "It is a hal, a circumstantial accusative, marked by the fatha. It describes the condition of the people while entering — group after group, in crowds — and answers \"how\" they entered the religion."
+    "a": "It is a hal, a circumstantial accusative, marked by the fatha. It describes the condition of the people while entering: group after group, in crowds: and answers \"how\" they entered the religion."
    },
    {
     "q": "What kind of construction is dini-llah?",
@@ -138,7 +138,7 @@
  "110:3": {
   "surah": 110,
   "ayah": 3,
-  "h1_en": "I'rab of Surah An-Nasr Ayah 3 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah An-Nasr Ayah 3: word by word Arabic grammar",
   "tldr_en": "The verse opens with the connective fa- linking it to the conditional clause as its answer, followed by two imperative verbs (sabbih, istaghfir-hu) addressed to the Prophet. It closes with an emphatic nominal sentence introduced by inna, whose predicate is the past-tense verb kana plus its accusative predicate tawwaban.",
   "translation_en": "So glorify your Lord with praise and ask Him for forgiveness; indeed He is ever-accepting of repentance.",
   "transliteration": "Fa-sabbih bi-hamdi rabbika wa-staghfirhu, innahu kana tawwaban",

@@ -44,7 +44,7 @@ const practiceHref = lang === 'ar' ? '/practice' : '/en/practice'; // do-it-your
 const dictionaryHref = lang === 'ar' ? '/dictionary' : '/en/dictionary'; // smart dictionary tool
 const libraryHref = lang === 'ar' ? '/library' : '/en/library'; // classical grammar library
 const signinHref = lang === 'ar' ? '/login' : '/en/login'; // web account
-const appHref = lang === 'ar' ? '/app' : '/en/app'; // signed-in web app hub
+const appHref = lang === 'ar' ? '/app' : '/en/app'; // signed in web app hub
 
 // Equivalent URL in the other language for the toggle
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -55,13 +55,13 @@ const otherUrl = lang === 'ar'
 <nav class="sticky top-0 z-50 bg-paper/85 dark:bg-coal/85 backdrop-blur-md border-b border-stone/60 dark:border-coal-edge/60">
   <Container>
     <div class="flex items-center justify-between py-4 gap-4">
-      {/* Logo — pulled snug into the corner */}
+      {/* Logo: pulled snug into the corner */}
       <a href={home} class="flex items-center gap-2.5 shrink-0 group -ms-2 md:-ms-4">
         <img src="/brand-mark.png" alt="" width="56" height="56" loading="eager" decoding="sync" class="w-12 h-12 md:w-14 md:h-14 rounded-lg shrink-0 transition-transform duration-200 group-hover:scale-105"/>
         <span class:list={[lang === 'ar' ? 'font-arabic-display font-bold text-4xl md:text-5xl' : 'font-display text-3xl', 'tracking-tight']}>{lang === 'ar' ? 'إعراب' : 'Irab'}</span>
       </a>
 
-      {/* Desktop links — segmented pill bar, soft fill + shadow lift on hover */}
+      {/* Desktop links: segmented pill bar, soft fill + shadow lift on hover */}
       <div class="nav-bar hidden md:flex items-center gap-1 text-small">
         <a href={toolHref}           class="nav-link">{t.tryDemo}</a>
         <a href={practiceHref}       class="nav-link">{t.practice}</a>
@@ -206,7 +206,7 @@ const otherUrl = lang === 'ar'
     box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--color-purple) 60%, transparent);
   }
 
-  /* The Quran-i'rab feature — teal accent so it stands out as the key feature. */
+  /* The Quran-i'rab feature: teal accent so it stands out as the key feature. */
   .nav-link-feature { color: var(--color-teal); font-weight: 700; }
   :global(.dark) .nav-link-feature { color: color-mix(in srgb, var(--color-teal) 88%, white); }
   .nav-link-feature:hover {
@@ -221,7 +221,7 @@ const otherUrl = lang === 'ar'
 <script>
   import { maybeSignedIn } from '../lib/session';
 
-  // Signed-in users see "My app" instead of "Sign in" (progressive, no Firebase).
+  // Signed in users see "My app" instead of "Sign in" (progressive, no Firebase).
   if (maybeSignedIn()) {
     document.querySelectorAll<HTMLElement>('[data-signin-link]').forEach((el) => el.classList.add('hidden'));
     document.querySelectorAll<HTMLElement>('[data-app-link]').forEach((el) => el.classList.remove('hidden'));

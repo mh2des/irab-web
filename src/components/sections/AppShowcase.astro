@@ -1,6 +1,6 @@
 ---
 /**
- * AppShowcase — the hover-driven phone cluster + download block.
+ * AppShowcase: the hover-driven phone cluster + download block.
  *
  * The cluster animation is a faithful port of docs/irab-showcase (entrance on
  * scroll-in, replay on hover, cursor parallax, idle float). Styles are global
@@ -23,7 +23,7 @@ const t = lang === 'ar'
   ? {
       eyebrow: 'التطبيق',
       title: 'إعراب كامِلًا، في جيبك.',
-      lead: 'كل ما رأيته هنا — والمزيد — داخل تطبيق إعراب: تحليل كلمة بكلمة، شرح الجملة، وبطاقات إعراب جاهزة للمشاركة.',
+      lead: 'كل ما رأيته هنا: والمزيد: داخل تطبيق إعراب: تحليل كلمة بكلمة، شرح الجملة، وبطاقات إعراب جاهزة للمشاركة.',
       scan: 'امسح الرمز للتحميل',
       appStore: 'App Store', googlePlay: 'Google Play',
       hintApple: 'iPhone · iPad', hintGoogle: 'Android',
@@ -32,7 +32,7 @@ const t = lang === 'ar'
   : {
       eyebrow: 'The app',
       title: 'The whole of Irab, in your pocket.',
-      lead: "Everything you saw here — and more — inside the Irab app: word-by-word analysis, sentence explanations, and share-ready i'rab cards.",
+      lead: "Everything you saw here: and more: inside the Irab app: word by word analysis, sentence explanations, and share-ready i'rab cards.",
       scan: 'Scan to download',
       appStore: 'App Store', googlePlay: 'Google Play',
       hintApple: 'iPhone · iPad', hintGoogle: 'Android',
@@ -67,7 +67,7 @@ const t = lang === 'ar'
           {t.lead}
         </p>
 
-        {/* QR cards — desktop (scan with your phone) */}
+        {/* QR cards: desktop (scan with your phone) */}
         <div class="hidden md:flex gap-4 mt-10 justify-center lg:justify-start" data-reveal data-reveal-delay="300">
           <a href={APPLE} target="_blank" rel="noopener" class="qr-card lift" aria-label={t.appleBtn}>
             <img src="/showcase/apple-qr.png" alt="" width="220" height="220" loading="lazy" decoding="async" class="qr-img"/>
@@ -82,7 +82,7 @@ const t = lang === 'ar'
         </div>
         <p class="hidden md:block mt-4 font-arabic text-small text-ink/50 dark:text-mist/50 text-center lg:text-start" data-reveal data-reveal-delay="350">{t.scan}</p>
 
-        {/* Store buttons — mobile (tap to install) */}
+        {/* Store buttons: mobile (tap to install) */}
         <div class="flex md:hidden flex-col sm:flex-row gap-3 mt-10" data-reveal data-reveal-delay="300">
           <a href={GOOGLE} target="_blank" rel="noopener"
              class="inline-flex items-center justify-center gap-3 px-7 py-4 bg-purple hover:bg-purple-deep text-white font-arabic font-medium tracking-tight rounded-full lift">
@@ -101,7 +101,7 @@ const t = lang === 'ar'
 </Section>
 
 <style>
-  /* The phones float directly on the page now — no panel, just breathing room. */
+  /* The phones float directly on the page now: no panel, just breathing room. */
   .showcase-frame { padding: 0 0.5rem; }
 
   .qr-card {
@@ -119,7 +119,7 @@ const t = lang === 'ar'
   :global(.dark) .qr-hint { color: color-mix(in srgb, var(--color-mist) 45%, transparent); }
 </style>
 
-<!-- Cluster animation styles — global on purpose (see component note). -->
+<!-- Cluster animation styles: global on purpose (see component note). -->
 <style is:global>
 .irab-showcase{
   position:relative;

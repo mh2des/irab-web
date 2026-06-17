@@ -1,6 +1,6 @@
 ---
 /**
- * /quran — the Quran-i'rab hub. All 114 surahs; published ones link to their
+ * /quran: the Quran-i'rab hub. All 114 surahs; published ones link to their
  * index, the rest show as upcoming. The crawl entry point for the section.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -16,7 +16,7 @@ const liveCount = SURAHS.filter((s) => s.publishedCount > 0).length;
 
 const itemList = {
   '@context': 'https://schema.org', '@type': 'ItemList',
-  name: 'سور القرآن الكريم — الإعراب',
+  name: 'سور القرآن الكريم: الإعراب',
   itemListElement: SURAHS.filter((s) => s.publishedCount > 0).map((s, i) => ({
     '@type': 'ListItem', position: i + 1, name: `سورة ${s.name}`, url: `https://irab.app/quran/${s.slug}`,
   })),

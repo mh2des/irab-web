@@ -1,8 +1,8 @@
 /**
- * history.ts — saved history + derived stats for the analyzer and practice
+ * history.ts: saved history + derived stats for the analyzer and practice
  * tools. Browser-only (localStorage). Each item is tagged with the owner uid
  * ('anon' before sign-in, the Firebase uid after) so a shared device keeps
- * accounts separate. Stats are DERIVED from real saved items — never invented.
+ * accounts separate. Stats are DERIVED from real saved items: never invented.
  *
  * Source of truth is the device; this is intentionally dependency-free and
  * cannot fail on a flaky network. Cross-device sync (Firestore) can layer on

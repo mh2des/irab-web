@@ -1,6 +1,6 @@
 /**
  * Auth helpers wrapping Firebase Auth (Email/password, Google, Apple) with
- * friendly bilingual error messages. Browser-only — used from <script> islands.
+ * friendly bilingual error messages. Browser-only: used from <script> islands.
  */
 import {
   GoogleAuthProvider,
@@ -79,7 +79,7 @@ export function authError(code: string, lang: Lang): string {
     'auth/user-not-found': 'No account found with that email.',
     'auth/wrong-password': 'Incorrect password.',
     'auth/invalid-credential': 'Email or password is incorrect.',
-    'auth/email-already-in-use': 'That email is already registered — sign in instead.',
+    'auth/email-already-in-use': 'That email is already registered: sign in instead.',
     'auth/weak-password': 'Password is too weak (at least 6 characters).',
     'auth/too-many-requests': 'Too many attempts. Try again later.',
     'auth/popup-closed-by-user': 'The sign-in window closed before finishing.',
@@ -88,7 +88,7 @@ export function authError(code: string, lang: Lang): string {
       'You already have an account with this email via another sign-in method.',
     'auth/operation-not-allowed': 'This sign-in method isn’t enabled yet.',
     'auth/unauthorized-domain': 'Sign-in from this domain isn’t allowed yet.',
-    'auth/network-request-failed': 'Network error — check your connection.',
+    'auth/network-request-failed': 'Network error: check your connection.',
   };
   const table = lang === 'ar' ? ar : en;
   return table[code] || (lang === 'ar' ? 'حدث خطأ. حاول مرة أخرى.' : 'Something went wrong. Please try again.');

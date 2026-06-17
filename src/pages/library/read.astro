@@ -1,16 +1,16 @@
 ---
 /**
- * /library/read?b=<bookId>[&c=<chapterIndex>] — the book reader (Arabic).
+ * /library/read?b=<bookId>[&c=<chapterIndex>]: the book reader (Arabic).
  * A client-side reader: streams the book's bundle from the same CORS-open
  * source the app uses, builds a searchable table of contents, renders the
  * selected chapter, and remembers the last chapter read (localStorage).
- * noindex — /library is the SEO surface; this is the app-like reading view.
+ * noindex: /library is the SEO surface; this is the app-like reading view.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import { LIBRARY_BASE } from '../../lib/library';
 ---
-<BaseLayout lang="ar" noindex title="قارئ الكتب — المكتبة النحوية | إعراب" description="اقرأ كتب النحو والصرف والبلاغة على إعراب.">
+<BaseLayout lang="ar" noindex title="قارئ الكتب: المكتبة النحوية | إعراب" description="اقرأ كتب النحو والصرف والبلاغة على إعراب.">
   <Nav lang="ar" />
 
   <main data-reader data-lang="ar" data-base={LIBRARY_BASE} dir="rtl" class="reader">
@@ -118,7 +118,7 @@ import { LIBRARY_BASE } from '../../lib/library';
   :global(.dark) .reader-nav { border-top-color: var(--color-coal-edge); }
   .reader-nav button:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  /* Injected chapter HTML — readable classical typography */
+  /* Injected chapter HTML: readable classical typography */
   .chapter-html { font-family: var(--font-arabic-classical); font-size: 1.5rem; line-height: 2.1; color: color-mix(in srgb, var(--color-ink) 90%, transparent); }
   :global(.dark) .chapter-html { color: color-mix(in srgb, var(--color-mist) 88%, transparent); }
   .chapter-html :global(h1), .chapter-html :global(h2), .chapter-html :global(h3) { font-family: var(--font-arabic-display); font-weight: 700; line-height: 1.4; margin: 1.6rem 0 0.9rem; color: var(--color-ink); }
@@ -231,7 +231,7 @@ import { LIBRARY_BASE } from '../../lib/library';
           if (!chapters.length) { fail('تعذّر تحميل فصول هذا الكتاب.'); return; }
           titleEl.textContent = bundle.title || '';
           authorEl.textContent = bundle.author && bundle.author !== 'غير معروف' ? bundle.author : '';
-          document.title = `${bundle.title || 'كتاب'} — المكتبة النحوية | إعراب`;
+          document.title = `${bundle.title || 'كتاب'}: المكتبة النحوية | إعراب`;
           buildToc();
           loadingEl.classList.add('hidden');
           gridEl.classList.remove('hidden');

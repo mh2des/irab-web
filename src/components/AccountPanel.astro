@@ -1,9 +1,9 @@
 ---
 /**
- * AccountPanel — signed-in user's hub. Identity + email verification + plan +
+ * AccountPanel: signed in user's hub. Identity + email verification + plan +
  * sign out. Redirects to /login if not authenticated. Rebuilt on the design
  * system: real .card surfaces, .badge / .btn primitives, readable text, and an
- * entrance reveal — no more blend-in bg-paper card or faint sub-floor text.
+ * entrance reveal: no more blend-in bg-paper card or faint sub-floor text.
  */
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
@@ -103,10 +103,10 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
     const planText = lang === 'ar'
       ? { free: 'مجاني', plus: 'إعراب بلس',
           noteFree: 'لديك ٣ تحليلات يوميًّا. رقِّ حسابك لإعرابٍ غير محدود، بنك التدريب الكامل، والشهادات السنوية.',
-          notePlus: 'اشتراكك مفعّل على جميع أجهزتك — الويب والتطبيق. ✓' }
+          notePlus: 'اشتراكك مفعّل على جميع أجهزتك: الويب والتطبيق. ✓' }
       : { free: 'Free', plus: 'Irab Plus',
           noteFree: 'You get 3 analyses a day. Upgrade for unlimited i\'rab, the full practice bank, and annual certificates.',
-          notePlus: 'Your subscription is active on all your devices — web and app. ✓' };
+          notePlus: 'Your subscription is active on all your devices: web and app. ✓' };
 
     onAuth((u) => {
       if (!u) { forgetSignedIn(); window.location.replace(login); return; }
@@ -133,7 +133,7 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
         }, { once: true });
       }
 
-      // Subscription status — read from the worker (RevenueCat by uid).
+      // Subscription status: read from the worker (RevenueCat by uid).
       const planEl = q<HTMLElement>('[data-plan]');
       const planBadge = q<HTMLElement>('[data-plan-badge]');
       const planNoteEl = q<HTMLElement>('[data-plan-note]');

@@ -2,7 +2,7 @@
  "108:1": {
   "surah": 108,
   "ayah": 1,
-  "h1_en": "I'rab of Surah Al-Kawthar Ayah 1 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Kawthar Ayah 1: word by word Arabic grammar",
   "tldr_en": "The verse is an emphatic nominal sentence built on the particle inna. Its written form إِنَّآ fuses inna with the attached pronoun nā, which serves as inna's noun (its subject). The predicate is the verbal clause aʿṭaynāka l-kawthar, where the verb carries two objects: the addressee pronoun ka and the noun al-kawthar.",
   "translation_en": "Indeed, We have granted you the abundance (al-Kawthar).",
   "transliteration": "Innā aʿṭaynāka l-kawthar(a)",
@@ -40,7 +40,7 @@
    },
    {
     "q": "Why does the verb aʿṭā take two objects (ka and al-kawthar)?",
-    "a": "The verb ʿaṭā (to give/grant) is doubly transitive, meaning it naturally requires two objects: the recipient and the thing given. Here ka (\"you\") is the first object and al-kawthar (\"the abundance\") is the second, both in the accusative — ka by position and al-kawthar by the visible fatha."
+    "a": "The verb ʿaṭā (to give/grant) is doubly transitive, meaning it naturally requires two objects: the recipient and the thing given. Here ka (\"you\") is the first object and al-kawthar (\"the abundance\") is the second, both in the accusative: ka by position and al-kawthar by the visible fatha."
    },
    {
     "q": "What is the predicate (khabar) of inna in this verse?",
@@ -52,7 +52,7 @@
  "108:2": {
   "surah": 108,
   "ayah": 2,
-  "h1_en": "I'rab of Surah Al-Kawthar Ayah 2 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Kawthar Ayah 2: word by word Arabic grammar",
   "tldr_en": "This verse is built on two parallel commands. The connector fa- (\"so\") links it to the previous ayah, then comes the imperative verb salli (\"pray\"), whose object of devotion is marked by the prepositional phrase li-rabbika (\"for your Lord\"). The conjunction wa- joins a second imperative, inhar (\"and sacrifice\"), sharing the same hidden \"you\" subject.",
   "translation_en": "So pray to your Lord and sacrifice.",
   "transliteration": "fa-ṣalli li-rabbika wa-nḥar",
@@ -114,9 +114,9 @@
  "108:3": {
   "surah": 108,
   "ayah": 3,
-  "h1_en": "I'rab of Surah Al-Kawthar Ayah 3 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Kawthar Ayah 3: word by word Arabic grammar",
   "tldr_en": "This verse is a nominal sentence opened by the emphatic particle inna. Inna governs shani'aka as its accusative noun (ism inna), with the attached pronoun -ka in the genitive as a possessive. The pronoun huwa serves as a separating pronoun (damir fasl), and al-abtar is the nominative predicate (khabar inna).",
-  "translation_en": "Indeed, the one who hates you — he is the one cut off (left without lasting legacy).",
+  "translation_en": "Indeed, the one who hates you: he is the one cut off (left without lasting legacy).",
   "transliteration": "Inna shāni'aka huwa al-abtar(u)",
   "words_en": [
    {

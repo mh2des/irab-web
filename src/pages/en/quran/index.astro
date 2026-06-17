@@ -1,6 +1,6 @@
 ---
 /**
- * /en/quran — English Quran-i'rab hub. Lists the surahs with English word-by-word
+ * /en/quran: English Quran-i'rab hub. Lists the surahs with English word by word
  * grammatical analysis. Original English content (not a translation of الجدول).
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
@@ -11,8 +11,8 @@ import { enSurahs, enAyatOfSurah } from '../../../lib/quran-en';
 
 const surahs = enSurahs();
 const SITE = 'https://irab.app';
-const title = "Quran I'rab in English — Word-by-Word Arabic Grammar | Irab";
-const description = "Word-by-word i'rab (Arabic grammatical analysis) of the Quran, in clear English: case, role, and explanation for every word. Original analysis, free to read.";
+const title = "Quran I'rab in English: Word-by-Word Arabic Grammar | Irab";
+const description = "Word by word i'rab (Arabic grammatical analysis) of the Quran, in clear English: case, role, and explanation for every word. Original analysis, free to read.";
 
 const itemList = {
   '@context': 'https://schema.org',
@@ -37,9 +37,9 @@ const breadcrumb = {
     <article class="py-12 md:py-16">
       <Container size="narrow">
         <p class="eyebrow mb-4">Quran i'rab · English</p>
-        <h1 class="font-display text-[clamp(2rem,5vw,3.2rem)] leading-tight tracking-tight mb-4">The Quran, parsed word by word — in English.</h1>
+        <h1 class="font-display text-[clamp(2rem,5vw,3.2rem)] leading-tight tracking-tight mb-4">The Quran, parsed word by word: in English.</h1>
         <p class="text-body text-ink/65 dark:text-mist/65 leading-loose max-w-2xl mb-10">
-          Original English i'rab (Arabic grammatical analysis) for each verse: the case, syntactic role, and a clear note for every word — plus a plain-English meaning. Free to read; deeper study and practice live in the Irab app.
+          Original English i'rab (Arabic grammatical analysis) for each verse: the case, syntactic role, and a clear note for every word: plus a plain-English meaning. Free to read; deeper study and practice live in the Irab app.
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

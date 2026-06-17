@@ -2,7 +2,7 @@
  "103:1": {
   "surah": 103,
   "ayah": 1,
-  "h1_en": "I'rab of Surah Al-Asr Ayah 1 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Asr Ayah 1: word by word Arabic grammar",
   "tldr_en": "This single-word verse is an oath (qasam). The opening wāw is the particle of swearing (wāw al-qasam), which functions like a preposition and puts the following noun in the genitive. Al-ʿaṣr is the object sworn by, governed in the genitive. The whole phrase attaches to an implied verb \"I swear,\" and the verse it introduces forms the answer of the oath.",
   "translation_en": "By time (the passing age).",
   "transliteration": "wal-ʿaṣr",
@@ -20,7 +20,7 @@
     "note_en": "Placed in the genitive by the oath-wāw, this is the thing sworn by, and the oath phrase relates to an understood verb meaning \"I swear.\""
    }
   ],
-  "irab_en": "The verse consists of an oath built from two elements. The initial وَ is wāw al-qasam, the particle used for swearing; grammatically it operates like a preposition (ḥarf jarr) and so requires the noun following it to take the genitive case. ٱلْعَصْرِ is therefore majrūr (genitive), its genitive marked by the kasra on the final letter, and it serves as the muqsam bihi — the thing by which the oath is taken. The combined prepositional-style phrase (wāw plus its genitive noun) is linked to a deleted oath-verb whose understood meaning is \"I swear\" (uqsimu). This suppressed verb is omitted because the oath construction itself makes it clear. The clause that follows in the next verse functions as the jawāb al-qasam, the response or content of the oath being affirmed.",
+  "irab_en": "The verse consists of an oath built from two elements. The initial وَ is wāw al-qasam, the particle used for swearing; grammatically it operates like a preposition (ḥarf jarr) and so requires the noun following it to take the genitive case. ٱلْعَصْرِ is therefore majrūr (genitive), its genitive marked by the kasra on the final letter, and it serves as the muqsam bihi: the thing by which the oath is taken. The combined prepositional-style phrase (wāw plus its genitive noun) is linked to a deleted oath-verb whose understood meaning is \"I swear\" (uqsimu). This suppressed verb is omitted because the oath construction itself makes it clear. The clause that follows in the next verse functions as the jawāb al-qasam, the response or content of the oath being affirmed.",
   "faqs_en": [
    {
     "q": "Why is ٱلْعَصْرِ in the genitive case?",
@@ -32,7 +32,7 @@
    },
    {
     "q": "What is the relationship between this verse and the next one?",
-    "a": "This verse is the oath (qasam), and the statement that follows it is the jawāb al-qasam — the answer or content the oath is affirming, namely that humankind is in loss."
+    "a": "This verse is the oath (qasam), and the statement that follows it is the jawāb al-qasam: the answer or content the oath is affirming, namely that humankind is in loss."
    }
   ],
   "uthmani": "وَٱلْعَصْرِ"
@@ -40,7 +40,7 @@
  "103:2": {
   "surah": 103,
   "ayah": 2,
-  "h1_en": "I'rab of Surah Al-Asr Ayah 2 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Asr Ayah 2: word by word Arabic grammar",
   "tldr_en": "This ayah is a nominal sentence governed by the emphatic particle inna, which puts its noun (al-insan) in the accusative and its predicate in the nominative. The predicate here is the prepositional phrase la-fi khusr, where the la- is the lam of emphasis and fi khusr attaches to an understood predicate, asserting that mankind is truly in loss.",
   "translation_en": "Indeed, mankind is in loss.",
   "transliteration": "Inna al-insana la-fi khusrin",
@@ -96,7 +96,7 @@
  "103:3": {
   "surah": 103,
   "ayah": 3,
-  "h1_en": "I'rab of Surah Al-Asr Ayah 3 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Asr Ayah 3: word by word Arabic grammar",
   "tldr_en": "This ayah is an exception (istithnaa) carved out of the previous verse, introduced by \"illa.\" The excepted noun is the relative pronoun \"alladhina\" in the accusative position. It heads a relative clause built from four coordinated past-tense verbs whose subject is the connected \"waw,\" with the last two verbs each completed by a prepositional phrase.",
   "translation_en": "Except those who believe, do righteous deeds, urge one another to truth, and urge one another to patience.",
   "transliteration": "illā alladhīna āmanū wa-ʿamilū aṣ-ṣāliḥāti wa-tawāṣaw bi-l-ḥaqqi wa-tawāṣaw bi-ṣ-ṣabri",

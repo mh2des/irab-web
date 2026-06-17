@@ -1,8 +1,8 @@
 /**
- * Firebase client init (browser only — import from <script> islands, never
+ * Firebase client init (browser only: import from <script> islands, never
  * from .astro frontmatter, which runs at build time with no `window`).
  *
- * The web config is PUBLIC by design — Firebase security comes from Auth
+ * The web config is PUBLIC by design: Firebase security comes from Auth
  * authorized domains + Firestore/Storage rules, not from hiding these keys
  * (they ship in every Firebase web app's bundle). Same project as the mobile
  * app (arabic-grammar-app-43de9), so accounts + subscriptions are shared.

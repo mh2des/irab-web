@@ -1,6 +1,6 @@
 ---
 /**
- * /history — the user's saved history of analyzer + practice results (Arabic).
+ * /history: the user's saved history of analyzer + practice results (Arabic).
  * Reads from the local history store (per-account); each row re-opens the saved
  * result without re-calling the API. Personal page → noindex.
  */
@@ -12,7 +12,7 @@ import Section from '../components/Section.astro';
 
 const home = '/';
 ---
-<BaseLayout lang="ar" noindex title="سجلّي — إعراب" description="سجلّ تحليلاتك وتمارينك السابقة على إعراب.">
+<BaseLayout lang="ar" noindex title="سجلّي: إعراب" description="سجلّ تحليلاتك وتمارينك السابقة على إعراب.">
   <Nav lang="ar" />
   <main data-hist-root data-lang="ar" dir="rtl">
     <Section size="sm">
@@ -101,7 +101,7 @@ const home = '/';
     const esc = (s: string) => (s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as Record<string, string>)[c]);
     const icA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>';
     const icP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>';
-    const icDel = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>';
+    const icDel = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1 1-2 2H8a2 2 0 0 1 1-2-2L5 6"/></svg>';
 
     function render() {
       const items = getHistory(uid, filter === 'all' ? undefined : filter);

@@ -2,7 +2,7 @@
  "112:1": {
   "surah": 112,
   "ayah": 1,
-  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 1 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 1: word by word Arabic grammar",
   "tldr_en": "This verse opens with the imperative verb \"qul\" (say), whose object is the entire sentence that follows. That reported sentence is nominal: the pronoun \"huwa\" is the subject, the divine name \"Allah\" is a second subject, and \"ahad\" is its predicate. The inner nominal clause as a whole serves as predicate to \"huwa\".",
   "translation_en": "Say: He, Allah, is One.",
   "transliteration": "Qul huwa Allāhu aḥad(un)",
@@ -32,7 +32,7 @@
     "note_en": "Nominative with tanwin damma; it reports about \"Allah\", and this second nominal clause as a whole is the predicate of the first subject \"huwa\"."
    }
   ],
-  "irab_en": "The verse begins with قُلْ, an imperative verb resting on a silent ending, its agent a concealed pronoun \"you\" addressed to the Prophet. Everything after it is the speech being commanded, so the following sentence occupies the accusative slot as the verb's object. That object is a nominal sentence: هُوَ is a detached pronoun, fixed on fatha, occupying the nominative position as the first topic (mubtada'). The divine name ٱللَّهُ is nominative and serves as a second topic, while أَحَدٌ is its predicate, nominative with tanwin. The clause \"Allāhu aḥad\" — a complete subject-plus-predicate unit — then functions as the predicate of the opening pronoun هُوَ. This layered structure (a pronoun whose comment is itself a full nominal sentence) gives the verse its emphatic, declarative force.",
+  "irab_en": "The verse begins with قُلْ, an imperative verb resting on a silent ending, its agent a concealed pronoun \"you\" addressed to the Prophet. Everything after it is the speech being commanded, so the following sentence occupies the accusative slot as the verb's object. That object is a nominal sentence: هُوَ is a detached pronoun, fixed on fatha, occupying the nominative position as the first topic (mubtada'). The divine name ٱللَّهُ is nominative and serves as a second topic, while أَحَدٌ is its predicate, nominative with tanwin. The clause \"Allāhu aḥad\": a complete subject-plus-predicate unit: then functions as the predicate of the opening pronoun هُوَ. This layered structure (a pronoun whose comment is itself a full nominal sentence) gives the verse its emphatic, declarative force.",
   "faqs_en": [
    {
     "q": "Why is the sentence after \"qul\" considered an object?",
@@ -52,7 +52,7 @@
  "112:2": {
   "surah": 112,
   "ayah": 2,
-  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 2 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 2: word by word Arabic grammar",
   "tldr_en": "This ayah is a complete nominal sentence (jumla ismiyya) built from just two words. The proper name \"Allah\" serves as the subject (mubtada') in the nominative, and \"al-Samad\" is its predicate (khabar), also nominative. Both carry the explicit damma ending. The whole clause continues the description begun in ayah 1.",
   "translation_en": "Allah is the Eternal, Self-Sufficient One, upon whom all depend.",
   "transliteration": "Allāhu al-Ṣamad",
@@ -90,7 +90,7 @@
  "112:3": {
   "surah": 112,
   "ayah": 3,
-  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 3 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 3: word by word Arabic grammar",
   "tldr_en": "This ayah joins two parallel negated verbal clauses with the particle wāw. In each, the particle lam negates a present-tense verb and forces it into the jussive (majzūm) mood, shown by a sukūn on the final letter. The first verb is active (\"does not beget\"), the second passive (\"nor is begotten\"), each with a hidden subject referring back to Allah.",
   "translation_en": "He does not beget, nor is He begotten.",
   "transliteration": "lam yalid wa lam yūlad",
@@ -138,7 +138,7 @@
    },
    {
     "q": "What is the role of the wāw between the two clauses?",
-    "a": "The wāw is a coordinating conjunction (ḥarf ʿaṭf) that links the second negated sentence to the first, presenting the two denials—begetting and being begotten—as a balanced, parallel pair."
+    "a": "The wāw is a coordinating conjunction (ḥarf ʿaṭf) that links the second negated sentence to the first, presenting the two denials:begetting and being begotten:as a balanced, parallel pair."
    }
   ],
   "uthmani": "لَمْ يَلِدْ وَلَمْ يُولَدْ"
@@ -146,7 +146,7 @@
  "112:4": {
   "surah": 112,
   "ayah": 4,
-  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 4 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Ikhlas Ayah 4: word by word Arabic grammar",
   "tldr_en": "This verse is a negated past-tense sentence built on كان. The negative particle لم turns the present-tense verb يكن into a jussive expressing the past. كان has a postponed subject أحد and a fronted predicate كفوًا (accusative), while the prepositional phrase له attaches to that predicate. Both له and كفوًا precede the subject for emphasis. The whole clause is coordinated to the preceding verse by و.",
   "translation_en": "And there has never been anyone equal to Him.",
   "transliteration": "wa-lam yakun lahū kufuwan aḥad",

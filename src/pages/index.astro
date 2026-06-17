@@ -17,12 +17,12 @@ import Footer from '../components/sections/Footer.astro';
 
 const features = [
   { title: 'محلل إعراب بالذكاء الاصطناعي', body: 'ألصق أيّ جملة عربية فتُعرَب كلمة بكلمة في ثوانٍ: النوع، الوظيفة، الإعراب، العلامة، التشكيل الكامل، ملاحظة التصحيح، وشرح واضح للجملة.', span: 'md:col-span-2' },
-  { title: 'تدرّب وأَعرِبْ بنفسك', body: 'لا تكتفِ بقراءة الإعراب — أَعرِبْ أنت، واحصل على تقييمٍ فوري وشرحٍ لكلّ كلمة. ٥٧٦ جملة منتقاة، وتقييم بالذكاء الاصطناعي على جملك الخاصة. لا يفعلها أيّ تطبيق آخر.', span: '' },
+  { title: 'تدرّب وأَعرِبْ بنفسك', body: 'لا تكتفِ بقراءة الإعراب: أَعرِبْ أنت، واحصل على تقييمٍ فوري وشرحٍ لكلّ كلمة. ٥٧٦ جملة منتقاة، وتقييم بالذكاء الاصطناعي على جملك الخاصة. لا يفعلها أيّ تطبيق آخر.', span: '' },
   { title: 'تعلَّم باللعب', body: 'حوّل النحو إلى عادة ممتعة: حملة من ٧ أبواب، تحدٍّ يومي، نقاط XP، سلاسل، ١٠ رتب، شارات، ولوحات صدارة تنافس فيها غيرك.', span: '' },
   { title: 'ثلاثة معاجم، تطبيق واحد', body: 'الذكي (مدعوم بالذكاء الاصطناعي). التقليدي (١٣ معجمًا تراثيًا منها لسان العرب). اللهجات (٨ مناطق: مصري، شامي، خليجي، مغاربي، عراقي، يمني، سوداني، فلسطيني). أكثر من ٣٠٠٠٠ مدخل، يعمل دون إنترنت.', span: 'md:col-span-2' },
   { title: 'مكتبة الكتب الكلاسيكية', body: '٤٧ كتابًا كلاسيكيًّا في النحو والصرف والبلاغة والإعراب، مع بحث، مفضلة، متابعة قراءة، وفهرس داخلي.', span: '' },
   { title: 'شهادات إتقان', body: 'مشتركو الخطة السنوية يستطيعون طلب شهادة قابلة للمشاركة بعد إكمال مستوى بدقّة قوية في كل موضوع.', span: 'md:col-span-2' },
-  { title: 'إعراب القرآن — مزيّة إضافية', body: 'ألصق أيّ آية وادرس بنيتها كلمة بكلمة، أو تصفّح إعراب آيات المصحف على الويب. مكتبة مرجعية تكميلية، لا أداة قراءات ولا بديل عن المعلّم.', span: '' },
+  { title: 'إعراب القرآن: مزيّة إضافية', body: 'ألصق أيّ آية وادرس بنيتها كلمة بكلمة، أو تصفّح إعراب آيات المصحف على الويب. مكتبة مرجعية تكميلية، لا أداة قراءات ولا بديل عن المعلّم.', span: '' },
   { title: 'إدخال صوتي + OCR', body: 'تكلّم بالجملة ليحلّلها التطبيق. ومع Plus يمكنك تصوير النص العربي، قصّه، اختيار النص، ثم إعرابه.', span: 'md:col-span-2' },
 ];
 
@@ -90,9 +90,9 @@ const faqs = [
       <LiveDemo lang="ar" showHeader={false} />
     </div>
 
-    {/* Secondary CTA — the full experience lives in the app */}
+    {/* Secondary CTA: the full experience lives in the app */}
     <div class="text-center pb-16">
-      <p class="font-arabic text-small text-ink/65 dark:text-mist/65 mb-5">التجربة الكاملة — مع التدريب والمعاجم والمكتبة — في التطبيق، وتعمل دون إنترنت:</p>
+      <p class="font-arabic text-small text-ink/65 dark:text-mist/65 mb-5">التجربة الكاملة: مع التدريب والمعاجم والمكتبة: في التطبيق، وتعمل دون إنترنت:</p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
         <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener" class="btn-primary lift">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5V3.5c0-.59.34-1.11.84-1.35L13.69 12 3.84 21.85c-.5-.25-.84-.76-.84-1.35M16.81 15.12L6.05 21.34l8.49-8.49 2.27 2.27M20.16 10.81c.34.27.59.66.59 1.19s-.25.92-.59 1.19l-2.31 1.34-2.61-2.55 2.61-2.55 2.31 1.38M6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
@@ -117,7 +117,7 @@ const faqs = [
           ثمّ يصحّح لك ويشرح.
         </blockquote>
         <p class="mt-8 text-body-lg text-ink/70 dark:text-mist/70 font-arabic leading-loose" data-reveal data-reveal-delay="200">
-          أكثر تطبيقات اللغة تُلقّنك المفردات. إعراب يدرّبك على <span class="text-teal font-medium">ما وراء الكلمة</span> — البنية النحوية — بتحليلٍ فوري بالذكاء الاصطناعي، وتقييمٍ لإعرابك أنت، وتحدّياتٍ ترفع مستواك يومًا بعد يوم.
+          أكثر تطبيقات اللغة تُلقّنك المفردات. إعراب يدرّبك على <span class="text-teal font-medium">ما وراء الكلمة</span>: البنية النحوية: بتحليلٍ فوري بالذكاء الاصطناعي، وتقييمٍ لإعرابك أنت، وتحدّياتٍ ترفع مستواك يومًا بعد يوم.
         </p>
       </Container>
     </Section>
@@ -335,7 +335,7 @@ const faqs = [
 
     {/* ── Final CTA ────────────────────────────────────────────────── */}
     <Section id="cta" size="lg" class="relative overflow-hidden bg-ink dark:bg-mist text-paper dark:text-coal">
-      {/* Watermark accent — bottom-left corner (opposite to LTR page since Arabic is RTL) */}
+      {/* Watermark accent: bottom-left corner (opposite to LTR page since Arabic is RTL) */}
       <img
         src="/brand-watermark.png"
         alt=""

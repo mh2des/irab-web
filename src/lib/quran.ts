@@ -1,5 +1,5 @@
 /**
- * quran.ts — build-time data access + i'rab content rendering for the
+ * quran.ts: build-time data access + i'rab content rendering for the
  * Quran-i'rab section. Reads the exported JSON (see scripts/export-quran.mjs);
  * no DB at build, no runtime JS shipped.
  */
@@ -80,7 +80,7 @@ function esc(s: string): string {
 }
 
 /** Bold the parenthesised token being parsed; linkify [N] only if the footnote
- *  exists for this group (orphan markers — the common case — stay literal). */
+ *  exists for this group (orphan markers: the common case: stay literal). */
 function inlineFormat(escaped: string, markers: Set<string>): string {
   let s = escaped.replace(/\(([^()]{1,80})\)/g, (_m, g) => `<b class="tok">${g}</b>`);
   s = s.replace(/\[(\d+)\]/g, (m, n: string) =>
@@ -89,12 +89,19 @@ function inlineFormat(escaped: string, markers: Set<string>): string {
   return s;
 }
 
+function cleanVisibleDashMarkers(text: string): string {
+  return text
+    .replace(/(^|\n)\s*[-]\s+/g, '$1')
+    .replace(/(^|\n)(\d+)\s*[-]\s*/g, '$1$2. ')
+    .replace(/([\u0600-\u06ff])[-]([\u0600-\u06ff])/g, '$1 $2');
+}
+
 /** Render an i'rab/sarf/balagha/fawaid `content` string to HTML.
  *  `### x` → <h3>, blank lines → paragraphs, (token) → bold, [N] → footnote. */
 export function renderIrab(content: string | null, footnotes: Footnote[] = []): string {
   if (!content) return '';
   const markers = new Set(footnotes.map((f) => onlyDigits(f.marker)).filter(Boolean));
-  const blocks = content.split(/\n\s*\n/);
+  const blocks = cleanVisibleDashMarkers(content).split(/\n\s*\n/);
   const out: string[] = [];
   for (const raw of blocks) {
     const t = raw.trim();

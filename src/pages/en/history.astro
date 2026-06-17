@@ -1,6 +1,6 @@
 ---
 /**
- * /en/history — saved analyzer + practice history (English chrome). Personal → noindex.
+ * /en/history: saved analyzer + practice history (English chrome). Personal → noindex.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
@@ -8,7 +8,7 @@ import Footer from '../../components/sections/Footer.astro';
 import Container from '../../components/Container.astro';
 import Section from '../../components/Section.astro';
 ---
-<BaseLayout lang="en" noindex title="My history — Irab" description="Your saved analyzer and practice results on Irab.">
+<BaseLayout lang="en" noindex title="My history: Irab" description="Your saved analyzer and practice results on Irab.">
   <Nav lang="en" />
   <main data-hist-root data-lang="en">
     <Section size="sm">
@@ -97,7 +97,7 @@ import Section from '../../components/Section.astro';
     const esc = (s: string) => (s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as Record<string, string>)[c]);
     const icA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>';
     const icP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>';
-    const icDel = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>';
+    const icDel = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1 1-2 2H8a2 2 0 0 1 1-2-2L5 6"/></svg>';
 
     function render() {
       const items = getHistory(uid, filter === 'all' ? undefined : filter);

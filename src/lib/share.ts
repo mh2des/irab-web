@@ -1,5 +1,5 @@
 /**
- * share.ts — turn a result card into a shareable PNG (Arabic/RTL + the custom
+ * share.ts: turn a result card into a shareable PNG (Arabic/RTL + the custom
  * Uthmanic/Aref-Ruqaa fonts render CORRECTLY via snapdom's foreignObject
  * pipeline), then share it through the native share sheet (mobile) or download
  * it, and export a matching PDF (the PNG placed into a page so Arabic stays
@@ -11,7 +11,7 @@ const SCALE = 2.5; // retina-crisp; keeps tashkeel + Ruqaa swashes sharp
 const ARABIC_SAMPLE = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الإعراب ٢:٢٥٥';
 const FONT_FACES = ['"Uthmanic Hafs"', '"Aref Ruqaa"', '"The Year of Handicrafts"'];
 
-/** Decode the Arabic faces before rasterizing — the #1 cause of "Arabic broken
+/** Decode the Arabic faces before rasterizing: the #1 cause of "Arabic broken
  *  in the screenshot" is capturing before the woff2 has loaded. */
 async function ensureFonts(): Promise<void> {
   try {
@@ -24,7 +24,7 @@ async function ensureFonts(): Promise<void> {
         fonts.load(`700 48px ${f}`, ARABIC_SAMPLE).catch(() => {}),
       ]),
     );
-  } catch { /* ignore — embedFonts will still try */ }
+  } catch { /* ignore: embedFonts will still try */ }
 }
 
 function bgColor(): string {
@@ -62,7 +62,7 @@ export async function shareImage(el: HTMLElement, opts: ShareOpts = {}): Promise
       await nav.share({ files: [file], title: opts.title, text: opts.text });
       return;
     } catch (e: any) {
-      if (e?.name === 'AbortError') return; // user dismissed the sheet — not an error
+      if (e?.name === 'AbortError') return; // user dismissed the sheet: not an error
       // any other failure → fall through to download
     }
   }

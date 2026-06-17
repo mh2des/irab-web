@@ -1,7 +1,7 @@
 /* ───────────────────────────────────────────────────────────────────────────
-   Irab — Design System
+   Irab: Design System
    ───────────────────────────────────────────────────────────────────────────
-   Direction:  C (The Forge) — editorial scholarship + tech precision
+   Direction:  C (The Forge): editorial scholarship + tech precision
    Default:    Light mode, with world-class dark toggle
    Anti-AI:    No gradients. Solid colors with sharp accents.
    ─────────────────────────────────────────────────────────────────────────── */
@@ -10,9 +10,9 @@
 
 /* ── Self-hosted fonts ──────────────────────────────────────────────────────
    The whole site runs on these:
-     • Uthmanic Hafs (KFGQPC) — Quran verses (Mushaf Hafs, Unicode-compatible)
-     • Aref Ruqaa SALT        — display / headings (regal Ruqaa)
-     • The Year of Handicrafts — body / i'rab / everything else
+     • Uthmanic Hafs (KFGQPC): Quran verses (Mushaf Hafs, Unicode-compatible)
+     • Aref Ruqaa SALT       : display / headings (regal Ruqaa)
+     • The Year of Handicrafts: body / i'rab / everything else
    No other web font is loaded; Latin glyphs the Arabic faces lack fall back to
    the system UI font only. */
 @font-face {
@@ -70,7 +70,7 @@
 
 /* ── Design tokens ──────────────────────────────────────────────────────── */
 @theme {
-  /* Brand palette — solid, used surgically, NEVER simultaneously in same section */
+  /* Brand palette: solid, used surgically, NEVER simultaneously in same section */
   --color-purple: #7C4DFF;
   --color-purple-deep: #6200EA;
   --color-teal: #1F789B;
@@ -79,7 +79,7 @@
   /* Foundational neutrals */
   --color-ink: #173847;          /* dominant text on light */
   --color-ink-soft: #2A4858;
-  --color-paper: #F8F6F1;        /* warm bone-white — the canvas */
+  --color-paper: #F8F6F1;        /* warm bone-white: the canvas */
   --color-paper-soft: #F2EFE8;
   --color-stone: #E8E5DD;        /* hairline borders, dividers */
   --color-stone-soft: #DDD9CF;
@@ -91,11 +91,11 @@
   --color-mist: #F5F5F0;         /* off-white text on dark */
   --color-mist-soft: #C8C5BC;
 
-  /* Elevated card surface — deliberately BRIGHTER than the paper canvas so cards
+  /* Elevated card surface: deliberately BRIGHTER than the paper canvas so cards
      read as lifted off the lattice, with a crisp visible edge (the old cards used
      bg-paper === body bg + a hairline, so they disappeared). */
   --color-card: #FFFFFF;
-  --color-card-edge: #E0DBCF;    /* stronger than --color-stone — a border you can see */
+  --color-card-edge: #E0DBCF;    /* stronger than --color-stone: a border you can see */
 
   /* Grammatical case colors (used in i'rab demo) */
   --color-marfu: #7C4DFF;        /* purple = nominative case */
@@ -103,7 +103,7 @@
   --color-majrur: #1F789B;       /* teal = genitive case */
   --color-jazm: #8B7355;         /* warm gray = jussive case */
 
-  /* Type families — three faces, mapped across every role. Latin falls back to
+  /* Type families: three faces, mapped across every role. Latin falls back to
      system-ui (the Arabic faces are Arabic-first). */
   --font-display: 'Aref Ruqaa', system-ui, serif;        /* headings / hero */
   --font-sans: 'The Year of Handicrafts', system-ui, sans-serif;  /* body */
@@ -112,15 +112,15 @@
   --font-arabic-display: 'Aref Ruqaa', system-ui, serif;
   /* Classical / book-feel Arabic → The Year of Handicrafts (our body face). */
   --font-arabic-classical: 'The Year of Handicrafts', serif;
-  /* Quran verses only — KFGQPC Uthmanic Hafs (Mushaf Hafs). */
+  /* Quran verses only: KFGQPC Uthmanic Hafs (Mushaf Hafs). */
   --font-quran: 'Uthmanic Hafs', 'The Year of Handicrafts', serif;
 
   /* Type scale (rems based on 16px root) */
-  --text-display-xl: 7.5rem;     /* 120px — hero word اقرأ */
+  --text-display-xl: 7.5rem;     /* 120px: hero word اقرأ */
   --text-display-xl--line-height: 0.9;
   --text-display-xl--letter-spacing: -0.04em;
 
-  --text-display: 3.75rem;       /* 60px — section opener (Aref Ruqaa dialed back) */
+  --text-display: 3.75rem;       /* 60px: section opener (Aref Ruqaa dialed back) */
   --text-display--line-height: 1.05;
   --text-display--letter-spacing: 0;
 
@@ -150,24 +150,24 @@
   --text-caption: 1.125rem;      /* 18px */
   --text-caption--line-height: 1.6;
 
-  /* Easings — consistent, intentional, never bouncy */
+  /* Easings: consistent, intentional, never bouncy */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 
-  /* Shadows — restrained, used only for elevation cues */
+  /* Shadows: restrained, used only for elevation cues */
   --shadow-soft: 0 1px 2px 0 rgb(23 56 71 / 0.04), 0 1px 1px 0 rgb(23 56 71 / 0.02);
   --shadow-card: 0 2px 8px -2px rgb(23 56 71 / 0.06), 0 4px 16px -4px rgb(23 56 71 / 0.04);
   --shadow-lift: 0 8px 24px -8px rgb(23 56 71 / 0.12), 0 16px 48px -16px rgb(23 56 71 / 0.08);
 }
 
-/* The three faces are Arabic-first and apply to every locale — no per-locale
+/* The three faces are Arabic-first and apply to every locale: no per-locale
    font cascade is needed any more (the old override pointed at fonts we no
    longer ship). */
 
 /* ── Arabic ligature protection ──────────────────────────────────────────
    Wide letter-spacing (tracking) is a Latin-typography concept that breaks
-   Arabic ligatures — letters stop connecting and look disjointed. Strip
+   Arabic ligatures: letters stop connecting and look disjointed. Strip
    wide tracking and uppercase transforms on Arabic pages globally. */
 :root[lang="ar"] :where(
   .eyebrow,
@@ -196,14 +196,14 @@
     font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
   }
 
-  /* Subtle Islamic geometric texture — a faint diagonal diamond lattice woven
+  /* Subtle Islamic geometric texture: a faint diagonal diamond lattice woven
      behind everything. Two crossing line-sets form the rhombus grid; kept very
      low-contrast so it reads as paper texture, not a graph. Solid cards sit on
      top of it cleanly. Tune via --pattern-line / --pattern-size. */
   :root {
     --pattern-line: color-mix(in srgb, var(--color-ink) 10%, transparent);
     --pattern-size: 24px;
-    /* Shared "soft elevated" hover shadow — the nav interaction, reused. */
+    /* Shared "soft elevated" hover shadow: the nav interaction, reused. */
     --lift-shadow:
       0 16px 34px -14px color-mix(in srgb, var(--color-purple) 42%, transparent),
       0 4px 10px -6px color-mix(in srgb, var(--color-ink) 10%, transparent);
@@ -234,7 +234,7 @@
   }
 
   /* Display headings use whichever display font the locale resolves to.
-     Optical settings only meaningful for Fraunces (English) — silently
+     Optical settings only meaningful for Fraunces (English): silently
      ignored by Reem Kufi (Arabic). */
   :where(h1, h2, h3, .display) {
     font-family: var(--font-display);
@@ -257,14 +257,14 @@
     color: var(--color-mist);
   }
 
-  /* Focus ring — accessible, on-brand */
+  /* Focus ring: accessible, on-brand */
   :focus-visible {
     outline: 2px solid var(--color-purple);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
-  /* Smooth scroll for anchor jumps only — NOT a smooth-scroll lib */
+  /* Smooth scroll for anchor jumps only: NOT a smooth-scroll lib */
   html {
     scroll-behavior: smooth;
   }
@@ -282,7 +282,7 @@
 
 /* ── Component primitives ──────────────────────────────────────────────── */
 @layer components {
-  /* Soft 3D lift on hover — the nav interaction, reused on buttons + clickable
+  /* Soft 3D lift on hover: the nav interaction, reused on buttons + clickable
      cards site-wide. Lifts the element with a soft, brand-tinted shadow. */
   .lift {
     transition: transform .25s var(--ease-out-quart),
@@ -309,7 +309,7 @@
     border-color: var(--color-coal-edge);
     box-shadow: 0 2px 8px -3px rgb(0 0 0 / 0.45), 0 14px 30px -14px rgb(0 0 0 / 0.55);
   }
-  /* Clickable card — soft 3D lift + brand-tinted edge on hover. */
+  /* Clickable card: soft 3D lift + brand-tinted edge on hover. */
   .card-interactive {
     transition: transform .25s var(--ease-out-quart), box-shadow .25s var(--ease-out-quart), border-color .2s;
   }
@@ -321,7 +321,7 @@
   .dark .card-interactive:hover { border-color: color-mix(in srgb, var(--color-purple) 45%, var(--color-coal-edge)); }
   @media (prefers-reduced-motion: reduce) { .card-interactive:hover { transform: none; } }
 
-  /* ── Buttons — solid brand, soft depth, lift on hover ─────────────────── */
+  /* ── Buttons: solid brand, soft depth, lift on hover ─────────────────── */
   .btn-primary {
     display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
     padding: 0.9rem 1.7rem; border-radius: 9999px; font-weight: 600; white-space: nowrap;
@@ -342,14 +342,14 @@
   .dark .btn-ghost:hover { color: color-mix(in srgb, var(--color-purple) 80%, white); }
   @media (prefers-reduced-motion: reduce) { .btn-primary:hover, .btn-ghost:hover { transform: none; } }
 
-  /* Large button variant — for hero / primary conversion moments. */
+  /* Large button variant: for hero / primary conversion moments. */
   .btn-lg { padding: 1.05rem 2.1rem; font-size: var(--text-small); gap: 0.65rem; }
-  /* Block button — fills its container (cards, forms). */
+  /* Block button: fills its container (cards, forms). */
   .btn-block { display: flex; width: 100%; }
   /* Disabled state for any button primitive. */
   .btn-primary:disabled, .btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
-  /* ── Icon button — square, real surface, always carry an aria-label ─────── */
+  /* ── Icon button: square, real surface, always carry an aria-label ─────── */
   .icon-btn {
     display: inline-flex; align-items: center; justify-content: center;
     width: 2.85rem; height: 2.85rem; border-radius: 0.85rem; flex-shrink: 0;
@@ -362,7 +362,7 @@
   .dark .icon-btn:hover { color: color-mix(in srgb, var(--color-purple) 80%, white); }
   @media (prefers-reduced-motion: reduce) { .icon-btn:hover { transform: none; } }
 
-  /* ── Form input — one consistent field across auth / dictionary / practice ── */
+  /* ── Form input: one consistent field across auth / dictionary / practice ── */
   .input {
     width: 100%;
     background: var(--color-card);
@@ -378,7 +378,7 @@
   .dark .input::placeholder { color: color-mix(in srgb, var(--color-mist) 42%, transparent); }
   .input:focus { outline: none; border-color: var(--color-purple); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-purple) 16%, transparent); }
 
-  /* ── Badge / chip — status pills (verified, plan, counts) ───────────────── */
+  /* ── Badge / chip: status pills (verified, plan, counts) ───────────────── */
   .badge {
     display: inline-flex; align-items: center; gap: 0.4rem;
     padding: 0.34rem 0.85rem; border-radius: 9999px;
@@ -394,7 +394,7 @@
   .badge-brand { background: color-mix(in srgb, var(--color-purple) 15%, transparent); color: var(--color-purple-deep); }
   .dark .badge-brand { color: color-mix(in srgb, var(--color-purple) 82%, white); }
 
-  /* ── Skeleton loader — shimmer, replaces the bare faint "…" loading text ── */
+  /* ── Skeleton loader: shimmer, replaces the bare faint "…" loading text ── */
   .skeleton {
     position: relative; overflow: hidden;
     background: color-mix(in srgb, var(--color-ink) 7%, transparent);
@@ -410,24 +410,24 @@
   @keyframes skeleton-shimmer { to { transform: translateX(100%); } }
   @media (prefers-reduced-motion: reduce) { .skeleton::after { animation: none; } }
 
-  /* ── Stat — big number + label, for hubs / usage / dashboards ───────────── */
+  /* ── Stat: big number + label, for hubs / usage / dashboards ───────────── */
   .stat-num { font-family: var(--font-display); font-weight: 700; font-size: 2.5rem; line-height: 1; color: var(--color-ink); }
   .dark .stat-num { color: var(--color-mist); }
   .stat-label { font-size: var(--text-caption); font-weight: 600; color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
   .dark .stat-label { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
 
-  /* ── Solid section band — replaces translucent bg-paper-soft/40 tinting ─── */
+  /* ── Solid section band: replaces translucent bg-paper-soft/40 tinting ─── */
   .section-tint { background: var(--color-paper-soft); }
   .dark .section-tint { background: var(--color-coal-soft); }
 
-  /* ── Panel entrance — for JS-toggled containers (hidden → shown). Plays the
+  /* ── Panel entrance: for JS-toggled containers (hidden → shown). Plays the
      moment `display:none` is removed; reliable where scroll-reveal/GSAP can't
      measure a hidden node. ── */
   @keyframes panel-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   .panel-in { animation: panel-in .5s var(--ease-out-quart) both; }
   @media (prefers-reduced-motion: reduce) { .panel-in { animation: none; } }
 
-  /* Hairline divider — used between sections sparingly */
+  /* Hairline divider: used between sections sparingly */
   .hairline {
     height: 1px;
     background-color: var(--color-stone);
@@ -436,21 +436,21 @@
     background-color: var(--color-coal-edge);
   }
 
-  /* Classical Naskh — Amiri, for i'rab analysis, hadith, classical Arabic. */
+  /* Classical Naskh: Amiri, for i'rab analysis, hadith, classical Arabic. */
   .classical-naskh {
     font-family: var(--font-arabic-classical) !important;
   }
 
-  /* Quran ayat — Amiri Quran variant, for verses themselves only. */
+  /* Quran ayat: Amiri Quran variant, for verses themselves only. */
   .quran-text {
     font-family: var(--font-quran) !important;
     font-feature-settings: 'ss01' 1, 'kern' 1, 'liga' 1, 'calt' 1;
   }
 
-  /* Eyebrow — section label above headlines. Designed for impact:
+  /* Eyebrow: section label above headlines. Designed for impact:
      bigger, bolder, colored, with an animated draw-in accent line.
      Latin: 14px mono with tracking (editorial small-caps feel).
-     Arabic: 18px Reem Kufi 700 (display-grade, no tracking — preserves
+     Arabic: 18px Reem Kufi 700 (display-grade, no tracking: preserves
      ligatures). Color defaults to purple (brand primary). */
   .eyebrow {
     display: inline-flex;
@@ -470,7 +470,7 @@
 
   /* Animated drawing-in accent line before the label. Uses currentColor
      so it inherits whatever color the eyebrow takes (purple/teal/ink). */
-  /* The drawn accent line before eyebrows reads as an AI tell — removed. */
+  /* The drawn accent line before eyebrows reads as an AI tell: removed. */
   .eyebrow::before { display: none; }
 
   /* RTL: line draws from the right */
@@ -479,12 +479,12 @@
     transform-origin: right center;
   }
 
-  /* Arabic: use the body face, not the ornate Ruqaa — eyebrows are
-     small UI labels and must stay legible — and make them clearly bigger. */
+  /* Arabic: use the body face, not the ornate Ruqaa: eyebrows are
+     small UI labels and must stay legible: and make them clearly bigger. */
   :root[lang="ar"] .eyebrow,
   :root[dir="rtl"] .eyebrow {
     font-family: var(--font-arabic);
-    font-size: 2rem;            /* 32px — section sub-labels */
+    font-size: 2rem;            /* 32px: section sub-labels */
     font-weight: 700;
     line-height: 1.3;
     letter-spacing: 0;

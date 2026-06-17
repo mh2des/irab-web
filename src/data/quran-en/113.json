@@ -2,7 +2,7 @@
  "113:1": {
   "surah": 113,
   "ayah": 1,
-  "h1_en": "I'rab of Surah Al-Falaq Ayah 1 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Falaq Ayah 1: word by word Arabic grammar",
   "tldr_en": "The verse opens with the imperative verb qul (\"say\") whose subject is a hidden \"you.\" Its unstated object is the whole quoted sentence that follows: a'udhu (\"I seek refuge\"), a present-tense verb with a concealed \"I.\" The preposition bi plus rabbi forms a phrase attached to a'udhu, and rabbi governs al-falaq as its genitive possessive complement.",
   "translation_en": "Say: I seek refuge with the Lord of the daybreak.",
   "transliteration": "Qul aʿūdhu bi-rabbi l-falaq(i)",
@@ -42,7 +42,7 @@
   "faqs_en": [
    {
     "q": "What is the grammatical object of the verb qul in this verse?",
-    "a": "Its object is not a single noun but the entire sentence spoken after it — \"aʿūdhu bi-rabbi l-falaq.\" In Arabic, a quoted statement following \"say\" occupies the accusative position as the object of qul, even though the words inside that quote keep their own internal grammar."
+    "a": "Its object is not a single noun but the entire sentence spoken after it: \"aʿūdhu bi-rabbi l-falaq.\" In Arabic, a quoted statement following \"say\" occupies the accusative position as the object of qul, even though the words inside that quote keep their own internal grammar."
    },
    {
     "q": "Why are both rabbi and al-falaq in the genitive case?",
@@ -58,7 +58,7 @@
  "113:2": {
   "surah": 113,
   "ayah": 2,
-  "h1_en": "I'rab of Surah Al-Falaq Ayah 2 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Falaq Ayah 2: word by word Arabic grammar",
   "tldr_en": "This verse is a prepositional phrase (min sharri) that attaches grammatically to the verb a'udhu (I seek refuge) in the previous ayah. Sharr is a noun in the genitive governed by min, and it is the first term of a genitive construction (idafa) whose second term is the relative noun ma (what), which takes a genitive position. The verb khalaqa forms the relative clause with an omitted returning pronoun.",
   "translation_en": "From the evil of what He created.",
   "transliteration": "min sharri mā khalaq(a)",
@@ -108,7 +108,7 @@
  "113:3": {
   "surah": 113,
   "ayah": 3,
-  "h1_en": "I'rab of Surah Al-Falaq Ayah 3 - word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Falaq Ayah 3 - word by word Arabic grammar",
   "tldr_en": "This verse opens with a coordinating wa- joining a prepositional phrase (min sharri) that attaches to the earlier verb a'udhu (I seek refuge). Sharr governs the indefinite ghasiq as a genitive possessed construction. The adverbial idha then introduces a conditional-type time clause whose verb is waqaba, the whole clause qualifying ghasiq.",
   "translation_en": "And from the evil of the darkening night when it settles in.",
   "transliteration": "wa min sharri ghaasiqin idhaa waqaba",
@@ -170,7 +170,7 @@
  "113:4": {
   "surah": 113,
   "ayah": 4,
-  "h1_en": "I'rab of Surah Al-Falaq Ayah 4 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Falaq Ayah 4: word by word Arabic grammar",
   "tldr_en": "This verse continues the chain of things sought refuge from. The conjunction wa links it to the earlier \"from the evil of.\" The prepositional phrase min sharri attaches to the verb a'udhu (I seek refuge) in verse 1. Sharr is a noun in the genitive governing the following genitive construct, and fi al-'uqad is a prepositional phrase modifying al-naffathat.",
   "translation_en": "And from the evil of those who blow on knots.",
   "transliteration": "wa min sharri an-naffathati fi al-'uqad",
@@ -220,7 +220,7 @@
    },
    {
     "q": "What does the prepositional phrase فِى ٱلْعُقَدِ connect to grammatically?",
-    "a": "It attaches to النفّاثات, the active participle describing those who blow. The phrase specifies the location or object of the blowing — 'on the knots' — functioning as an adverbial complement of that participle rather than relating to the main verb."
+    "a": "It attaches to النفّاثات, the active participle describing those who blow. The phrase specifies the location or object of the blowing: 'on the knots': functioning as an adverbial complement of that participle rather than relating to the main verb."
    },
    {
     "q": "How is the opening وَ in this verse parsed?",
@@ -232,7 +232,7 @@
  "113:5": {
   "surah": 113,
   "ayah": 5,
-  "h1_en": "I'rab of Surah Al-Falaq Ayah 5 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Falaq Ayah 5: word by word Arabic grammar",
   "tldr_en": "This ayah is coordinated by the conjunction wa onto the earlier \"min sharri\" phrases, so \"min sharri hasidin\" is again a prepositional phrase tied to the verb \"a'udhu\" in ayah 1. \"Hasidin\" is an indefinite genitive added to \"sharr.\" The clause \"idha hasada\" is an adverbial of time governing a following conditional-style verb.",
   "translation_en": "And from the evil of an envier when he envies.",
   "transliteration": "Wa min sharri hasidin idha hasad(a)",

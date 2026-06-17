@@ -2,8 +2,8 @@
  "109:1": {
   "surah": 109,
   "ayah": 1,
-  "h1_en": "I'rab of Surah Al-Kafirun Ayah 1 — word-by-word Arabic grammar",
-  "tldr_en": "This ayah is an imperative sentence: the verb \"qul\" (say) commands the addressee, with its subject an implied \"you.\" What follows is the quoted speech — a vocative call introduced by the particle \"ya.\" The vocative noun \"ayyuha\" is built on damma in an accusative position, and \"al-kafirun\" follows it as an explanatory appositive in nominative form.",
+  "h1_en": "I'rab of Surah Al-Kafirun Ayah 1: word by word Arabic grammar",
+  "tldr_en": "This ayah is an imperative sentence: the verb \"qul\" (say) commands the addressee, with its subject an implied \"you.\" What follows is the quoted speech: a vocative call introduced by the particle \"ya.\" The vocative noun \"ayyuha\" is built on damma in an accusative position, and \"al-kafirun\" follows it as an explanatory appositive in nominative form.",
   "translation_en": "Say: O you disbelievers.",
   "transliteration": "Qul yā ayyuhā al-kāfirūn",
   "words_en": [
@@ -40,11 +40,11 @@
    },
    {
     "q": "What is the subject of the verb \"qul\"?",
-    "a": "There is no visible subject. The doer is a hidden (implied) pronoun understood as \"you,\" addressed to a single male listener — the standard pattern for a masculine singular imperative."
+    "a": "There is no visible subject. The doer is a hidden (implied) pronoun understood as \"you,\" addressed to a single male listener: the standard pattern for a masculine singular imperative."
    },
    {
     "q": "What grammatical role does the rest of the verse play after \"qul\"?",
-    "a": "Everything from \"ya ayyuha al-kafirun\" onward is the content of the command — the speech that is to be said. Functionally it stands as the object of \"qul,\" since an imperative of saying introduces the words to be uttered."
+    "a": "Everything from \"ya ayyuha al-kafirun\" onward is the content of the command: the speech that is to be said. Functionally it stands as the object of \"qul,\" since an imperative of saying introduces the words to be uttered."
    }
   ],
   "uthmani": "قُلْ يَٰٓأَيُّهَا ٱلْكَٰفِرُونَ"
@@ -52,7 +52,7 @@
  "109:2": {
   "surah": 109,
   "ayah": 2,
-  "h1_en": "I'rab of Surah Al-Kafirun Ayah 2 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Kafirun Ayah 2: word by word Arabic grammar",
   "tldr_en": "A short verbal sentence negated by laa: the imperfect verb a'budu carries a hidden \"I\" subject, and the relative noun maa serves as its fronted object. Maa heads a relative clause whose verb ta'buduna (\"you worship\") contains the omitted returning pronoun, completing the meaning \"what you worship.\"",
   "translation_en": "I do not worship what you worship.",
   "transliteration": "lā aʿbudu mā taʿbudūn",
@@ -102,7 +102,7 @@
  "109:3": {
   "surah": 109,
   "ayah": 3,
-  "h1_en": "I'rab of Surah Al-Kafirun Ayah 3 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Kafirun Ayah 3: word by word Arabic grammar",
   "tldr_en": "This verse is a nominal sentence joined by the conjunction wa. The negative laa here is non-governing (muhmalah), so it has no grammatical effect. Antum is the subject (mubtada'), and the active participle 'aabiduuna is its predicate (khabar). The relative noun maa functions as the object of 'aabiduuna, with its own verbal clause following.",
   "translation_en": "And you are not worshippers of what I worship.",
   "transliteration": "wa laa antum 'aabiduuna maa a'bud",
@@ -164,7 +164,7 @@
  "109:4": {
   "surah": 109,
   "ayah": 4,
-  "h1_en": "Irab of Surah Al-Kafirun Ayah 4 - word-by-word Arabic grammar",
+  "h1_en": "Irab of Surah Al-Kafirun Ayah 4 - word by word Arabic grammar",
   "tldr_en": "This verse is a negated nominal sentence. The particle la negates, ana is the subject (mubtada), and the active participle abidun is the predicate (khabar). The relative noun ma functions as the object of that participle, and the past-tense verb abadtum with its attached subject pronoun forms the relative clause, whose returning pronoun is omitted.",
   "translation_en": "And I am not a worshipper of what you have worshipped.",
   "transliteration": "wa la ana abidun ma abadtum",
@@ -226,7 +226,7 @@
  "109:5": {
   "surah": 109,
   "ayah": 5,
-  "h1_en": "I'rab of Surah Al-Kafirun Ayah 5 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Kafirun Ayah 5: word by word Arabic grammar",
   "tldr_en": "This verse is a nominal sentence introduced by a connecting waw. After a non-operative negative laa, \"antum\" is the subject (mubtada') and the active participle \"aabidoona\" is its predicate (khabar). The relative noun \"maa\" sits in the accusative as the object of that participle, and \"a'budu\" forms its relative clause.",
   "translation_en": "And you are not worshippers of what I worship.",
   "transliteration": "Wa laa antum 'aabidoona maa a'bud.",
@@ -288,7 +288,7 @@
  "109:6": {
   "surah": 109,
   "ayah": 6,
-  "h1_en": "I'rab of Surah Al-Kafirun Ayah 6 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Kafirun Ayah 6: word by word Arabic grammar",
   "tldr_en": "This verse is two parallel nominal sentences. In each, a fronted prepositional phrase (lakum / liya) serves as a preposed predicate (khabar muqaddam), and the following noun (dinukum / din) is the delayed subject (mubtada' mu'akhkhar). The waw joins the two clauses. The fronting gives the sense of specification and contrast.",
   "translation_en": "For you is your religion, and for me is my religion.",
   "transliteration": "Lakum dīnukum wa-liya dīn(i)",
@@ -324,11 +324,11 @@
     "note_en": "This is the delayed subject, formally nominative; its damma is estimated on the consonant before the lightened (dropped) ya of possession ('my religion')."
    }
   ],
-  "irab_en": "The verse consists of two balanced nominal sentences joined by the conjunction waw. In the first, لَكُمْ — the preposition lam with the attached pronoun kum — is a prepositional phrase functioning as a fronted predicate (khabar muqaddam), while دِينُكُمْ is the delayed subject (mubtada' mu'akhkhar) in the nominative, marked by a clear damma, and joined to the pronoun kum in a genitive construct. The second clause mirrors the first: لِيَ is the fronted predicate, and دِينِ is the delayed subject, nominative in status though its ending is not pronounced — the original ya of possession is dropped for lightness, so the damma is merely estimated on the preceding letter. Fronting the predicates conveys restriction and emphatic contrast between the two parties.",
+  "irab_en": "The verse consists of two balanced nominal sentences joined by the conjunction waw. In the first, لَكُمْ: the preposition lam with the attached pronoun kum: is a prepositional phrase functioning as a fronted predicate (khabar muqaddam), while دِينُكُمْ is the delayed subject (mubtada' mu'akhkhar) in the nominative, marked by a clear damma, and joined to the pronoun kum in a genitive construct. The second clause mirrors the first: لِيَ is the fronted predicate, and دِينِ is the delayed subject, nominative in status though its ending is not pronounced: the original ya of possession is dropped for lightness, so the damma is merely estimated on the preceding letter. Fronting the predicates conveys restriction and emphatic contrast between the two parties.",
   "faqs_en": [
    {
     "q": "Why is the prepositional phrase placed before the subject in this verse?",
-    "a": "In both clauses the predicate (lakum, liya) is a prepositional phrase brought forward before the subject. This fronting is deliberate: it produces the sense of restriction and sharp contrast — 'yours alone for you, mine alone for me' — which fits the verse's theme of separating the two faiths."
+    "a": "In both clauses the predicate (lakum, liya) is a prepositional phrase brought forward before the subject. This fronting is deliberate: it produces the sense of restriction and sharp contrast: 'yours alone for you, mine alone for me': which fits the verse's theme of separating the two faiths."
    },
    {
     "q": "Why does دِينِ not show a visible case ending?",

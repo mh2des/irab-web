@@ -1,12 +1,12 @@
 ---
 /**
- * AuthForm — sign in / create account with Email, Google, Apple.
+ * AuthForm: sign in / create account with Email, Google, Apple.
  * Client-only logic (Firebase) lives in the module <script> below; it reads
  * config from data-attributes so it can use SDK imports.
  */
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
-// After auth, land users on the app hub (their signed-in home), not the bare account page.
+// After auth, land users on the app hub (their signed in home), not the bare account page.
 const account = lang === 'ar' ? '/app' : '/en/app';
 
 const t = lang === 'ar'
@@ -103,7 +103,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       class="block mx-auto mt-6 text-small text-ink/60 dark:text-mist/60 hover:text-ink dark:hover:text-mist transition-colors"></button>
   </div>
 
-  {/* Loading overlay — covers the card during sign-in / sign-up so it's clear something's happening */}
+  {/* Loading overlay: covers the card during sign in / sign-up so it's clear something's happening */}
   <div data-auth-loading class="hidden absolute inset-0 rounded-2xl bg-paper/85 dark:bg-coal/85 backdrop-blur-sm grid place-items-center z-10">
     <div class="text-center">
       <svg class="w-9 h-9 mx-auto text-purple animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>

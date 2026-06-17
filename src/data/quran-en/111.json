@@ -2,7 +2,7 @@
  "111:1": {
   "surah": 111,
   "ayah": 1,
-  "h1_en": "I'rab of Surah Al-Masad Ayah 1 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Masad Ayah 1: word by word Arabic grammar",
   "tldr_en": "The verse is built on two coordinated past-tense verbal sentences. The first, تَبَّتْ يَدَا أَبِي لَهَبٍ, has the verb تَبَّتْ followed by its subject يَدَا (a dual in the nominative), which heads a two-link genitive chain (أَبِي then لَهَبٍ). The conjunction وَ then links the second clause وَتَبَّ, whose subject is hidden.",
   "translation_en": "May the two hands of Abu Lahab perish, and may he perish.",
   "transliteration": "Tabbat yadā abī lahabin wa tabb(a)",
@@ -52,7 +52,7 @@
    },
    {
     "q": "Why is يَدَا written without a final nūn, and how is its case shown?",
-    "a": "يَدَا is a dual noun functioning as the subject, so it is nominative — but instead of a ḍammah, duals take a final alif. The expected dual nūn is dropped because يَدَا is the first term of a genitive construction (iḍāfah) with أَبِي, and the head noun of such a construction never keeps its nūn."
+    "a": "يَدَا is a dual noun functioning as the subject, so it is nominative: but instead of a ḍammah, duals take a final alif. The expected dual nūn is dropped because يَدَا is the first term of a genitive construction (iḍāfah) with أَبِي, and the head noun of such a construction never keeps its nūn."
    },
    {
     "q": "Why does أَبِي end in yāʾ instead of a kasrah for the genitive?",
@@ -64,7 +64,7 @@
  "111:2": {
   "surah": 111,
   "ayah": 2,
-  "h1_en": "I'rab of Surah Al-Masad Ayah 2 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Masad Ayah 2: word by word Arabic grammar",
   "tldr_en": "A negative verbal sentence: the particle mā negates the past verb aghnā (\"availed nothing\"). The prepositional phrase ʿanhu attaches to that verb, and māluhū is its delayed subject. The second mā is a maṣdariyya particle forming a verbal noun (\"what he earned\"), coordinated by the wāw onto māluhū as a second subject of aghnā.",
   "translation_en": "His wealth did not avail him, nor did what he earned.",
   "transliteration": "mā aghnā ʿanhu māluhū wa-mā kasab(a)",
@@ -112,7 +112,7 @@
     "note_en": "A past verb fixed on fatḥa meaning 'he earned'; with the preceding mā it yields an interpreted verbal noun standing in the nominative, coordinated onto māluhū."
    }
   ],
-  "irab_en": "The verse opens with mā, a particle of negation with no syntactic position, denying the action of the verb that follows. Aghnā is a past-tense verb ('it availed'), built on an estimated vowel over its weak final letter. The phrase ʿanhu — the preposition ʿan with its genitive pronoun — attaches to this verb. The verb's subject is delayed: māluhū ('his wealth') is nominative, marked by ḍamma, with the pronoun hū as its possessive annexation. The conjunction wāw then links a second subject: the particle mā here is maṣdariyya, turning kasaba ('he earned') into an interpreted verbal noun. This noun, 'what he earned', sits in the nominative position and is coordinated onto māluhū, so the negation covers both his wealth and his gains: neither availed him at all.",
+  "irab_en": "The verse opens with mā, a particle of negation with no syntactic position, denying the action of the verb that follows. Aghnā is a past-tense verb ('it availed'), built on an estimated vowel over its weak final letter. The phrase ʿanhu: the preposition ʿan with its genitive pronoun: attaches to this verb. The verb's subject is delayed: māluhū ('his wealth') is nominative, marked by ḍamma, with the pronoun hū as its possessive annexation. The conjunction wāw then links a second subject: the particle mā here is maṣdariyya, turning kasaba ('he earned') into an interpreted verbal noun. This noun, 'what he earned', sits in the nominative position and is coordinated onto māluhū, so the negation covers both his wealth and his gains: neither availed him at all.",
   "faqs_en": [
    {
     "q": "Why does the subject 'māluhū' come after the verb and the prepositional phrase?",
@@ -132,7 +132,7 @@
  "111:3": {
   "surah": 111,
   "ayah": 3,
-  "h1_en": "I'rab of Surah Al-Masad Ayah 3 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Masad Ayah 3: word by word Arabic grammar",
   "tldr_en": "A simple future verbal sentence. The prefix sa- marks futurity on the verb yaslaa (\"will burn in\"), whose hidden subject pronoun refers to Abu Lahab. Naaran is the accusative direct object, and dhaata is its accusative adjective in a genitive construction with lahab, which is itself the genitive second term of that annexation.",
   "translation_en": "He will soon burn in a Fire full of flames.",
   "transliteration": "Sa-yaslaa naaran dhaata lahab",
@@ -182,9 +182,9 @@
  "111:4": {
   "surah": 111,
   "ayah": 4,
-  "h1_en": "I'rab of Surah Al-Masad Ayah 4 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Masad Ayah 4: word by word Arabic grammar",
   "tldr_en": "The verse opens with a connective wāw joining \"his wife\" to the implied subject of the preceding verb \"yaṣlā\" (he will burn), so she too will enter the fire. \"Ḥammālata l-ḥaṭab\" (carrier of firewood) is read in the accusative as the object of an understood verb of disparagement, and \"al-ḥaṭab\" follows as its genitive possessive complement.",
-  "translation_en": "And his wife — the carrier of firewood.",
+  "translation_en": "And his wife: the carrier of firewood.",
   "transliteration": "wa-mra’atuhu ḥammālata l-ḥaṭab(i)",
   "words_en": [
    {
@@ -226,7 +226,7 @@
  "111:5": {
   "surah": 111,
   "ayah": 5,
-  "h1_en": "I'rab of Surah Al-Masad Ayah 5 — word-by-word Arabic grammar",
+  "h1_en": "I'rab of Surah Al-Masad Ayah 5: word by word Arabic grammar",
   "tldr_en": "This ayah is a nominal sentence with a fronted predicate. The prepositional phrase fi jidiha (\"around her neck\") serves as the advanced predicate (khabar muqaddam), while hablun (\"a rope\") is the delayed subject (mubtada' mu'akhkhar). The phrase min masadin then describes that rope, qualifying it as twisted palm-fiber.",
   "translation_en": "Around her neck is a rope of twisted palm-fiber.",
   "transliteration": "fī jīdihā ḥablun min masad(in)",

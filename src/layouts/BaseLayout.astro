@@ -66,7 +66,7 @@ const hasAlternate = lang === 'en' || hasEn;
   <link rel="canonical" href={canonical.toString()} />
 
   {/* Preload the three self-hosted faces (body, display, Quran) for fast,
-      flash-free first paint. Stable /public paths — not content-hashed. */}
+      flash-free first paint. Stable /public paths: not content-hashed. */}
   <link rel="preload" href="/fonts/TheYearofHandicrafts-Medium.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/TheYearofHandicrafts-Bold.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/aref-ruqaa.woff2" as="font" type="font/woff2" crossorigin />
@@ -95,7 +95,7 @@ const hasAlternate = lang === 'en' || hasEn;
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={new URL(ogImage, Astro.site).toString()} />
 
-  {/* Hreflang — only when an English twin exists, else Arabic-only pages
+  {/* Hreflang: only when an English twin exists, else Arabic-only pages
       would advertise an alternate that 404s. Arabic is x-default. */}
   {hasAlternate && (
     <>
@@ -123,7 +123,7 @@ const hasAlternate = lang === 'en' || hasEn;
 
   <slot name="head" />
 
-  <!-- Cloudflare Web Analytics — free, cookieless, no consent banner needed.
+  <!-- Cloudflare Web Analytics: free, cookieless, no consent banner needed.
        Activates when CF_BEACON_TOKEN is set (dash.cloudflare.com → Web Analytics
        → Add site (irab.app, no-proxy) → copy the token here). -->
   {CF_BEACON_TOKEN && (

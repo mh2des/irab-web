@@ -1,7 +1,7 @@
 /**
  * Authored, original i'rab summaries + FAQs per ayah.
  *
- * These are OUR words — a plain-language structural summary of the grammar,
+ * These are OUR words: a plain-language structural summary of the grammar,
  * not a copy of any source's prose. They serve three jobs: the answer-first
  * unit AI engines lift, the on-page lead, and the duplicate-content shield
  * (the verbatim source text is shared by hundreds of sites; this is unique).
@@ -12,7 +12,7 @@
 export interface AyahIntro {
   /** Named-ayah H1 override (e.g. "إعراب آية الكرسي"). */
   h1?: string;
-  /** Original 40–70 word structural summary (Arabic). */
+  /** Original 40 to 70 word structural summary (Arabic). */
   tldr?: string;
   /** Genuine questions → answers (back the FAQ/QAPage schema). */
   faqs?: { q: string; a: string }[];
@@ -77,7 +77,7 @@ export const INTROS: Record<string, AyahIntro> = {
     ],
   },
 
-  // ── Al-Fatiha 3–7 (completes the surah; 1:1 and 1:2 above) ──────────────────
+  // ── Al-Fatiha 3 to 7 (completes the surah; 1:1 and 1:2 above) ──────────────────
   '1:3': {
     h1: 'إعراب الرحمن الرحيم',
     tldr:

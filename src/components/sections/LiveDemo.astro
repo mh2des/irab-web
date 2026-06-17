@@ -15,14 +15,14 @@ const t = lang === 'ar'
       remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
       tryYour:    'جرّب جملتك',
       free:       'مجاني · بلا تسجيل',
-      exampleLabel: 'مثالٌ على النتيجة — اكتب جملتك في الأعلى',
+      exampleLabel: 'مثالٌ على النتيجة: اكتب جملتك في الأعلى',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
       parse:      'أعرب',
       copy:       'نسخ', share: 'مشاركة', pdf: 'PDF', madeWith: 'أُعرِب على irab.app',
       analyzing:  'جارٍ الإعراب…',
       errorMsg:   'تعذّر الإعراب الآن. حاول مرة أخرى.',
       signTitle:  'أنشئ حسابًا مجانيًا للمتابعة',
-      signBody:   'لقد استخدمت محاولتيك المجانيتين. سجّل الدخول لتحصل على ٣ محاولات يوميًّا — وإن كان لديك اشتراك فيُفتح لك الإعراب غير المحدود فورًا.',
+      signBody:   'لقد استخدمت محاولتيك المجانيتين. سجّل الدخول لتحصل على ٣ محاولات يوميًّا: وإن كان لديك اشتراك فيُفتح لك الإعراب غير المحدود فورًا.',
       signCta:    'تسجيل الدخول / إنشاء حساب',
       upTitle:    'بلغت حدّك اليومي المجاني',
       upBody:     'لديك ٣ محاولات مجانية يوميًّا. اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.',
@@ -48,14 +48,14 @@ const t = lang === 'ar'
       remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
       tryYour:    'Try your own',
       free:       'Free · no signup',
-      exampleLabel: 'Example output — type your own sentence above',
+      exampleLabel: 'Example output: type your own sentence above',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
       parse:      'Parse',
       copy:       'Copy', share: 'Share', pdf: 'PDF', madeWith: 'Parsed on irab.app',
       analyzing:  'Analyzing…',
       errorMsg:   "Couldn't analyze right now. Please try again.",
       signTitle:  'Create a free account to continue',
-      signBody:   "You've used your two free parses. Sign in to get 3 a day — and if you have a subscription, unlimited parsing unlocks instantly.",
+      signBody:   "You've used your two free parses. Sign in to get 3 a day: and if you have a subscription, unlimited parsing unlocks instantly.",
       signCta:    'Sign in / Create account',
       upTitle:    "You've reached your daily free limit",
       upBody:     'You get 3 free parses a day. Subscribe to Irab Plus for unlimited, or come back tomorrow.',
@@ -129,10 +129,10 @@ const t = lang === 'ar'
       {/* ── Error ───────────────────────────────────────────────────────── */}
       <p data-demo-error class="hidden mt-8 text-center font-arabic text-body text-red-600 dark:text-red-400"></p>
 
-      {/* ── Result actions (copy / share / pdf) — sit outside the captured card ── */}
+      {/* ── Result actions (copy / share / pdf): sit outside the captured card ── */}
       <div data-demo-actions class="hidden mt-8 mb-3 flex items-center justify-center flex-wrap gap-3">
         <button type="button" data-act-copy class="act-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           <span data-act-copy-label>{t.copy}</span>
         </button>
         <button type="button" data-act-share class="act-btn">
@@ -140,12 +140,12 @@ const t = lang === 'ar'
           <span>{t.share}</span>
         </button>
         <button type="button" data-act-pdf class="act-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1 1-2 2H5a2 2 0 0 1 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           <span>{t.pdf}</span>
         </button>
       </div>
 
-      {/* ── Result (hidden until the user parses — no specimen on load) ──── */}
+      {/* ── Result (hidden until the user parses: no specimen on load) ──── */}
       <div data-demo-result class="hidden mt-10">
         <div data-demo-source class="flex items-baseline gap-2.5 mb-6 px-1 min-h-[2rem]">
           <span data-source-main class="font-arabic-display font-bold text-[clamp(1.125rem,2vw,1.5rem)] text-purple leading-none"></span>
@@ -177,7 +177,7 @@ const t = lang === 'ar'
           <p lang="ar" dir="rtl" class="font-arabic text-body text-ink/80 dark:text-mist/80 leading-loose" style="font-family: var(--font-arabic-classical);" data-clarification-text></p>
         </div>
 
-        {/* Branded footer — part of the shared image/PDF */}
+        {/* Branded footer: part of the shared image/PDF */}
         <div class="flex items-center justify-center gap-2 pt-6 mt-2 border-t border-stone dark:border-coal-edge">
           <img src="/brand-mark.png" alt="" width="20" height="20" class="w-5 h-5 rounded-md" />
           <span class="font-arabic text-small text-ink/45 dark:text-mist/45">{t.madeWith}</span>
@@ -185,7 +185,7 @@ const t = lang === 'ar'
       </div>
     </div>
 
-    {/* ── Off-screen branded share card — captured for share-image / PDF ── */}
+    {/* ── Off-screen branded share card: captured for share-image / PDF ── */}
     <div data-export-card lang="ar" dir="rtl" aria-hidden="true" class="export-card">
       <div class="ec-top">
         <img src="/brand-mark.png" alt="" width="40" height="40" class="ec-logo" />
@@ -208,19 +208,19 @@ const t = lang === 'ar'
 </Section>
 
 <style>
-  /* Entrance — `backwards` fill (not forwards) so the settled transform stays
+  /* Entrance: `backwards` fill (not forwards) so the settled transform stays
      free for the hover lift below. */
-  /* These target innerHTML-injected result cards, so they must be GLOBAL —
+  /* These target innerHTML-injected result cards, so they must be GLOBAL :
      Astro scoped styles never reach dynamically-inserted nodes (that was why
      the result cards looked unstyled: plain text on the background). */
-  /* Word-card reveal is driven by Motion (revealStagger) — springy stagger. */
+  /* Word-card reveal is driven by Motion (revealStagger): springy stagger. */
   :global(.demo-card details[open] > summary ~ *) { animation: details-in 350ms ease-out; }
   @keyframes details-in {
     from { opacity: 0; transform: translateY(-4px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* Word cards — clean solid surface (matches the site .card) with a case-color rail. */
+  /* Word cards: clean solid surface (matches the site .card) with a case-color rail. */
   :global(.demo-card) {
     background: var(--color-card);
     border: 1px solid var(--color-card-edge);
@@ -237,7 +237,7 @@ const t = lang === 'ar'
   }
   :global(.demo-card:hover) { transform: translateY(-3px); box-shadow: var(--lift-shadow); }
 
-  /* Case pill — a quiet status tag carrying the case color. GLOBAL (injected). */
+  /* Case pill: a quiet status tag carrying the case color. GLOBAL (injected). */
   :global(.word-chip) {
     padding: 0.15rem 0.7rem;
     border-radius: 9999px;
@@ -251,7 +251,7 @@ const t = lang === 'ar'
     border-color: color-mix(in srgb, var(--chip) 30%, transparent);
   }
 
-  /* Input textarea — solid, clean, clear focus ring (no shiny glass). */
+  /* Input textarea: solid, clean, clear focus ring (no shiny glass). */
   .demo-textarea {
     background: var(--color-paper-soft);
     border: 1px solid var(--color-card-edge);
@@ -264,7 +264,7 @@ const t = lang === 'ar'
   }
   :global(.dark) .demo-textarea { background: var(--color-coal); border-color: var(--color-coal-edge); }
 
-  /* Result action buttons (copy / share / pdf) — big, clear, with depth + lift. */
+  /* Result action buttons (copy / share / pdf): big, clear, with depth + lift. */
   .act-btn {
     display: inline-flex; align-items: center; gap: 0.55rem;
     padding: 0.8rem 1.6rem; border-radius: 9999px;
@@ -278,7 +278,7 @@ const t = lang === 'ar'
   .act-btn:hover { color: var(--color-purple); border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
   .act-btn svg { width: 1.35rem; height: 1.35rem; }
 
-  /* Skeleton shimmer — the loading placeholder while the AI parses. */
+  /* Skeleton shimmer: the loading placeholder while the AI parses. */
   .skel {
     background: linear-gradient(90deg,
       color-mix(in srgb, var(--color-ink) 6%, transparent) 25%,
@@ -302,7 +302,7 @@ const t = lang === 'ar'
 </style>
 
 <style is:global>
-  /* Branded share card — global because its word rows are injected via innerHTML.
+  /* Branded share card: global because its word rows are injected via innerHTML.
      Rendered off-screen (left:-10000px) and captured by snapdom for share/PDF. */
   .export-card {
     position: fixed; left: -10000px; top: 0; z-index: -1;
@@ -343,7 +343,7 @@ const t = lang === 'ar'
 
   const STORAGE_KEY = 'irab-demo-quota';
   const FP_KEY = 'irab-fp';
-  let MAX_FREE = 2;          // becomes Infinity for signed-in premium users
+  let MAX_FREE = 2;          // becomes Infinity for signed in premium users
   let idToken: string | null = null;  // sent to the worker so premium uncaps
   // TEMP: workers.dev URL until 2026-05-16 when irab.app domain unlocks transfer.
   // Then map api.irab.app to the worker and swap to:
@@ -428,7 +428,7 @@ const t = lang === 'ar'
     let currentUid: string | null = null;
 
     // The gate has two modes: 'signin' (anonymous, used 2 free) and 'upgrade'
-    // (signed-in, hit the daily limit). NEVER show 'signin' to a signed-in user.
+    // (signed in, hit the daily limit). NEVER show 'signin' to a signed in user.
     function showGate(kind: 'signin' | 'upgrade') {
       gateTitleEl.textContent = kind === 'upgrade' ? i18n.upTitle : i18n.signTitle;
       gateBodyEl.textContent  = kind === 'upgrade' ? i18n.upBody  : i18n.signBody;
@@ -443,7 +443,7 @@ const t = lang === 'ar'
     }
     function bumpQuota() { try { localStorage.setItem(STORAGE_KEY, String(getQuota() + 1)); } catch {} }
     function renderQuota() {
-      // Premium: unlimited — badge, no dots, no gate.
+      // Premium: unlimited: badge, no dots, no gate.
       if (isPremium) {
         quotaEl.textContent = i18n.unlimited;
         quotaDots.forEach((dot) => dot.classList.add('hidden'));
@@ -451,16 +451,16 @@ const t = lang === 'ar'
         submitEl.disabled = false;
         return;
       }
-      // Signed-in (free): the SERVER enforces 3/day. No anonymous dots/gate here —
+      // Signed in (free): the SERVER enforces 3/day. No anonymous dots/gate here :
       // the daily-limit ("upgrade") gate appears only on a 429 from the server.
       if (isSignedIn) {
         quotaEl.textContent = '';
         quotaDots.forEach((dot) => dot.classList.add('hidden'));
-        gateEl.classList.add('hidden');   // ← the bug: signed-in users must never see the gate on load
+        gateEl.classList.add('hidden');   // ← the bug: signed in users must never see the gate on load
         submitEl.disabled = false;
         return;
       }
-      // Anonymous: 2 lifetime tries, then the sign-in gate.
+      // Anonymous: 2 lifetime tries, then the sign in gate.
       const remaining = Math.max(0, MAX_FREE - getQuota());
       quotaEl.textContent = i18n.remainingN(remaining);
       quotaDots.forEach((dot, i) => {
@@ -472,8 +472,8 @@ const t = lang === 'ar'
           dot.classList.add('bg-transparent', 'border', 'border-purple/30');
         }
       });
-      // Only gate truly-anonymous visitors. If the signed-in flag is present, auth
-      // is resolving and the signed-in branch will run in a moment — don't flash the gate.
+      // Only gate truly-anonymous visitors. If the signed in flag is present, auth
+      // is resolving and the signed in branch will run in a moment: don't flash the gate.
       if (remaining === 0 && !maybeSignedIn()) { submitEl.disabled = true; showGate('signin'); }
     }
 
@@ -499,7 +499,7 @@ const t = lang === 'ar'
         }
       }
 
-      // Verse — clean, no underlines
+      // Verse: clean, no underlines
       verseInner.textContent = ex.vocalizedSentence || ex.words.map((w) => w.word).join(' ');
 
       // Meaning
@@ -574,7 +574,7 @@ const t = lang === 'ar'
       submitLabelEl.textContent = on ? i18n.parsing : i18n.parse;
     }
 
-    // Narrated loading — rotate the "thinking" steps while the AI parses.
+    // Narrated loading: rotate the "thinking" steps while the AI parses.
     let stepTimer: number | null = null;
     function startNarration() {
       if (!loadingStepEl) return;
@@ -605,9 +605,9 @@ const t = lang === 'ar'
       if (ex.vocalizedSentence) lines.push(ex.vocalizedSentence);
       if (ex.meaning) lines.push(`"${ex.meaning}"`);
       lines.push('');
-      ex.words.forEach((w) => lines.push(`${w.word} — ${w.irab}`));
+      ex.words.forEach((w) => lines.push(`${w.word}: ${w.irab}`));
       if (ex.explanation) { lines.push(''); lines.push(ex.explanation); }
-      lines.push('', '— irab.app');
+      lines.push('', ': irab.app');
       return lines.join('\n');
     }
 
@@ -616,7 +616,7 @@ const t = lang === 'ar'
       e.preventDefault();
       const text = inputEl.value.trim();
       if (!text) return;
-      // Anonymous client-side pre-check (saves a call). Signed-in users rely on
+      // Anonymous client-side pre-check (saves a call). Signed in users rely on
       // the server's 3/day, so they're never pre-blocked here (kills the loop).
       if (!isSignedIn && getQuota() >= MAX_FREE) { showGate('signin'); return; }
 
@@ -643,7 +643,7 @@ const t = lang === 'ar'
         loadingEl.classList.add('hidden');
         stopNarration();
         if (res.status === 429) {
-          // Limit reached: signed-in → daily-limit/upgrade; anonymous → sign in.
+          // Limit reached: signed in → daily-limit/upgrade; anonymous → sign in.
           showGate(isSignedIn ? 'upgrade' : 'signin');
           return;
         }
@@ -683,14 +683,14 @@ const t = lang === 'ar'
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); formEl.requestSubmit(); }
     });
 
-    // Result actions — copy / share-as-image / PDF
+    // Result actions: copy / share-as-image / PDF
     const copyDefault = copyLabelEl?.textContent ?? '';
     copyBtn?.addEventListener('click', async () => {
       if (!lastEx) return;
       try {
         await navigator.clipboard.writeText(buildCopyText(lastEx));
         if (copyLabelEl) { copyLabelEl.textContent = i18n.copied; window.setTimeout(() => { copyLabelEl.textContent = copyDefault; }, 1600); }
-      } catch { /* clipboard blocked — ignore */ }
+      } catch { /* clipboard blocked: ignore */ }
     });
     shareBtn?.addEventListener('click', () => { if (exportCardEl) shareImage(exportCardEl, { filename: 'irab.png', title: 'إعراب · irab.app', text: lastEx?.vocalizedSentence }).catch(() => {}); });
     pdfBtn?.addEventListener('click', () => { if (exportCardEl) downloadPdf(exportCardEl, 'irab.pdf').catch(() => {}); });
@@ -700,7 +700,7 @@ const t = lang === 'ar'
 
     renderQuota();
 
-    // Re-open a saved analysis from history (?h=<id>) — renders the stored
+    // Re-open a saved analysis from history (?h=<id>): renders the stored
     // result directly, no API call, no quota spend.
     try {
       const histId = new URLSearchParams(location.search).get('h');
@@ -716,8 +716,8 @@ const t = lang === 'ar'
       }
     } catch { /* ignore */ }
 
-    // Signed-in premium → uncap. Firebase is lazy-loaded ONLY when the
-    // signed-in flag is present, so anonymous visitors never download it.
+    // Signed in premium → uncap. Firebase is lazy-loaded ONLY when the
+    // signed in flag is present, so anonymous visitors never download it.
     if (maybeSignedIn()) {
       (async () => {
         try {
@@ -740,7 +740,7 @@ const t = lang === 'ar'
             });
           });
           renderQuota();
-        } catch { /* ignore — anonymous/free path already rendered */ }
+        } catch { /* ignore: anonymous/free path already rendered */ }
       })();
     }
   }
