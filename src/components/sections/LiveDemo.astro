@@ -195,6 +195,14 @@ const t = lang === 'ar'
       <div class="ec-verse quran-text" data-ec-verse></div>
       <div class="ec-meaning" data-ec-meaning></div>
       <div class="ec-words" data-ec-words></div>
+      <div class="ec-block" data-ec-explanation>
+        <div class="ec-block-label">بنية الجملة</div>
+        <div class="ec-block-text" data-ec-explanation-text></div>
+      </div>
+      <div class="ec-block" data-ec-clarification>
+        <div class="ec-block-label">ملاحظة بلاغية</div>
+        <div class="ec-block-text" data-ec-clarification-text></div>
+      </div>
       <div class="ec-foot">أُعرِب على irab.app · حلّل أيّ جملة عربية</div>
     </div>
 
@@ -330,6 +338,13 @@ const t = lang === 'ar'
   .export-card .ec-chip { font-size: 0.9rem; font-weight: 600; color: var(--rail, var(--color-purple)); background: color-mix(in srgb, var(--rail, var(--color-purple)) 13%, transparent); padding: 0.2rem 0.7rem; border-radius: 999px; }
   .export-card .ec-irab { font-family: var(--font-arabic-classical); font-size: 1.25rem; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 88%, transparent); }
   .dark .export-card .ec-irab { color: color-mix(in srgb, var(--color-mist) 88%, transparent); }
+  .export-card .ec-details { margin-top: 0.55rem; padding-top: 0.55rem; border-top: 1px dashed var(--color-stone); font-family: var(--font-arabic-classical); font-size: 1.1rem; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
+  .dark .export-card .ec-details { border-top-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+  .export-card .ec-block { margin-top: 1.4rem; border: 1px solid var(--color-stone); border-radius: 16px; background: color-mix(in srgb, var(--color-purple) 4%, #fff); padding: 1.1rem 1.3rem; }
+  .dark .export-card .ec-block { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .export-card .ec-block-label { font-family: var(--font-arabic-display); font-weight: 700; font-size: 1.2rem; color: var(--color-purple); margin-bottom: 0.45rem; }
+  .export-card .ec-block-text { font-family: var(--font-arabic-classical); font-size: 1.2rem; line-height: 1.9; color: color-mix(in srgb, var(--color-ink) 85%, transparent); }
+  .dark .export-card .ec-block-text { color: color-mix(in srgb, var(--color-mist) 85%, transparent); }
   .export-card .ec-foot { margin-top: 1.9rem; padding-top: 1.3rem; border-top: 1px solid var(--color-stone); text-align: center; font-size: 1.1rem; font-weight: 600; color: var(--color-purple); }
   .dark .export-card .ec-foot { border-color: var(--color-coal-edge); }
 </style>
@@ -595,8 +610,23 @@ const t = lang === 'ar'
       if (wrap) {
         wrap.innerHTML = ex.words.map((wd) => {
           const hex = CASE_COLORS[wd.case].hex;
-          return `<div class="ec-word" style="--rail:${hex}"><div class="ec-w-head"><span class="ec-tok">${escape(wd.word)}</span><span class="ec-chip" style="--rail:${hex}">${escape(wd.caseLabel)}</span></div><div class="ec-irab">${escape(wd.irab)}</div></div>`;
+          const hasDetails = wd.details && wd.details !== 'لا توجد تفاصيل إضافية';
+          const detailsHtml = hasDetails ? `<div class="ec-details">${escape(wd.details)}</div>` : '';
+          return `<div class="ec-word" style="--rail:${hex}"><div class="ec-w-head"><span class="ec-tok">${escape(wd.word)}</span><span class="ec-chip" style="--rail:${hex}">${escape(wd.caseLabel)}</span></div><div class="ec-irab">${escape(wd.irab)}</div>${detailsHtml}</div>`;
         }).join('');
+      }
+      // Sentence structure + rhetorical note — so the export carries the FULL i'rab.
+      const expBlock = exportCardEl.querySelector<HTMLElement>('[data-ec-explanation]');
+      const expText = exportCardEl.querySelector<HTMLElement>('[data-ec-explanation-text]');
+      if (expBlock && expText) {
+        if (ex.explanation) { expText.textContent = ex.explanation; expBlock.style.display = ''; }
+        else expBlock.style.display = 'none';
+      }
+      const clarBlock = exportCardEl.querySelector<HTMLElement>('[data-ec-clarification]');
+      const clarText = exportCardEl.querySelector<HTMLElement>('[data-ec-clarification-text]');
+      if (clarBlock && clarText) {
+        if (ex.additionalClarification) { clarText.textContent = ex.additionalClarification; clarBlock.style.display = ''; }
+        else clarBlock.style.display = 'none';
       }
     }
 
