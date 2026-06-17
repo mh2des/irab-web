@@ -34,29 +34,32 @@ const t = lang === 'ar'
 ---
 <div data-dict-root data-lang={lang} data-login={login} dir={dir} class="w-full max-w-2xl mx-auto">
   {/* Signed-out gate */}
-  <div data-dict-gate class="hidden rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-8 text-center">
-    <h2 class="font-arabic-display text-h2 mb-2">{t.signedOutTitle}</h2>
-    <p class="text-ink/65 dark:text-mist/65 mb-6">{t.signedOutBody}</p>
-    <a href={login} class="inline-block px-6 py-3 rounded-full bg-purple hover:bg-purple-deep text-white font-medium transition-colors">{t.signIn}</a>
+  <div data-dict-gate class="hidden card panel-in p-8 md:p-10 text-center">
+    <h2 class="font-arabic-display text-h2 mb-3">{t.signedOutTitle}</h2>
+    <p class="text-body text-ink/75 dark:text-mist/75 mb-7 max-w-md mx-auto">{t.signedOutBody}</p>
+    <a href={login} class="btn-primary btn-lg">{t.signIn}</a>
   </div>
 
   {/* Tool (shown when signed in) */}
   <div data-dict-tool class="hidden">
     <form data-dict-form class="flex gap-2 mb-3">
       <input data-dict-input type="text" dir="rtl" autocomplete="off" placeholder={t.placeholder}
-        class="flex-1 px-5 py-3.5 rounded-full border border-stone dark:border-coal-edge bg-white dark:bg-coal text-ink dark:text-mist text-lg outline-none focus:border-purple" />
-      <button type="submit" data-dict-submit
-        class="px-7 py-3.5 rounded-full bg-purple hover:bg-purple-deep text-white font-medium transition-colors disabled:opacity-60">
+        class="input flex-1 text-lg" />
+      <button type="submit" data-dict-submit class="btn-primary">
         <span data-dict-submit-label>{t.search}</span>
       </button>
     </form>
-    <p data-dict-quota class="text-caption text-ink/45 dark:text-mist/45 mb-6 h-4"></p>
+    <p data-dict-quota class="text-small font-semibold text-ink/65 dark:text-mist/65 mb-6 h-5"></p>
 
     <p data-dict-msg class="hidden text-small rounded-lg px-4 py-3 mb-4"></p>
     <div data-dict-result></div>
   </div>
 
-  <div data-dict-loading class="text-center py-12 text-ink/40 dark:text-mist/40">…</div>
+  {/* Loading skeleton */}
+  <div data-dict-loading aria-busy="true">
+    <div class="skeleton h-14 w-full rounded-full mb-6"></div>
+    <div class="skeleton h-48 w-full rounded-2xl"></div>
+  </div>
 </div>
 
 <script>
@@ -110,19 +113,19 @@ const t = lang === 'ar'
         showMsg(T.noResult, 'info'); return;
       }
       clearMsg();
-      const card = el('div', 'rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-6 md:p-8');
+      const card = el('div', 'card panel-in p-6 md:p-8');
 
       // Header: word + root + pos
-      const head = el('div', 'flex flex-wrap items-baseline gap-3 mb-5 pb-5 border-b border-stone dark:border-coal-edge');
+      const head = el('div', 'flex flex-wrap items-baseline gap-3 mb-5 pb-5 border-b border-card-edge dark:border-coal-edge');
       const word = el('span', 'font-arabic-display text-[2rem] leading-none text-ink dark:text-mist');
       word.setAttribute('dir', 'rtl'); word.textContent = v.lemma || input.value.trim();
       head.appendChild(word);
-      if (v.root) { const r = el('span', 'text-small text-purple', `${T.root}: ${v.root}`); r.setAttribute('dir','rtl'); head.appendChild(r); }
-      if (v.pos)  head.appendChild(el('span', 'text-caption px-2.5 py-1 rounded-full bg-teal/12 text-teal', v.pos));
+      if (v.root) { const r = el('span', 'text-small font-semibold text-purple', `${T.root}: ${v.root}`); r.setAttribute('dir','rtl'); head.appendChild(r); }
+      if (v.pos)  head.appendChild(el('span', 'badge badge-good', v.pos));
       card.appendChild(head);
 
       // Senses
-      card.appendChild(el('p', 'text-caption text-ink/45 dark:text-mist/45 mb-2', T.meanings));
+      card.appendChild(el('p', 'text-small font-semibold text-ink/70 dark:text-mist/70 mb-2', T.meanings));
       const ol = el('ol', 'space-y-4 mb-2');
       v.senses.forEach((s: any) => {
         const li = el('li', 'ps-1');
@@ -133,7 +136,7 @@ const t = lang === 'ar'
         if (exs.length) {
           const exWrap = el('ul', 'mt-2 space-y-1');
           exs.slice(0, 3).forEach((e: any) => {
-            const line = el('li', 'text-small text-ink/60 dark:text-mist/60 ps-3 border-s-2 border-teal/30'); line.setAttribute('dir','rtl');
+            const line = el('li', 'text-small text-ink/70 dark:text-mist/70 ps-3 border-s-2 border-teal/40'); line.setAttribute('dir','rtl');
             line.textContent = e.ar || e.text || e.example || '';
             exWrap.appendChild(line);
           });
@@ -148,8 +151,8 @@ const t = lang === 'ar'
       const en = Array.isArray(tr.en) ? tr.en : [];
       const fr = Array.isArray(tr.fr) ? tr.fr : [];
       if (en.length || fr.length) {
-        const trWrap = el('div', 'mt-5 pt-5 border-t border-stone dark:border-coal-edge');
-        trWrap.appendChild(el('p', 'text-caption text-ink/45 dark:text-mist/45 mb-2', T.translations));
+        const trWrap = el('div', 'mt-5 pt-5 border-t border-card-edge dark:border-coal-edge');
+        trWrap.appendChild(el('p', 'text-small font-semibold text-ink/70 dark:text-mist/70 mb-2', T.translations));
         if (en.length) trWrap.appendChild(el('p', 'text-body text-ink/80 dark:text-mist/80', 'EN: ' + en.join(', ')));
         if (fr.length) trWrap.appendChild(el('p', 'text-body text-ink/80 dark:text-mist/80', 'FR: ' + fr.join(', ')));
         card.appendChild(trWrap);
