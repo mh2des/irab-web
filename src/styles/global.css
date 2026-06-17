@@ -8,11 +8,11 @@
 
 @import "tailwindcss";
 
-/* ── Self-hosted fonts — three, and only three ──────────────────────────────
+/* ── Self-hosted fonts ──────────────────────────────────────────────────────
    The whole site runs on these:
      • Uthmanic Hafs (KFGQPC) — Quran verses (Mushaf Hafs, Unicode-compatible)
      • Aref Ruqaa SALT        — display / headings (regal Ruqaa)
-     • Lateef Swashes Bold    — body / i'rab / everything else
+     • The Year of Handicrafts — body / i'rab / everything else
    No other web font is loaded; Latin glyphs the Arabic faces lack fall back to
    the system UI font only. */
 @font-face {
@@ -30,9 +30,37 @@
   font-display: swap;
 }
 @font-face {
-  font-family: 'Lateef Swashes';
-  src: url('/fonts/lateef-swashes.woff2') format('woff2');
-  font-weight: 400 700;
+  font-family: 'The Year of Handicrafts';
+  src: url('/fonts/TheYearofHandicrafts-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Year of Handicrafts';
+  src: url('/fonts/TheYearofHandicrafts-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Year of Handicrafts';
+  src: url('/fonts/TheYearofHandicrafts-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Year of Handicrafts';
+  src: url('/fonts/TheYearofHandicrafts-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Year of Handicrafts';
+  src: url('/fonts/TheYearofHandicrafts-Black.woff2') format('woff2');
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
@@ -78,14 +106,14 @@
   /* Type families — three faces, mapped across every role. Latin falls back to
      system-ui (the Arabic faces are Arabic-first). */
   --font-display: 'Aref Ruqaa', system-ui, serif;        /* headings / hero */
-  --font-sans: 'Lateef Swashes', system-ui, sans-serif;  /* body */
-  --font-mono: 'Lateef Swashes', ui-monospace, monospace;
-  --font-arabic: 'Lateef Swashes', system-ui, sans-serif;
+  --font-sans: 'The Year of Handicrafts', system-ui, sans-serif;  /* body */
+  --font-mono: 'The Year of Handicrafts', ui-monospace, monospace;
+  --font-arabic: 'The Year of Handicrafts', system-ui, sans-serif;
   --font-arabic-display: 'Aref Ruqaa', system-ui, serif;
-  /* Classical / book-feel Arabic → Lateef Swashes (our body face). */
-  --font-arabic-classical: 'Lateef Swashes', serif;
+  /* Classical / book-feel Arabic → The Year of Handicrafts (our body face). */
+  --font-arabic-classical: 'The Year of Handicrafts', serif;
   /* Quran verses only — KFGQPC Uthmanic Hafs (Mushaf Hafs). */
-  --font-quran: 'Uthmanic Hafs', 'Lateef Swashes', serif;
+  --font-quran: 'Uthmanic Hafs', 'The Year of Handicrafts', serif;
 
   /* Type scale (rems based on 16px root) */
   --text-display-xl: 7.5rem;     /* 120px — hero word اقرأ */
@@ -108,9 +136,8 @@
   --text-h3--line-height: 1.4;
   --text-h3--letter-spacing: 0;
 
-  /* Big, accessible body sizes. Lateef Swashes is a light, swashy face — it
-     needs to be genuinely large + roomy to read well, especially for weak
-     vision. These are deliberately generous. */
+  /* Big, accessible body sizes. The handwritten body face needs to be genuinely
+     large, roomy, and a touch heavier to stay crisp over the textured canvas. */
   --text-body-lg: 1.75rem;       /* 28px */
   --text-body-lg--line-height: 1.75;
 
@@ -190,7 +217,9 @@
 
   body {
     font-family: var(--font-sans);
+    font-synthesis: none;
     font-size: var(--text-body);
+    font-weight: 500;
     line-height: var(--text-body--line-height);
     color: var(--color-ink);
     background-color: var(--color-paper);
@@ -450,7 +479,7 @@
     transform-origin: right center;
   }
 
-  /* Arabic: use the body face (Lateef) not the ornate Ruqaa — eyebrows are
+  /* Arabic: use the body face, not the ornate Ruqaa — eyebrows are
      small UI labels and must stay legible — and make them clearly bigger. */
   :root[lang="ar"] .eyebrow,
   :root[dir="rtl"] .eyebrow {
