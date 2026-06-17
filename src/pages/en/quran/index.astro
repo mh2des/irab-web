@@ -65,9 +65,9 @@ const breadcrumb = {
 
 <style>
   .s-card {
-    display: block; border: 1px solid var(--color-stone); border-radius: 16px;
-    padding: 1.3rem 1.4rem; text-decoration: none;
-    background: var(--color-paper-soft); transition: border-color .2s, transform .2s, box-shadow .2s;
+    display: block; border: 1px solid var(--color-card-edge); border-radius: 16px;
+    padding: 1.3rem 1.4rem; text-decoration: none; box-shadow: var(--shadow-card);
+    background: var(--color-card); transition: border-color .2s, transform .2s, box-shadow .2s;
   }
   :global(.dark) .s-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
   .s-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
@@ -81,8 +81,8 @@ const breadcrumb = {
   :global(.dark) .s-ar { color: var(--color-mist); }
   .s-en { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--color-ink); }
   :global(.dark) .s-en { color: var(--color-mist); }
-  .s-meta { font-size: 0.9rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); margin-top: 0.15rem; }
-  :global(.dark) .s-meta { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
-  .more { text-align: center; margin-top: 2.5rem; font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 50%, transparent); }
-  :global(.dark) .more { color: color-mix(in srgb, var(--color-mist) 50%, transparent); }
+  .s-meta { font-size: 0.9rem; color: color-mix(in srgb, var(--color-ink) 68%, transparent); margin-top: 0.15rem; }
+  :global(.dark) .s-meta { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
+  .more { text-align: center; margin-top: 2.5rem; font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 65%, transparent); }
+  :global(.dark) .more { color: color-mix(in srgb, var(--color-mist) 65%, transparent); }
 </style>

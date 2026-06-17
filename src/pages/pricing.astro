@@ -57,24 +57,24 @@ const offerSchema = {
       {/* Plans */}
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
         {/* Monthly */}
-        <div class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-7 flex flex-col">
+        <div class="card p-7 flex flex-col">
           <p class="font-arabic-display text-h3 mb-1">شهري</p>
-          <p class="mb-1"><span class="font-arabic-display text-[2.5rem] leading-none">٤٫٩٩$</span> <span class="text-ink/55 dark:text-mist/55 text-small">/ شهريًّا</span></p>
-          <p class="text-caption text-ink/45 dark:text-mist/45 mb-6">يُجدَّد شهريًّا، ألغِ في أي وقت.</p>
-          <a href="/app" class="mt-auto inline-flex items-center justify-center px-5 py-3 rounded-full border border-purple/40 text-purple hover:bg-purple/10 font-medium transition-colors">ابدأ شهريًّا</a>
+          <p class="mb-1"><span class="font-arabic-display text-[2.5rem] leading-none">٤٫٩٩$</span> <span class="text-ink/65 dark:text-mist/65 text-small">/ شهريًّا</span></p>
+          <p class="text-caption text-ink/65 dark:text-mist/65 mb-6">يُجدَّد شهريًّا، ألغِ في أي وقت.</p>
+          <a href="/app" class="btn-ghost btn-block mt-auto">ابدأ شهريًّا</a>
         </div>
 
         {/* Annual — highlighted */}
-        <div class="relative rounded-2xl border-2 border-purple bg-purple/[0.05] p-7 flex flex-col">
-          <span class="absolute -top-3 start-6 text-caption px-3 py-1 rounded-full bg-purple text-white font-medium">الأفضل قيمة · وفّر ٣٧٪</span>
+        <div class="card relative p-7 border-2 border-purple flex flex-col">
+          <span class="absolute -top-3 start-6 text-caption px-3 py-1 rounded-full bg-purple text-white font-bold shadow-[0_6px_16px_-6px_var(--color-purple)]">الأفضل قيمة · وفّر ٣٧٪</span>
           <p class="font-arabic-display text-h3 mb-1">سنوي</p>
-          <p class="mb-1"><span class="font-arabic-display text-[2.5rem] leading-none">٣٧٫٩٩$</span> <span class="text-ink/55 dark:text-mist/55 text-small">/ سنويًّا</span></p>
-          <p class="text-caption text-purple mb-6">تجربة مجانية ٧ أيام · يشمل شهادات الإتقان</p>
-          <a href="/app" class="mt-auto inline-flex items-center justify-center px-5 py-3 rounded-full bg-purple hover:bg-purple-deep text-white font-medium transition-colors">ابدأ التجربة المجانية</a>
+          <p class="mb-1"><span class="font-arabic-display text-[2.5rem] leading-none">٣٧٫٩٩$</span> <span class="text-ink/65 dark:text-mist/65 text-small">/ سنويًّا</span></p>
+          <p class="text-caption text-purple-deep dark:text-purple font-semibold mb-6">تجربة مجانية ٧ أيام · يشمل شهادات الإتقان</p>
+          <a href="/app" class="btn-primary btn-block mt-auto">ابدأ التجربة المجانية</a>
         </div>
       </div>
 
-      <p class="text-caption text-ink/45 dark:text-mist/45 text-center mt-5 max-w-xl mx-auto leading-relaxed">
+      <p class="text-caption text-ink/65 dark:text-mist/65 text-center mt-5 max-w-xl mx-auto leading-relaxed">
         أسعار إقليمية قد تختلف، وتُضاف الضرائب عند الدفع حسب بلدك. تتمّ معالجة الدفع على الويب عبر <strong>Paddle</strong> (بائع التسجيل). راجع
         <a href="/refund" class="text-purple hover:text-purple-deep underline underline-offset-2">سياسة الاسترداد</a> و
         <a href="/terms" class="text-purple hover:text-purple-deep underline underline-offset-2">الشروط</a>.
@@ -85,9 +85,9 @@ const offerSchema = {
         <h2 class="font-arabic-display text-h3 text-center mb-6">ماذا يفتح لك إعراب بلس</h2>
         <ul class="grid grid-cols-1 gap-3">
           {included.map((item) => (
-            <li class="flex items-start gap-3 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft px-4 py-3">
-              <span class="text-teal shrink-0 mt-0.5" aria-hidden="true">✓</span>
-              <span class="text-body text-ink/80 dark:text-mist/80 leading-relaxed">{item}</span>
+            <li class="flex items-start gap-3 card px-4 py-3">
+              <span class="text-teal font-bold shrink-0 mt-0.5" aria-hidden="true">✓</span>
+              <span class="text-body text-ink/85 dark:text-mist/85 leading-relaxed">{item}</span>
             </li>
           ))}
         </ul>

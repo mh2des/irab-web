@@ -34,12 +34,13 @@ const CASE_LABEL: Record<string, string> = {
 
 <style>
   .wg {
-    border: 1px solid var(--color-stone);
+    border: 1px solid var(--color-card-edge);
     border-radius: 16px;
     overflow: hidden;
-    background: var(--color-paper-soft);
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
   }
-  :global(.dark) .wg { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  :global(.dark) .wg { border-color: var(--color-coal-edge); background: var(--color-coal-soft); box-shadow: 0 2px 8px -3px rgb(0 0 0 / 0.45), 0 14px 30px -14px rgb(0 0 0 / 0.55); }
 
   .wg-row {
     display: grid;
@@ -47,7 +48,7 @@ const CASE_LABEL: Record<string, string> = {
     gap: 1.25rem;
     align-items: start;
     padding: 1.1rem 1.3rem;
-    border-bottom: 1px solid var(--color-stone);
+    border-bottom: 1px solid var(--color-card-edge);
     border-inline-start: 4px solid var(--case);
   }
   :global(.dark) .wg-row { border-bottom-color: var(--color-coal-edge); }

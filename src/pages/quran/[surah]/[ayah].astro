@@ -212,12 +212,13 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
     position: relative; text-align: center;
     font-size: clamp(2.3rem, 5.5vw, 3.2rem); line-height: 2.15;
     color: var(--color-ink);
-    background: var(--color-paper-soft);
-    border: 1px solid var(--color-stone);
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
     border-top: 3px solid var(--color-purple);
     border-radius: 18px;
     padding: 2rem 1.75rem 2.25rem;
     margin: 0 0 1.1rem;
+    box-shadow: var(--shadow-card);
   }
   :global(.dark) .verse {
     color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge);
@@ -251,10 +252,11 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
   .pending-note {
     font-size: 1.45rem; line-height: 1.9; margin-top: 1.5rem;
     padding: 1.25rem 1.4rem; border-radius: 14px; text-align: center;
-    background: var(--color-paper-soft); border: 1px dashed var(--color-stone);
-    color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+    background: var(--color-card); border: 1.5px dashed var(--color-card-edge);
+    color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+    box-shadow: var(--shadow-card);
   }
-  :global(.dark) .pending-note { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  :global(.dark) .pending-note { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
 
   .tldr {
     background: color-mix(in srgb, var(--color-purple) 6%, var(--color-paper));
@@ -275,8 +277,9 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
   :global(.dark) .blk h2 { color: var(--color-mist); }
 
   .exp {
-    border: 1px solid var(--color-stone); border-radius: 12px;
-    padding: 0.4rem 1rem; margin-bottom: 0.75rem; background: var(--color-paper-soft);
+    border: 1px solid var(--color-card-edge); border-radius: 12px;
+    padding: 0.4rem 1rem; margin-bottom: 0.75rem; background: var(--color-card);
+    box-shadow: var(--shadow-card);
   }
   :global(.dark) .exp { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
   .exp summary {
@@ -298,13 +301,13 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
   .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.75rem; }
   .rel-card {
     display: flex; flex-direction: column; gap: 0.35rem;
-    border: 1px solid var(--color-stone); border-radius: 12px;
-    padding: 1rem 1.1rem; text-decoration: none; transition: border-color .2s, transform .2s;
+    border: 1px solid var(--color-card-edge); border-radius: 12px; background: var(--color-card); box-shadow: var(--shadow-card);
+    padding: 1rem 1.1rem; text-decoration: none; transition: border-color .2s, transform .2s, box-shadow .2s;
   }
-  :global(.dark) .rel-card { border-color: var(--color-coal-edge); }
+  :global(.dark) .rel-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
   .rel-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
-  .rel-card span { font-size: 1.1rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
-  :global(.dark) .rel-card span { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .rel-card span { font-size: 1.1rem; color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
+  :global(.dark) .rel-card span { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
   .rel-card b { font-size: 1.5rem; color: var(--color-ink); font-weight: 700; }
   :global(.dark) .rel-card b { color: var(--color-mist); }
 </style>

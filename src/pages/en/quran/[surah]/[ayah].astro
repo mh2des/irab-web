@@ -151,12 +151,13 @@ const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
     position: relative; text-align: center;
     font-size: clamp(2.3rem, 5.5vw, 3.2rem); line-height: 2.15;
     color: var(--color-ink);
-    background: var(--color-paper-soft);
-    border: 1px solid var(--color-stone);
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
     border-top: 3px solid var(--color-purple);
     border-radius: 18px;
     padding: 2rem 1.75rem 2.25rem;
     margin: 0 0 1.25rem;
+    box-shadow: var(--shadow-card);
   }
   :global(.dark) .verse {
     color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge);
@@ -207,8 +208,9 @@ const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
   :global(.dark) .irab-prose { color: color-mix(in srgb, var(--color-mist) 85%, transparent); }
 
   .exp {
-    border: 1px solid var(--color-stone); border-radius: 12px;
-    padding: 0.4rem 1rem; margin-bottom: 0.75rem; background: var(--color-paper-soft);
+    border: 1px solid var(--color-card-edge); border-radius: 12px;
+    padding: 0.4rem 1rem; margin-bottom: 0.75rem; background: var(--color-card);
+    box-shadow: var(--shadow-card);
   }
   :global(.dark) .exp { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
   .exp summary { cursor: pointer; font-weight: 600; padding: 0.6rem 0; font-size: 1.05rem; color: var(--color-ink); }
@@ -220,13 +222,13 @@ const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
   .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 0.75rem; }
   .rel-card {
     display: flex; flex-direction: column; gap: 0.3rem;
-    border: 1px solid var(--color-stone); border-radius: 12px;
-    padding: 1rem 1.1rem; text-decoration: none; transition: border-color .2s, transform .2s;
+    border: 1px solid var(--color-card-edge); border-radius: 12px; background: var(--color-card); box-shadow: var(--shadow-card);
+    padding: 1rem 1.1rem; text-decoration: none; transition: border-color .2s, transform .2s, box-shadow .2s;
   }
-  :global(.dark) .rel-card { border-color: var(--color-coal-edge); }
+  :global(.dark) .rel-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
   .rel-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
-  .rel-card span { font-size: 0.85rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
-  :global(.dark) .rel-card span { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .rel-card span { font-size: 0.85rem; color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
+  :global(.dark) .rel-card span { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
   .rel-card b { font-size: 1.1rem; color: var(--color-ink); font-weight: 700; }
   :global(.dark) .rel-card b { color: var(--color-mist); }
 </style>

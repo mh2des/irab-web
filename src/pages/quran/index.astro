@@ -84,10 +84,11 @@ const breadcrumb = {
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 0.7rem; }
   .s-card {
     display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.9rem;
-    border: 1px solid var(--color-stone); border-radius: 14px; padding: 0.9rem 1rem;
+    border: 1px solid var(--color-card-edge); border-radius: 14px; padding: 0.9rem 1rem;
+    background: var(--color-card); box-shadow: var(--shadow-card);
     text-decoration: none; position: relative; transition: border-color .2s, transform .2s, box-shadow .2s;
   }
-  :global(.dark) .s-card { border-color: var(--color-coal-edge); }
+  :global(.dark) .s-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
   a.s-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
   .is-soon { opacity: 0.5; }
 
@@ -100,13 +101,13 @@ const breadcrumb = {
   .s-mid { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
   .s-name { font-size: 1.7rem; font-weight: 700; color: var(--color-ink); }
   :global(.dark) .s-name { color: var(--color-mist); }
-  .s-en { font-size: 1rem; color: color-mix(in srgb, var(--color-ink) 50%, transparent); }
-  :global(.dark) .s-en { color: color-mix(in srgb, var(--color-mist) 50%, transparent); }
+  .s-en { font-size: 1rem; color: color-mix(in srgb, var(--color-ink) 65%, transparent); }
+  :global(.dark) .s-en { color: color-mix(in srgb, var(--color-mist) 65%, transparent); }
   .s-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem; flex: none; }
   .s-place { font-size: 0.92rem; font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 999px; }
   .s-place.makki { color: #B45309; background: color-mix(in srgb, #E0A82E 18%, transparent); }
   .s-place.madani { color: #047857; background: color-mix(in srgb, #10B981 16%, transparent); }
-  .s-ayat { font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 50%, transparent); }
-  :global(.dark) .s-ayat { color: color-mix(in srgb, var(--color-mist) 50%, transparent); }
-  .soon { position: absolute; inset-inline-end: 0.6rem; bottom: 0.4rem; font-size: 0.62rem; color: color-mix(in srgb, var(--color-ink) 45%, transparent); font-family: var(--font-mono); }
+  .s-ayat { font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 65%, transparent); }
+  :global(.dark) .s-ayat { color: color-mix(in srgb, var(--color-mist) 65%, transparent); }
+  .soon { position: absolute; inset-inline-end: 0.6rem; bottom: 0.4rem; font-size: 0.78rem; font-weight: 600; color: color-mix(in srgb, var(--color-ink) 62%, transparent); font-family: var(--font-mono); }
 </style>
