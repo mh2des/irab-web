@@ -207,10 +207,13 @@ const t = lang === 'ar'
   </div>
 </div>
 
-<style>
+<style is:global>
+  /* Global (not scoped): the chips, sentence cards, word cards, selects and
+     results are injected via JS, so scoped styles would never reach them. All
+     selectors are pr-* prefixed to avoid leaking into other components. */
   .pr-shell { width: 100%; max-width: 60rem; margin-inline: auto; }
   .pr-gate-icon { width: 4rem; height: 4rem; border-radius: 1.1rem; margin: 0 auto 1.25rem; display: grid; place-items: center; color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 12%, white); border: 1px solid color-mix(in srgb, var(--color-purple) 26%, var(--color-card-edge)); }
-  :global(.dark) .pr-gate-icon { background: color-mix(in srgb, var(--color-purple) 22%, var(--color-coal-soft)); }
+  .dark .pr-gate-icon { background: color-mix(in srgb, var(--color-purple) 22%, var(--color-coal-soft)); }
   .pr-gate-icon svg { width: 1.9rem; height: 1.9rem; }
 
   .pr-quota { text-align: center; font-weight: 800; color: var(--color-teal); font-size: var(--text-caption); margin-bottom: 1.25rem; }
@@ -228,7 +231,7 @@ const t = lang === 'ar'
     background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
     transition: transform .22s var(--ease-out-quart), box-shadow .22s, border-color .22s;
   }
-  :global(.dark) .pr-mode { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .dark .pr-mode { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .pr-mode:hover { transform: translateY(-4px); box-shadow: var(--lift-shadow); }
   .pr-mode-purple:hover { border-color: color-mix(in srgb, var(--color-purple) 45%, var(--color-card-edge)); }
   .pr-mode-teal:hover { border-color: color-mix(in srgb, var(--color-teal) 48%, var(--color-card-edge)); }
@@ -236,15 +239,15 @@ const t = lang === 'ar'
   .pr-mode-ic svg { width: 1.7rem; height: 1.7rem; }
   .pr-mode-purple .pr-mode-ic { color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 12%, white); }
   .pr-mode-teal .pr-mode-ic { color: var(--color-teal); background: color-mix(in srgb, var(--color-teal) 12%, white); }
-  :global(.dark) .pr-mode-purple .pr-mode-ic { background: color-mix(in srgb, var(--color-purple) 24%, var(--color-coal)); }
-  :global(.dark) .pr-mode-teal .pr-mode-ic { background: color-mix(in srgb, var(--color-teal) 24%, var(--color-coal)); }
+  .dark .pr-mode-purple .pr-mode-ic { background: color-mix(in srgb, var(--color-purple) 24%, var(--color-coal)); }
+  .dark .pr-mode-teal .pr-mode-ic { background: color-mix(in srgb, var(--color-teal) 24%, var(--color-coal)); }
   .pr-mode-tag { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.02em; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
-  :global(.dark) .pr-mode-tag { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .dark .pr-mode-tag { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
   .pr-mode-purple .pr-mode-tag { color: var(--color-purple-deep); }
   .pr-mode-teal .pr-mode-tag { color: var(--color-teal); }
   .pr-mode-title { font-size: 1.7rem; line-height: 1.2; }
   .pr-mode-body { color: color-mix(in srgb, var(--color-ink) 70%, transparent); font-size: var(--text-caption); line-height: 1.6; }
-  :global(.dark) .pr-mode-body { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+  .dark .pr-mode-body { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
   .pr-mode-cta { margin-top: auto; padding-top: 0.6rem; display: inline-flex; gap: 0.4rem; align-items: center; font-weight: 800; }
   .pr-mode-purple .pr-mode-cta { color: var(--color-purple-deep); }
   .pr-mode-teal .pr-mode-cta { color: var(--color-teal); }
@@ -253,12 +256,12 @@ const t = lang === 'ar'
   .pr-head { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.4rem; }
   .pr-kicker { font-weight: 800; font-size: var(--text-caption); color: var(--color-teal); }
   .pr-hint { color: color-mix(in srgb, var(--color-ink) 62%, transparent); font-size: var(--text-caption); }
-  :global(.dark) .pr-hint { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .dark .pr-hint { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
 
   /* Topic chips */
   .pr-chips { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.4rem; }
   .pr-chip { padding: 0.5rem 1.05rem; border-radius: 9999px; font-weight: 700; font-size: var(--text-caption); white-space: nowrap; background: var(--color-card); border: 1px solid var(--color-card-edge); color: var(--color-ink); transition: transform .18s, border-color .18s, color .18s, background-color .18s; }
-  :global(.dark) .pr-chip { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
+  .dark .pr-chip { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
   .pr-chip:hover { transform: translateY(-2px); border-color: var(--color-teal); }
   .pr-chip.is-active { background: var(--color-teal); border-color: var(--color-teal); color: #fff; }
 
@@ -270,12 +273,12 @@ const t = lang === 'ar'
     background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
     transition: transform .18s var(--ease-out-quart), border-color .18s;
   }
-  :global(.dark) .pr-sentence { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .dark .pr-sentence { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .pr-sentence:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--color-teal) 45%, var(--color-card-edge)); }
   .pr-sentence-text { font-family: var(--font-arabic-classical); font-size: 1.5rem; line-height: 1.6; color: var(--color-ink); }
-  :global(.dark) .pr-sentence-text { color: var(--color-mist); }
+  .dark .pr-sentence-text { color: var(--color-mist); }
   .pr-sentence-meta { flex: none; font-family: var(--font-mono); font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 58%, transparent); }
-  :global(.dark) .pr-sentence-meta { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+  .dark .pr-sentence-meta { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
 
   /* Sentence shown while solving */
   .pr-sentence-show {
@@ -283,20 +286,20 @@ const t = lang === 'ar'
     text-align: center; color: var(--color-ink); padding: 1.1rem 1.25rem; margin-bottom: 1.25rem;
     border-radius: 1rem; background: color-mix(in srgb, var(--color-paper-soft) 60%, white); border: 1px solid var(--color-card-edge);
   }
-  :global(.dark) .pr-sentence-show { color: var(--color-mist); background: color-mix(in srgb, var(--color-coal) 45%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
+  .dark .pr-sentence-show { color: var(--color-mist); background: color-mix(in srgb, var(--color-coal) 45%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
 
   /* Word cards (solve + custom) */
   .pr-word { border-radius: 1rem; padding: 1rem 1.15rem; background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card); }
-  :global(.dark) .pr-word { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .dark .pr-word { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .pr-word.is-done { border-color: color-mix(in srgb, var(--color-teal) 45%, var(--color-card-edge)); }
   .pr-word-head { display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; margin-bottom: 0.75rem; }
   .pr-word-token { font-family: var(--font-quran); font-size: 1.9rem; font-weight: 700; color: var(--color-ink); }
-  :global(.dark) .pr-word-token { color: var(--color-mist); }
+  .dark .pr-word-token { color: var(--color-mist); }
   .pr-word-num { font-family: var(--font-mono); font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 50%, transparent); }
   .pr-selects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
   .pr-field { display: flex; flex-direction: column; gap: 0.3rem; }
   .pr-field-label { font-size: 0.95rem; font-weight: 700; color: color-mix(in srgb, var(--color-ink) 62%, transparent); }
-  :global(.dark) .pr-field-label { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .dark .pr-field-label { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
   .pr-select {
     width: 100%; appearance: none; -webkit-appearance: none;
     padding: 0.7rem 0.85rem; border-radius: 0.75rem; font-family: var(--font-arabic); font-size: 1.15rem;
@@ -305,17 +308,17 @@ const t = lang === 'ar'
     background-repeat: no-repeat; background-position: left 0.7rem center; transition: border-color .18s, box-shadow .18s;
   }
   :root[dir="rtl"] .pr-select { background-position: left 0.7rem center; }
-  :global(.dark) .pr-select { background-color: var(--color-coal); border-color: var(--color-coal-edge); color: var(--color-mist); }
+  .dark .pr-select { background-color: var(--color-coal); border-color: var(--color-coal-edge); color: var(--color-mist); }
   .pr-select:focus { outline: none; border-color: var(--color-teal); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-teal) 18%, transparent); }
   .pr-select:disabled { opacity: 0.5; }
 
   /* Actions row */
   .pr-actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.4rem; }
   .pr-progress { font-family: var(--font-mono); font-weight: 700; font-size: var(--text-caption); color: color-mix(in srgb, var(--color-ink) 60%, transparent); }
-  :global(.dark) .pr-progress { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
+  .dark .pr-progress { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
   .pr-textarea { font-family: var(--font-arabic-classical); font-size: 1.5rem; resize: none; }
   .pr-msg { margin-top: 0.9rem; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: var(--text-caption); background: color-mix(in srgb, var(--color-purple) 10%, transparent); color: var(--color-purple-deep); }
-  :global(.dark) .pr-msg { color: color-mix(in srgb, var(--color-purple) 85%, white); }
+  .dark .pr-msg { color: color-mix(in srgb, var(--color-purple) 85%, white); }
 
   /* Results */
   .pr-summary { border-radius: 1.25rem; padding: 1.6rem; text-align: center; color: #fff; background: linear-gradient(135deg, var(--color-purple), var(--color-purple-deep)); box-shadow: var(--shadow-lift); }
@@ -323,7 +326,7 @@ const t = lang === 'ar'
   .pr-summary-label { font-weight: 700; opacity: 0.9; margin-top: 0.35rem; }
   .pr-summary-fb { margin-top: 0.8rem; font-size: var(--text-caption); line-height: 1.7; opacity: 0.95; }
   .pr-result { border-radius: 1rem; padding: 1rem 1.15rem; border: 1px solid var(--color-card-edge); background: var(--color-card); box-shadow: var(--shadow-card); }
-  :global(.dark) .pr-result { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .dark .pr-result { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .pr-result.ok { border-inline-start: 4px solid var(--color-teal); }
   .pr-result.bad { border-inline-start: 4px solid #dc2626; }
   .pr-result-head { display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; margin-bottom: 0.5rem; }
@@ -332,9 +335,9 @@ const t = lang === 'ar'
   .pr-result-mark.bad { color: #dc2626; }
   .pr-result-row { display: flex; gap: 0.5rem; font-size: 1.15rem; line-height: 1.6; margin-top: 0.2rem; }
   .pr-result-label { flex: none; font-weight: 700; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
-  :global(.dark) .pr-result-label { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .dark .pr-result-label { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
   .pr-result-exp { margin-top: 0.5rem; font-family: var(--font-arabic-classical); font-size: 1.15rem; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 72%, transparent); }
-  :global(.dark) .pr-result-exp { color: color-mix(in srgb, var(--color-mist) 74%, transparent); }
+  .dark .pr-result-exp { color: color-mix(in srgb, var(--color-mist) 74%, transparent); }
 
   @media (max-width: 640px) {
     .pr-modes { grid-template-columns: 1fr; }
@@ -393,19 +396,52 @@ const t = lang === 'ar'
     const bankError = q<HTMLElement>('[data-bank-error]');
     const sentenceListEl = q<HTMLElement>('[data-sentence-list]');
 
+    // Firestore loaded once, lazily; topics + per-topic sentences cached so the
+    // bank opens instantly (it is prefetched in the background right after boot).
+    let fsMod: any = null; let db: any = null;
+    async function getFs() {
+      if (!fsMod) {
+        fsMod = await import('firebase/firestore');
+        const { app } = await import('../lib/firebase');
+        db = fsMod.getFirestore(app);
+      }
+      return fsMod;
+    }
+
+    let bankPromise: Promise<void> | null = null;
+    function ensureBank(): Promise<void> {
+      if (!bankPromise) {
+        bankPromise = (async () => {
+          const f = await getFs();
+          const snap = await f.getDocs(f.query(f.collection(db, 'grammar_topics'), f.orderBy('level')));
+          topics = snap.docs.map((d: any) => ({ id: d.id, ...d.data() }))
+            .sort((a: any, b: any) => (a.level - b.level) || ((a.order ?? 0) - (b.order ?? 0)));
+          if (topics[0]) loadSentencesFor(topics[0].id).catch(() => {}); // warm the first topic
+        })();
+      }
+      return bankPromise;
+    }
+
+    const sentCache: Record<string, any[]> = {};
+    async function loadSentencesFor(topicId: string): Promise<any[]> {
+      if (sentCache[topicId]) return sentCache[topicId];
+      const f = await getFs();
+      const snap = await f.getDocs(f.query(f.collection(db, 'sentences', topicId, 'items'), f.orderBy('order')));
+      sentCache[topicId] = snap.docs.map((d: any) => ({ id: d.id, ...d.data() }));
+      return sentCache[topicId];
+    }
+
+    let bankRendered = false;
     async function openCurated() {
       showPhase('browse');
-      if (topics.length) return; // already loaded
+      if (bankRendered) return; // chips + sentences already on screen
       bankLoading.classList.remove('hidden');
       bankError.classList.add('hidden');
       try {
-        const [{ collection, getDocs, query, orderBy }, { app }] = await Promise.all([import('firebase/firestore'), import('../lib/firebase')]);
-        const { getFirestore } = await import('firebase/firestore');
-        const db = getFirestore(app);
-        const snap = await getDocs(query(collection(db, 'grammar_topics'), orderBy('level')));
-        topics = snap.docs.map((d: any) => ({ id: d.id, ...d.data() })).sort((a: any, b: any) => (a.level - b.level) || ((a.order ?? 0) - (b.order ?? 0)));
+        await ensureBank();
         bankLoading.classList.add('hidden');
         if (!topics.length) { bankError.classList.remove('hidden'); return; }
+        bankRendered = true;
         renderTopicChips();
         selectTopic(topics[0]);
       } catch (e) {
@@ -429,16 +465,12 @@ const t = lang === 'ar'
     async function selectTopic(topic: any) {
       selectedTopic = topic;
       chipsEl.querySelectorAll('.pr-chip').forEach((c) => c.classList.toggle('is-active', (c as HTMLElement).dataset.topicId === topic.id));
+      if (sentCache[topic.id]) { renderSentences(sentCache[topic.id]); return; }
       sentenceListEl.replaceChildren();
-      const loading = el('p', 'pr-hint text-center py-6', lang === 'ar' ? 'جارٍ التحميل…' : 'Loading…');
-      sentenceListEl.appendChild(loading);
+      sentenceListEl.appendChild(el('p', 'pr-hint text-center py-6', lang === 'ar' ? 'جارٍ التحميل…' : 'Loading…'));
       try {
-        const [{ collection, getDocs, query, orderBy }, { app }] = await Promise.all([import('firebase/firestore'), import('../lib/firebase')]);
-        const { getFirestore } = await import('firebase/firestore');
-        const db = getFirestore(app);
-        const snap = await getDocs(query(collection(db, 'sentences', topic.id, 'items'), orderBy('order')));
-        const sentences = snap.docs.map((d: any) => ({ id: d.id, ...d.data() }));
-        renderSentences(sentences);
+        const s = await loadSentencesFor(topic.id);
+        if (selectedTopic?.id === topic.id) renderSentences(s);
       } catch (e) {
         console.error('sentences failed', e);
         sentenceListEl.replaceChildren();
@@ -687,21 +719,22 @@ const t = lang === 'ar'
       if (!maybeSignedIn()) { loadingEl.classList.add('hidden'); gateEl.classList.remove('hidden'); return; }
       try {
         const [{ onAuth }, { fetchMe }] = await Promise.all([import('../lib/auth'), import('../lib/entitlement')]);
-        onAuth(async (u) => {
+        onAuth((u) => {
           if (!u) { if (!booted) { loadingEl.classList.add('hidden'); gateEl.classList.remove('hidden'); } return; }
           currentUid = u.uid;
-          try { idToken = await u.getIdToken(); } catch {}
+          u.getIdToken().then((tk) => { idToken = tk; }).catch(() => {});
           if (booted) return; // ignore auth refreshes — never reset the user's place
           booted = true;
           loadingEl.classList.add('hidden');
           toolEl.classList.remove('hidden');
-          try { const me = await fetchMe(u); if (me?.premium) { isPremium = true; quotaEl.textContent = T.unlimited; } } catch {}
-          // Re-open a saved practice result from history (?h=<id>).
+          // Premium + sentence bank load in the BACKGROUND — never block / flicker the first screen.
+          fetchMe(u).then((me) => { if (me?.premium) { isPremium = true; quotaEl.textContent = T.unlimited; } }).catch(() => {});
+          ensureBank().catch(() => {});
+          // Initial screen — set synchronously so there is no chooser flash.
           try {
             const histId = new URLSearchParams(location.search).get('h');
             if (histId) { const item = getHistoryItem(histId); if (item?.kind === 'practice' && item.data) { renderCustomResults(item.data, item.sentence); return; } }
           } catch {}
-          // Optional deep-link ?mode=curated|custom
           const mode = new URLSearchParams(location.search).get('mode');
           if (mode === 'curated') openCurated();
           else if (mode === 'custom') openCustom();
