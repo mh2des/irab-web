@@ -87,6 +87,7 @@ const t = lang === 'ar'
 
 <script>
   import { maybeSignedIn } from '../lib/session';
+  import { addHistory, getHistoryItem } from '../lib/history';
 
   const root = document.querySelector<HTMLElement>('[data-play-root]');
   if (root) {
@@ -116,6 +117,7 @@ const t = lang === 'ar'
     const againBtn = q<HTMLButtonElement>('[data-play-again]');
 
     let idToken: string | null = null;
+    let currentUid: string | null = null;
     let currentSentence = '';
     let wordInputs: { word: string; input: HTMLInputElement }[] = [];
 
@@ -168,7 +170,19 @@ const t = lang === 'ar'
         if (res.status === 429) { showMsg(T.limit, 'info'); return; }
         if (!res.ok) { showMsg(T.error, 'err'); return; }
         const json = await res.json();
-        renderResults(json?.data ?? json);
+        const data = json?.data ?? json;
+        renderResults(data);
+        try {
+          const wf = Array.isArray(data?.wordFeedback) ? data.wordFeedback : [];
+          addHistory({
+            kind: 'practice', uid: currentUid || 'anon', sentence: currentSentence,
+            score: typeof data?.score === 'number' ? data.score : undefined,
+            level: data?.level,
+            correctCount: wf.filter((w: any) => w?.isCorrect).length,
+            totalCount: wf.length,
+            data,
+          });
+        } catch { /* history is best-effort */ }
       } catch {
         showMsg(T.error, 'err');
       } finally {
@@ -220,9 +234,22 @@ const t = lang === 'ar'
         onAuth(async (u) => {
           hide(loadingEl);
           if (!u) { show(gate); return; }
+          currentUid = u.uid;
           try { idToken = await u.getIdToken(); } catch {}
           show(tool);
           try { const me = await fetchMe(u); if (me?.premium) quota.textContent = T.unlimited; } catch {}
+          // Re-open a saved practice result from history (?h=<id>).
+          try {
+            const histId = new URLSearchParams(location.search).get('h');
+            if (histId) {
+              const item = getHistoryItem(histId);
+              if (item && item.kind === 'practice' && item.data) {
+                currentSentence = item.sentence;
+                renderResults(item.data);
+                return;
+              }
+            }
+          } catch { /* ignore */ }
           sentenceEl.focus();
         });
       } catch { hide(loadingEl); show(gate); }

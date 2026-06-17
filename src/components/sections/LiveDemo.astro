@@ -337,6 +337,7 @@ const t = lang === 'ar'
 <script>
   import { EXAMPLES, SPECIMEN, CASE_COLORS, TYPE_META, type ParseExample } from '../../data/demo-examples';
   import { maybeSignedIn } from '../../lib/session';
+  import { addHistory, getHistoryItem } from '../../lib/history';
   import { revealStagger, springPress } from '../../lib/animate';
   import { shareImage, downloadPdf } from '../../lib/share';
 
@@ -424,6 +425,7 @@ const t = lang === 'ar'
 
     let isSignedIn = false;
     let isPremium = false;
+    let currentUid: string | null = null;
 
     // The gate has two modes: 'signin' (anonymous, used 2 free) and 'upgrade'
     // (signed-in, hit the daily limit). NEVER show 'signin' to a signed-in user.
@@ -648,7 +650,16 @@ const t = lang === 'ar'
         if (!res.ok) throw new Error(`API ${res.status}`);
         const parsed = await res.json() as ParseExample;
         const elapsed = ((performance.now() - start) / 1000).toFixed(1) + 's';
-        renderExample({ ...parsed, source: i18n.customSrc }, elapsed);
+        const ex = { ...parsed, source: i18n.customSrc };
+        renderExample(ex, elapsed);
+        try {
+          addHistory({
+            kind: 'analyze', uid: currentUid || 'anon', sentence: text,
+            vocalized: parsed.vocalizedSentence, meaning: (parsed as any).meaning,
+            wordCount: Array.isArray(parsed.words) ? parsed.words.length : undefined,
+            data: ex,
+          });
+        } catch { /* history is best-effort */ }
         resultEl.classList.remove('hidden');
         actionsEl.classList.remove('hidden');
         revealStagger(cardsEl.querySelectorAll('.demo-card'));
@@ -689,6 +700,22 @@ const t = lang === 'ar'
 
     renderQuota();
 
+    // Re-open a saved analysis from history (?h=<id>) — renders the stored
+    // result directly, no API call, no quota spend.
+    try {
+      const histId = new URLSearchParams(location.search).get('h');
+      if (histId) {
+        const item = getHistoryItem(histId);
+        if (item && item.kind === 'analyze' && item.data) {
+          renderExample(item.data as ParseExample);
+          resultEl.classList.remove('hidden');
+          actionsEl.classList.remove('hidden');
+          revealStagger(cardsEl.querySelectorAll('.demo-card'));
+          resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    } catch { /* ignore */ }
+
     // Signed-in premium → uncap. Firebase is lazy-loaded ONLY when the
     // signed-in flag is present, so anonymous visitors never download it.
     if (maybeSignedIn()) {
@@ -703,6 +730,7 @@ const t = lang === 'ar'
               unsub();
               if (u) {
                 isSignedIn = true;
+                currentUid = u.uid;
                 try { idToken = await u.getIdToken(); } catch { /* ignore */ }
                 try { const me = await fetchMe(u); if (me?.premium) isPremium = true; } catch { /* ignore */ }
                 MAX_FREE = Infinity; // no anonymous lifetime cap once signed in; server enforces 3/day

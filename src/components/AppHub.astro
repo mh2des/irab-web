@@ -1,143 +1,621 @@
 ---
 /**
- * AppHub — the signed-in web "app" home (/app). One coherent surface tying the
- * tools (analyzer, practice, dictionary, Quran i'rab) + plan status + today's
- * usage into a single dashboard, so the web feels like a product, not scattered
- * pages. Login-gated; Firebase loads only here (lazy). Premium recognized via
- * the same cross-platform entitlement (worker /v1/me + /api/usage).
+ * AppHub — signed-in product dashboard for /app and /en/app.
  *
- * Usage badges are only shown where they're TRUE: practice -> customPractice and
- * dictionary -> smartDictionary map to /api/usage. The web analyzer uses the
- * public demo quota (not /api/usage) and Quran is public, so those carry no
- * daily badge.
+ * This is intentionally a product surface, not a marketing section: plan state,
+ * upgrade choice, daily usage, and tools are visible at a glance. Firebase still
+ * loads lazily only after the local signed-in hint passes.
  */
 import { PADDLE_ENABLED } from '../lib/paddle';
+
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const login = lang === 'ar' ? '/login' : '/en/login';
 const home = lang === 'ar' ? '/' : '/en';
 const account = lang === 'ar' ? '/account' : '/en/account';
 const dir = lang === 'ar' ? 'rtl' : 'ltr';
+const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
 
 const tools = lang === 'ar'
   ? [
-      { key: 'analyzer',   title: 'محلّل الإعراب',  desc: 'ألصق جملة واحصل على إعرابها الكامل كلمة بكلمة.', href: '/tool',          usageKey: '', accent: 'purple' },
-      { key: 'practice',   title: 'تمارين الإعراب', desc: 'أَعرِبْ بنفسك واحصل على تصحيحٍ فوري وشرحٍ لكلّ كلمة.', href: '/practice/play', usageKey: 'customPractice', accent: 'teal' },
-      { key: 'dictionary', title: 'المعجم الذكي',   desc: 'معاني وجذور وأمثلة وترجمة لأيّ كلمة عربية.',     href: '/dictionary',    usageKey: 'smartDictionary', accent: 'purple' },
-      { key: 'quran',      title: 'إعراب القرآن',   desc: 'تصفّح إعراب آيات القرآن الكريم.',                href: '/quran',         usageKey: '', accent: 'teal' },
+      { key: 'analyzer', title: 'محلّل الإعراب', desc: 'إعراب كامل للجمل العربية كلمة بكلمة، مع العلامة والسبب.', href: '/tool', usageKey: '', accent: 'purple', cta: 'حلّل الآن' },
+      { key: 'practice', title: 'تمارين الإعراب', desc: 'أَعرِب بنفسك، ثم احصل على تصحيح وشرح لكل كلمة.', href: '/practice/play', usageKey: 'customPractice', accent: 'teal', cta: 'ابدأ التدريب' },
+      { key: 'dictionary', title: 'المعجم الذكي', desc: 'معنى الكلمة وجذرها ووزنها وأمثلة عليها في سياقها.', href: '/dictionary', usageKey: 'smartDictionary', accent: 'purple', cta: 'افتح المعجم' },
+      { key: 'quran', title: 'إعراب القرآن', desc: 'مكتبة منظمة لإعراب الآيات، مناسبة للمراجعة والدراسة.', href: '/quran', usageKey: '', accent: 'teal', cta: 'تصفّح' },
+      { key: 'library', title: 'المكتبة النحوية', desc: '٤٧ كتابًا في النحو والصرف والبلاغة، تُقرأ كاملةً.', href: '/library', usageKey: '', accent: 'purple', cta: 'افتح المكتبة' },
     ]
   : [
-      { key: 'analyzer',   title: "I'rab analyzer",   desc: 'Paste a sentence, get its full word-by-word i\'rab.', href: '/en/tool',          usageKey: '', accent: 'purple' },
-      { key: 'practice',   title: 'Practice',         desc: 'Parse it yourself, get instant correction per word.', href: '/en/practice/play', usageKey: 'customPractice', accent: 'teal' },
-      { key: 'dictionary', title: 'Smart dictionary', desc: 'Meanings, roots, examples, and translation for any word.', href: '/en/dictionary', usageKey: 'smartDictionary', accent: 'purple' },
-      { key: 'quran',      title: "Quran i'rab",      desc: 'Browse the i\'rab of Quranic verses.',          href: '/quran',         usageKey: '', accent: 'teal' },
+      { key: 'analyzer', title: "I'rab analyzer", desc: "Full word-by-word i'rab for Arabic sentences, with the marker and why.", href: '/en/tool', usageKey: '', accent: 'purple', cta: 'Analyze now' },
+      { key: 'practice', title: 'Practice', desc: 'Do the parsing yourself, then get correction and explanation per word.', href: '/en/practice/play', usageKey: 'customPractice', accent: 'teal', cta: 'Start practice' },
+      { key: 'dictionary', title: 'Smart dictionary', desc: 'Meaning, root, pattern, examples, and translation for any word.', href: '/en/dictionary', usageKey: 'smartDictionary', accent: 'purple', cta: 'Open dictionary' },
+      { key: 'quran', title: "Quran i'rab", desc: "Browse structured i'rab pages for Quranic verses.", href: '/en/quran', usageKey: '', accent: 'teal', cta: 'Browse' },
+      { key: 'library', title: 'Grammar library', desc: '47 works on nahw, sarf, and balagha — read in full.', href: '/en/library', usageKey: '', accent: 'purple', cta: 'Open library' },
     ];
 
 const t = lang === 'ar'
   ? {
-      hi: 'أهلاً', tools: 'أدواتك', loading: 'جارٍ التحميل…',
-      planFree: 'مجاني', planPlus: 'إعراب بلس',
-      upgradeTitle: 'افتح كلّ الميزات بلا حدود',
-      upgradeBody: 'اشترك في إعراب بلس ليُفتح كلّ شيء على الويب والتطبيق — بالحساب نفسه.',
-      upgradeCta: 'حمّل التطبيق', manage: 'إدارة الحساب', signOut: 'تسجيل الخروج',
-      open: 'افتح',
-      subAnnual: 'اشترك سنويًّا — الأفضل قيمة', subMonthly: 'اشترك شهريًّا', orGetApp: 'أو احصل عليه من التطبيق',
-      activatingTitle: '✓ تمّ الدفع — جارٍ تفعيل اشتراكك…', activatingBody: 'لحظات من فضلك، سيُفتح كلّ شيء تلقائيًّا.',
+      loading: 'جارٍ التحميل…',
+      signInTitle: 'سجّل الدخول لفتح تطبيقك',
+      signInBody: 'حساب واحد لأدوات إعراب على الويب والتطبيق.',
+      signInCta: 'تسجيل الدخول',
+      greeting: 'تطبيقي',
+      welcome: 'أهلاً',
+      planFree: 'الخطة المجانية',
+      planPlus: 'إعراب بلس',
+      freeNote: 'حدود يومية واضحة، وترقية واحدة تفتح كل شيء.',
+      plusNote: 'اشتراكك فعّال على الويب والتطبيق بالحساب نفسه.',
+      manage: 'إدارة الحساب',
+      signOut: 'تسجيل الخروج',
+      today: 'استخدام اليوم',
+      practice: 'التدريب',
+      dictionary: 'المعجم',
+      tools: 'الأدوات',
+      toolsBody: 'كل أداة واضحة، وكل حد يظهر في مكانه.',
+      upgradeEyebrow: 'إعراب بلس',
+      upgradeTitle: 'افتح التجربة الكاملة',
+      upgradeBody: 'تحليل غير محدود، تدريب كامل، معجم ذكي، OCR، وشهادات الخطة السنوية. يعمل على الويب و iOS و Android بالحساب نفسه.',
+      annual: 'سنوي',
+      monthly: 'شهري',
+      annualPrice: '٣٧٫٩٩$',
+      monthlyPrice: '٤٫٩٩$',
+      annualMeta: 'تجربة مجانية ٧ أيام',
+      monthlyMeta: 'مرونة شهرية',
+      save: 'وفّر ٣٧٪',
+      annualCta: 'ابدأ التجربة المجانية',
+      monthlyCta: 'اشترك شهريًّا',
+      secure: 'دفع آمن عبر Paddle. قد تُضاف الضريبة حسب بلدك.',
+      appFallback: 'أو اشترك من التطبيق',
+      activatingTitle: 'تم الدفع — جارٍ تفعيل اشتراكك',
+      activatingBody: 'سيُفتح كل شيء تلقائيًّا خلال لحظات.',
+      leftToday: (n: number) => `${n} متبقٍ`,
+      unlimited: 'غير محدود',
+      user: 'مستخدم',
+      statsKicker: 'تقدّمك',
+      statAnalyzed: 'جملة محلَّلة',
+      statPracticed: 'تمرين',
+      statAvg: 'متوسّط الدقّة',
+      statStreak: 'يوم متتالٍ',
+      recentTitle: 'النشاط الأخير',
+      recentEmpty: 'لا نشاط بعد — ابدأ بتحليل جملة أو تمرين، وسيظهر هنا.',
+      seeAll: 'عرض الكل',
     }
   : {
-      hi: 'Welcome', tools: 'Your tools', loading: 'Loading…',
-      planFree: 'Free', planPlus: 'Irab Plus',
-      upgradeTitle: 'Unlock everything, unlimited',
-      upgradeBody: 'Subscribe to Irab Plus and it unlocks across web and app — on the same account.',
-      upgradeCta: 'Get the app', manage: 'Manage account', signOut: 'Sign out',
-      open: 'Open',
-      subAnnual: 'Subscribe yearly — best value', subMonthly: 'Subscribe monthly', orGetApp: 'or get it in the app',
-      activatingTitle: '✓ Payment received — activating your subscription…', activatingBody: 'One moment — everything unlocks automatically.',
+      loading: 'Loading…',
+      signInTitle: 'Sign in to open your app',
+      signInBody: 'One account for Irab on web and mobile.',
+      signInCta: 'Sign in',
+      greeting: 'My app',
+      welcome: 'Welcome',
+      planFree: 'Free plan',
+      planPlus: 'Irab Plus',
+      freeNote: 'Clear daily limits, with one upgrade for everything.',
+      plusNote: 'Your subscription is active on web and mobile with the same account.',
+      manage: 'Manage account',
+      signOut: 'Sign out',
+      today: "Today's usage",
+      practice: 'Practice',
+      dictionary: 'Dictionary',
+      tools: 'Tools',
+      toolsBody: 'Every tool, with the limits shown where they matter.',
+      upgradeEyebrow: 'Irab Plus',
+      upgradeTitle: 'Unlock the full experience',
+      upgradeBody: 'Unlimited analysis, full practice, smart dictionary, OCR, and annual certificates. Works on web, iOS, and Android with one account.',
+      annual: 'Annual',
+      monthly: 'Monthly',
+      annualPrice: '$37.99',
+      monthlyPrice: '$4.99',
+      annualMeta: '7-day free trial',
+      monthlyMeta: 'Flexible monthly access',
+      save: 'Save 37%',
+      annualCta: 'Start free trial',
+      monthlyCta: 'Subscribe monthly',
+      secure: 'Secure checkout by Paddle. Tax may be added for your country.',
+      appFallback: 'or subscribe in the app',
+      activatingTitle: 'Payment received — activating your subscription',
+      activatingBody: 'Everything unlocks automatically in a few moments.',
+      leftToday: (n: number) => `${n} left`,
+      unlimited: 'Unlimited',
+      user: 'User',
+      statsKicker: 'Your progress',
+      statAnalyzed: 'analyzed',
+      statPracticed: 'practiced',
+      statAvg: 'avg accuracy',
+      statStreak: 'day streak',
+      recentTitle: 'Recent activity',
+      recentEmpty: 'No activity yet — analyze a sentence or practice, and it shows up here.',
+      seeAll: 'See all',
     };
-const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
+const historyHref = lang === 'ar' ? '/history' : '/en/history';
+const toolHref = lang === 'ar' ? '/tool' : '/en/tool';
+const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
 ---
-<div data-hub-root data-lang={lang} data-login={login} data-home={home} dir={dir} class="w-full max-w-3xl mx-auto">
-  {/* Loading skeleton until auth resolves */}
-  <div data-hub-loading aria-busy="true" aria-label={t.loading}>
-    <div class="flex items-center justify-between gap-4 mb-8">
-      <div class="space-y-2.5"><div class="skeleton h-4 w-20 rounded-md"></div><div class="skeleton h-8 w-44 rounded-md"></div></div>
-      <div class="skeleton h-8 w-24 rounded-full"></div>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div>
-      <div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div>
+<div data-hub-root data-lang={lang} data-login={login} data-home={home} dir={dir} class="app-shell w-full max-w-6xl mx-auto">
+  <div data-hub-loading aria-busy="true" aria-label={t.loading} class="space-y-6">
+    <div class="app-hero skeleton h-56"></div>
+    <div class="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] gap-5">
+      <div class="skeleton h-96"></div>
+      <div class="skeleton h-96"></div>
     </div>
   </div>
 
-  {/* Signed-out gate */}
-  <div data-hub-gate class="hidden card panel-in p-8 md:p-10 text-center">
-    <h2 class:list={[titleClass, 'text-h2 mb-3']}>{lang === 'ar' ? 'سجّل الدخول لفتح تطبيقك' : 'Sign in to open your app'}</h2>
-    <p class="text-body text-ink/75 dark:text-mist/75 mb-7 max-w-md mx-auto">{lang === 'ar' ? 'حسابٌ واحد لكلّ الأدوات على الويب والتطبيق.' : 'One account for all your tools, on web and app.'}</p>
-    <a href={login} class="btn-primary btn-lg">{lang === 'ar' ? 'تسجيل الدخول' : 'Sign in'}</a>
+  <div data-hub-gate class="hidden app-gate panel-in text-center">
+    <div class="mx-auto mb-5 grid place-items-center app-gate-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 15v2"/><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/>
+      </svg>
+    </div>
+    <h2 class:list={[titleClass, 'text-h2 leading-tight mb-3']}>{t.signInTitle}</h2>
+    <p class="text-body text-ink/70 dark:text-mist/70 mb-7 max-w-lg mx-auto">{t.signInBody}</p>
+    <a href={login} class="btn-primary btn-lg">{t.signInCta}</a>
   </div>
 
-  {/* Hub */}
-  <div data-hub class="hidden panel-in">
-    {/* Activating banner — shown after a successful checkout while entitlement syncs */}
-    <div data-hub-activating class="hidden mb-6 card p-5 text-center" style="border-color: color-mix(in srgb, var(--color-teal) 35%, var(--color-card-edge));">
-      <p class:list={[titleClass, 'text-h3 text-teal leading-tight mb-1']}>{t.activatingTitle}</p>
-      <p class="text-small text-ink/75 dark:text-mist/75">{t.activatingBody}</p>
-    </div>
-
-    {/* Header: greeting + plan */}
-    <div class="flex items-center justify-between gap-4 mb-8">
+  <div data-hub class="hidden panel-in space-y-6">
+    <section class="app-hero">
       <div class="min-w-0">
-        <p class="text-small font-semibold text-ink/70 dark:text-mist/70">{t.hi}</p>
-        <h1 data-hub-name class:list={[titleClass, 'text-h2 leading-tight truncate']}></h1>
+        <p class="app-kicker">{t.greeting}</p>
+        <h1 class:list={[titleClass, 'app-title leading-tight']}>
+          <span>{t.welcome}</span>
+          <span data-hub-name class="block truncate"></span>
+        </h1>
+        <p data-plan-note class="app-subtitle">{t.freeNote}</p>
       </div>
-      <span data-hub-plan class="badge shrink-0">{t.planFree}</span>
+      <div class="app-status">
+        <span data-hub-plan class="app-plan-pill">{t.planFree}</span>
+        <div class="flex gap-2">
+          <a href={account} class="btn-ghost app-action">{t.manage}</a>
+          <button type="button" data-hub-signout class="btn-ghost app-action app-action-muted">{t.signOut}</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="app-stats" aria-label={t.statsKicker}>
+      <div class="stat-tile stat-tile-purple"><span class="stat-tile-num" data-stat="analyze">0</span><span class="stat-tile-label">{t.statAnalyzed}</span></div>
+      <div class="stat-tile stat-tile-teal"><span class="stat-tile-num" data-stat="practice">0</span><span class="stat-tile-label">{t.statPracticed}</span></div>
+      <div class="stat-tile"><span class="stat-tile-num" data-stat="avg">—</span><span class="stat-tile-label">{t.statAvg}</span></div>
+      <div class="stat-tile"><span class="stat-tile-num" data-stat="streak">0</span><span class="stat-tile-label">{t.statStreak}</span></div>
+    </section>
+
+    <div data-hub-activating class="hidden app-activating">
+      <svg viewBox="0 0 24 24" class="w-7 h-7 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <div>
+        <p class:list={[titleClass, 'text-h3 leading-tight']}>{t.activatingTitle}</p>
+        <p class="text-small text-ink/70 dark:text-mist/70">{t.activatingBody}</p>
+      </div>
     </div>
 
-    {/* Upgrade nudge (free only) */}
-    <div data-hub-upgrade class="hidden mb-8 card p-6 md:p-7" style="border-color: color-mix(in srgb, var(--color-purple) 30%, var(--color-card-edge));">
-      <p class:list={[titleClass, 'text-h3 leading-tight mb-1.5']}>{t.upgradeTitle}</p>
-      <p class="text-body text-ink/75 dark:text-mist/75 mb-5">{t.upgradeBody}</p>
-      {PADDLE_ENABLED ? (
-        <Fragment>
-          <div class="flex flex-col sm:flex-row gap-3">
-            <button type="button" data-paddle-plan="annual" class="btn-primary">{t.subAnnual}</button>
-            <button type="button" data-paddle-plan="monthly" class="btn-ghost">{t.subMonthly}</button>
+    <div class="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] gap-5 items-start">
+      <section class="app-panel">
+        <div class="flex items-start justify-between gap-4 mb-5">
+          <div>
+            <p class="app-kicker">{t.tools}</p>
+            <h2 class:list={[titleClass, 'text-h2 leading-tight']}>{t.tools}</h2>
+            <p class="text-small text-ink/68 dark:text-mist/68 max-w-xl">{t.toolsBody}</p>
           </div>
-          <a href={`${home}#cta`} class="inline-block mt-4 text-small font-medium text-ink/60 dark:text-mist/60 hover:text-purple transition-colors">{t.orGetApp}</a>
-        </Fragment>
-      ) : (
-        <a href={`${home}#cta`} class="btn-primary">{t.upgradeCta}</a>
-      )}
-    </div>
+        </div>
 
-    {/* Tool grid */}
-    <p class="text-small font-semibold text-ink/70 dark:text-mist/70 mb-3">{t.tools}</p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-      {tools.map((tool) => (
-        <a href={tool.href} data-usage-key={tool.usageKey}
-          class="group card card-interactive block p-6">
-          <div class="flex items-start justify-between gap-3 mb-2">
-            <h3 class:list={[titleClass, 'text-h3 leading-tight']}>{tool.title}</h3>
-            <span data-usage class:list={['text-small font-semibold shrink-0', tool.accent === 'teal' ? 'text-teal' : 'text-purple']}></span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {tools.map((tool) => (
+            <a href={tool.href} data-usage-key={tool.usageKey} class:list={['tool-card', tool.accent === 'teal' ? 'tool-card-teal' : 'tool-card-purple']}>
+              <span class="tool-icon" aria-hidden="true">
+                {tool.key === 'analyzer' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>
+                )}
+                {tool.key === 'practice' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
+                )}
+                {tool.key === 'dictionary' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7"/><path d="M9 11h5"/></svg>
+                )}
+                {tool.key === 'quran' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v15"/><path d="M5 4h4a3 3 0 0 1 3 3v14a3 3 0 0 0-3-3H5z"/><path d="M19 4h-4a3 3 0 0 0-3 3"/></svg>
+                )}
+                {tool.key === 'library' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9.5 2v15"/><path d="M13 6h3"/></svg>
+                )}
+              </span>
+              <span class="block min-w-0">
+                <span class:list={[titleClass, 'tool-title']}>{tool.title}</span>
+                <span class="tool-desc">{tool.desc}</span>
+              </span>
+              <span class="tool-footer">
+                <span data-usage class="tool-usage"></span>
+                <span class="tool-cta">{tool.cta}<span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <aside class="space-y-5">
+        <section class="usage-panel">
+          <div>
+            <p class="app-kicker">{t.today}</p>
+            <h2 class:list={[titleClass, 'text-h3 leading-tight']}>{t.today}</h2>
           </div>
-          <p class="text-small text-ink/75 dark:text-mist/75 leading-relaxed">{tool.desc}</p>
-          <span class="mt-3 inline-flex items-center gap-1 text-small font-semibold text-purple group-hover:gap-2 transition-all">
-            {t.open}<span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span>
-          </span>
-        </a>
-      ))}
+          <div class="usage-grid">
+            <div class="usage-card">
+              <span class="usage-label">{t.practice}</span>
+              <strong data-usage-summary="customPractice">—</strong>
+            </div>
+            <div class="usage-card">
+              <span class="usage-label">{t.dictionary}</span>
+              <strong data-usage-summary="smartDictionary">—</strong>
+            </div>
+          </div>
+        </section>
+
+        <section data-hub-upgrade class="hidden upgrade-panel">
+          <div class="upgrade-head">
+            <p class="app-kicker app-kicker-light">{t.upgradeEyebrow}</p>
+            <h2 class:list={[titleClass, 'upgrade-title']}>{t.upgradeTitle}</h2>
+            <p class="upgrade-body">{t.upgradeBody}</p>
+          </div>
+
+          {PADDLE_ENABLED ? (
+            <div class="upgrade-plans">
+              <button type="button" data-paddle-plan="annual" class="plan-card plan-card-featured">
+                <span class="plan-badge">{t.save}</span>
+                <span class="plan-name">{t.annual}</span>
+                <span class="plan-price">{t.annualPrice}</span>
+                <span class="plan-meta">{t.annualMeta}</span>
+                <span class="plan-cta">{t.annualCta}</span>
+              </button>
+              <button type="button" data-paddle-plan="monthly" class="plan-card">
+                <span class="plan-name">{t.monthly}</span>
+                <span class="plan-price">{t.monthlyPrice}</span>
+                <span class="plan-meta">{t.monthlyMeta}</span>
+                <span class="plan-cta">{t.monthlyCta}</span>
+              </button>
+            </div>
+          ) : (
+            <a href={`${home}#cta`} class="btn-primary btn-block">{lang === 'ar' ? 'حمّل التطبيق' : 'Get the app'}</a>
+          )}
+          <p class="upgrade-fineprint">{t.secure}</p>
+          <a href={`${home}#cta`} class="upgrade-link">{t.appFallback}</a>
+        </section>
+      </aside>
     </div>
 
-    {/* Footer actions */}
-    <div class="flex flex-col sm:flex-row gap-3 items-center">
-      <a href={account} class="btn-ghost btn-block sm:w-auto">{t.manage}</a>
-      <button type="button" data-hub-signout class="text-small font-semibold text-ink/60 dark:text-mist/60 hover:text-red-600 dark:hover:text-red-400 transition-colors py-2 px-4">{t.signOut}</button>
-    </div>
+    <section data-hub-recent class="app-panel hidden">
+      <div class="flex items-center justify-between gap-4 mb-5">
+        <div>
+          <p class="app-kicker">{t.recentTitle}</p>
+          <h2 class:list={[titleClass, 'text-h2 leading-tight']}>{t.recentTitle}</h2>
+        </div>
+        <a href={historyHref} data-recent-seeall class="btn-ghost app-action hidden">{t.seeAll}</a>
+      </div>
+      <ul data-recent-list class="recent-list"></ul>
+      <p data-recent-empty class="hidden text-small text-ink/65 dark:text-mist/65 py-8 text-center">{t.recentEmpty}</p>
+    </section>
   </div>
 </div>
 
+<style>
+  .app-shell { --panel-pad: clamp(1.25rem, 2.4vw, 2rem); }
+  .app-gate,
+  .app-hero,
+  .app-panel,
+  .usage-panel,
+  .upgrade-panel,
+  .app-activating {
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    box-shadow: var(--shadow-lift);
+  }
+  :global(.dark) .app-gate,
+  :global(.dark) .app-hero,
+  :global(.dark) .app-panel,
+  :global(.dark) .usage-panel,
+  :global(.dark) .upgrade-panel,
+  :global(.dark) .app-activating {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+    box-shadow: 0 20px 46px -24px rgb(0 0 0 / 0.75);
+  }
+  .app-gate { border-radius: 1.25rem; padding: clamp(2rem, 6vw, 4rem); }
+  .app-gate-mark {
+    width: 4.25rem; height: 4.25rem; border-radius: 1.2rem;
+    color: var(--color-purple-deep);
+    background: color-mix(in srgb, var(--color-purple) 12%, white);
+    border: 1px solid color-mix(in srgb, var(--color-purple) 28%, var(--color-card-edge));
+  }
+  .app-hero {
+    border-radius: 1.25rem;
+    padding: clamp(1.4rem, 3vw, 2.25rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.25rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .app-hero::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    width: 0.45rem;
+    height: 100%;
+    background: var(--color-purple);
+  }
+  .app-title { font-size: clamp(2.25rem, 5vw, 4.25rem); }
+  .app-subtitle { max-width: 42rem; color: color-mix(in srgb, var(--color-ink) 70%, transparent); font-size: var(--text-small); }
+  :global(.dark) .app-subtitle { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+  .app-kicker {
+    display: block;
+    color: var(--color-purple-deep);
+    font-weight: 800;
+    font-size: var(--text-caption);
+    line-height: 1.35;
+  }
+  :global(.dark) .app-kicker { color: color-mix(in srgb, var(--color-purple) 85%, white); }
+  .app-kicker-light { color: color-mix(in srgb, white 86%, transparent); }
+  .app-status { display: flex; flex-direction: column; align-items: flex-end; gap: 1rem; }
+  .app-plan-pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 8rem;
+    border-radius: 999px;
+    padding: 0.65rem 1.1rem;
+    font-size: var(--text-caption);
+    font-weight: 800;
+    background: color-mix(in srgb, var(--color-ink) 8%, transparent);
+    color: var(--color-ink);
+  }
+  .app-plan-pill.is-plus {
+    background: var(--color-purple);
+    color: white;
+    box-shadow: 0 14px 26px -12px color-mix(in srgb, var(--color-purple) 70%, transparent);
+  }
+  .app-action { padding: 0.7rem 1.05rem; font-size: var(--text-caption); }
+  .app-action-muted { color: color-mix(in srgb, var(--color-ink) 62%, transparent); }
+  :global(.dark) .app-action-muted { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
+
+  /* Stats strip */
+  .app-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem; }
+  .stat-tile {
+    border-radius: 1.1rem; padding: 1.1rem 1.25rem;
+    background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
+    display: flex; flex-direction: column; gap: 0.25rem;
+  }
+  :global(.dark) .stat-tile { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .stat-tile-num { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1; color: var(--color-ink); }
+  :global(.dark) .stat-tile-num { color: var(--color-mist); }
+  .stat-tile-purple .stat-tile-num { color: var(--color-purple-deep); }
+  :global(.dark) .stat-tile-purple .stat-tile-num { color: color-mix(in srgb, var(--color-purple) 85%, white); }
+  .stat-tile-teal .stat-tile-num { color: var(--color-teal); }
+  .stat-tile-label { font-size: var(--text-caption); font-weight: 700; color: color-mix(in srgb, var(--color-ink) 66%, transparent); }
+  :global(.dark) .stat-tile-label { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
+
+  /* Recent activity */
+  .recent-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin: 0; padding: 0; }
+  .recent-item {
+    display: flex; align-items: center; gap: 0.9rem;
+    border-radius: 0.9rem; padding: 0.85rem 1rem;
+    border: 1px solid var(--color-card-edge); background: color-mix(in srgb, var(--color-paper-soft) 58%, white);
+    text-decoration: none; transition: transform .18s var(--ease-out-quart), border-color .18s, background-color .18s;
+  }
+  :global(.dark) .recent-item { background: color-mix(in srgb, var(--color-coal) 48%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
+  .recent-item:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--color-purple) 40%, var(--color-card-edge)); }
+  .recent-ic { width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; display: grid; place-items: center; flex: none; background: var(--color-card); border: 1px solid var(--color-card-edge); }
+  :global(.dark) .recent-ic { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .recent-ic svg { width: 1.2rem; height: 1.2rem; }
+  .recent-ic-analyze { color: var(--color-purple-deep); }
+  .recent-ic-practice { color: var(--color-teal); }
+  .recent-main { min-width: 0; flex: 1; }
+  .recent-sentence { display: block; font-family: var(--font-arabic-classical); font-size: 1.35rem; line-height: 1.5; color: var(--color-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  :global(.dark) .recent-sentence { color: var(--color-mist); }
+  .recent-meta { display: block; margin-top: 0.1rem; font-size: 1rem; color: color-mix(in srgb, var(--color-ink) 62%, transparent); }
+  :global(.dark) .recent-meta { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .recent-time { flex: none; font-family: var(--font-mono); font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
+  :global(.dark) .recent-time { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .app-panel,
+  .usage-panel {
+    border-radius: 1.25rem;
+    padding: var(--panel-pad);
+  }
+  .app-activating {
+    border-radius: 1.1rem;
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    color: var(--color-teal);
+    border-color: color-mix(in srgb, var(--color-teal) 45%, var(--color-card-edge));
+  }
+  .tool-card {
+    min-height: 15.5rem;
+    border-radius: 1rem;
+    padding: 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background: color-mix(in srgb, var(--color-paper-soft) 62%, white);
+    border: 1px solid var(--color-card-edge);
+    transition: transform .22s var(--ease-out-quart), border-color .22s, box-shadow .22s, background-color .22s;
+  }
+  :global(.dark) .tool-card {
+    background: color-mix(in srgb, var(--color-coal) 52%, var(--color-coal-soft));
+    border-color: var(--color-coal-edge);
+  }
+  .tool-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--lift-shadow);
+    background: var(--color-card);
+  }
+  :global(.dark) .tool-card:hover { background: var(--color-coal-soft); }
+  .tool-card-purple:hover { border-color: color-mix(in srgb, var(--color-purple) 48%, var(--color-card-edge)); }
+  .tool-card-teal:hover { border-color: color-mix(in srgb, var(--color-teal) 52%, var(--color-card-edge)); }
+  .tool-icon {
+    width: 3.2rem; height: 3.2rem; border-radius: 0.95rem;
+    display: grid; place-items: center;
+    background: white;
+    border: 1px solid var(--color-card-edge);
+  }
+  :global(.dark) .tool-icon { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .tool-card-purple .tool-icon, .tool-card-purple .tool-cta { color: var(--color-purple-deep); }
+  .tool-card-teal .tool-icon, .tool-card-teal .tool-cta { color: var(--color-teal); }
+  .tool-icon svg { width: 1.55rem; height: 1.55rem; }
+  .tool-title { display: block; font-size: 1.65rem; line-height: 1.25; }
+  .tool-desc {
+    display: block;
+    margin-top: 0.35rem;
+    color: color-mix(in srgb, var(--color-ink) 68%, transparent);
+    font-size: var(--text-caption);
+    line-height: 1.55;
+  }
+  :global(.dark) .tool-desc { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+  .tool-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+  .tool-usage {
+    min-height: 1.75rem;
+    color: color-mix(in srgb, var(--color-ink) 58%, transparent);
+    font-size: var(--text-caption);
+    font-weight: 800;
+  }
+  :global(.dark) .tool-usage { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
+  .tool-cta {
+    display: inline-flex;
+    gap: 0.35rem;
+    align-items: center;
+    font-size: var(--text-caption);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .usage-panel { display: grid; gap: 1rem; }
+  .usage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+  .usage-card {
+    border-radius: 1rem;
+    border: 1px solid var(--color-card-edge);
+    background: color-mix(in srgb, var(--color-paper-soft) 58%, white);
+    padding: 1rem;
+  }
+  :global(.dark) .usage-card { background: color-mix(in srgb, var(--color-coal) 48%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
+  .usage-label {
+    display: block;
+    font-size: var(--text-caption);
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    font-weight: 700;
+  }
+  :global(.dark) .usage-label { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
+  .usage-card strong {
+    display: block;
+    margin-top: 0.15rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.55rem);
+    line-height: 1.05;
+    color: var(--color-ink);
+  }
+  :global(.dark) .usage-card strong { color: var(--color-mist); }
+  .upgrade-panel {
+    border-radius: 1.25rem;
+    padding: var(--panel-pad);
+    color: white;
+    background:
+      linear-gradient(135deg, var(--color-ink), color-mix(in srgb, var(--color-purple-deep) 58%, var(--color-ink)));
+    border-color: color-mix(in srgb, var(--color-purple) 42%, transparent);
+  }
+  :global(.dark) .upgrade-panel {
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--color-coal) 70%, var(--color-purple-deep)), var(--color-coal-soft));
+  }
+  .upgrade-title { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.08; }
+  .upgrade-body {
+    margin-top: 0.75rem;
+    color: color-mix(in srgb, white 78%, transparent);
+    font-size: var(--text-small);
+    line-height: 1.55;
+  }
+  .upgrade-plans { display: grid; gap: 0.85rem; margin-top: 1.25rem; }
+  .plan-card {
+    position: relative;
+    width: 100%;
+    text-align: start;
+    border-radius: 1rem;
+    padding: 1.05rem;
+    background: rgb(255 255 255 / 0.1);
+    border: 1px solid rgb(255 255 255 / 0.18);
+    color: white;
+    transition: transform .2s var(--ease-out-quart), background-color .2s, border-color .2s;
+  }
+  .plan-card:hover {
+    transform: translateY(-3px);
+    background: rgb(255 255 255 / 0.16);
+    border-color: rgb(255 255 255 / 0.38);
+  }
+  .plan-card-featured {
+    background: white;
+    color: var(--color-ink);
+    border-color: white;
+    box-shadow: 0 18px 34px -18px rgb(0 0 0 / 0.55);
+  }
+  .plan-card-featured:hover { background: white; border-color: white; }
+  .plan-badge {
+    position: absolute;
+    inset-inline-end: 1rem;
+    top: 1rem;
+    border-radius: 999px;
+    padding: 0.26rem 0.7rem;
+    background: var(--color-teal);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 900;
+  }
+  .plan-name,
+  .plan-meta,
+  .plan-cta { display: block; }
+  .plan-name { font-size: var(--text-caption); font-weight: 900; opacity: 0.78; }
+  .plan-price { display: block; margin-top: 0.2rem; font-family: var(--font-display); font-size: 2.45rem; line-height: 1; font-weight: 700; }
+  .plan-meta { margin-top: 0.2rem; font-size: var(--text-caption); opacity: 0.76; }
+  .plan-cta {
+    margin-top: 0.8rem;
+    border-radius: 999px;
+    padding: 0.62rem 0.9rem;
+    text-align: center;
+    font-size: var(--text-caption);
+    font-weight: 900;
+    background: rgb(255 255 255 / 0.16);
+  }
+  .plan-card-featured .plan-cta { background: var(--color-purple); color: white; }
+  .upgrade-fineprint {
+    margin-top: 1rem;
+    color: color-mix(in srgb, white 66%, transparent);
+    font-size: var(--text-caption);
+    line-height: 1.45;
+  }
+  .upgrade-link {
+    display: inline-flex;
+    margin-top: 0.55rem;
+    color: white;
+    font-size: var(--text-caption);
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+  @media (max-width: 780px) {
+    .app-hero { grid-template-columns: 1fr; }
+    .app-status { align-items: stretch; }
+    .app-status > .flex { flex-direction: column; }
+    .app-action { width: 100%; }
+    .usage-grid { grid-template-columns: 1fr; }
+    .tool-card { min-height: 14rem; }
+    .app-stats { grid-template-columns: 1fr 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tool-card:hover,
+    .plan-card:hover { transform: none; }
+  }
+</style>
+
 <script>
   import { maybeSignedIn } from '../lib/session';
+  import { getStats, getHistory, formatAgo } from '../lib/history';
 
   const root = document.querySelector<HTMLElement>('[data-hub-root]');
   if (root) {
@@ -151,20 +629,88 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
     const hub = q<HTMLElement>('[data-hub]');
     const nameEl = q<HTMLElement>('[data-hub-name]');
     const planEl = q<HTMLElement>('[data-hub-plan]');
+    const planNoteEl = q<HTMLElement>('[data-plan-note]');
     const upgradeEl = q<HTMLElement>('[data-hub-upgrade]');
 
     const T = lang === 'ar'
-      ? { plus: 'إعراب بلس', free: 'مجاني', unlimited: 'غير محدود ⚡', leftToday: (n: number) => `${n} متبقٍ اليوم`, user: 'مستخدم' }
-      : { plus: 'Irab Plus', free: 'Free', unlimited: 'Unlimited ⚡', leftToday: (n: number) => `${n} left today`, user: 'User' };
+      ? {
+          plus: 'إعراب بلس',
+          free: 'الخطة المجانية',
+          plusNote: 'اشتراكك فعّال على الويب والتطبيق بالحساب نفسه.',
+          freeNote: 'حدود يومية واضحة، وترقية واحدة تفتح كل شيء.',
+          unlimited: 'غير محدود',
+          leftToday: (n: number) => `${n} متبقٍ`,
+          user: 'مستخدم',
+        }
+      : {
+          plus: 'Irab Plus',
+          free: 'Free plan',
+          plusNote: 'Your subscription is active on web and mobile with the same account.',
+          freeNote: 'Clear daily limits, with one upgrade for everything.',
+          unlimited: 'Unlimited',
+          leftToday: (n: number) => `${n} left`,
+          user: 'User',
+        };
 
     function setUsage(key: string, text: string) {
       const card = root!.querySelector<HTMLElement>(`[data-usage-key="${key}"]`);
       const span = card?.querySelector<HTMLElement>('[data-usage]');
+      const summary = root!.querySelector<HTMLElement>(`[data-usage-summary="${key}"]`);
       if (span) span.textContent = text;
+      if (summary) summary.textContent = text;
+    }
+
+    const escapeHtml = (s: string) => (s || '').replace(/[&<>"]/g, (c) =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as Record<string, string>)[c]);
+
+    function renderStats(uid: string) {
+      const stats = getStats(uid);
+      const set = (k: string, v: string) => { const el = root!.querySelector<HTMLElement>(`[data-stat="${k}"]`); if (el) el.textContent = v; };
+      set('analyze', String(stats.analyzeCount));
+      set('practice', String(stats.practiceCount));
+      set('avg', stats.avgScore == null ? '—' : `${stats.avgScore}%`);
+      set('streak', String(stats.streak));
+    }
+
+    function renderRecent(uid: string) {
+      const section = root!.querySelector<HTMLElement>('[data-hub-recent]');
+      const list = root!.querySelector<HTMLElement>('[data-recent-list]');
+      const empty = root!.querySelector<HTMLElement>('[data-recent-empty]');
+      const seeAll = root!.querySelector<HTMLElement>('[data-recent-seeall]');
+      if (!section || !list) return;
+      section.classList.remove('hidden');
+      const items = getHistory(uid).slice(0, 5);
+      if (!items.length) { empty?.classList.remove('hidden'); return; }
+      seeAll?.classList.remove('hidden');
+      const toolBase = lang === 'ar' ? '/tool' : '/en/tool';
+      const practiceBase = lang === 'ar' ? '/practice/play' : '/en/practice/play';
+      const icA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>';
+      const icP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>';
+      list.replaceChildren();
+      for (const it of items) {
+        const isA = it.kind === 'analyze';
+        const meta = isA
+          ? (it.wordCount ? `${it.wordCount} ${lang === 'ar' ? 'كلمة' : 'words'}` : (lang === 'ar' ? 'تحليل' : 'analysis'))
+          : (typeof it.score === 'number'
+              ? `${Math.round(it.score * 100)}%${it.level ? ' · ' + it.level : ''}`
+              : (lang === 'ar' ? 'تمرين' : 'practice'));
+        const a = document.createElement('a');
+        a.className = 'recent-item';
+        a.href = `${isA ? toolBase : practiceBase}?h=${encodeURIComponent(it.id)}`;
+        a.innerHTML =
+          `<span class="recent-ic recent-ic-${isA ? 'analyze' : 'practice'}" aria-hidden="true">${isA ? icA : icP}</span>` +
+          `<span class="recent-main"><span class="recent-sentence" dir="rtl">${escapeHtml(it.sentence)}</span><span class="recent-meta">${escapeHtml(meta)}</span></span>` +
+          `<span class="recent-time">${escapeHtml(formatAgo(it.ts, lang))}</span>`;
+        list.appendChild(a);
+      }
     }
 
     (async () => {
-      if (!maybeSignedIn()) { loadingEl.classList.add('hidden'); gate.classList.remove('hidden'); return; }
+      if (!maybeSignedIn()) {
+        loadingEl.classList.add('hidden');
+        gate.classList.remove('hidden');
+        return;
+      }
       try {
         const [{ onAuth, logout }, { fetchMe }, { forgetSignedIn, rememberSignedIn }] =
           await Promise.all([import('../lib/auth'), import('../lib/entitlement'), import('../lib/session')]);
@@ -177,27 +723,41 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
 
         onAuth(async (u) => {
           loadingEl.classList.add('hidden');
-          if (!u) { forgetSignedIn(); gate.classList.remove('hidden'); return; }
+          if (!u) {
+            forgetSignedIn();
+            gate.classList.remove('hidden');
+            return;
+          }
           rememberSignedIn();
           hub.classList.remove('hidden');
 
           const name = u.displayName || (u.email ? u.email.split('@')[0] : T.user);
           nameEl.textContent = name;
 
+          // Stats + recent activity from this account's saved history.
+          try { renderStats(u.uid); renderRecent(u.uid); } catch {}
+
           let idToken: string | null = null;
           try { idToken = await u.getIdToken(); } catch {}
 
-          // Plan badge via /v1/me
           let premium = false;
-          try { const me = await fetchMe(u); premium = me?.premium === true; } catch {}
+          try {
+            const me = await fetchMe(u);
+            premium = me?.premium === true;
+          } catch {}
+
           if (premium) {
             planEl.textContent = T.plus;
-            planEl.className = 'badge badge-brand shrink-0';
+            planEl.className = 'app-plan-pill is-plus';
+            planNoteEl.textContent = T.plusNote;
+            setUsage('customPractice', T.unlimited);
+            setUsage('smartDictionary', T.unlimited);
           } else {
             planEl.textContent = T.free;
+            planEl.className = 'app-plan-pill';
+            planNoteEl.textContent = T.freeNote;
             upgradeEl.classList.remove('hidden');
-            // Web checkout buttons (only rendered when PADDLE_ENABLED) — tag the
-            // purchase with this user's UID so the webhook grants their entitlement.
+
             root!.querySelectorAll<HTMLButtonElement>('[data-paddle-plan]').forEach((btn) => {
               btn.addEventListener('click', async () => {
                 const plan = btn.dataset.paddlePlan === 'monthly' ? 'monthly' : 'annual';
@@ -205,16 +765,21 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
                 try {
                   const { openCheckout } = await import('../lib/paddle');
                   await openCheckout({
-                    plan, firebaseUid: u.uid, email: u.email || undefined, lang,
+                    plan,
+                    firebaseUid: u.uid,
+                    email: u.email || undefined,
+                    lang,
                     onComplete: async () => {
                       const act = q<HTMLElement>('[data-hub-activating]');
                       act.classList.remove('hidden');
                       upgradeEl.classList.add('hidden');
                       act.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                      // Poll entitlement until RevenueCat reflects the Paddle purchase, then refresh.
                       for (let i = 0; i < 12; i++) {
                         await new Promise((r) => setTimeout(r, 3000));
-                        try { const me2 = await fetchMe(u); if (me2?.premium) break; } catch {}
+                        try {
+                          const me2 = await fetchMe(u);
+                          if (me2?.premium) break;
+                        } catch {}
                       }
                       window.location.reload();
                     },
@@ -228,7 +793,6 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
             });
           }
 
-          // Today's usage (truthful badges only — practice + dictionary)
           if (idToken) {
             try {
               const res = await fetch(`${WORKER}/api/usage`, {
@@ -241,21 +805,27 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
                 const usage = j?.data?.usage || {};
                 for (const key of ['customPractice', 'smartDictionary']) {
                   const u2 = usage[key];
-                  if (premium) { setUsage(key, T.unlimited); continue; }
+                  if (premium) {
+                    setUsage(key, T.unlimited);
+                    continue;
+                  }
                   if (u2 && typeof u2.remaining === 'number' && u2.limit !== -1) {
                     setUsage(key, T.leftToday(u2.remaining));
                   }
                 }
-              } else if (premium) {
+              }
+            } catch {
+              if (premium) {
                 setUsage('customPractice', T.unlimited);
                 setUsage('smartDictionary', T.unlimited);
               }
-            } catch {
-              if (premium) { setUsage('customPractice', T.unlimited); setUsage('smartDictionary', T.unlimited); }
             }
           }
         });
-      } catch { loadingEl.classList.add('hidden'); gate.classList.remove('hidden'); }
+      } catch {
+        loadingEl.classList.add('hidden');
+        gate.classList.remove('hidden');
+      }
     })();
   }
 </script>

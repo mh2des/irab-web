@@ -1,0 +1,150 @@
+---
+/**
+ * /en/history — saved analyzer + practice history (English chrome). Personal → noindex.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import Container from '../../components/Container.astro';
+import Section from '../../components/Section.astro';
+---
+<BaseLayout lang="en" noindex title="My history — Irab" description="Your saved analyzer and practice results on Irab.">
+  <Nav lang="en" />
+  <main data-hist-root data-lang="en">
+    <Section size="sm">
+      <Container size="narrow">
+        <div class="flex items-end justify-between gap-4 mb-8">
+          <div>
+            <p class="eyebrow mb-3">History</p>
+            <h1 class="font-display text-[clamp(2rem,5vw,3.2rem)] leading-tight tracking-tight">My history</h1>
+          </div>
+          <button type="button" data-hist-clear class="btn-ghost hidden">Clear all</button>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mb-6" data-hist-filters>
+          <button type="button" class="hist-chip is-active" data-f="all">All</button>
+          <button type="button" class="hist-chip" data-f="analyze">Analyses</button>
+          <button type="button" class="hist-chip" data-f="practice">Practice</button>
+        </div>
+
+        <ul data-hist-list class="flex flex-col gap-3"></ul>
+
+        <div data-hist-empty class="hidden card p-10 text-center">
+          <p class="text-body text-ink/70 dark:text-mist/70 mb-5">Nothing saved yet. Every sentence you analyze or practice is saved here automatically.</p>
+          <a href="/en/tool" class="btn-primary">Analyze a sentence</a>
+        </div>
+      </Container>
+    </Section>
+  </main>
+  <Footer lang="en" />
+</BaseLayout>
+
+<style>
+  .hist-chip {
+    padding: 0.5rem 1.1rem; border-radius: 9999px; font-weight: 600; font-size: var(--text-caption);
+    background: var(--color-card); border: 1px solid var(--color-card-edge); color: var(--color-ink);
+    transition: border-color .2s, color .2s, background-color .2s, transform .2s;
+  }
+  :global(.dark) .hist-chip { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
+  .hist-chip:hover { transform: translateY(-2px); border-color: var(--color-purple); }
+  .hist-chip.is-active { background: var(--color-purple); border-color: var(--color-purple); color: #fff; }
+
+  .hist-row { display: flex; align-items: stretch; gap: 0.6rem; }
+  .hist-card {
+    flex: 1; min-width: 0; display: flex; align-items: center; gap: 0.9rem;
+    border-radius: 1rem; padding: 1rem 1.15rem; text-decoration: none;
+    background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
+    transition: transform .18s var(--ease-out-quart), border-color .18s;
+  }
+  :global(.dark) .hist-card { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .hist-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--color-purple) 40%, var(--color-card-edge)); }
+  .hist-ic { width: 2.7rem; height: 2.7rem; border-radius: 0.8rem; display: grid; place-items: center; flex: none; border: 1px solid var(--color-card-edge); }
+  .hist-ic svg { width: 1.3rem; height: 1.3rem; }
+  .hist-ic-analyze { color: var(--color-purple-deep); }
+  .hist-ic-practice { color: var(--color-teal); }
+  .hist-main { min-width: 0; flex: 1; }
+  .hist-sentence { display: block; font-family: var(--font-arabic-classical); font-size: 1.5rem; line-height: 1.5; color: var(--color-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  :global(.dark) .hist-sentence { color: var(--color-mist); }
+  .hist-meta { display: block; margin-top: 0.15rem; font-size: 1.05rem; color: color-mix(in srgb, var(--color-ink) 62%, transparent); }
+  :global(.dark) .hist-meta { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .hist-time { flex: none; font-family: var(--font-mono); font-size: 1rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
+  :global(.dark) .hist-time { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .hist-del {
+    flex: none; width: 2.9rem; border-radius: 1rem; display: grid; place-items: center;
+    background: var(--color-card); border: 1px solid var(--color-card-edge); color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+    transition: color .18s, border-color .18s, background-color .18s;
+  }
+  :global(.dark) .hist-del { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .hist-del:hover { color: #dc2626; border-color: color-mix(in srgb, #dc2626 45%, var(--color-card-edge)); }
+  .hist-del svg { width: 1.2rem; height: 1.2rem; }
+</style>
+
+<script>
+  import { maybeSignedIn } from '../../lib/session';
+  import { getHistory, removeHistory, clearHistory, formatAgo, type HistoryKind } from '../../lib/history';
+
+  const root = document.querySelector<HTMLElement>('[data-hist-root]');
+  if (root) {
+    const lang = 'en';
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const listEl = q<HTMLElement>('[data-hist-list]');
+    const emptyEl = q<HTMLElement>('[data-hist-empty]');
+    const clearBtn = q<HTMLButtonElement>('[data-hist-clear]');
+    const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('.hist-chip'));
+    let uid = 'anon';
+    let filter: 'all' | HistoryKind = 'all';
+
+    const esc = (s: string) => (s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as Record<string, string>)[c]);
+    const icA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>';
+    const icP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>';
+    const icDel = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>';
+
+    function render() {
+      const items = getHistory(uid, filter === 'all' ? undefined : filter);
+      listEl.replaceChildren();
+      if (!items.length) { emptyEl.classList.remove('hidden'); clearBtn.classList.add('hidden'); return; }
+      emptyEl.classList.add('hidden'); clearBtn.classList.remove('hidden');
+      for (const it of items) {
+        const isA = it.kind === 'analyze';
+        const meta = isA
+          ? (it.wordCount ? `${it.wordCount} words` : 'analysis')
+          : (typeof it.score === 'number' ? `${Math.round(it.score * 100)}%${it.level ? ' · ' + it.level : ''}` : 'practice');
+        const href = `${isA ? '/en/tool' : '/en/practice/play'}?h=${encodeURIComponent(it.id)}`;
+        const li = document.createElement('li');
+        li.className = 'hist-row';
+        li.innerHTML =
+          `<a class="hist-card" href="${href}">` +
+            `<span class="hist-ic hist-ic-${isA ? 'analyze' : 'practice'}" aria-hidden="true">${isA ? icA : icP}</span>` +
+            `<span class="hist-main"><span class="hist-sentence" dir="rtl">${esc(it.vocalized || it.sentence)}</span><span class="hist-meta">${esc(meta)}</span></span>` +
+            `<span class="hist-time">${esc(formatAgo(it.ts, lang))}</span>` +
+          `</a>` +
+          `<button type="button" class="hist-del" data-del="${it.id}" aria-label="Delete">${icDel}</button>`;
+        listEl.appendChild(li);
+      }
+    }
+
+    listEl.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-del]');
+      if (!btn) return;
+      e.preventDefault();
+      removeHistory(btn.dataset.del || '');
+      render();
+    });
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Clear all history? This cannot be undone.')) { clearHistory(uid); render(); }
+    });
+    chips.forEach((c) => c.addEventListener('click', () => {
+      filter = (c.dataset.f as any) || 'all';
+      chips.forEach((x) => x.classList.toggle('is-active', x === c));
+      render();
+    }));
+
+    if (maybeSignedIn()) {
+      import('../../lib/auth').then(({ onAuth }) => {
+        onAuth((u) => { uid = u ? u.uid : 'anon'; render(); });
+      }).catch(() => render());
+    } else {
+      render();
+    }
+  }
+</script>
