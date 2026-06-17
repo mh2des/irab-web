@@ -81,11 +81,11 @@ const p = (path: string) => (lang === 'ar' ? path : `/en${path}`);
     </div>
 
     <div class="py-6 border-t border-stone dark:border-coal-edge flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      <p class="font-mono text-caption text-ink/40 dark:text-mist/40">{t.built}</p>
+      <p class="font-mono text-caption text-ink/60 dark:text-mist/60">{t.built}</p>
       <div class="flex items-center gap-4 font-mono text-caption">
-        <a href="/"   class:list={['transition-colors', lang === 'ar' ? 'text-ink dark:text-mist' : 'text-ink/40 hover:text-ink dark:text-mist/40 dark:hover:text-mist']}>العربية</a>
-        <span class="text-ink/20 dark:text-mist/20">·</span>
-        <a href="/en" class:list={['transition-colors', lang === 'en' ? 'text-ink dark:text-mist' : 'text-ink/40 hover:text-ink dark:text-mist/40 dark:hover:text-mist']}>EN</a>
+        <a href="/"   class:list={['transition-colors', lang === 'ar' ? 'text-ink dark:text-mist font-semibold' : 'text-ink/60 hover:text-ink dark:text-mist/60 dark:hover:text-mist']}>العربية</a>
+        <span class="text-ink/35 dark:text-mist/35">·</span>
+        <a href="/en" class:list={['transition-colors', lang === 'en' ? 'text-ink dark:text-mist font-semibold' : 'text-ink/60 hover:text-ink dark:text-mist/60 dark:hover:text-mist']}>EN</a>
       </div>
     </div>
   </Container>

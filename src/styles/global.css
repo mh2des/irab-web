@@ -313,6 +313,91 @@
   .dark .btn-ghost:hover { color: color-mix(in srgb, var(--color-purple) 80%, white); }
   @media (prefers-reduced-motion: reduce) { .btn-primary:hover, .btn-ghost:hover { transform: none; } }
 
+  /* Large button variant — for hero / primary conversion moments. */
+  .btn-lg { padding: 1.05rem 2.1rem; font-size: var(--text-small); gap: 0.65rem; }
+  /* Block button — fills its container (cards, forms). */
+  .btn-block { display: flex; width: 100%; }
+  /* Disabled state for any button primitive. */
+  .btn-primary:disabled, .btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* ── Icon button — square, real surface, always carry an aria-label ─────── */
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.85rem; height: 2.85rem; border-radius: 0.85rem; flex-shrink: 0;
+    color: var(--color-ink); background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, color .2s;
+  }
+  .dark .icon-btn { color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .icon-btn:hover { border-color: var(--color-purple); color: var(--color-purple-deep); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+  .dark .icon-btn:hover { color: color-mix(in srgb, var(--color-purple) 80%, white); }
+  @media (prefers-reduced-motion: reduce) { .icon-btn:hover { transform: none; } }
+
+  /* ── Form input — one consistent field across auth / dictionary / practice ── */
+  .input {
+    width: 100%;
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    border-radius: 0.85rem;
+    padding: 0.95rem 1.15rem;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    transition: border-color .18s, box-shadow .18s, background-color .18s;
+  }
+  .dark .input { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
+  .input::placeholder { color: color-mix(in srgb, var(--color-ink) 40%, transparent); }
+  .dark .input::placeholder { color: color-mix(in srgb, var(--color-mist) 42%, transparent); }
+  .input:focus { outline: none; border-color: var(--color-purple); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-purple) 16%, transparent); }
+
+  /* ── Badge / chip — status pills (verified, plan, counts) ───────────────── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.34rem 0.85rem; border-radius: 9999px;
+    font-size: 1rem; font-weight: 700; line-height: 1.2; white-space: nowrap;
+    background: color-mix(in srgb, var(--color-ink) 8%, transparent);
+    color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+  }
+  .dark .badge { background: color-mix(in srgb, var(--color-mist) 12%, transparent); color: color-mix(in srgb, var(--color-mist) 82%, transparent); }
+  .badge-good  { background: color-mix(in srgb, var(--color-teal) 15%, transparent); color: var(--color-teal); }
+  .dark .badge-good { color: color-mix(in srgb, var(--color-teal) 88%, white); }
+  .badge-warn  { background: color-mix(in srgb, #d97706 18%, transparent); color: #b45309; }
+  .dark .badge-warn { color: #fbbf24; }
+  .badge-brand { background: color-mix(in srgb, var(--color-purple) 15%, transparent); color: var(--color-purple-deep); }
+  .dark .badge-brand { color: color-mix(in srgb, var(--color-purple) 82%, white); }
+
+  /* ── Skeleton loader — shimmer, replaces the bare faint "…" loading text ── */
+  .skeleton {
+    position: relative; overflow: hidden;
+    background: color-mix(in srgb, var(--color-ink) 7%, transparent);
+    border-radius: 0.75rem;
+  }
+  .dark .skeleton { background: color-mix(in srgb, var(--color-mist) 9%, transparent); }
+  .skeleton::after {
+    content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-ink) 7%, transparent), transparent);
+    animation: skeleton-shimmer 1.5s var(--ease-out-quart) infinite;
+  }
+  .dark .skeleton::after { background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-mist) 9%, transparent), transparent); }
+  @keyframes skeleton-shimmer { to { transform: translateX(100%); } }
+  @media (prefers-reduced-motion: reduce) { .skeleton::after { animation: none; } }
+
+  /* ── Stat — big number + label, for hubs / usage / dashboards ───────────── */
+  .stat-num { font-family: var(--font-display); font-weight: 700; font-size: 2.5rem; line-height: 1; color: var(--color-ink); }
+  .dark .stat-num { color: var(--color-mist); }
+  .stat-label { font-size: var(--text-caption); font-weight: 600; color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
+  .dark .stat-label { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+
+  /* ── Solid section band — replaces translucent bg-paper-soft/40 tinting ─── */
+  .section-tint { background: var(--color-paper-soft); }
+  .dark .section-tint { background: var(--color-coal-soft); }
+
+  /* ── Panel entrance — for JS-toggled containers (hidden → shown). Plays the
+     moment `display:none` is removed; reliable where scroll-reveal/GSAP can't
+     measure a hidden node. ── */
+  @keyframes panel-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .panel-in { animation: panel-in .5s var(--ease-out-quart) both; }
+  @media (prefers-reduced-motion: reduce) { .panel-in { animation: none; } }
+
   /* Hairline divider — used between sections sparingly */
   .hairline {
     height: 1px;

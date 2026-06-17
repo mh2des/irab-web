@@ -56,25 +56,19 @@ const features = [
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
       {features.map((f, i) => {
-        const isPurple = i % 2 === 0;
-        const accentClass = isPurple ? 'text-purple' : 'text-teal';
-        const hoverBorder = isPurple ? 'hover:border-purple/40 dark:hover:border-purple/40' : 'hover:border-teal/40 dark:hover:border-teal/40';
+        const accentClass = i % 2 === 0 ? 'text-purple' : 'text-teal';
         return (
           <article
-            class:list={[
-              'group relative p-7 md:p-8 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft transition-colors duration-300',
-              hoverBorder,
-              f.span,
-            ]}
+            class:list={['group card card-interactive relative p-7 md:p-8', f.span]}
             data-reveal data-reveal-delay={String(i * 60)}
           >
             <div class="flex items-start justify-between gap-4 mb-3">
               <h3 class="font-display text-h3 leading-tight">{f.title}</h3>
-              <span class:list={[accentClass, 'font-mono text-caption mt-1.5 tabular-nums tracking-wider']}>
+              <span class:list={[accentClass, 'font-mono text-caption mt-1.5 tabular-nums tracking-wider font-bold']}>
                 {String(i + 1).padStart(2, '0')}
               </span>
             </div>
-            <p class="text-body text-ink/70 dark:text-mist/70 leading-relaxed">{f.body}</p>
+            <p class="text-body text-ink/75 dark:text-mist/75 leading-relaxed">{f.body}</p>
           </article>
         );
       })}

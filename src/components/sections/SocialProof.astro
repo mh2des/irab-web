@@ -74,7 +74,7 @@ const quotes = [
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {quotes.map((q, i) => (
         <figure
-          class="p-8 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft"
+          class="card card-interactive p-8"
           data-reveal data-reveal-delay={String(i * 80)}
         >
           <div class="flex items-center gap-1 mb-5" aria-label="5 out of 5 stars">
@@ -88,15 +88,15 @@ const quotes = [
             {q.arabic ? (
               <>
                 <span lang="ar" dir="rtl" class="font-arabic block">{q.body}</span>
-                <span class="block mt-3 text-ink/50 dark:text-mist/50 italic">{q.bodyEn}</span>
+                <span class="block mt-3 text-ink/65 dark:text-mist/65 italic">{q.bodyEn}</span>
               </>
             ) : (
               <>"{q.body}"</>
             )}
           </blockquote>
-          <figcaption class="mt-6 pt-5 border-t border-stone dark:border-coal-edge">
-            <p class="font-medium text-small">{q.name}</p>
-            <p class="font-mono text-caption text-ink/50 dark:text-mist/50 mt-0.5">{q.detail}</p>
+          <figcaption class="mt-6 pt-5 border-t border-card-edge dark:border-coal-edge">
+            <p class="font-bold text-small">{q.name}</p>
+            <p class="font-mono text-caption text-ink/65 dark:text-mist/65 mt-0.5">{q.detail}</p>
           </figcaption>
         </figure>
       ))}

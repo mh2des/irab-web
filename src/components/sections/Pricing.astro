@@ -22,7 +22,7 @@ const plus = [
   'Mastery certificates on the annual plan',
 ];
 ---
-<Section id="pricing" class="bg-paper-soft/40 dark:bg-coal-soft/30 border-y border-stone/60 dark:border-coal-edge/60">
+<Section id="pricing" class="section-tint border-y border-stone dark:border-coal-edge">
   <Container>
     <div class="text-center max-w-2xl mx-auto mb-16">
       <p class="eyebrow mb-4" data-reveal>Pricing</p>
@@ -37,7 +37,7 @@ const plus = [
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
       {/* Free */}
       <div
-        class="relative p-8 md:p-10 rounded-2xl border-2 border-teal/30 dark:border-teal/40 bg-paper dark:bg-coal-soft flex flex-col"
+        class="card relative p-8 md:p-10 border-2 border-teal/40 flex flex-col"
         data-reveal
       >
         <span class="absolute -top-3 left-8 px-3 py-1 bg-teal text-white text-caption font-mono tracking-wider rounded-full">START HERE</span>
@@ -50,7 +50,7 @@ const plus = [
         <ul class="space-y-3 mb-10 flex-1">
           {free.map((f) => (
             <li class="flex items-start gap-3">
-              <svg class="w-5 h-5 mt-0.5 shrink-0 text-ink/40 dark:text-mist/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12l5 5L20 7"/></svg>
+              <svg class="w-5 h-5 mt-0.5 shrink-0 text-teal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12l5 5L20 7"/></svg>
               <span class="text-body">{f}</span>
             </li>
           ))}
@@ -68,14 +68,14 @@ const plus = [
 
       {/* Plus */}
       <div
-        class="relative p-8 md:p-10 rounded-2xl border-2 border-purple bg-paper dark:bg-coal-soft flex flex-col"
+        class="card relative p-8 md:p-10 border-2 border-purple flex flex-col"
         data-reveal data-reveal-delay="100"
       >
         <span class="absolute -top-3 left-8 px-3 py-1 bg-purple text-white text-caption font-mono tracking-wider rounded-full">FOR SERIOUS LEARNERS</span>
 
         <div class="flex items-baseline justify-between gap-3 mb-2 mt-2">
           <h3 class="font-display text-h2 leading-tight">Irab Plus</h3>
-          <p class="font-mono text-caption text-ink/40 dark:text-mist/40 uppercase tracking-widest">From $4.99/mo</p>
+          <p class="font-mono text-caption text-purple-deep dark:text-purple font-bold uppercase tracking-widest">From $4.99/mo</p>
         </div>
         <p class="text-body text-ink/70 dark:text-mist/70 mb-8">Everything in Free, plus the full learning system and higher ceilings.</p>
 
@@ -99,7 +99,7 @@ const plus = [
       </div>
     </div>
 
-    <p class="text-center mt-10 font-mono text-caption text-ink/50 dark:text-mist/50" data-reveal>
+    <p class="text-center mt-10 font-mono text-caption text-ink/65 dark:text-mist/65" data-reveal>
       Cancel anytime · 7-day free trial on annual · Regional pricing may vary
     </p>
   </Container>

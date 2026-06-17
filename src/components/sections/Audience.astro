@@ -2,7 +2,7 @@
 import Container from '../Container.astro';
 import Section from '../Section.astro';
 ---
-<Section id="audience" class="bg-paper-soft/60 dark:bg-coal-soft/30 border-y border-stone/60 dark:border-coal-edge/60">
+<Section id="audience" class="section-tint border-y border-stone dark:border-coal-edge">
   <Container>
     <div class="max-w-2xl mb-16">
       <p class="eyebrow mb-4" data-reveal>For whom</p>
@@ -11,9 +11,9 @@ import Section from '../Section.astro';
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-stone dark:bg-coal-edge">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Students */}
-      <div class="relative bg-paper-soft dark:bg-coal-soft p-8 md:p-10 border-t-2 border-purple" data-reveal>
+      <div class="card relative p-8 md:p-10 border-t-2 border-t-purple" data-reveal>
         <div class="flex items-center gap-2 mb-6">
           <span class="inline-block w-1.5 h-1.5 rounded-full bg-purple"></span>
           <p class="font-mono text-caption uppercase tracking-widest text-ink/60 dark:text-mist/60">Students</p>
@@ -22,13 +22,13 @@ import Section from '../Section.astro';
         <p class="text-body text-ink/70 dark:text-mist/70 leading-relaxed mb-6">
           You finished Duolingo Arabic and still can't read the Quran. Irab is the bridge, real grammar, curated practice + AI custom grading, and a daily ritual that compounds.
         </p>
-        <p class="font-mono text-caption text-ink/50 dark:text-mist/50">
+        <p class="font-mono text-caption text-ink/65 dark:text-mist/65">
           → Madinah Books · Bayyinah · classical curricula
         </p>
       </div>
 
       {/* Teachers, teal accent */}
-      <div class="relative bg-paper-soft dark:bg-coal-soft p-8 md:p-10 border-t-2 border-teal" data-reveal data-reveal-delay="100">
+      <div class="card relative p-8 md:p-10 border-t-2 border-t-teal" data-reveal data-reveal-delay="100">
         <div class="flex items-center gap-2 mb-6">
           <span class="inline-block w-1.5 h-1.5 rounded-full bg-teal"></span>
           <p class="font-mono text-caption uppercase tracking-widest text-ink/60 dark:text-mist/60">Teachers</p>
@@ -44,7 +44,7 @@ import Section from '../Section.astro';
       </div>
 
       {/* Scholars */}
-      <div class="relative bg-paper-soft dark:bg-coal-soft p-8 md:p-10 border-t-2 border-ink dark:border-mist" data-reveal data-reveal-delay="200">
+      <div class="card relative p-8 md:p-10 border-t-2 border-t-ink dark:border-t-mist" data-reveal data-reveal-delay="200">
         <div class="flex items-center gap-2 mb-6">
           <span class="inline-block w-1.5 h-1.5 rounded-full bg-ink dark:bg-mist"></span>
           <p class="font-mono text-caption uppercase tracking-widest text-ink/60 dark:text-mist/60">Scholars</p>
@@ -53,7 +53,7 @@ import Section from '../Section.astro';
         <p class="text-body text-ink/70 dark:text-mist/70 leading-relaxed mb-6">
           Cross-check edge cases. Settle ambiguous parses. Get a starting point for tafsir or translation work. Not a replacement for your training, an augmentation of it.
         </p>
-        <p class="font-mono text-caption text-ink/50 dark:text-mist/50">
+        <p class="font-mono text-caption text-ink/65 dark:text-mist/65">
           → Translation work · tafsir · research
         </p>
       </div>

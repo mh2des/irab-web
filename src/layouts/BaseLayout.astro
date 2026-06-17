@@ -135,5 +135,11 @@ const hasAlternate = lang === 'en' || hasEn;
 </head>
 <body>
   <slot />
+
+  {/* Site-wide scroll-in reveals: any [data-reveal] fades up on enter.
+      ES module → runs once per page even if a page also imports it. */}
+  <script>
+    import '../scripts/scroll-reveal';
+  </script>
 </body>
 </html>

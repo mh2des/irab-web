@@ -5,15 +5,13 @@
 import Container from './Container.astro';
 
 interface Props {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   summary: string;
   lang?: 'en' | 'ar';
 }
 
 const { eyebrow, title, summary, lang = 'ar' } = Astro.props;
-const homeHref = lang === 'ar' ? '/' : '/en';
-const back = lang === 'ar' ? '→ إعراب' : '← Irab';
 const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
 const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxed';
 ---
@@ -32,9 +30,9 @@ const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-rela
 
   <Container size="narrow">
     <div class="relative py-20 md:py-28">
-      <p class="eyebrow mb-6"><a href={homeHref} class="hover:text-ink dark:hover:text-mist transition-colors">{back}</a> · {eyebrow}</p>
-      <h1 class:list={[titleClass, 'text-[clamp(2.5rem,6vw,5rem)] leading-[1.1] tracking-tight']}>{title}</h1>
-      <p class:list={[summaryClass, 'mt-8 text-body-lg text-ink/75 dark:text-mist/75 max-w-2xl']}>{summary}</p>
+      {eyebrow && <p class="eyebrow mb-6" data-reveal>{eyebrow}</p>}
+      <h1 class:list={[titleClass, 'text-[clamp(2.5rem,6vw,5rem)] leading-[1.1] tracking-tight']} data-reveal data-reveal-delay="80">{title}</h1>
+      <p class:list={[summaryClass, 'mt-8 text-body-lg text-ink/80 dark:text-mist/80 max-w-2xl']} data-reveal data-reveal-delay="160">{summary}</p>
     </div>
   </Container>
 </header>
