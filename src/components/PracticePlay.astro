@@ -1,232 +1,944 @@
 ---
 /**
- * PracticePlay: the hero wedge as a web tool: type a sentence, do the i'rab
- * YOURSELF (free text per word), get AI-graded word by word feedback.
- * Login-gated (worker /api/grade-custom-irab needs a Firebase token); free
- * daily quota vs premium unlimited, enforced server side. The one thing no
- * competitor offers. Firebase loads only here, never on content pages.
+ * PracticePlay: two-mode web practice surface.
+ *
+ * Mode B (primary): learner writes any Arabic sentence, types their own i'rab,
+ * and the worker grades it through /api/grade-custom-irab.
+ *
+ * Mode A: learner chooses from the curated Firestore sentence bank, selects
+ * type/role/case from the same fixed vocabulary as the Flutter app, then the
+ * worker /api/grade-practice gates usage and returns the correct analysis.
+ *
+ * Firebase and Firestore load only inside this login-gated script island.
  */
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const login = lang === 'ar' ? '/login' : '/en/login';
 const dir = lang === 'ar' ? 'rtl' : 'ltr';
+const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
 
 const t = lang === 'ar'
   ? {
       gateTitle: 'سجّل الدخول لتبدأ التدريب',
-      gateBody: 'تدرّب على الإعراب بنفسك واحصل على تصحيح فوري. سجّل الدخول مجاناً للبدء.',
+      gateBody: 'اختر جملة جاهزة أو اكتب جملتك، ثم أَعرِب بنفسك واحصل على التصحيح.',
       signIn: 'تسجيل الدخول',
+      eyebrow: 'وضع التدريب',
+      title: 'تدرّب كما في التطبيق',
+      subtitle: 'وضعان واضحان: جمل جاهزة باختيارات منظّمة، أو جملتك الخاصة مع تصحيح AI مفصّل.',
+      customTitle: 'اكتب جملتك',
+      customBody: 'أدخل أي جملة عربية، اكتب إعرابك لكل كلمة، ثم احصل على تقييم وشرح.',
+      customMeta: 'AI Powered',
+      curatedTitle: 'جمل جاهزة',
+      curatedBody: 'اختر من بنك الجمل المنظّم حسب المستوى والموضوع، ثم أجب بالاختيارات.',
+      curatedMeta: 'اختيارات مباشرة',
+      open: 'ابدأ',
+      backModes: 'العودة للأوضاع',
       sentencePlaceholder: 'اكتب جملة عربية لتُعربها بنفسك…',
-      start: 'ابدأ', startHint: 'سنقسّم الجملة كلماتٍ لتُعرب كلًّا منها.',
+      start: 'قسّم الجملة',
+      startHint: 'اكتب جملة من كلمتين إلى ١٥ كلمة. سنفتح لك حقول الإعراب كلمة بكلمة.',
       yourIrab: 'اكتب إعرابك لهذه الكلمة…',
-      grade: 'صحّح إعرابي', grading: 'جارٍ التصحيح…',
-      back: 'جملة أخرى', yourAnswer: 'إجابتك', correct: 'الصواب',
-      overall: 'التقييم العام',
-      limit: 'بلغت حدّك اليومي المجاني للتدريب المخصّص. اشترك من التطبيق للمزيد.',
-      error: 'حدث خطأ. حاول مرة أخرى.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.',
-      unlimited: 'تدريب غير محدود ⚡',
+      gradeCustom: 'صحّح إعرابي',
+      gradeCurated: 'تحقّق من الإجابات',
+      grading: 'جارٍ التصحيح…',
+      topics: 'اختر الموضوع',
+      sentences: 'اختر الجملة',
+      loadingTopics: 'جارٍ تحميل الجمل…',
+      noTopics: 'لم نجد موضوعات تدريب الآن.',
+      noSentences: 'لا توجد جمل في هذا الموضوع.',
+      chooseType: 'نوع الكلمة',
+      chooseRole: 'الموقع الإعرابي',
+      chooseCase: 'علامة الإعراب',
+      select: 'اختر',
+      completeAll: 'أكمل الاختيارات لكل كلمة أولاً.',
+      needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.',
+      limitCustom: 'بلغت حدّك اليومي المجاني للتدريب المخصّص.',
+      limitCurated: 'بلغت حدّك اليومي المجاني للجمل الجاهزة.',
+      error: 'حدث خطأ. حاول مرة أخرى.',
+      another: 'تدريب آخر',
+      overall: 'النتيجة',
+      correct: 'الصواب',
+      answer: 'إجابتك',
+      unlimited: 'تدريب غير محدود',
+      topicLevel: 'المستوى',
+      words: 'كلمة',
     }
   : {
       gateTitle: 'Sign in to start practicing',
-      gateBody: 'Do the i\'rab yourself and get instant AI correction. Sign in free to start.',
+      gateBody: 'Choose a ready-made sentence or write your own, then parse it and get corrected.',
       signIn: 'Sign in',
+      eyebrow: 'Practice mode',
+      title: 'Practice like the app',
+      subtitle: 'Two clear modes: curated sentences with structured choices, or your own sentence with detailed AI grading.',
+      customTitle: 'Write your sentence',
+      customBody: 'Enter any Arabic sentence, type your i\'rab for each word, then get a score and explanation.',
+      customMeta: 'AI Powered',
+      curatedTitle: 'Curated sentences',
+      curatedBody: 'Choose from the sentence bank by level and topic, then answer with direct options.',
+      curatedMeta: 'Option-based',
+      open: 'Start',
+      backModes: 'Back to modes',
       sentencePlaceholder: 'Type an Arabic sentence to parse yourself…',
-      start: 'Start', startHint: 'We\'ll split it into words for you to parse.',
+      start: 'Split sentence',
+      startHint: 'Write 2 to 15 words. We will open word-by-word i\'rab fields.',
       yourIrab: 'Type your i\'rab for this word…',
-      grade: 'Grade my i\'rab', grading: 'Grading…',
-      back: 'Try another', yourAnswer: 'Your answer', correct: 'Correct',
-      overall: 'Overall',
-      limit: 'You\'ve reached your free daily custom-practice limit. Subscribe in the app for more.',
-      error: 'Something went wrong. Please try again.', needWords: 'Write your i\'rab for at least one word.',
-      unlimited: 'Unlimited practice ⚡',
+      gradeCustom: 'Grade my i\'rab',
+      gradeCurated: 'Check answers',
+      grading: 'Grading…',
+      topics: 'Choose topic',
+      sentences: 'Choose sentence',
+      loadingTopics: 'Loading practice bank…',
+      noTopics: 'No practice topics found right now.',
+      noSentences: 'No sentences in this topic.',
+      chooseType: 'Word type',
+      chooseRole: 'Syntactic role',
+      chooseCase: 'Case marker',
+      select: 'Select',
+      completeAll: 'Complete the choices for every word first.',
+      needWords: 'Write your i\'rab for at least one word.',
+      limitCustom: 'You reached today\'s free custom-practice limit.',
+      limitCurated: 'You reached today\'s free curated-practice limit.',
+      error: 'Something went wrong. Please try again.',
+      another: 'Practice again',
+      overall: 'Score',
+      correct: 'Correct',
+      answer: 'Your answer',
+      unlimited: 'Unlimited practice',
+      topicLevel: 'Level',
+      words: 'words',
     };
 ---
-<div data-play-root data-lang={lang} data-login={login} dir={dir} class="w-full max-w-2xl mx-auto">
-  {/* Loading skeleton */}
-  <div data-play-loading aria-busy="true">
-    <div class="skeleton h-24 w-full rounded-2xl mb-4"></div>
-    <div class="skeleton h-12 w-full rounded-full"></div>
+<div data-practice-root data-lang={lang} data-login={login} dir={dir} class="practice-shell">
+  <div data-play-loading aria-busy="true" class="space-y-4">
+    <div class="skeleton h-44 rounded-2xl"></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="skeleton h-56 rounded-2xl"></div>
+      <div class="skeleton h-56 rounded-2xl"></div>
+    </div>
   </div>
 
-  {/* Signed-out gate */}
-  <div data-play-gate class="hidden card panel-in p-8 md:p-10 text-center">
-    <h2 class="font-arabic-display text-h2 mb-3">{t.gateTitle}</h2>
-    <p class="text-body text-ink/75 dark:text-mist/75 mb-7 max-w-md mx-auto">{t.gateBody}</p>
+  <div data-play-gate class="hidden practice-gate panel-in text-center">
+    <div class="practice-gate-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 15v2"/><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/>
+      </svg>
+    </div>
+    <h2 class:list={[titleClass, 'text-h2 leading-tight mb-3']}>{t.gateTitle}</h2>
+    <p class="text-body text-ink/70 dark:text-mist/70 mb-7 max-w-xl mx-auto">{t.gateBody}</p>
     <a href={login} class="btn-primary btn-lg">{t.signIn}</a>
   </div>
 
-  {/* Tool */}
-  <div data-play-tool class="hidden">
-    <p data-play-quota class="text-small font-semibold text-ink/65 dark:text-mist/65 mb-3 h-5 text-center"></p>
+  <div data-play-tool class="hidden panel-in">
+    <section data-phase-modes class="space-y-5">
+      <div class="practice-hero">
+        <div>
+          <p class="practice-kicker">{t.eyebrow}</p>
+          <h1 class:list={[titleClass, 'practice-title']}>{t.title}</h1>
+          <p class="practice-subtitle">{t.subtitle}</p>
+        </div>
+        <p data-play-quota class="practice-quota"></p>
+      </div>
 
-    {/* Phase 1: sentence input */}
-    <div data-phase-input>
-      <textarea data-play-sentence rows="2" dir="rtl" maxlength="500" placeholder={t.sentencePlaceholder}
-        class="input text-lg resize-none"></textarea>
-      <p class="text-small text-ink/65 dark:text-mist/65 mt-2 mb-4">{t.startHint}</p>
-      <button type="button" data-play-start class="btn-primary btn-block">{t.start}</button>
-    </div>
+      <div class="mode-grid">
+        <button type="button" data-mode="custom" class="mode-card mode-card-primary">
+          <span class="mode-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v3"/><path d="M12 18v3"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="m5.6 5.6 2.1 2.1"/><path d="m16.3 16.3 2.1 2.1"/><path d="m18.4 5.6-2.1 2.1"/><path d="m7.7 16.3-2.1 2.1"/><path d="M12 8.5 13 11l2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"/>
+            </svg>
+          </span>
+          <span class="mode-copy">
+            <span class:list={[titleClass, 'mode-title']}>{t.customTitle}</span>
+            <span class="mode-body">{t.customBody}</span>
+            <span class="mode-meta">{t.customMeta}</span>
+          </span>
+          <span class="mode-cta">{t.open}<span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></span>
+        </button>
 
-    {/* Phase 2: per-word i'rab fields */}
-    <div data-phase-fill class="hidden">
-      <div data-fill-words class="space-y-4 mb-5"></div>
-      <p data-play-msg class="hidden text-small rounded-lg px-4 py-3 mb-4"></p>
-      <button type="button" data-play-grade class="btn-primary btn-block">
-        <span data-grade-label>{t.grade}</span>
+        <button type="button" data-mode="curated" class="mode-card mode-card-teal">
+          <span class="mode-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7"/><path d="M9 11h5"/>
+            </svg>
+          </span>
+          <span class="mode-copy">
+            <span class:list={[titleClass, 'mode-title']}>{t.curatedTitle}</span>
+            <span class="mode-body">{t.curatedBody}</span>
+            <span class="mode-meta">{t.curatedMeta}</span>
+          </span>
+          <span class="mode-cta">{t.open}<span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></span>
+        </button>
+      </div>
+    </section>
+
+    <section data-phase-custom class="hidden practice-panel">
+      <div class="phase-head">
+        <button type="button" data-back-modes class="icon-btn" aria-label={t.backModes}>
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6'}/></svg>
+        </button>
+        <div>
+          <p class="practice-kicker">{t.customMeta}</p>
+          <h2 class:list={[titleClass, 'text-h2 leading-tight']}>{t.customTitle}</h2>
+        </div>
+      </div>
+      <textarea data-custom-sentence rows="3" dir="rtl" maxlength="500" placeholder={t.sentencePlaceholder} class="input practice-textarea"></textarea>
+      <p class="helper-text">{t.startHint}</p>
+      <button type="button" data-custom-start class="btn-primary btn-block">{t.start}</button>
+    </section>
+
+    <section data-phase-topics class="hidden practice-panel">
+      <div class="phase-head">
+        <button type="button" data-back-modes class="icon-btn" aria-label={t.backModes}>
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6'}/></svg>
+        </button>
+        <div>
+          <p class="practice-kicker">{t.curatedMeta}</p>
+          <h2 class:list={[titleClass, 'text-h2 leading-tight']}>{t.topics}</h2>
+        </div>
+      </div>
+      <p data-topic-loading class="helper-text">{t.loadingTopics}</p>
+      <div data-topic-list class="topic-grid"></div>
+      <p data-topic-empty class="hidden helper-text text-center">{t.noTopics}</p>
+    </section>
+
+    <section data-phase-sentences class="hidden practice-panel">
+      <div class="phase-head">
+        <button type="button" data-back-topics class="icon-btn" aria-label={t.topics}>
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6'}/></svg>
+        </button>
+        <div>
+          <p data-selected-topic class="practice-kicker"></p>
+          <h2 class:list={[titleClass, 'text-h2 leading-tight']}>{t.sentences}</h2>
+        </div>
+      </div>
+      <div data-sentence-list class="sentence-list"></div>
+      <p data-sentence-empty class="hidden helper-text text-center">{t.noSentences}</p>
+    </section>
+
+    <section data-phase-curated-fill class="hidden practice-panel">
+      <div class="phase-head">
+        <button type="button" data-back-sentences class="icon-btn" aria-label={t.sentences}>
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6'}/></svg>
+        </button>
+        <div class="min-w-0">
+          <p data-curated-topic class="practice-kicker"></p>
+          <h2 data-curated-sentence class:list={[titleClass, 'sentence-heading']} dir="rtl"></h2>
+        </div>
+      </div>
+      <div data-curated-words class="word-grid"></div>
+      <p data-curated-msg class="hidden message"></p>
+      <button type="button" data-curated-grade class="btn-primary btn-block">
+        <span data-curated-grade-label>{t.gradeCurated}</span>
       </button>
-    </div>
+    </section>
 
-    {/* Phase 3: results */}
-    <div data-phase-results class="hidden">
-      <div data-results-overall class="mb-5"></div>
-      <div data-results-words class="space-y-3 mb-6"></div>
-      <button type="button" data-play-again class="btn-ghost btn-block">{t.back}</button>
-    </div>
+    <section data-phase-custom-fill class="hidden practice-panel">
+      <div class="phase-head">
+        <button type="button" data-back-custom class="icon-btn" aria-label={t.customTitle}>
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6'}/></svg>
+        </button>
+        <div class="min-w-0">
+          <p class="practice-kicker">{t.customTitle}</p>
+          <h2 data-custom-current-sentence class:list={[titleClass, 'sentence-heading']} dir="rtl"></h2>
+        </div>
+      </div>
+      <div data-custom-words class="space-y-3"></div>
+      <p data-custom-msg class="hidden message"></p>
+      <button type="button" data-custom-grade class="btn-primary btn-block">
+        <span data-custom-grade-label>{t.gradeCustom}</span>
+      </button>
+    </section>
+
+    <section data-phase-results class="hidden practice-panel">
+      <div data-results-overall></div>
+      <div data-results-words class="result-list"></div>
+      <button type="button" data-play-again class="btn-ghost btn-block">{t.another}</button>
+    </section>
   </div>
 </div>
+
+<style>
+  .practice-shell { width: 100%; max-width: 72rem; margin-inline: auto; }
+  .practice-gate,
+  .practice-hero,
+  .practice-panel,
+  .mode-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    box-shadow: var(--shadow-lift);
+  }
+  :global(.dark) .practice-gate,
+  :global(.dark) .practice-hero,
+  :global(.dark) .practice-panel,
+  :global(.dark) .mode-card {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+    box-shadow: 0 20px 46px -24px rgb(0 0 0 / 0.75);
+  }
+  .practice-gate { border-radius: 1.25rem; padding: clamp(2rem, 6vw, 4rem); }
+  .practice-gate-icon {
+    width: 4.25rem; height: 4.25rem; border-radius: 1.1rem; margin: 0 auto 1.25rem;
+    display: grid; place-items: center; color: var(--color-purple-deep);
+    background: color-mix(in srgb, var(--color-purple) 12%, white);
+    border: 1px solid color-mix(in srgb, var(--color-purple) 28%, var(--color-card-edge));
+  }
+  .practice-gate-icon svg { width: 2rem; height: 2rem; }
+  .practice-hero {
+    border-radius: 1.25rem;
+    padding: clamp(1.4rem, 3vw, 2.35rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.25rem;
+    align-items: end;
+    position: relative;
+    overflow: hidden;
+  }
+  .practice-hero::before,
+  .practice-panel::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    bottom: 0;
+    width: 0.45rem;
+    background: var(--color-purple);
+  }
+  .practice-kicker {
+    display: block;
+    color: var(--color-purple-deep);
+    font-size: var(--text-caption);
+    font-weight: 900;
+    line-height: 1.35;
+  }
+  :global(.dark) .practice-kicker { color: color-mix(in srgb, var(--color-purple) 85%, white); }
+  .practice-title { font-size: clamp(2.35rem, 5vw, 4.5rem); line-height: 1.05; }
+  .practice-subtitle,
+  .helper-text {
+    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+    font-size: var(--text-small);
+    line-height: 1.55;
+  }
+  :global(.dark) .practice-subtitle,
+  :global(.dark) .helper-text { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+  .practice-quota {
+    min-width: 9rem;
+    border-radius: 999px;
+    padding: 0.55rem 0.95rem;
+    text-align: center;
+    background: color-mix(in srgb, var(--color-teal) 13%, transparent);
+    color: var(--color-teal);
+    font-size: var(--text-caption);
+    font-weight: 900;
+  }
+  .practice-quota:empty { display: none; }
+  .mode-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1rem; }
+  .mode-card {
+    border-radius: 1.25rem;
+    padding: clamp(1.25rem, 2.8vw, 2rem);
+    text-align: start;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    min-height: 18rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform .22s var(--ease-out-quart), box-shadow .22s, border-color .22s;
+  }
+  .mode-card:hover { transform: translateY(-4px); box-shadow: var(--lift-shadow); }
+  .mode-card-primary { border-color: color-mix(in srgb, var(--color-purple) 35%, var(--color-card-edge)); }
+  .mode-card-teal { border-color: color-mix(in srgb, var(--color-teal) 36%, var(--color-card-edge)); }
+  .mode-icon {
+    width: 4rem; height: 4rem; border-radius: 1.1rem; display: grid; place-items: center;
+    background: color-mix(in srgb, var(--color-purple) 12%, white);
+    color: var(--color-purple-deep);
+    border: 1px solid color-mix(in srgb, var(--color-purple) 25%, var(--color-card-edge));
+  }
+  .mode-card-teal .mode-icon {
+    background: color-mix(in srgb, var(--color-teal) 12%, white);
+    color: var(--color-teal);
+    border-color: color-mix(in srgb, var(--color-teal) 28%, var(--color-card-edge));
+  }
+  .mode-icon svg { width: 2rem; height: 2rem; }
+  .mode-copy { display: flex; flex-direction: column; min-width: 0; }
+  .mode-title { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1; }
+  .mode-body {
+    margin-top: 0.55rem;
+    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+    font-size: var(--text-small);
+    line-height: 1.55;
+  }
+  :global(.dark) .mode-body { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+  .mode-meta {
+    margin-top: 1rem;
+    width: max-content;
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    background: color-mix(in srgb, var(--color-purple) 13%, transparent);
+    color: var(--color-purple-deep);
+    font-size: var(--text-caption);
+    font-weight: 900;
+  }
+  .mode-card-teal .mode-meta {
+    background: color-mix(in srgb, var(--color-teal) 13%, transparent);
+    color: var(--color-teal);
+  }
+  .mode-cta {
+    position: absolute;
+    inset-inline-end: 1.25rem;
+    bottom: 1.25rem;
+    display: inline-flex;
+    gap: 0.35rem;
+    align-items: center;
+    color: var(--color-purple-deep);
+    font-size: var(--text-caption);
+    font-weight: 900;
+  }
+  .mode-card-teal .mode-cta { color: var(--color-teal); }
+  .practice-panel {
+    border-radius: 1.25rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    position: relative;
+    overflow: hidden;
+  }
+  .phase-head { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.25rem; }
+  .sentence-heading { font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.45; }
+  .practice-textarea { min-height: 9rem; resize: vertical; font-size: var(--text-body); line-height: 1.8; }
+  .topic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
+  .topic-card,
+  .sentence-card,
+  .word-card,
+  .result-word {
+    border: 1px solid var(--color-card-edge);
+    background: color-mix(in srgb, var(--color-paper-soft) 62%, white);
+    border-radius: 1rem;
+  }
+  :global(.dark) .topic-card,
+  :global(.dark) .sentence-card,
+  :global(.dark) .word-card,
+  :global(.dark) .result-word {
+    background: color-mix(in srgb, var(--color-coal) 48%, var(--color-coal-soft));
+    border-color: var(--color-coal-edge);
+  }
+  .topic-card,
+  .sentence-card {
+    display: block;
+    width: 100%;
+    text-align: start;
+    padding: 1rem;
+    transition: transform .18s var(--ease-out-quart), border-color .18s, box-shadow .18s;
+  }
+  .topic-card:hover,
+  .sentence-card:hover { transform: translateY(-2px); border-color: var(--color-purple); box-shadow: var(--shadow-card); }
+  .topic-title { display: block; font-size: 1.45rem; font-weight: 900; line-height: 1.25; }
+  .topic-meta,
+  .sentence-meta {
+    display: block;
+    margin-top: 0.2rem;
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    font-size: var(--text-caption);
+    font-weight: 700;
+  }
+  :global(.dark) .topic-meta,
+  :global(.dark) .sentence-meta { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
+  .sentence-list { display: grid; gap: 0.75rem; }
+  .sentence-text { display: block; font-size: 1.55rem; line-height: 1.7; color: var(--color-ink); }
+  :global(.dark) .sentence-text { color: var(--color-mist); }
+  .word-grid { display: grid; gap: 0.85rem; margin-bottom: 1rem; }
+  .word-card { padding: 1rem; }
+  .word-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.85rem; }
+  .word-token { font-family: var(--font-arabic-display); font-size: 1.75rem; line-height: 1.2; color: var(--color-ink); }
+  :global(.dark) .word-token { color: var(--color-mist); }
+  .word-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.65rem; }
+  .field-label { display: block; font-size: 0.95rem; font-weight: 900; color: color-mix(in srgb, var(--color-ink) 62%, transparent); margin-bottom: 0.25rem; }
+  :global(.dark) .field-label { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
+  .select-field {
+    width: 100%;
+    border: 1px solid var(--color-card-edge);
+    border-radius: 0.8rem;
+    background: var(--color-card);
+    color: var(--color-ink);
+    padding: 0.65rem 0.75rem;
+    font: inherit;
+    font-size: var(--text-caption);
+  }
+  :global(.dark) .select-field { background: var(--color-coal-soft); color: var(--color-mist); border-color: var(--color-coal-edge); }
+  .message {
+    border-radius: 0.9rem;
+    padding: 0.85rem 1rem;
+    margin: 0 0 1rem;
+    font-size: var(--text-caption);
+    font-weight: 800;
+    background: color-mix(in srgb, #dc2626 10%, transparent);
+    color: #b91c1c;
+  }
+  .result-summary {
+    border-radius: 1.1rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background: var(--color-purple);
+    color: white;
+    text-align: center;
+  }
+  .result-score { font-family: var(--font-display); font-size: clamp(3rem, 7vw, 5rem); line-height: 1; font-weight: 800; }
+  .result-list { display: grid; gap: 0.85rem; margin-bottom: 1rem; }
+  .result-word { padding: 1rem; border-inline-start-width: 0.32rem; }
+  .result-word.ok { border-inline-start-color: var(--color-teal); }
+  .result-word.bad { border-inline-start-color: #dc2626; }
+  .result-row { display: grid; grid-template-columns: minmax(7rem, auto) 1fr; gap: 0.8rem; align-items: start; }
+  .result-label { color: color-mix(in srgb, var(--color-ink) 58%, transparent); font-size: var(--text-caption); font-weight: 900; }
+  :global(.dark) .result-label { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  @media (max-width: 860px) {
+    .practice-hero,
+    .mode-grid { grid-template-columns: 1fr; }
+    .mode-card { min-height: 16rem; }
+    .topic-grid,
+    .word-fields { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mode-card:hover,
+    .topic-card:hover,
+    .sentence-card:hover { transform: none; }
+  }
+</style>
 
 <script>
   import { maybeSignedIn } from '../lib/session';
   import { addHistory, getHistoryItem } from '../lib/history';
 
-  const root = document.querySelector<HTMLElement>('[data-play-root]');
+  const root = document.querySelector<HTMLElement>('[data-practice-root]');
   if (root) {
     const lang = root.dataset.lang === 'en' ? 'en' : 'ar';
-    const login = root.dataset.login || '/login';
     const WORKER = 'https://irab-api-v2.mansourhassan783.workers.dev';
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+
+    const WORD_TYPES = ['اسم', 'فعل', 'حرف'];
+    const ROLES: Record<string, string[]> = {
+      'اسم': ['مبتدأ', 'خبر', 'فاعل', 'مفعول به', 'اسم مجرور', 'حال', 'تمييز', 'نعت', 'مضاف إليه', 'اسم إن وأخواتها', 'خبر إن وأخواتها', 'اسم كان وأخواتها', 'خبر كان وأخواتها', 'بدل', 'توكيد', 'معطوف', 'منادى', 'مستثنى', 'مفعول مطلق', 'مفعول لأجله', 'مفعول فيه', 'مفعول معه', 'نائب فاعل'],
+      'فعل': ['فعل ماضٍ', 'فعل مضارع', 'فعل أمر'],
+      'حرف': ['حرف جر', 'حرف نصب', 'حرف جزم', 'حرف عطف', 'حرف نفي', 'حرف استفهام', 'حرف نداء', 'حرف ناسخ', 'حرف شرط', 'حرف تعليل'],
+    };
+    const CASES = ['مرفوع بالضمة', 'منصوب بالفتحة', 'مجرور بالكسرة', 'مبني على السكون', 'مبني على الفتح', 'مبني على الضم', 'مبني على الكسر', 'مرفوع بالواو', 'منصوب بالألف', 'مجرور بالياء', 'مرفوع بالألف', 'منصوب بالياء', 'مرفوع بثبوت النون', 'منصوب بحذف النون', 'مجزوم بحذف النون', 'مجزوم بالسكون', 'مجزوم بحذف حرف العلة', 'منصوب بالكسرة', 'مجرور بالفتحة'];
+
     const T = lang === 'ar'
-      ? { yourIrab: 'اكتب إعرابك لهذه الكلمة…', grade: 'صحّح إعرابي', grading: 'جارٍ التصحيح…', yourAnswer: 'إجابتك', correct: 'الصواب', overall: 'التقييم العام', limit: 'بلغت حدّك اليومي المجاني للتدريب المخصّص. اشترك من التطبيق للمزيد.', error: 'حدث خطأ. حاول مرة أخرى.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', unlimited: 'تدريب غير محدود ⚡' }
-      : { yourIrab: "Type your i'rab for this word…", grade: 'Grade my i\'rab', grading: 'Grading…', yourAnswer: 'Your answer', correct: 'Correct', overall: 'Overall', limit: 'You\'ve reached your free daily limit. Subscribe in the app for more.', error: 'Something went wrong. Please try again.', needWords: 'Write your i\'rab for at least one word.', unlimited: 'Unlimited practice ⚡' };
+      ? {
+          select: 'اختر', chooseType: 'نوع الكلمة', chooseRole: 'الموقع الإعرابي', chooseCase: 'علامة الإعراب',
+          grading: 'جارٍ التصحيح…', gradeCustom: 'صحّح إعرابي', gradeCurated: 'تحقّق من الإجابات',
+          needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', completeAll: 'أكمل الاختيارات لكل كلمة أولاً.',
+          limitCustom: 'بلغت حدّك اليومي المجاني للتدريب المخصّص.', limitCurated: 'بلغت حدّك اليومي المجاني للجمل الجاهزة.',
+          error: 'حدث خطأ. حاول مرة أخرى.', overall: 'النتيجة', correct: 'الصواب', answer: 'إجابتك',
+          unlimited: 'تدريب غير محدود', topicLevel: 'المستوى', words: 'كلمة', noSentences: 'لا توجد جمل في هذا الموضوع.',
+        }
+      : {
+          select: 'Select', chooseType: 'Word type', chooseRole: 'Syntactic role', chooseCase: 'Case marker',
+          grading: 'Grading…', gradeCustom: 'Grade my i\'rab', gradeCurated: 'Check answers',
+          needWords: 'Write your i\'rab for at least one word.', completeAll: 'Complete the choices for every word first.',
+          limitCustom: 'You reached today\'s free custom-practice limit.', limitCurated: 'You reached today\'s free curated-practice limit.',
+          error: 'Something went wrong. Please try again.', overall: 'Score', correct: 'Correct', answer: 'Your answer',
+          unlimited: 'Unlimited practice', topicLevel: 'Level', words: 'words', noSentences: 'No sentences in this topic.',
+        };
 
     const loadingEl = q<HTMLElement>('[data-play-loading]');
     const gate = q<HTMLElement>('[data-play-gate]');
     const tool = q<HTMLElement>('[data-play-tool]');
     const quota = q<HTMLElement>('[data-play-quota]');
-    const phaseInput = q<HTMLElement>('[data-phase-input]');
-    const phaseFill = q<HTMLElement>('[data-phase-fill]');
-    const phaseResults = q<HTMLElement>('[data-phase-results]');
-    const sentenceEl = q<HTMLTextAreaElement>('[data-play-sentence]');
-    const startBtn = q<HTMLButtonElement>('[data-play-start]');
-    const fillWords = q<HTMLElement>('[data-fill-words]');
-    const gradeBtn = q<HTMLButtonElement>('[data-play-grade]');
-    const gradeLabel = q<HTMLElement>('[data-grade-label]');
-    const msg = q<HTMLElement>('[data-play-msg]');
-    const overall = q<HTMLElement>('[data-results-overall]');
-    const wordsOut = q<HTMLElement>('[data-results-words]');
-    const againBtn = q<HTMLButtonElement>('[data-play-again]');
+    const phases = {
+      modes: q<HTMLElement>('[data-phase-modes]'),
+      custom: q<HTMLElement>('[data-phase-custom]'),
+      topics: q<HTMLElement>('[data-phase-topics]'),
+      sentences: q<HTMLElement>('[data-phase-sentences]'),
+      curatedFill: q<HTMLElement>('[data-phase-curated-fill]'),
+      customFill: q<HTMLElement>('[data-phase-custom-fill]'),
+      results: q<HTMLElement>('[data-phase-results]'),
+    };
+    const customSentenceEl = q<HTMLTextAreaElement>('[data-custom-sentence]');
+    const customWordsEl = q<HTMLElement>('[data-custom-words]');
+    const customMsg = q<HTMLElement>('[data-custom-msg]');
+    const customGradeBtn = q<HTMLButtonElement>('[data-custom-grade]');
+    const customGradeLabel = q<HTMLElement>('[data-custom-grade-label]');
+    const topicList = q<HTMLElement>('[data-topic-list]');
+    const topicLoading = q<HTMLElement>('[data-topic-loading]');
+    const topicEmpty = q<HTMLElement>('[data-topic-empty]');
+    const sentenceList = q<HTMLElement>('[data-sentence-list]');
+    const sentenceEmpty = q<HTMLElement>('[data-sentence-empty]');
+    const selectedTopicEl = q<HTMLElement>('[data-selected-topic]');
+    const curatedTopicEl = q<HTMLElement>('[data-curated-topic]');
+    const curatedSentenceEl = q<HTMLElement>('[data-curated-sentence]');
+    const curatedWordsEl = q<HTMLElement>('[data-curated-words]');
+    const curatedMsg = q<HTMLElement>('[data-curated-msg]');
+    const curatedGradeBtn = q<HTMLButtonElement>('[data-curated-grade]');
+    const curatedGradeLabel = q<HTMLElement>('[data-curated-grade-label]');
+    const resultsOverall = q<HTMLElement>('[data-results-overall]');
+    const resultsWords = q<HTMLElement>('[data-results-words]');
 
     let idToken: string | null = null;
-    let currentUid: string | null = null;
-    let currentSentence = '';
-    let wordInputs: { word: string; input: HTMLInputElement }[] = [];
+    let currentUid = 'anon';
+    let topicsCache: any[] = [];
+    let selectedTopic: any = null;
+    let selectedSentence: any = null;
+    let currentCustomSentence = '';
+    let customInputs: { word: string; input: HTMLInputElement }[] = [];
+    let curatedInputs: { word: string; type: HTMLSelectElement; role: HTMLSelectElement; caseMarker: HTMLSelectElement }[] = [];
 
+    const show = (node: HTMLElement) => node.classList.remove('hidden');
+    const hide = (node: HTMLElement) => node.classList.add('hidden');
+    const allPhases = () => Object.values(phases).forEach(hide);
+    const showPhase = (name: keyof typeof phases) => { allPhases(); show(phases[name]); };
+    const norm = (s?: string | null) => (s || '').trim().replace(/\s+/g, ' ');
+    const pct = (n: number) => `${Math.round(n * 100)}%`;
+    const clearMsg = (node: HTMLElement) => { node.className = 'hidden message'; node.textContent = ''; };
+    const showMsg = (node: HTMLElement, text: string) => { node.textContent = text; node.className = 'message'; };
     const el = (tag: string, cls?: string, text?: string) => {
       const n = document.createElement(tag);
       if (cls) n.className = cls;
       if (text != null) n.textContent = text;
       return n;
     };
-    function showMsg(text: string, kind: 'err' | 'info') {
-      msg.textContent = text;
-      msg.className = 'text-small rounded-lg px-4 py-3 mb-4 ' + (kind === 'info' ? 'bg-purple/10 text-purple' : 'bg-red-500/10 text-red-600 dark:text-red-400');
+
+    function makeOptions(values: string[], placeholder = T.select) {
+      return `<option value="">${placeholder}</option>${values.map((v) => `<option value="${v}">${v}</option>`).join('')}`;
     }
-    const clearMsg = () => { msg.className = 'hidden'; };
-    const show = (node: HTMLElement) => node.classList.remove('hidden');
-    const hide = (node: HTMLElement) => node.classList.add('hidden');
 
-    startBtn.addEventListener('click', () => {
-      const s = sentenceEl.value.trim();
-      if (!s) return;
-      currentSentence = s;
-      const words = s.split(/\s+/).filter(Boolean).slice(0, 30);
-      fillWords.replaceChildren();
-      wordInputs = words.map((w) => {
-        const row = el('div', 'card p-4');
-        const label = el('div', 'font-arabic-display text-xl text-ink dark:text-mist mb-2'); label.setAttribute('dir', 'rtl'); label.textContent = w;
+    function modeFromUrl() {
+      try {
+        const mode = new URLSearchParams(location.search).get('mode');
+        return mode === 'curated' || mode === 'custom' ? mode : null;
+      } catch { return null; }
+    }
+
+    function renderCustomFields(sentence: string) {
+      const words = sentence.split(/\s+/).filter(Boolean).slice(0, 15);
+      customInputs = [];
+      customWordsEl.replaceChildren();
+      words.forEach((word) => {
+        const card = el('div', 'word-card');
+        const head = el('div', 'word-head');
+        const token = el('span', 'word-token');
+        token.setAttribute('dir', 'rtl');
+        token.textContent = word;
+        head.appendChild(token);
+        card.appendChild(head);
         const input = el('input', 'input') as HTMLInputElement;
-        input.type = 'text'; input.setAttribute('dir', 'rtl'); input.placeholder = T.yourIrab;
-        row.appendChild(label); row.appendChild(input);
-        fillWords.appendChild(row);
-        return { word: w, input };
+        input.type = 'text';
+        input.dir = 'rtl';
+        input.placeholder = lang === 'ar' ? 'مثال: فاعل مرفوع بالضمة…' : 'Example: subject, nominative with damma…';
+        card.appendChild(input);
+        customWordsEl.appendChild(card);
+        customInputs.push({ word, input });
       });
-      clearMsg();
-      hide(phaseInput); show(phaseFill); hide(phaseResults);
-    });
+      q<HTMLElement>('[data-custom-current-sentence]').textContent = sentence;
+      clearMsg(customMsg);
+      showPhase('customFill');
+    }
 
-    gradeBtn.addEventListener('click', async () => {
-      const userAnalysis = wordInputs
+    function renderCuratedFields(sentence: any) {
+      selectedSentence = sentence;
+      curatedInputs = [];
+      curatedWordsEl.replaceChildren();
+      curatedSentenceEl.textContent = sentence.sentence;
+      curatedTopicEl.textContent = sentence.topicName || selectedTopic?.name || '';
+      const words = Array.isArray(sentence.correctAnalysis) && sentence.correctAnalysis.length
+        ? sentence.correctAnalysis.map((a: any) => a.word)
+        : String(sentence.sentence || '').split(/\s+/).filter(Boolean);
+      words.forEach((word: string, index: number) => {
+        const card = el('div', 'word-card');
+        const head = el('div', 'word-head');
+        const token = el('span', 'word-token');
+        token.dir = 'rtl';
+        token.textContent = word;
+        const idx = el('span', 'topic-meta', String(index + 1));
+        head.appendChild(token);
+        head.appendChild(idx);
+        card.appendChild(head);
+
+        const fields = el('div', 'word-fields');
+        const type = document.createElement('select');
+        const role = document.createElement('select');
+        const caseMarker = document.createElement('select');
+        [type, role, caseMarker].forEach((s) => {
+          s.className = 'select-field';
+          s.dir = 'rtl';
+        });
+        type.innerHTML = makeOptions(WORD_TYPES, T.chooseType);
+        role.innerHTML = makeOptions([], T.chooseRole);
+        caseMarker.innerHTML = makeOptions(CASES, T.chooseCase);
+        type.addEventListener('change', () => {
+          role.innerHTML = makeOptions(ROLES[type.value] || [], T.chooseRole);
+        });
+        [
+          [T.chooseType, type],
+          [T.chooseRole, role],
+          [T.chooseCase, caseMarker],
+        ].forEach(([label, select]) => {
+          const wrap = el('label');
+          wrap.appendChild(el('span', 'field-label', String(label)));
+          wrap.appendChild(select as HTMLSelectElement);
+          fields.appendChild(wrap);
+        });
+        card.appendChild(fields);
+        curatedWordsEl.appendChild(card);
+        curatedInputs.push({ word, type, role, caseMarker });
+      });
+      clearMsg(curatedMsg);
+      showPhase('curatedFill');
+    }
+
+    async function loadTopics() {
+      if (topicsCache.length) { renderTopics(topicsCache); return; }
+      show(topicLoading);
+      hide(topicEmpty);
+      try {
+        const [{ collection, getDocs, orderBy, query }, { app }] =
+          await Promise.all([import('firebase/firestore'), import('../lib/firebase')]);
+        const { getFirestore } = await import('firebase/firestore');
+        const db = getFirestore(app);
+        const snap = await getDocs(query(collection(db, 'grammar_topics'), orderBy('level'), orderBy('order')));
+        topicsCache = snap.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
+        renderTopics(topicsCache);
+      } catch (e) {
+        console.error('practice topics failed', e);
+        renderTopics([]);
+      } finally {
+        hide(topicLoading);
+      }
+    }
+
+    function renderTopics(topics: any[]) {
+      topicList.replaceChildren();
+      if (!topics.length) { show(topicEmpty); return; }
+      hide(topicEmpty);
+      topics.forEach((topic) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'topic-card';
+        btn.innerHTML = `<span class="topic-title">${topic.name || topic.id}</span><span class="topic-meta">${T.topicLevel} ${topic.level || 1} · ${topic.sentenceCount || 0}</span>`;
+        btn.addEventListener('click', () => loadSentences(topic));
+        topicList.appendChild(btn);
+      });
+    }
+
+    async function loadSentences(topic: any) {
+      selectedTopic = topic;
+      selectedTopicEl.textContent = `${topic.name || topic.id} · ${T.topicLevel} ${topic.level || 1}`;
+      sentenceList.replaceChildren();
+      hide(sentenceEmpty);
+      showPhase('sentences');
+      try {
+        const [{ collection, getDocs, orderBy, query }, { app }] =
+          await Promise.all([import('firebase/firestore'), import('../lib/firebase')]);
+        const { getFirestore } = await import('firebase/firestore');
+        const db = getFirestore(app);
+        const snap = await getDocs(query(collection(db, 'sentences', topic.id, 'items'), orderBy('order')));
+        const sentences = snap.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
+        renderSentences(sentences);
+      } catch (e) {
+        console.error('practice sentences failed', e);
+        renderSentences([]);
+      }
+    }
+
+    function renderSentences(sentences: any[]) {
+      sentenceList.replaceChildren();
+      if (!sentences.length) { sentenceEmpty.textContent = T.noSentences; show(sentenceEmpty); return; }
+      sentences.forEach((sentence) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'sentence-card';
+        btn.innerHTML = `<span class="sentence-text" dir="rtl">${sentence.sentence || ''}</span><span class="sentence-meta">${sentence.correctAnalysis?.length || String(sentence.sentence || '').split(/\\s+/).filter(Boolean).length} ${T.words}</span>`;
+        btn.addEventListener('click', () => renderCuratedFields(sentence));
+        sentenceList.appendChild(btn);
+      });
+    }
+
+    async function gradeCurated() {
+      const attempts = curatedInputs.map((w) => ({
+        word: w.word,
+        type: w.type.value,
+        role: w.role.value,
+        caseMarker: w.caseMarker.value,
+      }));
+      if (attempts.some((a) => !a.type || !a.role || !a.caseMarker)) {
+        showMsg(curatedMsg, T.completeAll);
+        return;
+      }
+      clearMsg(curatedMsg);
+      curatedGradeBtn.disabled = true;
+      curatedGradeLabel.textContent = T.grading;
+      try {
+        const res = await fetch(`${WORKER}/api/grade-practice`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
+          body: JSON.stringify({ sentence: selectedSentence.sentence }),
+        });
+        if (res.status === 429) { showMsg(curatedMsg, T.limitCurated); return; }
+        if (!res.ok) { showMsg(curatedMsg, T.error); return; }
+        const json = await res.json();
+        const correct = (json?.data?.words || json?.words || selectedSentence.correctAnalysis || []) as any[];
+        const results = attempts.map((attempt, i) => {
+          const c = correct[i] || selectedSentence.correctAnalysis?.[i] || {};
+          const typeOk = norm(attempt.type) === norm(c.type);
+          const roleOk = norm(attempt.role) === norm(c.role);
+          const caseOk = norm(attempt.caseMarker) === norm(c.caseMarker);
+          return { word: attempt.word, attempt, correct: c, typeOk, roleOk, caseOk, isCorrect: typeOk && roleOk && caseOk };
+        });
+        const score = results.length ? results.filter((r) => r.isCorrect).length / results.length : 0;
+        renderStructuredResults({ mode: 'curated', sentence: selectedSentence.sentence, score, results });
+      } catch {
+        showMsg(curatedMsg, T.error);
+      } finally {
+        curatedGradeBtn.disabled = false;
+        curatedGradeLabel.textContent = T.gradeCurated;
+      }
+    }
+
+    async function gradeCustom() {
+      const userAnalysis = customInputs
         .map((w) => ({ word: w.word, irab: w.input.value.trim() }))
         .filter((w) => w.irab.length > 0);
-      if (userAnalysis.length === 0) { showMsg(T.needWords, 'err'); return; }
-      clearMsg();
-      gradeBtn.disabled = true; gradeLabel.textContent = T.grading;
+      if (!userAnalysis.length) { showMsg(customMsg, T.needWords); return; }
+      clearMsg(customMsg);
+      customGradeBtn.disabled = true;
+      customGradeLabel.textContent = T.grading;
       try {
         const res = await fetch(`${WORKER}/api/grade-custom-irab`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
-          body: JSON.stringify({ sentence: currentSentence, userAnalysis }),
+          body: JSON.stringify({ sentence: currentCustomSentence, userAnalysis }),
         });
-        if (res.status === 429) { showMsg(T.limit, 'info'); return; }
-        if (!res.ok) { showMsg(T.error, 'err'); return; }
+        if (res.status === 429) { showMsg(customMsg, T.limitCustom); return; }
+        if (!res.ok) { showMsg(customMsg, T.error); return; }
         const json = await res.json();
         const data = json?.data ?? json;
-        renderResults(data);
+        renderCustomResults(data);
         try {
           const wf = Array.isArray(data?.wordFeedback) ? data.wordFeedback : [];
           addHistory({
-            kind: 'practice', uid: currentUid || 'anon', sentence: currentSentence,
+            kind: 'practice', uid: currentUid, sentence: currentCustomSentence,
             score: typeof data?.score === 'number' ? data.score : undefined,
             level: data?.level,
             correctCount: wf.filter((w: any) => w?.isCorrect).length,
             totalCount: wf.length,
             data,
           });
-        } catch { /* history is best-effort */ }
+        } catch {}
       } catch {
-        showMsg(T.error, 'err');
+        showMsg(customMsg, T.error);
       } finally {
-        gradeBtn.disabled = false; gradeLabel.textContent = T.grade;
+        customGradeBtn.disabled = false;
+        customGradeLabel.textContent = T.gradeCustom;
       }
-    });
+    }
 
-    function renderResults(data: any) {
-      overall.replaceChildren();
-      wordsOut.replaceChildren();
-      // Overall card
-      const score = typeof data?.score === 'number' ? data.score : null;
-      const card = el('div', 'rounded-2xl bg-purple p-6 text-white text-center');
-      if (score != null) card.appendChild(el('div', 'text-4xl font-extrabold', String(Math.round(score)) + (score <= 1 ? '' : '')));
-      if (data?.level) card.appendChild(el('div', 'text-sm opacity-90 mt-1', String(data.level)));
-      if (data?.overallFeedback) { const p = el('p', 'text-sm opacity-95 mt-3 leading-relaxed'); p.setAttribute('dir','rtl'); p.textContent = String(data.overallFeedback); card.appendChild(p); }
-      overall.appendChild(card);
+    function renderSummary(score: number, label?: string) {
+      resultsOverall.replaceChildren();
+      const card = el('div', 'result-summary');
+      card.appendChild(el('div', 'result-score', pct(score)));
+      card.appendChild(el('div', 'text-small font-bold opacity-90 mt-1', label || T.overall));
+      resultsOverall.appendChild(card);
+    }
 
+    function renderStructuredResults(data: { mode: string; sentence: string; score: number; results: any[] }) {
+      renderSummary(data.score, T.overall);
+      resultsWords.replaceChildren();
+      data.results.forEach((r) => {
+        const card = el('div', `result-word ${r.isCorrect ? 'ok' : 'bad'}`);
+        const title = el('div', 'word-head');
+        const token = el('span', 'word-token');
+        token.dir = 'rtl';
+        token.textContent = r.word;
+        title.appendChild(token);
+        title.appendChild(el('strong', r.isCorrect ? 'text-teal' : 'text-red-600', r.isCorrect ? '✓' : '✗'));
+        card.appendChild(title);
+        const yours = `${r.attempt.type || '—'} · ${r.attempt.role || '—'} · ${r.attempt.caseMarker || '—'}`;
+        const correct = `${r.correct?.type || '—'} · ${r.correct?.role || '—'} · ${r.correct?.caseMarker || '—'}`;
+        card.appendChild(resultRow(T.answer, yours));
+        if (!r.isCorrect) card.appendChild(resultRow(T.correct, correct));
+        if (r.correct?.explanation) {
+          const p = el('p', 'helper-text mt-2');
+          p.dir = 'rtl';
+          p.textContent = String(r.correct.explanation);
+          card.appendChild(p);
+        }
+        resultsWords.appendChild(card);
+      });
+      try {
+        addHistory({
+          kind: 'practice', uid: currentUid, sentence: data.sentence, score: data.score,
+          correctCount: data.results.filter((r) => r.isCorrect).length,
+          totalCount: data.results.length,
+          data: { score: data.score, wordFeedback: data.results.map((r) => ({ word: r.word, isCorrect: r.isCorrect, userIrab: `${r.attempt.type} ${r.attempt.role} ${r.attempt.caseMarker}`, correctIrab: `${r.correct?.type || ''} ${r.correct?.role || ''} ${r.correct?.caseMarker || ''}` })) },
+        });
+      } catch {}
+      showPhase('results');
+    }
+
+    function renderCustomResults(data: any) {
+      const score = typeof data?.score === 'number' ? data.score : 0;
+      renderSummary(score, data?.level || T.overall);
+      resultsWords.replaceChildren();
       const wf = Array.isArray(data?.wordFeedback) ? data.wordFeedback : [];
       wf.forEach((w: any) => {
         const ok = w?.isCorrect === true;
-        const c = el('div', 'rounded-xl border p-4 ' + (ok ? 'border-teal/40 bg-teal/5' : 'border-red-400/40 bg-red-500/5'));
-        const head = el('div', 'flex items-center justify-between gap-3 mb-2');
-        const word = el('span', 'font-arabic-display text-xl text-ink dark:text-mist'); word.setAttribute('dir','rtl'); word.textContent = w?.word || '';
-        head.appendChild(word);
-        head.appendChild(el('span', ok ? 'text-teal text-lg' : 'text-red-500 text-lg', ok ? '✓' : '✗'));
-        c.appendChild(head);
-        const yours = el('p', 'text-small text-ink/70 dark:text-mist/70'); yours.setAttribute('dir','rtl'); yours.textContent = `${T.yourAnswer}: ${w?.userIrab || T.yourIrab}`;
-        c.appendChild(yours);
-        if (!ok && w?.correctIrab) { const corr = el('p', 'text-small text-teal mt-1'); corr.setAttribute('dir','rtl'); corr.textContent = `${T.correct}: ${w.correctIrab}`; c.appendChild(corr); }
-        if (w?.explanation) { const ex = el('p', 'text-small text-ink/70 dark:text-mist/70 mt-2 leading-relaxed'); ex.setAttribute('dir','rtl'); ex.textContent = String(w.explanation); c.appendChild(ex); }
-        wordsOut.appendChild(c);
+        const card = el('div', `result-word ${ok ? 'ok' : 'bad'}`);
+        const title = el('div', 'word-head');
+        const token = el('span', 'word-token');
+        token.dir = 'rtl';
+        token.textContent = w?.word || '';
+        title.appendChild(token);
+        title.appendChild(el('strong', ok ? 'text-teal' : 'text-red-600', ok ? '✓' : '✗'));
+        card.appendChild(title);
+        card.appendChild(resultRow(T.answer, w?.userIrab || '—'));
+        if (!ok && w?.correctIrab) card.appendChild(resultRow(T.correct, w.correctIrab));
+        if (w?.explanation) {
+          const p = el('p', 'helper-text mt-2');
+          p.dir = 'rtl';
+          p.textContent = String(w.explanation);
+          card.appendChild(p);
+        }
+        resultsWords.appendChild(card);
       });
-
-      hide(phaseInput); hide(phaseFill); show(phaseResults);
+      if (data?.overallFeedback) {
+        const p = el('p', 'helper-text mb-4');
+        p.dir = 'rtl';
+        p.textContent = String(data.overallFeedback);
+        resultsOverall.appendChild(p);
+      }
+      showPhase('results');
     }
 
-    againBtn.addEventListener('click', () => {
-      sentenceEl.value = ''; currentSentence = ''; wordInputs = [];
-      clearMsg(); hide(phaseResults); hide(phaseFill); show(phaseInput);
-      sentenceEl.focus();
-    });
+    function resultRow(label: string, value: string) {
+      const row = el('div', 'result-row');
+      row.appendChild(el('span', 'result-label', label));
+      const v = el('span', 'text-small');
+      v.dir = 'rtl';
+      v.textContent = value;
+      row.appendChild(v);
+      return row;
+    }
 
-    // Auth gate (Firebase lazy: tool pages only)
+    root.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        if (btn.dataset.mode === 'custom') {
+          showPhase('custom');
+          customSentenceEl.focus();
+        } else {
+          showPhase('topics');
+          await loadTopics();
+        }
+      });
+    });
+    root.querySelectorAll<HTMLButtonElement>('[data-back-modes]').forEach((btn) => btn.addEventListener('click', () => showPhase('modes')));
+    q<HTMLButtonElement>('[data-back-topics]').addEventListener('click', () => showPhase('topics'));
+    q<HTMLButtonElement>('[data-back-sentences]').addEventListener('click', () => showPhase('sentences'));
+    q<HTMLButtonElement>('[data-back-custom]').addEventListener('click', () => showPhase('custom'));
+    q<HTMLButtonElement>('[data-custom-start]').addEventListener('click', () => {
+      const s = customSentenceEl.value.trim();
+      const words = s.split(/\s+/).filter(Boolean);
+      if (words.length < 2) return;
+      currentCustomSentence = s;
+      renderCustomFields(s);
+    });
+    customGradeBtn.addEventListener('click', gradeCustom);
+    curatedGradeBtn.addEventListener('click', gradeCurated);
+    q<HTMLButtonElement>('[data-play-again]').addEventListener('click', () => showPhase('modes'));
+
     (async () => {
       if (!maybeSignedIn()) { hide(loadingEl); show(gate); return; }
       try {
@@ -238,21 +950,25 @@ const t = lang === 'ar'
           try { idToken = await u.getIdToken(); } catch {}
           show(tool);
           try { const me = await fetchMe(u); if (me?.premium) quota.textContent = T.unlimited; } catch {}
-          // Re-open a saved practice result from history (?h=<id>).
           try {
             const histId = new URLSearchParams(location.search).get('h');
             if (histId) {
               const item = getHistoryItem(histId);
               if (item && item.kind === 'practice' && item.data) {
-                currentSentence = item.sentence;
-                renderResults(item.data);
+                renderCustomResults(item.data);
                 return;
               }
             }
-          } catch { /* ignore */ }
-          sentenceEl.focus();
+          } catch {}
+          const mode = modeFromUrl();
+          if (mode === 'custom') { showPhase('custom'); customSentenceEl.focus(); }
+          else if (mode === 'curated') { showPhase('topics'); await loadTopics(); }
+          else showPhase('modes');
         });
-      } catch { hide(loadingEl); show(gate); }
+      } catch {
+        hide(loadingEl);
+        show(gate);
+      }
     })();
   }
 </script>

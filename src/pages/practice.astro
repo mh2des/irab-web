@@ -1,27 +1,21 @@
 ---
 /**
- * /practice: the do-it-yourself i'rab + instant AI feedback page (Arabic).
+ * /practice: mode-first practice landing (Arabic).
  *
- * The category-of-one wedge: every competitor only OUTPUTS the i'rab; Irab
- * makes the learner DO it and grades it. Targets practice-intent queries
- * (تمارين إعراب / اختبر إعرابك / تدريب على الإعراب) and showcases the
- * gamification. LearningResource + FAQPage structured data.
+ * Indexed SEO surface for interactive i'rab practice. Firebase must stay out of
+ * this static page; the signed-in tool lives at /practice/play.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Schema from '../components/Schema.astro';
 import Nav from '../components/Nav.astro';
-import ArticleHero from '../components/ArticleHero.astro';
-import ArticleSection from '../components/ArticleSection.astro';
-import ArticleCta from '../components/ArticleCta.astro';
 import ArticleFaq from '../components/ArticleFaq.astro';
 import Footer from '../components/sections/Footer.astro';
 
 const faqs = [
-  { q: 'كيف أتدرّب على الإعراب؟', a: 'في تطبيق إعراب تختار جملة، ثمّ تُعرِب كلماتها بنفسك: لكلّ كلمة تحدّد نوعها (اسم/فعل/حرف)، ووظيفتها النحوية، وعلامة إعرابها. بعدها يصحّح لك الذكاء الاصطناعي فورًا ويشرح كلّ خطأ. هذا تدريب فعّال (استرجاع نشط)، لا قراءة سلبية.' },
-  { q: 'هل التدريب مجاني؟', a: 'نعم، تبدأ مجانًا بمستويات وجمل تدريبية مجانية يوميًّا. يفتح Irab Plus بنك التدريب الكامل (٥٧٦ جملة)، وتقييم إعرابك على جملك الخاصة، وكلّ أبواب التحدّي.' },
-  { q: 'ما الفرق بين قراءة الإعراب والتدرّب عليه؟', a: 'قراءة الإعراب الجاهز تمنحك ألفة سطحية سرعان ما تُنسى. التدرّب: أن تُعرِب بنفسك ثمّ تُصحَّح: يبني الحاسّة النحوية ويثبّت القاعدة. هذا ما لا تقدّمه أدوات الإعراب الآلي الأخرى التي تكتفي بإعطائك الجواب.' },
-  { q: 'هل يصحّح أخطائي ويشرحها؟', a: 'نعم. بعد كلّ محاولة تحصل على تصحيح كلمة بكلمة يبيّن الصواب مقابل إجابتك، ولماذا، مع شرحٍ مفصّل بالذكاء الاصطناعي على جملك الخاصة.' },
-  { q: 'هل يناسب المبتدئين؟', a: 'نعم. تبدأ من أوّل المرفوعات وتتدرّج إلى تراكيب متقدّمة عبر ٧ أبواب و١٠ رتب. كلّ مستوى يبني على ما قبله، مع تحدٍّ يومي وسلاسل تحافظ على عادتك.' },
+  { q: 'ما أوّل وضع أبدأ به؟', a: 'ابدأ بوضع «اكتب جملتك» إذا أردت اختبار جملة من اختيارك والحصول على تصحيح ذكي. اختر «الجمل الجاهزة» إذا أردت تدريبًا أسرع بخيارات محددة.' },
+  { q: 'هل التدريب مجاني؟', a: 'نعم، يمكن البدء مجانًا بعد تسجيل الدخول. يفتح Irab Plus حصصًا أوسع ومزايا تدريب أكثر.' },
+  { q: 'هل أحتاج إلى معرفة كل أبواب النحو؟', a: 'لا. وضع الجمل الجاهزة يساعدك على التدرب بخيارات واضحة، ووضع الجملة الخاصة يشرح لك الأخطاء كلمة بكلمة.' },
+  { q: 'هل التصحيح فوري؟', a: 'نعم. بعد إرسال إجاباتك تحصل على نتيجة وتصحيح لكل كلمة مع توضيح الإجابة الصحيحة.' },
 ];
 
 const learningResource = {
@@ -35,75 +29,111 @@ const learningResource = {
   educationalLevel: 'مبتدئ إلى متقدّم',
   isAccessibleForFree: true,
   description:
-    'تدرّب على الإعراب بنفسك واحصل على تصحيحٍ فوري وشرحٍ بالذكاء الاصطناعي، مع تحدّيات ومستويات ونقاط ولوحة صدارة.',
+    'اختر بين كتابة جملتك أو التدريب على جمل جاهزة، ثم أعرِب الكلمات واحصل على تصحيح فوري.',
   provider: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
 };
 ---
 <BaseLayout
   lang="ar"
   hasEn
-  title="تمارين الإعراب مع تصحيح فوري بالذكاء الاصطناعي · إعراب"
-  description="لا تكتفِ بقراءة الإعراب: أَعرِبْ بنفسك واحصل على تصحيحٍ وشرحٍ فوري لكلّ كلمة. ٥٧٦ جملة تدريبية، تقييم لجملك الخاصة، وتحدّياتٌ ومستوياتٌ ترفع مستواك."
+  title="تمارين الإعراب التفاعلية · إعراب"
+  description="تدرّب على الإعراب بطريقتين: اكتب جملتك لتحصل على تصحيح ذكي، أو اختر من جمل جاهزة وأجب من خيارات واضحة."
 >
   <Schema slot="head" />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(learningResource)} is:inline />
 
   <Nav lang="ar" />
 
-  <ArticleHero
-    lang="ar"
-    eyebrow="تدرّب"
-    title="اختبر إعرابك، لا تكتفِ بقراءته."
-    summary="أكثر الأدوات تعطيك الإعراب جاهزًا. إعراب يجعلك تُعرِبُ بنفسك: اختر نوع الكلمة ووظيفتها وعلامتها، فيصحّح لك الذكاء الاصطناعي فورًا ويشرح أين أخطأت ولماذا. ٥٧٦ جملة منتقاة، وتقييمٌ على جملك الخاصة، وتحدّياتٌ ترفع مستواك: في تطبيق إعراب على iOS وAndroid."
-  />
+  <main>
+    <section class="px-6 pt-14 pb-10 md:pt-20 md:pb-14">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-center">
+          <div>
+            <p class="text-label uppercase tracking-[0.18em] text-purple font-semibold mb-5">تدرّب على الإعراب</p>
+            <h1 class="font-arabic-display text-[clamp(2.5rem,7vw,5rem)] leading-[0.98] tracking-tight text-ink dark:text-mist mb-6">
+              اختر طريقة التدريب، ثم أعرِب بنفسك.
+            </h1>
+            <p class="text-body-lg text-ink/68 dark:text-mist/68 leading-8 max-w-xl">
+              وضعان واضحان بدل صفحة شرح طويلة: جملة من اختيارك بتصحيح ذكي، أو جمل جاهزة بإجابات اختيارية منظّمة.
+            </p>
+          </div>
 
-  {/* Try the interactive tool on the web (login-gated) */}
-  <div class="px-6 -mt-2 mb-4 text-center">
-    <a href="/practice/play" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-purple hover:bg-purple-deep text-white font-medium tracking-tight lift">
-      جرّب التدريب التفاعلي الآن
-      <span aria-hidden="true">←</span>
-    </a>
-    <p class="text-caption text-ink/45 dark:text-mist/45 mt-3">أَعرِبْ جملتك الآن في المتصفّح: يتطلّب تسجيل الدخول.</p>
-  </div>
+          <div class="grid gap-4">
+            <a href="/practice/play?mode=custom" class="group block rounded-lg border border-purple/35 bg-white dark:bg-ink-soft shadow-[0_22px_70px_rgba(74,44,124,0.14)] p-5 md:p-6 lift">
+              <div class="flex items-start justify-between gap-4 mb-8">
+                <span class="inline-flex items-center rounded-full bg-purple/10 text-purple px-3 py-1 text-caption font-semibold">الأول</span>
+                <span class="text-caption text-ink/45 dark:text-mist/45">AI Powered</span>
+              </div>
+              <h2 class="font-arabic-display text-[clamp(1.9rem,4vw,3.1rem)] leading-tight text-ink dark:text-mist mb-4">اكتب جملتك</h2>
+              <p class="text-body text-ink/62 dark:text-mist/62 leading-7 mb-6">اكتب أي جملة عربية، أعرِب كلماتها بنفسك، ثم احصل على درجة وتصحيح مفصّل لكل كلمة.</p>
+              <div class="flex items-center justify-between border-t border-purple/10 pt-4">
+                <span class="text-sm font-semibold text-purple">ابدأ بهذا الوضع</span>
+                <span aria-hidden="true" class="text-2xl text-purple transition-transform group-hover:-translate-x-1">←</span>
+              </div>
+            </a>
 
-  <ArticleSection
-    lang="ar"
-    id="how"
-    title="كيف تتدرّب على الإعراب"
-    lead="ثلاث خطوات بسيطة تحوّل القاعدة النحوية من معلومة تقرؤها إلى مهارة تملكها."
-  >
-    <p><strong>١. أَعرِبْ بنفسك.</strong> لكلّ كلمة في الجملة، اختر نوعها (اسم، فعل، حرف)، ووظيفتها النحوية (مبتدأ، فاعل، مفعول…)، وعلامة إعرابها. أنت من يحلّل، لا الآلة.</p>
-    <p><strong>٢. تصحيحٌ فوري وشرح.</strong> يقارن الذكاء الاصطناعي إجابتك بالصواب كلمةً كلمة، ويبيّن أين أصبتَ وأين أخطأت، ولماذا: بشرحٍ مفصّل على جملك الخاصة.</p>
-    <p><strong>٣. اصعد وتقدّم.</strong> اجمع نقاط XP، حافظ على سلسلتك اليومية، افتح المستويات السبعة والرتب العشر، وتنافس في لوحة الصدارة.</p>
-  </ArticleSection>
+            <a href="/practice/play?mode=curated" class="group block rounded-lg border border-ink/10 dark:border-mist/12 bg-sand/60 dark:bg-ink p-5 md:p-6 lift">
+              <div class="flex items-start justify-between gap-4 mb-6">
+                <span class="inline-flex items-center rounded-full bg-teal/10 text-teal px-3 py-1 text-caption font-semibold">الثاني</span>
+                <span class="text-caption text-ink/45 dark:text-mist/45">جمل جاهزة</span>
+              </div>
+              <h2 class="font-arabic-display text-3xl md:text-4xl leading-tight text-ink dark:text-mist mb-3">الجمل المنتقاة</h2>
+              <p class="text-body text-ink/62 dark:text-mist/62 leading-7 mb-5">اختر موضوعًا وجملة، ثم حدّد النوع والوظيفة والعلامة من قوائم جاهزة.</p>
+              <div class="flex items-center justify-between border-t border-ink/10 dark:border-mist/10 pt-4">
+                <span class="text-sm font-semibold text-teal">تدرّب بالاختيارات</span>
+                <span aria-hidden="true" class="text-2xl text-teal transition-transform group-hover:-translate-x-1">←</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <ArticleSection
-    lang="ar"
-    id="why"
-    title="لماذا التدريب الفعّال يصنع الفرق"
-    lead="الدماغ يثبّت ما يستدعيه، لا ما يقرؤه فقط. الاسترجاع النشط هو سرّ الإتقان."
-  >
-    <p>قراءة الإعراب الجاهز تمنحك شعورًا زائفًا بالفهم سرعان ما يتبخّر. أمّا أن تُعرِب بنفسك ثمّ تُصحَّح، فهو ما يبني الحاسّة النحوية ويرسّخ القاعدة في الذاكرة طويلة المدى.</p>
-    <p>هذا تحديدًا ما لا تقدّمه أدوات الإعراب الآلي الأخرى: كلّها تعطيك الجواب وتنتهي. إعراب وحده يغلق الحلقة: تحاول، فيُصحَّح لك، فتتعلّم من خطئك. هذه هي الميزة التي تصنع متعلّمًا حقيقيًّا لا متلقّيًا.</p>
-  </ArticleSection>
+    <section class="px-6 py-8 border-y border-ink/8 dark:border-mist/10 bg-white/70 dark:bg-ink-soft/55">
+      <div class="max-w-6xl mx-auto grid gap-4 md:grid-cols-3">
+        <div>
+          <p class="text-label text-purple font-semibold mb-2">تسجيل الدخول</p>
+          <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">يحفظ محاولاتك ويطبّق حصص التدريب اليومية.</p>
+        </div>
+        <div>
+          <p class="text-label text-purple font-semibold mb-2">تصحيح كلمة بكلمة</p>
+          <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">ترى إجابتك بجانب الصواب مباشرة، بلا تشتيت.</p>
+        </div>
+        <div>
+          <p class="text-label text-purple font-semibold mb-2">تدريب قصير</p>
+          <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">جلسة مركّزة تكفي لتثبيت قاعدة أو اختبار فهمك.</p>
+        </div>
+      </div>
+    </section>
 
-  <ArticleSection
-    lang="ar"
-    id="gamification"
-    title="تعلَّم باللعب"
-    lead="حوّلنا تعلّم النحو إلى لعبة تدمن إتقانها، لا واجبًا تؤجّله."
-  >
-    <p><strong>حملة من ٧ أبواب</strong> تتدرّج من التأسيس إلى التراكيب المتقدّمة، و<strong>تحدٍّ يومي</strong> يبقيك على العهد.</p>
-    <p><strong>نقاط XP وسلاسل و١٠ رتب وشارات</strong> تكافئ مثابرتك، و<strong>لوحة صدارة</strong> تنافس فيها متعلّمين آخرين حول العالم.</p>
-    <p>كلّ جلسة قصيرة، ممتعة، وتترك أثرًا: حتى يصبح الإعراب عادةً يوميّة لا مهمّةً ثقيلة.</p>
-  </ArticleSection>
+    <section class="px-6 py-14 md:py-20">
+      <div class="max-w-6xl mx-auto grid lg:grid-cols-[0.78fr_1.22fr] gap-10">
+        <div>
+          <p class="text-label uppercase tracking-[0.18em] text-purple font-semibold mb-4">كيف يعمل</p>
+          <h2 class="font-arabic-display text-3xl md:text-5xl leading-tight text-ink dark:text-mist">التدريب مصمّم للحل، لا للقراءة فقط.</h2>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div class="rounded-lg border border-ink/10 dark:border-mist/12 bg-white dark:bg-ink-soft p-5">
+            <p class="text-3xl font-display text-purple mb-4">01</p>
+            <h3 class="font-semibold text-ink dark:text-mist mb-2">اختر الوضع</h3>
+            <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">اكتب جملتك أو افتح جملة جاهزة من البنك.</p>
+          </div>
+          <div class="rounded-lg border border-ink/10 dark:border-mist/12 bg-white dark:bg-ink-soft p-5">
+            <p class="text-3xl font-display text-purple mb-4">02</p>
+            <h3 class="font-semibold text-ink dark:text-mist mb-2">أجب بنفسك</h3>
+            <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">حلّل الكلمات بدل الاكتفاء بمشاهدة الجواب.</p>
+          </div>
+          <div class="rounded-lg border border-ink/10 dark:border-mist/12 bg-white dark:bg-ink-soft p-5">
+            <p class="text-3xl font-display text-purple mb-4">03</p>
+            <h3 class="font-semibold text-ink dark:text-mist mb-2">راجع التصحيح</h3>
+            <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">اعرف أين أصبت وأين تحتاج إلى مراجعة.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <ArticleCta lang="ar">
-    <span slot="title">ابدأ التدريب اليوم.</span>
-    حمّل تطبيق إعراب مجانًا على iOS وAndroid، واختبر إعرابك بأوّل جملة الآن: مع تصحيحٍ فوري وشرحٍ لكلّ كلمة.
-  </ArticleCta>
-
-  <ArticleFaq items={faqs} lang="ar" />
+    <ArticleFaq items={faqs} lang="ar" />
+  </main>
 
   <Footer lang="ar" />
 </BaseLayout>

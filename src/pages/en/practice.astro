@@ -1,26 +1,21 @@
 ---
 /**
- * /en/practice: do-it-yourself i'rab + instant AI feedback (English).
+ * /en/practice: mode-first practice landing (English).
  *
- * Targets "Arabic grammar practice / i'rab exercises / learn i'rab" for the
- * English learner + Islamic-studies audience no Arabic-only competitor serves,
- * and showcases the do-it-yourself-then-graded loop + gamification.
+ * Indexed SEO surface for interactive i'rab practice. Firebase must stay out of
+ * this static page; the signed-in tool lives at /en/practice/play.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Schema from '../../components/Schema.astro';
 import Nav from '../../components/Nav.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import Footer from '../../components/sections/Footer.astro';
 
 const faqs = [
-  { q: "How do I practice i'rab?", a: "In the Irab app you pick a sentence, then parse its words yourself: for each word you choose its type (noun/verb/particle), syntactic role, and case marker. The AI then grades you instantly and explains every mistake. That's active recall: real practice, not passive reading." },
-  { q: 'Is practice free?', a: 'Yes: you start free with daily practice levels and sentences. Irab Plus unlocks the full 576-sentence bank, graded feedback on your own sentences, and all challenge chapters.' },
-  { q: "What's the difference between reading i'rab and practicing it?", a: 'Reading a ready made answer gives shallow familiarity that fades. Doing the i\'rab yourself and being corrected builds real grammatical intuition and moves the rule into long term memory: which the answer-only AI tools never do.' },
-  { q: 'Does it correct and explain my mistakes?', a: 'Yes. After each attempt you get a word by word correction showing the right answer vs yours, and why, with detailed AI explanations on your own sentences.' },
-  { q: 'Is it good for beginners?', a: 'Yes. You start from the basics (nominative case) and progress to advanced structures across 7 chapters and 10 ranks. Each level builds on the last, with a daily challenge and streaks to keep the habit.' },
+  { q: 'Which practice mode should I start with?', a: 'Start with Write Your Sentence if you want AI feedback on a sentence you choose. Pick Curated Sentences when you want faster practice with fixed answer choices.' },
+  { q: 'Is practice free?', a: 'Yes. You can start free after signing in. Irab Plus unlocks larger daily limits and more practice access.' },
+  { q: 'Do I need to know every grammar chapter first?', a: 'No. Curated Sentences gives you structured choices, while Write Your Sentence explains mistakes word by word.' },
+  { q: 'Is the correction instant?', a: 'Yes. After submitting your answers, you get a score and a word-by-word correction showing the right answer.' },
 ];
 
 const learningResource = {
@@ -34,74 +29,110 @@ const learningResource = {
   educationalLevel: 'beginner to advanced',
   isAccessibleForFree: true,
   description:
-    "Practice Arabic i'rab yourself and get instant AI correction and explanation, with challenges, levels, XP, and a leaderboard.",
+    "Choose between writing your own sentence or practicing curated sentences, then parse the words and get instant correction.",
   provider: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
 };
 ---
 <BaseLayout
   lang="en"
-  title="Arabic i'rab Practice with Instant AI Feedback · Irab"
-  description="Don't just read the i'rab: do it yourself and get instant word by word AI correction and explanation. 576 practice sentences, grading on your own sentences, plus challenges and levels."
+  title="Interactive Arabic i'rab Practice · Irab"
+  description="Practice i'rab two ways: write your own sentence for AI correction, or choose curated sentences and answer from clear options."
 >
   <Schema slot="head" />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(learningResource)} is:inline />
 
   <Nav lang="en" />
 
-  <ArticleHero
-    lang="en"
-    eyebrow="Practice"
-    title="Do the i'rab yourself: then get graded."
-    summary="Most tools hand you the i'rab. Irab makes you do it: choose each word's type, role, and case marker, and the AI corrects you instantly and explains where you went wrong and why. 576 curated sentences, grading on your own sentences, and challenges that level you up: in the Irab app on iOS and Android."
-  />
+  <main>
+    <section class="px-6 pt-14 pb-10 md:pt-20 md:pb-14">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-center">
+          <div>
+            <p class="text-label uppercase tracking-[0.18em] text-purple font-semibold mb-5">Practice i'rab</p>
+            <h1 class="font-display text-[clamp(2.5rem,7vw,5rem)] leading-[0.98] tracking-tight text-ink dark:text-mist mb-6">
+              Choose a mode, then parse it yourself.
+            </h1>
+            <p class="text-body-lg text-ink/68 dark:text-mist/68 leading-8 max-w-xl">
+              Two clear ways to train: your own sentence with AI grading, or curated sentences with structured answer choices.
+            </p>
+          </div>
 
-  {/* Try the interactive tool on the web (login-gated) */}
-  <div class="px-6 -mt-2 mb-4 text-center">
-    <a href="/en/practice/play" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-purple hover:bg-purple-deep text-white font-medium tracking-tight lift">
-      Try the interactive practice now
-      <span aria-hidden="true">→</span>
-    </a>
-    <p class="text-caption text-ink/45 dark:text-mist/45 mt-3">Parse your own sentence in the browser: sign in required.</p>
-  </div>
+          <div class="grid gap-4">
+            <a href="/en/practice/play?mode=custom" class="group block rounded-lg border border-purple/35 bg-white dark:bg-ink-soft shadow-[0_22px_70px_rgba(74,44,124,0.14)] p-5 md:p-6 lift">
+              <div class="flex items-start justify-between gap-4 mb-8">
+                <span class="inline-flex items-center rounded-full bg-purple/10 text-purple px-3 py-1 text-caption font-semibold">First</span>
+                <span class="text-caption text-ink/45 dark:text-mist/45">AI Powered</span>
+              </div>
+              <h2 class="font-display text-[clamp(1.9rem,4vw,3.1rem)] leading-tight text-ink dark:text-mist mb-4">Write Your Sentence</h2>
+              <p class="text-body text-ink/62 dark:text-mist/62 leading-7 mb-6">Type any Arabic sentence, parse its words yourself, then get a score and detailed correction for every word.</p>
+              <div class="flex items-center justify-between border-t border-purple/10 pt-4">
+                <span class="text-sm font-semibold text-purple">Start here</span>
+                <span aria-hidden="true" class="text-2xl text-purple transition-transform group-hover:translate-x-1">→</span>
+              </div>
+            </a>
 
-  <ArticleSection
-    lang="en"
-    id="how"
-    title="How i'rab practice works"
-    lead="Three simple steps that turn a grammar rule from something you read into a skill you own."
-  >
-    <p><strong>1. Parse it yourself.</strong> For each word in the sentence, choose its type (noun, verb, particle), its syntactic role (subject, object, …), and its case marker. You do the analysis: not the machine.</p>
-    <p><strong>2. Instant correction + explanation.</strong> The AI compares your answer to the correct i'rab word by word, shows where you were right and wrong, and explains why: with detailed feedback on your own sentences.</p>
-    <p><strong>3. Level up.</strong> Earn XP, keep your daily streak, unlock 7 levels and 10 ranks, and compete on the leaderboard.</p>
-  </ArticleSection>
+            <a href="/en/practice/play?mode=curated" class="group block rounded-lg border border-ink/10 dark:border-mist/12 bg-sand/60 dark:bg-ink p-5 md:p-6 lift">
+              <div class="flex items-start justify-between gap-4 mb-6">
+                <span class="inline-flex items-center rounded-full bg-teal/10 text-teal px-3 py-1 text-caption font-semibold">Second</span>
+                <span class="text-caption text-ink/45 dark:text-mist/45">Sentence bank</span>
+              </div>
+              <h2 class="font-display text-3xl md:text-4xl leading-tight text-ink dark:text-mist mb-3">Curated Sentences</h2>
+              <p class="text-body text-ink/62 dark:text-mist/62 leading-7 mb-5">Choose a topic and sentence, then select the type, role, and case marker from ready-made options.</p>
+              <div class="flex items-center justify-between border-t border-ink/10 dark:border-mist/10 pt-4">
+                <span class="text-sm font-semibold text-teal">Practice with choices</span>
+                <span aria-hidden="true" class="text-2xl text-teal transition-transform group-hover:translate-x-1">→</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <ArticleSection
-    lang="en"
-    id="why"
-    title="Why active practice makes the difference"
-    lead="The brain keeps what it retrieves, not just what it reads. Active recall is the secret to mastery."
-  >
-    <p>Reading a ready made i'rab gives a false sense of understanding that quickly evaporates. Doing the i'rab yourself and being corrected is what builds grammatical intuition and moves the rule into long term memory.</p>
-    <p>This is exactly what the other AI i'rab tools don't offer: they all give you the answer and stop. Irab alone closes the loop: you try, you're corrected, you learn from your mistake. That's what turns you into a real learner, not a passive recipient.</p>
-  </ArticleSection>
+    <section class="px-6 py-8 border-y border-ink/8 dark:border-mist/10 bg-white/70 dark:bg-ink-soft/55">
+      <div class="max-w-6xl mx-auto grid gap-4 md:grid-cols-3">
+        <div>
+          <p class="text-label text-purple font-semibold mb-2">Sign in</p>
+          <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">Save attempts and apply the correct daily practice limits.</p>
+        </div>
+        <div>
+          <p class="text-label text-purple font-semibold mb-2">Word-by-word feedback</p>
+          <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">See your answer beside the correct one without clutter.</p>
+        </div>
+        <div>
+          <p class="text-label text-purple font-semibold mb-2">Short sessions</p>
+          <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">A focused round is enough to test one rule or sharpen recall.</p>
+        </div>
+      </div>
+    </section>
 
-  <ArticleSection
-    lang="en"
-    id="gamification"
-    title="Learn by playing"
-    lead="We turned learning grammar into a game you want to master, not a chore you postpone."
-  >
-    <p><strong>A seven chapter campaign</strong> progressing from foundations to advanced structures, plus a <strong>daily challenge</strong> that keeps you on track.</p>
-    <p><strong>XP, streaks, 10 ranks, and badges</strong> reward your consistency, and a <strong>leaderboard</strong> lets you compete with learners worldwide.</p>
-    <p>Every session is short, enjoyable, and sticky: until i'rab becomes a daily habit, not a heavy task.</p>
-  </ArticleSection>
+    <section class="px-6 py-14 md:py-20">
+      <div class="max-w-6xl mx-auto grid lg:grid-cols-[0.78fr_1.22fr] gap-10">
+        <div>
+          <p class="text-label uppercase tracking-[0.18em] text-purple font-semibold mb-4">How it works</p>
+          <h2 class="font-display text-3xl md:text-5xl leading-tight text-ink dark:text-mist">Practice is built for solving, not just reading.</h2>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div class="rounded-lg border border-ink/10 dark:border-mist/12 bg-white dark:bg-ink-soft p-5">
+            <p class="text-3xl font-display text-purple mb-4">01</p>
+            <h3 class="font-semibold text-ink dark:text-mist mb-2">Pick a mode</h3>
+            <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">Write your own sentence or open one from the bank.</p>
+          </div>
+          <div class="rounded-lg border border-ink/10 dark:border-mist/12 bg-white dark:bg-ink-soft p-5">
+            <p class="text-3xl font-display text-purple mb-4">02</p>
+            <h3 class="font-semibold text-ink dark:text-mist mb-2">Answer yourself</h3>
+            <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">Analyze the words instead of only viewing an answer.</p>
+          </div>
+          <div class="rounded-lg border border-ink/10 dark:border-mist/12 bg-white dark:bg-ink-soft p-5">
+            <p class="text-3xl font-display text-purple mb-4">03</p>
+            <h3 class="font-semibold text-ink dark:text-mist mb-2">Review correction</h3>
+            <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">See what was correct and what needs another pass.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <ArticleCta lang="en">
-    <span slot="title">Start practicing today.</span>
-    Download the free Irab app on iOS and Android, and test your i'rab on your first sentence now: with instant correction and an explanation for every word.
-  </ArticleCta>
-
-  <ArticleFaq items={faqs} lang="en" />
+    <ArticleFaq items={faqs} lang="en" />
+  </main>
 
   <Footer lang="en" />
 </BaseLayout>
