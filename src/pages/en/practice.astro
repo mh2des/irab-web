@@ -44,47 +44,16 @@ const learningResource = {
   <Nav lang="en" />
 
   <main>
-    <section class="px-6 pt-14 pb-10 md:pt-20 md:pb-14">
-      <div class="max-w-6xl mx-auto">
-        <div class="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-center">
-          <div>
-            <p class="text-label uppercase tracking-[0.18em] text-purple font-semibold mb-5">Practice i'rab</p>
-            <h1 class="font-display text-[clamp(2.5rem,7vw,5rem)] leading-[0.98] tracking-tight text-ink dark:text-mist mb-6">
-              Choose a mode, then parse it yourself.
-            </h1>
-            <p class="text-body-lg text-ink/68 dark:text-mist/68 leading-8 max-w-xl">
-              Two clear ways to train: your own sentence with AI grading, or curated sentences with structured answer choices.
-            </p>
-          </div>
-
-          <div class="grid gap-4">
-            <a href="/en/practice/play?mode=custom" class="group block rounded-lg border border-purple/35 bg-white dark:bg-ink-soft shadow-[0_22px_70px_rgba(74,44,124,0.14)] p-5 md:p-6 lift">
-              <div class="flex items-start justify-between gap-4 mb-8">
-                <span class="inline-flex items-center rounded-full bg-purple/10 text-purple px-3 py-1 text-caption font-semibold">First</span>
-                <span class="text-caption text-ink/45 dark:text-mist/45">AI Powered</span>
-              </div>
-              <h2 class="font-display text-[clamp(1.9rem,4vw,3.1rem)] leading-tight text-ink dark:text-mist mb-4">Write Your Sentence</h2>
-              <p class="text-body text-ink/62 dark:text-mist/62 leading-7 mb-6">Type any Arabic sentence, parse its words yourself, then get a score and detailed correction for every word.</p>
-              <div class="flex items-center justify-between border-t border-purple/10 pt-4">
-                <span class="text-sm font-semibold text-purple">Start here</span>
-                <span aria-hidden="true" class="text-2xl text-purple transition-transform group-hover:translate-x-1">→</span>
-              </div>
-            </a>
-
-            <a href="/en/practice/play?mode=curated" class="group block rounded-lg border border-ink/10 dark:border-mist/12 bg-sand/60 dark:bg-ink p-5 md:p-6 lift">
-              <div class="flex items-start justify-between gap-4 mb-6">
-                <span class="inline-flex items-center rounded-full bg-teal/10 text-teal px-3 py-1 text-caption font-semibold">Second</span>
-                <span class="text-caption text-ink/45 dark:text-mist/45">Sentence bank</span>
-              </div>
-              <h2 class="font-display text-3xl md:text-4xl leading-tight text-ink dark:text-mist mb-3">Curated Sentences</h2>
-              <p class="text-body text-ink/62 dark:text-mist/62 leading-7 mb-5">Choose a topic and sentence, then select the type, role, and case marker from ready-made options.</p>
-              <div class="flex items-center justify-between border-t border-ink/10 dark:border-mist/10 pt-4">
-                <span class="text-sm font-semibold text-teal">Practice with choices</span>
-                <span aria-hidden="true" class="text-2xl text-teal transition-transform group-hover:translate-x-1">→</span>
-              </div>
-            </a>
-          </div>
-        </div>
+    <section class="px-6 pt-16 pb-12 md:pt-24 md:pb-16 text-center">
+      <div class="max-w-3xl mx-auto">
+        <p class="eyebrow justify-center mb-5">Practice i'rab</p>
+        <h1 class="font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.05] tracking-tight text-ink dark:text-mist mb-6">
+          Parse it yourself — don't just read the answer.
+        </h1>
+        <p class="text-body-lg text-ink/72 dark:text-mist/72 leading-relaxed max-w-2xl mx-auto mb-9">
+          Write your own sentence and let AI grade and explain it, or pick a ready-made sentence and answer from structured options. You choose the mode when you start — in one place.
+        </p>
+        <a href="/en/practice/play" class="btn-primary btn-lg">Start practicing</a>
       </div>
     </section>
 
