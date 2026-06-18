@@ -64,6 +64,25 @@
   font-style: normal;
   font-display: swap;
 }
+/* Guesswhat Exceptional → the body face everywhere (replaces The Year of
+   Handicrafts). Arabic-only; The Year of Handicrafts stays as a fallback for
+   Latin glyphs + any marks Guesswhat lacks. Single weight → cover all weights. */
+@font-face {
+  font-family: 'Guesswhat Exceptional';
+  src: url('/fonts/guesswhat-exceptional.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+/* Boharat Felfel → headings in the library + profile only (replaces Aref Ruqaa
+   there; the rest of the site keeps Ruqaa). Single Bold weight. */
+@font-face {
+  font-family: 'Boharat Felfel';
+  src: url('/fonts/boharat-felfel.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* ── Class-based dark mode ──────────────────────────────────────────────── */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -106,12 +125,14 @@
   /* Type families: three faces, mapped across every role. Latin falls back to
      system-ui (the Arabic faces are Arabic-first). */
   --font-display: 'Aref Ruqaa', system-ui, serif;        /* headings / hero */
-  --font-sans: 'The Year of Handicrafts', system-ui, sans-serif;  /* body */
-  --font-mono: 'The Year of Handicrafts', ui-monospace, monospace;
-  --font-arabic: 'The Year of Handicrafts', system-ui, sans-serif;
+  /* Body face: Guesswhat Exceptional first, The Year of Handicrafts as the
+     fallback for Latin + any glyphs Guesswhat lacks, then system-ui. */
+  --font-sans: 'Guesswhat Exceptional', 'The Year of Handicrafts', system-ui, sans-serif;  /* body */
+  --font-mono: 'Guesswhat Exceptional', 'The Year of Handicrafts', ui-monospace, monospace;
+  --font-arabic: 'Guesswhat Exceptional', 'The Year of Handicrafts', system-ui, sans-serif;
   --font-arabic-display: 'Aref Ruqaa', system-ui, serif;
-  /* Classical / book-feel Arabic → The Year of Handicrafts (our body face). */
-  --font-arabic-classical: 'The Year of Handicrafts', serif;
+  /* Classical / book-feel Arabic → the body face. */
+  --font-arabic-classical: 'Guesswhat Exceptional', 'The Year of Handicrafts', serif;
   /* Quran verses only: KFGQPC Uthmanic Hafs (Mushaf Hafs). */
   --font-quran: 'Uthmanic Hafs', 'The Year of Handicrafts', serif;
 
@@ -164,6 +185,17 @@
 /* The three faces are Arabic-first and apply to every locale: no per-locale
    font cascade is needed any more (the old override pointed at fonts we no
    longer ship). */
+
+/* Boharat Felfel replaces Aref Ruqaa for headings/display ONLY inside the
+   library (index + reader) and the profile. Everywhere else keeps Ruqaa.
+   Overriding the display tokens on these roots cascades to every heading and
+   the font-display / font-arabic-display utilities used within them. */
+.library-page,
+.reader,
+.acct {
+  --font-display: 'Boharat Felfel', 'Aref Ruqaa', system-ui, serif;
+  --font-arabic-display: 'Boharat Felfel', 'Aref Ruqaa', system-ui, serif;
+}
 
 /* ── Arabic ligature protection ──────────────────────────────────────────
    Wide letter-spacing (tracking) is a Latin-typography concept that breaks
