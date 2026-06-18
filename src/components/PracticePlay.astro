@@ -61,19 +61,21 @@ const t = lang === 'ar'
       again: 'تدريب آخر',
       unlimited: 'تدريب غير محدود',
       score: 'نتيجتك',
-      upgradeEyebrow: 'انتهت المحاولات المجانية',
-      upgradeTitle: 'افتح التدريب غير المحدود',
-      upgradeBody: 'استمر مباشرة مع تصحيح إعرابك بالذكاء الاصطناعي، والجمل الجاهزة، وباقي أدوات إعراب بلس بالحساب نفسه.',
+      upgradeEyebrow: 'إعراب بلس',
+      upgradeTitle: 'واصِل تعلّمك بلا حدود',
+      upgradeBody: 'أنهيت محاولاتك المجانية لليوم. اشترك لتُحلّل وتتدرّب بلا حدود — مع تصحيح إعرابك بالذكاء الاصطناعي، الميزة التي تميّزنا.',
+      benefits: ['تحليل وتدريب بلا حدود كل يوم', 'تصحيح ذكي مفصّل لإعراب كل كلمة', 'بنك التدريب الكامل: ٥٧٦ جملة', 'المعجم الذكي وOCR وتصدير PDF', 'شهادات الإتقان على الخطة السنوية', 'حساب واحد على الويب والتطبيق'],
       annual: 'سنوي',
       monthly: 'شهري',
       annualPrice: '٣٧٫٩٩$',
       monthlyPrice: '٤٫٩٩$',
-      annualMeta: 'تجربة مجانية ٧ أيام',
-      monthlyMeta: 'مرونة شهرية',
+      annualPer: '≈ ٣٫١٧$ شهريًّا',
+      annualMeta: 'تجربة ٧ أيام مجانًا',
+      monthlyMeta: 'يُجدَّد شهريًّا',
       save: 'وفّر ٣٧٪',
-      annualCta: 'ابدأ التجربة المجانية',
+      annualCta: 'ابدأ تجربة ٧ أيام مجانًا',
       monthlyCta: 'اشترك شهريًّا',
-      secure: 'دفع آمن عبر Paddle. قد تُضاف الضريبة حسب بلدك.',
+      secure: 'ألغِ في أي وقت · دفع آمن عبر Paddle',
       activatingTitle: 'تم الدفع: جارٍ تفعيل اشتراكك',
       activatingBody: 'سيُفتح التدريب غير المحدود خلال لحظات.',
       close: 'إغلاق',
@@ -119,19 +121,21 @@ const t = lang === 'ar'
       again: 'Practice again',
       unlimited: 'Unlimited practice',
       score: 'Your score',
-      upgradeEyebrow: 'Free tries finished',
-      upgradeTitle: 'Unlock unlimited practice',
-      upgradeBody: 'Keep going with AI feedback on your own i\'rab, ready-made sentences, and the rest of Irab Plus on the same account.',
+      upgradeEyebrow: 'Irab Plus',
+      upgradeTitle: 'Keep learning, no limits',
+      upgradeBody: 'You\'ve used today\'s free tries. Subscribe to analyze and practice without limits — with AI feedback on your own i\'rab, the feature that sets us apart.',
+      benefits: ['Unlimited analysis & practice, every day', 'Detailed AI feedback on every word', 'Full practice bank: 576 sentences', 'Smart dictionary, OCR & PDF export', 'Mastery certificates on the annual plan', 'One account across web & app'],
       annual: 'Annual',
       monthly: 'Monthly',
       annualPrice: '$37.99',
       monthlyPrice: '$4.99',
-      annualMeta: '7 day free trial',
-      monthlyMeta: 'Flexible monthly access',
+      annualPer: '≈ $3.17/mo',
+      annualMeta: '7-day free trial',
+      monthlyMeta: 'Renews monthly',
       save: 'Save 37%',
-      annualCta: 'Start free trial',
+      annualCta: 'Start 7-day free trial',
       monthlyCta: 'Subscribe monthly',
-      secure: 'Secure checkout by Paddle. Tax may be added for your country.',
+      secure: 'Cancel anytime · Secure checkout by Paddle',
       activatingTitle: 'Payment received: activating your subscription',
       activatingBody: 'Unlimited practice will unlock in a few moments.',
       close: 'Close',
@@ -176,12 +180,21 @@ const t = lang === 'ar'
           <p class="pr-upgrade-eyebrow">{t.upgradeEyebrow}</p>
           <h2 id="pr-upgrade-title" class:list={[titleClass, 'pr-upgrade-title']}>{t.upgradeTitle}</h2>
           <p class="pr-upgrade-body">{t.upgradeBody}</p>
+          <ul class="pr-benefits">
+            {t.benefits.map((b) => (
+              <li class="pr-benefit">
+                <svg class="pr-benefit-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
           {PADDLE_ENABLED ? (
             <div class="pr-upgrade-plans">
               <button type="button" data-pr-plan="annual" class="pr-plan pr-plan-featured">
                 <span class="pr-plan-badge">{t.save}</span>
                 <span class="pr-plan-name">{t.annual}</span>
                 <span class="pr-plan-price">{t.annualPrice}</span>
+                <span class="pr-plan-per">{t.annualPer}</span>
                 <span class="pr-plan-meta">{t.annualMeta}</span>
                 <span class="pr-plan-cta">{t.annualCta}</span>
               </button>
@@ -337,6 +350,10 @@ const t = lang === 'ar'
     font-size: var(--text-body); line-height: 1.7;
   }
   .dark .pr-upgrade-body { color: color-mix(in srgb, var(--color-mist) 74%, transparent); }
+  .pr-benefits { list-style: none; margin: 1.25rem 0 0.5rem; padding: 0; display: grid; gap: 0.55rem; }
+  .pr-benefit { display: flex; align-items: flex-start; gap: 0.6rem; font-size: var(--text-caption); line-height: 1.5; color: color-mix(in srgb, var(--color-ink) 82%, transparent); }
+  .dark .pr-benefit { color: color-mix(in srgb, var(--color-mist) 82%, transparent); }
+  .pr-benefit-ic { width: 1.15rem; height: 1.15rem; flex: none; margin-top: 0.2rem; color: var(--color-teal); }
   .pr-upgrade-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-top: 1.35rem; }
   .pr-plan {
     position: relative; min-height: 11.5rem; text-align: start; display: flex; flex-direction: column; gap: 0.25rem;
@@ -355,6 +372,8 @@ const t = lang === 'ar'
   .dark .pr-plan-name { color: var(--color-mist); }
   .pr-plan-price { margin-top: 0.45rem; color: var(--color-ink); font-family: var(--font-display); font-size: 2.2rem; line-height: 1; font-weight: 800; }
   .dark .pr-plan-price { color: var(--color-mist); }
+  .pr-plan-per { margin-top: 0.15rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); font-size: 0.95rem; font-weight: 700; }
+  .dark .pr-plan-per { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
   .pr-plan-meta { color: color-mix(in srgb, var(--color-ink) 58%, transparent); font-size: var(--text-caption); }
   .dark .pr-plan-meta { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
   .pr-plan-cta { margin-top: auto; color: var(--color-purple-deep); font-weight: 900; }
