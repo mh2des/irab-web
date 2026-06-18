@@ -1,38 +1,66 @@
 ---
 /**
- * AccountPanel — the signed-in profile (/account). Clean, boxed sections:
- * identity, subscription, quick links, sign out. Redirects to /login if not
- * authed. Data attributes are unchanged so the auth script keeps working.
+ * AccountPanel — the signed-in profile (/account). A proper account home:
+ * identity hero, activity stats (from local history), subscription (upgrade
+ * opens the shared Paywall), an explore grid, preferences (theme + language),
+ * and a support/legal row. Redirects to /login if not authed. Existing
+ * data-* hooks are preserved so the auth flow keeps working.
  */
+import Paywall from './Paywall.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
 const login = lang === 'ar' ? '/login' : '/en/login';
-const home = lang === 'ar' ? '/' : '/en';
 const appHref = lang === 'ar' ? '/app' : '/en/app';
 const historyHref = lang === 'ar' ? '/history' : '/en/history';
-const pricing = '/pricing';
+const dictHref = lang === 'ar' ? '/dictionary' : '/en/dictionary';
+const libraryHref = lang === 'ar' ? '/library' : '/en/library';
+const altLangHref = lang === 'ar' ? '/en/account' : '/account';
+const support = 'mailto:support@irab.app';
+const chev = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
 
 const t = lang === 'ar'
   ? {
-      eyebrow: 'حسابي', loading: 'جارٍ التحميل…',
+      loading: 'جارٍ التحميل…',
+      memberSince: 'عضو منذ', via: 'عبر',
+      // stats
+      activity: 'نشاطك', statAnalyses: 'تحليلات', statPractice: 'تمارين',
+      statStreak: 'أيام متتالية', statBest: 'أفضل نتيجة',
+      noActivity: 'لا يوجد نشاط بعد. ابدأ بأوّل تحليل لك.', startNow: 'ابدأ الآن',
+      // subscription
       plan: 'الاشتراك', planChecking: 'جارٍ التحقّق…',
-      openApp: 'افتح تطبيقي', appDesc: 'أدواتك وإحصاءاتك',
-      history: 'سجلّي', historyDesc: 'تحليلاتك وتمارينك السابقة',
       upgrade: 'الترقية إلى إعراب بلس',
-      signOut: 'تسجيل الخروج',
-      resend: 'إعادة إرسال رابط التوثيق',
+      // explore
+      explore: 'استكشف',
+      openApp: 'تطبيقي', appDesc: 'أدواتك ولوحتك',
+      history: 'سجلّي', historyDesc: 'تحليلاتك وتمارينك',
+      dictionary: 'المعجم', dictionaryDesc: 'معجم عربي ذكي',
+      library: 'المكتبة', libraryDesc: '٤٧ كتابًا كلاسيكيًّا',
+      // preferences
+      prefs: 'التفضيلات', darkMode: 'الوضع الداكن', language: 'اللغة', langValue: 'English',
+      // support
+      help: 'المساعدة والدعم', privacy: 'الخصوصية', terms: 'الشروط',
+      signOut: 'تسجيل الخروج', resend: 'إعادة إرسال رابط التوثيق',
     }
   : {
-      eyebrow: 'My account', loading: 'Loading…',
+      loading: 'Loading…',
+      memberSince: 'Member since', via: 'via',
+      activity: 'Your activity', statAnalyses: 'Analyses', statPractice: 'Practice',
+      statStreak: 'Day streak', statBest: 'Best score',
+      noActivity: 'No activity yet. Run your first analysis to get started.', startNow: 'Start now',
       plan: 'Subscription', planChecking: 'Checking…',
-      openApp: 'Open my app', appDesc: 'Your tools and stats',
-      history: 'My history', historyDesc: 'Your past analyses and practice',
       upgrade: 'Upgrade to Irab Plus',
-      signOut: 'Sign out',
-      resend: 'Resend verification link',
+      explore: 'Explore',
+      openApp: 'My app', appDesc: 'Your tools & dashboard',
+      history: 'My history', historyDesc: 'Analyses & practice',
+      dictionary: 'Dictionary', dictionaryDesc: 'Smart Arabic dictionary',
+      library: 'Library', libraryDesc: '47 classical books',
+      prefs: 'Preferences', darkMode: 'Dark mode', language: 'Language', langValue: 'العربية',
+      help: 'Help & support', privacy: 'Privacy', terms: 'Terms',
+      signOut: 'Sign out', resend: 'Resend verification link',
     };
-const dir = lang === 'ar' ? 'rtl' : 'ltr';
-const chev = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
 ---
 <div data-account-root data-lang={lang} data-login={login} dir={dir} class="acct">
   {/* Loading skeleton */}
@@ -44,21 +72,44 @@ const chev = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
     </div>
   </div>
 
-  <div data-panel class="hidden panel-in space-y-4">
-    {/* Identity */}
-    <section class="acct-card acct-id">
-      <div data-avatar class="acct-avatar acct-avatar-real"></div>
-      <div class="acct-id-main">
-        <h1 data-name class="acct-name"></h1>
-        <p data-email dir="ltr" class="acct-email"></p>
-        <div class="acct-verify">
-          <span data-verify-badge class="badge"></span>
-          <button type="button" data-resend class="acct-resend hidden">{t.resend}</button>
+  <div data-panel class="hidden panel-in acct-stack">
+    {/* ── Identity hero ── */}
+    <section class="acct-card acct-hero">
+      <div class="acct-hero-top">
+        <div data-avatar class="acct-avatar acct-avatar-real"></div>
+        <div class="acct-id-main">
+          <div class="acct-name-row">
+            <h1 data-name class="acct-name"></h1>
+            <span data-provider class="acct-provider hidden"></span>
+          </div>
+          <p data-email dir="ltr" class="acct-email"></p>
         </div>
+      </div>
+      <div class="acct-hero-foot">
+        <span data-verify-badge class="badge"></span>
+        <button type="button" data-resend class="acct-resend hidden">{t.resend}</button>
+        <span data-member class="acct-member hidden"></span>
       </div>
     </section>
 
-    {/* Subscription */}
+    {/* ── Activity stats ── */}
+    <section data-stats class="acct-section hidden">
+      <p class="acct-eyebrow acct-section-head">{t.activity}</p>
+      <div class="acct-stats">
+        <div class="acct-stat"><span data-stat="analyze" class="acct-stat-num">0</span><span class="acct-stat-label">{t.statAnalyses}</span></div>
+        <div class="acct-stat"><span data-stat="practice" class="acct-stat-num">0</span><span class="acct-stat-label">{t.statPractice}</span></div>
+        <div class="acct-stat"><span data-stat="streak" class="acct-stat-num">0</span><span class="acct-stat-label">{t.statStreak}</span></div>
+        <div data-stat-best-wrap class="acct-stat"><span data-stat="best" class="acct-stat-num">—</span><span class="acct-stat-label">{t.statBest}</span></div>
+      </div>
+    </section>
+
+    {/* ── Empty activity (new users) ── */}
+    <section data-empty class="acct-card acct-empty hidden">
+      <p>{t.noActivity}</p>
+      <a href={appHref} class="btn-primary">{t.startNow}</a>
+    </section>
+
+    {/* ── Subscription ── */}
     <section class="acct-card">
       <div class="acct-row">
         <p class="acct-eyebrow">{t.plan}</p>
@@ -66,96 +117,197 @@ const chev = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
       </div>
       <p data-plan class="acct-plan-name">{t.planChecking}</p>
       <p data-plan-note class="acct-note"></p>
-      <a data-upgrade href={pricing} class="btn-primary btn-block mt-4 hidden">{t.upgrade}</a>
+      <button type="button" data-upgrade class="btn-primary btn-block mt-4 hidden">{t.upgrade}</button>
     </section>
 
-    {/* Quick links */}
-    <section class="acct-links">
-      <a href={appHref} class="acct-link">
-        <span class="acct-link-ic acct-link-ic-purple" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
-        <span class="acct-link-main"><span class="acct-link-title">{t.openApp}</span><span class="acct-link-desc">{t.appDesc}</span></span>
-        <svg class="acct-link-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={chev}/></svg>
-      </a>
-      <a href={historyHref} class="acct-link">
-        <span class="acct-link-ic acct-link-ic-teal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg></span>
-        <span class="acct-link-main"><span class="acct-link-title">{t.history}</span><span class="acct-link-desc">{t.historyDesc}</span></span>
-        <svg class="acct-link-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={chev}/></svg>
-      </a>
+    {/* ── Explore ── */}
+    <section class="acct-section">
+      <p class="acct-eyebrow acct-section-head">{t.explore}</p>
+      <div class="acct-links">
+        <a href={appHref} class="acct-link">
+          <span class="acct-link-ic acct-link-ic-purple" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+          <span class="acct-link-main"><span class="acct-link-title">{t.openApp}</span><span class="acct-link-desc">{t.appDesc}</span></span>
+          <svg class="acct-link-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={chev}/></svg>
+        </a>
+        <a href={historyHref} class="acct-link">
+          <span class="acct-link-ic acct-link-ic-teal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg></span>
+          <span class="acct-link-main"><span class="acct-link-title">{t.history}</span><span class="acct-link-desc">{t.historyDesc}</span></span>
+          <svg class="acct-link-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={chev}/></svg>
+        </a>
+        <a href={dictHref} class="acct-link">
+          <span class="acct-link-ic acct-link-ic-gold" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+          <span class="acct-link-main"><span class="acct-link-title">{t.dictionary}</span><span class="acct-link-desc">{t.dictionaryDesc}</span></span>
+          <svg class="acct-link-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={chev}/></svg>
+        </a>
+        <a href={libraryHref} class="acct-link">
+          <span class="acct-link-ic acct-link-ic-rose" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+          <span class="acct-link-main"><span class="acct-link-title">{t.library}</span><span class="acct-link-desc">{t.libraryDesc}</span></span>
+          <svg class="acct-link-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={chev}/></svg>
+        </a>
+      </div>
     </section>
 
-    {/* Sign out */}
-    <div class="text-center pt-1">
+    {/* ── Preferences ── */}
+    <section class="acct-card acct-prefs">
+      <p class="acct-eyebrow">{t.prefs}</p>
+      <div class="acct-pref-row">
+        <span class="acct-pref-label">{t.darkMode}</span>
+        <ThemeToggle />
+      </div>
+      <div class="acct-pref-row">
+        <span class="acct-pref-label">{t.language}</span>
+        <a href={altLangHref} class="acct-pref-link">{t.langValue}</a>
+      </div>
+    </section>
+
+    {/* ── Support & legal ── */}
+    <div class="acct-support">
+      <a href={support}>{t.help}</a>
+      <span aria-hidden="true">·</span>
+      <a href="/privacy">{t.privacy}</a>
+      <span aria-hidden="true">·</span>
+      <a href="/terms">{t.terms}</a>
+    </div>
+
+    {/* ── Sign out ── */}
+    <div class="text-center">
       <button type="button" data-signout class="acct-signout">{t.signOut}</button>
     </div>
   </div>
 </div>
 
+<Paywall lang={lang} />
+
 <style>
-  .acct { width: 100%; max-width: 30rem; margin-inline: auto; }
+  .acct { width: 100%; max-width: 38rem; margin-inline: auto; }
+  .acct-stack { display: grid; gap: 1rem; }
   .acct-card {
     background: var(--color-card); border: 1px solid var(--color-card-edge);
     border-radius: 1.1rem; box-shadow: var(--shadow-card); padding: 1.5rem;
   }
   :global(.dark) .acct-card { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .acct-section { display: grid; gap: 0.7rem; }
+  .acct-section-head { padding-inline: 0.15rem; }
+  .acct-eyebrow { font-weight: 800; font-size: var(--text-caption); letter-spacing: 0.01em; color: color-mix(in srgb, var(--color-ink) 58%, transparent); }
+  :global(.dark) .acct-eyebrow { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
 
-  /* Identity */
+  /* ── Identity hero ── */
+  .acct-hero { display: grid; gap: 1.1rem; }
   .acct-id { display: flex; align-items: center; gap: 1.1rem; }
+  .acct-hero-top { display: flex; align-items: center; gap: 1.1rem; }
   .acct-avatar { width: 4.5rem; height: 4.5rem; border-radius: 999px; flex: none; }
   .acct-avatar-real {
+    overflow: hidden; background-size: cover; background-position: center;
     display: grid; place-items: center; font-family: var(--font-sans); font-weight: 800; font-size: 1.9rem;
-    color: #fff; background: linear-gradient(140deg, var(--color-purple), var(--color-purple-deep));
+    color: #fff; background-color: var(--color-purple);
+    background-image: linear-gradient(140deg, var(--color-purple), var(--color-purple-deep));
     box-shadow: 0 10px 22px -10px var(--color-purple);
   }
+  .acct-avatar-real.has-photo { background-image: var(--photo); }
   .acct-id-main { min-width: 0; }
-  .acct-name { font-family: var(--font-sans); font-weight: 800; font-size: 1.65rem; line-height: 1.2; color: var(--color-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .acct-name-row { display: flex; align-items: center; gap: 0.55rem; min-width: 0; }
+  .acct-name { font-family: var(--font-sans); font-weight: 800; font-size: 1.55rem; line-height: 1.2; color: var(--color-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   :global(.dark) .acct-name { color: var(--color-mist); }
-  .acct-email { margin-top: 0.15rem; font-size: 1.05rem; color: color-mix(in srgb, var(--color-ink) 60%, transparent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .acct-provider {
+    flex: none; font-size: 0.72rem; font-weight: 800; padding: 0.16rem 0.55rem; border-radius: 999px;
+    color: color-mix(in srgb, var(--color-ink) 64%, transparent);
+    background: color-mix(in srgb, var(--color-ink) 8%, transparent);
+  }
+  :global(.dark) .acct-provider { color: color-mix(in srgb, var(--color-mist) 68%, transparent); background: color-mix(in srgb, var(--color-mist) 12%, transparent); }
+  .acct-email { margin-top: 0.2rem; font-size: 1rem; color: color-mix(in srgb, var(--color-ink) 60%, transparent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   :global(.dark) .acct-email { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
-  .acct-verify { margin-top: 0.7rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-  .acct-resend { font-size: 1rem; font-weight: 700; color: var(--color-purple-deep); }
+  .acct-hero-foot { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; }
+  .acct-resend { font-size: 0.95rem; font-weight: 700; color: var(--color-purple-deep); }
   :global(.dark) .acct-resend { color: color-mix(in srgb, var(--color-purple) 84%, white); }
+  .acct-member { font-size: 0.9rem; color: color-mix(in srgb, var(--color-ink) 52%, transparent); }
+  :global(.dark) .acct-member { color: color-mix(in srgb, var(--color-mist) 56%, transparent); }
 
-  /* Subscription */
+  /* ── Stats ── */
+  .acct-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+  .acct-stat {
+    display: flex; flex-direction: column; align-items: center; gap: 0.2rem; text-align: center;
+    padding: 1rem 0.5rem; border-radius: 0.9rem;
+    background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
+  }
+  :global(.dark) .acct-stat { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .acct-stat-num { font-family: var(--font-display); font-weight: 700; font-size: 1.85rem; line-height: 1; color: var(--color-ink); }
+  :global(.dark) .acct-stat-num { color: var(--color-mist); }
+  .acct-stat-label { font-size: 0.78rem; line-height: 1.25; color: color-mix(in srgb, var(--color-ink) 56%, transparent); }
+  :global(.dark) .acct-stat-label { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
+
+  /* ── Empty activity ── */
+  .acct-empty { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .acct-empty p { color: color-mix(in srgb, var(--color-ink) 66%, transparent); font-size: 1rem; }
+  :global(.dark) .acct-empty p { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
+
+  /* ── Subscription ── */
   .acct-row { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; }
-  .acct-eyebrow { font-weight: 800; font-size: var(--text-caption); color: color-mix(in srgb, var(--color-ink) 60%, transparent); }
-  :global(.dark) .acct-eyebrow { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
-  .acct-plan-name { margin-top: 0.35rem; font-family: var(--font-display); font-weight: 700; font-size: 1.9rem; line-height: 1.1; color: var(--color-ink); }
+  .acct-plan-name { margin-top: 0.35rem; font-family: var(--font-display); font-weight: 700; font-size: 1.75rem; line-height: 1.1; color: var(--color-ink); }
   :global(.dark) .acct-plan-name { color: var(--color-mist); }
-  .acct-note { margin-top: 0.5rem; font-size: 1.1rem; line-height: 1.7; color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
+  .acct-note { margin-top: 0.5rem; font-size: 1rem; line-height: 1.7; color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
   :global(.dark) .acct-note { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
 
-  /* Quick links */
-  .acct-links { display: grid; gap: 0.6rem; }
+  /* ── Explore links ── */
+  .acct-links { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
   .acct-link {
-    display: flex; align-items: center; gap: 0.9rem; padding: 0.95rem 1.1rem; border-radius: 1rem;
+    display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1rem; border-radius: 1rem;
     background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
     text-decoration: none; transition: transform .18s var(--ease-out-quart), border-color .18s, box-shadow .18s;
   }
   :global(.dark) .acct-link { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .acct-link:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--color-purple) 40%, var(--color-card-edge)); box-shadow: var(--shadow-lift); }
-  .acct-link-ic { width: 2.6rem; height: 2.6rem; border-radius: 0.8rem; flex: none; display: grid; place-items: center; }
-  .acct-link-ic svg { width: 1.3rem; height: 1.3rem; }
+  .acct-link-ic { width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; flex: none; display: grid; place-items: center; }
+  .acct-link-ic svg { width: 1.25rem; height: 1.25rem; }
   .acct-link-ic-purple { color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 12%, white); }
   .acct-link-ic-teal { color: var(--color-teal); background: color-mix(in srgb, var(--color-teal) 12%, white); }
-  :global(.dark) .acct-link-ic-purple { background: color-mix(in srgb, var(--color-purple) 22%, var(--color-coal)); }
-  :global(.dark) .acct-link-ic-teal { background: color-mix(in srgb, var(--color-teal) 22%, var(--color-coal)); }
+  .acct-link-ic-gold { color: #9a6b12; background: color-mix(in srgb, #C28A1E 16%, white); }
+  .acct-link-ic-rose { color: #a8472a; background: color-mix(in srgb, #C2603C 16%, white); }
+  :global(.dark) .acct-link-ic-purple { background: color-mix(in srgb, var(--color-purple) 22%, var(--color-coal)); color: color-mix(in srgb, var(--color-purple) 82%, white); }
+  :global(.dark) .acct-link-ic-teal { background: color-mix(in srgb, var(--color-teal) 22%, var(--color-coal)); color: color-mix(in srgb, var(--color-teal) 80%, white); }
+  :global(.dark) .acct-link-ic-gold { background: color-mix(in srgb, #C28A1E 24%, var(--color-coal)); color: color-mix(in srgb, #C28A1E 78%, white); }
+  :global(.dark) .acct-link-ic-rose { background: color-mix(in srgb, #C2603C 24%, var(--color-coal)); color: color-mix(in srgb, #C2603C 80%, white); }
   .acct-link-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-  .acct-link-title { font-weight: 800; font-size: 1.2rem; color: var(--color-ink); }
+  .acct-link-title { font-weight: 800; font-size: 1.05rem; color: var(--color-ink); }
   :global(.dark) .acct-link-title { color: var(--color-mist); }
-  .acct-link-desc { font-size: 1rem; color: color-mix(in srgb, var(--color-ink) 58%, transparent); }
-  :global(.dark) .acct-link-desc { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
-  .acct-link-chev { width: 1.15rem; height: 1.15rem; flex: none; color: color-mix(in srgb, var(--color-ink) 40%, transparent); }
-  :global(.dark) .acct-link-chev { color: color-mix(in srgb, var(--color-mist) 45%, transparent); }
+  .acct-link-desc { font-size: 0.85rem; color: color-mix(in srgb, var(--color-ink) 56%, transparent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  :global(.dark) .acct-link-desc { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .acct-link-chev { width: 1.05rem; height: 1.05rem; flex: none; color: color-mix(in srgb, var(--color-ink) 38%, transparent); }
+  :global(.dark) .acct-link-chev { color: color-mix(in srgb, var(--color-mist) 42%, transparent); }
 
-  .acct-signout { font-size: 1.1rem; font-weight: 700; color: color-mix(in srgb, var(--color-ink) 58%, transparent); padding: 0.6rem 1rem; transition: color .18s; }
-  :global(.dark) .acct-signout { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  /* ── Preferences ── */
+  .acct-prefs { display: grid; gap: 0.35rem; }
+  .acct-prefs .acct-eyebrow { margin-bottom: 0.5rem; }
+  .acct-pref-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; }
+  .acct-pref-row + .acct-pref-row { border-top: 1px solid var(--color-stone); }
+  :global(.dark) .acct-pref-row + .acct-pref-row { border-top-color: var(--color-coal-edge); }
+  .acct-pref-label { font-weight: 700; font-size: 1.05rem; color: var(--color-ink); }
+  :global(.dark) .acct-pref-label { color: var(--color-mist); }
+  .acct-pref-link { font-weight: 700; font-size: 1rem; color: var(--color-purple-deep); }
+  :global(.dark) .acct-pref-link { color: color-mix(in srgb, var(--color-purple) 84%, white); }
+
+  /* ── Support & sign out ── */
+  .acct-support { display: flex; align-items: center; justify-content: center; gap: 0.6rem; flex-wrap: wrap; font-size: 0.9rem; }
+  .acct-support a { color: color-mix(in srgb, var(--color-ink) 58%, transparent); transition: color .15s; }
+  :global(.dark) .acct-support a { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .acct-support a:hover { color: var(--color-purple-deep); }
+  :global(.dark) .acct-support a:hover { color: color-mix(in srgb, var(--color-purple) 86%, white); }
+  .acct-support span { color: color-mix(in srgb, var(--color-ink) 30%, transparent); }
+
+  .acct-signout { font-size: 1.05rem; font-weight: 700; color: color-mix(in srgb, var(--color-ink) 56%, transparent); padding: 0.6rem 1rem; transition: color .18s; }
+  :global(.dark) .acct-signout { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
   .acct-signout:hover { color: #dc2626; }
+
+  @media (max-width: 480px) {
+    .acct-stats { grid-template-columns: repeat(2, 1fr); }
+    .acct-links { grid-template-columns: 1fr; }
+  }
 </style>
 
 <script>
   import { onAuth, logout, resendVerification } from '../lib/auth';
   import { fetchMe } from '../lib/entitlement';
   import { rememberSignedIn, forgetSignedIn } from '../lib/session';
+  import { getStats } from '../lib/history';
 
   const root = document.querySelector<HTMLElement>('[data-account-root]');
   if (root) {
@@ -175,6 +327,12 @@ const chev = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
       : { free: 'Free', plus: 'Irab Plus',
           noteFree: 'You get 3 analyses a day. Upgrade for unlimited i\'rab, the full practice bank, and annual certificates.',
           notePlus: 'Your subscription is active on all your devices: web and app. ✓' };
+    const providerName: Record<string, string> = {
+      'google.com': 'Google', 'apple.com': 'Apple',
+      'password': lang === 'ar' ? 'البريد' : 'Email',
+    };
+    const memberSince = lang === 'ar' ? 'عضو منذ' : 'Member since';
+    const via = lang === 'ar' ? 'عبر' : 'via';
 
     onAuth((u) => {
       if (!u) { forgetSignedIn(); window.location.replace(login); return; }
@@ -185,8 +343,37 @@ const chev = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
       const name = u.displayName || (u.email ? u.email.split('@')[0] : (lang === 'ar' ? 'مستخدم' : 'User'));
       q<HTMLElement>('[data-name]').textContent = name;
       q<HTMLElement>('[data-email]').textContent = u.email || '';
-      q<HTMLElement>('[data-avatar]').textContent = (name.trim()[0] || '?').toUpperCase();
 
+      // Avatar: photo if present, else the gradient initial.
+      const avatar = q<HTMLElement>('[data-avatar]');
+      if (u.photoURL) {
+        avatar.classList.add('has-photo');
+        avatar.style.setProperty('--photo', `url("${u.photoURL}")`);
+      } else {
+        avatar.textContent = (name.trim()[0] || '?').toUpperCase();
+      }
+
+      // Provider chip.
+      const pid = u.providerData?.[0]?.providerId;
+      if (pid && providerName[pid]) {
+        const prov = q<HTMLElement>('[data-provider]');
+        prov.textContent = `${via} ${providerName[pid]}`;
+        prov.classList.remove('hidden');
+      }
+
+      // Member since (creation month/year).
+      const created = u.metadata?.creationTime;
+      if (created) {
+        try {
+          const d = new Date(created);
+          const fmt = new Intl.DateTimeFormat(lang === 'ar' ? 'ar' : 'en', { month: 'long', year: 'numeric' });
+          const m = q<HTMLElement>('[data-member]');
+          m.textContent = `${memberSince} ${fmt.format(d)}`;
+          m.classList.remove('hidden');
+        } catch { /* ignore */ }
+      }
+
+      // Verification.
       const badge = q<HTMLElement>('[data-verify-badge]');
       const resend = q<HTMLButtonElement>('[data-resend]');
       if (u.emailVerified) {
@@ -201,10 +388,30 @@ const chev = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
         }, { once: true });
       }
 
+      // Activity stats (local history, keyed by uid).
+      try {
+        const s = getStats(u.uid);
+        if (s.total > 0) {
+          q<HTMLElement>('[data-stat="analyze"]').textContent = String(s.analyzeCount);
+          q<HTMLElement>('[data-stat="practice"]').textContent = String(s.practiceCount);
+          q<HTMLElement>('[data-stat="streak"]').textContent = String(s.streak);
+          const bestWrap = q<HTMLElement>('[data-stat-best-wrap]');
+          if (s.bestScore != null) {
+            q<HTMLElement>('[data-stat="best"]').textContent = `${s.bestScore}%`;
+          } else {
+            bestWrap.classList.add('hidden'); // no practice yet → drop the 4th tile
+          }
+          q<HTMLElement>('[data-stats]').classList.remove('hidden');
+        } else {
+          q<HTMLElement>('[data-empty]').classList.remove('hidden');
+        }
+      } catch { /* stats are best-effort */ }
+
+      // Subscription.
       const planEl = q<HTMLElement>('[data-plan]');
       const planBadge = q<HTMLElement>('[data-plan-badge]');
       const planNoteEl = q<HTMLElement>('[data-plan-note]');
-      const upgrade = q<HTMLAnchorElement>('[data-upgrade]');
+      const upgrade = q<HTMLButtonElement>('[data-upgrade]');
       fetchMe(u).then((me) => {
         const premium = me?.premium === true;
         planEl.textContent = premium ? planText.plus : planText.free;
@@ -215,6 +422,11 @@ const chev = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
           planEl.classList.add('text-purple-deep', 'dark:text-purple');
         } else {
           upgrade.classList.remove('hidden');
+          upgrade.addEventListener('click', () => {
+            const pw = (window as any).IrabPaywall;
+            if (pw) pw.show({ uid: u.uid, email: u.email || undefined });
+            else window.location.href = '/pricing';
+          });
         }
       });
     });
