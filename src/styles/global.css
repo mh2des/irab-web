@@ -12,7 +12,7 @@
    The whole site runs on these:
      • Uthmanic Hafs (KFGQPC): Quran verses (Mushaf Hafs, Unicode-compatible)
      • Aref Ruqaa SALT       : display / headings (regal Ruqaa)
-     • The Year of Handicrafts: body / i'rab / everything else
+     • Thmanyah Sans         : body / i'rab / everything else (font.thmanyah.com)
    No other web font is loaded; Latin glyphs the Arabic faces lack fall back to
    the system UI font only. */
 @font-face {
@@ -29,57 +29,40 @@
   font-style: normal;
   font-display: swap;
 }
+/* Thmanyah Sans — the body face, five weights (Light/Regular/Medium/Bold/Black).
+   Weights 600/800 map to the nearest declared face (font-synthesis is off). */
 @font-face {
-  font-family: 'The Year of Handicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Regular.woff2') format('woff2');
+  font-family: 'Thmanyah Sans';
+  src: url('/fonts/thmanyah-sans-light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('/fonts/thmanyah-sans-regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'The Year of Handicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Medium.woff2') format('woff2');
+  font-family: 'Thmanyah Sans';
+  src: url('/fonts/thmanyah-sans-medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'The Year of Handicrafts';
-  src: url('/fonts/TheYearofHandicrafts-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'The Year of Handicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Bold.woff2') format('woff2');
+  font-family: 'Thmanyah Sans';
+  src: url('/fonts/thmanyah-sans-bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'The Year of Handicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Black.woff2') format('woff2');
+  font-family: 'Thmanyah Sans';
+  src: url('/fonts/thmanyah-sans-black.woff2') format('woff2');
   font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-/* Guesswhat Exceptional → the body face everywhere (replaces The Year of
-   Handicrafts). Arabic-only; The Year of Handicrafts stays as a fallback for
-   Latin glyphs + any marks Guesswhat lacks. Single weight → cover all weights. */
-@font-face {
-  font-family: 'Guesswhat Exceptional';
-  src: url('/fonts/guesswhat-exceptional.otf') format('opentype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-/* Boharat Felfel → headings in the library + profile only (replaces Aref Ruqaa
-   there; the rest of the site keeps Ruqaa). Single Bold weight. */
-@font-face {
-  font-family: 'Boharat Felfel';
-  src: url('/fonts/boharat-felfel.woff2') format('woff2');
-  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
@@ -125,16 +108,15 @@
   /* Type families: three faces, mapped across every role. Latin falls back to
      system-ui (the Arabic faces are Arabic-first). */
   --font-display: 'Aref Ruqaa', system-ui, serif;        /* headings / hero */
-  /* Body face: Guesswhat Exceptional first, The Year of Handicrafts as the
-     fallback for Latin + any glyphs Guesswhat lacks, then system-ui. */
-  --font-sans: 'Guesswhat Exceptional', 'The Year of Handicrafts', system-ui, sans-serif;  /* body */
-  --font-mono: 'Guesswhat Exceptional', 'The Year of Handicrafts', ui-monospace, monospace;
-  --font-arabic: 'Guesswhat Exceptional', 'The Year of Handicrafts', system-ui, sans-serif;
+  /* Body face: Thmanyah Sans (font.thmanyah.com). Latin falls back to system-ui. */
+  --font-sans: 'Thmanyah Sans', system-ui, sans-serif;   /* body */
+  --font-mono: 'Thmanyah Sans', ui-monospace, monospace;
+  --font-arabic: 'Thmanyah Sans', system-ui, sans-serif;
   --font-arabic-display: 'Aref Ruqaa', system-ui, serif;
   /* Classical / book-feel Arabic → the body face. */
-  --font-arabic-classical: 'Guesswhat Exceptional', 'The Year of Handicrafts', serif;
+  --font-arabic-classical: 'Thmanyah Sans', serif;
   /* Quran verses only: KFGQPC Uthmanic Hafs (Mushaf Hafs). */
-  --font-quran: 'Uthmanic Hafs', 'The Year of Handicrafts', serif;
+  --font-quran: 'Uthmanic Hafs', 'Thmanyah Sans', serif;
 
   /* Type scale (rems based on 16px root) */
   --text-display-xl: 7.5rem;     /* 120px: hero word اقرأ */
@@ -186,16 +168,6 @@
    font cascade is needed any more (the old override pointed at fonts we no
    longer ship). */
 
-/* Boharat Felfel replaces Aref Ruqaa for headings/display ONLY inside the
-   library (index + reader) and the profile. Everywhere else keeps Ruqaa.
-   Overriding the display tokens on these roots cascades to every heading and
-   the font-display / font-arabic-display utilities used within them. */
-.library-page,
-.reader,
-.acct {
-  --font-display: 'Boharat Felfel', 'Aref Ruqaa', system-ui, serif;
-  --font-arabic-display: 'Boharat Felfel', 'Aref Ruqaa', system-ui, serif;
-}
 
 /* ── Arabic ligature protection ──────────────────────────────────────────
    Wide letter-spacing (tracking) is a Latin-typography concept that breaks
@@ -225,7 +197,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    /* 'salt' = Thmanyah's recommended Stylistic Alternates (connected forms). */
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'salt' 1;
   }
 
   /* Subtle Islamic geometric texture: a faint diagonal diamond lattice woven
