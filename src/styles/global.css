@@ -155,10 +155,10 @@
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 
-  /* Shadows: restrained, used only for elevation cues */
-  --shadow-soft: 0 1px 2px 0 rgb(23 56 71 / 0.04), 0 1px 1px 0 rgb(23 56 71 / 0.02);
-  --shadow-card: 0 2px 8px -2px rgb(23 56 71 / 0.06), 0 4px 16px -4px rgb(23 56 71 / 0.04);
-  --shadow-lift: 0 8px 24px -8px rgb(23 56 71 / 0.12), 0 16px 48px -16px rgb(23 56 71 / 0.08);
+  /* Shadows: clear elevation so solid surfaces read as lifted off the canvas. */
+  --shadow-soft: 0 1px 2px 0 rgb(23 56 71 / 0.05), 0 1px 1px 0 rgb(23 56 71 / 0.03);
+  --shadow-card: 0 1px 2px rgb(23 56 71 / 0.06), 0 6px 18px -6px rgb(23 56 71 / 0.13), 0 14px 34px -18px rgb(23 56 71 / 0.10);
+  --shadow-lift: 0 10px 26px -8px rgb(23 56 71 / 0.16), 0 22px 52px -18px rgb(23 56 71 / 0.12);
 }
 
 /* The three faces are Arabic-first and apply to every locale: no per-locale
@@ -201,15 +201,17 @@
      low-contrast so it reads as paper texture, not a graph. Solid cards sit on
      top of it cleanly. Tune via --pattern-line / --pattern-size. */
   :root {
-    --pattern-line: color-mix(in srgb, var(--color-ink) 10%, transparent);
-    --pattern-size: 24px;
+    /* The Islamic lattice is a WHISPER, not a grid. Kept very faint so solid
+       surfaces clearly float above it instead of the texture taking over. */
+    --pattern-line: color-mix(in srgb, var(--color-ink) 4%, transparent);
+    --pattern-size: 30px;
     /* Shared "soft elevated" hover shadow: the nav interaction, reused. */
     --lift-shadow:
-      0 16px 34px -14px color-mix(in srgb, var(--color-purple) 42%, transparent),
-      0 4px 10px -6px color-mix(in srgb, var(--color-ink) 10%, transparent);
+      0 18px 38px -16px color-mix(in srgb, var(--color-purple) 40%, transparent),
+      0 6px 14px -8px color-mix(in srgb, var(--color-ink) 14%, transparent);
   }
   :root.dark {
-    --pattern-line: color-mix(in srgb, var(--color-mist) 8%, transparent);
+    --pattern-line: color-mix(in srgb, var(--color-mist) 5%, transparent);
     --lift-shadow:
       0 16px 36px -14px color-mix(in srgb, var(--color-purple) 55%, transparent),
       0 4px 12px -6px rgb(0 0 0 / 0.35);
