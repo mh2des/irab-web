@@ -12,7 +12,7 @@
    The whole site runs on these:
      • Uthmanic Hafs (KFGQPC): Quran verses (Mushaf Hafs, Unicode-compatible)
      • Aref Ruqaa SALT       : display / headings (regal Ruqaa)
-     • Thmanyah Sans         : body / i'rab / everything else (font.thmanyah.com)
+     • Thmanyah Serif Text   : body / i'rab / everything else (font.thmanyah.com — the للنصوص cut)
    No other web font is loaded; Latin glyphs the Arabic faces lack fall back to
    the system UI font only. */
 @font-face {
@@ -29,39 +29,40 @@
   font-style: normal;
   font-display: swap;
 }
-/* Thmanyah Sans — the body face, five weights (Light/Regular/Medium/Bold/Black).
-   Weights 600/800 map to the nearest declared face (font-synthesis is off). */
+/* Thmanyah Serif Text (للنصوص) — the body face, five weights
+   (Light/Regular/Medium/Bold/Black). Weights 600/800 map to the nearest
+   declared face (font-synthesis is off). */
 @font-face {
-  font-family: 'Thmanyah Sans';
-  src: url('/fonts/thmanyah-sans-light.woff2') format('woff2');
+  font-family: 'Thmanyah Text';
+  src: url('/fonts/thmanyah-text-light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Thmanyah Sans';
-  src: url('/fonts/thmanyah-sans-regular.woff2') format('woff2');
+  font-family: 'Thmanyah Text';
+  src: url('/fonts/thmanyah-text-regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Thmanyah Sans';
-  src: url('/fonts/thmanyah-sans-medium.woff2') format('woff2');
+  font-family: 'Thmanyah Text';
+  src: url('/fonts/thmanyah-text-medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Thmanyah Sans';
-  src: url('/fonts/thmanyah-sans-bold.woff2') format('woff2');
+  font-family: 'Thmanyah Text';
+  src: url('/fonts/thmanyah-text-bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Thmanyah Sans';
-  src: url('/fonts/thmanyah-sans-black.woff2') format('woff2');
+  font-family: 'Thmanyah Text';
+  src: url('/fonts/thmanyah-text-black.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -108,15 +109,16 @@
   /* Type families: three faces, mapped across every role. Latin falls back to
      system-ui (the Arabic faces are Arabic-first). */
   --font-display: 'Aref Ruqaa', system-ui, serif;        /* headings / hero */
-  /* Body face: Thmanyah Sans (font.thmanyah.com). Latin falls back to system-ui. */
-  --font-sans: 'Thmanyah Sans', system-ui, sans-serif;   /* body */
-  --font-mono: 'Thmanyah Sans', ui-monospace, monospace;
-  --font-arabic: 'Thmanyah Sans', system-ui, sans-serif;
+  /* Body face: Thmanyah Serif Text — the للنصوص cut (font.thmanyah.com).
+     Latin falls back to system-ui. */
+  --font-sans: 'Thmanyah Text', system-ui, sans-serif;   /* body */
+  --font-mono: 'Thmanyah Text', ui-monospace, monospace;
+  --font-arabic: 'Thmanyah Text', system-ui, sans-serif;
   --font-arabic-display: 'Aref Ruqaa', system-ui, serif;
   /* Classical / book-feel Arabic → the body face. */
-  --font-arabic-classical: 'Thmanyah Sans', serif;
+  --font-arabic-classical: 'Thmanyah Text', serif;
   /* Quran verses only: KFGQPC Uthmanic Hafs (Mushaf Hafs). */
-  --font-quran: 'Uthmanic Hafs', 'Thmanyah Sans', serif;
+  --font-quran: 'Uthmanic Hafs', 'Thmanyah Text', serif;
 
   /* Type scale (rems based on 16px root) */
   --text-display-xl: 7.5rem;     /* 120px: hero word اقرأ */

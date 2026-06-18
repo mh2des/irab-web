@@ -9,7 +9,7 @@
 
 const SCALE = 2.5; // retina-crisp; keeps tashkeel + Ruqaa swashes sharp
 const ARABIC_SAMPLE = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الإعراب ٢:٢٥٥';
-const FONT_FACES = ['"Uthmanic Hafs"', '"Aref Ruqaa"', '"Thmanyah Sans"'];
+const FONT_FACES = ['"Uthmanic Hafs"', '"Aref Ruqaa"', '"Thmanyah Text"'];
 
 /** Decode the Arabic faces before rasterizing: the #1 cause of "Arabic broken
  *  in the screenshot" is capturing before the woff2 has loaded. */
