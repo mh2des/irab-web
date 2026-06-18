@@ -130,22 +130,6 @@ const t = lang === 'ar'
       {/* ── Error ───────────────────────────────────────────────────────── */}
       <p data-demo-error class="hidden mt-8 text-center font-arabic text-body text-red-600 dark:text-red-400"></p>
 
-      {/* ── Result actions (copy / share / pdf): sit outside the captured card ── */}
-      <div data-demo-actions class="hidden mt-8 mb-3 flex items-center justify-center flex-wrap gap-3">
-        <button type="button" data-act-copy class="act-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          <span data-act-copy-label>{t.copy}</span>
-        </button>
-        <button type="button" data-act-share class="act-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          <span>{t.share}</span>
-        </button>
-        <button type="button" data-act-pdf class="act-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1 1-2 2H5a2 2 0 0 1 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>{t.pdf}</span>
-        </button>
-      </div>
-
       {/* ── Result (hidden until the user parses: no specimen on load) ──── */}
       <div data-demo-result class="hidden mt-10">
         <div data-demo-source class="flex items-baseline gap-2.5 mb-6 px-1 min-h-[2rem]">
@@ -182,6 +166,23 @@ const t = lang === 'ar'
         <div class="flex items-center justify-center gap-2 pt-6 mt-2 border-t border-stone dark:border-coal-edge">
           <img src="/brand-mark.png" alt="" width="20" height="20" class="w-5 h-5 rounded-md" />
           <span class="font-arabic text-small text-ink/45 dark:text-mist/45">{t.madeWith}</span>
+        </div>
+
+        {/* ── Result actions (copy / share / pdf): at the END of the result,
+             outside the captured card ── */}
+        <div data-demo-actions class="hidden mt-8 flex items-center justify-center flex-wrap gap-3">
+          <button type="button" data-act-copy class="act-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span data-act-copy-label>{t.copy}</span>
+          </button>
+          <button type="button" data-act-share class="act-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <span>{t.share}</span>
+          </button>
+          <button type="button" data-act-pdf class="act-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1 1-2 2H5a2 2 0 0 1 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>{t.pdf}</span>
+          </button>
         </div>
       </div>
     </div>
