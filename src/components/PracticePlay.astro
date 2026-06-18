@@ -78,6 +78,7 @@ const t = lang === 'ar'
       activatingBody: 'سيُفتح التدريب غير المحدود خلال لحظات.',
       close: 'إغلاق',
       pricing: 'عرض الأسعار',
+      sound: 'الصوت',
     }
   : {
       gateTitle: 'Sign in to start practicing',
@@ -135,6 +136,7 @@ const t = lang === 'ar'
       activatingBody: 'Unlimited practice will unlock in a few moments.',
       close: 'Close',
       pricing: 'View pricing',
+      sound: 'Sound',
     };
 ---
 <div data-practice-root data-lang={lang} data-login={login} dir={dir} class="pr-shell">
@@ -156,6 +158,12 @@ const t = lang === 'ar'
 
   {/* Tool */}
   <div data-pr-tool class="hidden">
+    <div class="pr-toolbar">
+      <button type="button" data-pr-mute class="pr-mute" aria-label={t.sound} aria-pressed="false">
+        <svg class="ic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+        <svg class="ic-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6"/><path d="M16 9l6 6"/></svg>
+      </button>
+    </div>
     {/* Quota pill (premium only) */}
     <p data-pr-quota class="pr-quota"></p>
 
@@ -245,6 +253,7 @@ const t = lang === 'ar'
         </div>
       </div>
       <p data-solve-sentence class="pr-sentence-show" lang="ar" dir="rtl"></p>
+      <div class="pr-progressbar" aria-hidden="true"><span data-solve-bar></span></div>
       <div data-solve-words class="space-y-3"></div>
       <div class="pr-actions">
         <span data-solve-progress class="pr-progress"></span>
@@ -487,6 +496,43 @@ const t = lang === 'ar'
   .pr-result-exp { margin-top: 0.5rem; font-family: var(--font-arabic-classical); font-size: 1.15rem; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 72%, transparent); }
   .dark .pr-result-exp { color: color-mix(in srgb, var(--color-mist) 74%, transparent); }
 
+  /* Sound toggle */
+  .pr-toolbar { display: flex; justify-content: flex-end; margin-bottom: 0.4rem; }
+  .pr-mute { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; border-radius: 999px; color: color-mix(in srgb, var(--color-ink) 58%, transparent); background: var(--color-card); border: 1px solid var(--color-card-edge); transition: color .18s, border-color .18s, transform .18s; }
+  .dark .pr-mute { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
+  .pr-mute:hover { transform: translateY(-2px); border-color: var(--color-teal); color: var(--color-teal); }
+  .pr-mute svg { width: 1.2rem; height: 1.2rem; }
+  .pr-mute .ic-off { display: none; }
+  .pr-mute.is-muted .ic-on { display: none; }
+  .pr-mute.is-muted .ic-off { display: block; }
+
+  /* Progress bar (solve) */
+  .pr-progressbar { height: 0.55rem; border-radius: 999px; background: color-mix(in srgb, var(--color-ink) 9%, transparent); overflow: hidden; margin-bottom: 1.4rem; }
+  .dark .pr-progressbar { background: color-mix(in srgb, var(--color-mist) 12%, transparent); }
+  .pr-progressbar span { display: block; height: 100%; width: 0%; border-radius: 999px; background: linear-gradient(90deg, var(--color-teal), var(--color-purple)); transition: width .45s var(--ease-out-quart); }
+
+  /* Word card "just answered" pop + done state mark */
+  @keyframes pr-pop { 0% { transform: scale(1); } 42% { transform: scale(1.03); } 100% { transform: scale(1); } }
+  .pr-word.just-done { animation: pr-pop .34s var(--ease-out-quart); }
+
+  /* Results: animated score ring */
+  .pr-ring { position: relative; width: 8.5rem; height: 8.5rem; margin: 0 auto 0.5rem; }
+  .pr-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .pr-ring-bg { fill: none; stroke: rgb(255 255 255 / 0.25); stroke-width: 9; }
+  .pr-ring-fg { fill: none; stroke: #fff; stroke-width: 9; stroke-linecap: round; transition: stroke-dashoffset 1s var(--ease-out-quart); }
+  .pr-ring-num { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 2.3rem; color: #fff; }
+
+  /* Results entrance */
+  .pr-summary { animation: pr-pop-in .5s var(--ease-out-quart) both; }
+  @keyframes pr-pop-in { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+  .pr-result { opacity: 0; transform: translateY(12px); animation: pr-result-in .45s var(--ease-out-quart) forwards; }
+  @keyframes pr-result-in { to { opacity: 1; transform: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pr-word.just-done, .pr-summary, .pr-result { animation: none; opacity: 1; transform: none; }
+    .pr-ring-fg, .pr-progressbar span { transition: none; }
+  }
+
   @media (max-width: 640px) {
     .pr-modes { grid-template-columns: 1fr; }
     .pr-upgrade-plans { grid-template-columns: 1fr; }
@@ -497,6 +543,8 @@ const t = lang === 'ar'
 <script>
   import { maybeSignedIn } from '../lib/session';
   import { addHistory, getHistoryItem } from '../lib/history';
+  import { revealStagger, springPress } from '../lib/animate';
+  import { sfx, confetti, countUp, isMuted, setMuted } from '../lib/celebrate';
 
   const root = document.querySelector<HTMLElement>('[data-practice-root]');
   if (root) {
@@ -514,8 +562,10 @@ const t = lang === 'ar'
     const CASES = ['مرفوع بالضمة', 'منصوب بالفتحة', 'مجرور بالكسرة', 'مبني على السكون', 'مبني على الفتح', 'مبني على الضم', 'مبني على الكسر', 'مرفوع بالواو', 'منصوب بالألف', 'مجرور بالياء', 'مرفوع بالألف', 'منصوب بالياء', 'مرفوع بثبوت النون', 'منصوب بحذف النون', 'مجزوم بحذف النون', 'مجزوم بالسكون', 'مجزوم بحذف حرف العلة', 'منصوب بالكسرة', 'مجرور بالفتحة'];
 
     const T = lang === 'ar'
-      ? { select: 'اختر', type: 'النوع', role: 'الموقع', caseMarker: 'العلامة', grading: 'جارٍ التصحيح…', check: 'تحقّق من الإجابات', gradeCustom: 'صحّح إعرابي', completeAll: 'أكمل اختيارات كل كلمة أولاً.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', limit: 'بلغت حدّك اليومي المجاني للتدريب. عُد غدًا أو رقِّ حسابك.', error: 'حدث خطأ. حاول مرة أخرى.', yourAnswer: 'إجابتك', correct: 'الصواب', unlimited: 'تدريب غير محدود', level: 'المستوى', words: 'كلمة', noSentences: 'لا توجد جمل في هذا الموضوع.', score: 'نتيجتك', answered: (a: number, n: number) => `${a} من ${n}`, yourIrabPlaceholder: 'إعرابك لهذه الكلمة…' }
-      : { select: 'Select', type: 'Type', role: 'Role', caseMarker: 'Marker', grading: 'Grading…', check: 'Check answers', gradeCustom: 'Grade my i\'rab', completeAll: 'Complete every word\'s choices first.', needWords: 'Write your i\'rab for at least one word.', limit: 'You\'ve hit today\'s free practice limit. Come back tomorrow or upgrade.', error: 'Something went wrong. Please try again.', yourAnswer: 'Your answer', correct: 'Correct', unlimited: 'Unlimited practice', level: 'Level', words: 'words', noSentences: 'No sentences in this topic.', score: 'Your score', answered: (a: number, n: number) => `${a} of ${n}`, yourIrabPlaceholder: 'Your i\'rab for this word…' };
+      ? { select: 'اختر', type: 'النوع', role: 'الموقع', caseMarker: 'العلامة', grading: 'جارٍ التصحيح…', check: 'تحقّق من الإجابات', gradeCustom: 'صحّح إعرابي', completeAll: 'أكمل اختيارات كل كلمة أولاً.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', limit: 'بلغت حدّك اليومي المجاني للتدريب. عُد غدًا أو رقِّ حسابك.', error: 'حدث خطأ. حاول مرة أخرى.', yourAnswer: 'إجابتك', correct: 'الصواب', unlimited: 'تدريب غير محدود', level: 'المستوى', words: 'كلمة', noSentences: 'لا توجد جمل في هذا الموضوع.', score: 'نتيجتك', answered: (a: number, n: number) => `${a} من ${n}`, yourIrabPlaceholder: 'إعرابك لهذه الكلمة…', fbExcellent: 'ممتاز! إتقان رائع 🎉', fbGreat: 'أحسنت! اقتربت من الإتقان', fbGood: 'جيد، واصل التدريب', fbKeep: 'لا بأس — التكرار يصنع الإتقان' }
+      : { select: 'Select', type: 'Type', role: 'Role', caseMarker: 'Marker', grading: 'Grading…', check: 'Check answers', gradeCustom: 'Grade my i\'rab', completeAll: 'Complete every word\'s choices first.', needWords: 'Write your i\'rab for at least one word.', limit: 'You\'ve hit today\'s free practice limit. Come back tomorrow or upgrade.', error: 'Something went wrong. Please try again.', yourAnswer: 'Your answer', correct: 'Correct', unlimited: 'Unlimited practice', level: 'Level', words: 'words', noSentences: 'No sentences in this topic.', score: 'Your score', answered: (a: number, n: number) => `${a} of ${n}`, yourIrabPlaceholder: 'Your i\'rab for this word…', fbExcellent: 'Excellent! Outstanding 🎉', fbGreat: 'Great work! Almost there', fbGood: 'Good — keep training', fbKeep: 'Keep going — practice makes perfect' };
+
+    const feedbackFor = (s: number) => s >= 0.9 ? T.fbExcellent : s >= 0.7 ? T.fbGreat : s >= 0.5 ? T.fbGood : T.fbKeep;
 
     const loadingEl = q<HTMLElement>('[data-pr-loading]');
     const gateEl = q<HTMLElement>('[data-pr-gate]');
@@ -611,7 +661,7 @@ const t = lang === 'ar'
         const b = el('button', 'pr-chip', topic.name || topic.id) as HTMLButtonElement;
         b.type = 'button';
         b.dataset.topicId = topic.id;
-        b.addEventListener('click', () => selectTopic(topic));
+        b.addEventListener('click', () => { sfx.tap(); selectTopic(topic); });
         chipsEl.appendChild(b);
       });
     }
@@ -641,9 +691,10 @@ const t = lang === 'ar'
         b.type = 'button';
         b.innerHTML = `<span class="pr-sentence-text" dir="rtl"></span><span class="pr-sentence-meta">${count} ${T.words}</span>`;
         b.querySelector('.pr-sentence-text')!.textContent = s.sentence || '';
-        b.addEventListener('click', () => openSolve(s));
+        b.addEventListener('click', () => { sfx.tap(); openSolve(s); });
         sentenceListEl.appendChild(b);
       });
+      revealStagger(sentenceListEl.querySelectorAll('.pr-sentence'), 0.05);
     }
 
     let curatedInputs: { word: string; type: HTMLSelectElement; role: HTMLSelectElement; cm: HTMLSelectElement }[] = [];
@@ -685,15 +736,25 @@ const t = lang === 'ar'
       updateProgress();
       q<HTMLElement>('[data-solve-msg]').className = 'hidden pr-msg';
       showPhase('solve');
+      revealStagger(wordsEl.querySelectorAll('.pr-word'));
     }
 
     function markDone(card: HTMLElement, type: HTMLSelectElement, role: HTMLSelectElement, cm: HTMLSelectElement) {
-      card.classList.toggle('is-done', !!(type.value && role.value && cm.value));
+      const done = !!(type.value && role.value && cm.value);
+      const was = card.dataset.done === '1';
+      card.dataset.done = done ? '1' : '0';
+      card.classList.toggle('is-done', done);
+      if (done && !was) {
+        card.classList.remove('just-done'); void card.offsetWidth; card.classList.add('just-done');
+        sfx.select();
+      } else { sfx.tap(); }
       updateProgress();
     }
     function updateProgress() {
       const done = curatedInputs.filter((w) => w.type.value && w.role.value && w.cm.value).length;
       q<HTMLElement>('[data-solve-progress]').textContent = T.answered(done, curatedInputs.length);
+      const bar = root!.querySelector<HTMLElement>('[data-solve-bar]');
+      if (bar) bar.style.width = curatedInputs.length ? `${(done / curatedInputs.length) * 100}%` : '0%';
     }
 
     async function checkCurated() {
@@ -724,6 +785,7 @@ const t = lang === 'ar'
         });
         const score = results.length ? results.filter((r) => r.isCorrect).length / results.length : 0;
         renderCuratedResults(selectedSentence.sentence, score, results);
+        celebrate(score);
       } finally {
         btn.disabled = false; label.textContent = T.check;
       }
@@ -787,6 +849,7 @@ const t = lang === 'ar'
         const json = await res.json();
         const data = json?.data ?? json;
         renderCustomResults(data, customSentence);
+        celebrate(typeof data?.score === 'number' ? data.score : 0);
       } catch {
         msg.textContent = T.error; msg.className = 'pr-msg';
       } finally {
@@ -802,10 +865,27 @@ const t = lang === 'ar'
     function summary(score: number, label: string, feedback?: string) {
       resultsOverall.replaceChildren();
       const c = el('div', 'pr-summary');
-      c.appendChild(el('div', 'pr-summary-score', pct(score)));
+      const circ = 2 * Math.PI * 52;
+      const ring = el('div', 'pr-ring');
+      ring.innerHTML =
+        `<svg viewBox="0 0 120 120"><circle class="pr-ring-bg" cx="60" cy="60" r="52"/>` +
+        `<circle class="pr-ring-fg" cx="60" cy="60" r="52" stroke-dasharray="${circ}" stroke-dashoffset="${circ}"/></svg>` +
+        `<span class="pr-ring-num">0%</span>`;
+      c.appendChild(ring);
       c.appendChild(el('div', 'pr-summary-label', label));
-      if (feedback) { const p = el('p', 'pr-summary-fb'); p.dir = 'rtl'; p.textContent = feedback; c.appendChild(p); }
+      const fb = feedback || feedbackFor(score);
+      if (fb) { const p = el('p', 'pr-summary-fb'); p.dir = 'auto'; p.textContent = fb; c.appendChild(p); }
       resultsOverall.appendChild(c);
+      const fg = ring.querySelector<SVGCircleElement>('.pr-ring-fg');
+      const num = ring.querySelector<HTMLElement>('.pr-ring-num')!;
+      requestAnimationFrame(() => { if (fg) (fg as any).style.strokeDashoffset = String(circ * (1 - Math.max(0, Math.min(1, score)))); });
+      countUp(num, Math.round(score * 100));
+    }
+
+    /** Sound + confetti payoff after results render. */
+    function celebrate(score: number) {
+      sfx.finish(score);
+      if (score >= 0.8) confetti();
     }
     function resultRow(label: string, value: string) {
       const row = el('div', 'pr-result-row');
@@ -817,8 +897,9 @@ const t = lang === 'ar'
     function renderCuratedResults(sentence: string, score: number, results: any[]) {
       summary(score, T.score);
       resultsWords.replaceChildren();
-      results.forEach((r) => {
+      results.forEach((r, i) => {
         const card = el('div', `pr-result ${r.isCorrect ? 'ok' : 'bad'}`);
+        card.style.animationDelay = `${Math.min(i, 10) * 60}ms`;
         const head = el('div', 'pr-result-head');
         const tok = el('span', 'pr-word-token'); tok.dir = 'rtl'; tok.textContent = r.word;
         head.append(tok, el('span', `pr-result-mark ${r.isCorrect ? 'ok' : 'bad'}`, r.isCorrect ? '✓' : '✗'));
@@ -841,9 +922,10 @@ const t = lang === 'ar'
       summary(score, data?.level || T.score, data?.overallFeedback || undefined);
       resultsWords.replaceChildren();
       const wf = Array.isArray(data?.wordFeedback) ? data.wordFeedback : [];
-      wf.forEach((w: any) => {
+      wf.forEach((w: any, i: number) => {
         const ok = w?.isCorrect === true;
         const card = el('div', `pr-result ${ok ? 'ok' : 'bad'}`);
+        card.style.animationDelay = `${Math.min(i, 10) * 60}ms`;
         const head = el('div', 'pr-result-head');
         const tok = el('span', 'pr-word-token'); tok.dir = 'rtl'; tok.textContent = w?.word || '';
         head.append(tok, el('span', `pr-result-mark ${ok ? 'ok' : 'bad'}`, ok ? '✓' : '✗'));
@@ -861,8 +943,17 @@ const t = lang === 'ar'
     }
 
     // ── Wiring ─────────────────────────────────────────────────
-    q<HTMLButtonElement>('[data-go="curated"]').addEventListener('click', openCurated);
-    q<HTMLButtonElement>('[data-go="custom"]').addEventListener('click', openCustom);
+    q<HTMLButtonElement>('[data-go="curated"]').addEventListener('click', () => { sfx.tap(); openCurated(); });
+    q<HTMLButtonElement>('[data-go="custom"]').addEventListener('click', () => { sfx.tap(); openCustom(); });
+
+    // Sound on/off toggle (persisted).
+    const muteBtn = q<HTMLButtonElement>('[data-pr-mute]');
+    const syncMute = () => { const m = isMuted(); muteBtn.classList.toggle('is-muted', m); muteBtn.setAttribute('aria-pressed', String(!m)); };
+    syncMute();
+    muteBtn.addEventListener('click', () => { setMuted(!isMuted()); syncMute(); if (!isMuted()) sfx.tap(); });
+
+    // Tactile spring-press on the primary action buttons.
+    springPress(root.querySelectorAll('[data-go], [data-solve-check], [data-custom-grade], [data-custom-split], [data-again]'));
     q<HTMLButtonElement>('[data-pr-upgrade-close]').addEventListener('click', () => upgradeEl.classList.add('hidden'));
     upgradeEl.addEventListener('click', (ev) => { if (ev.target === upgradeEl) upgradeEl.classList.add('hidden'); });
     function showUpgrade() {
