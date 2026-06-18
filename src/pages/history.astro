@@ -201,10 +201,10 @@ const home = '/';
     }
 
     // ── Inline result modal ───────────────────────────────────
-    const modal = q<HTMLElement>('[data-hist-modal]');
-    const detail = q<HTMLElement>('[data-hist-detail]');
+    const modal = document.querySelector<HTMLElement>('[data-hist-modal]')!;
+    const detail = document.querySelector<HTMLElement>('[data-hist-detail]')!;
     const closeModal = () => modal.classList.add('hidden');
-    q<HTMLButtonElement>('[data-hist-close]').addEventListener('click', closeModal);
+    document.querySelector<HTMLButtonElement>('[data-hist-close]')!.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
