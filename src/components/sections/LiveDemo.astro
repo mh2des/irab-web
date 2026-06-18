@@ -144,7 +144,24 @@ const t = lang === 'ar'
 
         <p class="hidden text-center text-body text-ink/55 dark:text-mist/55 italic mb-10" data-demo-meaning></p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8" data-demo-cards></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6" data-demo-cards></div>
+
+        {/* ── Result actions (copy / share / pdf): sit right under the result
+             cards so they're noticed, not under the input box ── */}
+        <div data-demo-actions class="hidden mb-10 flex items-center justify-center flex-wrap gap-3">
+          <button type="button" data-act-copy class="act-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span data-act-copy-label>{t.copy}</span>
+          </button>
+          <button type="button" data-act-share class="act-btn act-btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <span>{t.share}</span>
+          </button>
+          <button type="button" data-act-pdf class="act-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1 1-2 2H5a2 2 0 0 1 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>{t.pdf}</span>
+          </button>
+        </div>
 
         <div class="hidden card p-7 md:p-8 mb-5" data-demo-explanation>
           <p class="flex items-center gap-2 mb-4 font-arabic-display font-bold text-3xl text-purple">
@@ -166,23 +183,6 @@ const t = lang === 'ar'
         <div class="flex items-center justify-center gap-2 pt-6 mt-2 border-t border-stone dark:border-coal-edge">
           <img src="/brand-mark.png" alt="" width="20" height="20" class="w-5 h-5 rounded-md" />
           <span class="font-arabic text-small text-ink/45 dark:text-mist/45">{t.madeWith}</span>
-        </div>
-
-        {/* ── Result actions (copy / share / pdf): at the END of the result,
-             outside the captured card ── */}
-        <div data-demo-actions class="hidden mt-8 flex items-center justify-center flex-wrap gap-3">
-          <button type="button" data-act-copy class="act-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span data-act-copy-label>{t.copy}</span>
-          </button>
-          <button type="button" data-act-share class="act-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            <span>{t.share}</span>
-          </button>
-          <button type="button" data-act-pdf class="act-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1 1-2 2H5a2 2 0 0 1 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>{t.pdf}</span>
-          </button>
         </div>
       </div>
     </div>
@@ -232,22 +232,40 @@ const t = lang === 'ar'
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* Word cards: clean solid surface (matches the site .card) with a case-color rail. */
+  /* Word cards: a faint case-color identity (tint + rail) so each card's
+     grammatical case reads at a glance, on the clean site surface. */
   :global(.demo-card) {
-    background: var(--color-card);
+    background: color-mix(in srgb, var(--rail, var(--color-stone-soft)) 4%, var(--color-card));
     border: 1px solid var(--color-card-edge);
-    border-inline-start: 4px solid var(--rail, var(--color-stone-soft));
-    border-radius: 1rem;
+    border-inline-start: 5px solid var(--rail, var(--color-stone-soft));
+    border-radius: 1.1rem;
     box-shadow: var(--shadow-card);
-    transition: transform .25s var(--ease-out-quart), box-shadow .25s var(--ease-out-quart);
+    transition: transform .25s var(--ease-out-quart), box-shadow .25s var(--ease-out-quart), border-color .25s;
   }
   :global(.dark .demo-card) {
-    background: var(--color-coal-soft);
+    background: color-mix(in srgb, var(--rail, var(--color-coal-edge)) 12%, var(--color-coal-soft));
     border-color: var(--color-coal-edge);
     border-inline-start-color: var(--rail, var(--color-coal-edge));
     box-shadow: 0 2px 8px -3px rgb(0 0 0 / 0.45), 0 14px 30px -14px rgb(0 0 0 / 0.55);
   }
-  :global(.demo-card:hover) { transform: translateY(-3px); box-shadow: var(--lift-shadow); }
+  :global(.demo-card:hover) { transform: translateY(-3px); box-shadow: var(--lift-shadow); border-inline-start-width: 7px; }
+
+  /* "Show details" — a clear pill button (was easy-to-miss muted text). */
+  :global(.word-details-toggle) {
+    display: inline-flex; align-items: center; gap: 0.45rem; width: fit-content;
+    margin-top: 1.1rem; padding: 0.5rem 0.95rem; border-radius: 9999px; cursor: pointer;
+    font-family: var(--font-arabic); font-size: 0.95rem; font-weight: 700; line-height: 1;
+    color: var(--color-purple-deep);
+    background: color-mix(in srgb, var(--color-purple) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-purple) 24%, transparent);
+    transition: background-color .18s, border-color .18s, transform .18s;
+    list-style: none;
+  }
+  :global(.word-details-toggle::-webkit-details-marker) { display: none; }
+  :global(.word-details-toggle:hover) { background: color-mix(in srgb, var(--color-purple) 16%, transparent); border-color: color-mix(in srgb, var(--color-purple) 42%, transparent); transform: translateY(-1px); }
+  :global(.dark .word-details-toggle) { color: color-mix(in srgb, var(--color-purple) 86%, white); background: color-mix(in srgb, var(--color-purple) 22%, transparent); border-color: color-mix(in srgb, var(--color-purple) 36%, transparent); }
+  :global(.word-details-toggle .wd-chev) { width: 0.95rem; height: 0.95rem; transition: transform .3s var(--ease-out-quart); }
+  :global(.word-details[open] .word-details-toggle .wd-chev) { transform: rotate(180deg); }
 
   /* Case pill: a quiet status tag carrying the case color. GLOBAL (injected). */
   :global(.word-chip) {
@@ -289,6 +307,10 @@ const t = lang === 'ar'
   :global(.dark) .act-btn { color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .act-btn:hover { color: var(--color-purple); border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
   .act-btn svg { width: 1.35rem; height: 1.35rem; }
+  /* Share is the primary action: filled so it leads the row. */
+  .act-btn-primary { color: #fff; background: var(--color-purple); border-color: var(--color-purple); }
+  :global(.dark) .act-btn-primary { color: #fff; background: var(--color-purple); border-color: var(--color-purple); }
+  .act-btn-primary:hover { color: #fff; filter: brightness(1.07); border-color: var(--color-purple); }
 
   /* Skeleton shimmer: the loading placeholder while the AI parses. */
   .skel {
@@ -537,13 +559,14 @@ const t = lang === 'ar'
         const typeMeta = TYPE_META[w.type];
         const showDetails = w.details && w.details !== 'لا توجد تفاصيل إضافية';
         const detailsHtml = showDetails ? `
-          <details class="word-details group/details mt-4 pt-4 border-t border-stone/60 dark:border-coal-edge/60">
-            <summary class="inline-flex items-center gap-2 cursor-pointer list-none font-arabic text-small text-ink/55 dark:text-mist/55 hover:text-ink dark:hover:text-mist transition-colors [&::-webkit-details-marker]:hidden">
+          <details class="word-details group/details">
+            <summary class="word-details-toggle">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
               <span class="group-open/details:hidden">${i18n.showDetails}</span>
               <span class="hidden group-open/details:inline">${i18n.hideDetails}</span>
-              <svg class="w-3.5 h-3.5 transition-transform duration-300 group-open/details:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              <svg class="wd-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
-            <div class="mt-3">
+            <div class="mt-3 pt-4 border-t border-stone/60 dark:border-coal-edge/60">
               <p lang="ar" dir="rtl" class="font-arabic text-small text-ink/75 dark:text-mist/75 leading-loose">${escape(w.details)}</p>
             </div>
           </details>` : '';
@@ -551,9 +574,9 @@ const t = lang === 'ar'
           <article class="demo-card word-card relative p-6 md:p-7" style="--rail: ${caseColor}; opacity: 0;">
             <div class="flex items-start justify-between gap-4 mb-4">
               <div lang="ar" dir="rtl" class="font-bold text-[clamp(2rem,3.6vw,2.7rem)] leading-tight text-ink dark:text-mist" style="font-family: var(--font-quran);">${escape(w.word)}</div>
-              <div class="flex items-center gap-2 shrink-0 pt-1.5">
-                <span lang="ar" dir="rtl" class="font-arabic text-small text-ink/40 dark:text-mist/40">${typeMeta.ar}</span>
-                <span lang="ar" dir="rtl" class="word-chip font-arabic text-small font-medium" style="--chip: ${caseColor};">${escape(w.caseLabel)}</span>
+              <div class="flex flex-col items-end gap-1.5 shrink-0 pt-1">
+                <span lang="ar" dir="rtl" class="word-chip font-arabic text-small font-semibold" style="--chip: ${caseColor};">${escape(w.caseLabel)}</span>
+                <span lang="ar" dir="rtl" class="font-arabic text-caption font-medium text-ink/45 dark:text-mist/45">${typeMeta.ar}</span>
               </div>
             </div>
             <p lang="ar" dir="rtl" class="font-arabic text-body leading-loose text-ink/85 dark:text-mist/85" style="font-family: var(--font-arabic-classical);">${escape(w.irab)}</p>
