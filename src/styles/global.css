@@ -320,13 +320,14 @@
   }
   /* Clickable card: soft 3D lift + brand-tinted edge on hover. */
   .card-interactive {
-    transition: transform .25s var(--ease-out-quart), box-shadow .25s var(--ease-out-quart), border-color .2s;
+    transition: transform .3s var(--ease-out-expo), box-shadow .3s var(--ease-out-expo), border-color .25s;
   }
   .card-interactive:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: var(--lift-shadow);
     border-color: color-mix(in srgb, var(--color-purple) 35%, var(--color-card-edge));
   }
+  .card-interactive:active { transform: translateY(-2px); transition-duration: .1s; }
   .dark .card-interactive:hover { border-color: color-mix(in srgb, var(--color-purple) 45%, var(--color-coal-edge)); }
   @media (prefers-reduced-motion: reduce) { .card-interactive:hover { transform: none; } }
 
@@ -350,6 +351,19 @@
   .btn-ghost:hover { border-color: var(--color-purple); color: var(--color-purple-deep); transform: translateY(-2px); box-shadow: var(--shadow-card); }
   .dark .btn-ghost:hover { color: color-mix(in srgb, var(--color-purple) 80%, white); }
   @media (prefers-reduced-motion: reduce) { .btn-primary:hover, .btn-ghost:hover { transform: none; } }
+
+  /* Icon micro-interaction + tactile press: any button/lift icon gently scales
+     on hover and the whole control presses in on click — the same alive feel as
+     the tool-page share buttons, applied site-wide. */
+  .btn-primary > svg, .btn-ghost > svg, a.lift > svg {
+    transition: transform .22s var(--ease-out-quart);
+  }
+  .btn-primary:hover > svg, .btn-ghost:hover > svg, a.lift:hover > svg { transform: scale(1.12); }
+  .btn-primary:active, .btn-ghost:active, a.lift:active { transform: translateY(0) scale(0.97); }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary:hover > svg, .btn-ghost:hover > svg, a.lift:hover > svg { transform: none; }
+    .btn-primary:active, .btn-ghost:active, a.lift:active { transform: none; }
+  }
 
   /* Large button variant: for hero / primary conversion moments. */
   .btn-lg { padding: 1.05rem 2.1rem; font-size: var(--text-small); gap: 0.65rem; }
