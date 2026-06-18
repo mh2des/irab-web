@@ -12,7 +12,7 @@
  * One calm, linear flow — no nested phases, no flicker. Firebase/Firestore load
  * only inside this login-gated island. Results save to local history.
  */
-import { PADDLE_ENABLED } from '../lib/paddle';
+import Paywall from './Paywall.astro';
 
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
@@ -171,54 +171,7 @@ const t = lang === 'ar'
     {/* Quota pill (premium only) */}
     <p data-pr-quota class="pr-quota"></p>
 
-    <div data-pr-upgrade class="hidden pr-upgrade-backdrop" role="dialog" aria-modal="true" aria-labelledby="pr-upgrade-title">
-      <section class="pr-upgrade">
-        <button type="button" data-pr-upgrade-close class="pr-upgrade-close" aria-label={t.close}>
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
-        <div data-pr-upgrade-main>
-          <p class="pr-upgrade-eyebrow">{t.upgradeEyebrow}</p>
-          <h2 id="pr-upgrade-title" class:list={[titleClass, 'pr-upgrade-title']}>{t.upgradeTitle}</h2>
-          <p class="pr-upgrade-body">{t.upgradeBody}</p>
-          <ul class="pr-benefits">
-            {t.benefits.map((b) => (
-              <li class="pr-benefit">
-                <svg class="pr-benefit-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                <span>{b}</span>
-              </li>
-            ))}
-          </ul>
-          {PADDLE_ENABLED ? (
-            <div class="pr-upgrade-plans">
-              <button type="button" data-pr-plan="annual" class="pr-plan pr-plan-featured">
-                <span class="pr-plan-badge">{t.save}</span>
-                <span class="pr-plan-name">{t.annual}</span>
-                <span class="pr-plan-price">{t.annualPrice}</span>
-                <span class="pr-plan-per">{t.annualPer}</span>
-                <span class="pr-plan-meta">{t.annualMeta}</span>
-                <span class="pr-plan-cta">{t.annualCta}</span>
-              </button>
-              <button type="button" data-pr-plan="monthly" class="pr-plan">
-                <span class="pr-plan-name">{t.monthly}</span>
-                <span class="pr-plan-price">{t.monthlyPrice}</span>
-                <span class="pr-plan-meta">{t.monthlyMeta}</span>
-                <span class="pr-plan-cta">{t.monthlyCta}</span>
-              </button>
-            </div>
-          ) : (
-            <a href="/pricing" class="btn-primary btn-block">{t.pricing}</a>
-          )}
-          <p class="pr-upgrade-fineprint">{t.secure}</p>
-        </div>
-        <div data-pr-activating class="hidden pr-activating">
-          <div class="pr-activating-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          </div>
-          <h3 class:list={[titleClass, 'pr-activating-title']}>{t.activatingTitle}</h3>
-          <p>{t.activatingBody}</p>
-        </div>
-      </section>
-    </div>
+    <Paywall lang={lang} />
 
     {/* ── Phase: mode chooser ───────────────────────────────── */}
     <section data-phase="choose" class="pr-phase">
@@ -316,83 +269,6 @@ const t = lang === 'ar'
 
   .pr-quota { text-align: center; font-weight: 800; color: var(--color-teal); font-size: var(--text-caption); margin-bottom: 1.25rem; }
   .pr-quota:empty { display: none; }
-
-  /* Upgrade gate */
-  .pr-upgrade-backdrop {
-    position: fixed; inset: 0; z-index: 80; display: grid; place-items: center;
-    padding: 1rem; background: rgb(23 56 71 / 0.48); backdrop-filter: blur(10px);
-  }
-  .pr-upgrade-backdrop.hidden { display: none; }
-  .pr-upgrade {
-    position: relative; width: min(100%, 44rem); max-height: min(90vh, 44rem); overflow: auto;
-    border-radius: 1rem; padding: clamp(1.25rem, 3vw, 2rem);
-    background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-lift);
-  }
-  .dark .pr-upgrade { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
-  .pr-upgrade-close {
-    position: absolute; inset-block-start: 1rem; inset-inline-end: 1rem;
-    width: 2.45rem; height: 2.45rem; display: grid; place-items: center;
-    border-radius: 999px; color: color-mix(in srgb, var(--color-ink) 66%, transparent);
-    background: color-mix(in srgb, var(--color-paper) 72%, white); border: 1px solid var(--color-card-edge);
-  }
-  .dark .pr-upgrade-close { color: color-mix(in srgb, var(--color-mist) 72%, transparent); background: var(--color-coal); border-color: var(--color-coal-edge); }
-  .pr-upgrade-close svg { width: 1.15rem; height: 1.15rem; }
-  .pr-upgrade-eyebrow {
-    width: fit-content; margin-bottom: 0.7rem; padding: 0.25rem 0.7rem; border-radius: 999px;
-    color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 12%, white);
-    font-size: var(--text-caption); font-weight: 900;
-  }
-  .dark .pr-upgrade-eyebrow { color: color-mix(in srgb, var(--color-purple) 85%, white); background: color-mix(in srgb, var(--color-purple) 20%, var(--color-coal)); }
-  .pr-upgrade-title { padding-inline-end: 2.8rem; font-size: clamp(2.1rem, 5vw, 3.5rem); line-height: 1.04; color: var(--color-ink); }
-  .dark .pr-upgrade-title { color: var(--color-mist); }
-  .pr-upgrade-body {
-    max-width: 37rem; margin-top: 0.9rem; color: color-mix(in srgb, var(--color-ink) 70%, transparent);
-    font-size: var(--text-body); line-height: 1.7;
-  }
-  .dark .pr-upgrade-body { color: color-mix(in srgb, var(--color-mist) 74%, transparent); }
-  .pr-benefits { list-style: none; margin: 1.25rem 0 0.5rem; padding: 0; display: grid; gap: 0.55rem; }
-  .pr-benefit { display: flex; align-items: flex-start; gap: 0.6rem; font-size: var(--text-caption); line-height: 1.5; color: color-mix(in srgb, var(--color-ink) 82%, transparent); }
-  .dark .pr-benefit { color: color-mix(in srgb, var(--color-mist) 82%, transparent); }
-  .pr-benefit-ic { width: 1.15rem; height: 1.15rem; flex: none; margin-top: 0.2rem; color: var(--color-teal); }
-  .pr-upgrade-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-top: 1.35rem; }
-  .pr-plan {
-    position: relative; min-height: 11.5rem; text-align: start; display: flex; flex-direction: column; gap: 0.25rem;
-    padding: 1.05rem; border-radius: 0.9rem; background: color-mix(in srgb, var(--color-card) 82%, var(--color-paper));
-    border: 1px solid var(--color-card-edge); transition: transform .18s, border-color .18s, box-shadow .18s;
-  }
-  .dark .pr-plan { background: var(--color-coal); border-color: var(--color-coal-edge); }
-  .pr-plan:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--color-purple) 48%, var(--color-card-edge)); box-shadow: var(--shadow-card); }
-  .pr-plan-featured { border-color: color-mix(in srgb, var(--color-purple) 46%, var(--color-card-edge)); }
-  .pr-plan-badge {
-    position: absolute; inset-block-start: 0.8rem; inset-inline-end: 0.8rem;
-    padding: 0.15rem 0.55rem; border-radius: 999px; color: #fff; background: var(--color-purple);
-    font-size: 0.82rem; font-weight: 900;
-  }
-  .pr-plan-name { color: var(--color-ink); font-weight: 900; }
-  .dark .pr-plan-name { color: var(--color-mist); }
-  .pr-plan-price { margin-top: 0.45rem; color: var(--color-ink); font-family: var(--font-display); font-size: 2.2rem; line-height: 1; font-weight: 800; }
-  .dark .pr-plan-price { color: var(--color-mist); }
-  .pr-plan-per { margin-top: 0.15rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); font-size: 0.95rem; font-weight: 700; }
-  .dark .pr-plan-per { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
-  .pr-plan-meta { color: color-mix(in srgb, var(--color-ink) 58%, transparent); font-size: var(--text-caption); }
-  .dark .pr-plan-meta { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
-  .pr-plan-cta { margin-top: auto; color: var(--color-purple-deep); font-weight: 900; }
-  .dark .pr-plan-cta { color: color-mix(in srgb, var(--color-purple) 82%, white); }
-  .pr-upgrade-fineprint {
-    margin-top: 0.95rem; color: color-mix(in srgb, var(--color-ink) 54%, transparent);
-    font-size: var(--text-caption); line-height: 1.6;
-  }
-  .dark .pr-upgrade-fineprint { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
-  .pr-activating { text-align: center; padding: 2rem 1rem; }
-  .pr-activating-mark {
-    width: 4.5rem; height: 4.5rem; margin: 0 auto 1rem; display: grid; place-items: center;
-    border-radius: 999px; color: #fff; background: var(--color-teal);
-  }
-  .pr-activating-mark svg { width: 2.1rem; height: 2.1rem; }
-  .pr-activating-title { color: var(--color-ink); font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.1; }
-  .dark .pr-activating-title { color: var(--color-mist); }
-  .pr-activating p { margin-top: 0.7rem; color: color-mix(in srgb, var(--color-ink) 68%, transparent); }
-  .dark .pr-activating p { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
 
   /* Phase transition */
   .pr-phase { animation: pr-in .34s var(--ease-out-quart) both; }
@@ -554,7 +430,6 @@ const t = lang === 'ar'
 
   @media (max-width: 640px) {
     .pr-modes { grid-template-columns: 1fr; }
-    .pr-upgrade-plans { grid-template-columns: 1fr; }
     .pr-selects { grid-template-columns: 1fr; }
   }
 </style>
@@ -590,9 +465,6 @@ const t = lang === 'ar'
     const gateEl = q<HTMLElement>('[data-pr-gate]');
     const toolEl = q<HTMLElement>('[data-pr-tool]');
     const quotaEl = q<HTMLElement>('[data-pr-quota]');
-    const upgradeEl = q<HTMLElement>('[data-pr-upgrade]');
-    const upgradeMain = q<HTMLElement>('[data-pr-upgrade-main]');
-    const activatingEl = q<HTMLElement>('[data-pr-activating]');
     const phaseEls = Array.from(root.querySelectorAll<HTMLElement>('[data-phase]'));
     const el = (tag: string, cls?: string, text?: string) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 
@@ -973,48 +845,15 @@ const t = lang === 'ar'
 
     // Tactile spring-press on the primary action buttons.
     springPress(root.querySelectorAll('[data-go], [data-solve-check], [data-custom-grade], [data-custom-split], [data-again]'));
-    q<HTMLButtonElement>('[data-pr-upgrade-close]').addEventListener('click', () => upgradeEl.classList.add('hidden'));
-    upgradeEl.addEventListener('click', (ev) => { if (ev.target === upgradeEl) upgradeEl.classList.add('hidden'); });
+    // The upgrade gate is the shared <Paywall> island. Hand it the signed-in
+    // user (so checkout can tag the buyer) and let it own the Paddle flow.
     function showUpgrade() {
       if (isPremium) return;
-      upgradeMain.classList.remove('hidden');
-      activatingEl.classList.add('hidden');
-      upgradeEl.classList.remove('hidden');
-      setTimeout(() => root!.querySelector<HTMLButtonElement>('[data-pr-plan="annual"]')?.focus(), 60);
-    }
-    root.querySelectorAll<HTMLButtonElement>('[data-pr-plan]').forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        if (!authUser) return;
-        const plan = btn.dataset.prPlan === 'monthly' ? 'monthly' : 'annual';
-        btn.disabled = true;
-        try {
-          const { openCheckout } = await import('../lib/paddle');
-          await openCheckout({
-            plan,
-            firebaseUid: authUser.uid,
-            email: authUser.email || undefined,
-            lang,
-            onComplete: async () => {
-              upgradeMain.classList.add('hidden');
-              activatingEl.classList.remove('hidden');
-              for (let i = 0; i < 12; i++) {
-                await new Promise((r) => setTimeout(r, 3000));
-                try {
-                  const { fetchMe } = await import('../lib/entitlement');
-                  const me = await fetchMe(authUser);
-                  if (me?.premium) break;
-                } catch {}
-              }
-              window.location.reload();
-            },
-          });
-        } catch (e) {
-          console.error('paddle checkout failed', e);
-        } finally {
-          btn.disabled = false;
-        }
+      (window as any).IrabPaywall?.show({
+        uid: authUser?.uid,
+        email: authUser?.email || undefined,
       });
-    });
+    }
     root.querySelectorAll<HTMLButtonElement>('[data-back]').forEach((b) => b.addEventListener('click', () => showPhase(b.dataset.back!)));
     q<HTMLButtonElement>('[data-custom-split]').addEventListener('click', splitCustom);
     q<HTMLButtonElement>('[data-custom-grade]').addEventListener('click', gradeCustom);

@@ -1,6 +1,7 @@
 ---
 import Container from '../Container.astro';
 import Section from '../Section.astro';
+import Paywall from '../Paywall.astro';
 
 interface Props { lang?: 'en' | 'ar'; showHeader?: boolean; }
 const { lang = 'en', showHeader = true } = Astro.props;
@@ -214,6 +215,8 @@ const t = lang === 'ar'
     </div>
   </Container>
 </Section>
+
+<Paywall lang={lang} />
 
 <style>
   /* Entrance: `backwards` fill (not forwards) so the settled transform stays
@@ -673,8 +676,10 @@ const t = lang === 'ar'
         loadingEl.classList.add('hidden');
         stopNarration();
         if (res.status === 429) {
-          // Limit reached: signed in → daily-limit/upgrade; anonymous → sign in.
-          showGate(isSignedIn ? 'upgrade' : 'signin');
+          // Limit reached: signed in → the upgrade paywall (Paddle checkout);
+          // anonymous → the sign-in gate (no account yet, nothing to bill).
+          if (isSignedIn && (window as any).IrabPaywall) (window as any).IrabPaywall.show();
+          else showGate(isSignedIn ? 'upgrade' : 'signin');
           return;
         }
         if (!res.ok) throw new Error(`API ${res.status}`);
