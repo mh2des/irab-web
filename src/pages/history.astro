@@ -60,32 +60,32 @@ const home = '/';
   @keyframes hist-in { to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .hist-row { animation: none; opacity: 1; transform: none; } }
   .hist-card {
-    flex: 1; min-width: 0; display: flex; align-items: center; gap: 0.9rem;
-    border-radius: 1rem; padding: 1rem 1.15rem; text-decoration: none;
+    flex: 1; min-width: 0; display: flex; align-items: center; gap: 0.8rem;
+    border-radius: 0.85rem; padding: 0.7rem 0.95rem; text-decoration: none;
     background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
-    transition: transform .18s var(--ease-out-quart), border-color .18s;
+    transition: transform .16s var(--ease-out-quart), border-color .16s;
   }
   :global(.dark) .hist-card { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
-  .hist-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--color-purple) 40%, var(--color-card-edge)); }
-  .hist-ic { width: 2.7rem; height: 2.7rem; border-radius: 0.8rem; display: grid; place-items: center; flex: none; border: 1px solid var(--color-card-edge); }
-  .hist-ic svg { width: 1.3rem; height: 1.3rem; }
-  .hist-ic-analyze { color: var(--color-purple-deep); }
-  .hist-ic-practice { color: var(--color-teal); }
+  .hist-card:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--color-purple) 38%, var(--color-card-edge)); }
+  .hist-ic { width: 2.1rem; height: 2.1rem; border-radius: 0.6rem; display: grid; place-items: center; flex: none; }
+  .hist-ic svg { width: 1rem; height: 1rem; }
+  .hist-ic-analyze { color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 12%, transparent); }
+  .hist-ic-practice { color: var(--color-teal); background: color-mix(in srgb, var(--color-teal) 12%, transparent); }
   .hist-main { min-width: 0; flex: 1; }
-  .hist-sentence { display: block; font-family: var(--font-arabic-classical); font-size: 1.5rem; line-height: 1.5; color: var(--color-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hist-sentence { display: block; font-family: var(--font-arabic-classical); font-size: 1.3rem; line-height: 1.45; color: var(--color-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   :global(.dark) .hist-sentence { color: var(--color-mist); }
-  .hist-meta { display: block; margin-top: 0.15rem; font-size: 1.05rem; color: color-mix(in srgb, var(--color-ink) 62%, transparent); }
-  :global(.dark) .hist-meta { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
-  .hist-time { flex: none; font-family: var(--font-mono); font-size: 1rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
-  :global(.dark) .hist-time { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .hist-meta { display: block; margin-top: 0.1rem; font-size: 0.98rem; color: color-mix(in srgb, var(--color-ink) 60%, transparent); }
+  :global(.dark) .hist-meta { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
+  .hist-time { flex: none; font-family: var(--font-mono); font-size: 0.92rem; color: color-mix(in srgb, var(--color-ink) 52%, transparent); }
+  :global(.dark) .hist-time { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
   .hist-del {
-    flex: none; width: 2.9rem; border-radius: 1rem; display: grid; place-items: center;
-    background: var(--color-card); border: 1px solid var(--color-card-edge); color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+    flex: none; width: 2.5rem; border-radius: 0.8rem; display: grid; place-items: center;
+    background: var(--color-card); border: 1px solid var(--color-card-edge); color: color-mix(in srgb, var(--color-ink) 50%, transparent);
     transition: color .18s, border-color .18s, background-color .18s;
   }
-  :global(.dark) .hist-del { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  :global(.dark) .hist-del { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
   .hist-del:hover { color: #dc2626; border-color: color-mix(in srgb, #dc2626 45%, var(--color-card-edge)); }
-  .hist-del svg { width: 1.2rem; height: 1.2rem; }
+  .hist-del svg { width: 1.05rem; height: 1.05rem; }
 </style>
 
 <script>
