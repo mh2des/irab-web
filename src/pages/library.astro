@@ -129,18 +129,15 @@ const collection = {
                  data-book data-cat={b.category}
                  data-title={b.title} data-author={b.author} data-level={b.level}
                  style={`--c:${m.color};`}>
-                <div class="book-info">
-                  <div class="book-meta">
-                    <span class="book-badge">{b.category}</span>
-                    <span>{toArabicDigits(b.totalChapters)} فصل</span>
-                  </div>
-                  <h3 lang="ar" dir="rtl">{b.title}</h3>
-                  <p lang="ar" dir="rtl">{author}</p>
-                  <div class="book-foot">
-                    <span>{b.level}</span>
-                    <strong>اقرأ الكتاب <span aria-hidden="true">←</span></strong>
-                  </div>
-                </div>
+                <span class="book-cover">
+                  <span class="book-cover-cat">{b.category}</span>
+                  <h3 class="book-cover-title" lang="ar" dir="rtl">{b.title}</h3>
+                  <span class="book-cover-author" lang="ar" dir="rtl">{author}</span>
+                </span>
+                <span class="book-line">
+                  <span class="book-line-meta">{b.level} · {toArabicDigits(b.totalChapters)} فصل</span>
+                  <span class="book-line-cta">اقرأ <span aria-hidden="true">←</span></span>
+                </span>
               </a>
             );
           })}
@@ -414,97 +411,120 @@ const collection = {
 
   .library-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.6rem);
     animation: lib-grid-in .42s var(--ease-out-quart) both;
   }
   @keyframes lib-grid-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
   .book-card {
     display: flex;
-    min-height: 13rem;
-    padding: 1.25rem;
-    border-radius: 0.9rem;
+    flex-direction: column;
+    gap: 0.7rem;
     text-decoration: none;
-    background: var(--color-card);
-    border: 1px solid var(--color-card-edge);
-    box-shadow: var(--shadow-card);
-    transition: transform .18s, border-color .18s, box-shadow .18s;
+    border-radius: 0.6rem;
   }
-  :global(.dark) .book-card {
-    background: var(--color-coal-soft);
-    border-color: var(--color-coal-edge);
-  }
-  .book-card:hover {
-    transform: translateY(-4px);
-    border-color: color-mix(in srgb, var(--c) 62%, var(--color-card-edge));
-    box-shadow: var(--shadow-lift);
-  }
-  .book-info {
-    min-width: 0;
-    width: 100%;
+  .book-card:focus-visible { outline: 2px solid var(--c); outline-offset: 4px; }
+
+  /* The cover IS the object — a generated spine/cover per book, no card chrome
+     around it. This is what kills the "noisy text rows stacking" feel. */
+  .book-cover {
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
+    aspect-ratio: 3 / 4;
+    padding: 1rem 0.95rem;
+    border-radius: 0.45rem 0.85rem 0.85rem 0.45rem;
+    overflow: hidden;
+    color: #fff;
+    background:
+      radial-gradient(115% 75% at 78% 4%, color-mix(in srgb, #fff 24%, transparent) 0%, transparent 46%),
+      linear-gradient(152deg, color-mix(in srgb, var(--c) 96%, #fff) 0%, color-mix(in srgb, var(--c) 56%, #000) 100%);
+    box-shadow: var(--shadow-card);
+    transition: transform .22s var(--ease-out-quart), box-shadow .22s;
   }
-  .book-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    margin-bottom: 0.7rem;
-    color: color-mix(in srgb, var(--color-ink) 55%, transparent);
-    font-size: var(--text-caption);
-    line-height: 1.4;
+  /* Spine: a darker band hugging the binding (right edge in RTL). */
+  .book-cover::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: 0.85rem;
+    background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.34) 100%);
+    box-shadow: inset 1px 0 0 rgba(255,255,255,0.16);
+    z-index: 2;
   }
-  :global(.dark) .book-meta { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
-  .book-badge {
-    color: var(--c);
-    background: color-mix(in srgb, var(--c) 12%, transparent);
-    border: 1px solid color-mix(in srgb, var(--c) 24%, transparent);
+  /* Faint weave so the flat colour reads as cloth, not a swatch. */
+  .book-cover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    background: repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 7px);
+    z-index: 1;
+  }
+  .book-card:hover .book-cover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
+
+  .book-cover-cat {
+    position: relative; z-index: 3;
+    align-self: flex-start;
+    padding: 0.18rem 0.6rem;
     border-radius: 999px;
-    padding: 0.2rem 0.65rem;
-    font-weight: 900;
-    white-space: nowrap;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
   }
-  .book-info h3 {
-    color: var(--color-ink);
+  .book-cover-title {
+    position: relative; z-index: 3;
+    margin: 0.85rem 0 0;
+    padding-inline-end: 0.35rem;
+    font-family: var(--font-arabic-display);
+    font-weight: 700;
+    font-size: clamp(1.15rem, 1rem + 0.7vw, 1.55rem);
+    line-height: 1.4;
+    text-wrap: balance;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.22);
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
-    font-family: var(--font-arabic);
-    font-size: clamp(1.3rem, 1.9vw, 1.58rem);
-    line-height: 1.55;
-    font-weight: 900;
-    text-wrap: balance;
   }
-  :global(.dark) .book-info h3 { color: var(--color-mist); }
-  .book-info p {
-    margin-top: 0.25rem;
-    color: color-mix(in srgb, var(--color-ink) 58%, transparent);
-    font-size: var(--text-caption);
-    line-height: 1.55;
-  }
-  :global(.dark) .book-info p { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
-  .book-foot {
+  .book-cover-author {
+    position: relative; z-index: 3;
     margin-top: auto;
-    padding-top: 1rem;
+    padding-top: 0.7rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.82);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .book-line {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
-    border-top: 1px solid var(--color-stone);
+    gap: 0.6rem;
+    padding-inline: 0.15rem;
   }
-  :global(.dark) .book-foot { border-top-color: var(--color-coal-edge); }
-  .book-foot span {
-    color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+  .book-line-meta {
+    color: color-mix(in srgb, var(--color-ink) 56%, transparent);
     font-size: var(--text-caption);
   }
-  :global(.dark) .book-foot span { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
-  .book-foot strong {
-    color: var(--color-purple);
+  :global(.dark) .book-line-meta { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
+  .book-line-cta {
+    color: var(--c);
+    font-weight: 800;
     font-size: var(--text-caption);
     white-space: nowrap;
   }
+  .book-line-cta span { display: inline-block; transition: transform .18s; }
+  .book-card:hover .book-line-cta span { transform: translateX(-3px); }
   .library-empty {
     padding: 4rem 1rem;
     text-align: center;
@@ -517,14 +537,13 @@ const collection = {
     .library-hero-grid,
     .library-toolbar { grid-template-columns: 1fr; }
     .filter-row { justify-content: flex-start; }
-    .library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .library-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   @media (max-width: 720px) {
     .library-hero { padding-top: 2.5rem; }
     .library-stats,
-    .library-band,
-    .library-grid { grid-template-columns: 1fr; }
-    .book-card { min-height: 12rem; }
+    .library-band { grid-template-columns: 1fr; }
+    .library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .library-toolbar { gap: 0.75rem; }
   }
 </style>
