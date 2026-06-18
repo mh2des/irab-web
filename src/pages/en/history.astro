@@ -36,21 +36,32 @@ import Section from '../../components/Section.astro';
       </Container>
     </Section>
   </main>
+
+  {/* Result detail modal — opens the saved result inline (no navigation away) */}
+  <div data-hist-modal class="hist-modal hidden" role="dialog" aria-modal="true" aria-label="Result">
+    <div class="hist-modal-card panel-in">
+      <button type="button" data-hist-close class="hist-modal-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+      <div data-hist-detail></div>
+    </div>
+  </div>
+
   <Footer lang="en" />
 </BaseLayout>
 
-<style>
+<style is:global>
   .hist-chip {
     padding: 0.5rem 1.1rem; border-radius: 9999px; font-weight: 600; font-size: var(--text-caption);
     background: var(--color-card); border: 1px solid var(--color-card-edge); color: var(--color-ink);
     transition: border-color .2s, color .2s, background-color .2s, transform .2s;
   }
-  :global(.dark) .hist-chip { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
+  .dark .hist-chip { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
   .hist-chip:hover { transform: translateY(-2px); border-color: var(--color-purple); }
   .hist-chip.is-active { background: var(--color-purple); border-color: var(--color-purple); color: #fff; }
 
   .hist-group { list-style: none; font-family: var(--font-mono); font-weight: 800; font-size: var(--text-caption); color: color-mix(in srgb, var(--color-ink) 55%, transparent); margin: 1.6rem 0 0.4rem; }
-  :global(.dark) .hist-group { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .dark .hist-group { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
   .hist-group:first-child { margin-top: 0; }
   .hist-row { display: flex; align-items: stretch; gap: 0.6rem; opacity: 0; transform: translateY(10px); animation: hist-in .4s var(--ease-out-quart) forwards; }
   @keyframes hist-in { to { opacity: 1; transform: none; } }
@@ -61,7 +72,7 @@ import Section from '../../components/Section.astro';
     background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
     transition: transform .16s var(--ease-out-quart), border-color .16s;
   }
-  :global(.dark) .hist-card { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .dark .hist-card { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .hist-card:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--color-purple) 38%, var(--color-card-edge)); }
   .hist-ic { width: 2.1rem; height: 2.1rem; border-radius: 0.6rem; display: grid; place-items: center; flex: none; }
   .hist-ic svg { width: 1rem; height: 1rem; }
@@ -69,24 +80,63 @@ import Section from '../../components/Section.astro';
   .hist-ic-practice { color: var(--color-teal); background: color-mix(in srgb, var(--color-teal) 12%, transparent); }
   .hist-main { min-width: 0; flex: 1; }
   .hist-sentence { display: block; font-family: var(--font-arabic-classical); font-size: 1.3rem; line-height: 1.45; color: var(--color-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  :global(.dark) .hist-sentence { color: var(--color-mist); }
+  .dark .hist-sentence { color: var(--color-mist); }
   .hist-meta { display: block; margin-top: 0.1rem; font-size: 0.98rem; color: color-mix(in srgb, var(--color-ink) 60%, transparent); }
-  :global(.dark) .hist-meta { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
+  .dark .hist-meta { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
   .hist-time { flex: none; font-family: var(--font-mono); font-size: 0.92rem; color: color-mix(in srgb, var(--color-ink) 52%, transparent); }
-  :global(.dark) .hist-time { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
+  .dark .hist-time { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
   .hist-del {
     flex: none; width: 2.5rem; border-radius: 0.8rem; display: grid; place-items: center;
     background: var(--color-card); border: 1px solid var(--color-card-edge); color: color-mix(in srgb, var(--color-ink) 50%, transparent);
     transition: color .18s, border-color .18s, background-color .18s;
   }
-  :global(.dark) .hist-del { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
+  .dark .hist-del { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
   .hist-del:hover { color: #dc2626; border-color: color-mix(in srgb, #dc2626 45%, var(--color-card-edge)); }
   .hist-del svg { width: 1.05rem; height: 1.05rem; }
+  .hist-card { cursor: pointer; text-align: start; font: inherit; }
+
+  /* Result detail modal */
+  .hist-modal { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 1rem; background: rgb(23 56 71 / 0.5); backdrop-filter: blur(8px); }
+  .hist-modal.hidden { display: none; }
+  .hist-modal-card { position: relative; width: min(100%, 40rem); max-height: 88vh; overflow: auto; border-radius: 1.25rem; padding: clamp(1.5rem, 4vw, 2.25rem); background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-lift); }
+  .dark .hist-modal-card { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .hist-modal-close { position: absolute; inset-block-start: 0.9rem; inset-inline-end: 0.9rem; width: 2.4rem; height: 2.4rem; display: grid; place-items: center; border-radius: 999px; color: color-mix(in srgb, var(--color-ink) 60%, transparent); background: var(--color-paper-soft); border: 1px solid var(--color-card-edge); }
+  .dark .hist-modal-close { color: color-mix(in srgb, var(--color-mist) 64%, transparent); background: var(--color-coal); border-color: var(--color-coal-edge); }
+  .hist-modal-close svg { width: 1.1rem; height: 1.1rem; }
+
+  .hd-sentence { font-family: var(--font-quran); font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.9; text-align: center; color: var(--color-ink); padding-inline-end: 2rem; }
+  .dark .hd-sentence { color: var(--color-mist); }
+  .hd-meaning { text-align: center; font-style: italic; font-size: 1.15rem; color: color-mix(in srgb, var(--color-ink) 60%, transparent); margin-top: 0.4rem; }
+  .dark .hd-meaning { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
+  .hd-score { width: fit-content; margin: 0.9rem auto 0; padding: 0.4rem 1.2rem; border-radius: 999px; background: var(--color-purple); color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; }
+  .hd-words { margin-top: 1.4rem; display: flex; flex-direction: column; gap: 0.7rem; }
+  .hd-word { border-radius: 0.9rem; padding: 0.9rem 1.1rem; background: color-mix(in srgb, var(--color-paper-soft) 55%, white); border: 1px solid var(--color-card-edge); }
+  .dark .hd-word { background: color-mix(in srgb, var(--color-coal) 45%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
+  .hd-word.ok { border-inline-start: 3px solid var(--color-teal); }
+  .hd-word.bad { border-inline-start: 3px solid #dc2626; }
+  .hd-word-head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.4rem; }
+  .hd-tok { font-family: var(--font-quran); font-size: 1.6rem; font-weight: 700; color: var(--color-ink); }
+  .dark .hd-tok { color: var(--color-mist); }
+  .hd-chip { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 999px; color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 13%, transparent); }
+  .hd-mark { font-weight: 800; }
+  .hd-mark.ok { color: var(--color-teal); }
+  .hd-mark.bad { color: #dc2626; }
+  .hd-irab { font-family: var(--font-arabic-classical); font-size: 1.25rem; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 88%, transparent); }
+  .dark .hd-irab { color: color-mix(in srgb, var(--color-mist) 86%, transparent); }
+  .hd-correct { font-size: 1.15rem; line-height: 1.7; color: var(--color-teal); margin-top: 0.2rem; }
+  .hd-details { font-family: var(--font-arabic-classical); font-size: 1.1rem; line-height: 1.75; margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px dashed var(--color-card-edge); color: color-mix(in srgb, var(--color-ink) 68%, transparent); }
+  .dark .hd-details { color: color-mix(in srgb, var(--color-mist) 70%, transparent); border-top-color: var(--color-coal-edge); }
+  .hd-block { margin-top: 1.2rem; border-radius: 0.9rem; padding: 1rem 1.2rem; background: color-mix(in srgb, var(--color-purple) 5%, var(--color-card)); border: 1px solid var(--color-card-edge); }
+  .dark .hd-block { background: var(--color-coal); border-color: var(--color-coal-edge); }
+  .hd-block-label { font-family: var(--font-arabic-display); font-weight: 700; font-size: 1.15rem; color: var(--color-purple-deep); margin-bottom: 0.4rem; }
+  .dark .hd-block-label { color: color-mix(in srgb, var(--color-purple) 84%, white); }
+  .hd-block p { font-family: var(--font-arabic-classical); font-size: 1.2rem; line-height: 1.85; color: color-mix(in srgb, var(--color-ink) 84%, transparent); }
+  .dark .hd-block p { color: color-mix(in srgb, var(--color-mist) 82%, transparent); }
 </style>
 
 <script>
   import { maybeSignedIn } from '../../lib/session';
-  import { getHistory, removeHistory, clearHistory, formatAgo, type HistoryKind } from '../../lib/history';
+  import { getHistory, getHistoryItem, removeHistory, clearHistory, formatAgo, type HistoryKind } from '../../lib/history';
 
   const root = document.querySelector<HTMLElement>('[data-hist-root]');
   if (root) {
@@ -132,27 +182,73 @@ import Section from '../../components/Section.astro';
         const meta = isA
           ? (it.wordCount ? `${it.wordCount} words` : 'analysis')
           : (typeof it.score === 'number' ? `${Math.round(it.score * 100)}%${it.level ? ' · ' + it.level : ''}` : 'practice');
-        const href = `${isA ? '/en/tool' : '/en/practice/play'}?h=${encodeURIComponent(it.id)}`;
         const li = document.createElement('li');
         li.className = 'hist-row';
         li.style.animationDelay = `${Math.min(idx, 14) * 35}ms`;
         li.innerHTML =
-          `<a class="hist-card" href="${href}">` +
+          `<button type="button" class="hist-card" data-open="${it.id}">` +
             `<span class="hist-ic hist-ic-${isA ? 'analyze' : 'practice'}" aria-hidden="true">${isA ? icA : icP}</span>` +
             `<span class="hist-main"><span class="hist-sentence" dir="rtl">${esc(it.vocalized || it.sentence)}</span><span class="hist-meta">${esc(meta)}</span></span>` +
             `<span class="hist-time">${esc(formatAgo(it.ts, lang))}</span>` +
-          `</a>` +
+          `</button>` +
           `<button type="button" class="hist-del" data-del="${it.id}" aria-label="Delete">${icDel}</button>`;
         listEl.appendChild(li);
       });
     }
 
+    // ── Inline result modal ───────────────────────────────────
+    const modal = q<HTMLElement>('[data-hist-modal]');
+    const detail = q<HTMLElement>('[data-hist-detail]');
+    const closeModal = () => modal.classList.add('hidden');
+    q<HTMLButtonElement>('[data-hist-close]').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    function openDetail(id: string) {
+      const item = getHistoryItem(id);
+      if (!item) return;
+      const d: any = item.data || {};
+      detail.replaceChildren();
+      const html: string[] = [];
+      html.push(`<p class="hd-sentence" dir="rtl">${esc(item.vocalized || d.vocalizedSentence || item.sentence || '')}</p>`);
+      if (item.kind === 'analyze') {
+        if (d.meaning) html.push(`<p class="hd-meaning" dir="rtl">"${esc(d.meaning)}"</p>`);
+        const words = Array.isArray(d.words) ? d.words : [];
+        html.push('<div class="hd-words">');
+        for (const w of words) {
+          const det = (w.details && w.details !== 'لا توجد تفاصيل إضافية') ? `<p class="hd-details" dir="rtl">${esc(w.details)}</p>` : '';
+          html.push(
+            `<div class="hd-word"><div class="hd-word-head"><span class="hd-tok" dir="rtl">${esc(w.word || '')}</span>` +
+            `${w.caseLabel ? `<span class="hd-chip">${esc(w.caseLabel)}</span>` : ''}</div>` +
+            `<p class="hd-irab" dir="rtl">${esc(w.irab || '')}</p>${det}</div>`);
+        }
+        html.push('</div>');
+        if (d.explanation) html.push(`<div class="hd-block"><p class="hd-block-label">Sentence structure</p><p dir="rtl">${esc(d.explanation)}</p></div>`);
+        if (d.additionalClarification) html.push(`<div class="hd-block"><p class="hd-block-label">Rhetorical note</p><p dir="rtl">${esc(d.additionalClarification)}</p></div>`);
+      } else {
+        if (typeof d.score === 'number') html.push(`<div class="hd-score">${Math.round(d.score * 100)}%${d.level ? ' · ' + esc(d.level) : ''}</div>`);
+        const wf = Array.isArray(d.wordFeedback) ? d.wordFeedback : [];
+        html.push('<div class="hd-words">');
+        for (const w of wf) {
+          const ok = w.isCorrect === true;
+          const corr = (!ok && w.correctIrab) ? `<p class="hd-correct" dir="rtl">Correct: ${esc(w.correctIrab)}</p>` : '';
+          const exp = w.explanation ? `<p class="hd-details" dir="rtl">${esc(w.explanation)}</p>` : '';
+          html.push(
+            `<div class="hd-word ${ok ? 'ok' : 'bad'}"><div class="hd-word-head"><span class="hd-tok" dir="rtl">${esc(w.word || '')}</span>` +
+            `<span class="hd-mark ${ok ? 'ok' : 'bad'}">${ok ? '✓' : '✗'}</span></div>` +
+            `<p class="hd-irab" dir="rtl">Your answer: ${esc(w.userIrab || '—')}</p>${corr}${exp}</div>`);
+        }
+        html.push('</div>');
+      }
+      detail.innerHTML = html.join('');
+      modal.classList.remove('hidden');
+    }
+
     listEl.addEventListener('click', (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-del]');
-      if (!btn) return;
-      e.preventDefault();
-      removeHistory(btn.dataset.del || '');
-      render();
+      const del = (e.target as HTMLElement).closest<HTMLElement>('[data-del]');
+      if (del) { e.preventDefault(); removeHistory(del.dataset.del || ''); render(); return; }
+      const open = (e.target as HTMLElement).closest<HTMLElement>('[data-open]');
+      if (open) openDetail(open.dataset.open || '');
     });
     clearBtn.addEventListener('click', () => {
       if (confirm('Clear all history? This cannot be undone.')) { clearHistory(uid); render(); }
