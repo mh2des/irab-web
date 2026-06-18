@@ -31,14 +31,14 @@ const offerSchema = {
   brand: { '@type': 'Brand', name: 'Irab' },
   offers: [
     { '@type': 'Offer', name: 'شهري', price: '4.99', priceCurrency: 'USD', url: 'https://irab.app/pricing', availability: 'https://schema.org/InStock' },
-    { '@type': 'Offer', name: 'سنوي', price: '37.99', priceCurrency: 'USD', url: 'https://irab.app/pricing', availability: 'https://schema.org/InStock' },
+    { '@type': 'Offer', name: 'سنوي', price: '35.99', priceCurrency: 'USD', url: 'https://irab.app/pricing', availability: 'https://schema.org/InStock' },
   ],
 };
 ---
 <BaseLayout
   lang="ar"
   title="الأسعار · إعراب بلس"
-  description="اشترك في إعراب بلس: ٤٫٩٩$ شهريًّا أو ٣٧٫٩٩$ سنويًّا (تجربة مجانية ٧ أيام). يفتح كلّ الميزات على الويب والتطبيق بحسابٍ واحد. الدفع عبر Paddle."
+  description="اشترك في إعراب بلس: ٤٫٩٩$ شهريًّا أو ٣٥٫٩٩$ سنويًّا (تجربة مجانية ٧ أيام). يفتح كلّ الميزات على الويب والتطبيق بحسابٍ واحد. الدفع عبر Paddle."
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(offerSchema)} is:inline />
 
@@ -66,9 +66,9 @@ const offerSchema = {
 
         {/* Annual: highlighted */}
         <div class="card relative p-7 border-2 border-purple flex flex-col">
-          <span class="absolute -top-3 start-6 text-caption px-3 py-1 rounded-full bg-purple text-white font-bold shadow-[0_6px_16px_-6px_var(--color-purple)]">الأفضل قيمة · وفّر ٣٧٪</span>
+          <span class="absolute -top-3 start-6 text-caption px-3 py-1 rounded-full bg-purple text-white font-bold shadow-[0_6px_16px_-6px_var(--color-purple)]">الأفضل قيمة · وفّر ٤٠٪</span>
           <p class="font-arabic-display text-h3 mb-1">سنوي</p>
-          <p class="mb-1"><span class="font-arabic-display text-[2.5rem] leading-none">٣٧٫٩٩$</span> <span class="text-ink/65 dark:text-mist/65 text-small">/ سنويًّا</span></p>
+          <p class="mb-1"><span class="font-arabic-display text-[2.5rem] leading-none">٣٥٫٩٩$</span> <span class="text-ink/65 dark:text-mist/65 text-small">/ سنويًّا</span></p>
           <p class="text-caption text-purple-deep dark:text-purple font-semibold mb-6">تجربة مجانية ٧ أيام · يشمل شهادات الإتقان</p>
           <a href="/app" class="btn-primary btn-block mt-auto">ابدأ التجربة المجانية</a>
         </div>
