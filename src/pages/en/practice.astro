@@ -51,9 +51,26 @@ const learningResource = {
           Parse it yourself — don't just read the answer.
         </h1>
         <p class="text-body-lg text-ink/72 dark:text-mist/72 leading-relaxed max-w-2xl mx-auto mb-9">
-          Write your own sentence and let AI grade and explain it, or pick a ready-made sentence and answer from structured options. You choose the mode when you start — in one place.
+          The core feature is writing your own i'rab and getting intelligent feedback. Ready-made sentences are the second path for faster guided drills.
         </p>
         <a href="/en/practice/play" class="btn-primary btn-lg">Start practicing</a>
+      </div>
+    </section>
+
+    <section class="px-6 pb-14">
+      <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-4">
+        <a href="/en/practice/play?mode=custom" class="practice-mode-card practice-mode-primary">
+          <span class="practice-mode-pill">Golden feature</span>
+          <h2 class="font-display text-3xl md:text-4xl leading-tight text-ink dark:text-mist">Write your i'rab and get AI feedback</h2>
+          <p class="text-ink/68 dark:text-mist/70 leading-relaxed">Enter any Arabic sentence, write your analysis for each word, then review exactly what was right and what needs work.</p>
+          <span class="practice-mode-cta">Start with this mode <span aria-hidden="true">→</span></span>
+        </a>
+        <a href="/en/practice/play?mode=curated" class="practice-mode-card">
+          <span class="practice-mode-pill">Second option</span>
+          <h2 class="font-display text-3xl md:text-4xl leading-tight text-ink dark:text-mist">Ready-made sentences with clear choices</h2>
+          <p class="text-ink/68 dark:text-mist/70 leading-relaxed">Choose from the sentence bank and drill type, role, and case marker with guided options.</p>
+          <span class="practice-mode-cta">Open ready-made sentences <span aria-hidden="true">→</span></span>
+        </a>
       </div>
     </section>
 
@@ -105,3 +122,52 @@ const learningResource = {
 
   <Footer lang="en" />
 </BaseLayout>
+
+<style>
+  .practice-mode-card {
+    display: flex;
+    min-height: 19rem;
+    flex-direction: column;
+    gap: 1rem;
+    padding: clamp(1.35rem, 3vw, 2rem);
+    border-radius: 1rem;
+    text-decoration: none;
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    box-shadow: var(--shadow-card);
+    transition: transform .2s var(--ease-out-quart), border-color .2s, box-shadow .2s;
+  }
+  .practice-mode-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--color-teal) 42%, var(--color-card-edge));
+    box-shadow: var(--shadow-lift);
+  }
+  :global(.dark) .practice-mode-card {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+  }
+  .practice-mode-primary {
+    border-color: color-mix(in srgb, var(--color-purple) 42%, var(--color-card-edge));
+  }
+  .practice-mode-pill {
+    width: fit-content;
+    padding: 0.28rem 0.75rem;
+    border-radius: 999px;
+    color: var(--color-purple-deep);
+    background: color-mix(in srgb, var(--color-purple) 12%, white);
+    font-size: var(--text-caption);
+    font-weight: 900;
+  }
+  :global(.dark) .practice-mode-pill {
+    color: color-mix(in srgb, var(--color-purple) 84%, white);
+    background: color-mix(in srgb, var(--color-purple) 20%, var(--color-coal));
+  }
+  .practice-mode-cta {
+    margin-top: auto;
+    color: var(--color-purple-deep);
+    font-weight: 900;
+  }
+  :global(.dark) .practice-mode-cta {
+    color: color-mix(in srgb, var(--color-purple) 84%, white);
+  }
+</style>

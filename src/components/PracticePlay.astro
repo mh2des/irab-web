@@ -12,6 +12,8 @@
  * One calm, linear flow — no nested phases, no flicker. Firebase/Firestore load
  * only inside this login-gated island. Results save to local history.
  */
+import { PADDLE_ENABLED } from '../lib/paddle';
+
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const login = lang === 'ar' ? '/login' : '/en/login';
@@ -25,13 +27,13 @@ const t = lang === 'ar'
       gateBody: 'اختر جملة جاهزة أو اكتب جملتك، ثم أعرِب واحصل على التصحيح.',
       signIn: 'تسجيل الدخول',
       chooseTitle: 'كيف تريد أن تتدرّب؟',
-      chooseBody: 'وضعان واضحان — اختر ما يناسبك.',
+      chooseBody: 'ابدأ بالميزة الأقوى: اكتب إعرابك، ثم خذ تصحيحًا ذكيًّا.',
       curatedTitle: 'جمل جاهزة',
       curatedBody: 'اختر جملة من البنك، ثم حدّد نوع كل كلمة وموقعها وعلامتها.',
-      curatedTag: 'بالاختيارات',
+      curatedTag: 'الخيار الثاني',
       customTitle: 'اكتب جملتك',
       customBody: 'أدخل أي جملة، اكتب إعرابك بنفسك، ودع الذكاء الاصطناعي يصحّح ويشرح.',
-      customTag: 'بالذكاء الاصطناعي',
+      customTag: 'الميزة الذهبية',
       start: 'ابدأ',
       back: 'رجوع',
       chooseSentence: 'اختر جملة',
@@ -59,19 +61,36 @@ const t = lang === 'ar'
       again: 'تدريب آخر',
       unlimited: 'تدريب غير محدود',
       score: 'نتيجتك',
+      upgradeEyebrow: 'انتهت المحاولات المجانية',
+      upgradeTitle: 'افتح التدريب غير المحدود',
+      upgradeBody: 'استمر مباشرة مع تصحيح إعرابك بالذكاء الاصطناعي، والجمل الجاهزة، وباقي أدوات إعراب بلس بالحساب نفسه.',
+      annual: 'سنوي',
+      monthly: 'شهري',
+      annualPrice: '٣٧٫٩٩$',
+      monthlyPrice: '٤٫٩٩$',
+      annualMeta: 'تجربة مجانية ٧ أيام',
+      monthlyMeta: 'مرونة شهرية',
+      save: 'وفّر ٣٧٪',
+      annualCta: 'ابدأ التجربة المجانية',
+      monthlyCta: 'اشترك شهريًّا',
+      secure: 'دفع آمن عبر Paddle. قد تُضاف الضريبة حسب بلدك.',
+      activatingTitle: 'تم الدفع: جارٍ تفعيل اشتراكك',
+      activatingBody: 'سيُفتح التدريب غير المحدود خلال لحظات.',
+      close: 'إغلاق',
+      pricing: 'عرض الأسعار',
     }
   : {
       gateTitle: 'Sign in to start practicing',
       gateBody: 'Pick a ready-made sentence or write your own, then parse it and get corrected.',
       signIn: 'Sign in',
       chooseTitle: 'How do you want to practice?',
-      chooseBody: 'Two clear modes — pick what suits you.',
+      chooseBody: 'Start with the strongest feature: write your i\'rab, then get AI feedback.',
       curatedTitle: 'Ready-made sentences',
       curatedBody: 'Pick a sentence from the bank, then set each word\'s type, role, and case.',
-      curatedTag: 'Guided options',
+      curatedTag: 'Second option',
       customTitle: 'Write your own',
       customBody: 'Enter any sentence, type your i\'rab, and let AI grade and explain it.',
-      customTag: 'AI graded',
+      customTag: 'Golden feature',
       start: 'Start',
       back: 'Back',
       chooseSentence: 'Choose a sentence',
@@ -99,6 +118,23 @@ const t = lang === 'ar'
       again: 'Practice again',
       unlimited: 'Unlimited practice',
       score: 'Your score',
+      upgradeEyebrow: 'Free tries finished',
+      upgradeTitle: 'Unlock unlimited practice',
+      upgradeBody: 'Keep going with AI feedback on your own i\'rab, ready-made sentences, and the rest of Irab Plus on the same account.',
+      annual: 'Annual',
+      monthly: 'Monthly',
+      annualPrice: '$37.99',
+      monthlyPrice: '$4.99',
+      annualMeta: '7 day free trial',
+      monthlyMeta: 'Flexible monthly access',
+      save: 'Save 37%',
+      annualCta: 'Start free trial',
+      monthlyCta: 'Subscribe monthly',
+      secure: 'Secure checkout by Paddle. Tax may be added for your country.',
+      activatingTitle: 'Payment received: activating your subscription',
+      activatingBody: 'Unlimited practice will unlock in a few moments.',
+      close: 'Close',
+      pricing: 'View pricing',
     };
 ---
 <div data-practice-root data-lang={lang} data-login={login} dir={dir} class="pr-shell">
@@ -123,6 +159,46 @@ const t = lang === 'ar'
     {/* Quota pill (premium only) */}
     <p data-pr-quota class="pr-quota"></p>
 
+    <div data-pr-upgrade class="hidden pr-upgrade-backdrop" role="dialog" aria-modal="true" aria-labelledby="pr-upgrade-title">
+      <section class="pr-upgrade">
+        <button type="button" data-pr-upgrade-close class="pr-upgrade-close" aria-label={t.close}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+        <div data-pr-upgrade-main>
+          <p class="pr-upgrade-eyebrow">{t.upgradeEyebrow}</p>
+          <h2 id="pr-upgrade-title" class:list={[titleClass, 'pr-upgrade-title']}>{t.upgradeTitle}</h2>
+          <p class="pr-upgrade-body">{t.upgradeBody}</p>
+          {PADDLE_ENABLED ? (
+            <div class="pr-upgrade-plans">
+              <button type="button" data-pr-plan="annual" class="pr-plan pr-plan-featured">
+                <span class="pr-plan-badge">{t.save}</span>
+                <span class="pr-plan-name">{t.annual}</span>
+                <span class="pr-plan-price">{t.annualPrice}</span>
+                <span class="pr-plan-meta">{t.annualMeta}</span>
+                <span class="pr-plan-cta">{t.annualCta}</span>
+              </button>
+              <button type="button" data-pr-plan="monthly" class="pr-plan">
+                <span class="pr-plan-name">{t.monthly}</span>
+                <span class="pr-plan-price">{t.monthlyPrice}</span>
+                <span class="pr-plan-meta">{t.monthlyMeta}</span>
+                <span class="pr-plan-cta">{t.monthlyCta}</span>
+              </button>
+            </div>
+          ) : (
+            <a href="/pricing" class="btn-primary btn-block">{t.pricing}</a>
+          )}
+          <p class="pr-upgrade-fineprint">{t.secure}</p>
+        </div>
+        <div data-pr-activating class="hidden pr-activating">
+          <div class="pr-activating-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <h3 class:list={[titleClass, 'pr-activating-title']}>{t.activatingTitle}</h3>
+          <p>{t.activatingBody}</p>
+        </div>
+      </section>
+    </div>
+
     {/* ── Phase: mode chooser ───────────────────────────────── */}
     <section data-phase="choose" class="pr-phase">
       <div class="text-center max-w-xl mx-auto mb-8">
@@ -130,18 +206,18 @@ const t = lang === 'ar'
         <p class="text-body text-ink/70 dark:text-mist/70 mt-3">{t.chooseBody}</p>
       </div>
       <div class="pr-modes">
+        <button type="button" data-go="custom" class="pr-mode pr-mode-purple pr-mode-featured">
+          <span class="pr-mode-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+          <span class="pr-mode-tag">{t.customTag}</span>
+          <span class:list={[titleClass, 'pr-mode-title']}>{t.customTitle}</span>
+          <span class="pr-mode-body">{t.customBody}</span>
+          <span class="pr-mode-cta">{t.start}<span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></span>
+        </button>
         <button type="button" data-go="curated" class="pr-mode pr-mode-teal">
           <span class="pr-mode-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7"/><path d="M9 11h5"/></svg></span>
           <span class="pr-mode-tag">{t.curatedTag}</span>
           <span class:list={[titleClass, 'pr-mode-title']}>{t.curatedTitle}</span>
           <span class="pr-mode-body">{t.curatedBody}</span>
-          <span class="pr-mode-cta">{t.start}<span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></span>
-        </button>
-        <button type="button" data-go="custom" class="pr-mode pr-mode-purple">
-          <span class="pr-mode-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
-          <span class="pr-mode-tag">{t.customTag}</span>
-          <span class:list={[titleClass, 'pr-mode-title']}>{t.customTitle}</span>
-          <span class="pr-mode-body">{t.customBody}</span>
           <span class="pr-mode-cta">{t.start}<span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></span>
         </button>
       </div>
@@ -219,6 +295,77 @@ const t = lang === 'ar'
   .pr-quota { text-align: center; font-weight: 800; color: var(--color-teal); font-size: var(--text-caption); margin-bottom: 1.25rem; }
   .pr-quota:empty { display: none; }
 
+  /* Upgrade gate */
+  .pr-upgrade-backdrop {
+    position: fixed; inset: 0; z-index: 80; display: grid; place-items: center;
+    padding: 1rem; background: rgb(23 56 71 / 0.48); backdrop-filter: blur(10px);
+  }
+  .pr-upgrade-backdrop.hidden { display: none; }
+  .pr-upgrade {
+    position: relative; width: min(100%, 44rem); max-height: min(90vh, 44rem); overflow: auto;
+    border-radius: 1rem; padding: clamp(1.25rem, 3vw, 2rem);
+    background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-lift);
+  }
+  .dark .pr-upgrade { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .pr-upgrade-close {
+    position: absolute; inset-block-start: 1rem; inset-inline-end: 1rem;
+    width: 2.45rem; height: 2.45rem; display: grid; place-items: center;
+    border-radius: 999px; color: color-mix(in srgb, var(--color-ink) 66%, transparent);
+    background: color-mix(in srgb, var(--color-paper) 72%, white); border: 1px solid var(--color-card-edge);
+  }
+  .dark .pr-upgrade-close { color: color-mix(in srgb, var(--color-mist) 72%, transparent); background: var(--color-coal); border-color: var(--color-coal-edge); }
+  .pr-upgrade-close svg { width: 1.15rem; height: 1.15rem; }
+  .pr-upgrade-eyebrow {
+    width: fit-content; margin-bottom: 0.7rem; padding: 0.25rem 0.7rem; border-radius: 999px;
+    color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 12%, white);
+    font-size: var(--text-caption); font-weight: 900;
+  }
+  .dark .pr-upgrade-eyebrow { color: color-mix(in srgb, var(--color-purple) 85%, white); background: color-mix(in srgb, var(--color-purple) 20%, var(--color-coal)); }
+  .pr-upgrade-title { padding-inline-end: 2.8rem; font-size: clamp(2.1rem, 5vw, 3.5rem); line-height: 1.04; color: var(--color-ink); }
+  .dark .pr-upgrade-title { color: var(--color-mist); }
+  .pr-upgrade-body {
+    max-width: 37rem; margin-top: 0.9rem; color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+    font-size: var(--text-body); line-height: 1.7;
+  }
+  .dark .pr-upgrade-body { color: color-mix(in srgb, var(--color-mist) 74%, transparent); }
+  .pr-upgrade-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-top: 1.35rem; }
+  .pr-plan {
+    position: relative; min-height: 11.5rem; text-align: start; display: flex; flex-direction: column; gap: 0.25rem;
+    padding: 1.05rem; border-radius: 0.9rem; background: color-mix(in srgb, var(--color-card) 82%, var(--color-paper));
+    border: 1px solid var(--color-card-edge); transition: transform .18s, border-color .18s, box-shadow .18s;
+  }
+  .dark .pr-plan { background: var(--color-coal); border-color: var(--color-coal-edge); }
+  .pr-plan:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--color-purple) 48%, var(--color-card-edge)); box-shadow: var(--shadow-card); }
+  .pr-plan-featured { border-color: color-mix(in srgb, var(--color-purple) 46%, var(--color-card-edge)); }
+  .pr-plan-badge {
+    position: absolute; inset-block-start: 0.8rem; inset-inline-end: 0.8rem;
+    padding: 0.15rem 0.55rem; border-radius: 999px; color: #fff; background: var(--color-purple);
+    font-size: 0.82rem; font-weight: 900;
+  }
+  .pr-plan-name { color: var(--color-ink); font-weight: 900; }
+  .dark .pr-plan-name { color: var(--color-mist); }
+  .pr-plan-price { margin-top: 0.45rem; color: var(--color-ink); font-family: var(--font-display); font-size: 2.2rem; line-height: 1; font-weight: 800; }
+  .dark .pr-plan-price { color: var(--color-mist); }
+  .pr-plan-meta { color: color-mix(in srgb, var(--color-ink) 58%, transparent); font-size: var(--text-caption); }
+  .dark .pr-plan-meta { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+  .pr-plan-cta { margin-top: auto; color: var(--color-purple-deep); font-weight: 900; }
+  .dark .pr-plan-cta { color: color-mix(in srgb, var(--color-purple) 82%, white); }
+  .pr-upgrade-fineprint {
+    margin-top: 0.95rem; color: color-mix(in srgb, var(--color-ink) 54%, transparent);
+    font-size: var(--text-caption); line-height: 1.6;
+  }
+  .dark .pr-upgrade-fineprint { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
+  .pr-activating { text-align: center; padding: 2rem 1rem; }
+  .pr-activating-mark {
+    width: 4.5rem; height: 4.5rem; margin: 0 auto 1rem; display: grid; place-items: center;
+    border-radius: 999px; color: #fff; background: var(--color-teal);
+  }
+  .pr-activating-mark svg { width: 2.1rem; height: 2.1rem; }
+  .pr-activating-title { color: var(--color-ink); font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.1; }
+  .dark .pr-activating-title { color: var(--color-mist); }
+  .pr-activating p { margin-top: 0.7rem; color: color-mix(in srgb, var(--color-ink) 68%, transparent); }
+  .dark .pr-activating p { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
+
   /* Phase transition */
   .pr-phase { animation: pr-in .34s var(--ease-out-quart) both; }
   @keyframes pr-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
@@ -233,6 +380,7 @@ const t = lang === 'ar'
   }
   .dark .pr-mode { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .pr-mode:hover { transform: translateY(-4px); box-shadow: var(--lift-shadow); }
+  .pr-mode-featured { border-color: color-mix(in srgb, var(--color-purple) 42%, var(--color-card-edge)); }
   .pr-mode-purple:hover { border-color: color-mix(in srgb, var(--color-purple) 45%, var(--color-card-edge)); }
   .pr-mode-teal:hover { border-color: color-mix(in srgb, var(--color-teal) 48%, var(--color-card-edge)); }
   .pr-mode-ic { width: 3.4rem; height: 3.4rem; border-radius: 1rem; display: grid; place-items: center; margin-bottom: 0.4rem; }
@@ -341,6 +489,7 @@ const t = lang === 'ar'
 
   @media (max-width: 640px) {
     .pr-modes { grid-template-columns: 1fr; }
+    .pr-upgrade-plans { grid-template-columns: 1fr; }
     .pr-selects { grid-template-columns: 1fr; }
   }
 </style>
@@ -372,6 +521,9 @@ const t = lang === 'ar'
     const gateEl = q<HTMLElement>('[data-pr-gate]');
     const toolEl = q<HTMLElement>('[data-pr-tool]');
     const quotaEl = q<HTMLElement>('[data-pr-quota]');
+    const upgradeEl = q<HTMLElement>('[data-pr-upgrade]');
+    const upgradeMain = q<HTMLElement>('[data-pr-upgrade-main]');
+    const activatingEl = q<HTMLElement>('[data-pr-activating]');
     const phaseEls = Array.from(root.querySelectorAll<HTMLElement>('[data-phase]'));
     const el = (tag: string, cls?: string, text?: string) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 
@@ -384,6 +536,7 @@ const t = lang === 'ar'
 
     let idToken: string | null = null;
     let currentUid = 'anon';
+    let authUser: any = null;
     let isPremium = false;
     let topics: any[] = [];
     let selectedTopic: any = null;
@@ -559,7 +712,7 @@ const t = lang === 'ar'
           headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
           body: JSON.stringify({ sentence: selectedSentence.sentence }),
         }).catch(() => null);
-        if (res && res.status === 429) { msg.textContent = T.limit; msg.className = 'pr-msg'; return; }
+        if (res && res.status === 429) { msg.className = 'hidden pr-msg'; showUpgrade(); return; }
         const correct: any[] = selectedSentence.correctAnalysis || [];
         const norm = (s?: string) => (s || '').trim().replace(/\s+/g, ' ');
         const results = attempts.map((a, i) => {
@@ -629,7 +782,7 @@ const t = lang === 'ar'
           headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
           body: JSON.stringify({ sentence: customSentence, userAnalysis }),
         });
-        if (res.status === 429) { msg.textContent = T.limit; msg.className = 'pr-msg'; return; }
+        if (res.status === 429) { msg.className = 'hidden pr-msg'; showUpgrade(); return; }
         if (!res.ok) { msg.textContent = T.error; msg.className = 'pr-msg'; return; }
         const json = await res.json();
         const data = json?.data ?? json;
@@ -710,6 +863,48 @@ const t = lang === 'ar'
     // ── Wiring ─────────────────────────────────────────────────
     q<HTMLButtonElement>('[data-go="curated"]').addEventListener('click', openCurated);
     q<HTMLButtonElement>('[data-go="custom"]').addEventListener('click', openCustom);
+    q<HTMLButtonElement>('[data-pr-upgrade-close]').addEventListener('click', () => upgradeEl.classList.add('hidden'));
+    upgradeEl.addEventListener('click', (ev) => { if (ev.target === upgradeEl) upgradeEl.classList.add('hidden'); });
+    function showUpgrade() {
+      if (isPremium) return;
+      upgradeMain.classList.remove('hidden');
+      activatingEl.classList.add('hidden');
+      upgradeEl.classList.remove('hidden');
+      setTimeout(() => root!.querySelector<HTMLButtonElement>('[data-pr-plan="annual"]')?.focus(), 60);
+    }
+    root.querySelectorAll<HTMLButtonElement>('[data-pr-plan]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        if (!authUser) return;
+        const plan = btn.dataset.prPlan === 'monthly' ? 'monthly' : 'annual';
+        btn.disabled = true;
+        try {
+          const { openCheckout } = await import('../lib/paddle');
+          await openCheckout({
+            plan,
+            firebaseUid: authUser.uid,
+            email: authUser.email || undefined,
+            lang,
+            onComplete: async () => {
+              upgradeMain.classList.add('hidden');
+              activatingEl.classList.remove('hidden');
+              for (let i = 0; i < 12; i++) {
+                await new Promise((r) => setTimeout(r, 3000));
+                try {
+                  const { fetchMe } = await import('../lib/entitlement');
+                  const me = await fetchMe(authUser);
+                  if (me?.premium) break;
+                } catch {}
+              }
+              window.location.reload();
+            },
+          });
+        } catch (e) {
+          console.error('paddle checkout failed', e);
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    });
     root.querySelectorAll<HTMLButtonElement>('[data-back]').forEach((b) => b.addEventListener('click', () => showPhase(b.dataset.back!)));
     q<HTMLButtonElement>('[data-custom-split]').addEventListener('click', splitCustom);
     q<HTMLButtonElement>('[data-custom-grade]').addEventListener('click', gradeCustom);
@@ -730,6 +925,7 @@ const t = lang === 'ar'
         const [{ onAuth }, { fetchMe }] = await Promise.all([import('../lib/auth'), import('../lib/entitlement')]);
         onAuth((u) => {
           if (!u) { if (!booted) { loadingEl.classList.add('hidden'); gateEl.classList.remove('hidden'); } return; }
+          authUser = u;
           currentUid = u.uid;
           u.getIdToken().then((tk) => { idToken = tk; }).catch(() => {});
           if (booted) return; // ignore auth refreshes — never reset the user's place
