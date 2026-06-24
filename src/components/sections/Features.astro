@@ -56,7 +56,7 @@ const features = [
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
       {features.map((f, i) => {
-        const accentClass = i % 2 === 0 ? 'text-purple' : 'text-teal';
+        const accentClass = i % 2 === 0 ? 'text-purple-deep dark:text-purple' : 'text-teal-deep dark:text-teal';
         return (
           <article
             class:list={['group card card-interactive relative p-7 md:p-8', f.span]}
@@ -68,7 +68,7 @@ const features = [
                 {String(i + 1).padStart(2, '0')}
               </span>
             </div>
-            <p class="text-body text-ink/75 dark:text-mist/75 leading-relaxed">{f.body}</p>
+            <p class="text-body text-ink-muted dark:text-mist-muted leading-relaxed">{f.body}</p>
           </article>
         );
       })}

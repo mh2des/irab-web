@@ -21,6 +21,7 @@ const t = lang === 'ar'
       translations: 'الترجمة', noResult: 'لم نجد نتيجة لهذه الكلمة. تأكّد من الإملاء.',
       limit: 'بلغت حدّك اليومي المجاني. اشترك من التطبيق لبحثٍ غير محدود.',
       error: 'حدث خطأ. حاول مرة أخرى.', unlimited: 'بحث غير محدود ⚡',
+      tryRoots: 'جرّب هذه الجذور:',
     }
   : {
       placeholder: 'Type an Arabic word…', search: 'Search', searching: 'Searching…',
@@ -31,6 +32,7 @@ const t = lang === 'ar'
       translations: 'Translation', noResult: 'No result for that word: check the spelling.',
       limit: "You've reached your free daily limit. Subscribe in the app for unlimited search.",
       error: 'Something went wrong. Please try again.', unlimited: 'Unlimited search ⚡',
+      tryRoots: 'Try these roots:',
     };
 ---
 <div data-dict-root data-lang={lang} data-login={login} dir={dir} class="w-full max-w-2xl mx-auto">
@@ -51,6 +53,16 @@ const t = lang === 'ar'
       </button>
     </form>
     <p data-dict-quota class="text-small font-semibold text-ink/65 dark:text-mist/65 mb-6 h-5"></p>
+
+    {/* Empty-state suggestions: tap a curated root to run a real lookup. */}
+    <div data-dict-examples class="mb-6">
+      <p class="text-small font-semibold text-ink-subtle dark:text-mist-subtle mb-2">{t.tryRoots}</p>
+      <div class="flex flex-wrap gap-2">
+        {['كتب', 'علم', 'نور', 'صبر', 'رحمة', 'فهم'].map((w) => (
+          <button type="button" class="ex-chip" data-dict-example={w} lang="ar" dir="rtl">{w}</button>
+        ))}
+      </div>
+    </div>
 
     <p data-dict-msg class="hidden text-small rounded-lg px-4 py-3 mb-4"></p>
     <div data-dict-result></div>
@@ -189,6 +201,17 @@ const t = lang === 'ar'
     }
 
     form.addEventListener('submit', (e) => { e.preventDefault(); search(input.value.trim()); });
+
+    // Empty-state chips: fill the input with a curated root and run the same lookup.
+    const examplesWrap = root.querySelector<HTMLElement>('[data-dict-examples]');
+    examplesWrap?.addEventListener('click', (e) => {
+      const chip = (e.target as HTMLElement).closest<HTMLElement>('[data-dict-example]');
+      if (!chip) return;
+      const word = chip.dataset.dictExample || '';
+      if (!word) return;
+      input.value = word;
+      search(word);
+    });
 
     // Auth gate: Firebase only loads here (a tool page), never on content pages.
     (async () => {

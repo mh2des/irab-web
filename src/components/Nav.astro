@@ -18,7 +18,7 @@ const t = lang === 'ar'
       features: 'المميزات',
       signin:   'دخول',
       myApp:    'تطبيقي',
-      cta:      'حمّل التطبيق',
+      cta:      'جرِّب الآن',
       menu:     'القائمة',
       close:    'إغلاق',
     }
@@ -31,7 +31,7 @@ const t = lang === 'ar'
       features: 'Features',
       signin:   'Sign in',
       myApp:    'My app',
-      cta:      'Get the app',
+      cta:      'Try the analyzer',
       menu:     'Menu',
       close:    'Close',
     };
@@ -103,7 +103,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
         <a href={appHref} data-app-link class="nav-link nav-link-feature hidden">{t.myApp}</a>
 
         <a
-          href={`${home}#cta`}
+          href={`${home}#demo`}
           class="inline-flex items-center gap-2 px-4 py-2 bg-ink dark:bg-mist text-paper dark:text-coal text-small font-medium tracking-tight rounded-full hover:bg-purple dark:hover:bg-purple hover:text-white lift"
         >
           {t.cta}
@@ -167,7 +167,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
         </div>
 
         <a
-          href={`${home}#cta`}
+          href={`${home}#demo`}
           class="mt-3 inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-ink dark:bg-mist text-paper dark:text-coal font-medium tracking-tight rounded-full hover:bg-purple dark:hover:bg-purple hover:text-white lift"
         >
           {t.cta}

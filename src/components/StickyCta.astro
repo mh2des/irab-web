@@ -1,0 +1,81 @@
+---
+/**
+ * Floating mobile CTA, the always-reachable primary action.
+ *
+ * Mobile-only (hidden ≥ md, where the sticky nav already carries the CTA).
+ * Appears once the visitor scrolls past the live analyzer (#demo) and hides
+ * again near the final CTA / footer so it never stacks on top of them.
+ * Points at the analyzer — the single primary web action.
+ */
+interface Props { lang?: 'en' | 'ar'; }
+const { lang = 'ar' } = Astro.props;
+const t = lang === 'ar'
+  ? { label: 'جرِّب الإعراب الآن' }
+  : { label: 'Try the analyzer' };
+---
+<a data-sticky-cta href="#demo" class="sticky-cta btn-primary" aria-hidden="true" tabindex="-1">
+  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
+  </svg>
+  <span>{t.label}</span>
+</a>
+
+<style>
+  .sticky-cta {
+    position: fixed;
+    inset-inline: 1rem;
+    bottom: 1rem;
+    z-index: 40;
+    display: inline-flex;
+    justify-content: center;
+    box-shadow: var(--shadow-lift);
+    /* Hidden by opacity/transform (not display) so there's never a layout flash;
+       JS flips .is-visible on scroll. */
+    opacity: 0;
+    transform: translateY(150%);
+    pointer-events: none;
+    transition: opacity .3s var(--ease-out-quart), transform .35s var(--ease-out-expo);
+  }
+  .sticky-cta.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+  /* Desktop already has the sticky-nav CTA: this is a mobile-only pattern. */
+  @media (min-width: 768px) { .sticky-cta { display: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sticky-cta { transition: opacity .25s; transform: none; }
+    .sticky-cta.is-visible { transform: none; }
+  }
+</style>
+
+<script>
+  const cta = document.querySelector<HTMLElement>('[data-sticky-cta]');
+  if (cta) {
+    const demo = document.getElementById('demo');
+    const endEl = document.getElementById('cta') || document.querySelector('footer');
+    let pastHero = !demo;   // no demo on the page → treat as already past
+    let nearEnd = false;
+
+    function update() {
+      const show = pastHero && !nearEnd;
+      cta!.classList.toggle('is-visible', show);
+      if (show) { cta!.removeAttribute('aria-hidden'); cta!.removeAttribute('tabindex'); }
+      else { cta!.setAttribute('aria-hidden', 'true'); cta!.setAttribute('tabindex', '-1'); }
+    }
+
+    if (demo) {
+      new IntersectionObserver((entries) => {
+        const e = entries[0];
+        // "past" = the analyzer has scrolled up and out of view.
+        pastHero = !e.isIntersecting && e.boundingClientRect.top < 0;
+        update();
+      }, { threshold: 0 }).observe(demo);
+    }
+    if (endEl) {
+      new IntersectionObserver((entries) => {
+        nearEnd = entries[0].isIntersecting;
+        update();
+      }, { rootMargin: '0px 0px 160px 0px' }).observe(endEl);
+    }
+    update();
+  }
+</script>

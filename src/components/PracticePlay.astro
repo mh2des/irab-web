@@ -13,6 +13,7 @@
  * only inside this login-gated island. Results save to local history.
  */
 import Paywall from './Paywall.astro';
+import { EXAMPLES } from '../data/demo-examples';
 
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
@@ -51,6 +52,7 @@ const t = lang === 'ar'
       completeAll: 'أكمل اختيارات كل كلمة أولاً.',
       writeTitle: 'اكتب جملتك',
       sentencePlaceholder: 'اكتب جملة عربية من كلمتين إلى ١٥ كلمة…',
+      trySentence: 'جرّب جملة:',
       splitHint: 'سنقسّمها كلماتٍ لتكتب إعراب كلٍّ منها.',
       split: 'التالي',
       yourIrabPlaceholder: 'إعرابك لهذه الكلمة… مثال: فاعل مرفوع وعلامة رفعه الضمة',
@@ -115,6 +117,7 @@ const t = lang === 'ar'
       completeAll: 'Complete every word\'s choices first.',
       writeTitle: 'Write your sentence',
       sentencePlaceholder: 'Type an Arabic sentence, 2 to 15 words…',
+      trySentence: 'Try a sentence:',
       splitHint: 'We\'ll split it into words for you to parse.',
       split: 'Next',
       yourIrabPlaceholder: 'Your i\'rab for this word…',
@@ -255,7 +258,16 @@ const t = lang === 'ar'
       {/* write step */}
       <div data-custom-write>
         <textarea data-custom-input rows="3" dir="rtl" maxlength="500" placeholder={t.sentencePlaceholder} class="input pr-textarea"></textarea>
-        <p class="pr-hint mt-2 mb-4">{t.splitHint}</p>
+        {/* Empty-state suggestions: tap a curated sentence to fill the textarea. */}
+        <div class="mt-3">
+          <p class="text-small font-semibold text-ink-subtle dark:text-mist-subtle mb-2">{t.trySentence}</p>
+          <div class="flex flex-wrap gap-2">
+            {EXAMPLES.map((ex) => (
+              <button type="button" class="ex-chip" data-practice-example={ex.id} lang="ar" dir="rtl">{ex.source}</button>
+            ))}
+          </div>
+        </div>
+        <p class="pr-hint mt-3 mb-4">{t.splitHint}</p>
         <button type="button" data-custom-split class="btn-primary btn-block">{t.split}</button>
       </div>
       {/* solve step */}
@@ -532,6 +544,7 @@ const t = lang === 'ar'
   import { addHistory, getHistoryItem } from '../lib/history';
   import { revealStagger, springPress } from '../lib/animate';
   import { sfx, confetti, countUp, isMuted, setMuted } from '../lib/celebrate';
+  import { EXAMPLES } from '../data/demo-examples';
 
   const root = document.querySelector<HTMLElement>('[data-practice-root]');
   if (root) {
@@ -961,6 +974,18 @@ const t = lang === 'ar'
     }
     root.querySelectorAll<HTMLButtonElement>('[data-back]').forEach((b) => b.addEventListener('click', () => showPhase(b.dataset.back!)));
     q<HTMLButtonElement>('[data-custom-split]').addEventListener('click', splitCustom);
+
+    // Empty-state chips: fill the textarea with a curated example, then focus it.
+    customWrite.addEventListener('click', (e) => {
+      const chip = (e.target as HTMLElement).closest<HTMLElement>('[data-practice-example]');
+      if (!chip) return;
+      const ex = EXAMPLES.find((x) => x.id === chip.dataset.practiceExample);
+      if (!ex) return;
+      sfx.tap();
+      const ta = q<HTMLTextAreaElement>('[data-custom-input]');
+      ta.value = ex.vocalizedSentence || ex.text;
+      ta.focus();
+    });
     q<HTMLButtonElement>('[data-custom-grade]').addEventListener('click', gradeCustom);
     q<HTMLButtonElement>('[data-solve-check]').addEventListener('click', checkCurated);
     q<HTMLButtonElement>('[data-again]').addEventListener('click', () => {

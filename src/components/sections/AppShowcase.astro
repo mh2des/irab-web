@@ -60,7 +60,7 @@ const t = lang === 'ar'
       {/* Download block */}
       <div class="text-center lg:text-start">
         <p class="eyebrow mb-4 justify-center lg:justify-start" data-reveal>{t.eyebrow}</p>
-        <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+        <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
           {t.title}
         </h2>
         <p class="mt-6 font-arabic text-body-lg text-ink/70 dark:text-mist/70 leading-loose max-w-md mx-auto lg:mx-0" data-reveal data-reveal-delay="200">
@@ -70,12 +70,12 @@ const t = lang === 'ar'
         {/* QR cards: desktop (scan with your phone) */}
         <div class="hidden md:flex gap-4 mt-10 justify-center lg:justify-start" data-reveal data-reveal-delay="300">
           <a href={APPLE} target="_blank" rel="noopener" class="qr-card lift" aria-label={t.appleBtn}>
-            <img src="/showcase/apple-qr.png" alt="" width="220" height="220" loading="lazy" decoding="async" class="qr-img"/>
+            <img src="/showcase/apple-qr.png" alt="رمز QR لتنزيل تطبيق إعراب من App Store" width="220" height="220" loading="lazy" decoding="async" class="qr-img"/>
             <span class="qr-store">{t.appStore}</span>
             <span class="qr-hint">{t.hintApple}</span>
           </a>
           <a href={GOOGLE} target="_blank" rel="noopener" class="qr-card lift" aria-label={t.googleBtn}>
-            <img src="/showcase/google-qr.png" alt="" width="220" height="220" loading="lazy" decoding="async" class="qr-img"/>
+            <img src="/showcase/google-qr.png" alt="رمز QR لتنزيل تطبيق إعراب من Google Play" width="220" height="220" loading="lazy" decoding="async" class="qr-img"/>
             <span class="qr-store">{t.googlePlay}</span>
             <span class="qr-hint">{t.hintGoogle}</span>
           </a>

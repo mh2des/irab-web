@@ -14,10 +14,10 @@ interface Props {
 const { size = 'default', class: className = '', id } = Astro.props as Props;
 
 const sizes: Record<NonNullable<Props['size']>, string> = {
-  sm: 'py-16 md:py-20',
-  default: 'py-24 md:py-32',
-  lg: 'py-32 md:py-40',
-  xl: 'py-40 md:py-56',
+  sm: 'py-14 md:py-18',
+  default: 'py-20 md:py-28',
+  lg: 'py-28 md:py-36',
+  xl: 'py-36 md:py-48',
 };
 ---
 <section id={id} class:list={[sizes[size], className]}>

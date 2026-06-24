@@ -2,6 +2,7 @@
 import Container from '../Container.astro';
 import Section from '../Section.astro';
 import Paywall from '../Paywall.astro';
+import { EXAMPLES } from '../../data/demo-examples';
 
 interface Props { lang?: 'en' | 'ar'; showHeader?: boolean; }
 const { lang = 'en', showHeader = true } = Astro.props;
@@ -16,7 +17,10 @@ const t = lang === 'ar'
       remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
       tryYour:    'جرّب جملتك',
       free:       'مجاني · بلا تسجيل',
-      exampleLabel: 'مثالٌ على النتيجة: اكتب جملتك في الأعلى',
+      exampleLabel: 'هذا مثال — اكتب جملتك في الأعلى لإعراب نصّك.',
+      tryExample: 'جرّب مثالًا:',
+      nudgeTitle: 'أعجبك هذا؟ افتح إعرابًا غير محدود مع إعراب بلس.',
+      nudgeCta:   'اشترك في إعراب بلس',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
       parse:      'أعرب',
       copy:       'نسخ', share: 'مشاركة', pdf: 'PDF', madeWith: 'أُعرِب على irab.app',
@@ -49,7 +53,10 @@ const t = lang === 'ar'
       remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
       tryYour:    'Try your own',
       free:       'Free · no signup',
-      exampleLabel: 'Example output: type your own sentence above',
+      exampleLabel: 'This is a sample — type your own sentence above to parse it.',
+      tryExample: 'Try an example:',
+      nudgeTitle: "Liked that? Unlock unlimited i'rab with Irab Plus.",
+      nudgeCta:   'Get Irab Plus',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
       parse:      'Parse',
       copy:       'Copy', share: 'Share', pdf: 'PDF', madeWith: 'Parsed on irab.app',
@@ -113,6 +120,14 @@ const t = lang === 'ar'
           <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
           <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
         </div>
+
+        {/* One-tap example chips: instant pre-parsed results — no typing, no API spend. */}
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          <span class="font-arabic text-small text-ink-subtle dark:text-mist-subtle">{t.tryExample}</span>
+          {EXAMPLES.map((ex) => (
+            <button type="button" data-demo-chip data-example-id={ex.id} class="ex-chip" lang="ar" dir="rtl">{ex.source}</button>
+          ))}
+        </div>
       </div>
 
       {/* ── Loading state ───────────────────────────────────────────────── */}
@@ -132,6 +147,8 @@ const t = lang === 'ar'
 
       {/* ── Result (hidden until the user parses: no specimen on load) ──── */}
       <div data-demo-result class="hidden mt-10">
+        {/* Sample caption: shown only for the on-load specimen, hidden once the user acts. */}
+        <p data-demo-samplenote class="hidden text-center font-arabic text-small text-ink-subtle dark:text-mist-subtle mb-5">{t.exampleLabel}</p>
         <div data-demo-source class="flex items-baseline gap-2.5 mb-6 px-1 min-h-[2rem]">
           <span data-source-main class="font-arabic-display font-bold text-[clamp(1.125rem,2vw,1.5rem)] text-purple leading-none"></span>
           <span data-source-sep class="hidden text-ink/25 dark:text-mist/25 text-small select-none">·</span>
@@ -177,6 +194,13 @@ const t = lang === 'ar'
             <span lang="ar" dir="rtl" class="font-arabic">{t.rhetorical}</span>
           </p>
           <p lang="ar" dir="rtl" class="font-arabic text-body text-ink/80 dark:text-mist/80 leading-loose" style="font-family: var(--font-arabic-classical);" data-clarification-text></p>
+        </div>
+
+        {/* Contextual upgrade nudge — the peak-delight moment, revealed after a
+            parse/chip for non-premium users. NOT part of the share/PDF export. */}
+        <div data-demo-nudge class="hidden mb-8 rounded-2xl border border-purple/25 bg-purple/5 dark:bg-purple/10 px-6 py-7 text-center">
+          <p class="font-bold text-h3 leading-snug mb-4">{t.nudgeTitle}</p>
+          <button type="button" data-nudge-cta class="btn-primary lift">{t.nudgeCta}</button>
         </div>
 
         {/* Branded footer: part of the shared image/PDF */}
@@ -451,6 +475,9 @@ const t = lang === 'ar'
     const submitSpinnerEl = submitEl.querySelector<HTMLElement>('[data-submit-spinner]')!;
     const submitArrowEl   = submitEl.querySelector<HTMLElement>('[data-submit-arrow]')!;
     const actionsEl     = root.querySelector<HTMLElement>('[data-demo-actions]')!;
+    const sampleNoteEl  = root.querySelector<HTMLElement>('[data-demo-samplenote]');
+    const nudgeEl       = root.querySelector<HTMLElement>('[data-demo-nudge]');
+    const nudgeCtaEl    = root.querySelector<HTMLButtonElement>('[data-nudge-cta]');
     const copyBtn       = root.querySelector<HTMLButtonElement>('[data-act-copy]');
     const copyLabelEl   = root.querySelector<HTMLElement>('[data-act-copy-label]');
     const shareBtn      = root.querySelector<HTMLButtonElement>('[data-act-share]');
@@ -479,6 +506,10 @@ const t = lang === 'ar'
       gateEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
+    // Upgrade nudge: only ever shown to non-premium users after they interact.
+    function showNudge() { if (nudgeEl && !isPremium) nudgeEl.classList.remove('hidden'); }
+    function hideNudge() { nudgeEl?.classList.add('hidden'); }
+
     function getQuota(): number {
       try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? parseInt(raw, 10) : 0; } catch { return 0; }
     }
@@ -489,6 +520,7 @@ const t = lang === 'ar'
         quotaEl.textContent = i18n.unlimited;
         quotaDots.forEach((dot) => dot.classList.add('hidden'));
         gateEl.classList.add('hidden');
+        hideNudge();
         submitEl.disabled = false;
         return;
       }
@@ -597,14 +629,19 @@ const t = lang === 'ar'
       }
     }
 
-    // Chips
+    // Chips: one-tap pre-parsed example. Reveal the result panel — the old code
+    // rendered into a still-hidden panel, so the tap looked like a no-op.
     root.querySelectorAll<HTMLButtonElement>('[data-demo-chip]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const ex = EXAMPLES.find((e) => e.id === btn.dataset.exampleId);
-        if (ex) {
-          renderExample(ex);
-          root.querySelector('[data-demo-verse]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        if (!ex) return;
+        renderExample(ex);
+        sampleNoteEl?.classList.add('hidden');
+        resultEl.classList.remove('hidden');
+        actionsEl.classList.remove('hidden');
+        revealStagger(cardsEl.querySelectorAll('.demo-card'));
+        showNudge();
+        root.querySelector('[data-demo-verse]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
 
@@ -682,6 +719,8 @@ const t = lang === 'ar'
       resultEl.classList.add('hidden');
       gateEl.classList.add('hidden');
       actionsEl.classList.add('hidden');
+      hideNudge();
+      sampleNoteEl?.classList.add('hidden');
       loadingEl.classList.remove('hidden');
       loadingEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setLoading(true);
@@ -722,6 +761,7 @@ const t = lang === 'ar'
         resultEl.classList.remove('hidden');
         actionsEl.classList.remove('hidden');
         revealStagger(cardsEl.querySelectorAll('.demo-card'));
+        showNudge();
         if (!isSignedIn) bumpQuota();
         renderQuota();
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -754,26 +794,46 @@ const t = lang === 'ar'
     shareBtn?.addEventListener('click', () => { if (exportCardEl) shareImage(exportCardEl, { filename: 'irab.png', title: 'إعراب · irab.app', text: lastEx?.vocalizedSentence }).catch(() => {}); });
     pdfBtn?.addEventListener('click', () => { if (exportCardEl) downloadPdf(exportCardEl, 'irab.pdf').catch(() => {}); });
 
+    // Upgrade nudge CTA: signed-in → Paddle checkout; anonymous → sign-in (start the funnel).
+    nudgeCtaEl?.addEventListener('click', () => {
+      if (isSignedIn && (window as any).IrabPaywall) (window as any).IrabPaywall.show();
+      else window.location.href = loginHref;
+    });
+
     // Spring micro-interactions on the primary + action buttons
     springPress([submitEl, ...Array.from(actionsEl.querySelectorAll('button'))]);
 
     renderQuota();
 
-    // Re-open a saved analysis from history (?h=<id>): renders the stored
-    // result directly, no API call, no quota spend.
+    // Initial state: replay a saved analysis from ?h=, otherwise show a real
+    // pre-parsed specimen (al-Fatiha 1:2) so visitors SEE the power on load —
+    // no typing, no API call, no quota spend.
+    let restored = false;
     try {
       const histId = new URLSearchParams(location.search).get('h');
       if (histId) {
         const item = getHistoryItem(histId);
         if (item && item.kind === 'analyze' && item.data) {
           renderExample(item.data as ParseExample);
+          sampleNoteEl?.classList.add('hidden');
           resultEl.classList.remove('hidden');
           actionsEl.classList.remove('hidden');
           revealStagger(cardsEl.querySelectorAll('.demo-card'));
           resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          restored = true;
         }
       }
     } catch { /* ignore */ }
+
+    if (!restored) {
+      // Above-the-fold specimen: a complete result, visible immediately. Marked
+      // as a sample (caption), no nudge, and NO scroll — keep first paint calm.
+      renderExample(SPECIMEN);
+      sampleNoteEl?.classList.remove('hidden');
+      resultEl.classList.remove('hidden');
+      actionsEl.classList.remove('hidden');
+      revealStagger(cardsEl.querySelectorAll('.demo-card'));
+    }
 
     // Signed in premium → uncap. Firebase is lazy-loaded ONLY when the
     // signed in flag is present, so anonymous visitors never download it.

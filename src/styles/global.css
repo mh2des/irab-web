@@ -82,6 +82,10 @@
   /* Foundational neutrals */
   --color-ink: #173847;          /* dominant text on light */
   --color-ink-soft: #2A4858;
+  /* Deterministic muted text: real tokens instead of ad-hoc text-ink/60-/75
+     opacity (which silently failed WCAG AA over the paper canvas). */
+  --color-ink-muted: #44606C;    /* ≈7:1 on white — AA-safe muted body + small labels */
+  --color-ink-subtle: #56707A;   /* ≈5.4:1 on white — secondary / captions */
   --color-paper: #F8F6F1;        /* warm bone-white: the canvas */
   --color-paper-soft: #F2EFE8;
   --color-stone: #E8E5DD;        /* hairline borders, dividers */
@@ -93,6 +97,8 @@
   --color-coal-edge: #1C262E;
   --color-mist: #F5F5F0;         /* off-white text on dark */
   --color-mist-soft: #C8C5BC;
+  --color-mist-muted: #CBC8BF;   /* ≈11:1 on coal — muted body on dark */
+  --color-mist-subtle: #A7A49B;  /* ≈7:1 on coal — secondary / captions on dark */
 
   /* Elevated card surface: deliberately BRIGHTER than the paper canvas so cards
      read as lifted off the lattice, with a crisp visible edge (the old cards used
@@ -114,6 +120,11 @@
   --font-sans: 'Thmanyah Text', system-ui, sans-serif;   /* body */
   --font-mono: 'Thmanyah Text', ui-monospace, monospace;
   --font-arabic: 'Thmanyah Text', system-ui, sans-serif;
+  /* Decorative Ruqaa display face. USAGE RULE: Aref Ruqaa is gorgeous but the
+     swashes hurt legibility in running text. Use font-arabic-display ONLY for
+     the brand wordmark, the hero word, and SHORT labels (≤2 words, no
+     punctuation). Any full sentence / phrase >2 words / anything with a comma
+     belongs on the body face (font-arabic font-bold). */
   --font-arabic-display: 'Aref Ruqaa', system-ui, serif;
   /* Classical / book-feel Arabic → the body face. */
   --font-arabic-classical: 'Thmanyah Text', serif;
@@ -416,6 +427,31 @@
   .dark .badge-warn { color: #fbbf24; }
   .badge-brand { background: color-mix(in srgb, var(--color-purple) 15%, transparent); color: var(--color-purple-deep); }
   .dark .badge-brand { color: color-mix(in srgb, var(--color-purple) 82%, white); }
+
+  /* ── Qualitative social-proof badge: five stars + store names, NO numeric
+     claim (we don't invent a rating). Used near the hero and pricing. ──────── */
+  .rating-badge {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    font-family: var(--font-arabic); font-size: var(--text-small);
+    font-weight: 600; line-height: 1.2; color: var(--color-ink-muted);
+  }
+  .dark .rating-badge { color: var(--color-mist-muted); }
+  .rating-badge .stars { color: #E0A200; letter-spacing: 0.08em; font-size: 1.05em; }
+
+  /* ── Example chip: one-tap suggestion pill (demo sentences, dictionary roots,
+     practice starters). Defined globally so JS-injected chips style too. ───── */
+  .ex-chip {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.5rem 0.95rem; border-radius: 9999px; cursor: pointer; white-space: nowrap;
+    font-family: var(--font-arabic); font-size: var(--text-small); font-weight: 600; line-height: 1;
+    color: var(--color-ink); background: var(--color-card); border: 1px solid var(--color-card-edge);
+    transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, color .2s, background-color .2s;
+  }
+  .dark .ex-chip { color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .ex-chip:hover { border-color: var(--color-purple); color: var(--color-purple-deep); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+  .dark .ex-chip:hover { color: color-mix(in srgb, var(--color-purple) 80%, white); }
+  .ex-chip:active { transform: translateY(0) scale(0.97); }
+  @media (prefers-reduced-motion: reduce) { .ex-chip:hover, .ex-chip:active { transform: none; } }
 
   /* ── Skeleton loader: shimmer, replaces the bare faint "…" loading text ── */
   .skeleton {

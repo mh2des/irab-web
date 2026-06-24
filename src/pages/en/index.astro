@@ -18,6 +18,7 @@ import Pricing from '../../components/sections/Pricing.astro';
 import Faq, { FAQS } from '../../components/sections/Faq.astro';
 import FinalCta from '../../components/sections/FinalCta.astro';
 import AppShowcase from '../../components/sections/AppShowcase.astro';
+import StickyCta from '../../components/StickyCta.astro';
 import Footer from '../../components/sections/Footer.astro';
 ---
 <BaseLayout
@@ -29,15 +30,19 @@ lang="en"   title="Irab · Read Arabic the way scholars read."
   <Nav lang="en" />
   <main>
     <Hero />
-    <Thesis />
     <LiveDemo />
+    <Thesis />
     <Features />
     <Audience />
-    <SocialProof />
-    <Pricing />
     <AppShowcase lang="en" />
+    <SocialProof />
+    <div class="section-tint border-t border-stone dark:border-coal-edge pt-12 pb-2 flex justify-center">
+      <div class="rating-badge"><span class="stars" aria-hidden="true">★★★★★</span><span>on the App Store &amp; Google Play</span></div>
+    </div>
+    <Pricing />
     <Faq />
     <FinalCta />
+    <StickyCta lang="en" />
   </main>
   <Footer lang="en" />
 

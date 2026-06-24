@@ -13,6 +13,7 @@ import Container from '../components/Container.astro';
 import Section from '../components/Section.astro';
 import LiveDemo from '../components/sections/LiveDemo.astro';
 import AppShowcase from '../components/sections/AppShowcase.astro';
+import StickyCta from '../components/StickyCta.astro';
 import Footer from '../components/sections/Footer.astro';
 
 const features = [
@@ -69,18 +70,23 @@ const faqs = [
           </div>
 
           <h1
-            class="font-arabic-display text-[clamp(1.7rem,4vw,2.9rem)] leading-[1.25] tracking-tight max-w-3xl mx-auto"
+            class="font-arabic font-bold text-[clamp(1.7rem,4vw,2.9rem)] leading-[1.25] tracking-tight max-w-3xl mx-auto"
             data-reveal data-reveal-delay="150"
           >
             أعرب أيّ جملة عربية <span class="text-teal">فورًا</span>.
           </h1>
 
           <p
-            class="mt-5 text-base md:text-body-lg max-w-xl mx-auto text-ink/70 dark:text-mist/70 font-arabic leading-loose"
+            class="mt-5 text-base md:text-body-lg max-w-xl mx-auto text-ink-muted dark:text-mist-muted font-arabic leading-loose"
             data-reveal data-reveal-delay="250"
           >
             حلّلها كلمة بكلمة بالذكاء الاصطناعي، أو أَعرِبْ بنفسك واحصل على تصحيحٍ فوري. اكتب جملتك في الأسفل وابدأ الآن.
           </p>
+
+          <div class="mt-7 flex flex-col items-center gap-4" data-reveal data-reveal-delay="350">
+            <a href="#demo" class="btn-primary lift font-arabic">جرِّب الآن</a>
+            <div class="rating-badge"><span class="stars" aria-hidden="true">★★★★★</span><span>على App Store و Google Play</span></div>
+          </div>
         </div>
       </Container>
     </Section>
@@ -92,9 +98,9 @@ const faqs = [
 
     {/* Secondary CTA: the full experience lives in the app */}
     <div class="text-center pb-16">
-      <p class="font-arabic text-small text-ink/65 dark:text-mist/65 mb-5">التجربة الكاملة: مع التدريب والمعاجم والمكتبة: في التطبيق، وتعمل دون إنترنت:</p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener" class="btn-primary lift">
+      <p class="font-arabic text-small text-ink-subtle dark:text-mist-subtle mb-5">التجربة الكاملة: مع التدريب والمعاجم والمكتبة: في التطبيق، وتعمل دون إنترنت:</p>
+      <div class="inline-flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener" class="btn-ghost lift">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5V3.5c0-.59.34-1.11.84-1.35L13.69 12 3.84 21.85c-.5-.25-.84-.76-.84-1.35M16.81 15.12L6.05 21.34l8.49-8.49 2.27 2.27M20.16 10.81c.34.27.59.66.59 1.19s-.25.92-.59 1.19l-2.31 1.34-2.61-2.55 2.61-2.55 2.31 1.38M6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
           حمّل من Google Play
         </a>
@@ -110,13 +116,13 @@ const faqs = [
       <Container size="narrow">
         <p class="eyebrow mb-10" data-reveal>الفكرة</p>
         <blockquote
-          class="font-arabic-display text-[clamp(1.6rem,3.5vw,2.5rem)] leading-[1.5] tracking-tight"
+          class="font-arabic font-bold text-[clamp(1.6rem,3.5vw,2.5rem)] leading-[1.5] tracking-tight"
           data-reveal data-reveal-delay="100"
         >
           غيرُك يُعطيك الإعراب جاهزًا. إعراب يجعلك <span class="text-teal">تُعرِبُ بنفسك</span>،<br />
           ثمّ يصحّح لك ويشرح.
         </blockquote>
-        <p class="mt-8 text-body-lg text-ink/70 dark:text-mist/70 font-arabic leading-loose" data-reveal data-reveal-delay="200">
+        <p class="mt-8 text-body-lg text-ink-muted dark:text-mist-muted font-arabic leading-loose" data-reveal data-reveal-delay="200">
           أكثر تطبيقات اللغة تُلقّنك المفردات. إعراب يدرّبك على <span class="text-teal font-medium">ما وراء الكلمة</span>: البنية النحوية: بتحليلٍ فوري بالذكاء الاصطناعي، وتقييمٍ لإعرابك أنت، وتحدّياتٍ ترفع مستواك يومًا بعد يوم.
         </p>
       </Container>
@@ -127,7 +133,7 @@ const faqs = [
       <Container>
         <div class="max-w-2xl mb-16">
           <p class="eyebrow mb-4" data-reveal>المنتج</p>
-          <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+          <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
             ورشة عمل كاملة لقواعد العربية.
           </h2>
         </div>
@@ -151,7 +157,7 @@ const faqs = [
                     {String(i + 1).padStart(2, '0')}
                   </span>
                 </div>
-                <p class="font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose">{f.body}</p>
+                <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose">{f.body}</p>
               </article>
             );
           })}
@@ -164,7 +170,7 @@ const faqs = [
       <Container>
         <div class="max-w-2xl mb-16">
           <p class="eyebrow mb-4" data-reveal>لمن</p>
-          <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+          <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
             مصنوع للمتعلّمين الجادّين، في كلّ مستوى.
           </h2>
         </div>
@@ -172,16 +178,16 @@ const faqs = [
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div class="card card-interactive p-8 md:p-10 border-t-2 border-t-purple" data-reveal>
             <p class="font-arabic-display font-bold text-3xl text-purple mb-5">الطلاب</p>
-            <h3 class="font-arabic-display text-h2 leading-tight mb-6">من البسملة إلى البقرة.</h3>
-            <p class="font-arabic text-body text-ink/75 dark:text-mist/75 leading-loose">
+            <h3 class="font-arabic font-bold text-h2 leading-tight mb-6">من البسملة إلى البقرة.</h3>
+            <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose">
               أتقنت العربية المحادثة، لكنّك لا تزال تعجز عن قراءة القرآن بفهم. إعراب هو الجسر: قواعد حقيقية، وتدريب بتقييم ذكي، وعادة يومية تتراكم.
             </p>
           </div>
 
           <div class="card card-interactive p-8 md:p-10 border-t-2 border-t-teal" data-reveal data-reveal-delay="100">
             <p class="font-arabic-display font-bold text-3xl text-teal mb-5">المعلّمون</p>
-            <h3 class="font-arabic-display text-h2 leading-tight mb-6">افحص في ثوانٍ.</h3>
-            <p class="font-arabic text-body text-ink/75 dark:text-mist/75 leading-loose mb-6">
+            <h3 class="font-arabic font-bold text-h2 leading-tight mb-6">افحص في ثوانٍ.</h3>
+            <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose mb-6">
               إعراب فوري لأي جملة يأتيك بها طلابك. راجع النتائج التي يشاركونها معك، وقارن التحليلات، ووجّههم إلى التدريب دون الحاجة إلى لوحة معلّم أو قائمة طلاب.
             </p>
             <a href="/teachers" class="font-arabic-display font-bold text-teal hover:text-teal-deep text-xl transition-colors duration-200">للمدارس والأكاديميات</a>
@@ -189,8 +195,8 @@ const faqs = [
 
           <div class="card card-interactive p-8 md:p-10 border-t-2 border-t-ink dark:border-t-mist" data-reveal data-reveal-delay="200">
             <p class="font-arabic-display font-bold text-3xl text-ink dark:text-mist mb-5">طلاب العلم</p>
-            <h3 class="font-arabic-display text-h2 leading-tight mb-6">رأي ثانٍ، فوريّ.</h3>
-            <p class="font-arabic text-body text-ink/75 dark:text-mist/75 leading-loose">
+            <h3 class="font-arabic font-bold text-h2 leading-tight mb-6">رأي ثانٍ، فوريّ.</h3>
+            <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose">
               تحقّق من الحالات المختلطة، وسوِّ الإعرابات الغامضة، وابدأ من نقطة موثوقة في أعمال التفسير والترجمة. ليس بديلًا عن التكوين العلمي، بل تكميلٌ له.
             </p>
           </div>
@@ -198,12 +204,15 @@ const faqs = [
       </Container>
     </Section>
 
+    {/* ── App showcase + download ──────────────────────────────────── */}
+    <AppShowcase lang="ar" />
+
     {/* ── Social Proof ─────────────────────────────────────────────── */}
     <Section id="proof">
       <Container>
         <div class="max-w-2xl mb-16">
           <p class="eyebrow mb-4" data-reveal>قالها الناس، لا نحن</p>
-          <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+          <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
             آراء حقيقية من متعلّمين يحبّون العربية.
           </h2>
         </div>
@@ -228,7 +237,7 @@ const faqs = [
               <blockquote class="font-arabic text-body leading-loose text-ink/80 dark:text-mist/80">"{q.body}"</blockquote>
               <figcaption class="mt-6 pt-5 border-t border-card-edge dark:border-coal-edge">
                 <p class="font-arabic font-bold text-small">{q.name}</p>
-                <p class="font-mono text-caption text-ink/65 dark:text-mist/65 mt-0.5">{q.detail}</p>
+                <p class="font-mono text-caption text-ink-muted dark:text-mist-muted mt-0.5">{q.detail}</p>
               </figcaption>
             </figure>
           ))}
@@ -241,10 +250,13 @@ const faqs = [
       <Container>
         <div class="text-center max-w-2xl mx-auto mb-16">
           <p class="eyebrow mb-4" data-reveal>الأسعار</p>
-          <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+          <div class="flex justify-center mb-6" data-reveal>
+            <div class="rating-badge"><span class="stars" aria-hidden="true">★★★★★</span><span>على App Store و Google Play</span></div>
+          </div>
+          <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
             مجاني للتجربة. صادق في الدفع.
           </h2>
-          <p class="mt-6 font-arabic text-body-lg text-ink/70 dark:text-mist/70 leading-loose" data-reveal data-reveal-delay="200">
+          <p class="mt-6 font-arabic text-body-lg text-ink-muted dark:text-mist-muted leading-loose" data-reveal data-reveal-delay="200">
             خطّتان. بلا خطّة وسطى تضليلية.
           </p>
         </div>
@@ -256,7 +268,7 @@ const faqs = [
               <h3 class="font-arabic-display text-h2 leading-tight">مجاني</h3>
               <p class="font-arabic text-small text-teal">مجاناً للأبد</p>
             </div>
-            <p class="font-arabic text-body text-ink/70 dark:text-mist/70 mb-8 leading-loose">كلّ ما تحتاجه لتبدأ قراءة العربية بجدّية.</p>
+            <p class="font-arabic text-body text-ink-muted dark:text-mist-muted mb-8 leading-loose">كلّ ما تحتاجه لتبدأ قراءة العربية بجدّية.</p>
             <ul class="space-y-3 mb-10 flex-1 font-arabic">
               {['٣ تحليلات إعرابية يومية', '٥ عمليات بحث يومية في المعجم الذكي', 'المعجم التقليدي ومعجم اللهجات بلا حد', 'مكتبة مرجعية كاملة', 'إدخال صوتي', 'مستويات التدريب ١-٢ والبابان ١-٢ من التحديات', 'بدون إعلانات.'].map((f) => (
                 <li class="flex items-start gap-3">
@@ -277,7 +289,7 @@ const faqs = [
               <h3 class="font-arabic-display text-h2 leading-tight">Irab Plus</h3>
               <p class="font-arabic text-small font-bold text-purple-deep dark:text-purple">من ٤٫٩٩$ شهريّاً</p>
             </div>
-            <p class="font-arabic text-body text-ink/70 dark:text-mist/70 mb-8 leading-loose">كلّ ما في الخطّة المجانية، إضافة إلى العمق الذي يصنع الإتقان فعلًا.</p>
+            <p class="font-arabic text-body text-ink-muted dark:text-mist-muted mb-8 leading-loose">كلّ ما في الخطّة المجانية، إضافة إلى العمق الذي يصنع الإتقان فعلًا.</p>
             <ul class="space-y-3 mb-10 flex-1 font-arabic">
               {['تحليلات إعرابية لا محدودة', 'بحث غير محدود في المعجم الذكي', 'بنك التدريب الكامل ٥٧٦ جملة + تقييم إعرابك الخاص', 'كلّ أبواب التحدّي السبعة + الشروحات المدفوعة', 'كاميرا OCR، تصدير PDF، وبطاقات مشاركة بلا علامة', 'تحليلات تقدّم، ظهور في لوحة الصدارة، وتجميد إضافي للسلسلة', 'شهادات الإتقان في الخطة السنوية'].map((p) => (
                 <li class="flex items-start gap-3">
@@ -293,14 +305,11 @@ const faqs = [
           </div>
         </div>
 
-        <p class="text-center mt-10 font-arabic text-small text-ink/65 dark:text-mist/65 leading-loose" data-reveal>
+        <p class="text-center mt-10 font-arabic text-small text-ink-muted dark:text-mist-muted leading-loose" data-reveal>
           إلغاء في أيّ وقت · ٧ أيّام تجربة مجانية على السنوي · قد تختلف الأسعار حسب المنطقة
         </p>
       </Container>
     </Section>
-
-    {/* ── App showcase + download ──────────────────────────────────── */}
-    <AppShowcase lang="ar" />
 
     {/* ── FAQ ──────────────────────────────────────────────────────── */}
     <Section id="faq">
@@ -308,10 +317,10 @@ const faqs = [
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
           <div class="md:col-span-1">
             <p class="eyebrow mb-4" data-reveal>أسئلة</p>
-            <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.2] tracking-tight" data-reveal data-reveal-delay="100">
+            <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.2] tracking-tight" data-reveal data-reveal-delay="100">
               ربّما هذا ما تتساءل عنه.
             </h2>
-            <p class="mt-6 font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose" data-reveal data-reveal-delay="200">
+            <p class="mt-6 font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose" data-reveal data-reveal-delay="200">
               عندك سؤال آخر؟ <a href="mailto:support@irab.app" class="text-purple hover:text-purple-deep">راسلنا</a>.
             </p>
           </div>
@@ -320,12 +329,12 @@ const faqs = [
             {faqs.map((f) => (
               <details class="group py-6 cursor-pointer">
                 <summary class="flex items-start justify-between gap-6 list-none [&::-webkit-details-marker]:hidden">
-                  <h3 class="font-arabic-display text-h3 leading-snug pl-4 transition-colors duration-200 group-hover:text-purple group-open:text-purple">{f.q}</h3>
+                  <h3 class="font-arabic font-bold text-h3 leading-snug pl-4 transition-colors duration-200 group-hover:text-purple group-open:text-purple">{f.q}</h3>
                   <span class="shrink-0 mt-1 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 group-open:bg-purple text-purple group-open:text-white transition-all duration-300 group-open:rotate-45">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
                   </span>
                 </summary>
-                <p class="mt-4 font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose pl-12">{f.a}</p>
+                <p class="mt-4 font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose pl-12">{f.a}</p>
               </details>
             ))}
           </div>
@@ -347,7 +356,7 @@ const faqs = [
           <p lang="ar" dir="rtl" class="font-arabic-display font-bold text-[clamp(4rem,12vw,10rem)] leading-[0.9] mb-12" data-reveal>
             ابدأ الآن
           </p>
-          <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight max-w-2xl mx-auto" data-reveal data-reveal-delay="100">
+          <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight max-w-2xl mx-auto" data-reveal data-reveal-delay="100">
             أوّل يوم تستعمل فيه إعراب هو اليوم الذي تفتح فيه العربية لك بطريقة مختلفة.
           </h2>
           <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4" data-reveal data-reveal-delay="200">
@@ -368,6 +377,7 @@ const faqs = [
         </div>
       </Container>
     </Section>
+    <StickyCta lang="ar" />
   </main>
 
   <Footer lang="ar" />
