@@ -105,7 +105,7 @@ const t = lang === 'ar'
       <div class="card p-5 md:p-7">
         <form data-demo-form>
           <textarea data-demo-input lang="ar" dir="rtl" rows="3" maxlength="200" placeholder={t.placeholder}
-            class="demo-textarea w-full rounded-2xl px-6 py-5 font-arabic text-[clamp(1.6rem,3.2vw,2.15rem)] leading-relaxed text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
+            class="demo-textarea w-full rounded-lg px-5 md:px-6 py-5 font-arabic text-[clamp(1.45rem,3vw,2rem)] leading-relaxed text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
             style="font-family: var(--font-arabic-classical);"></textarea>
           <div class="mt-4 flex items-center justify-between gap-3">
             <span data-demo-quota class="font-arabic text-small text-ink/45 dark:text-mist/45"></span>
@@ -137,8 +137,8 @@ const t = lang === 'ar'
           <p data-loading-step class="font-arabic text-body text-ink/65 dark:text-mist/65">{t.analyzing}</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div class="skel h-36 rounded-2xl"></div>
-          <div class="skel h-36 rounded-2xl"></div>
+          <div class="skel h-36 rounded-lg"></div>
+          <div class="skel h-36 rounded-lg"></div>
         </div>
       </div>
 
@@ -198,7 +198,7 @@ const t = lang === 'ar'
 
         {/* Contextual upgrade nudge — the peak-delight moment, revealed after a
             parse/chip for non-premium users. NOT part of the share/PDF export. */}
-        <div data-demo-nudge class="hidden mb-8 rounded-2xl border border-purple/25 bg-purple/5 dark:bg-purple/10 px-6 py-7 text-center">
+        <div data-demo-nudge class="hidden mb-8 rounded-lg border border-purple/25 bg-purple/5 dark:bg-purple/10 px-6 py-7 text-center">
           <p class="font-bold text-h3 leading-snug mb-4">{t.nudgeTitle}</p>
           <button type="button" data-nudge-cta class="btn-primary lift">{t.nudgeCta}</button>
         </div>
@@ -262,7 +262,7 @@ const t = lang === 'ar'
     background: color-mix(in srgb, var(--rail, var(--color-stone-soft)) 4%, var(--color-card));
     border: 1px solid var(--color-card-edge);
     border-inline-start: 5px solid var(--rail, var(--color-stone-soft));
-    border-radius: 1.1rem;
+    border-radius: 0.5rem;
     box-shadow: var(--shadow-card);
     transition: transform .25s var(--ease-out-quart), box-shadow .25s var(--ease-out-quart), border-color .25s;
   }
@@ -277,7 +277,7 @@ const t = lang === 'ar'
   /* "Show details" — a clear pill button (was easy-to-miss muted text). */
   :global(.word-details-toggle) {
     display: inline-flex; align-items: center; gap: 0.45rem; width: fit-content;
-    margin-top: 1.1rem; padding: 0.5rem 0.95rem; border-radius: 9999px; cursor: pointer;
+    margin-top: 1.1rem; padding: 0.5rem 0.95rem; border-radius: 0.5rem; cursor: pointer;
     font-family: var(--font-arabic); font-size: 0.95rem; font-weight: 700; line-height: 1;
     color: var(--color-purple-deep);
     background: color-mix(in srgb, var(--color-purple) 10%, transparent);
@@ -294,7 +294,7 @@ const t = lang === 'ar'
   /* Case pill: a quiet status tag carrying the case color. GLOBAL (injected). */
   :global(.word-chip) {
     padding: 0.15rem 0.7rem;
-    border-radius: 9999px;
+    border-radius: 0.5rem;
     color: var(--chip);
     background: color-mix(in srgb, var(--chip) 11%, transparent);
     border: 1px solid color-mix(in srgb, var(--chip) 22%, transparent);
@@ -321,8 +321,8 @@ const t = lang === 'ar'
   /* Result action buttons (copy / share / pdf): big, clear, with depth + lift. */
   .act-btn {
     display: inline-flex; align-items: center; gap: 0.55rem;
-    padding: 0.8rem 1.6rem; border-radius: 9999px;
-    font-family: var(--font-arabic); font-size: 1.2rem; font-weight: 600; line-height: 1;
+    min-height: 2.85rem; padding: 0.75rem 1.35rem; border-radius: 0.5rem;
+    font-family: var(--font-arabic); font-size: 1.1rem; font-weight: 700; line-height: 1;
     color: var(--color-ink);
     background: var(--color-card); border: 1.5px solid var(--color-card-edge);
     cursor: pointer; box-shadow: var(--shadow-card);

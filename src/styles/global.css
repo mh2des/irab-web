@@ -154,16 +154,16 @@
 
   /* Big, accessible body sizes. The handwritten body face needs to be genuinely
      large, roomy, and a touch heavier to stay crisp over the textured canvas. */
-  --text-body-lg: 1.75rem;       /* 28px */
-  --text-body-lg--line-height: 1.75;
+  --text-body-lg: 1.5rem;        /* 24px */
+  --text-body-lg--line-height: 1.65;
 
-  --text-body: 1.5rem;           /* 24px */
-  --text-body--line-height: 1.85;
+  --text-body: 1.25rem;          /* 20px */
+  --text-body--line-height: 1.75;
 
-  --text-small: 1.25rem;         /* 20px */
-  --text-small--line-height: 1.7;
+  --text-small: 1.125rem;        /* 18px */
+  --text-small--line-height: 1.6;
 
-  --text-caption: 1.125rem;      /* 18px */
+  --text-caption: 1rem;          /* 16px */
   --text-caption--line-height: 1.6;
 
   /* Easings: consistent, intentional, never bouncy */
@@ -321,7 +321,7 @@
   .card {
     background: var(--color-card);
     border: 1px solid var(--color-card-edge);
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     box-shadow: var(--shadow-card);
   }
   .dark .card {
@@ -345,7 +345,7 @@
   /* ── Buttons: solid brand, soft depth, lift on hover ─────────────────── */
   .btn-primary {
     display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
-    padding: 0.9rem 1.7rem; border-radius: 9999px; font-weight: 600; white-space: nowrap;
+    min-height: 2.85rem; padding: 0.78rem 1.35rem; border-radius: 0.5rem; font-weight: 700; white-space: nowrap;
     background: var(--color-purple); color: #fff;
     box-shadow: 0 6px 16px -6px color-mix(in srgb, var(--color-purple) 60%, transparent), 0 1px 2px rgb(23 56 71 / 0.10);
     transition: transform .22s var(--ease-out-quart), box-shadow .22s var(--ease-out-quart), background-color .2s;
@@ -354,7 +354,7 @@
   .btn-primary:active { transform: translateY(0); }
   .btn-ghost {
     display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
-    padding: 0.9rem 1.7rem; border-radius: 9999px; font-weight: 600; white-space: nowrap;
+    min-height: 2.85rem; padding: 0.78rem 1.35rem; border-radius: 0.5rem; font-weight: 700; white-space: nowrap;
     color: var(--color-ink); background: var(--color-card); border: 1px solid var(--color-card-edge);
     transition: transform .22s var(--ease-out-quart), box-shadow .22s var(--ease-out-quart), border-color .2s, color .2s;
   }
@@ -377,7 +377,7 @@
   }
 
   /* Large button variant: for hero / primary conversion moments. */
-  .btn-lg { padding: 1.05rem 2.1rem; font-size: var(--text-small); gap: 0.65rem; }
+  .btn-lg { min-height: 3.25rem; padding: 0.95rem 1.75rem; font-size: var(--text-small); gap: 0.65rem; }
   /* Block button: fills its container (cards, forms). */
   .btn-block { display: flex; width: 100%; }
   /* Disabled state for any button primitive. */
@@ -386,7 +386,7 @@
   /* ── Icon button: square, real surface, always carry an aria-label ─────── */
   .icon-btn {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 2.85rem; height: 2.85rem; border-radius: 0.85rem; flex-shrink: 0;
+    width: 2.85rem; height: 2.85rem; border-radius: 0.5rem; flex-shrink: 0;
     color: var(--color-ink); background: var(--color-card);
     border: 1px solid var(--color-card-edge);
     transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, color .2s;
@@ -401,7 +401,7 @@
     width: 100%;
     background: var(--color-card);
     border: 1px solid var(--color-card-edge);
-    border-radius: 0.85rem;
+    border-radius: 0.5rem;
     padding: 0.95rem 1.15rem;
     color: var(--color-ink);
     font-family: var(--font-sans);
@@ -415,7 +415,7 @@
   /* ── Badge / chip: status pills (verified, plan, counts) ───────────────── */
   .badge {
     display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.34rem 0.85rem; border-radius: 9999px;
+    padding: 0.34rem 0.85rem; border-radius: 0.5rem;
     font-size: 1rem; font-weight: 700; line-height: 1.2; white-space: nowrap;
     background: color-mix(in srgb, var(--color-ink) 8%, transparent);
     color: color-mix(in srgb, var(--color-ink) 78%, transparent);
@@ -442,7 +442,7 @@
      practice starters). Defined globally so JS-injected chips style too. ───── */
   .ex-chip {
     display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.5rem 0.95rem; border-radius: 9999px; cursor: pointer; white-space: nowrap;
+    min-height: 2.35rem; padding: 0.48rem 0.85rem; border-radius: 0.5rem; cursor: pointer; white-space: nowrap;
     font-family: var(--font-arabic); font-size: var(--text-small); font-weight: 600; line-height: 1;
     color: var(--color-ink); background: var(--color-card); border: 1px solid var(--color-card-edge);
     transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, color .2s, background-color .2s;
