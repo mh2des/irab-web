@@ -17,17 +17,25 @@ export function revealStagger(els: ArrayLike<Element>, delayStep = 0.07): void {
     animate(list as Element[], { opacity: [0, 1] }, { duration: 0.4, delay: stagger(0.05) } as any);
     return;
   }
-  animate(
+  const controls = animate(
     list as Element[],
     { opacity: [0, 1], y: [28, 0], scale: [0.96, 1] },
     { type: 'spring', visualDuration: 0.55, bounce: 0.34, delay: stagger(delayStep) } as any,
   );
+  controls.finished.then(() => {
+    list.forEach((el) => {
+      (el as HTMLElement).style.transform = '';
+    });
+  }).catch(() => {});
 }
 
 /** A single element entrance. */
 export function revealOne(el: Element, delay = 0): void {
   if (reduce()) { (el as HTMLElement).style.opacity = '1'; return; }
-  animate(el, { opacity: [0, 1], y: [12, 0] }, { type: 'spring', visualDuration: 0.45, bounce: 0.2, delay } as any);
+  const controls = animate(el, { opacity: [0, 1], y: [12, 0] }, { type: 'spring', visualDuration: 0.45, bounce: 0.2, delay } as any);
+  controls.finished.then(() => {
+    (el as HTMLElement).style.transform = '';
+  }).catch(() => {});
 }
 
 /** Spring hover + press micro-interaction on buttons (tactile, beats CSS transitions). */

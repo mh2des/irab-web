@@ -17,8 +17,7 @@ const t = lang === 'ar'
       remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
       tryYour:    'جرّب جملتك',
       free:       'مجاني · بلا تسجيل',
-      exampleLabel: 'هذا مثال — اكتب جملتك في الأعلى لإعراب نصّك.',
-      tryExample: 'جرّب مثالًا:',
+      tryExample: 'أمثلة جاهزة:',
       nudgeTitle: 'أعجبك هذا؟ افتح إعرابًا غير محدود مع إعراب بلس.',
       nudgeCta:   'اشترك في إعراب بلس',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
@@ -53,8 +52,7 @@ const t = lang === 'ar'
       remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
       tryYour:    'Try your own',
       free:       'Free · no signup',
-      exampleLabel: 'This is a sample — type your own sentence above to parse it.',
-      tryExample: 'Try an example:',
+      tryExample: 'Examples:',
       nudgeTitle: "Liked that? Unlock unlimited i'rab with Irab Plus.",
       nudgeCta:   'Get Irab Plus',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
@@ -102,7 +100,7 @@ const t = lang === 'ar'
     {/* ── Result panel ───────────────────────────────────────────────── */}
     <div class="max-w-4xl mx-auto" data-demo data-lang={lang} data-login={login} data-app={appHref}>
       {/* ── The tool: a clean, solid input card ─────────────────────────── */}
-      <div class="card p-5 md:p-7">
+      <div class="demo-shell card p-4 md:p-5">
         <form data-demo-form>
           <textarea data-demo-input lang="ar" dir="rtl" rows="3" maxlength="200" placeholder={t.placeholder}
             class="demo-textarea w-full rounded-lg px-5 md:px-6 py-5 font-arabic text-[clamp(1.45rem,3vw,2rem)] leading-relaxed text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
@@ -120,14 +118,13 @@ const t = lang === 'ar'
           <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
           <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
         </div>
+      </div>
 
-        {/* One-tap example chips: instant pre-parsed results — no typing, no API spend. */}
-        <div class="mt-4 flex flex-wrap items-center gap-2">
-          <span class="font-arabic text-small text-ink-subtle dark:text-mist-subtle">{t.tryExample}</span>
-          {EXAMPLES.map((ex) => (
-            <button type="button" data-demo-chip data-example-id={ex.id} class="ex-chip" lang="ar" dir="rtl">{ex.source}</button>
-          ))}
-        </div>
+      <div class="mt-4 flex flex-wrap items-center gap-2">
+        <span class="font-arabic text-caption text-ink-subtle dark:text-mist-subtle">{t.tryExample}</span>
+        {EXAMPLES.slice(0, 3).map((ex) => (
+          <button type="button" data-demo-chip data-example-id={ex.id} class="ex-chip" lang="ar" dir="rtl">{ex.source}</button>
+        ))}
       </div>
 
       {/* ── Loading state ───────────────────────────────────────────────── */}
@@ -147,8 +144,6 @@ const t = lang === 'ar'
 
       {/* ── Result (hidden until the user parses: no specimen on load) ──── */}
       <div data-demo-result class="hidden mt-10">
-        {/* Sample caption: shown only for the on-load specimen, hidden once the user acts. */}
-        <p data-demo-samplenote class="hidden text-center font-arabic text-small text-ink-subtle dark:text-mist-subtle mb-5">{t.exampleLabel}</p>
         <div data-demo-source class="flex items-baseline gap-2.5 mb-6 px-1 min-h-[2rem]">
           <span data-source-main class="font-arabic-display font-bold text-[clamp(1.125rem,2vw,1.5rem)] text-purple leading-none"></span>
           <span data-source-sep class="hidden text-ink/25 dark:text-mist/25 text-small select-none">·</span>
@@ -258,21 +253,72 @@ const t = lang === 'ar'
 
   /* Word cards: a faint case-color identity (tint + rail) so each card's
      grammatical case reads at a glance, on the clean site surface. */
+  .demo-shell {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.9rem;
+    border-color: var(--color-card-edge);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.78),
+      0 2px 5px rgb(23 56 71 / 0.04),
+      0 24px 58px -38px rgb(23 56 71 / 0.28);
+  }
+  :global(.dark) .demo-shell {
+    border-color: var(--color-coal-edge);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.04),
+      0 2px 8px -3px rgb(0 0 0 / 0.42),
+      0 22px 48px -34px rgb(0 0 0 / 0.72);
+  }
+
   :global(.demo-card) {
-    background: color-mix(in srgb, var(--rail, var(--color-stone-soft)) 4%, var(--color-card));
+    position: relative;
+    overflow: hidden;
+    background: var(--color-card);
     border: 1px solid var(--color-card-edge);
-    border-inline-start: 5px solid var(--rail, var(--color-stone-soft));
-    border-radius: 0.5rem;
-    box-shadow: var(--shadow-card);
-    transition: transform .25s var(--ease-out-quart), box-shadow .25s var(--ease-out-quart), border-color .25s;
+    border-radius: 0.75rem;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.78),
+      0 1px 2px rgb(23 56 71 / 0.05),
+      0 10px 22px -18px rgb(23 56 71 / 0.18),
+      0 18px 44px -34px rgb(23 56 71 / 0.2);
+    transform: translate3d(0, 0, 0);
+    transform-origin: center;
+    transition:
+      transform 420ms var(--ease-out-quart),
+      box-shadow 420ms var(--ease-out-quart),
+      border-color 320ms var(--ease-out-quart),
+      background-color 320ms var(--ease-out-quart);
+    will-change: transform;
   }
   :global(.dark .demo-card) {
-    background: color-mix(in srgb, var(--rail, var(--color-coal-edge)) 12%, var(--color-coal-soft));
+    background: var(--color-coal-soft);
     border-color: var(--color-coal-edge);
-    border-inline-start-color: var(--rail, var(--color-coal-edge));
-    box-shadow: 0 2px 8px -3px rgb(0 0 0 / 0.45), 0 14px 30px -14px rgb(0 0 0 / 0.55);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.04),
+      0 2px 8px -3px rgb(0 0 0 / 0.42),
+      0 14px 32px -24px rgb(0 0 0 / 0.52),
+      0 22px 48px -36px rgb(0 0 0 / 0.68);
   }
-  :global(.demo-card:hover) { transform: translateY(-3px); box-shadow: var(--lift-shadow); border-inline-start-width: 7px; }
+  :global(.demo-card:hover) {
+    transform: translate3d(0, -7px, 0);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.82),
+      0 8px 18px -10px rgb(23 56 71 / 0.18),
+      0 28px 62px -32px rgb(23 56 71 / 0.34);
+    border-color: color-mix(in srgb, var(--color-ink) 18%, var(--color-card-edge));
+  }
+  :global(.dark .demo-card:hover) {
+    border-color: color-mix(in srgb, var(--color-purple) 32%, var(--color-coal-edge));
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.06),
+      0 4px 14px -8px rgb(0 0 0 / 0.62),
+      0 30px 68px -34px rgb(0 0 0 / 0.82);
+  }
+  :global(.demo-card:active) {
+    transform: translate3d(0, -2px, 0) scale(0.992);
+    transition-duration: 120ms;
+  }
 
   /* "Show details" — a clear pill button (was easy-to-miss muted text). */
   :global(.word-details-toggle) {
@@ -309,14 +355,15 @@ const t = lang === 'ar'
   .demo-textarea {
     background: var(--color-paper-soft);
     border: 1px solid var(--color-card-edge);
-    transition: border-color .2s, box-shadow .2s;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.75);
+    transition: border-color .2s, box-shadow .2s, background-color .2s;
   }
   .demo-textarea:focus {
     outline: none;
     border-color: var(--color-purple);
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-purple) 14%, transparent);
   }
-  :global(.dark) .demo-textarea { background: var(--color-coal); border-color: var(--color-coal-edge); }
+  :global(.dark) .demo-textarea { background: var(--color-coal); border-color: var(--color-coal-edge); box-shadow: none; }
 
   /* Result action buttons (copy / share / pdf): big, clear, with depth + lift. */
   .act-btn {
@@ -353,7 +400,9 @@ const t = lang === 'ar'
 
   @media (prefers-reduced-motion: reduce) {
     :global(.word-card) { animation: none; }
-    :global(.demo-card), :global(.demo-card:hover) { transform: none; }
+    .demo-shell,
+    :global(.demo-card),
+    :global(.demo-card:hover) { transform: none; transition: none; }
     :global(.demo-card details[open] > summary ~ *) { animation: none; }
     .skel { animation: none; }
   }
@@ -400,7 +449,7 @@ const t = lang === 'ar'
 </style>
 
 <script>
-  import { EXAMPLES, SPECIMEN, CASE_COLORS, TYPE_META, type ParseExample } from '../../data/demo-examples';
+  import { EXAMPLES, CASE_COLORS, TYPE_META, type ParseExample } from '../../data/demo-examples';
   import { maybeSignedIn } from '../../lib/session';
   import { addHistory, getHistoryItem } from '../../lib/history';
   import { revealStagger, springPress } from '../../lib/animate';
@@ -452,7 +501,6 @@ const t = lang === 'ar'
     const sourceMainEl = root.querySelector<HTMLElement>('[data-source-main]')!;
     const sourceSubEl  = root.querySelector<HTMLElement>('[data-source-sub]');
     const quotaDots    = root.querySelectorAll<HTMLElement>('[data-dot]');
-    const sourceContainer = root.querySelector<HTMLElement>('[data-demo-source]')!;
     const verseInner   = root.querySelector<HTMLElement>('[data-demo-verse-inner]')!;
     const meaningEl    = root.querySelector<HTMLElement>('[data-demo-meaning]');
     const wordCountEl  = root.querySelector<HTMLElement>('[data-demo-wordcount]');
@@ -475,7 +523,6 @@ const t = lang === 'ar'
     const submitSpinnerEl = submitEl.querySelector<HTMLElement>('[data-submit-spinner]')!;
     const submitArrowEl   = submitEl.querySelector<HTMLElement>('[data-submit-arrow]')!;
     const actionsEl     = root.querySelector<HTMLElement>('[data-demo-actions]')!;
-    const sampleNoteEl  = root.querySelector<HTMLElement>('[data-demo-samplenote]');
     const nudgeEl       = root.querySelector<HTMLElement>('[data-demo-nudge]');
     const nudgeCtaEl    = root.querySelector<HTMLButtonElement>('[data-nudge-cta]');
     const copyBtn       = root.querySelector<HTMLButtonElement>('[data-act-copy]');
@@ -522,6 +569,7 @@ const t = lang === 'ar'
         gateEl.classList.add('hidden');
         hideNudge();
         submitEl.disabled = false;
+        submitLabelEl.textContent = i18n.parse;
         return;
       }
       // Signed in (free): the SERVER enforces 3/day. No anonymous dots/gate here :
@@ -531,6 +579,7 @@ const t = lang === 'ar'
         quotaDots.forEach((dot) => dot.classList.add('hidden'));
         gateEl.classList.add('hidden');   // ← the bug: signed in users must never see the gate on load
         submitEl.disabled = false;
+        submitLabelEl.textContent = i18n.parse;
         return;
       }
       // Anonymous: 2 lifetime tries, then the sign in gate.
@@ -547,7 +596,14 @@ const t = lang === 'ar'
       });
       // Only gate truly-anonymous visitors. If the signed in flag is present, auth
       // is resolving and the signed in branch will run in a moment: don't flash the gate.
-      if (remaining === 0 && !maybeSignedIn()) { submitEl.disabled = true; showGate('signin'); }
+      if (remaining === 0 && !maybeSignedIn()) {
+        submitEl.disabled = false;
+        submitLabelEl.textContent = i18n.signCta;
+        showGate('signin');
+      } else {
+        submitEl.disabled = false;
+        submitLabelEl.textContent = i18n.parse;
+      }
     }
 
     function escape(s: string): string {
@@ -586,7 +642,7 @@ const t = lang === 'ar'
       if (timeEl && parsedSeconds) timeEl.textContent = i18n.parsedIn(parsedSeconds);
 
       // Cards
-      cardsEl.innerHTML = ex.words.map((w, i) => {
+      cardsEl.innerHTML = ex.words.map((w) => {
         const caseColor = CASE_COLORS[w.case].hex;
         const typeMeta = TYPE_META[w.type];
         const showDetails = w.details && w.details !== 'لا توجد تفاصيل إضافية';
@@ -629,19 +685,20 @@ const t = lang === 'ar'
       }
     }
 
-    // Chips: one-tap pre-parsed example. Reveal the result panel — the old code
-    // rendered into a still-hidden panel, so the tap looked like a no-op.
     root.querySelectorAll<HTMLButtonElement>('[data-demo-chip]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const ex = EXAMPLES.find((e) => e.id === btn.dataset.exampleId);
+        const ex = EXAMPLES.find((item) => item.id === btn.dataset.exampleId);
         if (!ex) return;
+        errorEl.classList.add('hidden');
+        loadingEl.classList.add('hidden');
+        gateEl.classList.add('hidden');
+        hideNudge();
         renderExample(ex);
-        sampleNoteEl?.classList.add('hidden');
         resultEl.classList.remove('hidden');
         actionsEl.classList.remove('hidden');
         revealStagger(cardsEl.querySelectorAll('.demo-card'));
         showNudge();
-        root.querySelector('[data-demo-verse]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
 
@@ -708,11 +765,11 @@ const t = lang === 'ar'
     // Form
     formEl.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const text = inputEl.value.trim();
-      if (!text) return;
       // Anonymous client-side pre-check (saves a call). Signed in users rely on
       // the server's 3/day, so they're never pre-blocked here (kills the loop).
       if (!isSignedIn && getQuota() >= MAX_FREE) { showGate('signin'); return; }
+      const text = inputEl.value.trim();
+      if (!text) return;
 
       const start = performance.now();
       errorEl.classList.add('hidden');
@@ -720,7 +777,6 @@ const t = lang === 'ar'
       gateEl.classList.add('hidden');
       actionsEl.classList.add('hidden');
       hideNudge();
-      sampleNoteEl?.classList.add('hidden');
       loadingEl.classList.remove('hidden');
       loadingEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setLoading(true);
@@ -805,35 +861,21 @@ const t = lang === 'ar'
 
     renderQuota();
 
-    // Initial state: replay a saved analysis from ?h=, otherwise show a real
-    // pre-parsed specimen (al-Fatiha 1:2) so visitors SEE the power on load —
-    // no typing, no API call, no quota spend.
-    let restored = false;
+    // Initial state: replay a saved analysis from ?h=. Otherwise keep the
+    // results area empty until the user submits text or taps an example.
     try {
       const histId = new URLSearchParams(location.search).get('h');
       if (histId) {
         const item = getHistoryItem(histId);
         if (item && item.kind === 'analyze' && item.data) {
           renderExample(item.data as ParseExample);
-          sampleNoteEl?.classList.add('hidden');
           resultEl.classList.remove('hidden');
           actionsEl.classList.remove('hidden');
           revealStagger(cardsEl.querySelectorAll('.demo-card'));
           resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          restored = true;
         }
       }
     } catch { /* ignore */ }
-
-    if (!restored) {
-      // Above-the-fold specimen: a complete result, visible immediately. Marked
-      // as a sample (caption), no nudge, and NO scroll — keep first paint calm.
-      renderExample(SPECIMEN);
-      sampleNoteEl?.classList.remove('hidden');
-      resultEl.classList.remove('hidden');
-      actionsEl.classList.remove('hidden');
-      revealStagger(cardsEl.querySelectorAll('.demo-card'));
-    }
 
     // Signed in premium → uncap. Firebase is lazy-loaded ONLY when the
     // signed in flag is present, so anonymous visitors never download it.

@@ -35,6 +35,7 @@ document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
         duration: 0.7,
         delay,
         ease: 'expo.out',
+        clearProps: 'transform',
       });
     },
   });

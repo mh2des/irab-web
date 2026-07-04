@@ -17,13 +17,13 @@ import StickyCta from '../components/StickyCta.astro';
 import Footer from '../components/sections/Footer.astro';
 
 const features = [
-  { title: 'محلل إعراب بالذكاء الاصطناعي', body: 'ألصق أيّ جملة عربية فتُعرَب كلمة بكلمة في ثوانٍ: النوع، الوظيفة، الإعراب، العلامة، التشكيل الكامل، ملاحظة التصحيح، وشرح واضح للجملة.', span: 'md:col-span-2' },
-  { title: 'تدرّب وأَعرِبْ بنفسك', body: 'لا تكتفِ بقراءة الإعراب: أَعرِبْ أنت، واحصل على تقييمٍ فوري وشرحٍ لكلّ كلمة. ٥٧٦ جملة منتقاة، وتقييم بالذكاء الاصطناعي على جملك الخاصة. لا يفعلها أيّ تطبيق آخر.', span: '' },
-  { title: 'تعلَّم باللعب', body: 'حوّل النحو إلى عادة ممتعة: حملة من ٧ أبواب، تحدٍّ يومي، نقاط XP، سلاسل، ١٠ رتب، شارات، ولوحات صدارة تنافس فيها غيرك.', span: '' },
-  { title: 'ثلاثة معاجم، تطبيق واحد', body: 'الذكي (مدعوم بالذكاء الاصطناعي). التقليدي (١٣ معجمًا تراثيًا منها لسان العرب). اللهجات (٨ مناطق: مصري، شامي، خليجي، مغاربي، عراقي، يمني، سوداني، فلسطيني). أكثر من ٣٠٠٠٠ مدخل، يعمل دون إنترنت.', span: 'md:col-span-2' },
+  { title: 'محلل إعراب بالذكاء الاصطناعي', body: 'ألصق أيّ جملة عربية فتُعرَب كلمة بكلمة: النوع، الوظيفة، العلامة، التشكيل، التصحيح، وشرح واضح للجملة.', span: 'md:col-span-2' },
+  { title: 'تدرّب وأَعرِبْ بنفسك', body: 'أَعرِبْ أنت، واحصل على تقييمٍ فوري وشرحٍ لكلّ كلمة. ٥٧٦ جملة منتقاة، وتقييم بالذكاء الاصطناعي على جملك الخاصة.', span: '' },
+  { title: 'تعلَّم باللعب', body: 'حملة من ٧ أبواب، تحدٍّ يومي، نقاط XP، سلاسل، ١٠ رتب، شارات، ولوحات صدارة.', span: '' },
+  { title: 'ثلاثة معاجم، تطبيق واحد', body: 'المعجم الذكي، ١٣ معجمًا تراثيًا، ومعجم لهجات من ٨ مناطق عربية يضم أكثر من ٣٠٠٠٠ مدخل ويعمل دون إنترنت.', span: 'md:col-span-2' },
   { title: 'مكتبة الكتب الكلاسيكية', body: '٤٧ كتابًا كلاسيكيًّا في النحو والصرف والبلاغة والإعراب، مع بحث، مفضلة، متابعة قراءة، وفهرس داخلي.', span: '' },
   { title: 'شهادات إتقان', body: 'مشتركو الخطة السنوية يستطيعون طلب شهادة قابلة للمشاركة بعد إكمال مستوى بدقّة قوية في كل موضوع.', span: 'md:col-span-2' },
-  { title: 'إعراب القرآن: مزيّة إضافية', body: 'ألصق أيّ آية وادرس بنيتها كلمة بكلمة، أو تصفّح إعراب آيات المصحف على الويب. مكتبة مرجعية تكميلية، لا أداة قراءات ولا بديل عن المعلّم.', span: '' },
+  { title: 'إعراب القرآن: مزيّة إضافية', body: 'ألصق أيّ آية وادرس بنيتها كلمة بكلمة، أو تصفّح إعراب آيات المصحف على الويب كمكتبة مرجعية تكميلية.', span: '' },
   { title: 'إدخال صوتي + OCR', body: 'تكلّم بالجملة ليحلّلها التطبيق. ومع Plus يمكنك تصوير النص العربي، قصّه، اختيار النص، ثم إعرابه.', span: 'md:col-span-2' },
 ];
 
@@ -83,10 +83,6 @@ const faqs = [
             حلّلها كلمة بكلمة بالذكاء الاصطناعي، أو أَعرِبْ بنفسك واحصل على تصحيحٍ فوري. اكتب جملتك في الأسفل وابدأ الآن.
           </p>
 
-          <div class="mt-7 flex flex-col items-center gap-4" data-reveal data-reveal-delay="350">
-            <a href="#demo" class="btn-primary lift font-arabic">جرِّب الآن</a>
-            <div class="rating-badge"><span class="stars" aria-hidden="true">★★★★★</span><span>على App Store و Google Play</span></div>
-          </div>
         </div>
       </Container>
     </Section>
@@ -94,21 +90,6 @@ const faqs = [
     {/* ── The tool, front and center (ChatGPT-style: open straight into it) ── */}
     <div class="-mt-4 md:-mt-6">
       <LiveDemo lang="ar" showHeader={false} />
-    </div>
-
-    {/* Secondary CTA: the full experience lives in the app */}
-    <div class="text-center pb-16">
-      <p class="font-arabic text-small text-ink-subtle dark:text-mist-subtle mb-5">التجربة الكاملة: مع التدريب والمعاجم والمكتبة: في التطبيق، وتعمل دون إنترنت:</p>
-      <div class="inline-flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener" class="btn-ghost lift">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5V3.5c0-.59.34-1.11.84-1.35L13.69 12 3.84 21.85c-.5-.25-.84-.76-.84-1.35M16.81 15.12L6.05 21.34l8.49-8.49 2.27 2.27M20.16 10.81c.34.27.59.66.59 1.19s-.25.92-.59 1.19l-2.31 1.34-2.61-2.55 2.61-2.55 2.31 1.38M6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
-          حمّل من Google Play
-        </a>
-        <a href="https://apps.apple.com/app/id6765811277" target="_blank" rel="noopener" class="btn-ghost lift">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/></svg>
-          App Store
-        </a>
-      </div>
     </div>
 
     {/* ── Thesis ───────────────────────────────────────────────────── */}
@@ -138,26 +119,21 @@ const faqs = [
           </h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="product-grid grid grid-cols-1 md:grid-cols-3 gap-4">
           {features.map((f, i) => {
-            const isPurple = i % 2 === 0;
-            const accentClass = isPurple ? 'text-purple' : 'text-teal';
-            const hoverBorder = isPurple ? 'hover:border-purple/40' : 'hover:border-teal/40';
             return (
               <article
                 class:list={[
-                  'card card-interactive group relative p-7 md:p-8',
+                  'product-card group relative overflow-hidden p-6 md:p-7',
                   f.span,
                 ]}
                 data-reveal data-reveal-delay={String(i * 60)}
               >
-                <div class="flex items-start justify-between gap-4 mb-3">
-                  <h3 class="font-arabic-display text-h3 leading-tight">{f.title}</h3>
-                  <span class:list={[accentClass, 'font-mono text-caption mt-1.5 tabular-nums tracking-wider']}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
+                <div class="flex items-start justify-between gap-4 mb-4">
+                  <h3 class="font-arabic font-bold text-[clamp(1.35rem,2.4vw,2rem)] leading-snug">{f.title}</h3>
+                  <span class="product-index font-mono tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                 </div>
-                <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose">{f.body}</p>
+                <p class="font-arabic text-small text-ink-muted dark:text-mist-muted leading-loose max-w-[48rem]">{f.body}</p>
               </article>
             );
           })}
@@ -176,25 +152,25 @@ const faqs = [
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div class="card card-interactive p-8 md:p-10 border-t-2 border-t-purple" data-reveal>
-            <p class="font-arabic-display font-bold text-3xl text-purple mb-5">الطلاب</p>
+          <div class="audience-card audience-card-purple p-7 md:p-8" data-reveal>
+            <p class="audience-kicker font-arabic font-bold mb-5">الطلاب</p>
             <h3 class="font-arabic font-bold text-h2 leading-tight mb-6">من البسملة إلى البقرة.</h3>
             <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose">
               أتقنت العربية المحادثة، لكنّك لا تزال تعجز عن قراءة القرآن بفهم. إعراب هو الجسر: قواعد حقيقية، وتدريب بتقييم ذكي، وعادة يومية تتراكم.
             </p>
           </div>
 
-          <div class="card card-interactive p-8 md:p-10 border-t-2 border-t-teal" data-reveal data-reveal-delay="100">
-            <p class="font-arabic-display font-bold text-3xl text-teal mb-5">المعلّمون</p>
+          <div class="audience-card audience-card-teal p-7 md:p-8" data-reveal data-reveal-delay="100">
+            <p class="audience-kicker font-arabic font-bold mb-5">المعلّمون</p>
             <h3 class="font-arabic font-bold text-h2 leading-tight mb-6">افحص في ثوانٍ.</h3>
             <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose mb-6">
               إعراب فوري لأي جملة يأتيك بها طلابك. راجع النتائج التي يشاركونها معك، وقارن التحليلات، ووجّههم إلى التدريب دون الحاجة إلى لوحة معلّم أو قائمة طلاب.
             </p>
-            <a href="/teachers" class="font-arabic-display font-bold text-teal hover:text-teal-deep text-xl transition-colors duration-200">للمدارس والأكاديميات</a>
+            <a href="/teachers" class="audience-link font-arabic font-bold text-teal hover:text-teal-deep text-small transition-colors duration-200">للمدارس والأكاديميات</a>
           </div>
 
-          <div class="card card-interactive p-8 md:p-10 border-t-2 border-t-ink dark:border-t-mist" data-reveal data-reveal-delay="200">
-            <p class="font-arabic-display font-bold text-3xl text-ink dark:text-mist mb-5">طلاب العلم</p>
+          <div class="audience-card audience-card-ink p-7 md:p-8" data-reveal data-reveal-delay="200">
+            <p class="audience-kicker font-arabic font-bold mb-5">طلاب العلم</p>
             <h3 class="font-arabic font-bold text-h2 leading-tight mb-6">رأي ثانٍ، فوريّ.</h3>
             <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose">
               تحقّق من الحالات المختلطة، وسوِّ الإعرابات الغامضة، وابدأ من نقطة موثوقة في أعمال التفسير والترجمة. ليس بديلًا عن التكوين العلمي، بل تكميلٌ له.
@@ -217,7 +193,7 @@ const faqs = [
           </h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="proof-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { body: 'ممتاز جدًا جدًا، لم أرَ مثله في الإعراب.', name: 'محمد', detail: '★★★★★ · Google Play' },
             { body: 'ماشاءالله جميل جدًا لعشاق اللغة العربية، ولِمن لديهم شغف بها، وحتى الذين يتعلّمونها الآن يمكنهم بسهولة فهم أيّ كلمة يريدونها.', name: 'Osamah Alrebaki', detail: '★★★★★ · Google Play' },
@@ -228,14 +204,14 @@ const faqs = [
             { body: 'تطبيق عظيم، يعمل على جهازي ماك وهذا الذي أبهرني. شكرًا جزيلًا.', name: 'مستخدم App Store', detail: '★★★★★ · App Store' },
             { body: 'خطوة ممتازة، بالتوفيق.', name: 'Albahr Malek', detail: '★★★★★ · App Store' },
           ].map((q, i) => (
-            <figure class="card card-interactive p-8" data-reveal data-reveal-delay={String(i * 80)}>
-              <div class="flex items-center gap-1 mb-5" aria-label="٥ من ٥">
+            <figure class:list={['proof-card p-6', i === 1 || i === 5 ? 'lg:col-span-2' : '']} data-reveal data-reveal-delay={String(i * 60)}>
+              <div class="proof-stars flex items-center gap-1 mb-5" aria-label="٥ من ٥">
                 {Array.from({ length: 5 }).map(() => (
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-marfu);"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 ))}
               </div>
-              <blockquote class="font-arabic text-body leading-loose text-ink/80 dark:text-mist/80">"{q.body}"</blockquote>
-              <figcaption class="mt-6 pt-5 border-t border-card-edge dark:border-coal-edge">
+              <blockquote class="font-arabic text-body leading-loose text-ink/80 dark:text-mist/80">«{q.body}»</blockquote>
+              <figcaption class="mt-6 pt-5 border-t border-card-edge/80 dark:border-coal-edge">
                 <p class="font-arabic font-bold text-small">{q.name}</p>
                 <p class="font-mono text-caption text-ink-muted dark:text-mist-muted mt-0.5">{q.detail}</p>
               </figcaption>
@@ -250,9 +226,6 @@ const faqs = [
       <Container>
         <div class="text-center max-w-2xl mx-auto mb-16">
           <p class="eyebrow mb-4" data-reveal>الأسعار</p>
-          <div class="flex justify-center mb-6" data-reveal>
-            <div class="rating-badge"><span class="stars" aria-hidden="true">★★★★★</span><span>على App Store و Google Play</span></div>
-          </div>
           <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
             مجاني للتجربة. صادق في الدفع.
           </h2>
@@ -262,8 +235,8 @@ const faqs = [
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <div class="card lift relative p-8 md:p-10 border-2 border-teal/40 flex flex-col" data-reveal>
-            <span class="absolute -top-3 right-8 px-4 py-1.5 bg-teal text-white text-small font-arabic font-bold rounded-full">ابدأ هنا</span>
+          <div class="pricing-card home-card home-card-teal relative p-8 md:p-10 flex flex-col" data-reveal>
+            <span class="pricing-ribbon absolute -top-3 right-8 px-4 py-1.5 bg-teal text-white text-small font-arabic font-bold rounded-full">ابدأ هنا</span>
             <div class="flex items-baseline justify-between gap-3 mb-2 mt-2">
               <h3 class="font-arabic-display text-h2 leading-tight">مجاني</h3>
               <p class="font-arabic text-small text-teal">مجاناً للأبد</p>
@@ -278,13 +251,13 @@ const faqs = [
               ))}
             </ul>
             <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener"
-               class="inline-flex items-center justify-center px-6 py-3 bg-teal hover:bg-teal-deep text-white font-arabic font-medium tracking-tight rounded-full lift">
+               class="home-cta inline-flex items-center justify-center px-6 py-3 bg-teal hover:bg-teal-deep text-white font-arabic font-medium tracking-tight rounded-full">
               حمّل التطبيق المجاني
             </a>
           </div>
 
-          <div class="card lift relative p-8 md:p-10 border-2 border-purple flex flex-col" data-reveal data-reveal-delay="100">
-            <span class="absolute -top-3 right-8 px-4 py-1.5 bg-purple text-white text-small font-arabic font-bold rounded-full">للجادّين</span>
+          <div class="pricing-card home-card home-card-purple relative p-8 md:p-10 flex flex-col" data-reveal data-reveal-delay="100">
+            <span class="pricing-ribbon absolute -top-3 right-8 px-4 py-1.5 bg-purple text-white text-small font-arabic font-bold rounded-full">للجادّين</span>
             <div class="flex items-baseline justify-between gap-3 mb-2 mt-2">
               <h3 class="font-arabic-display text-h2 leading-tight">Irab Plus</h3>
               <p class="font-arabic text-small font-bold text-purple-deep dark:text-purple">من ٤٫٩٩$ شهريّاً</p>
@@ -299,7 +272,7 @@ const faqs = [
               ))}
             </ul>
             <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener"
-               class="inline-flex items-center justify-center px-6 py-3 bg-purple hover:bg-purple-deep text-white font-arabic font-medium tracking-tight rounded-full lift">
+               class="home-cta inline-flex items-center justify-center px-6 py-3 bg-purple hover:bg-purple-deep text-white font-arabic font-medium tracking-tight rounded-full">
               ابدأ التجربة المجانية ٧ أيام
             </a>
           </div>
@@ -325,16 +298,18 @@ const faqs = [
             </p>
           </div>
 
-          <div class="md:col-span-2 divide-y divide-stone dark:divide-coal-edge border-y border-stone dark:border-coal-edge">
+          <div class="md:col-span-2 space-y-3">
             {faqs.map((f) => (
-              <details class="group py-6 cursor-pointer">
-                <summary class="flex items-start justify-between gap-6 list-none [&::-webkit-details-marker]:hidden">
+              <details class="faq-card group cursor-pointer">
+                <summary class="flex items-start justify-between gap-6 list-none p-5 md:p-6 [&::-webkit-details-marker]:hidden">
                   <h3 class="font-arabic font-bold text-h3 leading-snug pl-4 transition-colors duration-200 group-hover:text-purple group-open:text-purple">{f.q}</h3>
                   <span class="shrink-0 mt-1 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 group-open:bg-purple text-purple group-open:text-white transition-all duration-300 group-open:rotate-45">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
                   </span>
                 </summary>
-                <p class="mt-4 font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose pl-12">{f.a}</p>
+                <div class="faq-answer px-5 md:px-6 pb-6">
+                  <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose pl-12">{f.a}</p>
+                </div>
               </details>
             ))}
           </div>
@@ -387,6 +362,264 @@ const faqs = [
   </script>
 
   <style>
+    .product-card,
+    .audience-card,
+    .proof-card,
+    .pricing-card,
+    .faq-card {
+      position: relative;
+      background: var(--color-card);
+      border: 1px solid var(--color-card-edge);
+      border-radius: 0.75rem;
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.78),
+        0 1px 2px rgb(23 56 71 / 0.05),
+        0 10px 22px -18px rgb(23 56 71 / 0.18),
+        0 18px 44px -34px rgb(23 56 71 / 0.2);
+      transform: translate3d(0, 0, 0);
+      transition:
+        transform 420ms var(--ease-out-quart),
+        box-shadow 420ms var(--ease-out-quart),
+        border-color 320ms var(--ease-out-quart),
+        background-color 320ms var(--ease-out-quart),
+        filter 320ms var(--ease-out-quart);
+      transform-origin: center;
+      will-change: transform;
+    }
+
+    :global(.dark) .product-card,
+    :global(.dark) .audience-card,
+    :global(.dark) .proof-card,
+    :global(.dark) .pricing-card,
+    :global(.dark) .faq-card {
+      background: var(--color-coal-soft);
+      border-color: var(--color-coal-edge);
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.04),
+        0 2px 8px -3px rgb(0 0 0 / 0.42),
+        0 14px 32px -24px rgb(0 0 0 / 0.52),
+        0 22px 48px -36px rgb(0 0 0 / 0.68);
+    }
+
+    .product-card:hover,
+    .audience-card:hover,
+    .proof-card:hover,
+    .pricing-card:hover,
+    .faq-card:hover,
+    .faq-card[open] {
+      transform: translate3d(0, -7px, 0);
+      border-color: color-mix(in srgb, var(--color-ink) 18%, var(--color-card-edge));
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.82),
+        0 8px 18px -10px rgb(23 56 71 / 0.18),
+        0 28px 62px -32px rgb(23 56 71 / 0.34);
+    }
+
+    :global(.dark) .product-card:hover,
+    :global(.dark) .audience-card:hover,
+    :global(.dark) .proof-card:hover,
+    :global(.dark) .pricing-card:hover,
+    :global(.dark) .faq-card:hover,
+    :global(.dark) .faq-card[open] {
+      border-color: color-mix(in srgb, var(--color-purple) 32%, var(--color-coal-edge));
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.06),
+        0 4px 14px -8px rgb(0 0 0 / 0.62),
+        0 30px 68px -34px rgb(0 0 0 / 0.82);
+    }
+
+    .product-card:active,
+    .audience-card:active,
+    .proof-card:active,
+    .pricing-card:active,
+    .faq-card:active {
+      transform: translate3d(0, -2px, 0) scale(0.992);
+      transition-duration: 120ms;
+    }
+
+    .product-card:focus-within,
+    .audience-card:focus-within,
+    .proof-card:focus-within,
+    .pricing-card:focus-within,
+    .faq-card:focus-within {
+      outline: 2px solid color-mix(in srgb, var(--color-purple) 45%, transparent);
+      outline-offset: 3px;
+    }
+
+    .product-card h3,
+    .audience-card h3,
+    .proof-card blockquote,
+    .pricing-card h3,
+    .faq-card h3,
+    .product-index,
+    .audience-kicker,
+    .pricing-ribbon,
+    .proof-stars,
+    .faq-card summary span {
+      transition:
+        transform 260ms var(--ease-out-quart),
+        color 220ms var(--ease-out-quart),
+        background-color 220ms var(--ease-out-quart),
+        border-color 220ms var(--ease-out-quart),
+        opacity 220ms var(--ease-out-quart);
+    }
+
+    .product-card:hover h3,
+    .audience-card:hover h3,
+    .proof-card:hover blockquote,
+    .pricing-card:hover h3,
+    .faq-card:hover h3,
+    .faq-card[open] h3 {
+      transform: translateY(-1px);
+    }
+
+    .product-card:hover .product-index,
+    .audience-card:hover .audience-kicker,
+    .pricing-card:hover .pricing-ribbon,
+    .proof-card:hover .proof-stars,
+    .faq-card:hover summary span,
+    .faq-card[open] summary span {
+      transform: translateY(-1px) scale(1.035);
+    }
+
+    .product-index {
+      color: color-mix(in srgb, var(--color-ink) 36%, transparent);
+      font-size: var(--text-caption);
+    }
+
+    .audience-card {
+      min-height: 100%;
+      overflow: hidden;
+    }
+
+    .audience-kicker {
+      color: var(--color-ink-muted);
+      background: color-mix(in srgb, var(--color-ink) 5%, transparent);
+      border: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
+      border-radius: 999px;
+      display: inline-flex;
+      padding: 0.32rem 0.85rem;
+      line-height: 1.2;
+    }
+
+    .audience-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .audience-link::after {
+      content: "←";
+      transition: transform 220ms var(--ease-out-quart);
+    }
+
+    .audience-link:hover::after {
+      transform: translateX(-3px);
+    }
+
+    .proof-card {
+      min-height: 100%;
+      overflow: hidden;
+    }
+
+    .proof-stars {
+      color: #E0A200;
+      opacity: 0.9;
+    }
+
+    .pricing-card {
+      overflow: visible;
+    }
+
+    .pricing-card ul li svg {
+      transition: transform 220ms var(--ease-out-quart), color 220ms var(--ease-out-quart);
+    }
+
+    .pricing-card:hover ul li svg {
+      transform: scale(1.08);
+    }
+
+    .home-card-teal {
+      border-color: color-mix(in srgb, var(--color-teal) 32%, var(--color-card-edge));
+    }
+
+    .home-card-purple {
+      border-color: color-mix(in srgb, var(--color-purple) 42%, var(--color-card-edge));
+    }
+
+    .home-cta {
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.2),
+        0 8px 18px -12px currentColor;
+      transition:
+        transform 220ms var(--ease-out-quart),
+        box-shadow 220ms var(--ease-out-quart),
+        background-color 180ms,
+        filter 180ms;
+    }
+
+    .home-cta:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.24),
+        0 16px 28px -16px currentColor;
+      filter: brightness(1.04);
+    }
+
+    .home-cta:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .faq-card {
+      overflow: hidden;
+    }
+
+    .faq-card summary {
+      border-radius: inherit;
+    }
+
+    .faq-answer {
+      animation: faq-answer-in 260ms var(--ease-out-quart) both;
+    }
+
+    @keyframes faq-answer-in {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .product-card,
+      .audience-card,
+      .proof-card,
+      .pricing-card,
+      .faq-card,
+      .home-cta,
+      .audience-link::after {
+        transition: none;
+      }
+
+      .product-card:hover,
+      .audience-card:hover,
+      .proof-card:hover,
+      .pricing-card:hover,
+      .faq-card:hover,
+      .faq-card[open],
+      .product-card:active,
+      .audience-card:active,
+      .proof-card:active,
+      .pricing-card:active,
+      .faq-card:active,
+      .home-cta:hover,
+      .home-cta:active,
+      .audience-link:hover::after {
+        transform: none;
+      }
+
+      .faq-answer {
+        animation: none;
+      }
+    }
+
     .hero-word {
       opacity: 0;
       -webkit-clip-path: inset(0 100% 0 0);
