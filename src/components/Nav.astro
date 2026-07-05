@@ -17,7 +17,7 @@ const t = lang === 'ar'
       library:  'المكتبة',
       features: 'المميزات',
       signin:   'دخول',
-      myApp:    'تطبيقي',
+      myApp:    'حسابي',
       cta:      'جرِّب الآن',
       menu:     'القائمة',
       close:    'إغلاق',
@@ -30,7 +30,7 @@ const t = lang === 'ar'
       library:  'Library',
       features: 'Features',
       signin:   'Sign in',
-      myApp:    'My app',
+      myApp:    'Profile',
       cta:      'Try the analyzer',
       menu:     'Menu',
       close:    'Close',
@@ -251,7 +251,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
 <script>
   import { maybeSignedIn } from '../lib/session';
 
-  // Signed in users see "My app" instead of "Sign in" (progressive, no Firebase).
+  // Signed in users see their profile link instead of "Sign in" (progressive, no Firebase).
   if (maybeSignedIn()) {
     document.querySelectorAll<HTMLElement>('[data-signin-link]').forEach((el) => el.classList.add('hidden'));
     document.querySelectorAll<HTMLElement>('[data-app-link]').forEach((el) => el.classList.remove('hidden'));

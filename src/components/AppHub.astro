@@ -1,6 +1,6 @@
 ---
 /**
- * AppHub: signed in product dashboard for /app and /en/app.
+ * AppHub: signed in profile dashboard for /app and /en/app.
  *
  * This is intentionally a product surface, not a marketing section: plan state,
  * upgrade choice, daily usage, and tools are visible at a glance. Firebase still
@@ -35,36 +35,36 @@ const tools = lang === 'ar'
 const t = lang === 'ar'
   ? {
       loading: 'جارٍ التحميل…',
-      signInTitle: 'سجّل الدخول لفتح تطبيقك',
-      signInBody: 'حساب واحد لأدوات إعراب على الويب والتطبيق.',
+      signInTitle: 'سجّل الدخول لفتح حسابك',
+      signInBody: 'لوحة واحدة لحسابك، خطتك، تقدّمك، وأدوات إعراب على الويب والتطبيق.',
       signInCta: 'تسجيل الدخول',
-      greeting: 'تطبيقي',
-      welcome: 'أهلاً',
+      dashboard: 'لوحة الحساب',
+      profile: 'الملف الشخصي',
+      signedIn: 'متصل الآن',
       planFree: 'الخطة المجانية',
-      planPlus: 'إعراب بلس',
-      freeNote: 'حدود يومية واضحة، وترقية واحدة تفتح كل شيء.',
+      freeNote: 'خطة مجانية نشطة. ابدأ بما تحتاجه الآن.',
       plusNote: 'اشتراكك فعّال على الويب والتطبيق بالحساب نفسه.',
+      history: 'السجل',
       manage: 'إدارة الحساب',
       signOut: 'تسجيل الخروج',
+      continueTitle: 'ابدأ الآن',
+      continueBody: 'اختر مهمتك التالية',
+      primaryTool: 'حلّل جملة',
+      secondaryTool: 'تدرّب الآن',
       today: 'استخدام اليوم',
+      todayBody: 'حدود التدريب والمعجم',
       practice: 'التدريب',
       dictionary: 'المعجم',
+      workspaceEyebrow: 'مساحة العمل',
       tools: 'الأدوات',
-      toolsBody: 'كل أداة واضحة، وكل حد يظهر في مكانه.',
+      toolsBody: 'أدوات الحساب مرتبة كسطور عمل واضحة.',
       upgradeEyebrow: 'إعراب بلس',
-      upgradeTitle: 'افتح التجربة الكاملة',
-      upgradeBody: 'تحليل غير محدود، تدريب كامل، معجم ذكي، OCR، وشهادات الخطة السنوية. يعمل على الويب و iOS و Android بالحساب نفسه.',
-      annual: 'سنوي',
-      monthly: 'شهري',
+      upgradeBody: 'تحليل غير محدود وحدود أعلى بنفس الحساب على الويب والتطبيق.',
       annualPrice: '٣٥٫٩٩$',
       monthlyPrice: '٤٫٩٩$',
       annualMeta: 'تجربة مجانية ٧ أيام',
-      monthlyMeta: 'مرونة شهرية',
-      save: 'وفّر ٤٠٪',
       annualCta: 'ابدأ التجربة المجانية',
       monthlyCta: 'اشترك شهريًّا',
-      secure: 'دفع آمن عبر Paddle. قد تُضاف الضريبة حسب بلدك.',
-      appFallback: 'أو اشترك من التطبيق',
       activatingTitle: 'تم الدفع: جارٍ تفعيل اشتراكك',
       activatingBody: 'سيُفتح كل شيء تلقائيًّا خلال لحظات.',
       leftToday: (n: number) => `${n} متبقٍ`,
@@ -81,36 +81,36 @@ const t = lang === 'ar'
     }
   : {
       loading: 'Loading…',
-      signInTitle: 'Sign in to open your app',
-      signInBody: 'One account for Irab on web and mobile.',
+      signInTitle: 'Sign in to open your profile',
+      signInBody: 'One dashboard for your account, plan, progress, and Irab tools across web and mobile.',
       signInCta: 'Sign in',
-      greeting: 'My app',
-      welcome: 'Welcome',
+      dashboard: 'Account dashboard',
+      profile: 'Profile',
+      signedIn: 'Signed in',
       planFree: 'Free plan',
-      planPlus: 'Irab Plus',
-      freeNote: 'Clear daily limits, with one upgrade for everything.',
+      freeNote: 'Your free plan is active. Start with what you need now.',
       plusNote: 'Your subscription is active on web and mobile with the same account.',
+      history: 'History',
       manage: 'Manage account',
       signOut: 'Sign out',
+      continueTitle: 'Start now',
+      continueBody: 'Choose your next task',
+      primaryTool: 'Analyze a sentence',
+      secondaryTool: 'Practice now',
       today: "Today's usage",
+      todayBody: 'Practice and dictionary limits',
       practice: 'Practice',
       dictionary: 'Dictionary',
+      workspaceEyebrow: 'Workspace',
       tools: 'Tools',
-      toolsBody: 'Every tool, with the limits shown where they matter.',
+      toolsBody: 'Your account tools, arranged as clear action rows.',
       upgradeEyebrow: 'Irab Plus',
-      upgradeTitle: 'Unlock the full experience',
-      upgradeBody: 'Unlimited analysis, full practice, smart dictionary, OCR, and annual certificates. Works on web, iOS, and Android with one account.',
-      annual: 'Annual',
-      monthly: 'Monthly',
+      upgradeBody: 'Unlimited analysis and higher limits with the same account on web and mobile.',
       annualPrice: '$35.99',
       monthlyPrice: '$4.99',
       annualMeta: '7 day free trial',
-      monthlyMeta: 'Flexible monthly access',
-      save: 'Save 40%',
       annualCta: 'Start free trial',
       monthlyCta: 'Subscribe monthly',
-      secure: 'Secure checkout by Paddle. Tax may be added for your country.',
-      appFallback: 'or subscribe in the app',
       activatingTitle: 'Payment received: activating your subscription',
       activatingBody: 'Everything unlocks automatically in a few moments.',
       leftToday: (n: number) => `${n} left`,
@@ -128,9 +128,6 @@ const t = lang === 'ar'
 const historyHref = lang === 'ar' ? '/history' : '/en/history';
 const toolHref = lang === 'ar' ? '/tool' : '/en/tool';
 const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
-const premiumFeatures = lang === 'ar'
-  ? ['تحليل إعراب غير محدود', 'تدريب كامل مع تصحيح ذكي', 'معجم و OCR وشرح أعمق', 'اشتراك واحد للويب والتطبيق']
-  : ['Unlimited i\'rab analysis', 'Full practice with AI correction', 'Dictionary, OCR, and deeper explanations', 'One subscription for web and app'];
 ---
 <div data-hub-root data-lang={lang} data-login={login} data-home={home} dir={dir} class="app-shell w-full max-w-6xl mx-auto">
   <div data-hub-loading aria-busy="true" aria-label={t.loading} class="space-y-6">
@@ -152,30 +149,56 @@ const premiumFeatures = lang === 'ar'
     <a href={login} class="btn-primary btn-lg">{t.signInCta}</a>
   </div>
 
-  <div data-hub class="hidden panel-in space-y-6">
-    <section class="app-hero">
-      <div class="min-w-0">
-        <p class="app-kicker">{t.greeting}</p>
-        <h1 class:list={[titleClass, 'app-title leading-tight']}>
-          <span>{t.welcome}</span>
-          <span data-hub-name class="block truncate"></span>
-        </h1>
-        <p data-plan-note class="app-subtitle">{t.freeNote}</p>
-      </div>
-      <div class="app-status">
+  <div data-hub class="hidden panel-in profile-dashboard">
+    <section class="profile-shell" aria-label={t.dashboard}>
+      <div class="profile-main-row">
+        <div class="identity-block">
+          <div class="profile-avatar" data-hub-avatar aria-hidden="true">إ</div>
+          <div class="identity-copy">
+            <p class="app-kicker">{t.profile}</p>
+            <h1 class:list={[titleClass, 'profile-title']} data-hub-name></h1>
+            <div class="profile-meta">
+              <span data-hub-email class="profile-email"></span>
+              <span class="profile-dot" aria-hidden="true"></span>
+              <span>{t.signedIn}</span>
+            </div>
+          </div>
+        </div>
+
+      <div class="account-actions">
         <span data-hub-plan class="app-plan-pill">{t.planFree}</span>
-        <div class="flex gap-2">
-          <a href={account} class="btn-ghost app-action">{t.manage}</a>
-          <button type="button" data-hub-signout class="btn-ghost app-action app-action-muted">{t.signOut}</button>
+        <a href={historyHref} class="app-link">{t.history}</a>
+        <a href={account} class="app-link">{t.manage}</a>
+        <button type="button" data-hub-signout class="app-link app-link-muted">{t.signOut}</button>
+      </div>
+      </div>
+
+      <div class="profile-support-row">
+        <p data-plan-note class="profile-note">{t.freeNote}</p>
+        <div class="profile-metrics" aria-label={t.statsKicker}>
+          <div class="metric-item"><span class="metric-value" data-stat="analyze">0</span><span>{t.statAnalyzed}</span></div>
+          <div class="metric-item"><span class="metric-value" data-stat="practice">0</span><span>{t.statPracticed}</span></div>
+          <div class="metric-item"><span class="metric-value" data-stat="avg">0%</span><span>{t.statAvg}</span></div>
+          <div class="metric-item"><span class="metric-value" data-stat="streak">0</span><span>{t.statStreak}</span></div>
         </div>
       </div>
     </section>
 
-    <section class="app-stats" aria-label={t.statsKicker}>
-      <div class="stat-tile stat-tile-purple"><span class="stat-tile-num" data-stat="analyze">0</span><span class="stat-tile-label">{t.statAnalyzed}</span></div>
-      <div class="stat-tile stat-tile-teal"><span class="stat-tile-num" data-stat="practice">0</span><span class="stat-tile-label">{t.statPracticed}</span></div>
-      <div class="stat-tile"><span class="stat-tile-num" data-stat="avg">0%</span><span class="stat-tile-label">{t.statAvg}</span></div>
-      <div class="stat-tile"><span class="stat-tile-num" data-stat="streak">0</span><span class="stat-tile-label">{t.statStreak}</span></div>
+    <section class="command-bar">
+      <div class="command-copy">
+        <p class="app-kicker">{t.continueTitle}</p>
+        <h2 class:list={[titleClass, 'command-title']}>{t.continueBody}</h2>
+      </div>
+      <div class="command-actions">
+        <a href={toolHref} class="command-action command-action-primary">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>
+          <span>{t.primaryTool}</span>
+        </a>
+        <a href={practiceHref} class="command-action">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
+          <span>{t.secondaryTool}</span>
+        </a>
+      </div>
     </section>
 
     <div data-hub-activating class="hidden app-activating">
@@ -188,108 +211,87 @@ const premiumFeatures = lang === 'ar'
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] gap-5 items-start">
-      <section class="app-panel">
-        <div class="flex items-start justify-between gap-4 mb-5">
-          <div>
-            <p class="app-kicker">{t.tools}</p>
-            <h2 class:list={[titleClass, 'text-h2 leading-tight']}>{t.tools}</h2>
-            <p class="text-small text-ink/68 dark:text-mist/68 max-w-xl">{t.toolsBody}</p>
+    <section class="workspace-panel">
+      <div class="workspace-head">
+        <div>
+          <p class="app-kicker">{t.workspaceEyebrow}</p>
+          <h2 class:list={[titleClass, 'workspace-title']}>{t.tools}</h2>
+          <p class="workspace-body">{t.toolsBody}</p>
+        </div>
+      </div>
+
+      <div class="workspace-list">
+        {tools.map((tool) => (
+          <a href={tool.href} data-usage-key={tool.usageKey} class:list={['workspace-row', tool.accent === 'teal' ? 'workspace-row-teal' : 'workspace-row-purple']}>
+            <span class="workspace-icon" aria-hidden="true">
+              {tool.key === 'analyzer' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>
+              )}
+              {tool.key === 'practice' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
+              )}
+              {tool.key === 'dictionary' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7"/><path d="M9 11h5"/></svg>
+              )}
+              {tool.key === 'quran' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v15"/><path d="M5 4h4a3 3 0 0 1 3 3v14a3 3 0 0 0-3-3H5z"/><path d="M19 4h-4a3 3 0 0 0-3 3"/></svg>
+              )}
+              {tool.key === 'library' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9.5 2v15"/><path d="M13 6h3"/></svg>
+              )}
+            </span>
+            <span class="workspace-main">
+              <span class:list={[titleClass, 'workspace-row-title']}>{tool.title}</span>
+              <span class="workspace-row-desc">{tool.desc}</span>
+            </span>
+            <span data-usage class="workspace-usage"></span>
+            <span class="workspace-cta">{tool.cta}<span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <div class="profile-info-rail">
+      <details class="usage-disclosure">
+        <summary>
+          <span>
+            <span class="app-kicker">{t.today}</span>
+            <strong>{t.todayBody}</strong>
+          </span>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="usage-inline-list">
+          <div class="usage-inline-row">
+            <span>{t.practice}</span>
+            <strong data-usage-summary="customPractice">0</strong>
+          </div>
+          <div class="usage-inline-row">
+            <span>{t.dictionary}</span>
+            <strong data-usage-summary="smartDictionary">0</strong>
           </div>
         </div>
+      </details>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {tools.map((tool) => (
-            <a href={tool.href} data-usage-key={tool.usageKey} class:list={['tool-card', tool.accent === 'teal' ? 'tool-card-teal' : 'tool-card-purple']}>
-              <span class="tool-icon" aria-hidden="true">
-                {tool.key === 'analyzer' && (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>
-                )}
-                {tool.key === 'practice' && (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
-                )}
-                {tool.key === 'dictionary' && (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7"/><path d="M9 11h5"/></svg>
-                )}
-                {tool.key === 'quran' && (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v15"/><path d="M5 4h4a3 3 0 0 1 3 3v14a3 3 0 0 0-3-3H5z"/><path d="M19 4h-4a3 3 0 0 0-3 3"/></svg>
-                )}
-                {tool.key === 'library' && (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9.5 2v15"/><path d="M13 6h3"/></svg>
-                )}
-              </span>
-              <span class="block min-w-0">
-                <span class:list={[titleClass, 'tool-title']}>{tool.title}</span>
-                <span class="tool-desc">{tool.desc}</span>
-              </span>
-              <span class="tool-footer">
-                <span data-usage class="tool-usage"></span>
-                <span class="tool-cta">{tool.cta}<span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></span>
-              </span>
-            </a>
-          ))}
+      <section data-hub-upgrade class="hidden upgrade-nudge">
+        <div class="upgrade-copy">
+          <p class="app-kicker">{t.upgradeEyebrow}</p>
+          <p class:list={[titleClass, 'upgrade-lead']}>{t.upgradeBody}</p>
         </div>
+        {PADDLE_ENABLED ? (
+          <div class="upgrade-actions">
+            <button type="button" data-paddle-plan="annual" class="upgrade-btn upgrade-btn-primary">
+              <span>{t.annualCta}</span>
+              <small>{t.annualPrice} · {t.annualMeta}</small>
+            </button>
+            <button type="button" data-paddle-plan="monthly" class="upgrade-btn">
+              <span>{t.monthlyCta}</span>
+              <small>{t.monthlyPrice}</small>
+            </button>
+          </div>
+        ) : (
+          <a href={`${home}#cta`} class="upgrade-btn upgrade-btn-primary">{lang === 'ar' ? 'حمّل التطبيق' : 'Get the app'}</a>
+        )}
       </section>
-
-      <aside class="space-y-5">
-        <section class="usage-panel">
-          <div>
-            <p class="app-kicker">{t.today}</p>
-            <h2 class:list={[titleClass, 'text-h3 leading-tight']}>{t.today}</h2>
-          </div>
-          <div class="usage-grid">
-            <div class="usage-card">
-              <span class="usage-label">{t.practice}</span>
-              <strong data-usage-summary="customPractice">0</strong>
-            </div>
-            <div class="usage-card">
-              <span class="usage-label">{t.dictionary}</span>
-              <strong data-usage-summary="smartDictionary">0</strong>
-            </div>
-          </div>
-        </section>
-
-        <section data-hub-upgrade class="hidden upgrade-panel">
-          <div class="upgrade-head">
-            <p class="app-kicker app-kicker-light">{t.upgradeEyebrow}</p>
-            <h2 class:list={[titleClass, 'upgrade-title']}>{t.upgradeTitle}</h2>
-            <p class="upgrade-body">{t.upgradeBody}</p>
-          </div>
-
-          <ul class="upgrade-features" aria-label={t.upgradeTitle}>
-            {premiumFeatures.map((feature) => (
-              <li>
-                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 6 9 17l-5-5"/>
-                </svg>
-                <span>{feature}</span>
-              </li>
-            ))}
-          </ul>
-
-          {PADDLE_ENABLED ? (
-            <div class="upgrade-plans">
-              <button type="button" data-paddle-plan="annual" class="plan-card plan-card-featured">
-                <span class="plan-badge">{t.save}</span>
-                <span class="plan-name">{t.annual}</span>
-                <span class="plan-price">{t.annualPrice}</span>
-                <span class="plan-meta">{t.annualMeta}</span>
-                <span class="plan-cta">{t.annualCta}</span>
-              </button>
-              <button type="button" data-paddle-plan="monthly" class="plan-card">
-                <span class="plan-name">{t.monthly}</span>
-                <span class="plan-price">{t.monthlyPrice}</span>
-                <span class="plan-meta">{t.monthlyMeta}</span>
-                <span class="plan-cta">{t.monthlyCta}</span>
-              </button>
-            </div>
-          ) : (
-            <a href={`${home}#cta`} class="btn-primary btn-block">{lang === 'ar' ? 'حمّل التطبيق' : 'Get the app'}</a>
-          )}
-          <p class="upgrade-fineprint">{t.secure}</p>
-          <a href={`${home}#cta`} class="upgrade-link">{t.appFallback}</a>
-        </section>
-      </aside>
     </div>
 
     <section data-hub-recent class="app-panel hidden">
@@ -386,14 +388,216 @@ const premiumFeatures = lang === 'ar'
   .app-action-muted { color: color-mix(in srgb, var(--color-ink) 62%, transparent); }
   :global(.dark) .app-action-muted { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
 
+  .profile-hero,
+  .quick-panel {
+    border-radius: 0.65rem;
+    border: 1px solid var(--color-card-edge);
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
+  }
+  :global(.dark) .profile-hero,
+  :global(.dark) .quick-panel {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+    box-shadow: 0 18px 46px -28px rgb(0 0 0 / 0.78);
+  }
+  .profile-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(21rem, 0.46fr);
+    gap: 1px;
+    overflow: hidden;
+    background: var(--color-card-edge);
+  }
+  :global(.dark) .profile-hero { background: var(--color-coal-edge); }
+  .profile-card,
+  .profile-side {
+    background: var(--color-card);
+    padding: clamp(1.25rem, 2.6vw, 2rem);
+  }
+  :global(.dark) .profile-card,
+  :global(.dark) .profile-side { background: var(--color-coal-soft); }
+  .profile-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.15rem;
+    align-items: center;
+  }
+  .profile-avatar {
+    width: clamp(4.4rem, 8vw, 6rem);
+    height: clamp(4.4rem, 8vw, 6rem);
+    border-radius: 0.65rem;
+    display: grid;
+    place-items: center;
+    flex: none;
+    color: white;
+    background: var(--color-ink);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 16px 28px -18px rgb(23 56 71 / 0.46);
+    font-family: var(--font-arabic-display);
+    font-weight: 800;
+    font-size: clamp(2.2rem, 5vw, 3.3rem);
+    line-height: 1;
+  }
+  :global(.dark) .profile-avatar { background: var(--color-purple-deep); }
+  .profile-copy { min-width: 0; }
+  .profile-title {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35em;
+    align-items: baseline;
+    margin-top: 0.15rem;
+    font-size: clamp(2.4rem, 5vw, 4.4rem);
+    line-height: 1.03;
+  }
+  .profile-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.6rem;
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    font-size: var(--text-caption);
+    font-weight: 700;
+  }
+  :global(.dark) .profile-meta { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
+  .profile-email {
+    max-width: min(32rem, 100%);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    direction: ltr;
+    unicode-bidi: plaintext;
+  }
+  .profile-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: var(--color-teal);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-teal) 14%, transparent);
+  }
+  .profile-side {
+    display: grid;
+    align-content: space-between;
+    gap: 1rem;
+  }
+  .profile-plan-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+  .profile-side-label {
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    font-size: var(--text-caption);
+    font-weight: 800;
+  }
+  :global(.dark) .profile-side-label { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
+  .profile-ready {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: start;
+    border-radius: 0.55rem;
+    padding: 0.95rem;
+    background: color-mix(in srgb, var(--color-paper-soft) 70%, white);
+    border: 1px solid var(--color-card-edge);
+  }
+  :global(.dark) .profile-ready { background: color-mix(in srgb, var(--color-coal) 56%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
+  .profile-ready strong,
+  .profile-ready small { display: block; }
+  .profile-ready strong { font-size: var(--text-small); line-height: 1.2; }
+  .profile-ready small {
+    margin-top: 0.2rem;
+    color: color-mix(in srgb, var(--color-ink) 66%, transparent);
+    font-size: var(--text-caption);
+    line-height: 1.45;
+  }
+  :global(.dark) .profile-ready small { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
+  .ready-icon {
+    width: 2.15rem;
+    height: 2.15rem;
+    border-radius: 0.5rem;
+    display: grid;
+    place-items: center;
+    color: white;
+    background: var(--color-teal);
+  }
+  .ready-icon svg { width: 1.1rem; height: 1.1rem; }
+  .profile-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+  .quick-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    padding: clamp(1rem, 2vw, 1.35rem);
+  }
+  .quick-title { font-size: clamp(1.75rem, 3vw, 2.35rem); line-height: 1.12; }
+  .quick-body {
+    color: color-mix(in srgb, var(--color-ink) 66%, transparent);
+    font-size: var(--text-caption);
+    line-height: 1.5;
+  }
+  :global(.dark) .quick-body { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(10rem, 1fr));
+    gap: 0.75rem;
+  }
+  .quick-action {
+    min-height: 3.8rem;
+    border-radius: 0.55rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--color-card-edge);
+    background: color-mix(in srgb, var(--color-paper-soft) 66%, white);
+    color: var(--color-ink);
+    font-size: var(--text-caption);
+    font-weight: 900;
+    transition: transform .22s var(--ease-out-quart), box-shadow .22s var(--ease-out-quart), border-color .2s, background-color .2s, color .2s;
+  }
+  :global(.dark) .quick-action { background: color-mix(in srgb, var(--color-coal) 54%, var(--color-coal-soft)); color: var(--color-mist); border-color: var(--color-coal-edge); }
+  .quick-action:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--color-teal) 52%, var(--color-card-edge));
+    box-shadow: var(--lift-shadow);
+  }
+  .quick-action-primary {
+    color: white;
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+  :global(.dark) .quick-action-primary { background: var(--color-purple); border-color: var(--color-purple); color: white; }
+  .quick-action-primary:hover { border-color: var(--color-purple); background: var(--color-purple); }
+  .quick-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    display: grid;
+    place-items: center;
+  }
+  .quick-icon svg { width: 1.25rem; height: 1.25rem; transition: transform .22s var(--ease-out-quart); }
+  .quick-action:hover .quick-icon svg { transform: scale(1.12); }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.16fr) minmax(21rem, 0.84fr);
+    gap: 1rem;
+    align-items: start;
+  }
+
   /* Stats strip */
   .app-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem; }
   .stat-tile {
-    border-radius: 1.1rem; padding: 1.1rem 1.25rem;
+    border-radius: 0.55rem; padding: 1.05rem 1.1rem;
     background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
     display: flex; flex-direction: column; gap: 0.25rem;
+    transition: transform .22s var(--ease-out-quart), border-color .22s, box-shadow .22s;
   }
   :global(.dark) .stat-tile { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .stat-tile:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--color-ink) 18%, var(--color-card-edge)); box-shadow: var(--lift-shadow); }
+  :global(.dark) .stat-tile:hover { border-color: color-mix(in srgb, var(--color-purple) 34%, var(--color-coal-edge)); }
   .stat-tile-num { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1; color: var(--color-ink); }
   :global(.dark) .stat-tile-num { color: var(--color-mist); }
   .stat-tile-purple .stat-tile-num { color: var(--color-purple-deep); }
@@ -406,11 +610,11 @@ const premiumFeatures = lang === 'ar'
   /* .recent-* rows are injected via JS — styled in the global block below. */
   .app-panel,
   .usage-panel {
-    border-radius: 1.25rem;
+    border-radius: 0.65rem;
     padding: var(--panel-pad);
   }
   .app-activating {
-    border-radius: 1.1rem;
+    border-radius: 0.65rem;
     padding: 1rem 1.25rem;
     display: flex;
     gap: 1rem;
@@ -420,22 +624,22 @@ const premiumFeatures = lang === 'ar'
   }
   .app-activating.hidden { display: none; }
   .tool-card {
-    min-height: 15.5rem;
-    border-radius: 1rem;
+    min-height: 13.75rem;
+    border-radius: 0.55rem;
     padding: 1.15rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
     background: color-mix(in srgb, var(--color-paper-soft) 62%, white);
     border: 1px solid var(--color-card-edge);
-    transition: transform .22s var(--ease-out-quart), border-color .22s, box-shadow .22s, background-color .22s;
+    transition: transform .24s var(--ease-out-quart), border-color .22s, box-shadow .22s, background-color .22s;
   }
   :global(.dark) .tool-card {
     background: color-mix(in srgb, var(--color-coal) 52%, var(--color-coal-soft));
     border-color: var(--color-coal-edge);
   }
   .tool-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: var(--lift-shadow);
     background: var(--color-card);
   }
@@ -443,7 +647,7 @@ const premiumFeatures = lang === 'ar'
   .tool-card-purple:hover { border-color: color-mix(in srgb, var(--color-purple) 48%, var(--color-card-edge)); }
   .tool-card-teal:hover { border-color: color-mix(in srgb, var(--color-teal) 52%, var(--color-card-edge)); }
   .tool-icon {
-    width: 3.2rem; height: 3.2rem; border-radius: 0.95rem;
+    width: 3rem; height: 3rem; border-radius: 0.55rem;
     display: grid; place-items: center;
     background: white;
     border: 1px solid var(--color-card-edge);
@@ -452,7 +656,7 @@ const premiumFeatures = lang === 'ar'
   .tool-card-purple .tool-icon, .tool-card-purple .tool-cta { color: var(--color-purple-deep); }
   .tool-card-teal .tool-icon, .tool-card-teal .tool-cta { color: var(--color-teal); }
   .tool-icon svg { width: 1.55rem; height: 1.55rem; }
-  .tool-title { display: block; font-size: 1.65rem; line-height: 1.25; }
+  .tool-title { display: block; font-size: 1.5rem; line-height: 1.25; }
   .tool-desc {
     display: block;
     margin-top: 0.35rem;
@@ -484,9 +688,16 @@ const premiumFeatures = lang === 'ar'
     white-space: nowrap;
   }
   .usage-panel { display: grid; gap: 1rem; }
+  .usage-intro {
+    margin-top: 0.25rem;
+    color: color-mix(in srgb, var(--color-ink) 64%, transparent);
+    font-size: var(--text-caption);
+    line-height: 1.45;
+  }
+  :global(.dark) .usage-intro { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
   .usage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
   .usage-card {
-    border-radius: 1rem;
+    border-radius: 0.55rem;
     border: 1px solid var(--color-card-edge);
     background: color-mix(in srgb, var(--color-paper-soft) 58%, white);
     padding: 1rem;
@@ -509,7 +720,7 @@ const premiumFeatures = lang === 'ar'
   }
   :global(.dark) .usage-card strong { color: var(--color-mist); }
   .upgrade-panel {
-    border-radius: 1.25rem;
+    border-radius: 0.65rem;
     padding: var(--panel-pad);
     color: white;
     background: var(--color-ink);
@@ -555,7 +766,7 @@ const premiumFeatures = lang === 'ar'
     position: relative;
     width: 100%;
     text-align: start;
-    border-radius: 1rem;
+    border-radius: 0.55rem;
     padding: 1.05rem;
     background: rgb(255 255 255 / 0.1);
     border: 1px solid rgb(255 255 255 / 0.18);
@@ -617,6 +828,16 @@ const premiumFeatures = lang === 'ar'
     text-underline-offset: 0.18em;
   }
   @media (max-width: 780px) {
+    .profile-hero,
+    .dashboard-grid,
+    .quick-panel { grid-template-columns: 1fr; }
+    .profile-card { grid-template-columns: 1fr; text-align: center; }
+    .profile-avatar { margin-inline: auto; }
+    .profile-title { justify-content: center; }
+    .profile-meta { justify-content: center; }
+    .profile-plan-row { align-items: flex-start; }
+    .profile-actions { flex-direction: column; }
+    .quick-actions { grid-template-columns: 1fr; }
     .app-hero { grid-template-columns: 1fr; }
     .app-status { align-items: stretch; }
     .app-status > .flex { flex-direction: column; }
@@ -627,9 +848,828 @@ const premiumFeatures = lang === 'ar'
   }
   @media (prefers-reduced-motion: reduce) {
     .tool-card:hover,
-    .plan-card:hover { transform: none; }
+    .plan-card:hover,
+    .stat-tile:hover,
+    .quick-action:hover { transform: none; }
+    .quick-action:hover .quick-icon svg { transform: none; }
   }
-</style>
+
+  /* Profile dashboard v2: calm, sparse, and action-led. These rules override
+     the older card-heavy dashboard styles above while keeping the same auth
+     wiring and Paddle hooks. */
+  .dashboard-flow {
+    display: grid;
+    gap: 0.9rem;
+  }
+  .profile-strip,
+  .start-panel,
+  .stats-strip,
+  .workspace-panel,
+  .usage-panel,
+  .upgrade-panel,
+  .app-panel,
+  .app-activating {
+    border-radius: 0.55rem;
+    border: 1px solid var(--color-card-edge);
+    background: var(--color-card);
+    box-shadow: 0 12px 28px -22px rgb(23 56 71 / 0.34);
+  }
+  :global(.dark) .profile-strip,
+  :global(.dark) .start-panel,
+  :global(.dark) .stats-strip,
+  :global(.dark) .workspace-panel,
+  :global(.dark) .usage-panel,
+  :global(.dark) .upgrade-panel,
+  :global(.dark) .app-panel,
+  :global(.dark) .app-activating {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+    box-shadow: 0 16px 42px -28px rgb(0 0 0 / 0.78);
+  }
+  .profile-strip {
+    min-height: 7.5rem;
+    padding: 1.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .identity-block {
+    display: flex;
+    align-items: center;
+    gap: 0.95rem;
+    min-width: 0;
+  }
+  .profile-avatar {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.55rem;
+    display: grid;
+    place-items: center;
+    color: white;
+    background: var(--color-ink);
+    box-shadow: 0 14px 24px -18px rgb(23 56 71 / 0.55);
+    font-family: var(--font-display);
+    font-size: 2.15rem;
+    line-height: 1;
+  }
+  :global(.dark) .profile-avatar { background: var(--color-purple-deep); }
+  .identity-copy { min-width: 0; }
+  .profile-title {
+    margin-top: 0.1rem;
+    max-width: 38rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: clamp(2rem, 3.4vw, 3.15rem);
+    line-height: 1.05;
+    color: var(--color-ink);
+  }
+  :global(.dark) .profile-title { color: var(--color-mist); }
+  .profile-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+    font-size: var(--text-caption);
+    font-weight: 700;
+  }
+  :global(.dark) .profile-meta { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .profile-email {
+    max-width: min(30rem, 100%);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    direction: ltr;
+    unicode-bidi: plaintext;
+  }
+  .profile-dot {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 999px;
+    background: var(--color-teal);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-teal) 14%, transparent);
+  }
+  .account-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+  .app-plan-pill {
+    min-width: 0;
+    border-radius: 999px;
+    padding: 0.48rem 0.85rem;
+    background: color-mix(in srgb, var(--color-ink) 7%, transparent);
+    color: var(--color-ink);
+    font-size: var(--text-caption);
+    font-weight: 900;
+  }
+  :global(.dark) .app-plan-pill { color: var(--color-mist); background: color-mix(in srgb, white 9%, transparent); }
+  .app-plan-pill.is-plus {
+    color: white;
+    background: var(--color-purple);
+    box-shadow: 0 12px 24px -16px color-mix(in srgb, var(--color-purple) 80%, transparent);
+  }
+  .app-link {
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-card-edge);
+    background: var(--color-card);
+    padding: 0.55rem 0.85rem;
+    color: var(--color-ink);
+    font-size: var(--text-caption);
+    font-weight: 800;
+    transition: transform .18s var(--ease-out-quart), border-color .18s, box-shadow .18s, color .18s;
+  }
+  :global(.dark) .app-link { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
+  .app-link:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--color-purple) 38%, var(--color-card-edge));
+    box-shadow: var(--shadow-card);
+    color: var(--color-purple-deep);
+  }
+  .app-link-muted { color: color-mix(in srgb, var(--color-ink) 56%, transparent); }
+  :global(.dark) .app-link-muted { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+
+  .start-panel {
+    padding: 1.1rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+  }
+  .start-title,
+  .workspace-title,
+  .panel-title {
+    font-size: clamp(1.65rem, 2.7vw, 2.25rem);
+    line-height: 1.12;
+    color: var(--color-ink);
+  }
+  :global(.dark) .start-title,
+  :global(.dark) .workspace-title,
+  :global(.dark) .panel-title { color: var(--color-mist); }
+  .start-note,
+  .workspace-body,
+  .panel-note {
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    font-size: var(--text-caption);
+    line-height: 1.5;
+  }
+  :global(.dark) .start-note,
+  :global(.dark) .workspace-body,
+  :global(.dark) .panel-note { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .start-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(9.75rem, 1fr));
+    gap: 0.65rem;
+  }
+  .start-action {
+    min-height: 3.3rem;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.7rem 0.95rem;
+    border: 1px solid var(--color-card-edge);
+    background: color-mix(in srgb, var(--color-paper-soft) 64%, white);
+    color: var(--color-ink);
+    font-size: var(--text-caption);
+    font-weight: 900;
+    transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, background-color .2s;
+  }
+  :global(.dark) .start-action { background: color-mix(in srgb, var(--color-coal) 54%, var(--color-coal-soft)); border-color: var(--color-coal-edge); color: var(--color-mist); }
+  .start-action svg { width: 1.1rem; height: 1.1rem; transition: transform .2s var(--ease-out-quart); }
+  .start-action:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--color-teal) 48%, var(--color-card-edge));
+    box-shadow: var(--shadow-card);
+  }
+  .start-action:hover svg { transform: scale(1.1); }
+  .start-action-primary {
+    color: white;
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+  .start-action-primary:hover { background: var(--color-purple); border-color: var(--color-purple); }
+  :global(.dark) .start-action-primary { background: var(--color-purple); border-color: var(--color-purple); color: white; }
+
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .stat-cell {
+    min-height: 5.2rem;
+    padding: 0.9rem 1rem;
+    border-inline-start: 1px solid var(--color-card-edge);
+    display: grid;
+    gap: 0.1rem;
+    align-content: center;
+  }
+  :global(.dark) .stat-cell { border-color: var(--color-coal-edge); }
+  .stat-cell:first-child { border-inline-start: 0; }
+  .stat-value {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-size: clamp(1.7rem, 3vw, 2.45rem);
+    line-height: 1;
+  }
+  :global(.dark) .stat-value { color: var(--color-mist); }
+  .stat-purple { color: var(--color-purple-deep); }
+  .stat-teal { color: var(--color-teal); }
+  .stat-label {
+    color: color-mix(in srgb, var(--color-ink) 58%, transparent);
+    font-size: var(--text-caption);
+    font-weight: 800;
+  }
+  :global(.dark) .stat-label { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
+
+  .workspace-panel,
+  .usage-panel,
+  .upgrade-panel,
+  .app-panel { padding: clamp(1rem, 2vw, 1.35rem); }
+  .workspace-head { margin-bottom: 0.85rem; }
+  .workspace-list {
+    display: grid;
+    gap: 0.55rem;
+  }
+  .workspace-row {
+    min-height: 5.4rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-card-edge);
+    background: color-mix(in srgb, var(--color-paper-soft) 48%, white);
+    padding: 0.8rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 0.8rem;
+    transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, background-color .2s;
+  }
+  :global(.dark) .workspace-row { background: color-mix(in srgb, var(--color-coal) 50%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
+  .workspace-row:hover {
+    transform: translateY(-2px);
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
+  }
+  :global(.dark) .workspace-row:hover { background: var(--color-coal-soft); }
+  .workspace-row-purple:hover { border-color: color-mix(in srgb, var(--color-purple) 42%, var(--color-card-edge)); }
+  .workspace-row-teal:hover { border-color: color-mix(in srgb, var(--color-teal) 46%, var(--color-card-edge)); }
+  .workspace-icon {
+    width: 2.65rem;
+    height: 2.65rem;
+    border-radius: 0.5rem;
+    display: grid;
+    place-items: center;
+    color: var(--color-purple-deep);
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+  }
+  .workspace-row-teal .workspace-icon,
+  .workspace-row-teal .workspace-cta { color: var(--color-teal); }
+  :global(.dark) .workspace-icon { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .workspace-icon svg { width: 1.25rem; height: 1.25rem; }
+  .workspace-main { min-width: 0; }
+  .workspace-row-title {
+    display: block;
+    color: var(--color-ink);
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+  :global(.dark) .workspace-row-title { color: var(--color-mist); }
+  .workspace-row-desc {
+    display: block;
+    margin-top: 0.18rem;
+    color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+    font-size: var(--text-caption);
+    line-height: 1.4;
+  }
+  :global(.dark) .workspace-row-desc { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .workspace-usage {
+    color: color-mix(in srgb, var(--color-ink) 56%, transparent);
+    font-size: var(--text-caption);
+    font-weight: 900;
+    white-space: nowrap;
+  }
+  :global(.dark) .workspace-usage { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+  .workspace-cta {
+    color: var(--color-purple-deep);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: var(--text-caption);
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .lower-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+    gap: 0.9rem;
+    align-items: stretch;
+  }
+  .usage-panel,
+  .upgrade-panel {
+    display: grid;
+    gap: 0.9rem;
+  }
+  .usage-list {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .usage-row {
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-card-edge);
+    padding: 0.75rem 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    background: color-mix(in srgb, var(--color-paper-soft) 50%, white);
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    font-size: var(--text-caption);
+    font-weight: 800;
+  }
+  :global(.dark) .usage-row { background: color-mix(in srgb, var(--color-coal) 50%, var(--color-coal-soft)); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .usage-row strong {
+    color: var(--color-ink);
+    font-size: var(--text-small);
+    white-space: nowrap;
+  }
+  :global(.dark) .usage-row strong { color: var(--color-mist); }
+
+  .upgrade-panel {
+    color: var(--color-ink);
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+  :global(.dark) .upgrade-panel { color: var(--color-mist); }
+  .upgrade-tags {
+    margin-top: 0.65rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .upgrade-tags span {
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-purple) 22%, var(--color-card-edge));
+    padding: 0.28rem 0.62rem;
+    color: color-mix(in srgb, var(--color-ink) 68%, transparent);
+    background: color-mix(in srgb, var(--color-purple) 6%, transparent);
+    font-size: 0.94rem;
+    font-weight: 800;
+  }
+  :global(.dark) .upgrade-tags span { color: color-mix(in srgb, var(--color-mist) 72%, transparent); border-color: color-mix(in srgb, var(--color-purple) 28%, var(--color-coal-edge)); }
+  .upgrade-actions {
+    display: grid;
+    gap: 0.5rem;
+    min-width: min(18rem, 100%);
+  }
+  .upgrade-btn {
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-card-edge);
+    background: var(--color-card);
+    color: var(--color-ink);
+    padding: 0.72rem 0.9rem;
+    display: grid;
+    gap: 0.08rem;
+    text-align: center;
+    font-weight: 900;
+    transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, background-color .2s;
+  }
+  .upgrade-btn small {
+    color: color-mix(in srgb, currentColor 62%, transparent);
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+  :global(.dark) .upgrade-btn { background: var(--color-coal-soft); color: var(--color-mist); border-color: var(--color-coal-edge); }
+  .upgrade-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+    border-color: color-mix(in srgb, var(--color-purple) 38%, var(--color-card-edge));
+  }
+  .upgrade-btn-primary {
+    color: white;
+    background: var(--color-purple);
+    border-color: var(--color-purple);
+  }
+  :global(.dark) .upgrade-btn-primary { color: white; background: var(--color-purple); border-color: var(--color-purple); }
+
+  @media (max-width: 900px) {
+    .profile-strip,
+    .start-panel,
+    .upgrade-panel { grid-template-columns: 1fr; }
+    .profile-strip { align-items: stretch; }
+    .account-actions { justify-content: flex-start; }
+    .start-actions { grid-template-columns: 1fr; }
+    .lower-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    .profile-strip,
+    .start-panel,
+    .workspace-panel,
+    .usage-panel,
+    .upgrade-panel,
+    .app-panel { padding: 0.9rem; }
+    .identity-block { align-items: flex-start; }
+    .profile-avatar { width: 3.35rem; height: 3.35rem; font-size: 1.75rem; }
+    .profile-title { font-size: 2rem; white-space: normal; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .stat-cell:nth-child(3) { border-inline-start: 0; border-top: 1px solid var(--color-card-edge); }
+    .stat-cell:nth-child(4) { border-top: 1px solid var(--color-card-edge); }
+    :global(.dark) .stat-cell:nth-child(3),
+    :global(.dark) .stat-cell:nth-child(4) { border-top-color: var(--color-coal-edge); }
+    .workspace-row {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+    }
+    .workspace-usage,
+    .workspace-cta {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .app-link:hover,
+    .start-action:hover,
+    .workspace-row:hover,
+    .upgrade-btn:hover { transform: none; }
+    .start-action:hover svg { transform: none; }
+  }
+
+  /* Profile dashboard v3: fewer visible boxes, clearer action hierarchy. */
+  .profile-dashboard {
+    gap: 0.8rem;
+  }
+  .profile-dashboard:not(.hidden) { display: grid; }
+  .profile-shell,
+  .command-bar,
+  .workspace-panel,
+  .usage-disclosure,
+  .upgrade-nudge,
+  .app-panel,
+  .app-activating {
+    border-radius: 0.62rem;
+    border: 1px solid var(--color-card-edge);
+    background: var(--color-card);
+    box-shadow: 0 16px 34px -26px rgb(23 56 71 / 0.36);
+  }
+  :global(.dark) .profile-shell,
+  :global(.dark) .command-bar,
+  :global(.dark) .workspace-panel,
+  :global(.dark) .usage-disclosure,
+  :global(.dark) .upgrade-nudge,
+  :global(.dark) .app-panel,
+  :global(.dark) .app-activating {
+    background: var(--color-coal-soft);
+    border-color: var(--color-coal-edge);
+    box-shadow: 0 18px 42px -30px rgb(0 0 0 / 0.8);
+  }
+  .profile-shell {
+    padding: clamp(1rem, 2vw, 1.35rem);
+    display: grid;
+    gap: 1rem;
+  }
+  .profile-main-row,
+  .profile-support-row,
+  .command-bar,
+  .profile-info-rail {
+    display: grid;
+    align-items: center;
+    gap: 1rem;
+  }
+  .upgrade-nudge:not(.hidden) {
+    display: grid;
+    align-items: center;
+    gap: 1rem;
+  }
+  .profile-main-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .profile-support-row {
+    grid-template-columns: minmax(0, 0.78fr) minmax(20rem, 1fr);
+    padding-top: 0.95rem;
+    border-top: 1px solid var(--color-card-edge);
+  }
+  :global(.dark) .profile-support-row { border-color: var(--color-coal-edge); }
+  .identity-block { gap: 0.85rem; }
+  .profile-avatar {
+    width: 3.65rem;
+    height: 3.65rem;
+    border-radius: 0.5rem;
+    font-size: 1.95rem;
+  }
+  .profile-title {
+    font-size: clamp(2rem, 3.1vw, 2.85rem);
+    max-width: 34rem;
+  }
+  .profile-note {
+    margin: 0;
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    font-size: var(--text-caption);
+    font-weight: 800;
+    line-height: 1.55;
+  }
+  :global(.dark) .profile-note { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .profile-metrics {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-card-edge);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--color-paper-soft) 56%, white);
+  }
+  :global(.dark) .profile-metrics {
+    background: color-mix(in srgb, var(--color-coal) 48%, var(--color-coal-soft));
+    border-color: var(--color-coal-edge);
+  }
+  .metric-item {
+    min-width: 0;
+    min-height: 4.15rem;
+    padding: 0.72rem 0.82rem;
+    display: grid;
+    align-content: center;
+    gap: 0.08rem;
+    color: color-mix(in srgb, var(--color-ink) 58%, transparent);
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+  .metric-item + .metric-item { border-inline-start: 1px solid var(--color-card-edge); }
+  :global(.dark) .metric-item {
+    color: color-mix(in srgb, var(--color-mist) 64%, transparent);
+  }
+  :global(.dark) .metric-item + .metric-item { border-color: var(--color-coal-edge); }
+  .metric-value {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(1.28rem, 2.1vw, 1.8rem);
+    line-height: 1;
+  }
+  :global(.dark) .metric-value { color: var(--color-mist); }
+  .app-link {
+    appearance: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .command-bar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: clamp(1rem, 2vw, 1.25rem);
+  }
+  .command-copy { min-width: 0; }
+  .command-title,
+  .nudge-title {
+    color: var(--color-ink);
+    font-size: clamp(1.55rem, 2.4vw, 2.1rem);
+    line-height: 1.16;
+  }
+  :global(.dark) .command-title,
+  :global(.dark) .nudge-title { color: var(--color-mist); }
+  .command-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.58rem;
+    flex-wrap: wrap;
+  }
+  .command-action {
+    min-height: 3.18rem;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.7rem 0.95rem;
+    border: 1px solid var(--color-card-edge);
+    background: color-mix(in srgb, var(--color-paper-soft) 58%, white);
+    color: var(--color-ink);
+    font-size: var(--text-caption);
+    font-weight: 900;
+    white-space: nowrap;
+    transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, background-color .2s, color .2s;
+  }
+  :global(.dark) .command-action {
+    background: color-mix(in srgb, var(--color-coal) 52%, var(--color-coal-soft));
+    border-color: var(--color-coal-edge);
+    color: var(--color-mist);
+  }
+  .command-action svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    transition: transform .2s var(--ease-out-quart);
+  }
+  .command-action:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--color-teal) 46%, var(--color-card-edge));
+    box-shadow: var(--shadow-card);
+    background: var(--color-card);
+  }
+  .command-action:hover svg { transform: scale(1.08); }
+  .command-action-primary {
+    color: white;
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+  .command-action-primary:hover {
+    color: white;
+    background: var(--color-purple);
+    border-color: var(--color-purple);
+  }
+  :global(.dark) .command-action-primary {
+    color: white;
+    background: var(--color-purple);
+    border-color: var(--color-purple);
+  }
+
+  .workspace-panel { padding: clamp(1rem, 2vw, 1.25rem); }
+  .workspace-head { margin-bottom: 0.75rem; }
+  .workspace-row {
+    min-height: 4.8rem;
+    background: transparent;
+    box-shadow: none;
+  }
+  .workspace-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -24px rgb(23 56 71 / 0.5);
+  }
+  .workspace-row-desc { max-width: 58rem; }
+
+  .profile-info-rail {
+    grid-template-columns: minmax(0, 0.52fr) minmax(0, 1.48fr);
+    align-items: stretch;
+  }
+  .usage-disclosure {
+    padding: 0;
+    overflow: hidden;
+  }
+  .usage-disclosure summary {
+    min-height: 4.8rem;
+    padding: 0.95rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .usage-disclosure summary::-webkit-details-marker { display: none; }
+  .usage-disclosure summary strong {
+    display: block;
+    color: var(--color-ink);
+    font-size: var(--text-small);
+    line-height: 1.25;
+  }
+  :global(.dark) .usage-disclosure summary strong { color: var(--color-mist); }
+  .usage-disclosure summary svg {
+    width: 1.05rem;
+    height: 1.05rem;
+    color: color-mix(in srgb, var(--color-ink) 54%, transparent);
+    transition: transform .2s var(--ease-out-quart);
+  }
+  :global(.dark) .usage-disclosure summary svg { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .usage-disclosure[open] summary svg { transform: rotate(180deg); }
+  .usage-inline-list {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0 1rem 1rem;
+  }
+  .usage-inline-row {
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-card-edge);
+    padding: 0.68rem 0.78rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    font-size: var(--text-caption);
+    font-weight: 800;
+  }
+  :global(.dark) .usage-inline-row {
+    border-color: var(--color-coal-edge);
+    color: color-mix(in srgb, var(--color-mist) 66%, transparent);
+  }
+  .usage-inline-row strong {
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+  :global(.dark) .usage-inline-row strong { color: var(--color-mist); }
+
+  .upgrade-nudge {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.68fr);
+    padding: clamp(1.2rem, 2.4vw, 1.65rem);
+    overflow: hidden;
+    color: white;
+    background:
+      radial-gradient(circle at 12% 0%, rgb(255 255 255 / 0.18), transparent 34%),
+      linear-gradient(135deg, var(--color-ink) 0%, #243f4a 54%, #5b36e9 100%);
+    border-color: color-mix(in srgb, var(--color-purple) 38%, var(--color-ink));
+    box-shadow: 0 24px 52px -30px color-mix(in srgb, var(--color-purple) 62%, black);
+  }
+  :global(.dark) .upgrade-nudge {
+    background:
+      radial-gradient(circle at 12% 0%, rgb(255 255 255 / 0.16), transparent 34%),
+      linear-gradient(135deg, var(--color-coal-soft) 0%, #172f39 56%, #4f2fce 100%);
+    border-color: color-mix(in srgb, var(--color-purple) 42%, var(--color-coal-edge));
+  }
+  .upgrade-nudge .app-kicker {
+    color: color-mix(in srgb, white 78%, var(--color-teal));
+  }
+  .upgrade-lead {
+    margin-top: 0.18rem;
+    max-width: 46rem;
+    color: white;
+    font-size: clamp(1.55rem, 2.55vw, 2.35rem);
+    line-height: 1.18;
+  }
+  .upgrade-nudge .upgrade-actions {
+    display: grid;
+    gap: 0.7rem;
+    min-width: min(22rem, 100%);
+  }
+  .upgrade-nudge .upgrade-btn {
+    min-height: 5.15rem;
+    border-radius: 0.78rem;
+    padding: 1rem 1.15rem;
+    border-color: rgb(255 255 255 / 0.22);
+    color: white;
+    background: rgb(255 255 255 / 0.1);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14);
+  }
+  .upgrade-nudge .upgrade-btn span {
+    font-size: clamp(1.18rem, 2vw, 1.7rem);
+    line-height: 1.12;
+    white-space: normal;
+  }
+  .upgrade-nudge .upgrade-btn small {
+    color: rgb(255 255 255 / 0.72);
+    font-size: clamp(0.95rem, 1.4vw, 1.08rem);
+  }
+  .upgrade-nudge .upgrade-btn:hover {
+    transform: translateY(-3px);
+    border-color: rgb(255 255 255 / 0.42);
+    box-shadow: 0 18px 34px -24px rgb(0 0 0 / 0.72), inset 0 1px 0 rgb(255 255 255 / 0.18);
+  }
+  .upgrade-nudge .upgrade-btn-primary {
+    background: linear-gradient(135deg, #8d62ff 0%, var(--color-purple) 60%, #5b36e9 100%);
+    border-color: transparent;
+    box-shadow: 0 20px 42px -24px rgb(124 77 255 / 0.95), inset 0 1px 0 rgb(255 255 255 / 0.2);
+  }
+  .upgrade-nudge .upgrade-btn-primary:hover {
+    border-color: transparent;
+    box-shadow: 0 24px 46px -24px rgb(124 77 255 / 1), inset 0 1px 0 rgb(255 255 255 / 0.26);
+  }
+
+  @media (max-width: 980px) {
+    .profile-main-row,
+    .profile-support-row,
+    .command-bar,
+    .profile-info-rail,
+    .upgrade-nudge { grid-template-columns: 1fr; }
+    .account-actions,
+    .command-actions { justify-content: flex-start; }
+  }
+  @media (max-width: 680px) {
+    .profile-shell,
+    .command-bar,
+    .workspace-panel,
+    .app-panel,
+    .upgrade-nudge { padding: 0.9rem; }
+    .profile-support-row { padding-top: 0.85rem; }
+    .profile-avatar {
+      width: 3.25rem;
+      height: 3.25rem;
+      font-size: 1.68rem;
+    }
+    .profile-title {
+      max-width: 100%;
+      white-space: normal;
+      font-size: 1.95rem;
+    }
+    .profile-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .metric-item:nth-child(3) {
+      border-inline-start: 0;
+      border-top: 1px solid var(--color-card-edge);
+    }
+    .metric-item:nth-child(4) { border-top: 1px solid var(--color-card-edge); }
+    :global(.dark) .metric-item:nth-child(3),
+    :global(.dark) .metric-item:nth-child(4) { border-top-color: var(--color-coal-edge); }
+    .command-actions { display: grid; grid-template-columns: 1fr; }
+    .command-action { width: 100%; }
+    .profile-info-rail { gap: 0.75rem; }
+    .upgrade-nudge .upgrade-actions { min-width: 0; }
+    .upgrade-nudge .upgrade-btn { min-height: 4.65rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .command-action:hover,
+    .workspace-row:hover,
+    .upgrade-btn:hover { transform: none; }
+    .command-action:hover svg,
+    .usage-disclosure[open] summary svg { transform: none; }
+  }
+  </style>
 
 <style is:global>
   /* Recent-activity rows are built in JS (renderRecent), so they must be styled
@@ -664,7 +1704,6 @@ const premiumFeatures = lang === 'ar'
   const root = document.querySelector<HTMLElement>('[data-hub-root]');
   if (root) {
     const lang = root.dataset.lang === 'en' ? 'en' : 'ar';
-    const login = root.dataset.login || '/login';
     const home = root.dataset.home || '/';
     const WORKER = 'https://irab-api-v2.mansourhassan783.workers.dev';
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
@@ -672,6 +1711,8 @@ const premiumFeatures = lang === 'ar'
     const gate = q<HTMLElement>('[data-hub-gate]');
     const hub = q<HTMLElement>('[data-hub]');
     const nameEl = q<HTMLElement>('[data-hub-name]');
+    const emailEl = q<HTMLElement>('[data-hub-email]');
+    const avatarEl = q<HTMLElement>('[data-hub-avatar]');
     const planEl = q<HTMLElement>('[data-hub-plan]');
     const planNoteEl = q<HTMLElement>('[data-plan-note]');
     const upgradeEl = q<HTMLElement>('[data-hub-upgrade]');
@@ -681,7 +1722,7 @@ const premiumFeatures = lang === 'ar'
           plus: 'إعراب بلس',
           free: 'الخطة المجانية',
           plusNote: 'اشتراكك فعّال على الويب والتطبيق بالحساب نفسه.',
-          freeNote: 'حدود يومية واضحة، وترقية واحدة تفتح كل شيء.',
+          freeNote: 'خطة مجانية نشطة. ابدأ بما تحتاجه الآن.',
           unlimited: 'غير محدود',
           leftToday: (n: number) => `${n} متبقٍ`,
           user: 'مستخدم',
@@ -690,7 +1731,7 @@ const premiumFeatures = lang === 'ar'
           plus: 'Irab Plus',
           free: 'Free plan',
           plusNote: 'Your subscription is active on web and mobile with the same account.',
-          freeNote: 'Clear daily limits, with one upgrade for everything.',
+          freeNote: 'Your free plan is active. Start with what you need now.',
           unlimited: 'Unlimited',
           leftToday: (n: number) => `${n} left`,
           user: 'User',
@@ -722,15 +1763,18 @@ const premiumFeatures = lang === 'ar'
       const empty = root!.querySelector<HTMLElement>('[data-recent-empty]');
       const seeAll = root!.querySelector<HTMLElement>('[data-recent-seeall]');
       if (!section || !list) return;
-      section.classList.remove('hidden');
+      section.classList.add('hidden');
+      empty?.classList.add('hidden');
+      seeAll?.classList.add('hidden');
+      list.replaceChildren();
       const items = getHistory(uid).slice(0, 5);
-      if (!items.length) { empty?.classList.remove('hidden'); return; }
+      if (!items.length) return;
+      section.classList.remove('hidden');
       seeAll?.classList.remove('hidden');
       const toolBase = lang === 'ar' ? '/tool' : '/en/tool';
       const practiceBase = lang === 'ar' ? '/practice/play' : '/en/practice/play';
       const icA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>';
       const icP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>';
-      list.replaceChildren();
       for (const it of items) {
         const isA = it.kind === 'analyze';
         const meta = isA
@@ -777,6 +1821,9 @@ const premiumFeatures = lang === 'ar'
 
           const name = u.displayName || (u.email ? u.email.split('@')[0] : T.user);
           nameEl.textContent = name;
+          emailEl.textContent = u.email || '';
+          const initialSource = (u.displayName || u.email || T.user).trim();
+          avatarEl.textContent = initialSource ? Array.from(initialSource)[0] : (lang === 'ar' ? 'إ' : 'I');
 
           // Stats + recent activity from this account's saved history.
           try { renderStats(u.uid); renderRecent(u.uid); } catch {}

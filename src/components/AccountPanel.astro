@@ -34,7 +34,7 @@ const t = lang === 'ar'
       upgrade: 'الترقية إلى إعراب بلس',
       // explore
       explore: 'استكشف',
-      openApp: 'تطبيقي', appDesc: 'أدواتك ولوحتك',
+      openApp: 'لوحة الحساب', appDesc: 'أدواتك وتقدّمك',
       history: 'سجلّي', historyDesc: 'تحليلاتك وتمارينك',
       dictionary: 'المعجم', dictionaryDesc: 'معجم عربي ذكي',
       library: 'المكتبة', libraryDesc: '٤٧ كتابًا كلاسيكيًّا',
@@ -53,7 +53,7 @@ const t = lang === 'ar'
       plan: 'Subscription', planChecking: 'Checking…',
       upgrade: 'Upgrade to Irab Plus',
       explore: 'Explore',
-      openApp: 'My app', appDesc: 'Your tools & dashboard',
+      openApp: 'Profile dashboard', appDesc: 'Your tools & progress',
       history: 'My history', historyDesc: 'Analyses & practice',
       dictionary: 'Dictionary', dictionaryDesc: 'Smart Arabic dictionary',
       library: 'Library', libraryDesc: '47 classical books',
@@ -78,10 +78,7 @@ const t = lang === 'ar'
       <div class="acct-hero-top">
         <div data-avatar class="acct-avatar acct-avatar-real"></div>
         <div class="acct-id-main">
-          <div class="acct-name-row">
-            <h1 data-name class="acct-name"></h1>
-            <span data-provider class="acct-provider hidden"></span>
-          </div>
+          <h1 data-name class="acct-name"></h1>
           <p data-email dir="ltr" class="acct-email"></p>
         </div>
       </div>
@@ -180,7 +177,9 @@ const t = lang === 'ar'
 
 <style>
   .acct { width: 100%; max-width: 38rem; margin-inline: auto; }
-  .acct-stack { display: grid; gap: 1rem; }
+  .acct .hidden { display: none !important; }
+  .acct-stack { gap: 1rem; }
+  .acct-stack:not(.hidden) { display: grid; }
   .acct-card {
     background: var(--color-card); border: 1px solid var(--color-card-edge);
     border-radius: 1.1rem; box-shadow: var(--shadow-card); padding: 1.5rem;
@@ -205,15 +204,8 @@ const t = lang === 'ar'
   }
   .acct-avatar-real.has-photo { background-image: var(--photo); }
   .acct-id-main { min-width: 0; }
-  .acct-name-row { display: flex; align-items: center; gap: 0.55rem; min-width: 0; }
   .acct-name { font-family: var(--font-sans); font-weight: 800; font-size: 1.55rem; line-height: 1.2; color: var(--color-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   :global(.dark) .acct-name { color: var(--color-mist); }
-  .acct-provider {
-    flex: none; font-size: 0.72rem; font-weight: 800; padding: 0.16rem 0.55rem; border-radius: 999px;
-    color: color-mix(in srgb, var(--color-ink) 64%, transparent);
-    background: color-mix(in srgb, var(--color-ink) 8%, transparent);
-  }
-  :global(.dark) .acct-provider { color: color-mix(in srgb, var(--color-mist) 68%, transparent); background: color-mix(in srgb, var(--color-mist) 12%, transparent); }
   .acct-email { margin-top: 0.2rem; font-size: 1rem; color: color-mix(in srgb, var(--color-ink) 60%, transparent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   :global(.dark) .acct-email { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
   .acct-hero-foot { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; }
@@ -327,12 +319,7 @@ const t = lang === 'ar'
       : { free: 'Free', plus: 'Irab Plus',
           noteFree: 'You get 3 analyses a day. Upgrade for unlimited i\'rab, the full practice bank, and annual certificates.',
           notePlus: 'Your subscription is active on all your devices: web and app. ✓' };
-    const providerName: Record<string, string> = {
-      'google.com': 'Google', 'apple.com': 'Apple',
-      'password': lang === 'ar' ? 'البريد' : 'Email',
-    };
     const memberSince = lang === 'ar' ? 'عضو منذ' : 'Member since';
-    const via = lang === 'ar' ? 'عبر' : 'via';
 
     onAuth((u) => {
       if (!u) { forgetSignedIn(); window.location.replace(login); return; }
@@ -351,14 +338,6 @@ const t = lang === 'ar'
         avatar.style.setProperty('--photo', `url("${u.photoURL}")`);
       } else {
         avatar.textContent = (name.trim()[0] || '?').toUpperCase();
-      }
-
-      // Provider chip.
-      const pid = u.providerData?.[0]?.providerId;
-      if (pid && providerName[pid]) {
-        const prov = q<HTMLElement>('[data-provider]');
-        prov.textContent = `${via} ${providerName[pid]}`;
-        prov.classList.remove('hidden');
       }
 
       // Member since (creation month/year).
