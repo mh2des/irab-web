@@ -162,7 +162,7 @@ const t = lang === 'ar'
              cards so they're noticed, not under the input box ── */}
         <div data-demo-actions class="hidden mb-10 flex items-center justify-center flex-wrap gap-3">
           <button type="button" data-act-copy class="act-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             <span data-act-copy-label>{t.copy}</span>
           </button>
           <button type="button" data-act-share class="act-btn act-btn-primary">
@@ -170,7 +170,7 @@ const t = lang === 'ar'
             <span>{t.share}</span>
           </button>
           <button type="button" data-act-pdf class="act-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1 1-2 2H5a2 2 0 0 1 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
             <span>{t.pdf}</span>
           </button>
         </div>
@@ -372,8 +372,15 @@ const t = lang === 'ar'
     font-family: var(--font-arabic); font-size: 1.1rem; font-weight: 700; line-height: 1;
     color: var(--color-ink);
     background: var(--color-card); border: 1.5px solid var(--color-card-edge);
+    appearance: none; list-style: none; text-decoration: none;
     cursor: pointer; box-shadow: var(--shadow-card);
     transition: color .2s, border-color .2s, transform .22s var(--ease-out-quart), box-shadow .22s var(--ease-out-quart);
+  }
+  .act-btn::before,
+  .act-btn::after,
+  .act-btn::marker {
+    content: none;
+    display: none;
   }
   :global(.dark) .act-btn { color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .act-btn:hover { color: var(--color-purple); border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
@@ -582,18 +589,11 @@ const t = lang === 'ar'
         submitLabelEl.textContent = i18n.parse;
         return;
       }
-      // Anonymous: 2 lifetime tries, then the sign in gate.
+      // Anonymous: keep the free quota invisible until it is spent, then ask
+      // for sign-in. Do not reveal "2 free parses" on first visit.
       const remaining = Math.max(0, MAX_FREE - getQuota());
-      quotaEl.textContent = i18n.remainingN(remaining);
-      quotaDots.forEach((dot, i) => {
-        if (i < remaining) {
-          dot.classList.add('bg-purple');
-          dot.classList.remove('bg-transparent', 'border', 'border-purple/30');
-        } else {
-          dot.classList.remove('bg-purple');
-          dot.classList.add('bg-transparent', 'border', 'border-purple/30');
-        }
-      });
+      quotaEl.textContent = '';
+      quotaDots.forEach((dot) => dot.classList.add('hidden'));
       // Only gate truly-anonymous visitors. If the signed in flag is present, auth
       // is resolving and the signed in branch will run in a moment: don't flash the gate.
       if (remaining === 0 && !maybeSignedIn()) {
