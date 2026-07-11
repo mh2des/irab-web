@@ -32,8 +32,8 @@ interface Props {
 }
 
 const {
-  title = "إعراب · اقرأ العربية كما يقرؤها العلماء.",
-  description = "إعراب آلي للعربية والقرآن مدعوم بالذكاء الاصطناعي.",
+  title = "إعراب: موقع إعراب الجمل بالذكاء الاصطناعي · أعرِب أي جملة فورًا",
+  description = "موقع إعراب مباشر: ألصق أي جملة عربية واحصل على إعرابها كلمة بكلمة بالذكاء الاصطناعي، مع تدريب وتحديات وإعراب القرآن كاملًا.",
   lang = 'ar',
   ogImage = '/og-default.png',
   noindex = false,
@@ -45,6 +45,18 @@ const {
 const dir = lang === 'ar' ? 'rtl' : 'ltr';
 const path = pathOverride ?? Astro.url.pathname;
 const canonical = canonicalOverride ? new URL(canonicalOverride) : new URL(path, Astro.site);
+
+// Site-wide WebSite entity: names the site for SERP display and helps
+// search/answer engines reconcile إعراب (ar) and Irab (en) as one entity.
+const webSite = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'إعراب',
+  alternateName: ['Irab', 'irab.app', 'موقع إعراب'],
+  url: 'https://irab.app/',
+  inLanguage: ['ar', 'en'],
+  publisher: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
+};
 
 // Arabic is default (root). English lives under /en/*.
 const stripEn = (p: string) => p.replace(/^\/en(?=\/|$)/, '') || '/';
@@ -63,6 +75,8 @@ const hasAlternate = lang === 'en' || hasEn;
   <meta name="generator" content={Astro.generator} />
 
   <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/icons/Icon-192.png" />
+  <link rel="manifest" href="/manifest.json" />
   <link rel="canonical" href={canonical.toString()} />
 
   {/* Preload the three self-hosted faces (body, display, Quran) for fast,
@@ -120,6 +134,8 @@ const hasAlternate = lang === 'en' || hasEn;
       } catch (e) {}
     })();
   </script>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webSite)} is:inline />
 
   <slot name="head" />
 
