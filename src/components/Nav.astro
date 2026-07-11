@@ -11,7 +11,8 @@ const { lang = 'ar' } = Astro.props;
 const t = lang === 'ar'
   ? {
       tryDemo:  'محلّل الإعراب',
-      practice: 'المدرّب',
+      practice: 'التدريب',
+      challenges: 'التحديات',
       dictionary: 'المعجم',
       quran:    'إعراب القرآن',
       library:  'المكتبة',
@@ -24,7 +25,8 @@ const t = lang === 'ar'
     }
   : {
       tryDemo:  "I'rab analyzer",
-      practice: 'Trainer',
+      practice: 'Practice',
+      challenges: 'Challenges',
       dictionary: 'Dictionary',
       quran:    "Quran i'rab",
       library:  'Library',
@@ -40,7 +42,8 @@ const t = lang === 'ar'
 const home = lang === 'ar' ? '/' : '/en';
 const quranHref = lang === 'ar' ? '/quran' : '/en/quran'; // Quran-i'rab section (en mirror = pilot)
 const toolHref = lang === 'ar' ? '/tool' : '/en/tool'; // the AI analyzer landing page
-const practiceHref = lang === 'ar' ? '/practice' : '/en/practice'; // do-it-yourself + AI feedback
+const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play'; // do-it-yourself + AI feedback
+const challengesHref = lang === 'ar' ? '/challenges' : '/en/challenges'; // ready-made answer-choice drills
 const dictionaryHref = lang === 'ar' ? '/dictionary' : '/en/dictionary'; // smart dictionary tool
 const libraryHref = lang === 'ar' ? '/library' : '/en/library'; // classical grammar library
 const signinHref = lang === 'ar' ? '/login' : '/en/login'; // web account
@@ -54,10 +57,13 @@ const otherUrl = lang === 'ar'
 
 // A nav tab is "active" on its own page and any sub-page (e.g. /practice/play
 // keeps Practice active, /quran/al-fatihah keeps Quran active).
-const isActive = (href: string) => path === href || path.startsWith(href + '/');
+const isActive = (href: string) =>
+  path === href ||
+  path.startsWith(href + '/') ||
+  (href === practiceHref && path === (lang === 'ar' ? '/practice' : '/en/practice'));
 ---
 <nav class="sticky top-0 z-50 bg-paper/90 dark:bg-coal/90 backdrop-blur-xl border-b border-stone/70 dark:border-coal-edge/70">
-  <Container>
+  <Container size="wide">
     <div class="flex items-center justify-between py-3 gap-3">
       {/* Logo: pulled snug into the corner */}
       <a href={home} class="flex items-center gap-2.5 shrink-0 group -ms-1">
@@ -69,6 +75,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
       <div class="nav-bar hidden xl:flex items-center gap-1 text-caption">
         <a href={toolHref}           class:list={['nav-link', { 'is-active': isActive(toolHref) }]}       aria-current={isActive(toolHref) ? 'page' : undefined}>{t.tryDemo}</a>
         <a href={practiceHref}       class:list={['nav-link', { 'is-active': isActive(practiceHref) }]}   aria-current={isActive(practiceHref) ? 'page' : undefined}>{t.practice}</a>
+        <a href={challengesHref}     class:list={['nav-link', { 'is-active': isActive(challengesHref) }]} aria-current={isActive(challengesHref) ? 'page' : undefined}>{t.challenges}</a>
         <a href={dictionaryHref}     class:list={['nav-link', { 'is-active': isActive(dictionaryHref) }]} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
         <a href={quranHref}          class:list={['nav-link', { 'is-active': isActive(quranHref) }]}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
         <a href={libraryHref}        class:list={['nav-link', { 'is-active': isActive(libraryHref) }]}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
@@ -142,6 +149,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
       <div class="py-6 flex flex-col gap-1">
         <a href={toolHref}           class:list={['nav-mlink', isActive(toolHref) && 'is-active']}       aria-current={isActive(toolHref) ? 'page' : undefined}>{t.tryDemo}</a>
         <a href={practiceHref}       class:list={['nav-mlink', isActive(practiceHref) && 'is-active']}   aria-current={isActive(practiceHref) ? 'page' : undefined}>{t.practice}</a>
+        <a href={challengesHref}     class:list={['nav-mlink', isActive(challengesHref) && 'is-active']} aria-current={isActive(challengesHref) ? 'page' : undefined}>{t.challenges}</a>
         <a href={dictionaryHref}     class:list={['nav-mlink', isActive(dictionaryHref) && 'is-active']} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
         <a href={quranHref}          class:list={['nav-mlink', isActive(quranHref) && 'is-active']}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
         <a href={libraryHref}        class:list={['nav-mlink', isActive(libraryHref) && 'is-active']}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
@@ -188,7 +196,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
 
   /* Each link is a pill that fills + lifts with a soft shadow on hover. */
   .nav-link {
-    padding: 0.5rem 1.15rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
     color: color-mix(in srgb, var(--color-ink) 68%, transparent);
     white-space: nowrap;

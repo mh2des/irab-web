@@ -1,6 +1,6 @@
 ---
 /**
- * /en/practice: mode-first practice landing (English).
+ * /en/practice: AI-feedback practice landing (English).
  *
  * Indexed SEO surface for interactive i'rab practice. Firebase must stay out of
  * this static page; the signed-in tool lives at /en/practice/play.
@@ -12,9 +12,9 @@ import ArticleFaq from '../../components/ArticleFaq.astro';
 import Footer from '../../components/sections/Footer.astro';
 
 const faqs = [
-  { q: 'Which practice mode should I start with?', a: 'Start with Write Your Sentence if you want AI feedback on a sentence you choose. Pick Curated Sentences when you want faster practice with fixed answer choices.' },
+  { q: 'What is the difference between Practice and Challenges?', a: "In Practice, you write your own sentence and i'rab for AI feedback. Challenges use ready-made sentences and fixed answer choices." },
   { q: 'Is practice free?', a: 'Yes. You can start free after signing in. Irab Plus unlocks larger daily limits and more practice access.' },
-  { q: 'Do I need to know every grammar chapter first?', a: 'No. Curated Sentences gives you structured choices, while Write Your Sentence explains mistakes word by word.' },
+  { q: 'Do I need to know every grammar chapter first?', a: 'No. Start with a short sentence and write what you know; the feedback explains mistakes word by word.' },
   { q: 'Is the correction instant?', a: 'Yes. After submitting your answers, you get a score and a word-by-word correction showing the right answer.' },
 ];
 
@@ -24,19 +24,19 @@ const learningResource = {
   name: "Interactive Arabic i'rab practice with instant feedback: Irab",
   url: 'https://irab.app/en/practice',
   inLanguage: 'en',
-  learningResourceType: ['Exercise', 'Quiz', 'Game'],
+  learningResourceType: ['Exercise'],
   teaches: ["i'rab", 'Arabic grammar', 'nahw'],
   educationalLevel: 'beginner to advanced',
   isAccessibleForFree: true,
   description:
-    "Choose between writing your own sentence or practicing curated sentences, then parse the words and get instant correction.",
+    "Write an Arabic sentence and your i'rab for each word, then get instant intelligent correction.",
   provider: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
 };
 ---
 <BaseLayout
   lang="en"
   title="Interactive Arabic i'rab Practice · Irab"
-  description="Practice i'rab two ways: write your own sentence for AI correction, or choose curated sentences and answer from clear options."
+  description="Write an Arabic sentence and your i'rab for each word, then get instant intelligent feedback showing what is right and wrong."
 >
   <Schema slot="head" />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(learningResource)} is:inline />
@@ -51,9 +51,12 @@ const learningResource = {
           Parse it yourself — don't just read the answer.
         </h1>
         <p class="text-body-lg text-ink/72 dark:text-mist/72 leading-relaxed max-w-2xl mx-auto mb-9">
-          The core feature is writing your own i'rab and getting intelligent feedback. Ready-made sentences are the second path for faster guided drills.
+          Write any Arabic sentence, parse each word yourself, then get an instant score and intelligent feedback explaining what is right and wrong.
         </p>
-        <a href="/en/practice/play" class="practice-start-cta btn-primary btn-lg">Start practicing</a>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href="/en/practice/play" class="practice-start-cta btn-primary btn-lg">Start practicing</a>
+          <a href="/en/challenges" class="btn-ghost btn-lg">Go to challenges</a>
+        </div>
       </div>
     </section>
 
@@ -83,8 +86,8 @@ const learningResource = {
         <div class="grid sm:grid-cols-3 gap-4">
           <div class="rounded-lg border border-ink/10 dark:border-mist/12 bg-white dark:bg-ink-soft p-5">
             <p class="text-3xl font-display text-purple mb-4">01</p>
-            <h3 class="font-semibold text-ink dark:text-mist mb-2">Pick a mode</h3>
-            <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">Write your own sentence or open one from the bank.</p>
+            <h3 class="font-semibold text-ink dark:text-mist mb-2">Write your sentence</h3>
+            <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">Choose any Arabic sentence you want to test.</p>
           </div>
           <div class="rounded-lg border border-ink/10 dark:border-mist/12 bg-white dark:bg-ink-soft p-5">
             <p class="text-3xl font-display text-purple mb-4">02</p>

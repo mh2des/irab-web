@@ -1,0 +1,18 @@
+---
+/**
+ * /en/challenges: ready-made Arabic i'rab challenges. Login-gated and noindex;
+ * Firebase and the sentence bank load lazily inside PracticePlay.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import PracticePlay from '../../components/PracticePlay.astro';
+---
+<BaseLayout lang="en" title="Arabic i'rab challenges · Irab" description="Practice ready-made sentences by choosing each word's type, role, and case marker.">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <Nav lang="en" />
+  <main class="px-4 sm:px-6 py-8 md:py-12">
+    <PracticePlay lang="en" mode="curated" />
+  </main>
+  <Footer lang="en" />
+</BaseLayout>

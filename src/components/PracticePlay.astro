@@ -1,6 +1,6 @@
 ---
 /**
- * PracticePlay — the web practice surface, two clean modes (mirrors the app):
+ * PracticePlay — the shared engine behind two separate web features:
  *
  *  • Curated: pick a topic + a ready-made sentence, then answer each word with
  *    guided type → role → case selectors. Graded against the sentence's stored
@@ -9,14 +9,15 @@
  *  • Custom: write any Arabic sentence, type your own i'rab per word, AI grades it
  *    via /api/grade-custom-irab.
  *
- * One calm, linear flow — no nested phases, no flicker. Firebase/Firestore load
- * only inside this login-gated island. Results save to local history.
+ * Each route fixes the engine to one mode, so users never see a mode chooser.
+ * Firebase/Firestore load only inside this login-gated island. Results save to
+ * local history.
  */
 import Paywall from './Paywall.astro';
 import { EXAMPLES } from '../data/demo-examples';
 
-interface Props { lang?: 'ar' | 'en'; }
-const { lang = 'ar' } = Astro.props;
+interface Props { lang?: 'ar' | 'en'; mode?: 'custom' | 'curated' | 'choose'; }
+const { lang = 'ar', mode = 'choose' } = Astro.props;
 const login = lang === 'ar' ? '/login' : '/en/login';
 const dir = lang === 'ar' ? 'rtl' : 'ltr';
 const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
@@ -40,12 +41,32 @@ const t = lang === 'ar'
       start: 'ابدأ',
       back: 'رجوع',
       chooseSentence: 'اختر جملة',
+      chooseSentenceBody: 'اختر تمرينًا من هذا الفصل، ثم ابدأ إعراب الكلمات.',
+      chooseChapter: 'اختر فصلًا نحويًّا',
+      challengeEyebrow: 'مسار التحديات',
+      challengeBody: 'فصول مرتّبة، وجمل مختارة، وتطبيق مباشر خطوةً خطوة.',
+      chapter: 'الفصل',
+      openChapter: 'افتح الفصل',
+      appliedExercises: 'تمارين تطبيقية',
+      sentenceCount: (n: number) => `${n} جملة`,
+      startChallenge: 'ابدأ التحدي',
+      stepChapter: 'اختر الفصل',
+      stepSentence: 'اختر الجملة',
+      stepAnswer: 'أعرِب الكلمات',
+      customIntroTitle: 'كيف يعمل التدريب؟',
+      customIntroBody: 'اكتب جملة، أعرِب كل كلمة بأسلوبك، ثم احصل على تقييم وتصحيح ذكي يوضّح الصواب والخطأ.',
       loadingBank: 'جارٍ تحميل بنك الجمل…',
       noTopics: 'تعذّر تحميل الجمل الآن. حاول مجددًا.',
       noSentences: 'لا توجد جمل في هذا الموضوع.',
       level: 'المستوى',
       words: 'كلمة',
       answerTitle: 'حدّد إعراب كل كلمة',
+      sentenceLabel: 'جملة التحدي',
+      solveInstruction: 'أكمل النوع والموقع والعلامة لكل كلمة، ثم أرسل إجاباتك للتصحيح.',
+      progressLabel: 'تقدّمك في التحدي',
+      wordLabel: 'الكلمة',
+      incompleteWord: 'بانتظار الإجابة',
+      completeWord: 'مكتملة',
       type: 'النوع', role: 'الموقع', caseMarker: 'العلامة', select: 'اختر',
       answered: (a: number, n: number) => `${a} من ${n}`,
       check: 'تحقّق من الإجابات',
@@ -105,12 +126,32 @@ const t = lang === 'ar'
       start: 'Start',
       back: 'Back',
       chooseSentence: 'Choose a sentence',
+      chooseSentenceBody: 'Choose an exercise from this chapter, then begin parsing its words.',
+      chooseChapter: 'Choose a grammar chapter',
+      challengeEyebrow: 'Challenge path',
+      challengeBody: 'Structured chapters, selected sentences, and focused practice one step at a time.',
+      chapter: 'Chapter',
+      openChapter: 'Open chapter',
+      appliedExercises: 'Applied exercises',
+      sentenceCount: (n: number) => `${n} sentences`,
+      startChallenge: 'Start challenge',
+      stepChapter: 'Choose chapter',
+      stepSentence: 'Choose sentence',
+      stepAnswer: 'Parse the words',
+      customIntroTitle: 'How does Practice work?',
+      customIntroBody: "Enter a sentence, write your i'rab for each word, then receive an instant score and intelligent correction.",
       loadingBank: 'Loading the sentence bank…',
       noTopics: 'Couldn\'t load sentences right now. Please retry.',
       noSentences: 'No sentences in this topic.',
       level: 'Level',
       words: 'words',
       answerTitle: 'Set the i\'rab for each word',
+      sentenceLabel: 'Challenge sentence',
+      solveInstruction: 'Complete the type, role, and marker for every word, then submit your answers for correction.',
+      progressLabel: 'Challenge progress',
+      wordLabel: 'Word',
+      incompleteWord: 'Waiting for answer',
+      completeWord: 'Complete',
       type: 'Type', role: 'Role', caseMarker: 'Marker', select: 'Select',
       answered: (a: number, n: number) => `${a} of ${n}`,
       check: 'Check answers',
@@ -153,8 +194,32 @@ const t = lang === 'ar'
       pricing: 'View pricing',
       sound: 'Sound',
     };
+
+const gateTitle = mode === 'curated'
+  ? (lang === 'ar' ? 'سجّل الدخول لتبدأ التحديات' : 'Sign in to start a challenge')
+  : t.gateTitle;
+const gateBody = mode === 'curated'
+  ? (lang === 'ar' ? 'اختر جملة جاهزة، ثم حدّد نوع كل كلمة وموقعها وعلامتها.' : "Choose a ready-made sentence, then set each word's type, role, and case marker.")
+  : mode === 'custom'
+    ? (lang === 'ar' ? 'اكتب جملتك وإعرابك بنفسك، ثم احصل على تصحيح ذكي لكل كلمة.' : "Write your sentence and i'rab, then get intelligent feedback on every word.")
+    : t.gateBody;
+const againLabel = mode === 'curated'
+  ? (lang === 'ar' ? 'تحدٍّ آخر' : 'Another challenge')
+  : t.again;
 ---
-<div data-practice-root data-lang={lang} data-login={login} dir={dir} class="pr-shell">
+<div data-practice-root data-lang={lang} data-login={login} data-practice-mode={mode} dir={dir} class="pr-shell">
+  {mode === 'custom' && (
+    <section class="pr-feature-intro" aria-labelledby="practice-intro-title">
+      <span class="pr-feature-intro-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/><path d="m13 7 3 3"/></svg>
+      </span>
+      <span class="pr-feature-intro-copy">
+        <h1 id="practice-intro-title" class:list={[titleClass, 'pr-feature-intro-title']}>{t.customIntroTitle}</h1>
+        <p>{t.customIntroBody}</p>
+      </span>
+    </section>
+  )}
+
   {/* Loading */}
   <div data-pr-loading aria-busy="true" class="space-y-4">
     <div class="skeleton h-40 rounded-2xl"></div>
@@ -166,8 +231,8 @@ const t = lang === 'ar'
     <div class="pr-gate-icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v2"/><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>
     </div>
-    <h2 class:list={[titleClass, 'text-h2 leading-tight mb-3']}>{t.gateTitle}</h2>
-    <p class="text-body text-ink/75 dark:text-mist/75 mb-7 max-w-md mx-auto">{t.gateBody}</p>
+    <h2 class:list={[titleClass, 'text-h2 leading-tight mb-3']}>{gateTitle}</h2>
+    <p class="text-body text-ink/75 dark:text-mist/75 mb-7 max-w-md mx-auto">{gateBody}</p>
     <a href={login} class="btn-primary btn-lg">{t.signIn}</a>
   </div>
 
@@ -218,33 +283,77 @@ const t = lang === 'ar'
       </div>
     </section>
 
-    {/* ── Phase: curated browse (topic chips + sentences) ───── */}
+    {/* ── Phase: curated chapter library ────────────────────── */}
     <section data-phase="browse" class="pr-phase hidden">
-      <div class="pr-head">
-        <button type="button" data-back="choose" class="icon-btn" aria-label={t.back}><svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={back}/></svg></button>
-        <h2 class:list={[titleClass, 'text-h2 leading-tight']}>{t.chooseSentence}</h2>
+      <div class="pr-challenge-hero">
+        <div class="pr-journey" aria-label={t.stepChapter}>
+          <span class="is-active">1</span><i></i><span>2</span><i></i><span>3</span>
+        </div>
+        <p class="pr-kicker">{t.challengeEyebrow}</p>
+        <h1 class:list={[titleClass, 'pr-challenge-title']}>{t.chooseChapter}</h1>
+        <p class="pr-challenge-body">{t.challengeBody}</p>
       </div>
-      <div data-topic-chips class="pr-chips"></div>
       <p data-bank-loading class="pr-hint text-center py-6">{t.loadingBank}</p>
       <p data-bank-error class="hidden pr-hint text-center py-6">{t.noTopics}</p>
+      <div data-topic-grid class="pr-chapters"></div>
+    </section>
+
+    {/* ── Phase: sentence selection inside one chapter ─────── */}
+    <section data-phase="sentences" class="pr-phase hidden">
+      <div class="pr-head pr-head-between">
+        <div class="pr-head-main">
+          <button type="button" data-back="browse" class="icon-btn" aria-label={t.back}><svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={back}/></svg></button>
+          <div class="min-w-0">
+            <p class="pr-kicker" data-sentence-chapter></p>
+            <h2 class:list={[titleClass, 'text-h2 leading-tight']} data-sentence-topic></h2>
+          </div>
+        </div>
+        <div class="pr-journey pr-journey-compact" aria-label={t.stepSentence}>
+          <span class="is-done">✓</span><i class="is-done"></i><span class="is-active">2</span><i></i><span>3</span>
+        </div>
+      </div>
+      <div class="pr-sentence-intro">
+        <p>{t.chooseSentenceBody}</p>
+        <span data-sentence-count></span>
+      </div>
       <div data-sentence-list class="pr-sentences"></div>
     </section>
 
     {/* ── Phase: curated solve ──────────────────────────────── */}
     <section data-phase="solve" class="pr-phase hidden">
       <div class="pr-head">
-        <button type="button" data-back="browse" class="icon-btn" aria-label={t.back}><svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={back}/></svg></button>
+        <button type="button" data-back="sentences" class="icon-btn" aria-label={t.back}><svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={back}/></svg></button>
         <div class="min-w-0">
           <p class="pr-kicker" data-solve-topic></p>
           <h2 class:list={[titleClass, 'text-h2 leading-tight']}>{t.answerTitle}</h2>
         </div>
+        <div class="pr-journey pr-journey-compact pr-journey-end" aria-label={t.stepAnswer}>
+          <span class="is-done">✓</span><i class="is-done"></i><span class="is-done">✓</span><i class="is-done"></i><span class="is-active">3</span>
+        </div>
       </div>
-      <p data-solve-sentence class="pr-sentence-show" lang="ar" dir="rtl"></p>
-      <div class="pr-progressbar" aria-hidden="true"><span data-solve-bar></span></div>
-      <div data-solve-words class="space-y-3"></div>
-      <div class="pr-actions">
-        <span data-solve-progress class="pr-progress"></span>
-        <button type="button" data-solve-check class="btn-primary"><span data-solve-check-label>{t.check}</span></button>
+      <div class="pr-solve-context">
+        <div class="pr-solve-context-top">
+          <span class="pr-solve-label">{t.sentenceLabel}</span>
+          <span data-solve-word-count class="pr-solve-word-count"></span>
+        </div>
+        <p data-solve-sentence class="pr-sentence-show pr-solve-sentence" lang="ar" dir="rtl"></p>
+        <p class="pr-solve-instruction">{t.solveInstruction}</p>
+      </div>
+      <div class="pr-solve-progress-head">
+        <span>{t.progressLabel}</span>
+        <strong data-solve-percent>0%</strong>
+      </div>
+      <div class="pr-progressbar pr-solve-progressbar" aria-hidden="true"><span data-solve-bar></span></div>
+      <div data-solve-words class="pr-question-list"></div>
+      <div data-solve-dock class="pr-solve-dock">
+        <div class="pr-solve-dock-copy">
+          <span>{t.progressLabel}</span>
+          <strong data-solve-progress class="pr-progress" aria-live="polite"></strong>
+        </div>
+        <button type="button" data-solve-check class="btn-primary pr-solve-submit" disabled>
+          <span data-solve-check-label>{t.check}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+        </button>
       </div>
       <p data-solve-msg class="hidden pr-msg"></p>
     </section>
@@ -294,7 +403,7 @@ const t = lang === 'ar'
           <span data-result-copy-label>{t.copyResult}</span>
         </button>
       </div>
-      <button type="button" data-again class="btn-ghost btn-block mt-4">{t.again}</button>
+      <button type="button" data-again class="btn-ghost btn-block mt-4">{againLabel}</button>
     </section>
   </div>
 </div>
@@ -302,14 +411,30 @@ const t = lang === 'ar'
 <style is:global>
   /* Global (not scoped): the chips, sentence cards, word cards, selects and
      results are injected via JS, so scoped styles would never reach them. All
-     selectors are pr-* prefixed to avoid leaking into other components. */
+  selectors are pr-* prefixed to avoid leaking into other components. */
   .pr-shell { width: 100%; max-width: 60rem; margin-inline: auto; }
+  .pr-feature-intro {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding: 1rem 1.15rem;
+    border-radius: 1rem; color: var(--color-ink); background:
+      linear-gradient(135deg, color-mix(in srgb, var(--color-purple) 9%, white), color-mix(in srgb, var(--color-teal) 7%, white));
+    border: 1px solid color-mix(in srgb, var(--color-purple) 22%, var(--color-card-edge));
+  }
+  .dark .pr-feature-intro { color: var(--color-mist); background: linear-gradient(135deg, color-mix(in srgb, var(--color-purple) 14%, var(--color-coal-soft)), color-mix(in srgb, var(--color-teal) 10%, var(--color-coal-soft))); border-color: color-mix(in srgb, var(--color-purple) 28%, var(--color-coal-edge)); }
+  .pr-feature-intro-icon { width: 3rem; height: 3rem; flex: none; display: grid; place-items: center; border-radius: 0.85rem; color: #fff; background: linear-gradient(135deg, var(--color-purple), var(--color-purple-deep)); box-shadow: 0 10px 22px -12px var(--color-purple); }
+  .pr-feature-intro-icon svg { width: 1.45rem; height: 1.45rem; }
+  .pr-feature-intro-copy { min-width: 0; }
+  .pr-feature-intro-title { font-size: 1.2rem; line-height: 1.25; margin-bottom: 0.18rem; }
+  .pr-feature-intro-copy p { font-size: var(--text-caption); line-height: 1.65; color: color-mix(in srgb, var(--color-ink) 68%, transparent); }
+  .dark .pr-feature-intro-copy p { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
   .pr-gate-icon { width: 4rem; height: 4rem; border-radius: 1.1rem; margin: 0 auto 1.25rem; display: grid; place-items: center; color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 12%, white); border: 1px solid color-mix(in srgb, var(--color-purple) 26%, var(--color-card-edge)); }
   .dark .pr-gate-icon { background: color-mix(in srgb, var(--color-purple) 22%, var(--color-coal-soft)); }
   .pr-gate-icon svg { width: 1.9rem; height: 1.9rem; }
 
   .pr-quota { text-align: center; font-weight: 800; color: var(--color-teal); font-size: var(--text-caption); margin-bottom: 1.25rem; }
   .pr-quota:empty { display: none; }
+
+  /* Fixed routes begin at their own feature and never return to the old mode chooser. */
+  [data-practice-mode="custom"] [data-phase="custom"] > .pr-head > .icon-btn { display: none; }
 
   /* Phase transition */
   .pr-phase { animation: pr-in .34s var(--ease-out-quart) both; }
@@ -379,46 +504,86 @@ const t = lang === 'ar'
 
   /* Phase head */
   .pr-head { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.4rem; }
+  .pr-head-between { justify-content: space-between; }
+  .pr-head-main { display: flex; align-items: center; gap: 0.9rem; min-width: 0; }
   .pr-kicker { font-weight: 800; font-size: var(--text-caption); color: var(--color-teal); }
   .pr-hint { color: color-mix(in srgb, var(--color-ink) 62%, transparent); font-size: var(--text-caption); }
   .dark .pr-hint { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
 
-  /* Topic chips */
-  .pr-chips { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.4rem; }
-  .pr-chip { padding: 0.5rem 1.05rem; border-radius: 9999px; font-weight: 700; font-size: var(--text-caption); white-space: nowrap; background: var(--color-card); border: 1px solid var(--color-card-edge); color: var(--color-ink); transition: transform .18s, border-color .18s, color .18s, background-color .18s; }
-  .dark .pr-chip { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
-  .pr-chip:hover { transform: translateY(-2px); border-color: var(--color-teal); }
-  .pr-chip.is-active { background: var(--color-teal); border-color: var(--color-teal); color: #fff; }
+  /* Challenges: a clear chapter → sentence → answer journey. */
+  .pr-challenge-hero { position: relative; overflow: hidden; margin-bottom: 1.5rem; padding: clamp(1.4rem, 4vw, 2.1rem); border-radius: 1.35rem; color: var(--color-ink); background: radial-gradient(90% 120% at 100% 0%, color-mix(in srgb, var(--color-teal) 15%, transparent), transparent 58%), var(--color-card); border: 1px solid color-mix(in srgb, var(--color-teal) 28%, var(--color-card-edge)); box-shadow: var(--shadow-card); }
+  .dark .pr-challenge-hero { color: var(--color-mist); background: radial-gradient(90% 120% at 100% 0%, color-mix(in srgb, var(--color-teal) 20%, transparent), transparent 58%), var(--color-coal-soft); border-color: color-mix(in srgb, var(--color-teal) 30%, var(--color-coal-edge)); }
+  .pr-challenge-title { max-width: 42rem; margin-top: 0.35rem; font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.08; }
+  .pr-challenge-body { max-width: 38rem; margin-top: 0.65rem; font-size: var(--text-small); line-height: 1.7; color: color-mix(in srgb, var(--color-ink) 68%, transparent); }
+  .dark .pr-challenge-body { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+
+  .pr-journey { display: flex; align-items: center; width: min(100%, 15rem); margin-bottom: 1.2rem; direction: ltr; }
+  .pr-journey span { width: 1.85rem; height: 1.85rem; flex: none; display: grid; place-items: center; border-radius: 999px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 800; color: color-mix(in srgb, var(--color-ink) 45%, transparent); background: color-mix(in srgb, var(--color-ink) 7%, transparent); border: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent); }
+  .dark .pr-journey span { color: color-mix(in srgb, var(--color-mist) 52%, transparent); background: color-mix(in srgb, var(--color-mist) 9%, transparent); border-color: color-mix(in srgb, var(--color-mist) 12%, transparent); }
+  .pr-journey i { height: 2px; flex: 1; background: color-mix(in srgb, var(--color-ink) 11%, transparent); }
+  .dark .pr-journey i { background: color-mix(in srgb, var(--color-mist) 14%, transparent); }
+  .pr-journey span.is-active { color: #fff; background: var(--color-teal); border-color: var(--color-teal); box-shadow: 0 7px 16px -8px var(--color-teal); }
+  .pr-journey span.is-done { color: #fff; background: var(--color-purple); border-color: var(--color-purple); }
+  .pr-journey i.is-done { background: var(--color-purple); }
+  .pr-journey-compact { width: 9rem; margin: 0; }
+  .pr-journey-compact span { width: 1.55rem; height: 1.55rem; font-size: 0.68rem; }
+  .pr-journey-end { margin-inline-start: auto; }
+
+  .pr-chapters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
+  .pr-chapter { --chapter-accent: var(--color-teal); position: relative; overflow: hidden; min-height: 12rem; display: flex; flex-direction: column; align-items: stretch; text-align: start; padding: 1.25rem; border-radius: 1.15rem; color: var(--color-ink); background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card); transition: transform .22s var(--ease-out-quart), box-shadow .22s, border-color .22s; }
+  .dark .pr-chapter { color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .pr-chapter::after { content: ""; position: absolute; inset-inline-end: -2rem; inset-block-end: -3.5rem; width: 8.5rem; height: 8.5rem; border-radius: 50%; background: color-mix(in srgb, var(--chapter-accent) 9%, transparent); transition: transform .3s var(--ease-out-quart); }
+  .pr-chapter:nth-child(3n + 2) { --chapter-accent: var(--color-purple); }
+  .pr-chapter:nth-child(3n) { --chapter-accent: var(--color-teal-deep); }
+  .pr-chapter:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--chapter-accent) 45%, var(--color-card-edge)); box-shadow: var(--shadow-lift); }
+  .pr-chapter:hover::after { transform: scale(1.16); }
+  .pr-chapter-top { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+  .pr-chapter-num { width: 2.65rem; height: 2.65rem; display: grid; place-items: center; border-radius: 0.8rem; color: #fff; background: var(--chapter-accent); font-family: var(--font-mono); font-size: 0.88rem; font-weight: 800; box-shadow: 0 10px 20px -13px var(--chapter-accent); }
+  .pr-chapter-level { padding: 0.28rem 0.65rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800; color: color-mix(in srgb, var(--color-ink) 58%, transparent); background: color-mix(in srgb, var(--color-ink) 6%, transparent); }
+  .dark .pr-chapter-level { color: color-mix(in srgb, var(--color-mist) 64%, transparent); background: color-mix(in srgb, var(--color-mist) 9%, transparent); }
+  .pr-chapter-title { position: relative; z-index: 1; margin-top: 1rem; font-family: var(--font-arabic-display); font-size: clamp(1.35rem, 3vw, 1.75rem); font-weight: 700; line-height: 1.35; }
+  [dir="ltr"] .pr-chapter-title { font-family: var(--font-display); }
+  .pr-chapter-meta { position: relative; z-index: 1; margin-top: 0.3rem; font-size: var(--text-caption); color: color-mix(in srgb, var(--color-ink) 60%, transparent); }
+  .dark .pr-chapter-meta { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
+  .pr-chapter-cta { position: relative; z-index: 1; margin-top: auto; padding-top: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; font-size: var(--text-caption); font-weight: 800; color: var(--chapter-accent); }
+  .pr-chapter-cta svg { width: 1rem; height: 1rem; transition: transform .2s; }
+  .pr-chapter:hover .pr-chapter-cta svg { transform: translateX(-0.2rem); }
+  [dir="ltr"] .pr-chapter:hover .pr-chapter-cta svg { transform: translateX(0.2rem); }
+
+  .pr-sentence-intro { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; padding: 0.9rem 1rem; border-radius: 0.85rem; background: color-mix(in srgb, var(--color-teal) 8%, transparent); border: 1px solid color-mix(in srgb, var(--color-teal) 20%, transparent); }
+  .pr-sentence-intro p { font-size: var(--text-caption); line-height: 1.6; color: color-mix(in srgb, var(--color-ink) 68%, transparent); }
+  .dark .pr-sentence-intro p { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+  .pr-sentence-intro span { flex: none; padding: 0.3rem 0.7rem; border-radius: 999px; color: var(--color-teal-deep); background: var(--color-card); border: 1px solid color-mix(in srgb, var(--color-teal) 22%, var(--color-card-edge)); font-family: var(--font-mono); font-size: 0.78rem; font-weight: 800; }
+  .pr-sentence-intro span:empty { display: none; }
+  .dark .pr-sentence-intro span { color: color-mix(in srgb, var(--color-teal) 84%, white); background: var(--color-coal-soft); border-color: color-mix(in srgb, var(--color-teal) 28%, var(--color-coal-edge)); }
 
   /* Sentence list */
-  .pr-sentences { display: grid; grid-template-columns: 1fr; gap: 0.65rem; }
+  .pr-sentences { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
   .pr-sentence {
-    display: flex; align-items: center; gap: 0.95rem;
-    width: 100%; text-align: start; padding: 1rem 1.15rem; border-radius: 1.1rem;
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1rem;
+    width: 100%; text-align: start; padding: 1.05rem 1.15rem; border-radius: 1.1rem;
     background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
     transition: transform .18s var(--ease-out-quart), border-color .18s, box-shadow .18s;
   }
   .dark .pr-sentence { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .pr-sentence:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--color-teal) 50%, var(--color-card-edge)); box-shadow: var(--shadow-lift); }
   .pr-sentence-idx {
-    flex: none; width: 2.1rem; height: 2.1rem; display: grid; place-items: center; border-radius: 0.7rem;
-    font-family: var(--font-mono); font-weight: 800; font-size: 0.95rem;
+    flex: none; width: 2.75rem; height: 2.75rem; display: grid; place-items: center; border-radius: 0.8rem;
+    font-family: var(--font-mono); font-weight: 800; font-size: 0.88rem;
     color: var(--color-teal); background: color-mix(in srgb, var(--color-teal) 12%, transparent);
   }
   .dark .pr-sentence-idx { color: color-mix(in srgb, var(--color-teal) 82%, white); background: color-mix(in srgb, var(--color-teal) 22%, transparent); }
   .pr-sentence:hover .pr-sentence-idx { color: #fff; background: var(--color-teal); }
-  .pr-sentence-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+  .pr-sentence-main { min-width: 0; display: flex; flex-direction: column; gap: 0.3rem; }
   .pr-sentence-text { font-family: var(--font-arabic-classical); font-size: 1.45rem; line-height: 1.55; color: var(--color-ink); }
   .dark .pr-sentence-text { color: var(--color-mist); }
-  .pr-sentence-meta {
-    width: fit-content; font-family: var(--font-mono); font-size: 0.8rem; padding: 0.1rem 0.5rem; border-radius: 999px;
-    color: color-mix(in srgb, var(--color-ink) 56%, transparent); background: color-mix(in srgb, var(--color-ink) 6%, transparent);
-  }
-  .dark .pr-sentence-meta { color: color-mix(in srgb, var(--color-mist) 60%, transparent); background: color-mix(in srgb, var(--color-mist) 10%, transparent); }
-  .pr-sentence-chev { flex: none; width: 1.1rem; height: 1.1rem; color: color-mix(in srgb, var(--color-ink) 38%, transparent); transition: transform .18s; }
-  .dark .pr-sentence-chev { color: color-mix(in srgb, var(--color-mist) 42%, transparent); }
-  .pr-sentence:hover .pr-sentence-chev { color: var(--color-teal); transform: translateX(-0.2rem); }
-  :root[dir="ltr"] .pr-sentence:hover .pr-sentence-chev { transform: translateX(0.2rem); }
+  .pr-sentence-meta { width: fit-content; font-family: var(--font-mono); font-size: 0.78rem; color: color-mix(in srgb, var(--color-ink) 54%, transparent); }
+  .dark .pr-sentence-meta { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .pr-sentence-open { display: flex; align-items: center; gap: 0.45rem; padding: 0.48rem 0.7rem; border-radius: 0.65rem; color: var(--color-teal-deep); background: color-mix(in srgb, var(--color-teal) 10%, transparent); font-size: 0.82rem; font-weight: 800; }
+  .dark .pr-sentence-open { color: color-mix(in srgb, var(--color-teal) 86%, white); background: color-mix(in srgb, var(--color-teal) 15%, transparent); }
+  .pr-sentence-open svg { width: 0.95rem; height: 0.95rem; transition: transform .18s; }
+  .pr-sentence:hover .pr-sentence-open svg { transform: translateX(-0.18rem); }
+  :root[dir="ltr"] .pr-sentence:hover .pr-sentence-open svg { transform: translateX(0.18rem); }
 
   /* Sentence shown while solving */
   .pr-sentence-show {
@@ -428,6 +593,27 @@ const t = lang === 'ar'
   }
   .dark .pr-sentence-show { color: var(--color-mist); background: color-mix(in srgb, var(--color-coal) 45%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
 
+  /* Final challenge screen: sentence context, assessment cards, live progress. */
+  .pr-solve-context { position: relative; overflow: hidden; margin-bottom: 1.15rem; padding: 1.15rem; border-radius: 1.2rem; background: radial-gradient(75% 140% at 100% 0%, color-mix(in srgb, var(--color-purple) 13%, transparent), transparent 62%), var(--color-card); border: 1px solid color-mix(in srgb, var(--color-purple) 24%, var(--color-card-edge)); box-shadow: var(--shadow-card); }
+  .dark .pr-solve-context { background: radial-gradient(75% 140% at 100% 0%, color-mix(in srgb, var(--color-purple) 18%, transparent), transparent 62%), var(--color-coal-soft); border-color: color-mix(in srgb, var(--color-purple) 30%, var(--color-coal-edge)); }
+  .pr-solve-context-top { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.55rem; }
+  .pr-solve-label { font-size: var(--text-caption); font-weight: 800; color: var(--color-purple-deep); }
+  .dark .pr-solve-label { color: color-mix(in srgb, var(--color-purple) 84%, white); }
+  .pr-solve-word-count { padding: 0.28rem 0.65rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.76rem; font-weight: 800; color: color-mix(in srgb, var(--color-ink) 58%, transparent); background: color-mix(in srgb, var(--color-ink) 6%, transparent); }
+  .dark .pr-solve-word-count { color: color-mix(in srgb, var(--color-mist) 64%, transparent); background: color-mix(in srgb, var(--color-mist) 9%, transparent); }
+  .pr-solve-sentence { margin: 0; padding: 0.8rem 0.75rem; border: 0; background: transparent; box-shadow: none; }
+  .dark .pr-solve-sentence { background: transparent; border: 0; }
+  .pr-solve-instruction { max-width: 40rem; margin: 0.45rem auto 0; text-align: center; font-size: var(--text-caption); line-height: 1.65; color: color-mix(in srgb, var(--color-ink) 62%, transparent); }
+  .dark .pr-solve-instruction { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .pr-solve-progress-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 0 0 0.45rem; font-size: var(--text-caption); font-weight: 750; color: color-mix(in srgb, var(--color-ink) 62%, transparent); }
+  .dark .pr-solve-progress-head { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
+  .pr-solve-progress-head strong { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-teal-deep); }
+  .dark .pr-solve-progress-head strong { color: color-mix(in srgb, var(--color-teal) 86%, white); }
+  .pr-solve-progressbar { height: 0.7rem; margin-bottom: 1.25rem; padding: 0.14rem; background: color-mix(in srgb, var(--color-ink) 7%, transparent); }
+  .dark .pr-solve-progressbar { background: color-mix(in srgb, var(--color-mist) 10%, transparent); }
+  .pr-solve-progressbar span { background: linear-gradient(90deg, var(--color-purple), var(--color-teal)); }
+  .pr-question-list { display: flex; flex-direction: column; gap: 0.9rem; }
+
   /* Word cards (solve + custom) */
   .pr-word { border-radius: 1rem; padding: 1rem 1.15rem; background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card); }
   .dark .pr-word { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
@@ -436,26 +622,58 @@ const t = lang === 'ar'
   .pr-word-token { font-family: var(--font-quran); font-size: 1.9rem; font-weight: 700; color: var(--color-ink); }
   .dark .pr-word-token { color: var(--color-mist); }
   .pr-word-num { font-family: var(--font-mono); font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 50%, transparent); }
-  .pr-selects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
-  .pr-field { display: flex; flex-direction: column; gap: 0.3rem; }
-  .pr-field-label { font-size: 0.95rem; font-weight: 700; color: color-mix(in srgb, var(--color-ink) 62%, transparent); }
+  .pr-question-card { position: relative; overflow: hidden; padding: 1.1rem; border-radius: 1.15rem; transition: transform .22s var(--ease-out-quart), border-color .22s, box-shadow .22s, background-color .22s; }
+  .pr-question-card::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: 0.28rem; background: color-mix(in srgb, var(--color-purple) 45%, var(--color-card-edge)); transition: background-color .22s; }
+  .pr-question-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--color-purple) 28%, var(--color-card-edge)); box-shadow: var(--shadow-lift); }
+  .pr-question-card.is-done { background: linear-gradient(135deg, color-mix(in srgb, var(--color-teal) 5%, white), var(--color-card)); border-color: color-mix(in srgb, var(--color-teal) 38%, var(--color-card-edge)); }
+  .dark .pr-question-card.is-done { background: linear-gradient(135deg, color-mix(in srgb, var(--color-teal) 9%, var(--color-coal-soft)), var(--color-coal-soft)); border-color: color-mix(in srgb, var(--color-teal) 38%, var(--color-coal-edge)); }
+  .pr-question-card.is-done::before { background: var(--color-teal); }
+  .pr-question-card .pr-word-head { margin-bottom: 1rem; padding-inline-start: 0.25rem; }
+  .pr-word-identity { display: flex; align-items: center; gap: 0.75rem; min-width: 0; }
+  .pr-question-number { flex: none; padding: 0.3rem 0.65rem; border-radius: 0.65rem; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800; color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 10%, transparent); }
+  .dark .pr-question-number { color: color-mix(in srgb, var(--color-purple) 84%, white); background: color-mix(in srgb, var(--color-purple) 16%, transparent); }
+  .pr-question-card .pr-word-token { font-size: clamp(1.8rem, 4vw, 2.2rem); }
+  .pr-word-status { flex: none; display: inline-flex; align-items: center; gap: 0.38rem; padding: 0.3rem 0.65rem; border-radius: 999px; font-size: 0.76rem; font-weight: 800; color: color-mix(in srgb, var(--color-ink) 48%, transparent); background: color-mix(in srgb, var(--color-ink) 6%, transparent); }
+  .pr-word-status::before { content: ""; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: currentColor; opacity: 0.6; }
+  .dark .pr-word-status { color: color-mix(in srgb, var(--color-mist) 54%, transparent); background: color-mix(in srgb, var(--color-mist) 8%, transparent); }
+  .pr-word-status.is-done { color: var(--color-teal-deep); background: color-mix(in srgb, var(--color-teal) 11%, transparent); }
+  .dark .pr-word-status.is-done { color: color-mix(in srgb, var(--color-teal) 86%, white); background: color-mix(in srgb, var(--color-teal) 15%, transparent); }
+  .pr-word-status.is-done::before { content: "✓"; width: auto; height: auto; background: none; opacity: 1; }
+  .pr-selects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; }
+  .pr-field { --field-accent: var(--color-purple); display: flex; flex-direction: column; gap: 0.5rem; padding: 0.75rem; border-radius: 0.9rem; background: color-mix(in srgb, var(--field-accent) 5%, var(--color-paper-soft)); border: 1px solid color-mix(in srgb, var(--field-accent) 14%, var(--color-card-edge)); }
+  .dark .pr-field { background: color-mix(in srgb, var(--field-accent) 7%, var(--color-coal)); border-color: color-mix(in srgb, var(--field-accent) 20%, var(--color-coal-edge)); }
+  .pr-field-role { --field-accent: var(--color-teal); }
+  .pr-field-marker { --field-accent: var(--color-teal-deep); }
+  .pr-field-heading { display: flex; align-items: center; gap: 0.45rem; }
+  .pr-field-step { width: 1.35rem; height: 1.35rem; display: grid; place-items: center; border-radius: 0.42rem; color: #fff; background: var(--field-accent); font-family: var(--font-mono); font-size: 0.67rem; font-weight: 800; }
+  .pr-field-label { font-size: 0.9rem; font-weight: 800; color: color-mix(in srgb, var(--color-ink) 68%, transparent); }
   .dark .pr-field-label { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
   .pr-select {
     width: 100%; appearance: none; -webkit-appearance: none;
-    padding: 0.7rem 0.85rem; border-radius: 0.75rem; font-family: var(--font-arabic); font-size: 1.15rem;
-    background: var(--color-paper-soft); border: 1px solid var(--color-card-edge); color: var(--color-ink);
+    min-height: 3.1rem; padding: 0.7rem 0.85rem; border-radius: 0.7rem; font-family: var(--font-arabic); font-size: 1.08rem; font-weight: 600;
+    background-color: var(--color-card); border: 1px solid color-mix(in srgb, var(--field-accent) 22%, var(--color-card-edge)); color: var(--color-ink);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23173847' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: left 0.7rem center; transition: border-color .18s, box-shadow .18s;
+    background-repeat: no-repeat; background-position: left 0.7rem center; transition: border-color .18s, box-shadow .18s, background-color .18s;
   }
   :root[dir="rtl"] .pr-select { background-position: left 0.7rem center; }
-  .dark .pr-select { background-color: var(--color-coal); border-color: var(--color-coal-edge); color: var(--color-mist); }
-  .pr-select:focus { outline: none; border-color: var(--color-teal); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-teal) 18%, transparent); }
-  .pr-select:disabled { opacity: 0.5; }
+  .dark .pr-select { background-color: var(--color-coal-soft); border-color: color-mix(in srgb, var(--field-accent) 26%, var(--color-coal-edge)); color: var(--color-mist); }
+  .pr-select:focus { outline: none; border-color: var(--field-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--field-accent) 16%, transparent); }
+  .pr-select:disabled { opacity: 0.48; cursor: not-allowed; background-color: color-mix(in srgb, var(--color-ink) 4%, var(--color-paper-soft)); }
 
   /* Actions row */
   .pr-actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.4rem; }
   .pr-progress { font-family: var(--font-mono); font-weight: 700; font-size: var(--text-caption); color: color-mix(in srgb, var(--color-ink) 60%, transparent); }
   .dark .pr-progress { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
+  .pr-solve-dock { position: sticky; z-index: 12; bottom: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.25rem; padding: 0.85rem 0.9rem 0.85rem 1rem; border-radius: 1rem; background: color-mix(in srgb, var(--color-card) 92%, transparent); border: 1px solid var(--color-card-edge); box-shadow: 0 18px 42px -24px rgb(23 56 71 / 0.42); backdrop-filter: blur(14px); transition: border-color .22s, box-shadow .22s; }
+  .dark .pr-solve-dock { background: color-mix(in srgb, var(--color-coal-soft) 92%, transparent); border-color: var(--color-coal-edge); box-shadow: 0 18px 42px -20px rgb(0 0 0 / 0.72); }
+  .pr-solve-dock.is-ready { border-color: color-mix(in srgb, var(--color-teal) 45%, var(--color-card-edge)); box-shadow: 0 18px 42px -22px color-mix(in srgb, var(--color-teal) 40%, transparent); }
+  .pr-solve-dock-copy { display: flex; flex-direction: column; gap: 0.18rem; }
+  .pr-solve-dock-copy > span { font-size: 0.8rem; font-weight: 700; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
+  .dark .pr-solve-dock-copy > span { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .pr-solve-dock-copy .pr-progress { color: var(--color-ink); }
+  .dark .pr-solve-dock-copy .pr-progress { color: var(--color-mist); }
+  .pr-solve-submit { min-width: 11rem; }
+  .pr-solve-submit svg { width: 1.05rem; height: 1.05rem; }
   .pr-textarea { font-family: var(--font-arabic-classical); font-size: 1.5rem; resize: none; }
   .pr-msg { margin-top: 0.9rem; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: var(--text-caption); background: color-mix(in srgb, var(--color-purple) 10%, transparent); color: var(--color-purple-deep); }
   .dark .pr-msg { color: color-mix(in srgb, var(--color-purple) 85%, white); }
@@ -584,7 +802,21 @@ const t = lang === 'ar'
 
   @media (max-width: 640px) {
     .pr-modes { grid-template-columns: 1fr; }
+    .pr-chapters { grid-template-columns: 1fr; }
+    .pr-chapter { min-height: 10.5rem; }
+    .pr-head-between { align-items: flex-start; }
+    .pr-journey-compact { display: none; }
+    .pr-sentence-intro { align-items: flex-start; flex-direction: column; }
+    .pr-sentence { grid-template-columns: auto minmax(0, 1fr); }
+    .pr-sentence-open { grid-column: 2; width: fit-content; }
+    .pr-feature-intro { align-items: flex-start; }
+    .pr-question-card .pr-word-head { align-items: flex-start; }
+    .pr-word-identity { align-items: flex-start; flex-direction: column; gap: 0.35rem; }
+    .pr-word-status { margin-top: 0.1rem; }
     .pr-selects { grid-template-columns: 1fr; }
+    .pr-solve-dock { bottom: 0.55rem; padding: 0.7rem; }
+    .pr-solve-dock-copy > span { display: none; }
+    .pr-solve-submit { min-width: 0; flex: 1; }
   }
 </style>
 
@@ -598,6 +830,9 @@ const t = lang === 'ar'
   const root = document.querySelector<HTMLElement>('[data-practice-root]');
   if (root) {
     const lang = root.dataset.lang === 'en' ? 'en' : 'ar';
+    const fixedMode = root.dataset.practiceMode === 'custom' || root.dataset.practiceMode === 'curated'
+      ? root.dataset.practiceMode
+      : null;
     const WORKER = 'https://irab-api-v2.mansourhassan783.workers.dev';
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
 
@@ -611,8 +846,12 @@ const t = lang === 'ar'
     const CASES = ['مرفوع بالضمة', 'منصوب بالفتحة', 'مجرور بالكسرة', 'مبني على السكون', 'مبني على الفتح', 'مبني على الضم', 'مبني على الكسر', 'مرفوع بالواو', 'منصوب بالألف', 'مجرور بالياء', 'مرفوع بالألف', 'منصوب بالياء', 'مرفوع بثبوت النون', 'منصوب بحذف النون', 'مجزوم بحذف النون', 'مجزوم بالسكون', 'مجزوم بحذف حرف العلة', 'منصوب بالكسرة', 'مجرور بالفتحة'];
 
     const T = lang === 'ar'
-      ? { select: 'اختر', type: 'النوع', role: 'الموقع', caseMarker: 'العلامة', grading: 'جارٍ التصحيح…', check: 'تحقّق من الإجابات', gradeCustom: 'صحّح إعرابي', completeAll: 'أكمل اختيارات كل كلمة أولاً.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', limit: 'بلغت حدّك اليومي المجاني للتدريب. عُد غدًا أو رقِّ حسابك.', error: 'حدث خطأ. حاول مرة أخرى.', yourAnswer: 'إجابتك', correct: 'الصواب', unlimited: 'تدريب غير محدود', level: 'المستوى', words: 'كلمة', noSentences: 'لا توجد جمل في هذا الموضوع.', score: 'نتيجتك', answered: (a: number, n: number) => `${a} من ${n}`, yourIrabPlaceholder: 'إعرابك لهذه الكلمة…', fbExcellent: 'ممتاز! إتقان رائع 🎉', fbGreat: 'أحسنت! اقتربت من الإتقان', fbGood: 'جيد، واصل التدريب', fbKeep: 'لا بأس — التكرار يصنع الإتقان' }
-      : { select: 'Select', type: 'Type', role: 'Role', caseMarker: 'Marker', grading: 'Grading…', check: 'Check answers', gradeCustom: 'Grade my i\'rab', completeAll: 'Complete every word\'s choices first.', needWords: 'Write your i\'rab for at least one word.', limit: 'You\'ve hit today\'s free practice limit. Come back tomorrow or upgrade.', error: 'Something went wrong. Please try again.', yourAnswer: 'Your answer', correct: 'Correct', unlimited: 'Unlimited practice', level: 'Level', words: 'words', noSentences: 'No sentences in this topic.', score: 'Your score', answered: (a: number, n: number) => `${a} of ${n}`, yourIrabPlaceholder: 'Your i\'rab for this word…', fbExcellent: 'Excellent! Outstanding 🎉', fbGreat: 'Great work! Almost there', fbGood: 'Good — keep training', fbKeep: 'Keep going — practice makes perfect' };
+      ? {
+          select: 'اختر', type: 'النوع', role: 'الموقع', caseMarker: 'العلامة', grading: 'جارٍ التصحيح…', check: 'تحقّق من الإجابات', gradeCustom: 'صحّح إعرابي', completeAll: 'أكمل اختيارات كل كلمة أولاً.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', limit: 'بلغت حدّك اليومي المجاني للتدريب. عُد غدًا أو رقِّ حسابك.', error: 'حدث خطأ. حاول مرة أخرى.', yourAnswer: 'إجابتك', correct: 'الصواب', unlimited: 'تدريب غير محدود', level: 'المستوى', words: 'كلمة', wordLabel: 'الكلمة', incompleteWord: 'بانتظار الإجابة', completeWord: 'مكتملة', chapter: 'الفصل', appliedExercises: 'تمارين تطبيقية', openChapter: 'افتح الفصل', startChallenge: 'ابدأ التحدي', noSentences: 'لا توجد جمل في هذا الموضوع.', score: 'نتيجتك', answered: (a: number, n: number) => `${a} من ${n}`, sentenceCount: (n: number) => `${toAr(n)} جملة`, yourIrabPlaceholder: 'إعرابك لهذه الكلمة…', fbExcellent: 'ممتاز! إتقان رائع 🎉', fbGreat: 'أحسنت! اقتربت من الإتقان', fbGood: 'جيد، واصل التدريب', fbKeep: 'لا بأس — التكرار يصنع الإتقان'
+        }
+      : {
+          select: 'Select', type: 'Type', role: 'Role', caseMarker: 'Marker', grading: 'Grading…', check: 'Check answers', gradeCustom: 'Grade my i\'rab', completeAll: 'Complete every word\'s choices first.', needWords: 'Write your i\'rab for at least one word.', limit: 'You\'ve hit today\'s free practice limit. Come back tomorrow or upgrade.', error: 'Something went wrong. Please try again.', yourAnswer: 'Your answer', correct: 'Correct', unlimited: 'Unlimited practice', level: 'Level', words: 'words', wordLabel: 'Word', incompleteWord: 'Waiting for answer', completeWord: 'Complete', chapter: 'Chapter', appliedExercises: 'Applied exercises', openChapter: 'Open chapter', startChallenge: 'Start challenge', noSentences: 'No sentences in this topic.', score: 'Your score', answered: (a: number, n: number) => `${a} of ${n}`, sentenceCount: (n: number) => `${n} sentences`, yourIrabPlaceholder: 'Your i\'rab for this word…', fbExcellent: 'Excellent! Outstanding 🎉', fbGreat: 'Great work! Almost there', fbGood: 'Good — keep training', fbKeep: 'Keep going — practice makes perfect'
+        };
 
     const feedbackFor = (s: number) => s >= 0.9 ? T.fbExcellent : s >= 0.7 ? T.fbGreat : s >= 0.5 ? T.fbGood : T.fbKeep;
 
@@ -644,10 +883,13 @@ const t = lang === 'ar'
     let lastMode: 'curated' | 'custom' | null = null; // so "another practice" stays in the same mode
 
     // ── Curated ────────────────────────────────────────────────
-    const chipsEl = q<HTMLElement>('[data-topic-chips]');
+    const chaptersEl = q<HTMLElement>('[data-topic-grid]');
     const bankLoading = q<HTMLElement>('[data-bank-loading]');
     const bankError = q<HTMLElement>('[data-bank-error]');
     const sentenceListEl = q<HTMLElement>('[data-sentence-list]');
+    const sentenceTopicEl = q<HTMLElement>('[data-sentence-topic]');
+    const sentenceChapterEl = q<HTMLElement>('[data-sentence-chapter]');
+    const sentenceCountEl = q<HTMLElement>('[data-sentence-count]');
 
     // Firestore loaded once, lazily; topics + per-topic sentences cached so the
     // bank opens instantly (it is prefetched in the background right after boot).
@@ -687,7 +929,7 @@ const t = lang === 'ar'
     let bankRendered = false;
     async function openCurated() {
       showPhase('browse');
-      if (bankRendered) return; // chips + sentences already on screen
+      if (bankRendered) return;
       bankLoading.classList.remove('hidden');
       bankError.classList.add('hidden');
       try {
@@ -695,8 +937,7 @@ const t = lang === 'ar'
         bankLoading.classList.add('hidden');
         if (!topics.length) { bankError.classList.remove('hidden'); return; }
         bankRendered = true;
-        renderTopicChips();
-        selectTopic(topics[0]);
+        renderChapterCards();
       } catch (e) {
         console.error('practice bank failed', e);
         bankLoading.classList.add('hidden');
@@ -704,20 +945,35 @@ const t = lang === 'ar'
       }
     }
 
-    function renderTopicChips() {
-      chipsEl.replaceChildren();
-      topics.forEach((topic) => {
-        const b = el('button', 'pr-chip', topic.name || topic.id) as HTMLButtonElement;
+    function renderChapterCards() {
+      chaptersEl.replaceChildren();
+      const chevPath = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
+      topics.forEach((topic, index) => {
+        const b = el('button', 'pr-chapter') as HTMLButtonElement;
         b.type = 'button';
         b.dataset.topicId = topic.id;
+        b.innerHTML =
+          `<span class="pr-chapter-top">` +
+            `<span class="pr-chapter-num">${toAr(index + 1)}</span>` +
+            `<span class="pr-chapter-level">${T.level} ${toAr(topic.level ?? 1)}</span>` +
+          `</span>` +
+          `<span class="pr-chapter-title"></span>` +
+          `<span class="pr-chapter-meta">${T.appliedExercises}</span>` +
+          `<span class="pr-chapter-cta"><span>${T.openChapter}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${chevPath}"/></svg></span>`;
+        b.querySelector<HTMLElement>('.pr-chapter-title')!.textContent = topic.name || topic.id;
         b.addEventListener('click', () => { sfx.tap(); selectTopic(topic); });
-        chipsEl.appendChild(b);
+        chaptersEl.appendChild(b);
       });
+      revealStagger(chaptersEl.querySelectorAll('.pr-chapter'), 0.055);
     }
 
     async function selectTopic(topic: any) {
       selectedTopic = topic;
-      chipsEl.querySelectorAll('.pr-chip').forEach((c) => c.classList.toggle('is-active', (c as HTMLElement).dataset.topicId === topic.id));
+      const chapterIndex = Math.max(0, topics.findIndex((item) => item.id === topic.id));
+      sentenceChapterEl.textContent = `${T.chapter} ${toAr(chapterIndex + 1)} · ${T.level} ${toAr(topic.level ?? 1)}`;
+      sentenceTopicEl.textContent = topic.name || topic.id;
+      sentenceCountEl.textContent = '';
+      showPhase('sentences');
       if (sentCache[topic.id]) { renderSentences(sentCache[topic.id]); return; }
       sentenceListEl.replaceChildren();
       sentenceListEl.appendChild(el('p', 'pr-hint text-center py-6', lang === 'ar' ? 'جارٍ التحميل…' : 'Loading…'));
@@ -733,6 +989,7 @@ const t = lang === 'ar'
 
     function renderSentences(sentences: any[]) {
       sentenceListEl.replaceChildren();
+      sentenceCountEl.textContent = T.sentenceCount(sentences.length);
       if (!sentences.length) { sentenceListEl.appendChild(el('p', 'pr-hint text-center py-6', T.noSentences)); return; }
       const chevPath = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
       sentences.forEach((s, i) => {
@@ -745,7 +1002,7 @@ const t = lang === 'ar'
             `<span class="pr-sentence-text" dir="rtl"></span>` +
             `<span class="pr-sentence-meta">${count} ${T.words}</span>` +
           `</span>` +
-          `<svg class="pr-sentence-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${chevPath}"/></svg>`;
+          `<span class="pr-sentence-open"><span>${T.startChallenge}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${chevPath}"/></svg></span>`;
         b.querySelector('.pr-sentence-text')!.textContent = s.sentence || '';
         b.addEventListener('click', () => { sfx.tap(); openSolve(s); });
         sentenceListEl.appendChild(b);
@@ -770,19 +1027,32 @@ const t = lang === 'ar'
       const words = Array.isArray(sentence.correctAnalysis) && sentence.correctAnalysis.length
         ? sentence.correctAnalysis.map((a: any) => a.word)
         : String(sentence.sentence || '').split(/\s+/).filter(Boolean);
+      q<HTMLElement>('[data-solve-word-count]').textContent = `${toAr(words.length)} ${T.words}`;
       words.forEach((word: string, i: number) => {
-        const card = el('div', 'pr-word');
+        const card = el('div', 'pr-word pr-question-card');
+        card.setAttribute('role', 'group');
+        card.setAttribute('aria-label', `${T.wordLabel} ${toAr(i + 1)}: ${word}`);
         const head = el('div', 'pr-word-head');
+        const identity = el('div', 'pr-word-identity');
+        const number = el('span', 'pr-question-number', `${T.wordLabel} ${toAr(i + 1)}`);
         const tok = el('span', 'pr-word-token'); tok.dir = 'rtl'; tok.textContent = word;
-        head.append(tok, el('span', 'pr-word-num', String(i + 1)));
+        identity.append(number, tok);
+        const status = el('span', 'pr-word-status', T.incompleteWord);
+        status.setAttribute('aria-live', 'polite');
+        head.append(identity, status);
         card.appendChild(head);
         const grid = el('div', 'pr-selects');
         const type = document.createElement('select'); type.className = 'pr-select'; type.dir = 'rtl'; type.innerHTML = opt(WORD_TYPES, T.type);
         const role = document.createElement('select'); role.className = 'pr-select'; role.dir = 'rtl'; role.innerHTML = opt([], T.role); role.disabled = true;
         const cm = document.createElement('select'); cm.className = 'pr-select'; cm.dir = 'rtl'; cm.innerHTML = opt(CASES, T.caseMarker);
         type.addEventListener('change', () => { role.innerHTML = opt(ROLES[type.value] || [], T.role); role.disabled = !type.value; markDone(card, type, role, cm); });
-        [[T.type, type], [T.role, role], [T.caseMarker, cm]].forEach(([label, sel]) => {
-          const f = el('div', 'pr-field'); f.appendChild(el('span', 'pr-field-label', String(label))); f.appendChild(sel as HTMLSelectElement); grid.appendChild(f);
+        [[T.type, type, 'type'], [T.role, role, 'role'], [T.caseMarker, cm, 'marker']].forEach(([label, sel, kind], fieldIndex) => {
+          const field = el('div', `pr-field pr-field-${String(kind)}`);
+          const heading = el('span', 'pr-field-heading');
+          heading.append(el('span', 'pr-field-step', toAr(fieldIndex + 1)), el('span', 'pr-field-label', String(label)));
+          (sel as HTMLSelectElement).setAttribute('aria-label', `${String(label)} — ${word}`);
+          field.append(heading, sel as HTMLSelectElement);
+          grid.appendChild(field);
         });
         [role, cm].forEach((s) => s.addEventListener('change', () => markDone(card, type, role, cm)));
         card.appendChild(grid);
@@ -800,6 +1070,11 @@ const t = lang === 'ar'
       const was = card.dataset.done === '1';
       card.dataset.done = done ? '1' : '0';
       card.classList.toggle('is-done', done);
+      const status = card.querySelector<HTMLElement>('.pr-word-status');
+      if (status) {
+        status.textContent = done ? T.completeWord : T.incompleteWord;
+        status.classList.toggle('is-done', done);
+      }
       if (done && !was) {
         card.classList.remove('just-done'); void card.offsetWidth; card.classList.add('just-done');
         sfx.select();
@@ -809,8 +1084,13 @@ const t = lang === 'ar'
     function updateProgress() {
       const done = curatedInputs.filter((w) => w.type.value && w.role.value && w.cm.value).length;
       q<HTMLElement>('[data-solve-progress]').textContent = T.answered(done, curatedInputs.length);
+      const percent = curatedInputs.length ? Math.round((done / curatedInputs.length) * 100) : 0;
+      q<HTMLElement>('[data-solve-percent]').textContent = `${toAr(percent)}%`;
       const bar = root!.querySelector<HTMLElement>('[data-solve-bar]');
-      if (bar) bar.style.width = curatedInputs.length ? `${(done / curatedInputs.length) * 100}%` : '0%';
+      if (bar) bar.style.width = `${percent}%`;
+      const submit = q<HTMLButtonElement>('[data-solve-check]');
+      submit.disabled = done !== curatedInputs.length || curatedInputs.length === 0;
+      q<HTMLElement>('[data-solve-dock]').classList.toggle('is-ready', done === curatedInputs.length && curatedInputs.length > 0);
     }
 
     async function checkCurated() {
@@ -843,7 +1123,8 @@ const t = lang === 'ar'
         renderCuratedResults(selectedSentence.sentence, score, results);
         celebrate(score);
       } finally {
-        btn.disabled = false; label.textContent = T.check;
+        btn.disabled = curatedInputs.some((word) => !word.type.value || !word.role.value || !word.cm.value);
+        label.textContent = T.check;
       }
     }
 
@@ -1021,7 +1302,11 @@ const t = lang === 'ar'
         email: authUser?.email || undefined,
       });
     }
-    root.querySelectorAll<HTMLButtonElement>('[data-back]').forEach((b) => b.addEventListener('click', () => showPhase(b.dataset.back!)));
+    root.querySelectorAll<HTMLButtonElement>('[data-back]').forEach((b) => b.addEventListener('click', () => {
+      if (b.dataset.back === 'choose' && fixedMode === 'custom') openCustom();
+      else if (b.dataset.back === 'choose' && fixedMode === 'curated') openCurated();
+      else showPhase(b.dataset.back!);
+    }));
     q<HTMLButtonElement>('[data-custom-split]').addEventListener('click', splitCustom);
 
     // Empty-state chips: fill the textarea with a curated example, then focus it.
@@ -1038,9 +1323,9 @@ const t = lang === 'ar'
     q<HTMLButtonElement>('[data-custom-grade]').addEventListener('click', gradeCustom);
     q<HTMLButtonElement>('[data-solve-check]').addEventListener('click', checkCurated);
     q<HTMLButtonElement>('[data-again]').addEventListener('click', () => {
-      // Stay in the same mode: curated → back to the sentence list (pick another);
+      // Stay in the same mode: curated → current chapter (pick another sentence);
       // custom → a fresh write screen. Only fall back to the chooser if unknown.
-      if (lastMode === 'curated') showPhase('browse');
+      if (lastMode === 'curated') showPhase(selectedTopic ? 'sentences' : 'browse');
       else if (lastMode === 'custom') openCustom();
       else showPhase('choose');
     });
@@ -1055,7 +1340,9 @@ const t = lang === 'ar'
       labelEl.textContent = copiedMsg;
       setTimeout(() => { labelEl.textContent = original; }, 1600);
     };
-    const shareUrl = () => lang === 'ar' ? 'https://irab.app/practice' : 'https://irab.app/en/practice';
+    const shareUrl = () => fixedMode === 'curated'
+      ? (lang === 'ar' ? 'https://irab.app/challenges' : 'https://irab.app/en/challenges')
+      : (lang === 'ar' ? 'https://irab.app/practice' : 'https://irab.app/en/practice');
     q<HTMLButtonElement>('[data-result-share]').addEventListener('click', async () => {
       sfx.tap();
       const text = shareText();
@@ -1090,17 +1377,18 @@ const t = lang === 'ar'
           booted = true;
           loadingEl.classList.add('hidden');
           toolEl.classList.remove('hidden');
-          // Premium + sentence bank load in the BACKGROUND — never block / flicker the first screen.
+          // Premium loads in the background. The sentence bank is only needed
+          // by the Challenges route, so custom feedback never imports Firestore.
           fetchMe(u).then((me) => { if (me?.premium) { isPremium = true; quotaEl.textContent = T.unlimited; } }).catch(() => {});
-          ensureBank().catch(() => {});
+          if (fixedMode !== 'custom') ensureBank().catch(() => {});
           // Initial screen — set synchronously so there is no chooser flash.
           try {
             const histId = new URLSearchParams(location.search).get('h');
             if (histId) { const item = getHistoryItem(histId); if (item?.kind === 'practice' && item.data) { renderCustomResults(item.data, item.sentence); return; } }
           } catch {}
-          const mode = new URLSearchParams(location.search).get('mode');
-          if (mode === 'curated') openCurated();
-          else if (mode === 'custom') openCustom();
+          const requestedMode = fixedMode || new URLSearchParams(location.search).get('mode');
+          if (requestedMode === 'curated') openCurated();
+          else if (requestedMode === 'custom') openCustom();
           else showPhase('choose');
         });
       } catch { loadingEl.classList.add('hidden'); gateEl.classList.remove('hidden'); }

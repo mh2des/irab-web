@@ -1,6 +1,6 @@
 ---
 /**
- * /practice: mode-first practice landing (Arabic).
+ * /practice: AI-feedback practice landing (Arabic).
  *
  * Indexed SEO surface for interactive i'rab practice. Firebase must stay out of
  * this static page; the signed-in tool lives at /practice/play.
@@ -12,9 +12,9 @@ import ArticleFaq from '../components/ArticleFaq.astro';
 import Footer from '../components/sections/Footer.astro';
 
 const faqs = [
-  { q: 'ما أوّل وضع أبدأ به؟', a: 'ابدأ بوضع «اكتب جملتك» إذا أردت اختبار جملة من اختيارك والحصول على تصحيح ذكي. اختر «الجمل الجاهزة» إذا أردت تدريبًا أسرع بخيارات محددة.' },
+  { q: 'ما الفرق بين التدريب والتحديات؟', a: 'في التدريب تكتب جملتك وإعرابك بنفسك وتحصل على تصحيح ذكي. أمّا التحديات فتستخدم جملًا جاهزة وخيارات محددة.' },
   { q: 'هل التدريب مجاني؟', a: 'نعم، يمكن البدء مجانًا بعد تسجيل الدخول. يفتح Irab Plus حصصًا أوسع ومزايا تدريب أكثر.' },
-  { q: 'هل أحتاج إلى معرفة كل أبواب النحو؟', a: 'لا. وضع الجمل الجاهزة يساعدك على التدرب بخيارات واضحة، ووضع الجملة الخاصة يشرح لك الأخطاء كلمة بكلمة.' },
+  { q: 'هل أحتاج إلى معرفة كل أبواب النحو؟', a: 'لا. ابدأ بجملة قصيرة واكتب ما تعرفه، وسيشرح لك التصحيح أخطاءك كلمة بكلمة.' },
   { q: 'هل التصحيح فوري؟', a: 'نعم. بعد إرسال إجاباتك تحصل على نتيجة وتصحيح لكل كلمة مع توضيح الإجابة الصحيحة.' },
 ];
 
@@ -24,12 +24,12 @@ const learningResource = {
   name: 'تمارين الإعراب التفاعلية مع تصحيح فوري: إعراب',
   url: 'https://irab.app/practice',
   inLanguage: 'ar',
-  learningResourceType: ['Exercise', 'Quiz', 'Game'],
+  learningResourceType: ['Exercise'],
   teaches: ['الإعراب', 'النحو', 'الصرف'],
   educationalLevel: 'مبتدئ إلى متقدّم',
   isAccessibleForFree: true,
   description:
-    'اختر بين كتابة جملتك أو التدريب على جمل جاهزة، ثم أعرِب الكلمات واحصل على تصحيح فوري.',
+    'اكتب جملة عربية وإعرابك لكل كلمة، ثم احصل على تصحيح ذكي وفوري.',
   provider: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
 };
 ---
@@ -37,7 +37,7 @@ const learningResource = {
   lang="ar"
   hasEn
   title="تمارين الإعراب التفاعلية · إعراب"
-  description="تدرّب على الإعراب بطريقتين: اكتب جملتك لتحصل على تصحيح ذكي، أو اختر من جمل جاهزة وأجب من خيارات واضحة."
+  description="اكتب جملة عربية وإعرابك لكل كلمة، ثم احصل على تصحيح ذكي وفوري يوضّح الصواب والخطأ."
 >
   <Schema slot="head" />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(learningResource)} is:inline />
@@ -52,9 +52,12 @@ const learningResource = {
           أعرِبْ بنفسك، لا أن تقرأ الإعراب فقط.
         </h1>
         <p class="font-arabic text-body-lg text-ink/72 dark:text-mist/72 leading-loose max-w-2xl mx-auto mb-9">
-          الميزة الأساسية هي أن تكتب إعرابك بنفسك ثم تحصل على تصحيح ذكي. وبعدها يمكنك استخدام الجمل الجاهزة لتدريب أسرع بخيارات منظّمة.
+          اكتب أي جملة عربية، أعرِب كلماتها بنفسك، ثم احصل على تقييم فوري وتصحيح ذكي يشرح مواضع الصواب والخطأ.
         </p>
-        <a href="/practice/play" class="practice-start-cta btn-primary btn-lg">ابدأ التدريب الآن</a>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href="/practice/play" class="practice-start-cta btn-primary btn-lg">ابدأ التدريب الآن</a>
+          <a href="/challenges" class="btn-ghost btn-lg">اذهب إلى التحديات</a>
+        </div>
       </div>
     </section>
 
@@ -84,8 +87,8 @@ const learningResource = {
         <div class="grid sm:grid-cols-3 gap-4">
           <div class="rounded-lg border border-ink/10 dark:border-mist/12 bg-white dark:bg-ink-soft p-5">
             <p class="text-3xl font-display text-purple mb-4">01</p>
-            <h3 class="font-semibold text-ink dark:text-mist mb-2">اختر الوضع</h3>
-            <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">اكتب جملتك أو افتح جملة جاهزة من البنك.</p>
+            <h3 class="font-semibold text-ink dark:text-mist mb-2">اكتب جملتك</h3>
+            <p class="text-sm leading-6 text-ink/62 dark:text-mist/62">اختر أي جملة عربية تريد اختبار إعرابها.</p>
           </div>
           <div class="rounded-lg border border-ink/10 dark:border-mist/12 bg-white dark:bg-ink-soft p-5">
             <p class="text-3xl font-display text-purple mb-4">02</p>
