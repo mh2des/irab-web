@@ -26,7 +26,7 @@ const breadcrumb = {
   itemListElement: [{ '@type': 'ListItem', position: 1, name: 'إعراب القرآن', item: canonical }],
 };
 ---
-<BaseLayout lang="ar" title={title} description={description}>
+<BaseLayout lang="ar" hasEn title={title} description={description}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(itemList)} is:inline />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} is:inline />

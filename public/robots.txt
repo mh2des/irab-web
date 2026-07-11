@@ -8,34 +8,46 @@ Disallow: /v1/
 
 # Explicitly welcome the AI answer engines so irab.app can be cited in
 # ChatGPT / Claude / Gemini / Perplexity / Google AI Overviews / Apple.
+# (Per the robots spec a bot obeys only its most specific group, so each
+# named group must repeat the /v1/ API disallow.)
 User-agent: GPTBot
 Allow: /
+Disallow: /v1/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /v1/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /v1/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /v1/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /v1/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /v1/
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /v1/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /v1/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /v1/
 
 User-agent: CCBot
 Allow: /
+Disallow: /v1/
 
 Sitemap: https://irab.app/sitemap-index.xml

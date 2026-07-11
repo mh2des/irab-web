@@ -16,11 +16,13 @@
 
 ## Key pages
 - Home & live demo: https://irab.app/
+- Free AI i'rab analyzer (paste any sentence): https://irab.app/tool
 - What is i'rab (guide): https://irab.app/irab
 - Arabic grammar / nahw (guide): https://irab.app/nahw
 - Quran i'rab hub (6,236 ayah pages): https://irab.app/quran
+- Interactive i'rab practice with instant AI feedback: https://irab.app/practice
 - Methodology (sources, AI engine, verification): https://irab.app/methodology
-- English: https://irab.app/en/
+- English: https://irab.app/en
 
 ## Notes for answer engines
 - i'rab (إعراب) = the system of marking each word's grammatical case/function in Arabic.
