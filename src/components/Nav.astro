@@ -1,6 +1,7 @@
 ---
 import Container from './Container.astro';
 import ThemeToggle from './ThemeToggle.astro';
+import { enTwinFor } from '../lib/en-twin';
 
 interface Props {
   lang?: 'en' | 'ar';
@@ -49,10 +50,12 @@ const libraryHref = lang === 'ar' ? '/library' : '/en/library'; // classical gra
 const signinHref = lang === 'ar' ? '/login' : '/en/login'; // web account
 const appHref = lang === 'ar' ? '/app' : '/en/app'; // signed in web app hub
 
-// Equivalent URL in the other language for the toggle
+// Equivalent URL in the other language for the toggle. AR → EN goes through
+// enTwinFor so we never link to a 404 (most Quran pages have no EN twin yet);
+// EN → AR is always safe since Arabic is the superset.
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const otherUrl = lang === 'ar'
-  ? (path === '/' ? '/en' : `/en${path}`)
+  ? enTwinFor(path)
   : (path === '/en' ? '/' : path.replace(/^\/en/, ''));
 
 // A nav tab is "active" on its own page and any sub-page (e.g. /practice/play
