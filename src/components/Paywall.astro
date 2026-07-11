@@ -1,13 +1,13 @@
 ---
 /**
- * Paywall: the shared "you've used your free daily tries" upgrade gate.
+ * Paywall: shared upgrade gate for daily limits and locked Plus content.
  *
  * One polished, fully-responsive modal reused by every gated tool (analyzer,
  * dictionary, practice). It exposes a tiny global API so any tool's <script>
  * can summon it on a 429 without duplicating markup, styles, or the Paddle
  * checkout flow:
  *
- *     window.IrabPaywall.show({ uid?, email?, onActivated? })
+ *     window.IrabPaywall.show({ uid?, email?, reason?, onActivated? })
  *     window.IrabPaywall.hide()
  *
  * When uid/email are omitted it reads the current Firebase user itself, so most
@@ -105,8 +105,8 @@ const t = lang === 'ar'
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2l2.4 6.8L21 9l-5.2 4 1.8 7L12 16.6 6.4 20l1.8-7L3 9l6.6-.2z"/></svg>
           {t.eyebrow}
         </span>
-        <h2 id="pw-title" class:list={[titleFont, 'pw-title']}>{t.title}</h2>
-        <p class="pw-body">{t.body}</p>
+        <h2 id="pw-title" data-pw-title class:list={[titleFont, 'pw-title']}>{t.title}</h2>
+        <p data-pw-body class="pw-body">{t.body}</p>
         <ul class="pw-benefits">
           {t.benefits.map((b) => (
             <li class="pw-benefit">
@@ -361,6 +361,19 @@ const t = lang === 'ar'
       const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
       const mainView = q<HTMLElement>('[data-pw-main]');
       const activating = q<HTMLElement>('[data-pw-activating]');
+      const titleEl = q<HTMLElement>('[data-pw-title]');
+      const bodyEl = q<HTMLElement>('[data-pw-body]');
+      const defaultTitle = titleEl.textContent || '';
+      const defaultBody = bodyEl.textContent || '';
+      const challengeCopy = lang === 'ar'
+        ? {
+            title: 'افتح بنك التحديات كاملًا',
+            body: 'المستويان ١–٢ متاحان مجانًا. اشترك في إعراب بلاس لفتح بقية المستويات وجميع الجمل المنتقاة بالحساب نفسه على الويب والتطبيق.',
+          }
+        : {
+            title: 'Unlock the full challenge bank',
+            body: 'Levels 1–2 are free. Subscribe to Irab Plus to unlock every remaining level and curated sentence with the same account on web and mobile.',
+          };
 
       let onActivated: (() => void) | null = null;
       let passedUid: string | null = null;
@@ -370,10 +383,13 @@ const t = lang === 'ar'
         root!.classList.add('pw-hidden');
         document.documentElement.style.removeProperty('overflow');
       }
-      function show(opts?: { uid?: string; email?: string; onActivated?: () => void }) {
+      function show(opts?: { uid?: string; email?: string; reason?: 'limit' | 'challenges'; onActivated?: () => void }) {
         onActivated = opts?.onActivated ?? null;
         passedUid = opts?.uid ?? null;
         passedEmail = opts?.email ?? null;
+        const copy = opts?.reason === 'challenges' ? challengeCopy : { title: defaultTitle, body: defaultBody };
+        titleEl.textContent = copy.title;
+        bodyEl.textContent = copy.body;
         mainView.classList.remove('pw-hidden');
         activating.classList.add('pw-hidden');
         root!.classList.remove('pw-hidden');

@@ -20,7 +20,7 @@ const tools = lang === 'ar'
   ? [
       { key: 'analyzer', title: 'محلّل الإعراب', desc: 'إعراب كامل للجمل العربية كلمة بكلمة، مع العلامة والسبب.', href: '/tool', usageKey: '', accent: 'purple', cta: 'حلّل الآن' },
       { key: 'practice', title: 'التدريب بالتصحيح الذكي', desc: 'اكتب جملتك وإعرابك بنفسك، ثم احصل على تصحيح وشرح لكل كلمة.', href: '/practice/play', usageKey: 'customPractice', accent: 'teal', cta: 'ابدأ التدريب' },
-      { key: 'challenges', title: 'التحديات', desc: 'اختر من الجمل الجاهزة، ثم حدّد نوع كل كلمة وموقعها وعلامتها.', href: '/challenges', usageKey: '', accent: 'purple', cta: 'ابدأ التحدي' },
+      { key: 'challenges', title: 'التحديات', desc: 'اختر من الجمل الجاهزة، ثم حدّد نوع كل كلمة وموقعها وعلامتها.', href: '/challenges', usageKey: 'practiceMode', accent: 'purple', cta: 'ابدأ التحدي' },
       { key: 'dictionary', title: 'المعجم الذكي', desc: 'معنى الكلمة وجذرها ووزنها وأمثلة عليها في سياقها.', href: '/dictionary', usageKey: 'smartDictionary', accent: 'purple', cta: 'افتح المعجم' },
       { key: 'quran', title: 'إعراب القرآن', desc: 'مكتبة منظمة لإعراب الآيات، مناسبة للمراجعة والدراسة.', href: '/quran', usageKey: '', accent: 'teal', cta: 'تصفّح' },
       { key: 'library', title: 'المكتبة النحوية', desc: '٤٧ كتابًا في النحو والصرف والبلاغة، تُقرأ كاملةً.', href: '/library', usageKey: '', accent: 'purple', cta: 'افتح المكتبة' },
@@ -28,7 +28,7 @@ const tools = lang === 'ar'
   : [
       { key: 'analyzer', title: "I'rab analyzer", desc: "Full word by word i'rab for Arabic sentences, with the marker and why.", href: '/en/tool', usageKey: '', accent: 'purple', cta: 'Analyze now' },
       { key: 'practice', title: 'AI feedback practice', desc: "Write your own sentence and i'rab, then get word-by-word correction and explanation.", href: '/en/practice/play', usageKey: 'customPractice', accent: 'teal', cta: 'Start practicing' },
-      { key: 'challenges', title: 'Challenges', desc: "Choose a ready-made sentence, then set each word's type, role, and case marker.", href: '/en/challenges', usageKey: '', accent: 'purple', cta: 'Start a challenge' },
+      { key: 'challenges', title: 'Challenges', desc: "Choose a ready-made sentence, then set each word's type, role, and case marker.", href: '/en/challenges', usageKey: 'practiceMode', accent: 'purple', cta: 'Start a challenge' },
       { key: 'dictionary', title: 'Smart dictionary', desc: 'Meaning, root, pattern, examples, and translation for any word.', href: '/en/dictionary', usageKey: 'smartDictionary', accent: 'purple', cta: 'Open dictionary' },
       { key: 'quran', title: "Quran i'rab", desc: "Browse structured i'rab pages for Quranic verses.", href: '/en/quran', usageKey: '', accent: 'teal', cta: 'Browse' },
       { key: 'library', title: 'Grammar library', desc: '47 works on nahw, sarf, and balagha: read in full.', href: '/en/library', usageKey: '', accent: 'purple', cta: 'Open library' },
@@ -56,6 +56,7 @@ const t = lang === 'ar'
       today: 'استخدام اليوم',
       todayBody: 'حدود التدريب والمعجم',
       practice: 'التدريب',
+      challenges: 'التحديات',
       dictionary: 'المعجم',
       workspaceEyebrow: 'مساحة العمل',
       tools: 'الأدوات',
@@ -102,6 +103,7 @@ const t = lang === 'ar'
       today: "Today's usage",
       todayBody: 'Practice and dictionary limits',
       practice: 'Practice',
+      challenges: 'Challenges',
       dictionary: 'Dictionary',
       workspaceEyebrow: 'Workspace',
       tools: 'Tools',
@@ -269,6 +271,10 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
           <div class="usage-inline-row">
             <span>{t.practice}</span>
             <strong data-usage-summary="customPractice">0</strong>
+          </div>
+          <div class="usage-inline-row">
+            <span>{t.challenges}</span>
+            <strong data-usage-summary="practiceMode">0</strong>
           </div>
           <div class="usage-inline-row">
             <span>{t.dictionary}</span>
@@ -1847,6 +1853,7 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
             planEl.className = 'app-plan-pill is-plus';
             planNoteEl.textContent = T.plusNote;
             setUsage('customPractice', T.unlimited);
+            setUsage('practiceMode', T.unlimited);
             setUsage('smartDictionary', T.unlimited);
           } else {
             planEl.textContent = T.free;
@@ -1899,7 +1906,7 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
               if (res.ok) {
                 const j = await res.json();
                 const usage = j?.data?.usage || {};
-                for (const key of ['customPractice', 'smartDictionary']) {
+                for (const key of ['customPractice', 'practiceMode', 'smartDictionary']) {
                   const u2 = usage[key];
                   if (premium) {
                     setUsage(key, T.unlimited);
@@ -1913,6 +1920,7 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
             } catch {
               if (premium) {
                 setUsage('customPractice', T.unlimited);
+                setUsage('practiceMode', T.unlimited);
                 setUsage('smartDictionary', T.unlimited);
               }
             }

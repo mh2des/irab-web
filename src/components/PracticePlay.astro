@@ -45,6 +45,7 @@ const t = lang === 'ar'
       chooseChapter: 'اختر فصلًا نحويًّا',
       challengeEyebrow: 'مسار التحديات',
       challengeBody: 'فصول مرتّبة، وجمل مختارة، وتطبيق مباشر خطوةً خطوة.',
+      plusRequired: 'حصري لإعراب بلاس',
       chapter: 'الفصل',
       openChapter: 'افتح الفصل',
       appliedExercises: 'تمارين تطبيقية',
@@ -130,6 +131,7 @@ const t = lang === 'ar'
       chooseChapter: 'Choose a grammar chapter',
       challengeEyebrow: 'Challenge path',
       challengeBody: 'Structured chapters, selected sentences, and focused practice one step at a time.',
+      plusRequired: 'Irab Plus exclusive',
       chapter: 'Chapter',
       openChapter: 'Open chapter',
       appliedExercises: 'Applied exercises',
@@ -537,10 +539,16 @@ const againLabel = mode === 'curated'
   .pr-chapter:nth-child(3n) { --chapter-accent: var(--color-teal-deep); }
   .pr-chapter:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--chapter-accent) 45%, var(--color-card-edge)); box-shadow: var(--shadow-lift); }
   .pr-chapter:hover::after { transform: scale(1.16); }
+  .pr-chapter.is-locked { --chapter-accent: var(--color-purple); border-color: color-mix(in srgb, var(--color-purple) 22%, var(--color-card-edge)); background: linear-gradient(135deg, color-mix(in srgb, var(--color-purple) 4%, white), var(--color-card)); }
+  .dark .pr-chapter.is-locked { border-color: color-mix(in srgb, var(--color-purple) 26%, var(--color-coal-edge)); background: linear-gradient(135deg, color-mix(in srgb, var(--color-purple) 7%, var(--color-coal-soft)), var(--color-coal-soft)); }
+  .pr-chapter.is-locked:hover { border-color: color-mix(in srgb, var(--color-purple) 48%, var(--color-card-edge)); }
   .pr-chapter-top { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
   .pr-chapter-num { width: 2.65rem; height: 2.65rem; display: grid; place-items: center; border-radius: 0.8rem; color: #fff; background: var(--chapter-accent); font-family: var(--font-mono); font-size: 0.88rem; font-weight: 800; box-shadow: 0 10px 20px -13px var(--chapter-accent); }
   .pr-chapter-level { padding: 0.28rem 0.65rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800; color: color-mix(in srgb, var(--color-ink) 58%, transparent); background: color-mix(in srgb, var(--color-ink) 6%, transparent); }
+  .pr-chapter-level svg { width: 0.78rem; height: 0.78rem; display: inline-block; margin-inline-end: 0.28rem; vertical-align: -0.08rem; }
+  .pr-chapter.is-locked .pr-chapter-level { color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 10%, transparent); }
   .dark .pr-chapter-level { color: color-mix(in srgb, var(--color-mist) 64%, transparent); background: color-mix(in srgb, var(--color-mist) 9%, transparent); }
+  .dark .pr-chapter.is-locked .pr-chapter-level { color: color-mix(in srgb, var(--color-purple) 86%, white); background: color-mix(in srgb, var(--color-purple) 15%, transparent); }
   .pr-chapter-title { position: relative; z-index: 1; margin-top: 1rem; font-family: var(--font-arabic-display); font-size: clamp(1.35rem, 3vw, 1.75rem); font-weight: 700; line-height: 1.35; }
   [dir="ltr"] .pr-chapter-title { font-family: var(--font-display); }
   .pr-chapter-meta { position: relative; z-index: 1; margin-top: 0.3rem; font-size: var(--text-caption); color: color-mix(in srgb, var(--color-ink) 60%, transparent); }
@@ -847,10 +855,10 @@ const againLabel = mode === 'curated'
 
     const T = lang === 'ar'
       ? {
-          select: 'اختر', type: 'النوع', role: 'الموقع', caseMarker: 'العلامة', grading: 'جارٍ التصحيح…', check: 'تحقّق من الإجابات', gradeCustom: 'صحّح إعرابي', completeAll: 'أكمل اختيارات كل كلمة أولاً.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', limit: 'بلغت حدّك اليومي المجاني للتدريب. عُد غدًا أو رقِّ حسابك.', error: 'حدث خطأ. حاول مرة أخرى.', yourAnswer: 'إجابتك', correct: 'الصواب', unlimited: 'تدريب غير محدود', level: 'المستوى', words: 'كلمة', wordLabel: 'الكلمة', incompleteWord: 'بانتظار الإجابة', completeWord: 'مكتملة', chapter: 'الفصل', appliedExercises: 'تمارين تطبيقية', openChapter: 'افتح الفصل', startChallenge: 'ابدأ التحدي', noSentences: 'لا توجد جمل في هذا الموضوع.', score: 'نتيجتك', answered: (a: number, n: number) => `${a} من ${n}`, sentenceCount: (n: number) => `${toAr(n)} جملة`, yourIrabPlaceholder: 'إعرابك لهذه الكلمة…', fbExcellent: 'ممتاز! إتقان رائع 🎉', fbGreat: 'أحسنت! اقتربت من الإتقان', fbGood: 'جيد، واصل التدريب', fbKeep: 'لا بأس — التكرار يصنع الإتقان'
+          select: 'اختر', type: 'النوع', role: 'الموقع', caseMarker: 'العلامة', grading: 'جارٍ التصحيح…', check: 'تحقّق من الإجابات', gradeCustom: 'صحّح إعرابي', completeAll: 'أكمل اختيارات كل كلمة أولاً.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', limit: 'بلغت حدّك اليومي المجاني للتدريب. عُد غدًا أو رقِّ حسابك.', error: 'حدث خطأ. حاول مرة أخرى.', yourAnswer: 'إجابتك', correct: 'الصواب', unlimited: 'تدريب غير محدود', level: 'المستوى', words: 'كلمة', wordLabel: 'الكلمة', incompleteWord: 'بانتظار الإجابة', completeWord: 'مكتملة', chapter: 'الفصل', appliedExercises: 'تمارين تطبيقية', openChapter: 'افتح الفصل', startChallenge: 'ابدأ التحدي', plusRequired: 'حصري لإعراب بلاس', noSentences: 'لا توجد جمل في هذا الموضوع.', score: 'نتيجتك', answered: (a: number, n: number) => `${a} من ${n}`, sentenceCount: (n: number) => `${toAr(n)} جملة`, yourIrabPlaceholder: 'إعرابك لهذه الكلمة…', fbExcellent: 'ممتاز! إتقان رائع 🎉', fbGreat: 'أحسنت! اقتربت من الإتقان', fbGood: 'جيد، واصل التدريب', fbKeep: 'لا بأس — التكرار يصنع الإتقان'
         }
       : {
-          select: 'Select', type: 'Type', role: 'Role', caseMarker: 'Marker', grading: 'Grading…', check: 'Check answers', gradeCustom: 'Grade my i\'rab', completeAll: 'Complete every word\'s choices first.', needWords: 'Write your i\'rab for at least one word.', limit: 'You\'ve hit today\'s free practice limit. Come back tomorrow or upgrade.', error: 'Something went wrong. Please try again.', yourAnswer: 'Your answer', correct: 'Correct', unlimited: 'Unlimited practice', level: 'Level', words: 'words', wordLabel: 'Word', incompleteWord: 'Waiting for answer', completeWord: 'Complete', chapter: 'Chapter', appliedExercises: 'Applied exercises', openChapter: 'Open chapter', startChallenge: 'Start challenge', noSentences: 'No sentences in this topic.', score: 'Your score', answered: (a: number, n: number) => `${a} of ${n}`, sentenceCount: (n: number) => `${n} sentences`, yourIrabPlaceholder: 'Your i\'rab for this word…', fbExcellent: 'Excellent! Outstanding 🎉', fbGreat: 'Great work! Almost there', fbGood: 'Good — keep training', fbKeep: 'Keep going — practice makes perfect'
+          select: 'Select', type: 'Type', role: 'Role', caseMarker: 'Marker', grading: 'Grading…', check: 'Check answers', gradeCustom: 'Grade my i\'rab', completeAll: 'Complete every word\'s choices first.', needWords: 'Write your i\'rab for at least one word.', limit: 'You\'ve hit today\'s free practice limit. Come back tomorrow or upgrade.', error: 'Something went wrong. Please try again.', yourAnswer: 'Your answer', correct: 'Correct', unlimited: 'Unlimited practice', level: 'Level', words: 'words', wordLabel: 'Word', incompleteWord: 'Waiting for answer', completeWord: 'Complete', chapter: 'Chapter', appliedExercises: 'Applied exercises', openChapter: 'Open chapter', startChallenge: 'Start challenge', plusRequired: 'Irab Plus exclusive', noSentences: 'No sentences in this topic.', score: 'Your score', answered: (a: number, n: number) => `${a} of ${n}`, sentenceCount: (n: number) => `${n} sentences`, yourIrabPlaceholder: 'Your i\'rab for this word…', fbExcellent: 'Excellent! Outstanding 🎉', fbGreat: 'Great work! Almost there', fbGood: 'Good — keep training', fbKeep: 'Keep going — practice makes perfect'
         };
 
     const feedbackFor = (s: number) => s >= 0.9 ? T.fbExcellent : s >= 0.7 ? T.fbGreat : s >= 0.5 ? T.fbGood : T.fbKeep;
@@ -890,6 +898,7 @@ const againLabel = mode === 'curated'
     const sentenceTopicEl = q<HTMLElement>('[data-sentence-topic]');
     const sentenceChapterEl = q<HTMLElement>('[data-sentence-chapter]');
     const sentenceCountEl = q<HTMLElement>('[data-sentence-count]');
+    const topicIsLocked = (topic: any) => !isPremium && Number(topic?.level ?? 1) > 2;
 
     // Firestore loaded once, lazily; topics + per-topic sentences cached so the
     // bank opens instantly (it is prefetched in the background right after boot).
@@ -948,26 +957,35 @@ const againLabel = mode === 'curated'
     function renderChapterCards() {
       chaptersEl.replaceChildren();
       const chevPath = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
+      const lockSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
       topics.forEach((topic, index) => {
+        const locked = topicIsLocked(topic);
         const b = el('button', 'pr-chapter') as HTMLButtonElement;
         b.type = 'button';
         b.dataset.topicId = topic.id;
+        b.classList.toggle('is-locked', locked);
+        b.setAttribute('aria-label', `${topic.name || topic.id}${locked ? ` — ${T.plusRequired}` : ''}`);
         b.innerHTML =
           `<span class="pr-chapter-top">` +
             `<span class="pr-chapter-num">${toAr(index + 1)}</span>` +
-            `<span class="pr-chapter-level">${T.level} ${toAr(topic.level ?? 1)}</span>` +
+            `<span class="pr-chapter-level">${locked ? lockSvg : ''}${T.level} ${toAr(topic.level ?? 1)}</span>` +
           `</span>` +
           `<span class="pr-chapter-title"></span>` +
-          `<span class="pr-chapter-meta">${T.appliedExercises}</span>` +
-          `<span class="pr-chapter-cta"><span>${T.openChapter}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${chevPath}"/></svg></span>`;
+          `<span class="pr-chapter-meta">${locked ? T.plusRequired : T.appliedExercises}</span>` +
+          `<span class="pr-chapter-cta"><span>${locked ? T.plusRequired : T.openChapter}</span>${locked ? lockSvg : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${chevPath}"/></svg>`}</span>`;
         b.querySelector<HTMLElement>('.pr-chapter-title')!.textContent = topic.name || topic.id;
-        b.addEventListener('click', () => { sfx.tap(); selectTopic(topic); });
+        b.addEventListener('click', () => {
+          sfx.tap();
+          if (topicIsLocked(topic)) { showUpgrade('challenges'); return; }
+          selectTopic(topic);
+        });
         chaptersEl.appendChild(b);
       });
       revealStagger(chaptersEl.querySelectorAll('.pr-chapter'), 0.055);
     }
 
     async function selectTopic(topic: any) {
+      if (topicIsLocked(topic)) { showUpgrade('challenges'); return; }
       selectedTopic = topic;
       const chapterIndex = Math.max(0, topics.findIndex((item) => item.id === topic.id));
       sentenceChapterEl.textContent = `${T.chapter} ${toAr(chapterIndex + 1)} · ${T.level} ${toAr(topic.level ?? 1)}`;
@@ -1295,11 +1313,12 @@ const againLabel = mode === 'curated'
     springPress(root.querySelectorAll('[data-go], [data-solve-check], [data-custom-grade], [data-custom-split], [data-again], [data-result-share], [data-result-copy]'));
     // The upgrade gate is the shared <Paywall> island. Hand it the signed-in
     // user (so checkout can tag the buyer) and let it own the Paddle flow.
-    function showUpgrade() {
+    function showUpgrade(reason: 'limit' | 'challenges' = 'limit') {
       if (isPremium) return;
       (window as any).IrabPaywall?.show({
         uid: authUser?.uid,
         email: authUser?.email || undefined,
+        reason,
       });
     }
     root.querySelectorAll<HTMLButtonElement>('[data-back]').forEach((b) => b.addEventListener('click', () => {
@@ -1364,32 +1383,57 @@ const againLabel = mode === 'curated'
 
     // ── Auth boot (runs once; no flicker) ──────────────────────
     let booted = false;
+    function openInitialPhase() {
+      try {
+        const histId = new URLSearchParams(location.search).get('h');
+        if (histId) {
+          const item = getHistoryItem(histId);
+          if (item?.kind === 'practice' && item.data) { renderCustomResults(item.data, item.sentence); return; }
+        }
+      } catch {}
+      const requestedMode = fixedMode || new URLSearchParams(location.search).get('mode');
+      if (requestedMode === 'curated') openCurated();
+      else if (requestedMode === 'custom') openCustom();
+      else showPhase('choose');
+    }
+
     (async () => {
       if (!maybeSignedIn()) { loadingEl.classList.add('hidden'); gateEl.classList.remove('hidden'); return; }
       try {
         const [{ onAuth }, { fetchMe }] = await Promise.all([import('../lib/auth'), import('../lib/entitlement')]);
-        onAuth((u) => {
+        onAuth(async (u) => {
           if (!u) { if (!booted) { loadingEl.classList.add('hidden'); gateEl.classList.remove('hidden'); } return; }
           authUser = u;
           currentUid = u.uid;
-          u.getIdToken().then((tk) => { idToken = tk; }).catch(() => {});
           if (booted) return; // ignore auth refreshes — never reset the user's place
           booted = true;
+
+          try { idToken = await u.getIdToken(); } catch {}
+
+          // Mode A parity with the app: resolve the shared RevenueCat-backed
+          // entitlement BEFORE revealing chapters. This fails closed to the
+          // free Levels 1–2 if the probe is unavailable and prevents a locked
+          // chapter from flashing open while /v1/me is still pending.
+          if (fixedMode === 'curated') {
+            try {
+              const me = await fetchMe(u);
+              isPremium = me?.premium === true;
+            } catch { isPremium = false; }
+            if (isPremium) quotaEl.textContent = T.unlimited;
+          }
+
           loadingEl.classList.add('hidden');
           toolEl.classList.remove('hidden');
-          // Premium loads in the background. The sentence bank is only needed
-          // by the Challenges route, so custom feedback never imports Firestore.
-          fetchMe(u).then((me) => { if (me?.premium) { isPremium = true; quotaEl.textContent = T.unlimited; } }).catch(() => {});
-          if (fixedMode !== 'custom') ensureBank().catch(() => {});
-          // Initial screen — set synchronously so there is no chooser flash.
-          try {
-            const histId = new URLSearchParams(location.search).get('h');
-            if (histId) { const item = getHistoryItem(histId); if (item?.kind === 'practice' && item.data) { renderCustomResults(item.data, item.sentence); return; } }
-          } catch {}
-          const requestedMode = fixedMode || new URLSearchParams(location.search).get('mode');
-          if (requestedMode === 'curated') openCurated();
-          else if (requestedMode === 'custom') openCustom();
-          else showPhase('choose');
+
+          // Custom feedback keeps its fast first paint; its entitlement only
+          // affects quota messaging and can resolve in the background.
+          if (fixedMode !== 'curated') {
+            fetchMe(u).then((me) => {
+              if (me?.premium) { isPremium = true; quotaEl.textContent = T.unlimited; }
+            }).catch(() => {});
+          }
+
+          openInitialPhase();
         });
       } catch { loadingEl.classList.add('hidden'); gateEl.classList.remove('hidden'); }
     })();
