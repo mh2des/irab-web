@@ -15,7 +15,7 @@ const t = lang === 'ar'
       legal:   'قانوني',
       links: {
         demo: 'التجربة المباشرة', features: 'المميزات', pricing: 'الأسعار', faq: 'الأسئلة',
-        irab: 'ما هو الإعراب؟', nahw: 'ما هو النحو؟', quran: 'إعراب القرآن', teachers: 'للمعلمين',
+        irab: 'ما هو الإعراب؟', nahw: 'ما هو النحو؟', quran: 'إعراب القرآن', teachers: 'للمعلمين', methodology: 'منهجيتنا ومصادرنا',
         privacy: 'الخصوصية', terms: 'الشروط', refund: 'الاسترداد', contact: 'تواصل',
       },
       built: '© ٢٠٢٦ إعراب. كلّ الحقوق محفوظة.',
@@ -27,7 +27,7 @@ const t = lang === 'ar'
       legal:   'Legal',
       links: {
         demo: 'Live demo', features: 'Features', pricing: 'Pricing', faq: 'FAQ',
-        irab: "What is i'rab?", nahw: 'What is nahw?', quran: 'Parse the Quran', teachers: 'For teachers',
+        irab: "What is i'rab?", nahw: 'What is nahw?', quran: 'Parse the Quran', teachers: 'For teachers', methodology: 'Methodology & sources',
         privacy: 'Privacy', terms: 'Terms', refund: 'Refund', contact: 'Contact',
       },
       built: '© 2026 Irab. All rights reserved.',
@@ -66,6 +66,7 @@ const p = (path: string) => (lang === 'ar' ? path : `/en${path}`);
           <li><a href={p('/nahw')}          class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.nahw}</a></li>
           <li><a href={p('/quran-parser')}  class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.quran}</a></li>
           <li><a href={p('/teachers')}      class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.teachers}</a></li>
+          <li><a href="/methodology"       class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.methodology}</a></li>
         </ul>
       </div>
 

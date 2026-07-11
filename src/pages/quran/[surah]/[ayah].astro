@@ -88,6 +88,7 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
 
         <p class="source">
           المصدر: <span class="source-book">الجدول في إعراب القرآن</span>، تأليف محمود صافي{shared ? `، يشمل الآيات ${toArabicDigits(ayah.ayahStart)} إلى ${toArabicDigits(ayah.ayahEnd)}` : ''}
+          · <a href="/methodology" class="source-link">منهجيتنا في التحقّق</a>
         </p>
 
         {intro.tldr && (
@@ -162,6 +163,21 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
             </div>
           </section>
         )}
+
+        <section class="blk">
+          <h2>تعمّق في الإعراب</h2>
+          <div class="rel">
+            <a class="rel-card" href="/tool">
+              <span>أداة مجانية بالذكاء الاصطناعي</span><b>أعرِب أي جملة بنفسك</b>
+            </a>
+            <a class="rel-card" href="/irab">
+              <span>دليل شامل للمبتدئ والمتقدم</span><b>ما هو الإعراب؟</b>
+            </a>
+            <a class="rel-card" href="/nahw">
+              <span>قواعد النحو من الأساس</span><b>تعلّم النحو</b>
+            </a>
+          </div>
+        </section>
 
         {faqs.length > 0 && (
           <section class="blk">
@@ -238,6 +254,7 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
   }
   :global(.dark) .source { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
   .source-book { color: var(--color-teal); font-weight: 600; }
+  .source-link { color: var(--color-teal); text-underline-offset: 3px; }
 
   .shared-note {
     font-size: 1.3rem; line-height: 1.7; margin: 0 0 1.5rem;
