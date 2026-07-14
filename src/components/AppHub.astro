@@ -307,10 +307,7 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
 
     <section data-hub-recent class="app-panel hidden">
       <div class="flex items-center justify-between gap-4 mb-5">
-        <div>
-          <p class="app-kicker">{t.recentTitle}</p>
-          <h2 class:list={[titleClass, 'text-h2 leading-tight']}>{t.recentTitle}</h2>
-        </div>
+        <h2 class="recent-heading">{t.recentTitle}</h2>
         <a href={historyHref} data-recent-seeall class="btn-ghost app-action hidden">{t.seeAll}</a>
       </div>
       <ul data-recent-list class="recent-list"></ul>
@@ -1679,6 +1676,114 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
     .upgrade-btn:hover { transform: none; }
     .command-action:hover svg,
     .usage-disclosure[open] summary svg { transform: none; }
+  }
+
+  /* Profile dashboard v4: spacious Thmanyah hierarchy shared with /account. */
+  .app-shell { font-family: var(--font-sans); }
+  .profile-dashboard { gap: 1.25rem; }
+  .profile-shell,
+  .command-bar,
+  .workspace-panel,
+  .usage-disclosure,
+  .upgrade-nudge,
+  .app-panel,
+  .app-activating {
+    border-radius: 1.05rem;
+    box-shadow: var(--shadow-card);
+  }
+  .profile-shell { padding: clamp(1.5rem, 3vw, 2.15rem); gap: 1.55rem; }
+  .profile-main-row,
+  .profile-support-row,
+  .command-bar,
+  .profile-info-rail { gap: 1.45rem; }
+  .profile-support-row { padding-top: 1.4rem; }
+  .identity-block { gap: 1.2rem; }
+  .profile-avatar {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 1.1rem;
+    font-family: var(--font-sans);
+    font-size: 2.35rem;
+  }
+  .identity-copy .app-kicker {
+    margin-bottom: 0.3rem;
+    font-size: clamp(1.08rem, 1.8vw, 1.3rem);
+    line-height: 1.55;
+  }
+  .profile-title {
+    max-width: 38rem;
+    font-family: var(--font-sans);
+    font-size: clamp(2.35rem, 4vw, 3.45rem);
+    font-weight: 900;
+    line-height: 1.24;
+  }
+  .profile-meta { gap: 0.65rem; margin-top: 0.55rem; font-size: 1rem; line-height: 1.65; }
+  .account-actions { gap: 0.72rem; }
+  .app-plan-pill { padding: 0.62rem 1rem; font-size: 0.96rem; line-height: 1.5; }
+  .app-link { padding: 0.68rem 0.95rem; font-size: 0.95rem; line-height: 1.5; }
+  .profile-note { font-size: 1rem; line-height: 1.8; }
+  .profile-metrics { border-radius: 0.82rem; }
+  .metric-item { min-height: 5.5rem; padding: 1rem 1.05rem; gap: 0.25rem; font-size: 0.9rem; line-height: 1.5; }
+  .metric-value { font-family: var(--font-sans); font-size: clamp(1.7rem, 2.7vw, 2.25rem); font-weight: 900; line-height: 1.15; }
+
+  .command-bar { padding: clamp(1.4rem, 2.7vw, 1.85rem); }
+  .command-copy .app-kicker,
+  .workspace-head .app-kicker,
+  .usage-disclosure .app-kicker { font-size: 1rem; line-height: 1.55; }
+  .command-title {
+    margin-top: 0.28rem;
+    font-family: var(--font-sans);
+    font-size: clamp(1.9rem, 3vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.35;
+  }
+  .command-actions { gap: 0.8rem; }
+  .command-action { min-height: 3.75rem; border-radius: 0.75rem; padding: 0.85rem 1.15rem; font-size: 1rem; line-height: 1.5; }
+
+  .workspace-panel { padding: clamp(1.5rem, 3vw, 2rem); }
+  .workspace-head { margin-bottom: 1.25rem; }
+  .workspace-title {
+    margin-top: 0.25rem;
+    font-family: var(--font-sans);
+    font-size: clamp(2rem, 3.2vw, 2.65rem);
+    font-weight: 900;
+    line-height: 1.3;
+  }
+  .workspace-body { margin-top: 0.45rem; font-size: 1rem; line-height: 1.75; }
+  .workspace-list { gap: 0.8rem; }
+  .workspace-row { min-height: 6.25rem; border-radius: 0.85rem; padding: 1rem 1.1rem; gap: 1rem; }
+  .workspace-icon { width: 3rem; height: 3rem; border-radius: 0.78rem; }
+  .workspace-row-title { font-family: var(--font-sans); font-size: 1.3rem; font-weight: 900; line-height: 1.45; }
+  .workspace-row-desc { margin-top: 0.18rem; font-size: 0.92rem; line-height: 1.7; }
+  .workspace-usage,
+  .workspace-cta { font-size: 0.94rem; line-height: 1.55; }
+
+  .profile-info-rail { gap: 1.25rem; }
+  .usage-disclosure summary { min-height: 6.1rem; padding: 1.25rem 1.35rem; }
+  .usage-disclosure summary strong { margin-top: 0.18rem; font-family: var(--font-sans); font-size: 1.25rem; font-weight: 900; line-height: 1.5; }
+  .usage-inline-list { gap: 0.65rem; padding: 0 1.25rem 1.25rem; }
+  .usage-inline-row { padding: 0.85rem 0.95rem; font-size: 0.95rem; line-height: 1.55; }
+  .upgrade-nudge { padding: clamp(1.55rem, 3vw, 2.15rem); gap: 1.4rem; }
+  .upgrade-lead { margin-top: 0.35rem; font-family: var(--font-sans); font-weight: 900; line-height: 1.45; }
+  .recent-heading { color: var(--color-ink); font-family: var(--font-sans); font-size: clamp(1.9rem, 3vw, 2.45rem); font-weight: 900; line-height: 1.35; }
+  :global(.dark) .recent-heading { color: var(--color-mist); }
+
+  @media (max-width: 680px) {
+    .profile-dashboard { gap: 1rem; }
+    .profile-shell,
+    .command-bar,
+    .workspace-panel,
+    .app-panel,
+    .upgrade-nudge { padding: 1.15rem; }
+    .identity-block { align-items: flex-start; gap: 0.9rem; }
+    .profile-avatar { width: 4rem; height: 4rem; border-radius: 0.9rem; font-size: 1.9rem; }
+    .profile-title { font-size: 2.15rem; line-height: 1.3; }
+    .profile-main-row,
+    .profile-support-row,
+    .command-bar { gap: 1.15rem; }
+    .metric-item { min-height: 5.25rem; padding: 0.9rem; }
+    .workspace-row { min-height: 6rem; padding: 0.95rem; }
+    .workspace-row-desc { white-space: normal; }
   }
   </style>
 
