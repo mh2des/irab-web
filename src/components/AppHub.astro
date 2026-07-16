@@ -70,6 +70,11 @@ const t = lang === 'ar'
       monthlyCta: 'اشترك شهريًّا',
       activatingTitle: 'تم الدفع: جارٍ تفعيل اشتراكك',
       activatingBody: 'سيُفتح كل شيء تلقائيًّا خلال لحظات.',
+      activatingSlow: 'ما زلنا نفعّل اشتراكك… قد يستغرق الأمر دقيقة أو دقيقتين. أبقِ هذه الصفحة مفتوحة.',
+      timeoutTitle: 'دفعتك مسجَّلة',
+      timeoutBody: 'التفعيل يستغرق أطول من المعتاد. سيتفعّل اشتراكك تلقائيًّا خلال دقائق — حدّث الصفحة بعد قليل، وإن لم يظهر الاشتراك راسلنا على hello@irab.app.',
+      refresh: 'تحديث الصفحة',
+      checkoutError: 'تعذّر فتح صفحة الدفع. تحقّق من اتصالك بالإنترنت أو عطّل مانع الإعلانات، ثم أعد المحاولة.',
       leftToday: (n: number) => `${n} متبقٍ`,
       unlimited: 'غير محدود',
       user: 'مستخدم',
@@ -117,6 +122,11 @@ const t = lang === 'ar'
       monthlyCta: 'Subscribe monthly',
       activatingTitle: 'Payment received: activating your subscription',
       activatingBody: 'Everything unlocks automatically in a few moments.',
+      activatingSlow: 'Still activating… this can take a minute or two. Keep this page open.',
+      timeoutTitle: 'Your payment went through',
+      timeoutBody: "Activation is taking longer than usual. Your subscription will unlock automatically within a few minutes — refresh shortly, and if it still doesn't show, email hello@irab.app.",
+      refresh: 'Refresh page',
+      checkoutError: "Couldn't open the checkout. Check your connection or disable ad-blockers, then try again.",
       leftToday: (n: number) => `${n} left`,
       unlimited: 'Unlimited',
       user: 'User',
@@ -205,13 +215,15 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
       </div>
     </section>
 
-    <div data-hub-activating class="hidden app-activating">
+    <div data-hub-activating class="hidden app-activating" aria-live="polite"
+         data-s-slow={t.activatingSlow} data-s-timeout-title={t.timeoutTitle} data-s-timeout-body={t.timeoutBody}>
       <svg viewBox="0 0 24 24" class="w-7 h-7 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M20 6 9 17l-5-5"/>
       </svg>
       <div>
-        <p class:list={[titleClass, 'text-h3 leading-tight']}>{t.activatingTitle}</p>
-        <p class="text-small text-ink/70 dark:text-mist/70">{t.activatingBody}</p>
+        <p data-hub-act-title class:list={[titleClass, 'text-h3 leading-tight']}>{t.activatingTitle}</p>
+        <p data-hub-act-body class="text-small text-ink/70 dark:text-mist/70">{t.activatingBody}</p>
+        <button type="button" data-hub-refresh class="hidden act-refresh">{t.refresh}</button>
       </div>
     </div>
 
@@ -298,6 +310,7 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
               <span>{t.monthlyCta}</span>
               <small>{t.monthlyPrice}</small>
             </button>
+            <p data-hub-pay-error class="hidden upgrade-error" role="alert">{t.checkoutError}</p>
           </div>
         ) : (
           <a href={`${home}#cta`} class="upgrade-btn upgrade-btn-primary">{lang === 'ar' ? 'حمّل التطبيق' : 'Get the app'}</a>
@@ -338,6 +351,26 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
     border-color: var(--color-coal-edge);
     box-shadow: 0 20px 46px -24px rgb(0 0 0 / 0.75);
   }
+  .upgrade-error {
+    grid-column: 1 / -1;
+    margin-top: 0.6rem; padding: 0.7rem 0.95rem; border-radius: 10px;
+    font-size: 0.92rem; line-height: 1.6;
+    color: #8C2E2A; background: #FBEDEB; border: 1px solid #EBCFCC;
+  }
+  :global(.dark) .upgrade-error { color: #F0A9A2; background: rgb(164 64 60 / 0.16); border-color: rgb(164 64 60 / 0.38); }
+  .upgrade-error.hidden { display: none; }
+
+  .act-refresh {
+    margin-top: 0.9rem; padding: 0.55rem 1.3rem; border-radius: 10px;
+    font-weight: 700; cursor: pointer;
+    color: var(--color-paper); background: var(--color-ink); border: none;
+    transition: background 0.2s;
+  }
+  .act-refresh:hover { background: var(--color-purple); color: #fff; }
+  :global(.dark) .act-refresh { color: var(--color-coal); background: var(--color-mist); }
+  :global(.dark) .act-refresh:hover { background: var(--color-purple); color: #fff; }
+  .act-refresh.hidden { display: none; }
+
   .app-gate { border-radius: 1.25rem; padding: clamp(2rem, 6vw, 4rem); }
   .app-gate-mark {
     width: 4.25rem; height: 4.25rem; border-radius: 1.2rem;
@@ -1966,10 +1999,12 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
             planNoteEl.textContent = T.freeNote;
             upgradeEl.classList.remove('hidden');
 
+            const payError = root!.querySelector<HTMLElement>('[data-hub-pay-error]');
             root!.querySelectorAll<HTMLButtonElement>('[data-paddle-plan]').forEach((btn) => {
               btn.addEventListener('click', async () => {
                 const plan = btn.dataset.paddlePlan === 'monthly' ? 'monthly' : 'annual';
                 btn.disabled = true;
+                payError?.classList.add('hidden');
                 try {
                   const { openCheckout } = await import('../lib/paddle');
                   await openCheckout({
@@ -1978,22 +2013,34 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
                     email: u.email || undefined,
                     lang,
                     onComplete: async () => {
+                      // Webhook-driven entitlement: quick poll → "still
+                      // activating" notice → patient poll. Reload only on a
+                      // confirmed unlock; on timeout tell the truth and give
+                      // a refresh button instead of reloading into "Free".
                       const act = q<HTMLElement>('[data-hub-activating]');
                       act.classList.remove('hidden');
                       upgradeEl.classList.add('hidden');
                       act.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                      for (let i = 0; i < 12; i++) {
-                        await new Promise((r) => setTimeout(r, 3000));
-                        try {
-                          const me2 = await fetchMe(u);
-                          if (me2?.premium) break;
-                        } catch {}
-                      }
-                      window.location.reload();
+                      const actBody = act.querySelector<HTMLElement>('[data-hub-act-body]');
+                      let unlocked = false;
+                      try {
+                        const { waitForPremium } = await import('../lib/entitlement');
+                        unlocked = await waitForPremium(u, {
+                          onSlow: () => { if (actBody) actBody.textContent = act.dataset.sSlow || actBody.textContent; },
+                        });
+                      } catch {}
+                      if (unlocked) { window.location.reload(); return; }
+                      const actTitle = act.querySelector<HTMLElement>('[data-hub-act-title]');
+                      const refreshBtn = act.querySelector<HTMLButtonElement>('[data-hub-refresh]');
+                      if (actTitle) actTitle.textContent = act.dataset.sTimeoutTitle || actTitle.textContent;
+                      if (actBody) actBody.textContent = act.dataset.sTimeoutBody || actBody.textContent;
+                      refreshBtn?.classList.remove('hidden');
+                      refreshBtn?.addEventListener('click', () => window.location.reload());
                     },
                   });
                 } catch (e) {
                   console.error('paddle checkout failed', e);
+                  payError?.classList.remove('hidden');
                 } finally {
                   btn.disabled = false;
                 }

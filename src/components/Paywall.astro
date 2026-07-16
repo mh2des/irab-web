@@ -56,6 +56,11 @@ const t = lang === 'ar'
       pricing: 'عرض كل الخطط',
       activatingTitle: 'تم الدفع — جارٍ تفعيل اشتراكك',
       activatingBody: 'سيُفتح الوصول غير المحدود خلال لحظات…',
+      activatingSlow: 'ما زلنا نفعّل اشتراكك… قد يستغرق الأمر دقيقة أو دقيقتين. أبقِ هذه الصفحة مفتوحة.',
+      timeoutTitle: 'دفعتك مسجَّلة',
+      timeoutBody: 'التفعيل يستغرق أطول من المعتاد. سيتفعّل اشتراكك تلقائيًّا خلال دقائق — حدّث الصفحة بعد قليل، وإن لم يظهر الاشتراك راسلنا على hello@irab.app.',
+      refresh: 'تحديث الصفحة',
+      checkoutError: 'تعذّر فتح صفحة الدفع. تحقّق من اتصالك بالإنترنت أو عطّل مانع الإعلانات، ثم أعد المحاولة.',
       close: 'إغلاق',
     }
   : {
@@ -86,11 +91,17 @@ const t = lang === 'ar'
       pricing: 'See all plans',
       activatingTitle: 'Payment received — activating your subscription',
       activatingBody: 'Unlimited access will unlock in a few moments…',
+      activatingSlow: 'Still activating… this can take a minute or two. Keep this page open.',
+      timeoutTitle: 'Your payment went through',
+      timeoutBody: "Activation is taking longer than usual. Your subscription will unlock automatically within a few minutes — refresh shortly, and if it still doesn't show, email hello@irab.app.",
+      refresh: 'Refresh page',
+      checkoutError: "Couldn't open the checkout. Check your connection or disable ad-blockers, then try again.",
       close: 'Close',
     };
 ---
 
 <div data-pw-root data-lang={lang} data-login={login} dir={dir}
+     data-s-slow={t.activatingSlow} data-s-timeout-title={t.timeoutTitle} data-s-timeout-body={t.timeoutBody}
      class="pw-backdrop pw-hidden" role="dialog" aria-modal="true" aria-labelledby="pw-title">
   <section class="pw-dialog">
     <button type="button" data-pw-close class="pw-close" aria-label={t.close}>
@@ -149,6 +160,7 @@ const t = lang === 'ar'
         ) : (
           <a href={pricing} class="pw-plan-link">{t.pricing}</a>
         )}
+        <p data-pw-error class="pw-error pw-hidden" role="alert">{t.checkoutError}</p>
         <p class="pw-fineprint">
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           {t.secure}
@@ -157,13 +169,14 @@ const t = lang === 'ar'
     </div>
 
     {/* ── Activating state ── */}
-    <div data-pw-activating class="pw-activating pw-hidden">
+    <div data-pw-activating class="pw-activating pw-hidden" aria-live="polite">
       <div class="pw-activating-mark" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
-      <h3 class:list={[titleFont, 'pw-activating-title']}>{t.activatingTitle}</h3>
-      <p>{t.activatingBody}</p>
-      <div class="pw-spinner" aria-hidden="true"></div>
+      <h3 data-pw-act-title class:list={[titleFont, 'pw-activating-title']}>{t.activatingTitle}</h3>
+      <p data-pw-act-body>{t.activatingBody}</p>
+      <div data-pw-spinner class="pw-spinner" aria-hidden="true"></div>
+      <button type="button" data-pw-refresh class="pw-refresh pw-hidden">{t.refresh}</button>
     </div>
   </section>
 </div>
@@ -321,6 +334,26 @@ const t = lang === 'ar'
   .pw-fineprint svg { width: 0.9rem; height: 0.9rem; flex: none; }
 
   /* Activating state */
+  .pw-error {
+    margin-top: 0.9rem; padding: 0.7rem 0.95rem; border-radius: 10px;
+    font-size: 0.92rem; line-height: 1.6;
+    color: #8C2E2A; background: #FBEDEB; border: 1px solid #EBCFCC;
+  }
+  .dark .pw-error { color: #F0A9A2; background: rgba(164, 64, 60, 0.16); border-color: rgba(164, 64, 60, 0.38); }
+  .pw-error.pw-hidden { display: none; }
+
+  .pw-refresh {
+    margin-top: 1.4rem; padding: 0.65rem 1.5rem; border-radius: 10px;
+    font-weight: 700; cursor: pointer;
+    color: var(--color-paper); background: var(--color-ink); border: none;
+    transition: background 0.2s;
+  }
+  .pw-refresh:hover { background: var(--color-purple); color: #fff; }
+  .dark .pw-refresh { color: var(--color-coal); background: var(--color-mist); }
+  .dark .pw-refresh:hover { background: var(--color-purple); color: #fff; }
+  .pw-refresh.pw-hidden { display: none; }
+  .pw-spinner.pw-hidden { display: none; }
+
   .pw-activating { padding: clamp(2.5rem, 6vw, 4rem) 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; }
   .pw-activating.pw-hidden { display: none; }
   .pw-activating-mark {
@@ -363,6 +396,11 @@ const t = lang === 'ar'
       const activating = q<HTMLElement>('[data-pw-activating]');
       const titleEl = q<HTMLElement>('[data-pw-title]');
       const bodyEl = q<HTMLElement>('[data-pw-body]');
+      const errorEl = root.querySelector<HTMLElement>('[data-pw-error]');
+      const actTitle = q<HTMLElement>('[data-pw-act-title]');
+      const actBody = q<HTMLElement>('[data-pw-act-body]');
+      const spinner = q<HTMLElement>('[data-pw-spinner]');
+      const refreshBtn = q<HTMLButtonElement>('[data-pw-refresh]');
       const defaultTitle = titleEl.textContent || '';
       const defaultBody = bodyEl.textContent || '';
       const challengeCopy = lang === 'ar'
@@ -390,6 +428,7 @@ const t = lang === 'ar'
         const copy = opts?.reason === 'challenges' ? challengeCopy : { title: defaultTitle, body: defaultBody };
         titleEl.textContent = copy.title;
         bodyEl.textContent = copy.body;
+        errorEl?.classList.add('pw-hidden');
         mainView.classList.remove('pw-hidden');
         activating.classList.add('pw-hidden');
         root!.classList.remove('pw-hidden');
@@ -414,22 +453,34 @@ const t = lang === 'ar'
         } catch { return null; }
       }
 
-      async function pollEntitlementThenReload() {
+      // After checkout.completed: wait for the webhook-driven entitlement.
+      // Quick phase → "still activating" notice → patient phase. Only a
+      // CONFIRMED unlock reloads; on timeout we tell the truth and hand the
+      // user a refresh button instead of reloading into a "Free" page.
+      async function awaitActivation() {
+        let unlocked = false;
         try {
-          const [{ auth }, { fetchMe }] = await Promise.all([
+          const [{ auth }, { waitForPremium }] = await Promise.all([
             import('../lib/firebase'), import('../lib/entitlement'),
           ]);
           const u = auth.currentUser;
           if (u) {
-            for (let i = 0; i < 12; i++) {
-              await new Promise((r) => setTimeout(r, 3000));
-              try { const me = await fetchMe(u); if (me?.premium) break; } catch { /* keep waiting */ }
-            }
+            unlocked = await waitForPremium(u, {
+              onSlow: () => { actBody.textContent = root!.dataset.sSlow || actBody.textContent; },
+            });
           }
-        } catch { /* fall through to reload */ }
-        if (onActivated) { try { onActivated(); return; } catch { /* fall through */ } }
-        window.location.reload();
+        } catch { /* treated as not-yet-unlocked below */ }
+        if (unlocked) {
+          if (onActivated) { try { onActivated(); return; } catch { /* fall through */ } }
+          window.location.reload();
+          return;
+        }
+        actTitle.textContent = root!.dataset.sTimeoutTitle || actTitle.textContent;
+        actBody.textContent = root!.dataset.sTimeoutBody || actBody.textContent;
+        spinner.classList.add('pw-hidden');
+        refreshBtn.classList.remove('pw-hidden');
       }
+      refreshBtn.addEventListener('click', () => window.location.reload());
 
       if (PADDLE_ENABLED) {
         root.querySelectorAll<HTMLButtonElement>('[data-pw-plan]').forEach((btn) => {
@@ -438,6 +489,7 @@ const t = lang === 'ar'
             if (!user) { window.location.href = loginHref; return; }
             const plan = btn.dataset.pwPlan === 'monthly' ? 'monthly' : 'annual';
             btn.disabled = true;
+            errorEl?.classList.add('pw-hidden');
             try {
               const { openCheckout } = await import('../lib/paddle');
               await openCheckout({
@@ -448,11 +500,12 @@ const t = lang === 'ar'
                 onComplete: () => {
                   mainView.classList.add('pw-hidden');
                   activating.classList.remove('pw-hidden');
-                  pollEntitlementThenReload();
+                  awaitActivation();
                 },
               });
             } catch (e) {
               console.error('paddle checkout failed', e);
+              errorEl?.classList.remove('pw-hidden');
             } finally {
               btn.disabled = false;
             }

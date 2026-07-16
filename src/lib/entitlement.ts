@@ -30,3 +30,25 @@ export async function isPremium(user: User): Promise<boolean> {
   const me = await fetchMe(user);
   return me?.premium === true;
 }
+
+/**
+ * Poll /v1/me after a checkout until premium unlocks. Provisioning is
+ * asynchronous (Paddle webhook → RevenueCat → worker), usually seconds but
+ * occasionally minutes. Two phases: a quick phase (12 × 3s ≈ 36s), then —
+ * after notifying the UI via onSlow — a patient phase (24 × 5s ≈ 2 min).
+ * Resolves true the moment premium is seen; false only after ~2.5 minutes.
+ */
+export async function waitForPremium(user: User, opts?: { onSlow?: () => void }): Promise<boolean> {
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const check = async () => { try { return (await fetchMe(user))?.premium === true; } catch { return false; } };
+  for (let i = 0; i < 12; i++) {
+    await sleep(3000);
+    if (await check()) return true;
+  }
+  try { opts?.onSlow?.(); } catch { /* UI callback must never abort polling */ }
+  for (let i = 0; i < 24; i++) {
+    await sleep(5000);
+    if (await check()) return true;
+  }
+  return false;
+}
