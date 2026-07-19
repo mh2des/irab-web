@@ -10,7 +10,10 @@ export function rememberSignedIn(): void {
   try { localStorage.setItem(FLAG, '1'); } catch { /* ignore */ }
 }
 export function forgetSignedIn(): void {
-  try { localStorage.removeItem(FLAG); } catch { /* ignore */ }
+  try {
+    localStorage.removeItem(FLAG);
+    localStorage.removeItem('irab-premium'); // entitlement cache follows the session
+  } catch { /* ignore */ }
 }
 export function maybeSignedIn(): boolean {
   try { return localStorage.getItem(FLAG) === '1'; } catch { return false; }

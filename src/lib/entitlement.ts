@@ -20,7 +20,11 @@ export async function fetchMe(user: User): Promise<Me | null> {
     });
     if (!res.ok) return null;
     const data = (await res.json()) as Partial<Me>;
-    return { uid: String(data.uid ?? user.uid), premium: data.premium === true };
+    const premium = data.premium === true;
+    // Cache for Firebase-free surfaces (the Nav's Plus chip reads this
+    // synchronously). Stale values only affect chip visibility, never access.
+    try { localStorage.setItem('irab-premium', premium ? '1' : '0'); } catch { /* ignore */ }
+    return { uid: String(data.uid ?? user.uid), premium };
   } catch {
     return null;
   }

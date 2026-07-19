@@ -127,6 +127,10 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
   if (root) {
     const lang = (root.dataset.lang === 'en' ? 'en' : 'ar') as Lang;
     const account = root.dataset.account || '/account';
+    // ?next= lets a plan CTA route through login and land back in checkout.
+    // Same-origin relative paths only ('/x…', not '//host') — no open redirect.
+    const nextRaw = new URLSearchParams(window.location.search).get('next');
+    const dest = nextRaw && /^\/(?!\/)/.test(nextRaw) ? nextRaw : account;
     const T = {
       signIn: lang === 'ar' ? 'تسجيل الدخول' : 'Sign in',
       signUp: lang === 'ar' ? 'إنشاء حساب' : 'Create account',
@@ -156,7 +160,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
     let mode: 'in' | 'up' = 'in';
 
     // Already signed in? Go to account.
-    onAuth((u) => { if (u) { rememberSignedIn(); window.location.replace(account); } });
+    onAuth((u) => { if (u) { rememberSignedIn(); window.location.replace(dest); } });
 
     function showMsg(text: string, kind: 'err' | 'ok') {
       msg.textContent = text;
@@ -192,7 +196,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       try {
         await fn();
         rememberSignedIn();
-        window.location.assign(account); // keep the overlay up through the redirect
+        window.location.assign(dest); // keep the overlay up through the redirect
       } catch (e: any) {
         loadingEl.classList.add('hidden');
         showMsg(authError(e?.code || '', lang), 'err');

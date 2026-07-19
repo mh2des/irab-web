@@ -160,7 +160,7 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
     </div>
     <h2 class:list={[titleClass, 'text-h2 leading-tight mb-3']}>{t.signInTitle}</h2>
     <p class="text-body text-ink/70 dark:text-mist/70 mb-7 max-w-lg mx-auto">{t.signInBody}</p>
-    <a href={login} class="btn-primary btn-lg">{t.signInCta}</a>
+    <a href={login} data-hub-gate-signin class="btn-primary btn-lg">{t.signInCta}</a>
   </div>
 
   <div data-hub class="hidden panel-in profile-dashboard">
@@ -1858,6 +1858,20 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
     const loadingEl = q<HTMLElement>('[data-hub-loading]');
     const gate = q<HTMLElement>('[data-hub-gate]');
+
+    // ?checkout=annual|monthly: a plan CTA elsewhere on the site (homepage,
+    // /pricing, nav Plus chip) sent the user here to complete checkout.
+    // Signed-in free users get the overlay auto-opened; signed-out users keep
+    // the intent through login via the gate link's ?next= param.
+    const coRaw = new URLSearchParams(window.location.search).get('checkout');
+    const checkoutIntent = coRaw === 'annual' || coRaw === 'monthly' ? coRaw : null;
+    if (checkoutIntent) {
+      const gateSignin = root.querySelector<HTMLAnchorElement>('[data-hub-gate-signin]');
+      if (gateSignin) {
+        const back = `${window.location.pathname}?checkout=${checkoutIntent}`;
+        gateSignin.href = `${root.dataset.login || '/login'}?next=${encodeURIComponent(back)}`;
+      }
+    }
     const hub = q<HTMLElement>('[data-hub]');
     const nameEl = q<HTMLElement>('[data-hub-name]');
     const emailEl = q<HTMLElement>('[data-hub-email]');
@@ -1987,6 +2001,7 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
           } catch {}
 
           if (premium) {
+            if (checkoutIntent) window.history.replaceState(null, '', window.location.pathname);
             planEl.textContent = T.plus;
             planEl.className = 'app-plan-pill is-plus';
             planNoteEl.textContent = T.plusNote;
@@ -2046,6 +2061,15 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
                 }
               });
             });
+
+            // Complete a checkout intent carried in from another page: open
+            // the overlay for the requested plan, once (param is cleared so
+            // a reload doesn't re-open it).
+            if (checkoutIntent) {
+              window.history.replaceState(null, '', window.location.pathname);
+              upgradeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              root!.querySelector<HTMLButtonElement>(`[data-paddle-plan="${checkoutIntent}"]`)?.click();
+            }
           }
 
           if (idToken) {

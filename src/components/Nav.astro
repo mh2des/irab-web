@@ -17,9 +17,11 @@ const t = lang === 'ar'
       dictionary: 'المعجم',
       quran:    'إعراب القرآن',
       library:  'المكتبة',
+      pricing:  'الأسعار',
       features: 'المميزات',
       signin:   'دخول',
       myApp:    'حسابي',
+      plus:     'بلس',
       cta:      'جرِّب الآن',
       menu:     'القائمة',
       close:    'إغلاق',
@@ -31,9 +33,11 @@ const t = lang === 'ar'
       dictionary: 'Dictionary',
       quran:    "Quran i'rab",
       library:  'Library',
+      pricing:  'Pricing',
       features: 'Features',
       signin:   'Sign in',
       myApp:    'Profile',
+      plus:     'Plus',
       cta:      'Try the analyzer',
       menu:     'Menu',
       close:    'Close',
@@ -49,6 +53,8 @@ const dictionaryHref = lang === 'ar' ? '/dictionary' : '/en/dictionary'; // smar
 const libraryHref = lang === 'ar' ? '/library' : '/en/library'; // classical grammar library
 const signinHref = lang === 'ar' ? '/login' : '/en/login'; // web account
 const appHref = lang === 'ar' ? '/app' : '/en/app'; // signed in web app hub
+const pricingHref = '/pricing'; // single shared pricing page (no EN twin yet)
+const plusHref = `${appHref}?checkout=annual`; // upgrade chip → auto-opens checkout
 
 // Equivalent URL in the other language for the toggle. AR → EN goes through
 // enTwinFor so we never link to a 404 (most Quran pages have no EN twin yet);
@@ -82,6 +88,7 @@ const isActive = (href: string) =>
         <a href={dictionaryHref}     class:list={['nav-link', { 'is-active': isActive(dictionaryHref) }]} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
         <a href={quranHref}          class:list={['nav-link', { 'is-active': isActive(quranHref) }]}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
         <a href={libraryHref}        class:list={['nav-link', { 'is-active': isActive(libraryHref) }]}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
+        <a href={pricingHref}        class:list={['nav-link', { 'is-active': isActive(pricingHref) }]}     aria-current={isActive(pricingHref) ? 'page' : undefined}>{t.pricing}</a>
         <a href={`${home}#features`} class="nav-link">{t.features}</a>
       </div>
 
@@ -110,6 +117,10 @@ const isActive = (href: string) =>
         <ThemeToggle />
 
         <a href={signinHref} data-signin-link class="nav-link">{t.signin}</a>
+        <a href={plusHref} data-plus-chip class="nav-plus hidden">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M13 2 4.7 13.2h5.6L11 22l8.3-11.2h-5.6z"/></svg>
+          {t.plus}
+        </a>
         <a href={appHref} data-app-link class="nav-link nav-link-feature hidden">{t.myApp}</a>
 
         <a
@@ -156,6 +167,8 @@ const isActive = (href: string) =>
         <a href={dictionaryHref}     class:list={['nav-mlink', isActive(dictionaryHref) && 'is-active']} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
         <a href={quranHref}          class:list={['nav-mlink', isActive(quranHref) && 'is-active']}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
         <a href={libraryHref}        class:list={['nav-mlink', isActive(libraryHref) && 'is-active']}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
+        <a href={pricingHref}        class:list={['nav-mlink', isActive(pricingHref) && 'is-active']}     aria-current={isActive(pricingHref) ? 'page' : undefined}>{t.pricing}</a>
+        <a href={plusHref} data-plus-chip class="nav-mlink nav-mlink-plus hidden">⚡ {t.plus}</a>
         <a href={`${home}#features`} class="nav-mlink">{t.features}</a>
         <a href={signinHref} data-signin-link class="block py-3 font-display text-h3 tracking-tight text-purple hover:text-purple-deep transition-colors">{t.signin}</a>
         <a href={appHref} data-app-link class="hidden py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.myApp}</a>
@@ -247,6 +260,25 @@ const isActive = (href: string) =>
   :global(.dark) .nav-link-feature:hover { color: color-mix(in srgb, var(--color-teal) 88%, white); background: var(--color-coal-soft); }
 
   /* Mobile menu links — large display rows; active page is highlighted. */
+  /* Plus upgrade chip: quiet but unmistakable. */
+  .nav-plus {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.45rem 0.8rem; border-radius: 999px;
+    font-weight: 700; white-space: nowrap;
+    color: var(--color-purple-deep);
+    background: color-mix(in srgb, var(--color-purple) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-purple) 30%, transparent);
+    transition: background .2s, color .2s, transform .2s;
+  }
+  .nav-plus svg { width: 0.85rem; height: 0.85rem; }
+  .nav-plus:hover { background: var(--color-purple); color: #fff; transform: translateY(-1.5px); }
+  :global(.dark) .nav-plus { color: color-mix(in srgb, var(--color-purple) 70%, white); background: color-mix(in srgb, var(--color-purple) 20%, transparent); }
+  :global(.dark) .nav-plus:hover { background: var(--color-purple); color: #fff; }
+  .nav-plus.hidden { display: none; }
+  .nav-mlink-plus { color: var(--color-purple-deep); font-weight: 700; }
+  :global(.dark) .nav-mlink-plus { color: color-mix(in srgb, var(--color-purple) 70%, white); }
+  .nav-mlink-plus.hidden { display: none; }
+
   .nav-mlink {
     display: block; padding: 0.75rem 0.85rem;
     border-radius: 0.5rem;
@@ -266,6 +298,14 @@ const isActive = (href: string) =>
   if (maybeSignedIn()) {
     document.querySelectorAll<HTMLElement>('[data-signin-link]').forEach((el) => el.classList.add('hidden'));
     document.querySelectorAll<HTMLElement>('[data-app-link]').forEach((el) => el.classList.remove('hidden'));
+    // Upgrade chip for signed-in FREE users. 'irab-premium' is a cached copy
+    // of the last /v1/me answer (written by entitlement.fetchMe) — a stale
+    // '1' only hides the chip, never blocks anything, so no Firebase needed.
+    let premium = false;
+    try { premium = localStorage.getItem('irab-premium') === '1'; } catch { /* show the chip */ }
+    if (!premium) {
+      document.querySelectorAll<HTMLElement>('[data-plus-chip]').forEach((el) => el.classList.remove('hidden'));
+    }
   }
 
   const toggle = document.querySelector<HTMLButtonElement>('[data-mobile-toggle]');
