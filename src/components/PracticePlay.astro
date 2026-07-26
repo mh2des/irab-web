@@ -21,7 +21,8 @@ const { lang = 'ar', mode = 'choose' } = Astro.props;
 const login = lang === 'ar' ? '/login' : '/en/login';
 const dir = lang === 'ar' ? 'rtl' : 'ltr';
 const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
-const back = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
+// "Back" points toward the reading-flow start: RIGHT in RTL, LEFT in LTR.
+const back = lang === 'ar' ? 'M9 18l6-6-6-6' : 'M15 18l-6-6 6-6';
 
 const t = lang === 'ar'
   ? {
