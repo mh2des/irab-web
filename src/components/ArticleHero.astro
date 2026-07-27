@@ -9,10 +9,15 @@ interface Props {
   title: string;
   summary: string;
   lang?: 'en' | 'ar';
+  /** Keep the title on ONE line at every width (fluid size scales down instead of wrapping). */
+  nowrapTitle?: boolean;
 }
 
-const { eyebrow, title, summary, lang = 'ar' } = Astro.props;
+const { eyebrow, title, summary, lang = 'ar', nowrapTitle = false } = Astro.props;
 const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
+const titleSize = nowrapTitle
+  ? 'text-[clamp(1.35rem,4.1vw,3.4rem)] whitespace-nowrap'
+  : 'text-[clamp(2.5rem,6vw,5rem)]';
 const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxed';
 ---
 <header class="relative overflow-hidden border-b border-stone dark:border-coal-edge">
@@ -31,7 +36,7 @@ const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-rela
   <Container size="narrow">
     <div class="relative py-20 md:py-28">
       {eyebrow && <p class="eyebrow mb-6" data-reveal>{eyebrow}</p>}
-      <h1 class:list={[titleClass, 'text-[clamp(2.5rem,6vw,5rem)] leading-[1.1] tracking-tight']} data-reveal data-reveal-delay="80">{title}</h1>
+      <h1 class:list={[titleClass, titleSize, 'leading-[1.1] tracking-tight']} data-reveal data-reveal-delay="80">{title}</h1>
       <p class:list={[summaryClass, 'mt-8 text-body-lg text-ink/80 dark:text-mist/80 max-w-2xl']} data-reveal data-reveal-delay="160">{summary}</p>
     </div>
   </Container>
