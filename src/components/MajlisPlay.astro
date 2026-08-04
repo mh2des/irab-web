@@ -1,0 +1,679 @@
+---
+/**
+ * MajlisPlay — the web PLAYER for مجالس الإعراب live rooms.
+ *
+ * Joins the same Firebase RTDB rooms the mobile app hosts (the app's QR
+ * already encodes https://irab.app/majlis?pin=NNNNNN). Player-only: hosting
+ * stays in the app. Anonymous auth is enough; a signed-in web account works
+ * too (same uid identity either way, so score survives reloads).
+ *
+ * Protocol (extracted from the app 2026-08-04, see docs/majlis-web-player-plan.md):
+ *   join    → callable majalisJoinRoom {pin, displayName, avatar} (us-central1)
+ *   listen  → rooms/{id}/meta + rooms/{id}/participants (RTDB)
+ *   qLive   → one-shot read rooms/{id}/publicQ/{index}
+ *   answer  → write-once rooms/{id}/answers/{index}/{uid} = {answer, ts: server}
+ *   review  → poll rooms/{id}/reveal/{index} (rules hide it until close)
+ *   status  : lobby | questionLive | answerReview | leaderboard | finished
+ * meta.currentQuestionIndex is a STRING. Countdown derives from
+ * questionStartAt vs .info/serverTimeOffset — never the local clock.
+ */
+---
+
+<div data-majlis-root dir="rtl" class="mx-auto w-full max-w-xl">
+
+  <!-- Connection banner (hidden unless RTDB reports offline mid-game) -->
+  <div data-s="offline" class="hidden mb-4 rounded-xl border border-stone bg-paper-soft dark:border-coal-edge dark:bg-coal-soft px-4 py-3 text-sm text-ink-muted dark:text-mist-muted">
+    انقطع الاتصال، نحاول إعادة الاتصال تلقائيًّا…
+  </div>
+
+  <!-- ═══ JOIN ═══ -->
+  <section data-s="join">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6 sm:p-8">
+      <p class="text-sm font-bold text-teal dark:text-mist-subtle">مجالس الإعراب</p>
+      <h1 class="font-sans font-black text-3xl sm:text-4xl mt-1 text-ink dark:text-mist">انضم إلى المجلس</h1>
+      <p class="mt-2 text-ink-muted dark:text-mist-muted text-[15px]">أدخل رمز المجلس الذي يعرضه المضيف، ثم اختر اسمك وصورتك.</p>
+
+      <!-- PIN -->
+      <label class="block mt-6 text-sm font-bold text-ink-soft dark:text-mist-soft">رمز المجلس</label>
+      <div data-pin-boxes dir="ltr" class="mt-2 flex gap-2 justify-center">
+        <!-- 6 boxes, filled by script -->
+      </div>
+      <input data-pin-input inputmode="numeric" autocomplete="one-time-code" maxlength="6" class="sr-only" aria-label="رمز المجلس المكوّن من ستة أرقام" />
+
+      <!-- Name -->
+      <label for="mj-name" class="block mt-6 text-sm font-bold text-ink-soft dark:text-mist-soft">اسمك في المجلس</label>
+      <input id="mj-name" data-name maxlength="20" placeholder="مثال: أحمد"
+        class="mt-2 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3.5 text-lg text-ink dark:text-mist placeholder:text-ink-subtle dark:placeholder:text-mist-subtle focus:outline-none focus:border-teal" />
+
+      <!-- Avatar -->
+      <p class="mt-6 text-sm font-bold text-ink-soft dark:text-mist-soft">صورتك</p>
+      <div class="mt-2 flex items-center gap-4">
+        <img data-avatar-preview alt="" width="64" height="64" class="w-16 h-16 rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal p-1" />
+        <button data-avatar-shuffle type="button" class="rounded-xl border border-stone dark:border-coal-edge px-4 py-2.5 text-sm font-bold text-ink-soft dark:text-mist-soft hover:border-teal">
+          صورة أخرى
+        </button>
+      </div>
+
+      <p data-join-error class="hidden mt-4 rounded-xl bg-paper-soft dark:bg-coal px-4 py-3 text-sm font-bold text-ink dark:text-mist border border-stone dark:border-coal-edge"></p>
+
+      <button data-join-btn type="button"
+        class="mt-6 w-full rounded-xl bg-purple text-white text-lg font-black py-4 disabled:opacity-40 disabled:cursor-not-allowed">
+        ادخل المجلس
+      </button>
+
+      <p class="mt-5 text-center text-sm text-ink-subtle dark:text-mist-subtle">
+        تريد استضافة مجلسك الخاص؟
+        <a href="/#download" class="font-bold text-teal underline underline-offset-4">حمّل تطبيق إعراب</a>
+      </p>
+    </div>
+
+    <!-- One-tap rejoin (shown only when a recent session exists) -->
+    <button data-rejoin class="hidden mt-4 w-full rounded-xl border border-card-edge dark:border-coal-edge bg-card dark:bg-coal-soft px-4 py-3.5 text-sm font-bold text-ink dark:text-mist">
+      عُد إلى مجلسك السابق
+    </button>
+  </section>
+
+  <!-- ═══ LOBBY ═══ -->
+  <section data-s="lobby" class="hidden text-center">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8">
+      <img data-lobby-avatar alt="" width="80" height="80" class="mx-auto w-20 h-20 rounded-2xl border border-stone dark:border-coal-edge p-1" />
+      <h2 data-lobby-name class="font-sans font-black text-2xl mt-3 text-ink dark:text-mist"></h2>
+      <p class="mt-1 text-teal font-bold text-sm">أنت في المجلس</p>
+      <p class="mt-4 text-ink-muted dark:text-mist-muted">انتظر بدء المضيف… وابقَ على هذه الصفحة.</p>
+      <div class="mt-2 flex justify-center gap-1.5" aria-hidden="true">
+        <span class="mj-dot"></span><span class="mj-dot" style="animation-delay:.2s"></span><span class="mj-dot" style="animation-delay:.4s"></span>
+      </div>
+    </div>
+    <div class="mt-4 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5 text-start">
+      <p class="text-sm font-bold text-ink-soft dark:text-mist-soft"><span data-lobby-count>0</span> في المجلس</p>
+      <div data-lobby-players class="mt-3 flex flex-wrap gap-2"></div>
+    </div>
+  </section>
+
+  <!-- ═══ COUNTDOWN ═══ -->
+  <section data-s="count" class="hidden">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft py-20 text-center">
+      <p class="text-sm font-bold text-ink-muted dark:text-mist-muted">استعد…</p>
+      <div data-count-num class="font-black text-8xl text-purple mt-2">٣</div>
+    </div>
+  </section>
+
+  <!-- ═══ QUESTION ═══ -->
+  <section data-s="question" class="hidden">
+    <div class="flex items-center justify-between gap-3">
+      <p class="text-sm font-bold text-ink-muted dark:text-mist-muted">سؤال <span data-q-num></span></p>
+      <div class="flex items-center gap-2" dir="ltr">
+        <svg width="40" height="40" viewBox="0 0 40 40" class="-rotate-90">
+          <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" class="text-stone dark:text-coal-edge" stroke-width="4"/>
+          <circle data-time-ring cx="20" cy="20" r="16" fill="none" stroke="currentColor" class="text-teal" stroke-width="4" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="0"/>
+        </svg>
+        <span data-time-left class="text-lg font-black tabular-nums text-ink dark:text-mist w-7 text-center"></span>
+      </div>
+    </div>
+
+    <div class="mt-3 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6">
+      <p data-q-text class="text-xl sm:text-2xl font-bold leading-relaxed text-ink dark:text-mist"></p>
+      <p data-q-source class="hidden mt-3 rounded-xl bg-paper-soft dark:bg-coal px-4 py-3 text-lg leading-loose text-ink-soft dark:text-mist-soft"></p>
+    </div>
+
+    <p data-q-hint class="mt-4 text-sm font-bold text-ink-muted dark:text-mist-muted"></p>
+    <div data-q-zone class="mt-2 grid gap-2.5"></div>
+
+    <button data-submit-btn type="button"
+      class="hidden mt-4 w-full rounded-xl bg-purple text-white text-lg font-black py-4 disabled:opacity-40">
+      أرسل إجابتي
+    </button>
+  </section>
+
+  <!-- ═══ LOCKED IN ═══ -->
+  <section data-s="locked" class="hidden text-center">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft py-16 px-6">
+      <div class="text-4xl">✓</div>
+      <h2 class="font-sans font-black text-2xl mt-3 text-ink dark:text-mist">تم استلام إجابتك</h2>
+      <p class="mt-2 text-ink-muted dark:text-mist-muted">بانتظار بقية اللاعبين…</p>
+    </div>
+  </section>
+
+  <!-- ═══ REVEAL ═══ -->
+  <section data-s="reveal" class="hidden">
+    <div data-reveal-verdict class="rounded-2xl p-6 text-center text-white">
+      <h2 data-reveal-title class="font-sans font-black text-3xl"></h2>
+      <p data-reveal-points class="mt-1 text-lg font-black"></p>
+    </div>
+    <div class="mt-3 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6">
+      <p class="text-sm font-bold text-teal">الإجابة الصحيحة</p>
+      <p data-reveal-correct class="mt-1 text-lg font-bold text-ink dark:text-mist"></p>
+      <p data-reveal-explain class="mt-3 text-[15px] leading-relaxed text-ink-muted dark:text-mist-muted"></p>
+    </div>
+    <div class="mt-3 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5">
+      <p class="text-sm font-bold text-ink-soft dark:text-mist-soft">ترتيبك الآن: <span data-my-rank class="text-purple font-black"></span></p>
+    </div>
+  </section>
+
+  <!-- ═══ LEADERBOARD ═══ -->
+  <section data-s="board" class="hidden">
+    <h2 class="font-sans font-black text-2xl text-center text-ink dark:text-mist">المتصدرون</h2>
+    <div data-board-list class="mt-4 grid gap-2"></div>
+    <p class="mt-4 text-center text-sm font-bold text-ink-muted dark:text-mist-muted">ترتيبك: <span data-my-rank-2 class="text-purple font-black"></span></p>
+  </section>
+
+  <!-- ═══ PODIUM ═══ -->
+  <section data-s="podium" class="hidden text-center">
+    <h2 class="font-sans font-black text-3xl text-ink dark:text-mist">انتهى المجلس</h2>
+    <div data-podium-list class="mt-6 grid gap-2"></div>
+    <div class="mt-6 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6">
+      <p class="text-sm font-bold text-ink-muted dark:text-mist-muted">نتيجتك النهائية</p>
+      <p class="mt-1 text-3xl font-black text-purple"><span data-final-score>0</span> نقطة</p>
+      <p class="mt-1 text-sm text-ink-muted dark:text-mist-muted">المركز <span data-final-rank></span></p>
+    </div>
+    <div class="mt-6 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6">
+      <p class="font-bold text-ink dark:text-mist">أعجبك المجلس؟ استضف مجلسك الخاص من تطبيق إعراب.</p>
+      <a href="/#download" class="mt-3 inline-block rounded-xl bg-teal text-white font-black px-6 py-3">حمّل التطبيق</a>
+    </div>
+  </section>
+
+  <!-- ═══ TERMINAL ═══ -->
+  <section data-s="terminal" class="hidden text-center">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft py-16 px-6">
+      <h2 data-terminal-title class="font-sans font-black text-2xl text-ink dark:text-mist"></h2>
+      <p data-terminal-body class="mt-2 text-ink-muted dark:text-mist-muted"></p>
+      <button data-terminal-again class="mt-6 rounded-xl bg-purple text-white font-black px-6 py-3">انضم إلى مجلس آخر</button>
+    </div>
+  </section>
+</div>
+
+<style>
+  .mj-dot {
+    width: 8px; height: 8px; border-radius: 9999px;
+    background: var(--color-teal); opacity: .35;
+    animation: mj-pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes mj-pulse { 0%,100% { opacity:.25; transform:scale(1);} 50% { opacity:1; transform:scale(1.25);} }
+  @media (prefers-reduced-motion: reduce) { .mj-dot { animation: none; opacity:.6; } }
+</style>
+
+<script>
+  import { signInAnonymously, onAuthStateChanged, type User } from 'firebase/auth';
+  import { httpsCallable, getFunctions } from 'firebase/functions';
+  import {
+    getDatabase, ref, onValue, get, set, serverTimestamp, type Database, type Unsubscribe,
+  } from 'firebase/database';
+  import { app, auth } from '../lib/firebase';
+  import { confetti } from '../lib/celebrate';
+
+  const root = document.querySelector<HTMLElement>('[data-majlis-root]');
+  if (root) {
+    const RTDB_URL = 'https://arabic-grammar-app-43de9-default-rtdb.firebaseio.com';
+    const AVATAR_COUNT = 64;
+    const REJOIN_MS = 90 * 60 * 1000; // mirrors the app's 90-min rejoin memory
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const toAr = (n: number | string) => String(n).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[+d]);
+
+    const JOIN_ERRORS: Record<string, string> = {
+      ROOM_NOT_FOUND: 'لا يوجد مجلس بهذا الرمز. تأكد من الرقم لدى المضيف.',
+      ROOM_STARTED: 'بدأ هذا المجلس بالفعل ولا يقبل لاعبين جددًا.',
+      ROOM_LOCKED: 'أغلق المضيف باب الانضمام.',
+      ROOM_FULL: 'اكتمل عدد اللاعبين في هذا المجلس.',
+      NAME_LENGTH: 'اكتب اسمًا من حرفين إلى عشرين حرفًا.',
+      NAME_REJECTED: 'هذا الاسم غير مناسب، جرّب اسمًا آخر.',
+      RATE_LIMITED: 'محاولات كثيرة، انتظر قليلًا ثم جرّب مجددًا.',
+    };
+
+    // ── State ──────────────────────────────────────────────────────────────
+    type Status = 'lobby' | 'questionLive' | 'answerReview' | 'leaderboard' | 'finished';
+    let db: Database; let uid = '';
+    let roomId = ''; let myName = ''; let myAvatar = Math.floor(Math.random() * AVATAR_COUNT);
+    let meta: any = null; let joined = false;
+    let participants: Array<{ uid: string; name: string; avatar: number; score: number }> = [];
+    let serverOffset = 0;
+    let qIndex = ''; let qData: any = null; let answered = false; let reveal: any = null;
+    let tickTimer: number | undefined;
+    let unsubs: Unsubscribe[] = [];
+    // fix_error two-step selection
+    let selWord = -1; let selOpt = -1; let arrangeOrder: number[] = [];
+
+    const now = () => Date.now() + serverOffset;
+    const avatarUrl = (i: number) => `/majlis-avatars/a${((i % AVATAR_COUNT) + AVATAR_COUNT) % AVATAR_COUNT}.svg`;
+
+    // ── Screens ────────────────────────────────────────────────────────────
+    const screens = ['join', 'lobby', 'count', 'question', 'locked', 'reveal', 'board', 'podium', 'terminal'];
+    function show(name: string) {
+      for (const s of screens) q(`[data-s="${s}"]`).classList.toggle('hidden', s !== name);
+      window.scrollTo({ top: 0 });
+    }
+    const track = (event: string, params: Record<string, unknown> = {}) => {
+      try { (window as any).gtag?.('event', event, params); } catch { /* ignore */ }
+    };
+
+    // ── PIN input (6 segmented boxes backed by one hidden input) ───────────
+    const pinInput = q<HTMLInputElement>('[data-pin-input]');
+    const pinBoxes = q<HTMLElement>('[data-pin-boxes]');
+    for (let i = 0; i < 6; i++) {
+      const b = document.createElement('div');
+      b.className = 'w-11 h-14 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal grid place-items-center text-2xl font-black text-ink dark:text-mist';
+      b.dataset.pinBox = String(i);
+      pinBoxes.appendChild(b);
+    }
+    function renderPin() {
+      const v = pinInput.value;
+      pinBoxes.querySelectorAll<HTMLElement>('[data-pin-box]').forEach((b, i) => {
+        b.textContent = v[i] ?? '';
+        b.classList.toggle('border-teal', i === v.length);
+      });
+      updateJoinEnabled();
+    }
+    pinBoxes.addEventListener('click', () => pinInput.focus());
+    pinInput.addEventListener('input', () => {
+      pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, 6);
+      renderPin();
+    });
+
+    const nameInput = q<HTMLInputElement>('[data-name]');
+    const joinBtn = q<HTMLButtonElement>('[data-join-btn]');
+    const joinErr = q<HTMLElement>('[data-join-error]');
+    function updateJoinEnabled() {
+      joinBtn.disabled = !(pinInput.value.length === 6 && nameInput.value.trim().length >= 2);
+    }
+    nameInput.addEventListener('input', updateJoinEnabled);
+
+    const avatarPreview = q<HTMLImageElement>('[data-avatar-preview]');
+    function renderAvatar() { avatarPreview.src = avatarUrl(myAvatar); }
+    q('[data-avatar-shuffle]').addEventListener('click', () => {
+      myAvatar = (myAvatar + 1 + Math.floor(Math.random() * (AVATAR_COUNT - 1))) % AVATAR_COUNT;
+      renderAvatar();
+    });
+    renderAvatar();
+
+    // Prefill from ?pin= (the app's QR payload) and restore name.
+    const urlPin = new URLSearchParams(location.search).get('pin') ?? '';
+    if (/^\d{6}$/.test(urlPin)) { pinInput.value = urlPin; }
+    try { nameInput.value = localStorage.getItem('mj-name') ?? ''; } catch { /* ignore */ }
+    renderPin();
+
+    // One-tap rejoin.
+    const rejoinBtn = q<HTMLButtonElement>('[data-rejoin]');
+    let saved: any = null;
+    try { saved = JSON.parse(localStorage.getItem('mj-session') ?? 'null'); } catch { /* ignore */ }
+    if (saved && Date.now() - saved.ts < REJOIN_MS && /^\d{6}$/.test(saved.pin ?? '')) {
+      rejoinBtn.classList.remove('hidden');
+      rejoinBtn.addEventListener('click', () => {
+        pinInput.value = saved.pin; nameInput.value = saved.name ?? nameInput.value;
+        myAvatar = saved.avatar ?? myAvatar; renderAvatar(); renderPin();
+        join();
+      });
+    }
+
+    // ── Auth + join ────────────────────────────────────────────────────────
+    async function ensureUser(): Promise<User> {
+      const existing = await new Promise<User | null>((resolve) => {
+        const stop = onAuthStateChanged(auth, (u) => { stop(); resolve(u); });
+      });
+      if (existing) return existing;
+      const cred = await signInAnonymously(auth);
+      return cred.user;
+    }
+
+    async function join() {
+      joinErr.classList.add('hidden');
+      joinBtn.disabled = true;
+      joinBtn.textContent = 'جارٍ الانضمام…';
+      track('majlis_web_join_attempt');
+      try {
+        const user = await ensureUser();
+        uid = user.uid;
+        db = getDatabase(app, RTDB_URL);
+        const call = httpsCallable(getFunctions(app, 'us-central1'), 'majalisJoinRoom');
+        const res: any = await call({ pin: pinInput.value, displayName: nameInput.value.trim(), avatar: myAvatar });
+        roomId = res.data.roomId; myName = res.data.displayName; myAvatar = res.data.avatar ?? myAvatar;
+        joined = true;
+        try {
+          localStorage.setItem('mj-name', nameInput.value.trim());
+          localStorage.setItem('mj-session', JSON.stringify({ pin: pinInput.value, name: myName, avatar: myAvatar, ts: Date.now() }));
+        } catch { /* ignore */ }
+        track('majlis_web_joined');
+        attachRoom();
+      } catch (e: any) {
+        const msg = String(e?.message ?? '');
+        const code = Object.keys(JOIN_ERRORS).find((k) => msg.includes(k));
+        joinErr.textContent = code ? JOIN_ERRORS[code] : 'تعذّر الانضمام، تحقق من اتصالك ثم جرّب مجددًا.';
+        joinErr.classList.remove('hidden');
+        track('majlis_web_join_error', { code: code ?? 'unknown' });
+      } finally {
+        joinBtn.textContent = 'ادخل المجلس';
+        updateJoinEnabled();
+      }
+    }
+    joinBtn.addEventListener('click', join);
+
+    // ── Room streams ───────────────────────────────────────────────────────
+    function attachRoom() {
+      unsubs.push(onValue(ref(db, '.info/serverTimeOffset'), (s) => { serverOffset = s.val() ?? 0; }));
+      unsubs.push(onValue(ref(db, '.info/connected'), (s) => {
+        q('[data-s="offline"]').classList.toggle('hidden', s.val() === true || !joined);
+        if (s.val() === true && joined) {
+          // Re-assert presence after reconnects (profile must already exist).
+          set(ref(db, `rooms/${roomId}/participants/${uid}/presence`), { connected: true, lastSeen: serverTimestamp() }).catch(() => {});
+        }
+      }));
+      unsubs.push(onValue(ref(db, `rooms/${roomId}/participants`), (s) => {
+        const val = s.val() ?? {};
+        participants = Object.entries<any>(val)
+          .map(([id, p]) => ({ uid: id, name: p?.profile?.displayName ?? '؟', avatar: p?.profile?.avatar ?? 0, score: p?.score ?? 0, joinedAt: p?.profile?.joinedAt ?? 0 }))
+          .sort((a: any, b: any) => a.joinedAt - b.joinedAt);
+        renderLobbyPlayers();
+      }));
+      unsubs.push(onValue(ref(db, `rooms/${roomId}/meta`), (s) => onMeta(s.val())));
+      show('lobby');
+      q<HTMLImageElement>('[data-lobby-avatar]').src = avatarUrl(myAvatar);
+      q('[data-lobby-name]').textContent = myName;
+      startTick();
+    }
+
+    function renderLobbyPlayers() {
+      q('[data-lobby-count]').textContent = toAr(participants.length);
+      const wrap = q('[data-lobby-players]');
+      wrap.innerHTML = '';
+      for (const p of participants) {
+        const chip = document.createElement('span');
+        chip.className = 'inline-flex items-center gap-1.5 rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-2.5 py-1 text-sm font-bold text-ink-soft dark:text-mist-soft';
+        const img = document.createElement('img');
+        img.src = avatarUrl(p.avatar); img.width = 20; img.height = 20; img.alt = '';
+        img.className = 'w-5 h-5 rounded-full';
+        chip.append(img, document.createTextNode(p.name));
+        wrap.appendChild(chip);
+      }
+    }
+
+    // ── Meta-driven state machine ──────────────────────────────────────────
+    function onMeta(m: any) {
+      if (joined && m == null) { terminal('أُغلق المجلس', 'انتهت هذه الجلسة أو أغلقها المضيف.'); return; }
+      meta = m;
+      const status: Status = m?.status ?? 'lobby';
+      const idx = String(m?.currentQuestionIndex ?? '');
+      switch (status) {
+        case 'lobby': show('lobby'); break;
+        case 'questionLive':
+          if (idx !== qIndex || qData == null) loadQuestion(idx);
+          else renderPhase();
+          break;
+        case 'answerReview':
+          if (reveal?.__idx !== idx) fetchReveal(idx);
+          else renderReveal();
+          break;
+        case 'leaderboard': renderBoard(); break;
+        case 'finished': renderPodium(); break;
+      }
+    }
+
+    async function loadQuestion(idx: string) {
+      qIndex = idx; qData = null; answered = false; reveal = null;
+      selWord = -1; selOpt = -1; arrangeOrder = [];
+      try {
+        const snap = await get(ref(db, `rooms/${roomId}/publicQ/${idx}`));
+        qData = snap.val();
+      } catch { /* rules can race the status flip; retry once shortly */
+        setTimeout(() => { if (meta?.status === 'questionLive' && !qData) loadQuestion(idx); }, 400);
+        return;
+      }
+      if (qData) renderPhase();
+    }
+
+    // countdown vs live answering, driven by the ticker
+    function renderPhase() {
+      if (!qData || meta?.status !== 'questionLive') return;
+      if (now() < (meta.questionStartAt ?? 0)) {
+        show('count');
+      } else if (answered) {
+        show('locked');
+      } else {
+        renderQuestion();
+        show('question');
+      }
+    }
+
+    function startTick() {
+      stopTick();
+      tickTimer = window.setInterval(() => {
+        if (meta?.status !== 'questionLive') return;
+        const startAt = meta.questionStartAt ?? 0; const endAt = meta.questionEndAt ?? 0;
+        if (now() < startAt) {
+          const n = Math.min(3, Math.max(1, Math.ceil((startAt - now()) / 1000)));
+          q('[data-count-num]').textContent = toAr(n);
+          if (!q('[data-s="count"]').classList.contains('hidden')) return;
+          renderPhase();
+        } else {
+          if (!q('[data-s="count"]').classList.contains('hidden')) renderPhase();
+          const span = Math.max(1, endAt - startAt);
+          const left = Math.max(0, endAt - now());
+          q('[data-time-left]').textContent = toAr(Math.ceil(left / 1000));
+          q<SVGCircleElement>('[data-time-ring]').style.strokeDashoffset = String(100.5 * (1 - left / span));
+        }
+      }, 200);
+    }
+    function stopTick() { if (tickTimer) { clearInterval(tickTimer); tickTimer = undefined; } }
+
+    // ── Question rendering by type ─────────────────────────────────────────
+    const HINTS: Record<string, string> = {
+      mcq: 'اختر الإجابة الصحيحة',
+      true_false: 'صحيح أم خطأ؟',
+      tap_word: 'انقر الكلمة المطلوبة',
+      arrange_irab: 'رتّب البطاقات بالنقر عليها بالترتيب الصحيح',
+      fix_error: 'انقر الكلمة الخاطئة ثم اختر تصويبها',
+    };
+
+    function renderQuestion() {
+      q('[data-q-num]').textContent = `${toAr(Number(qIndex) + 1)} / ${toAr(meta?.qCount ?? '؟')}`;
+      q('[data-q-text]').textContent = qData.questionText ?? '';
+      const src = q<HTMLElement>('[data-q-source]');
+      // fix_error renders the source sentence as its own tappable words instead
+      const showSource = qData.sourceText && qData.type !== 'fix_error';
+      src.classList.toggle('hidden', !showSource);
+      if (showSource) src.textContent = qData.sourceText;
+      q('[data-q-hint]').textContent = HINTS[qData.type] ?? '';
+
+      const zone = q<HTMLElement>('[data-q-zone]');
+      zone.innerHTML = '';
+      const submit = q<HTMLButtonElement>('[data-submit-btn]');
+      submit.classList.add('hidden');
+
+      const optBtn = (label: string, cls = '') => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'rounded-xl border border-card-edge dark:border-coal-edge bg-card dark:bg-coal-soft px-4 py-4 text-start text-lg font-bold text-ink dark:text-mist active:scale-[0.98] transition-transform min-h-14 ' + cls;
+        b.textContent = label;
+        return b;
+      };
+      const options: string[] = qData.options ?? [];
+
+      if (qData.type === 'mcq') {
+        options.forEach((o, i) => {
+          const b = optBtn(o);
+          b.addEventListener('click', () => submitAnswer(i, b));
+          zone.appendChild(b);
+        });
+      } else if (qData.type === 'true_false') {
+        zone.className = 'mt-2 grid grid-cols-2 gap-2.5';
+        const yes = optBtn('صحيح', 'text-center'); const no = optBtn('خطأ', 'text-center');
+        yes.addEventListener('click', () => submitAnswer(true, yes));
+        no.addEventListener('click', () => submitAnswer(false, no));
+        zone.append(yes, no);
+      } else if (qData.type === 'tap_word') {
+        zone.className = 'mt-2 flex flex-wrap gap-2';
+        options.forEach((w, i) => {
+          const b = optBtn(w, 'px-4');
+          b.addEventListener('click', () => submitAnswer(i, b));
+          zone.appendChild(b);
+        });
+      } else if (qData.type === 'arrange_irab') {
+        zone.className = 'mt-2 grid gap-2.5';
+        submit.classList.remove('hidden'); submit.disabled = true;
+        const badges: HTMLElement[] = [];
+        options.forEach((o, i) => {
+          const b = optBtn(o, 'relative flex items-center justify-between gap-3');
+          const badge = document.createElement('span');
+          badge.className = 'w-8 h-8 shrink-0 grid place-items-center rounded-full border border-stone dark:border-coal-edge text-sm font-black text-ink-muted dark:text-mist-muted';
+          badge.textContent = '';
+          b.appendChild(badge); badges.push(badge);
+          b.addEventListener('click', () => {
+            const at = arrangeOrder.indexOf(i);
+            if (at >= 0) arrangeOrder.splice(at, 1); else arrangeOrder.push(i);
+            badges.forEach((bd, j) => {
+              const pos = arrangeOrder.indexOf(j);
+              bd.textContent = pos >= 0 ? toAr(pos + 1) : '';
+              bd.classList.toggle('bg-purple', pos >= 0);
+              bd.classList.toggle('text-white', pos >= 0);
+              bd.classList.toggle('border-purple', pos >= 0);
+            });
+            submit.disabled = arrangeOrder.length !== options.length;
+          });
+          zone.appendChild(b);
+        });
+        submit.onclick = () => { if (arrangeOrder.length === options.length) submitAnswer([...arrangeOrder], submit); };
+      } else if (qData.type === 'fix_error') {
+        zone.className = 'mt-2 grid gap-4';
+        submit.classList.remove('hidden'); submit.disabled = true;
+        // Step 1: the sentence words (from sourceText, fallback questionText)
+        const words = String(qData.sourceText ?? qData.questionText ?? '').split(/\s+/).filter(Boolean);
+        const wordsWrap = document.createElement('div');
+        wordsWrap.className = 'flex flex-wrap gap-2';
+        const wordBtns: HTMLButtonElement[] = [];
+        words.forEach((w, i) => {
+          const b = optBtn(w, 'px-4 py-3');
+          b.addEventListener('click', () => {
+            selWord = i;
+            wordBtns.forEach((wb, j) => wb.classList.toggle('border-purple', j === i));
+            submit.disabled = !(selWord >= 0 && selOpt >= 0);
+          });
+          wordBtns.push(b); wordsWrap.appendChild(b);
+        });
+        // Step 2: corrections
+        const optsWrap = document.createElement('div');
+        optsWrap.className = 'grid gap-2.5';
+        const head = document.createElement('p');
+        head.className = 'text-sm font-bold text-ink-muted dark:text-mist-muted';
+        head.textContent = 'التصويب:';
+        const optBtns: HTMLButtonElement[] = [];
+        options.forEach((o, i) => {
+          const b = optBtn(o);
+          b.addEventListener('click', () => {
+            selOpt = i;
+            optBtns.forEach((ob, j) => ob.classList.toggle('border-purple', j === i));
+            submit.disabled = !(selWord >= 0 && selOpt >= 0);
+          });
+          optBtns.push(b); optsWrap.appendChild(b);
+        });
+        zone.append(wordsWrap, head, optsWrap);
+        submit.onclick = () => { if (selWord >= 0 && selOpt >= 0) submitAnswer({ w: selWord, o: selOpt }, submit); };
+      }
+    }
+
+    // ── Submit (write-once; rules enforce the window) ──────────────────────
+    async function submitAnswer(answer: unknown, btn?: HTMLButtonElement) {
+      if (answered) return;
+      answered = true;
+      if (btn) btn.classList.add('border-purple');
+      try {
+        await set(ref(db, `rooms/${roomId}/answers/${qIndex}/${uid}`), { answer, ts: serverTimestamp() });
+        track('majlis_web_answer_submitted', { type: qData?.type });
+        show('locked');
+      } catch {
+        // Window closed or double-write; the reveal will tell the truth.
+        show('locked');
+      }
+    }
+
+    // ── Reveal ─────────────────────────────────────────────────────────────
+    async function fetchReveal(idx: string, attempt = 0) {
+      // Close runs server-side; the reveal node lands moments after the flip.
+      try {
+        const snap = await get(ref(db, `rooms/${roomId}/reveal/${idx}`));
+        if (snap.exists()) { reveal = { ...snap.val(), __idx: idx }; renderReveal(); return; }
+      } catch { /* readable only after close per rules; retry below */ }
+      if (attempt < 20 && meta?.status === 'answerReview') {
+        setTimeout(() => fetchReveal(idx, attempt + 1), 200);
+      }
+    }
+
+    function myRank(): string {
+      const sorted = [...participants].sort((a, b) => b.score - a.score);
+      const at = sorted.findIndex((p) => p.uid === uid);
+      return at < 0 ? '؟' : `${toAr(at + 1)} من ${toAr(sorted.length)}`;
+    }
+
+    function renderReveal() {
+      const award = reveal?.awarded?.[uid];
+      const correct = !!award?.correct;
+      const verdict = q<HTMLElement>('[data-reveal-verdict]');
+      verdict.style.background = correct ? 'var(--color-teal)' : 'var(--color-ink)';
+      q('[data-reveal-title]').textContent = answered ? (correct ? 'إجابة صحيحة!' : 'إجابة غير صحيحة') : 'لم تُجب هذه المرة';
+      q('[data-reveal-points]').textContent = correct ? `+${toAr(award?.points ?? 0)} نقطة` : '';
+      q('[data-reveal-correct]').textContent = reveal?.correctDisplay ?? '';
+      q('[data-reveal-explain]').textContent = reveal?.explanation ?? '';
+      q('[data-my-rank]').textContent = myRank();
+      show('reveal');
+    }
+
+    // ── Leaderboard + podium ───────────────────────────────────────────────
+    function boardRow(p: { name: string; avatar: number; score: number; uid: string }, i: number) {
+      const row = document.createElement('div');
+      const mine = p.uid === uid;
+      row.className = 'flex items-center gap-3 rounded-xl border px-4 py-3 ' +
+        (mine ? 'border-purple bg-card dark:bg-coal-soft' : 'border-card-edge dark:border-coal-edge bg-card dark:bg-coal-soft');
+      const rank = document.createElement('span');
+      rank.className = 'w-7 text-center font-black ' + (i === 0 ? 'text-purple' : 'text-ink-muted dark:text-mist-muted');
+      rank.textContent = toAr(i + 1);
+      const img = document.createElement('img');
+      img.src = avatarUrl(p.avatar); img.alt = ''; img.width = 32; img.height = 32;
+      img.className = 'w-8 h-8 rounded-full';
+      const name = document.createElement('span');
+      name.className = 'flex-1 font-bold text-ink dark:text-mist truncate';
+      name.textContent = p.name + (mine ? ' (أنت)' : '');
+      const score = document.createElement('span');
+      score.className = 'font-black tabular-nums text-ink-soft dark:text-mist-soft';
+      score.textContent = toAr(p.score);
+      row.append(rank, img, name, score);
+      return row;
+    }
+
+    function renderBoard() {
+      const list = q<HTMLElement>('[data-board-list]');
+      list.innerHTML = '';
+      const sorted = [...participants].sort((a, b) => b.score - a.score).slice(0, 5);
+      sorted.forEach((p, i) => list.appendChild(boardRow(p, i)));
+      q('[data-my-rank-2]').textContent = myRank();
+      show('board');
+    }
+
+    let celebrated = false;
+    function renderPodium() {
+      const list = q<HTMLElement>('[data-podium-list]');
+      list.innerHTML = '';
+      const sorted = [...participants].sort((a, b) => b.score - a.score);
+      sorted.slice(0, 3).forEach((p, i) => list.appendChild(boardRow(p, i)));
+      const meIdx = sorted.findIndex((p) => p.uid === uid);
+      q('[data-final-score]').textContent = toAr(sorted[meIdx]?.score ?? 0);
+      q('[data-final-rank]').textContent = meIdx < 0 ? '؟' : `${toAr(meIdx + 1)} من ${toAr(sorted.length)}`;
+      show('podium');
+      stopTick();
+      try { localStorage.removeItem('mj-session'); } catch { /* ignore */ }
+      track('majlis_web_game_completed', { rank: meIdx + 1, players: sorted.length });
+      if (!celebrated && meIdx >= 0 && meIdx < 3 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        celebrated = true; confetti();
+      }
+    }
+
+    // ── Terminal ───────────────────────────────────────────────────────────
+    function terminal(title: string, body: string) {
+      joined = false;
+      unsubs.forEach((u) => u()); unsubs = [];
+      stopTick();
+      q('[data-terminal-title]').textContent = title;
+      q('[data-terminal-body]').textContent = body;
+      show('terminal');
+      try { localStorage.removeItem('mj-session'); } catch { /* ignore */ }
+    }
+    q('[data-terminal-again]').addEventListener('click', () => {
+      location.href = '/majlis';
+    });
+  }
+</script>

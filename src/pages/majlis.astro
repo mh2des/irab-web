@@ -1,0 +1,31 @@
+---
+/**
+ * /majlis: web player for مجالس الإعراب live rooms.
+ *
+ * This is the URL the mobile app's QR codes have always encoded
+ * (https://irab.app/majlis?pin=NNNNNN) — players who scan without the app
+ * land here and play in the browser. Player-only: hosting lives in the app.
+ * Indexed as a lightweight landing (the join UI doubles as the hero);
+ * Firebase loads only inside the MajlisPlay island after interaction.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import MajlisPlay from '../components/MajlisPlay.astro';
+---
+<BaseLayout
+  lang="ar"
+  title="انضم إلى مجلس إعراب · إعراب"
+  description="ادخل رمز المجلس أو امسح رمز QR وانضم إلى مسابقة إعراب مباشرة من متصفحك، بلا تسجيل وبلا تطبيق."
+>
+  <Nav lang="ar" />
+  <main class="px-4 sm:px-6 py-8 md:py-12">
+    <MajlisPlay />
+    <noscript>
+      <p class="mx-auto max-w-xl mt-6 text-center text-ink-muted">
+        يحتاج مجلس الإعراب إلى تفعيل JavaScript في المتصفح، أو حمّل تطبيق إعراب للانضمام.
+      </p>
+    </noscript>
+  </main>
+  <Footer lang="ar" />
+</BaseLayout>
