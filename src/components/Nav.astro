@@ -19,6 +19,8 @@ const t = lang === 'ar'
       library:  'المكتبة',
       pricing:  'الأسعار',
       features: 'المميزات',
+      majalis:  'المجالس',
+      newBadge: 'جديد',
       signin:   'دخول',
       myApp:    'حسابي',
       plus:     'بلس',
@@ -35,6 +37,8 @@ const t = lang === 'ar'
       library:  'Library',
       pricing:  'Pricing',
       features: 'Features',
+      majalis:  'Majalis',
+      newBadge: 'New',
       signin:   'Sign in',
       myApp:    'Profile',
       plus:     'Plus',
@@ -54,6 +58,7 @@ const libraryHref = lang === 'ar' ? '/library' : '/en/library'; // classical gra
 const signinHref = lang === 'ar' ? '/login' : '/en/login'; // web account
 const appHref = lang === 'ar' ? '/app' : '/en/app'; // signed in web app hub
 const pricingHref = '/pricing'; // single shared pricing page (no EN twin yet)
+const majalisHref = '/majalis'; // live-quiz landing (AR only; EN nav keeps Features)
 const plusHref = `${appHref}?checkout=annual`; // upgrade chip → auto-opens checkout
 
 // Equivalent URL in the other language for the toggle. AR → EN goes through
@@ -89,7 +94,9 @@ const isActive = (href: string) =>
         <a href={quranHref}          class:list={['nav-link', { 'is-active': isActive(quranHref) }]}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
         <a href={libraryHref}        class:list={['nav-link', { 'is-active': isActive(libraryHref) }]}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
         <a href={pricingHref}        class:list={['nav-link', { 'is-active': isActive(pricingHref) }]}     aria-current={isActive(pricingHref) ? 'page' : undefined}>{t.pricing}</a>
-        <a href={`${home}#features`} class="nav-link">{t.features}</a>
+        {lang === 'ar'
+          ? <a href={majalisHref} class:list={['nav-link', { 'is-active': isActive(majalisHref) }]} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis} <span class="nav-new">{t.newBadge}</span></a>
+          : <a href={`${home}#features`} class="nav-link">{t.features}</a>}
       </div>
 
       {/* Right cluster, desktop */}
@@ -169,7 +176,9 @@ const isActive = (href: string) =>
         <a href={libraryHref}        class:list={['nav-mlink', isActive(libraryHref) && 'is-active']}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
         <a href={pricingHref}        class:list={['nav-mlink', isActive(pricingHref) && 'is-active']}     aria-current={isActive(pricingHref) ? 'page' : undefined}>{t.pricing}</a>
         <a href={plusHref} data-plus-chip class="nav-mlink nav-mlink-plus hidden">⚡ {t.plus}</a>
-        <a href={`${home}#features`} class="nav-mlink">{t.features}</a>
+        {lang === 'ar'
+          ? <a href={majalisHref} class:list={['nav-mlink', isActive(majalisHref) && 'is-active']} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis} <span class="nav-new">{t.newBadge}</span></a>
+          : <a href={`${home}#features`} class="nav-mlink">{t.features}</a>}
         <a href={signinHref} data-signin-link class="block py-3 font-display text-h3 tracking-tight text-purple hover:text-purple-deep transition-colors">{t.signin}</a>
         <a href={appHref} data-app-link class="hidden py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.myApp}</a>
 
@@ -247,6 +256,17 @@ const isActive = (href: string) =>
     background: var(--color-coal-soft);
     box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--color-purple) 60%, transparent);
   }
+
+  /* «جديد» badge on the majalis nav item. */
+  .nav-new {
+    display: inline-block; vertical-align: middle;
+    margin-inline-start: 0.15rem; padding: 0.1rem 0.45rem;
+    border-radius: 999px; font-size: 0.7rem; font-weight: 700; line-height: 1.4;
+    color: var(--color-teal);
+    background: color-mix(in srgb, var(--color-teal) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-teal) 35%, transparent);
+  }
+  :global(.dark) .nav-new { color: color-mix(in srgb, var(--color-teal) 85%, white); }
 
   /* The Quran-i'rab feature: teal accent so it stands out as the key feature. */
   .nav-link-feature { color: var(--color-teal); font-weight: 700; }

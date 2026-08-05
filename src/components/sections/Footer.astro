@@ -52,6 +52,7 @@ const p = (path: string) => (lang === 'ar' ? path : `/en${path}`);
         <p class="eyebrow mb-4">{t.product}</p>
         <ul class="space-y-2 text-small">
           <li><a href={lang === 'ar' ? '/quran' : '/en/quran'} class="text-teal hover:text-teal-deep dark:text-teal font-bold transition-colors duration-200">{lang === 'ar' ? 'إعراب القرآن الكريم' : "Quran i'rab"}</a></li>
+          {lang === 'ar' && <li><a href="/majalis" class="text-purple hover:text-purple-deep font-bold transition-colors duration-200">مجالس الإعراب</a></li>}
           <li><a href={`${home}#demo`}     class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.demo}</a></li>
           <li><a href={`${home}#features`} class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.features}</a></li>
           <li><a href="/pricing"          class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.pricing}</a></li>

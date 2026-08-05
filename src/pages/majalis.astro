@@ -1,0 +1,189 @@
+---
+/**
+ * مجالس الإعراب — public marketing landing for the live-quiz feature.
+ * The join page stays /majlis (zero-friction for QR scans); this page sells
+ * the feature to first-time visitors and hosts, and is the ONLY indexed
+ * majalis URL (host/live/create/report are login-gated + noindex).
+ * All claims below are verified against the shipped feature: free tier =
+ * 1 majlis/24h, 10 questions, 20 players, 10 AI questions/day; Plus = 10
+ * majalis, 50 questions, 100 players, 100 AI questions/day; players join
+ * free without accounts; Western digits (majalis convention).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import Container from '../components/Container.astro';
+import Section from '../components/Section.astro';
+import ArticleFaq from '../components/ArticleFaq.astro';
+
+const steps = [
+  { n: '1', title: 'أنشئ أسئلتك', body: 'اكتبها بنفسك من 4 أنواع، أو ولّدها بالذكاء الاصطناعي من موضوع نحوي أو نص من كتابك، وراجع كل سؤال قبل الانطلاق.' },
+  { n: '2', title: 'شارك رمز الدخول', body: 'رمز من 6 أرقام أو رمز QR يظهر على شاشتك. ينضم اللاعبون مجانًا من أي متصفح على irab.app/majlis أو من تطبيق إعراب، دون حساب.' },
+  { n: '3', title: 'العبوا مباشرة', body: 'سؤال تلو سؤال: نقاط بالسرعة والدقة، كشف الإجابة مع الشرح النحوي، لوحة المتصدرين، ثم منصة التتويج والتقرير الكامل.' },
+];
+
+const features = [
+  { title: '4 أنواع أسئلة إعرابية', body: 'اختيار من متعدد، صواب وخطأ، صحّح الخطأ في الجملة، وترتيب أجزاء الإعراب. كل نوع مبني لتدريب حاسة الإعراب لا الحفظ.' },
+  { title: 'توليد بالذكاء الاصطناعي', body: 'اختر موضوعًا نحويًّا أو الصق نصًّا من كتابك أو صوّر صفحة منه، وستحصل على أسئلة جاهزة تراجعها وتعدّلها قبل المجلس.' },
+  { title: 'مراجعة ذكية لنقاط الضعف', body: 'يقرأ إعراب تقارير مجالسك السابقة ويولّد أسئلة جديدة تستهدف ما أخطأ فيه طلابك أكثر.' },
+  { title: 'حماس مباشر', body: 'عدّاد تنازلي، نقاط تكافئ السرعة والدقة معًا، متصدرون بين الأسئلة، ومنصة تتويج في الختام.' },
+  { title: 'شرح بعد كل سؤال', body: 'بعد إغلاق كل سؤال يظهر للجميع الجواب الصحيح مع تعليل نحوي واضح، فيتعلم من أخطأ قبل السؤال التالي.' },
+  { title: 'تقرير كامل لكل مجلس', body: 'دقة كل سؤال، أصعب سؤال وأسهله، توزيع الإجابات، وترتيب المشاركين. يبقى محفوظًا في سجل مجالسك على الويب والتطبيق.' },
+];
+
+const faqs = [
+  { q: 'هل يحتاج الطلاب إلى حسابات للانضمام؟', a: 'لا. ينضم اللاعبون مجانًا برمز الدخول أو رمز QR من أي متصفح على irab.app/majlis أو من تطبيق إعراب، دون تسجيل أو بريد إلكتروني. يكتب اللاعب اسمه ويدخل مباشرة.' },
+  { q: 'كم تكلفة مجالس الإعراب؟', a: 'الاستضافة مجانية: مجلس واحد كل 24 ساعة حتى 10 أسئلة و20 لاعبًا، مع 10 أسئلة مولّدة بالذكاء الاصطناعي يوميًّا. مشتركو إعراب بلس يحصلون على 10 مجالس يوميًّا حتى 50 سؤالًا و100 لاعب و100 سؤال ذكاء اصطناعي، مع كل أنواع الأسئلة. الانضمام مجاني دائمًا للجميع.' },
+  { q: 'ما الفرق بينها وبين أدوات المسابقات العامة مثل Kahoot؟', a: 'مجالس الإعراب مبنية للنحو العربي خصوصًا: أنواع أسئلة إعرابية مثل صحّح الخطأ وترتيب الإعراب، توليد أسئلة نحوية بالذكاء الاصطناعي من كتابك، شرح نحوي بعد كل سؤال، وواجهة عربية كاملة. لا تحتاج إلى تجهيز الأسئلة في أداة عامة ثم تكييفها للنحو.' },
+  { q: 'هل تعمل على الهاتف والحاسوب؟', a: 'نعم. يستضيف المعلم من متصفح الحاسوب أو من التطبيق، وينضم اللاعبون من أي جهاز فيه متصفح أو من التطبيق. المسودات والتقارير وبنك الأسئلة متزامنة بين الويب والتطبيق تلقائيًّا.' },
+  { q: 'هل تُحفظ النتائج بعد انتهاء المجلس؟', a: 'نعم. كل مجلس منتهٍ يُنتج تقريرًا كاملًا في سجل مجالسك: دقة كل سؤال، أصعب الأسئلة وأسهلها، توزيع إجابات اللاعبين، وترتيبهم النهائي. تفتحه متى شئت من الويب أو التطبيق.' },
+  { q: 'أنا معلم في مدرسة أو أكاديمية، هل يوجد عرض للمؤسسات؟', a: 'نعم، نقدم حسابات معلمين مجانية للمؤسسات المؤهلة. اطلع على صفحة إعراب للمعلمين أو راسلنا على hello@irab.app.' },
+];
+---
+<BaseLayout
+  lang="ar"
+  title="مجالس الإعراب: مسابقات إعراب مباشرة لصفك · إعراب"
+  description="حوّل درس النحو إلى مسابقة مباشرة: أنشئ أسئلة إعراب يدويًّا أو بالذكاء الاصطناعي، شارك رمز الدخول، ولينضم طلابك مجانًا من أي متصفح. نقاط ومتصدرون وشرح نحوي وتقرير كامل."
+>
+  <Nav lang="ar" />
+
+  <main>
+    {/* ── Hero ─────────────────────────────────────────────────────── */}
+    <Section size="sm" class="relative overflow-hidden" id="hero">
+      <Container>
+        <div class="max-w-3xl">
+          <p class="eyebrow mb-4" data-reveal>مجالس الإعراب</p>
+          <h1 class="font-arabic font-bold text-[clamp(2rem,5vw,3.4rem)] leading-[1.25] tracking-tight" data-reveal data-reveal-delay="100">
+            اجعل الإعراب <span class="text-purple">مسابقة مباشرة</span> في صفك.
+          </h1>
+          <p class="mt-6 text-body-lg text-ink-muted dark:text-mist-muted font-arabic leading-loose max-w-2xl" data-reveal data-reveal-delay="200">
+            أنشئ أسئلة إعراب يدويًّا أو بالذكاء الاصطناعي، شارك رمز الدخول، ولينضم طلابك مجانًا من أي متصفح أو من التطبيق. نقاط بالسرعة والدقة، شرح نحوي بعد كل سؤال، وتقرير كامل في الختام.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3" data-reveal data-reveal-delay="300">
+            <a href="/majlis/create" class="btn-primary btn-lg">أنشئ مجلسك مجانًا</a>
+            <a href="/majlis" class="btn-ghost btn-lg">عندك رمز؟ انضم الآن</a>
+          </div>
+          <p class="mt-4 text-small text-ink-subtle dark:text-mist-subtle font-arabic" data-reveal data-reveal-delay="350">
+            اللاعبون ينضمون مجانًا دون حساب، والاستضافة تبدأ مجانًا بمجلس كل يوم.
+          </p>
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── How it works ─────────────────────────────────────────────── */}
+    <Section class="section-tint border-y border-stone dark:border-coal-edge">
+      <Container>
+        <div class="max-w-2xl mb-12">
+          <p class="eyebrow mb-4" data-reveal>كيف تعمل</p>
+          <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+            ثلاث خطوات من الفكرة إلى التتويج.
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {steps.map((s, i) => (
+            <div class="card p-7" data-reveal data-reveal-delay={String(i * 100)}>
+              <span class="inline-grid place-items-center w-10 h-10 rounded-full bg-purple/10 text-purple font-black text-lg tabular-nums mb-4">{s.n}</span>
+              <h3 class="font-arabic font-bold text-h3 leading-snug mb-3">{s.title}</h3>
+              <p class="font-arabic text-small text-ink-muted dark:text-mist-muted leading-loose">{s.body}</p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Features ─────────────────────────────────────────────────── */}
+    <Section>
+      <Container>
+        <div class="max-w-2xl mb-12">
+          <p class="eyebrow mb-4" data-reveal>ما الذي يميزها</p>
+          <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+            مبنية للنحو، لا مسابقة عامة.
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {features.map((f, i) => (
+            <div class="card p-6 md:p-7" data-reveal data-reveal-delay={String((i % 3) * 80)}>
+              <h3 class="font-arabic font-bold text-[1.25rem] leading-snug mb-3">{f.title}</h3>
+              <p class="font-arabic text-small text-ink-muted dark:text-mist-muted leading-loose">{f.body}</p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Free vs Plus ─────────────────────────────────────────────── */}
+    <Section class="section-tint border-y border-stone dark:border-coal-edge">
+      <Container size="narrow">
+        <div class="max-w-2xl mb-10">
+          <p class="eyebrow mb-4" data-reveal>الأسعار</p>
+          <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+            ابدأ مجانًا اليوم.
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="card p-7" data-reveal>
+            <p class="font-arabic font-bold text-h3 mb-4">مجانًا</p>
+            <ul class="font-arabic text-small text-ink-muted dark:text-mist-muted leading-loose space-y-2">
+              <li>مجلس مباشر كل 24 ساعة</li>
+              <li>حتى 10 أسئلة و20 لاعبًا في المجلس</li>
+              <li>اختيار من متعدد وصواب وخطأ</li>
+              <li>10 أسئلة مولّدة بالذكاء الاصطناعي يوميًّا</li>
+              <li>تقرير كامل بعد كل مجلس</li>
+            </ul>
+          </div>
+          <div class="card p-7 border-purple/40" data-reveal data-reveal-delay="100">
+            <p class="font-arabic font-bold text-h3 mb-4 text-purple">مع إعراب بلس</p>
+            <ul class="font-arabic text-small text-ink-muted dark:text-mist-muted leading-loose space-y-2">
+              <li>10 مجالس يوميًّا</li>
+              <li>حتى 50 سؤالًا و100 لاعب في المجلس</li>
+              <li>كل أنواع الأسئلة، ومنها صحّح الخطأ وترتيب الإعراب</li>
+              <li>100 سؤال ذكاء اصطناعي يوميًّا، مع التوليد من نص أو صورة والمراجعة الذكية</li>
+            </ul>
+            <a href="/pricing" class="inline-block mt-5 font-arabic font-bold text-purple hover:text-purple-deep text-small transition-colors duration-200">تفاصيل الأسعار</a>
+          </div>
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Teachers band ────────────────────────────────────────────── */}
+    <Container size="narrow">
+      <div class="my-16 bg-teal text-white rounded-2xl p-8 md:p-10" data-reveal>
+        <p class="font-mono text-caption opacity-70 uppercase tracking-widest mb-4">للمعلمين والمؤسسات</p>
+        <h3 class="font-arabic font-bold text-h2 leading-tight mb-4">أوّل أداة صفّية مباشرة في إعراب.</h3>
+        <p class="font-arabic text-body-lg opacity-90 max-w-2xl mb-6 leading-loose">
+          مجالس الإعراب مصممة للحصة: يستضيف المعلم من حاسوبه أو هاتفه، وينضم الصف كله في ثوانٍ. المدارس الشرعية والأكاديميات المؤهلة تحصل على حسابات معلمين مجانية.
+        </p>
+        <a href="/teachers" class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-paper text-teal font-arabic font-medium tracking-tight rounded-full transition-colors duration-200">
+          إعراب للمعلمين
+          <svg class="w-4 h-4 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </Container>
+
+    <ArticleFaq lang="ar" items={faqs} />
+
+    {/* ── Final CTA ────────────────────────────────────────────────── */}
+    <Section size="lg" class="relative overflow-hidden bg-ink dark:bg-mist text-paper dark:text-coal">
+      <Container>
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="font-arabic font-bold text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.3] tracking-tight mb-6" data-reveal>
+            مجلسك الأول يستغرق دقائق.
+          </h2>
+          <p class="font-arabic text-body-lg opacity-80 leading-loose mb-8" data-reveal data-reveal-delay="100">
+            أنشئ الأسئلة، شارك الرمز، وشاهد صفك يتنافس على الإعراب.
+          </p>
+          <div class="flex flex-wrap gap-3 justify-center" data-reveal data-reveal-delay="200">
+            <a href="/majlis/create" class="btn-primary btn-lg">أنشئ مجلسك مجانًا</a>
+            <a href="/majlis" class="inline-flex items-center justify-center min-h-[3.25rem] px-7 rounded-lg font-bold border border-paper/30 dark:border-coal/30 hover:border-paper dark:hover:border-coal transition-colors duration-200">انضم برمز</a>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  </main>
+
+  <Footer lang="ar" />
+
+  <script>
+    import '../scripts/scroll-reveal';
+  </script>
+</BaseLayout>

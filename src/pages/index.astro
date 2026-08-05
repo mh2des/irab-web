@@ -17,6 +17,7 @@ import StickyCta from '../components/StickyCta.astro';
 import Footer from '../components/sections/Footer.astro';
 
 const features = [
+  { title: 'مجالس الإعراب: مسابقات مباشرة', body: 'حوّل الإعراب إلى مسابقة حية: أنشئ الأسئلة يدويًّا أو بالذكاء الاصطناعي، شارك رمز الدخول، ولينضم طلابك مجانًا من أي متصفح أو من التطبيق. نقاط ومتصدرون وشرح نحوي بعد كل سؤال وتقرير كامل في الختام.', span: 'md:col-span-3', href: '/majalis', linkLabel: 'اعرف المزيد عن المجالس' },
   { title: 'محلل إعراب بالذكاء الاصطناعي', body: 'ألصق أيّ جملة عربية فتُعرَب كلمة بكلمة: النوع، الوظيفة، العلامة، التشكيل، التصحيح، وشرح واضح للجملة.', span: 'md:col-span-2' },
   { title: 'تدرّب وأَعرِبْ بنفسك', body: 'أَعرِبْ أنت، واحصل على تقييمٍ فوري وشرحٍ لكلّ كلمة. ٥٧٦ جملة منتقاة، وتقييم بالذكاء الاصطناعي على جملك الخاصة.', span: '' },
   { title: 'تعلَّم باللعب', body: 'حملة من ٧ أبواب، تحدٍّ يومي، نقاط XP، سلاسل، ١٠ رتب، شارات، ولوحات صدارة.', span: '' },
@@ -134,6 +135,9 @@ const faqs = [
                   <span class="product-index font-mono tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                 </div>
                 <p class="font-arabic text-small text-ink-muted dark:text-mist-muted leading-loose max-w-[48rem]">{f.body}</p>
+                {'href' in f && (
+                  <a href={f.href} class="inline-block mt-4 font-arabic font-bold text-purple hover:text-purple-deep text-small transition-colors duration-200">{f.linkLabel}</a>
+                )}
               </article>
             );
           })}
