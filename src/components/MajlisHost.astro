@@ -200,47 +200,12 @@
               <span class="rounded-full bg-teal/10 border border-teal/30 px-2.5 py-0.5 text-xs font-black text-teal">منتهٍ</span>
               <span class="text-xs text-ink-subtle dark:text-mist-subtle">${participantsLabel(Number(v.participantCount ?? 0))}</span>
             </div>
-            <p class="mt-2 font-bold text-lg text-ink dark:text-mist truncate"></p>
-            <div data-more class="hidden mt-4 grid gap-3"></div>`;
-          el.querySelector('p')!.textContent = title;
-          const more = el.querySelector<HTMLElement>('[data-more]')!;
+            <p class="mt-2 font-bold text-lg text-ink dark:text-mist truncate"></p>`;
+          el.querySelector('p:last-child')!.textContent = title;
           const toggle = btn('التقرير', 'mt-4 w-full rounded-xl border border-stone dark:border-coal-edge py-3 text-sm font-black text-ink dark:text-mist');
-          toggle.addEventListener('click', () => {
-            const open = more.classList.toggle('hidden');
-            toggle.textContent = open ? 'التقرير' : 'إخفاء';
-            if (!open && !more.childElementCount) fillReport(more, v);
-          });
+          toggle.addEventListener('click', () => { location.href = `/majlis/report?room=${encodeURIComponent(r.id)}`; });
           el.appendChild(toggle);
           return el;
-        }
-
-        function fillReport(more: HTMLElement, v: any) {
-          const stat = (label: string, val: string) =>
-            `<div class="rounded-xl bg-paper-soft dark:bg-coal px-3 py-2.5 text-center"><p class="text-lg font-black text-ink dark:text-mist">${val}</p><p class="text-xs text-ink-subtle dark:text-mist-subtle">${label}</p></div>`;
-          const grid = document.createElement('div');
-          grid.className = 'grid grid-cols-4 gap-2';
-          grid.innerHTML =
-            stat('مشاركون', String(v.participantCount ?? 0)) +
-            stat('أسئلة', String(v.qCount ?? 0)) +
-            stat('الدقة', `${Math.round((Number(v.avgAccuracy) || 0) * 100)}%`) +
-            stat('أعلى نقاط', String(v.topScore ?? 0));
-          more.appendChild(grid);
-          const rows = Array.isArray(v.participants) ? v.participants : [];
-          if (rows.length) {
-            const standings = document.createElement('div');
-            standings.className = 'grid gap-1.5';
-            rows.slice(0, 10).forEach((p: any, i: number) => {
-              const row = document.createElement('div');
-              row.className = 'flex items-center gap-3 rounded-xl border border-stone dark:border-coal-edge px-3 py-2';
-              row.innerHTML = `<span class="w-6 text-center font-black ${i === 0 ? 'text-purple' : 'text-ink-muted dark:text-mist-muted'}">${i + 1}</span>
-                <img src="/majlis-avatars/a${((Number(p.avatar) || 0) % 64 + 64) % 64}.svg" width="24" height="24" alt="" class="w-6 h-6 rounded-full" />
-                <span class="flex-1 font-bold text-sm text-ink dark:text-mist truncate"></span>
-                <span class="font-black text-sm tabular-nums text-ink-soft dark:text-mist-soft">${Number(p.score) || 0}</span>`;
-              row.querySelector('span.flex-1')!.textContent = String(p.name ?? '؟');
-              standings.appendChild(row);
-            });
-            more.appendChild(standings);
-          }
         }
 
         function bankCard(b: { id: string; data: any }) {

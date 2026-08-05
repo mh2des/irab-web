@@ -94,7 +94,7 @@
   <section data-s="count" class="hidden">
     <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft py-20 text-center">
       <p class="text-sm font-bold text-ink-muted dark:text-mist-muted">استعد…</p>
-      <div data-count-num class="font-black text-8xl text-purple mt-2">٣</div>
+      <div data-count-num class="font-black text-8xl text-purple mt-2">3</div>
     </div>
   </section>
 
@@ -207,7 +207,8 @@
     const AVATAR_COUNT = 64;
     const REJOIN_MS = 90 * 60 * 1000; // mirrors the app's 90-min rejoin memory
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
-    const toAr = (n: number | string) => String(n).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[+d]);
+    // Western digits everywhere in majalis (owner decision 2026-07-05, same as the app).
+    const toAr = (n: number | string) => String(n);
 
     const JOIN_ERRORS: Record<string, string> = {
       ROOM_NOT_FOUND: 'لا يوجد مجلس بهذا الرمز. تأكد من الرقم لدى المضيف.',
@@ -462,7 +463,7 @@
     };
 
     function renderQuestion() {
-      q('[data-q-num]').textContent = `${toAr(Number(qIndex) + 1)} / ${toAr(meta?.qCount ?? '؟')}`;
+      q('[data-q-num]').textContent = `${Number(qIndex) + 1} من ${meta?.qCount ?? '؟'}`;
       q('[data-q-text]').textContent = qData.questionText ?? '';
       const src = q<HTMLElement>('[data-q-source]');
       // fix_error renders the source sentence as its own tappable words instead

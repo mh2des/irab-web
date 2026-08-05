@@ -1,0 +1,288 @@
+---
+/**
+ * MajlisReport — full report for a finished majlis, mirroring the app's
+ * MajalisReportScreen (contract: docs/majlis-host-contracts.md Part 3 §2):
+ * reads majalis_reports/{roomId} (host-only per rules), renders the 2×2 stat
+ * grid, hardest/easiest cards, the all-questions list with per-question
+ * drill-down (correct/wrong tiles + distribution bars with per-type labels),
+ * and the full standings. Server-first load with cache fallback and a retry
+ * button. Distribution coerced defensively (Map OR List with holes).
+ * Western digits, Thmanyah headings, no em-dashes.
+ */
+---
+
+<div data-mreport-root dir="rtl" class="mx-auto w-full max-w-2xl">
+
+  <div data-v="loading">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 animate-pulse h-40"></div>
+  </div>
+
+  <section data-v="gate" class="hidden">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+      <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">سجّل الدخول لعرض التقرير</h1>
+      <a data-login-link href="/login?next=/majlis/host?tab=history" class="mt-5 inline-block rounded-xl bg-purple text-white font-black px-8 py-3.5">تسجيل الدخول</a>
+    </div>
+  </section>
+
+  <section data-v="error" class="hidden">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+      <h1 class="font-sans font-black text-xl text-ink dark:text-mist">تعذر تحميل التقرير. تحقق من اتصالك بالإنترنت وحاول مجددًا.</h1>
+      <div class="mt-5 flex justify-center gap-2">
+        <button type="button" data-retry class="rounded-xl bg-purple text-white font-black px-6 py-3">حاول مجددًا</button>
+        <a href="/majlis/host?tab=history" class="rounded-xl border border-stone dark:border-coal-edge px-6 py-3 font-bold text-ink-soft dark:text-mist-soft">إلى السجل</a>
+      </div>
+    </div>
+  </section>
+
+  <section data-v="report" class="hidden">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <div>
+        <p class="text-sm font-bold text-teal">مجالس الإعراب</p>
+        <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">تقرير المجلس</h1>
+      </div>
+      <a href="/majlis/host?tab=history" class="rounded-xl border border-stone dark:border-coal-edge px-4 py-2 text-sm font-bold text-ink-soft dark:text-mist-soft">السجل</a>
+    </div>
+    <p data-r-title class="mt-2 text-[15px] font-bold text-ink-soft dark:text-mist-soft leading-relaxed"></p>
+
+    <!-- Stats -->
+    <div data-r-stats class="mt-5 grid grid-cols-2 gap-2"></div>
+
+    <!-- Hardest / easiest -->
+    <div data-r-extremes class="mt-3 grid gap-2"></div>
+
+    <!-- All questions -->
+    <h2 class="font-sans font-black text-lg text-ink dark:text-mist mt-7">كل الأسئلة</h2>
+    <div data-r-questions class="mt-3 grid gap-2"></div>
+
+    <!-- Standings -->
+    <h2 class="font-sans font-black text-lg text-ink dark:text-mist mt-7">ترتيب المشاركين</h2>
+    <div data-r-standings class="mt-3 grid gap-1.5"></div>
+  </section>
+</div>
+
+<script>
+  import { maybeSignedIn } from '../lib/session';
+
+  const root = document.querySelector<HTMLElement>('[data-mreport-root]');
+  if (root) {
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const views = ['loading', 'gate', 'error', 'report'];
+    const show = (v: string) => views.forEach((x) => q(`[data-v="${x}"]`).classList.toggle('hidden', x !== v));
+
+    const roomId = new URLSearchParams(location.search).get('room');
+    const TYPE_LABELS: Record<string, string> = {
+      mcq: 'اختيار من متعدد', true_false: 'صواب وخطأ', tap_word: 'تحديد الكلمة',
+      fix_error: 'صحّح الخطأ', arrange_irab: 'ترتيب الإعراب',
+    };
+    const wordsOf = (s: any) => String(s ?? '').split(/\s+/).filter(Boolean);
+    const pctColor = (p: number) => p >= 60 ? 'text-teal' : p >= 35 ? 'text-amber-500' : 'text-rose-500';
+
+    if (!roomId) { location.href = '/majlis/host?tab=history'; }
+    else if (!maybeSignedIn()) { show('gate'); }
+    else init();
+
+    async function init() {
+      const [{ onAuth }, fb] = await Promise.all([import('../lib/auth'), import('../lib/firebase')]);
+      const fs = await import('firebase/firestore');
+      const db = fs.getFirestore(fb.app);
+      let started = false;
+
+      onAuth(async (u) => {
+        if (!u || u.isAnonymous) { show('gate'); return; }
+        if (started) return;
+        started = true;
+
+        q<HTMLButtonElement>('[data-retry]').addEventListener('click', () => { show('loading'); load(); });
+        load();
+
+        async function load() {
+          // Server first, cache fallback (app parity: fresh report preferred).
+          let snap: any = null;
+          try { snap = await fs.getDocFromServer(fs.doc(db, 'majalis_reports', String(roomId))); }
+          catch {
+            try { snap = await fs.getDocFromCache(fs.doc(db, 'majalis_reports', String(roomId))); }
+            catch { /* fall through */ }
+          }
+          if (!snap || !snap.exists()) { show('error'); return; }
+          let v: any;
+          try { v = snap.data(); } catch { show('error'); return; }
+          render(v);
+          show('report');
+        }
+      });
+    }
+
+    // App-parity defensive coercion: distribution may arrive as a Map or a
+    // sparse List; counts may be numbers or strings.
+    function coerceDistribution(raw: any): Record<string, number> {
+      const out: Record<string, number> = {};
+      if (Array.isArray(raw)) {
+        raw.forEach((c, i) => { if (c != null) out[String(i)] = Number(c) || 0; });
+      } else if (raw && typeof raw === 'object') {
+        for (const [k, c] of Object.entries(raw)) out[String(k)] = Number(c) || 0;
+      }
+      return out;
+    }
+
+    function render(v: any) {
+      const per: any[] = Array.isArray(v.perQuestion) ? v.perQuestion : [];
+      q<HTMLElement>('[data-r-title]').textContent = String(per[0]?.questionText ?? 'مجلس إعرابي');
+
+      const stat = (label: string, val: string) =>
+        `<div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft px-4 py-4 text-center"><p class="text-2xl font-black text-ink dark:text-mist tabular-nums">${val}</p><p class="mt-1 text-sm text-ink-subtle dark:text-mist-subtle">${label}</p></div>`;
+      q<HTMLElement>('[data-r-stats]').innerHTML =
+        stat('مشاركون', String(Number(v.participantCount) || 0)) +
+        stat('أسئلة', String(Number(v.qCount) || 0)) +
+        stat('متوسط الدقة', `${Math.round((Number(v.avgAccuracy) || 0) * 100)}%`) +
+        stat('أعلى نقاط', String(Number(v.topScore) || 0));
+
+      // Hardest / easiest
+      const ext = q<HTMLElement>('[data-r-extremes]');
+      ext.innerHTML = '';
+      const byIndex = (i: any) => per.find((p) => Number(p?.index) === Number(i));
+      const extremeCard = (label: string, cls: string, p: any) => {
+        const el = document.createElement('button');
+        el.type = 'button';
+        el.className = 'text-start rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-4 hover:border-purple';
+        const pct = Math.round((Number(p.correctRate) || 0) * 100);
+        el.innerHTML = `<div class="flex items-center justify-between gap-3"><span class="text-sm font-black ${cls}">${label}</span><span class="font-black tabular-nums ${cls}">${pct}%</span></div><p class="mt-1.5 text-[15px] font-bold text-ink dark:text-mist leading-relaxed" data-x-text></p>`;
+        el.querySelector('[data-x-text]')!.textContent = String(p.questionText ?? '');
+        el.addEventListener('click', () => {
+          const row = q<HTMLElement>(`[data-q-row="${Number(p.index)}"]`);
+          row?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          row?.querySelector<HTMLButtonElement>('button')?.click();
+        });
+        return el;
+      };
+      const hardest = v.hardestIndex != null ? byIndex(v.hardestIndex) : null;
+      const easiest = v.easiestIndex != null ? byIndex(v.easiestIndex) : null;
+      if (hardest) ext.appendChild(extremeCard('أصعب سؤال', 'text-rose-500', hardest));
+      if (easiest && easiest !== hardest) ext.appendChild(extremeCard('أسهل سؤال', 'text-teal', easiest));
+
+      // All questions with expandable drill-down
+      const list = q<HTMLElement>('[data-r-questions]');
+      list.innerHTML = '';
+      [...per].sort((a, b) => Number(a?.index) - Number(b?.index)).forEach((p) => list.appendChild(questionRow(p)));
+
+      // Standings (all, stored score-desc)
+      const st = q<HTMLElement>('[data-r-standings]');
+      st.innerHTML = '';
+      const rows: any[] = Array.isArray(v.participants) ? v.participants : [];
+      rows.forEach((p, i) => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-3 rounded-xl border border-stone dark:border-coal-edge bg-card dark:bg-coal-soft px-3.5 py-2.5';
+        row.innerHTML = `<span class="w-6 text-center font-black tabular-nums ${i === 0 ? 'text-purple' : 'text-ink-muted dark:text-mist-muted'}">${i + 1}</span>
+          <img src="/majlis-avatars/a${((Number(p.avatar) || 0) % 64 + 64) % 64}.svg" width="28" height="28" alt="" class="w-7 h-7 rounded-full" />
+          <span class="flex-1 font-bold text-[15px] text-ink dark:text-mist truncate"></span>
+          <span class="font-black tabular-nums text-ink-soft dark:text-mist-soft">${Number(p.score) || 0}</span>`;
+        row.querySelector('span.flex-1')!.textContent = String(p.name ?? '؟');
+        st.appendChild(row);
+      });
+      if (!rows.length) st.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted">بلا مشاركين</p>';
+    }
+
+    function questionRow(p: any) {
+      const el = document.createElement('div');
+      el.setAttribute('data-q-row', String(Number(p?.index) || 0));
+      el.className = 'rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft overflow-hidden';
+      const pct = Math.round((Number(p?.correctRate) || 0) * 100);
+      const head = document.createElement('button');
+      head.type = 'button';
+      head.className = 'w-full text-start p-4 flex items-center gap-3';
+      head.innerHTML = `<span class="flex-1 text-[15px] font-bold text-ink dark:text-mist leading-relaxed" data-q-text></span><span class="font-black tabular-nums ${pctColor(pct)}">${pct}%</span>`;
+      head.querySelector('[data-q-text]')!.textContent = String(p?.questionText ?? '؟');
+      const body = document.createElement('div');
+      body.className = 'hidden px-4 pb-4 grid gap-3';
+      head.addEventListener('click', () => {
+        const open = body.classList.toggle('hidden');
+        if (!open && !body.childElementCount) fillDrilldown(body, p);
+      });
+      el.append(head, body);
+      return el;
+    }
+
+    function fillDrilldown(body: HTMLElement, p: any) {
+      const type = String(p?.type ?? 'mcq');
+      const meta = document.createElement('div');
+      meta.className = 'flex items-center gap-2 flex-wrap';
+      meta.innerHTML = `<span class="rounded-full bg-paper-soft dark:bg-coal border border-stone dark:border-coal-edge px-2.5 py-0.5 text-xs font-black text-ink-soft dark:text-mist-soft">${TYPE_LABELS[type] ?? '؟'}</span>`;
+      body.appendChild(meta);
+      if (p?.sourceText) {
+        const src = document.createElement('p');
+        src.className = 'text-[15px] text-ink-soft dark:text-mist-soft leading-relaxed';
+        src.textContent = `«${p.sourceText}»`;
+        body.appendChild(src);
+      }
+
+      const answered = Number(p?.answeredCount) || 0;
+      const correct = Number(p?.correctCount) || 0;
+      const tiles = document.createElement('div');
+      tiles.className = 'grid grid-cols-2 gap-2';
+      tiles.innerHTML =
+        `<div class="rounded-xl bg-teal/10 px-3 py-2.5 text-center"><p class="font-black text-teal tabular-nums">${correct}</p><p class="text-xs text-ink-subtle dark:text-mist-subtle">أجابوا صوابًا</p></div>` +
+        `<div class="rounded-xl bg-rose-500/10 px-3 py-2.5 text-center"><p class="font-black text-rose-500 tabular-nums">${Math.max(0, answered - correct)}</p><p class="text-xs text-ink-subtle dark:text-mist-subtle">أجابوا خطأً</p></div>`;
+      body.appendChild(tiles);
+
+      // Distribution rows with app-parity per-type labels.
+      const dist = coerceDistribution(p?.distribution);
+      const options: string[] = Array.isArray(p?.options) ? p.options.map(String) : [];
+      const correctDisplay = String(p?.correctDisplay ?? '');
+      let rows: Array<{ label: string; count: number; correct: boolean }> = [];
+      if (type === 'true_false') {
+        rows = [
+          { label: 'صواب', count: dist['true'] ?? 0, correct: correctDisplay === 'صواب' },
+          { label: 'خطأ', count: dist['false'] ?? 0, correct: correctDisplay === 'خطأ' },
+        ];
+      } else if (type === 'mcq') {
+        rows = options.map((o, i) => ({ label: o, count: dist[String(i)] ?? 0, correct: o === correctDisplay }));
+      } else if (type === 'tap_word') {
+        rows = wordsOf(p?.sourceText).map((w, i) => ({ label: w, count: dist[String(i)] ?? 0, correct: w === correctDisplay }));
+      } else {
+        const words = wordsOf(p?.sourceText);
+        rows = Object.entries(dist)
+          .sort((a, b) => b[1] - a[1])
+          .map(([k, count]) => {
+            let label = 'أخرى';
+            if (k !== 'other') {
+              if (type === 'fix_error') {
+                const [w, o] = k.split('|');
+                label = `«${words[Number(w)] ?? '؟'}» صوابها «${options[Number(o)] ?? '؟'}»`;
+              } else {
+                label = k.split(',').map((i) => options[Number(i)] ?? '؟').join(' ');
+              }
+            }
+            return { label, count, correct: label === correctDisplay };
+          });
+      }
+      const total = Math.max(1, answered);
+      const bars = document.createElement('div');
+      bars.className = 'grid gap-1.5';
+      rows.forEach((r) => {
+        const bar = document.createElement('div');
+        bar.className = 'relative overflow-hidden rounded-xl border px-3.5 py-2 ' + (r.correct ? 'border-teal' : 'border-stone dark:border-coal-edge');
+        const fill = document.createElement('div');
+        fill.className = 'absolute inset-y-0 start-0 ' + (r.correct ? 'bg-teal/15' : 'bg-purple/8');
+        fill.style.width = `${Math.round((r.count / total) * 100)}%`;
+        const line = document.createElement('div');
+        line.className = 'relative flex items-center justify-between gap-3';
+        line.innerHTML = `<span class="font-bold text-sm text-ink dark:text-mist truncate" data-b-label></span><span class="font-black tabular-nums text-xs ${r.correct ? 'text-teal' : 'text-ink-muted dark:text-mist-muted'}">${r.count}</span>`;
+        line.querySelector('[data-b-label]')!.textContent = r.label;
+        bar.append(fill, line);
+        bars.appendChild(bar);
+      });
+      body.appendChild(bars);
+
+      const ans = document.createElement('p');
+      ans.className = 'text-sm font-bold text-teal';
+      ans.textContent = `الإجابة الصحيحة: ${correctDisplay || '؟'}`;
+      body.appendChild(ans);
+
+      if (p?.explanation) {
+        const ex = document.createElement('p');
+        ex.className = 'text-sm text-ink-muted dark:text-mist-muted leading-relaxed';
+        ex.textContent = String(p.explanation);
+        body.appendChild(ex);
+      }
+    }
+  }
+</script>
