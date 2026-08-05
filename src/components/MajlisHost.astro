@@ -40,10 +40,10 @@
       <span data-quota-pill class="hidden rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3.5 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
     </div>
 
-    <!-- Creation note (editor lands on web in the next slice) -->
+    <!-- Create CTA (same drafts on app and web) -->
     <div class="mt-4 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5 flex items-center justify-between gap-4 flex-wrap">
-      <p class="text-[15px] text-ink-muted dark:text-mist-muted">أنشئ مجلسًا جديدًا من تطبيق إعراب، وستظهر مسودته هنا فورًا لتستضيفه من الويب.</p>
-      <a href="/#download" class="rounded-xl border border-stone dark:border-coal-edge px-4 py-2.5 text-sm font-bold text-ink-soft dark:text-mist-soft whitespace-nowrap">افتح التطبيق</a>
+      <p class="text-[15px] text-ink-muted dark:text-mist-muted">أنشئ مجلسًا هنا أو من التطبيق، فمسوداتك متزامنة بينهما.</p>
+      <a href="/majlis/create" class="rounded-xl bg-purple text-white font-black px-5 py-2.5 whitespace-nowrap">مجلس جديد</a>
     </div>
 
     <!-- Tabs -->
@@ -178,13 +178,15 @@
           row.className = 'mt-4 flex gap-2';
           const host = btn('استضف الآن', 'flex-1 rounded-xl bg-purple text-white font-black py-3');
           host.addEventListener('click', () => { location.href = `/majlis/live?draft=${encodeURIComponent(d.id)}`; });
+          const edit = btn('متابعة', 'rounded-xl border border-stone dark:border-coal-edge px-4 text-sm font-bold text-ink-soft dark:text-mist-soft');
+          edit.addEventListener('click', () => { location.href = `/majlis/create?draft=${encodeURIComponent(d.id)}`; });
           const del = btn('حذف', 'rounded-xl border border-stone dark:border-coal-edge px-4 text-sm font-bold text-ink-muted dark:text-mist-muted');
           del.addEventListener('click', async () => {
             drafts = drafts.filter((x) => x.id !== d.id); render();
             try { await fs.deleteDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', d.id)); }
             catch { drafts = [...drafts, d]; render(); }
           });
-          row.append(host, del);
+          row.append(host, edit, del);
           el.appendChild(row);
           return el;
         }

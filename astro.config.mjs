@@ -22,7 +22,7 @@ for (const a of quran.ayat) {
 }
 
 // Private/auth pages — noindex, keep out of the sitemap.
-for (const p of ['/login', '/account', '/en/login', '/en/account', '/dictionary', '/en/dictionary', '/practice/play', '/en/practice/play', '/challenges', '/en/challenges', '/app', '/en/app', '/history', '/en/history', '/library/read', '/en/library/read', '/majlis/host', '/majlis/live']) {
+for (const p of ['/login', '/account', '/en/login', '/en/account', '/dictionary', '/en/dictionary', '/practice/play', '/en/practice/play', '/challenges', '/en/challenges', '/app', '/en/app', '/history', '/en/history', '/library/read', '/en/library/read', '/majlis/host', '/majlis/live', '/majlis/create']) {
   sitemapExclude.add(`https://irab.app${p}`);
 }
 

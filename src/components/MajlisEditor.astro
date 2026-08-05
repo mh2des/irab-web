@@ -1,0 +1,808 @@
+---
+/**
+ * MajlisEditor — create/edit a majlis draft on the web with full app parity
+ * (contract: docs/majlis-host-contracts.md, creation section):
+ *   - Draft doc majalis_drafts/{uid}/drafts: title auto-derived from Q1,
+ *     client-side Timestamps (updatedAt every save, createdAt first save only),
+ *     hasAiQuestions; question wire shape with ALL keys (explicit nulls).
+ *   - Editor types: mcq, true_false, fix_error, arrange_irab (tap_word retired
+ *     from authoring; old tap_word questions still render in review).
+ *   - fix_error options shuffled at build; arrange fragments shuffled with a
+ *     guaranteed non-identity permutation; mcq correct index re-derived after
+ *     dropping blank rows.
+ *   - saveToBank questions upsert to majalis_bank AFTER the draft write, fire
+ *     and forget; bank reuse mints a FRESH id; edits PRESERVE the question id
+ *     and AI provenance; sourceReference cleared when sourceText changes.
+ *   - Free: 10 questions, mcq+true_false only. Premium: 50, all types.
+ *   - Saves at continue-to-review and launch (like the app), plus quiet
+ *     background saves after review edits so a closed tab loses nothing.
+ * Western digits, Thmanyah only (font-sans on headings), no em-dashes.
+ */
+---
+
+<div data-medit-root dir="rtl" class="mx-auto w-full max-w-2xl">
+
+  <div data-v="loading">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 animate-pulse h-40"></div>
+  </div>
+
+  <section data-v="gate" class="hidden">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+      <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">سجّل الدخول لإنشاء مجلسك</h1>
+      <p class="mt-2 text-ink-muted dark:text-mist-muted">أنشئ أسئلة الإعراب مرة واحدة، واستضفها من الويب أو التطبيق.</p>
+      <a data-login-link href="/login?next=/majlis/create" class="mt-5 inline-block rounded-xl bg-purple text-white font-black px-8 py-3.5">تسجيل الدخول</a>
+    </div>
+  </section>
+
+  <section data-v="fatal" class="hidden">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+      <h1 class="font-sans font-black text-xl text-ink dark:text-mist" data-fatal-msg></h1>
+      <a href="/majlis/host" class="mt-5 inline-block rounded-xl border border-stone dark:border-coal-edge px-6 py-3 font-bold text-ink-soft dark:text-mist-soft">العودة إلى مجالسي</a>
+    </div>
+  </section>
+
+  <!-- ═══ Editor ═══ -->
+  <section data-v="editor" class="hidden">
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <p class="text-sm font-bold text-teal">مجالس الإعراب</p>
+        <h1 data-ed-title class="font-sans font-black text-2xl text-ink dark:text-mist">سؤال جديد</h1>
+      </div>
+      <span data-count-badge class="hidden rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3.5 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
+    </div>
+
+    <div class="mt-5 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5 grid gap-5">
+
+      <!-- Type chips -->
+      <div>
+        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">نوع السؤال</p>
+        <div data-type-chips class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <!-- Question text -->
+      <div>
+        <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" for="medit-qtext">نص السؤال</label>
+        <textarea id="medit-qtext" data-qtext rows="2"
+          class="mt-2 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist leading-relaxed resize-y focus:outline-none focus:border-purple"
+          placeholder="اكتب سؤالك هنا"></textarea>
+      </div>
+
+      <!-- Source sentence / target word (sentence types) -->
+      <div data-src-block class="hidden">
+        <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" for="medit-src" data-src-label></label>
+        <input id="medit-src" data-src type="text"
+          class="mt-2 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple" />
+      </div>
+
+      <!-- MCQ -->
+      <div data-sec-mcq class="hidden">
+        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">الخيارات، وحدد الصحيح</p>
+        <div data-mcq-rows class="grid gap-2"></div>
+        <button type="button" data-mcq-add class="mt-2 text-sm font-bold text-purple">+ خيار آخر</button>
+      </div>
+
+      <!-- True / False -->
+      <div data-sec-tf class="hidden">
+        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">الحكم الصحيح</p>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" data-tf="true" class="rounded-xl border py-3.5 font-black"></button>
+          <button type="button" data-tf="false" class="rounded-xl border py-3.5 font-black"></button>
+        </div>
+      </div>
+
+      <!-- Fix error -->
+      <div data-sec-fix class="hidden grid gap-4">
+        <div>
+          <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">اضغط الكلمة الخاطئة في الجملة</p>
+          <div data-fix-words class="flex flex-wrap gap-2"></div>
+          <p data-fix-words-hint class="text-xs text-ink-subtle dark:text-mist-subtle mt-2">اكتب الجملة في الحقل أعلاه أولًا</p>
+        </div>
+        <div data-fix-stage2 class="hidden grid gap-2">
+          <label class="text-sm font-bold text-ink-soft dark:text-mist-soft">الصورة الصحيحة للكلمة</label>
+          <input data-fix-correct type="text" class="w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-teal" />
+          <label class="text-sm font-bold text-ink-soft dark:text-mist-soft mt-1">مموهات، إجابات خاطئة مشابهة (واحد على الأقل)</label>
+          <input data-fix-d1 type="text" placeholder="مموه 1" class="w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple" />
+          <input data-fix-d2 type="text" placeholder="مموه 2 (اختياري)" class="w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple" />
+        </div>
+      </div>
+
+      <!-- Arrange i'rab -->
+      <div data-sec-arr class="hidden">
+        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">أجزاء الإعراب بالترتيب الصحيح، وستُخلط تلقائيًّا للاعبين</p>
+        <div data-arr-rows class="grid gap-2"></div>
+        <button type="button" data-arr-add class="mt-2 text-sm font-bold text-purple">+ جزء آخر</button>
+      </div>
+
+      <!-- Explanation -->
+      <div>
+        <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" for="medit-expl">شرح الإجابة (اختياري)</label>
+        <input id="medit-expl" data-expl type="text"
+          class="mt-2 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple" />
+      </div>
+
+      <!-- Time + bank -->
+      <div class="flex items-center justify-between gap-4 flex-wrap">
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-bold text-ink-soft dark:text-mist-soft">مدة السؤال</span>
+          <div class="flex items-center gap-2" dir="ltr">
+            <button type="button" data-t-minus class="w-9 h-9 rounded-lg border border-stone dark:border-coal-edge font-black text-ink dark:text-mist">-</button>
+            <span data-t-val class="w-14 text-center font-black tabular-nums text-ink dark:text-mist">30 ث</span>
+            <button type="button" data-t-plus class="w-9 h-9 rounded-lg border border-stone dark:border-coal-edge font-black text-ink dark:text-mist">+</button>
+          </div>
+        </div>
+        <label class="flex items-center gap-2 cursor-pointer select-none">
+          <input data-bank-toggle type="checkbox" class="w-4 h-4 accent-[var(--color-purple)]" />
+          <span class="text-sm font-bold text-ink-soft dark:text-mist-soft">حفظ في بنك الأسئلة</span>
+        </label>
+      </div>
+
+      <p data-form-err class="hidden text-sm font-bold text-rose-500"></p>
+
+      <div class="grid gap-2">
+        <button type="button" data-continue class="rounded-xl bg-purple text-white font-black py-3.5">متابعة إلى المراجعة</button>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" data-add-another class="rounded-xl border border-stone dark:border-coal-edge py-3 text-sm font-black text-ink dark:text-mist">أضف سؤالًا آخر</button>
+          <button type="button" data-from-bank class="rounded-xl border border-stone dark:border-coal-edge py-3 text-sm font-black text-ink dark:text-mist">من بنك الأسئلة</button>
+        </div>
+        <a data-back-review href="#" class="hidden text-center text-sm font-bold text-ink-muted dark:text-mist-muted py-1">رجوع إلى المراجعة دون حفظ هذا السؤال</a>
+      </div>
+    </div>
+    <p class="mt-4 text-center text-sm text-ink-subtle dark:text-mist-subtle">المسودات لا تُحتسب من حصتك اليومية حتى تبدأ المجلس</p>
+  </section>
+
+  <!-- ═══ Review ═══ -->
+  <section data-v="review" class="hidden">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <div>
+        <p class="text-sm font-bold text-teal">مجالس الإعراب</p>
+        <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">راجع مجلسك</h1>
+      </div>
+      <span data-r-count class="rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3.5 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
+    </div>
+
+    <div data-ai-banner class="hidden mt-4 rounded-2xl border border-purple/30 bg-purple/5 p-4 text-sm text-ink-soft dark:text-mist-soft leading-relaxed">
+      بعض الأسئلة مولّدة بالذكاء الاصطناعي. راجعها وتأكد من صحتها قبل الانطلاق، فأنت المسؤول عما يُعرض في مجلسك.
+    </div>
+
+    <div data-r-list class="mt-4 grid gap-3"></div>
+
+    <div class="mt-5 grid gap-2">
+      <button type="button" data-r-add class="rounded-xl border border-stone dark:border-coal-edge py-3 font-black text-ink dark:text-mist">أضف سؤالًا</button>
+      <button type="button" data-r-launch class="rounded-xl bg-purple text-white font-black py-4 text-lg">أطلق المجلس مباشرة</button>
+      <p data-r-err class="hidden text-center text-sm font-bold text-rose-500"></p>
+      <a href="/majlis/host" class="text-center text-sm font-bold text-ink-muted dark:text-mist-muted py-1">حفظ والعودة إلى مجالسي</a>
+    </div>
+  </section>
+
+  <!-- Bank sheet -->
+  <div data-bank-sheet class="hidden fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-6" dir="rtl">
+    <div class="w-full max-w-lg max-h-[80vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-card dark:bg-coal-soft border border-card-edge dark:border-coal-edge p-5">
+      <div class="flex items-center justify-between">
+        <h2 class="font-sans font-black text-lg text-ink dark:text-mist">من بنك الأسئلة</h2>
+        <button type="button" data-bank-close class="rounded-lg border border-stone dark:border-coal-edge px-3 py-1.5 text-sm font-bold text-ink-muted dark:text-mist-muted">إغلاق</button>
+      </div>
+      <div data-bank-list class="mt-4 grid gap-2"></div>
+      <p data-bank-empty class="hidden mt-4 text-center text-sm text-ink-muted dark:text-mist-muted">بنك أسئلتك فارغ. فعّل «حفظ في بنك الأسئلة» عند إنشاء سؤال ليظهر هنا.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { maybeSignedIn } from '../lib/session';
+
+  const root = document.querySelector<HTMLElement>('[data-medit-root]');
+  if (root) {
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const views = ['loading', 'gate', 'fatal', 'editor', 'review'];
+    const show = (v: string) => views.forEach((x) => q(`[data-v="${x}"]`).classList.toggle('hidden', x !== v));
+
+    const draftParam = new URLSearchParams(location.search).get('draft');
+    if (draftParam) {
+      const link = q<HTMLAnchorElement>('[data-login-link]');
+      link.href = `/login?next=${encodeURIComponent('/majlis/create?draft=' + draftParam)}`;
+    }
+
+    const TYPE_LABELS: Record<string, string> = {
+      mcq: 'اختيار من متعدد', true_false: 'صواب وخطأ', tap_word: 'تحديد الكلمة',
+      fix_error: 'صحّح الخطأ', arrange_irab: 'ترتيب الإعراب',
+    };
+    // The app prefills this fixed instruction when fix_error is picked on an empty box.
+    const FIX_INSTRUCTION = 'في الجملة خطأ إعرابي واحد، اضغط الكلمة الخاطئة ثم اختر صوابها';
+    const EDITOR_TYPES = ['mcq', 'true_false', 'fix_error', 'arrange_irab'];
+    const PREMIUM_TYPES = new Set(['fix_error', 'arrange_irab', 'tap_word']);
+
+    if (!maybeSignedIn()) { show('gate'); }
+    else init();
+
+    async function init() {
+      const [{ onAuth }, fb] = await Promise.all([import('../lib/auth'), import('../lib/firebase')]);
+      const fs = await import('firebase/firestore');
+      const db = fs.getFirestore(fb.app);
+      let started = false;
+
+      onAuth(async (u) => {
+        if (!u || u.isAnonymous) { show('gate'); return; }
+        if (started) return;
+        started = true;
+        const uid = u.uid;
+
+        let isPremium = false;
+        try {
+          const { getFunctions, httpsCallable } = await import('firebase/functions');
+          const res: any = await httpsCallable(getFunctions(fb.app, 'us-central1'), 'majalisQuotaStatus')({});
+          isPremium = !!res?.data?.isPremium;
+        } catch { /* default to free; the server re-enforces at launch */ }
+        const maxQ = isPremium ? 50 : 10;
+
+        // ── Draft state (wire-shape question objects, order = play order) ──
+        let questions: any[] = [];
+        let draftId: string | null = draftParam;
+        let dirty = false;
+        let rev = 0;
+        const markDirty = () => { dirty = true; rev++; };
+        let mode: 'fresh' | 'append' | 'edit' = 'fresh';
+        let editingIndex: number | null = null;
+
+        window.addEventListener('beforeunload', (e) => { if (dirty) e.preventDefault(); });
+
+        const freshId = () => `mq_${Date.now() * 1000 + Math.floor(Math.random() * 1000)}`;
+        const wordsOf = (s: any) => String(s ?? '').split(/\s+/).filter(Boolean);
+
+        function shuffled<T>(arr: T[]): T[] {
+          const a = [...arr];
+          for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+          }
+          return a;
+        }
+        // Arrange fragments must never be stored in play order (contract 1.3).
+        function nonIdentityPerm(n: number): number[] {
+          let p: number[];
+          do { p = shuffled([...Array(n).keys()]); }
+          while (n > 1 && p.every((v, i) => v === i));
+          return p;
+        }
+
+        // All saves run through one chain: overlapping saves (a background save
+        // racing the launch save) could otherwise both see draftId==null and
+        // addDoc TWO draft docs.
+        let saveChain: Promise<boolean> = Promise.resolve(true);
+        function saveDraft(): Promise<boolean> {
+          const p = saveChain.then(() => doSaveDraft());
+          saveChain = p.catch(() => false);
+          return p;
+        }
+        async function doSaveDraft(): Promise<boolean> {
+          if (!questions.length) return false;
+          const myRev = rev;
+          try {
+            const first = questions[0] ?? {};
+            const src = String(first.sourceText ?? '').trim();
+            const title = (src || String(first.questionText ?? '').trim()).slice(0, 60);
+            const data: any = {
+              title, questions,
+              updatedAt: fs.Timestamp.now(),
+              hasAiQuestions: questions.some((x) => !!x.aiGenerated),
+            };
+            if (!draftId) {
+              data.createdAt = fs.Timestamp.now();
+              const ref = await fs.addDoc(fs.collection(db, 'majalis_drafts', uid, 'drafts'), data);
+              draftId = ref.id;
+            } else {
+              await fs.setDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', draftId), data, { merge: true });
+            }
+            // Bank upserts only after the draft write succeeded; failures are silent.
+            for (const qq of questions) {
+              if (qq?.saveToBank) {
+                fs.setDoc(fs.doc(db, 'majalis_bank', uid, 'questions', String(qq.id)), qq, { merge: true }).catch(() => {});
+              }
+            }
+            if (rev === myRev) dirty = false;
+            return true;
+          } catch { return false; }
+        }
+        const bgSave = () => { saveDraft(); };
+
+        // ── Form elements ──
+        const chipsWrap = q<HTMLElement>('[data-type-chips]');
+        const qtext = q<HTMLTextAreaElement>('[data-qtext]');
+        const srcBlock = q<HTMLElement>('[data-src-block]');
+        const srcLabel = q<HTMLElement>('[data-src-label]');
+        const srcInput = q<HTMLInputElement>('[data-src]');
+        const mcqRows = q<HTMLElement>('[data-mcq-rows]');
+        const fixWords = q<HTMLElement>('[data-fix-words]');
+        const fixStage2 = q<HTMLElement>('[data-fix-stage2]');
+        const fixCorrect = q<HTMLInputElement>('[data-fix-correct]');
+        const fixD1 = q<HTMLInputElement>('[data-fix-d1]');
+        const fixD2 = q<HTMLInputElement>('[data-fix-d2]');
+        const arrRows = q<HTMLElement>('[data-arr-rows]');
+        const expl = q<HTMLInputElement>('[data-expl]');
+        const tVal = q<HTMLElement>('[data-t-val]');
+        const bankToggle = q<HTMLInputElement>('[data-bank-toggle]');
+        const formErr = q<HTMLElement>('[data-form-err]');
+        const ctaBtn = q<HTMLButtonElement>('[data-continue]');
+        const addAnotherBtn = q<HTMLButtonElement>('[data-add-another]');
+        const fromBankBtn = q<HTMLButtonElement>('[data-from-bank]');
+        const backReview = q<HTMLAnchorElement>('[data-back-review]');
+
+        let fType = 'mcq';
+        let tfVerdict: boolean | null = null;
+        let fixWordIndex: number | null = null;
+        let mcqCorrectRow = 0;
+        let tLimit = 30;
+
+        const err = (m: string) => { formErr.textContent = m; formErr.classList.remove('hidden'); };
+        const clearErr = () => formErr.classList.add('hidden');
+
+        function renderChips() {
+          chipsWrap.innerHTML = '';
+          for (const t of EDITOR_TYPES) {
+            const locked = !isPremium && PREMIUM_TYPES.has(t);
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'rounded-full px-4 py-2 text-sm font-black border ' + (fType === t
+              ? 'bg-purple text-white border-purple'
+              : 'border-stone dark:border-coal-edge text-ink-soft dark:text-mist-soft');
+            b.textContent = TYPE_LABELS[t] + (locked ? ' 🔒' : '');
+            b.addEventListener('click', () => {
+              if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+              fType = t;
+              if (t === 'fix_error' && !qtext.value.trim()) qtext.value = FIX_INSTRUCTION;
+              renderChips(); renderTypeSections();
+            });
+            chipsWrap.appendChild(b);
+          }
+        }
+
+        function renderTypeSections() {
+          clearErr();
+          const sentence = fType === 'fix_error' || fType === 'arrange_irab';
+          srcBlock.classList.toggle('hidden', !sentence);
+          srcLabel.textContent = fType === 'arrange_irab' ? 'الكلمة المستهدفة بالإعراب' : 'الجملة، وفيها الخطأ';
+          srcInput.placeholder = fType === 'arrange_irab' ? 'مثال: الطالبُ' : 'اكتب الجملة كاملة';
+          q('[data-sec-mcq]').classList.toggle('hidden', fType !== 'mcq');
+          q('[data-sec-tf]').classList.toggle('hidden', fType !== 'true_false');
+          q('[data-sec-fix]').classList.toggle('hidden', fType !== 'fix_error');
+          q('[data-sec-arr]').classList.toggle('hidden', fType !== 'arrange_irab');
+          if (fType === 'true_false') renderTf();
+          if (fType === 'fix_error') renderFixWords();
+        }
+
+        // MCQ rows: 2 initial, cap 4; radio marks the correct row.
+        function mcqInputs(): HTMLInputElement[] {
+          return [...mcqRows.querySelectorAll<HTMLInputElement>('input[type="text"]')];
+        }
+        function addMcqRow(value = '') {
+          const i = mcqInputs().length;
+          if (i >= 4) return;
+          const row = document.createElement('div');
+          row.className = 'flex items-center gap-2';
+          const radio = document.createElement('input');
+          radio.type = 'radio'; radio.name = 'medit-mcq-correct';
+          radio.className = 'w-4 h-4 accent-[var(--color-teal)]';
+          radio.checked = i === mcqCorrectRow;
+          radio.addEventListener('change', () => { mcqCorrectRow = mcqInputs().findIndex((x) => x.parentElement === row); });
+          const input = document.createElement('input');
+          input.type = 'text'; input.value = value;
+          input.placeholder = `الخيار ${i + 1}`;
+          input.className = 'flex-1 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple';
+          row.append(radio, input);
+          mcqRows.appendChild(row);
+          if (mcqInputs().length >= 4) q('[data-mcq-add]').classList.add('hidden');
+        }
+        function resetMcq(values: string[] = ['', ''], correct = 0) {
+          mcqRows.innerHTML = ''; mcqCorrectRow = correct;
+          q('[data-mcq-add]').classList.remove('hidden');
+          values.forEach((v) => addMcqRow(v));
+        }
+        q<HTMLButtonElement>('[data-mcq-add]').addEventListener('click', () => addMcqRow());
+
+        function renderTf() {
+          const bT = q<HTMLButtonElement>('[data-tf="true"]');
+          const bF = q<HTMLButtonElement>('[data-tf="false"]');
+          bT.textContent = 'صحيح'; bF.textContent = 'خطأ';
+          bT.className = 'rounded-xl border py-3.5 font-black ' + (tfVerdict === true ? 'bg-teal text-white border-teal' : 'border-stone dark:border-coal-edge text-ink dark:text-mist');
+          bF.className = 'rounded-xl border py-3.5 font-black ' + (tfVerdict === false ? 'bg-rose-500 text-white border-rose-500' : 'border-stone dark:border-coal-edge text-ink dark:text-mist');
+        }
+        q('[data-tf="true"]').addEventListener('click', () => { tfVerdict = true; renderTf(); });
+        q('[data-tf="false"]').addEventListener('click', () => { tfVerdict = false; renderTf(); });
+
+        function renderFixWords() {
+          const words = wordsOf(srcInput.value);
+          fixWords.innerHTML = '';
+          q('[data-fix-words-hint]').classList.toggle('hidden', words.length > 0);
+          if (fixWordIndex != null && fixWordIndex >= words.length) fixWordIndex = null;
+          words.forEach((w, i) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'rounded-lg px-3 py-1.5 text-[15px] font-bold border ' + (fixWordIndex === i
+              ? 'bg-rose-500 text-white border-rose-500'
+              : 'border-stone dark:border-coal-edge text-ink dark:text-mist');
+            b.textContent = w;
+            b.addEventListener('click', () => { fixWordIndex = i; renderFixWords(); });
+            fixWords.appendChild(b);
+          });
+          fixStage2.classList.toggle('hidden', fixWordIndex == null);
+        }
+        srcInput.addEventListener('input', () => { if (fType === 'fix_error') renderFixWords(); });
+
+        // Arrange fragments: 3 initial, min 2, max 6.
+        function arrInputs(): HTMLInputElement[] {
+          return [...arrRows.querySelectorAll<HTMLInputElement>('input')];
+        }
+        function addArrRow(value = '') {
+          const n = arrInputs().length;
+          if (n >= 6) return;
+          const row = document.createElement('div');
+          row.className = 'flex items-center gap-2';
+          const num = document.createElement('span');
+          num.className = 'w-6 text-center font-black text-ink-muted dark:text-mist-muted tabular-nums';
+          const input = document.createElement('input');
+          input.type = 'text'; input.value = value;
+          input.placeholder = 'جزء من الإعراب';
+          input.className = 'flex-1 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple';
+          const rm = document.createElement('button');
+          rm.type = 'button'; rm.textContent = 'حذف';
+          rm.className = 'text-xs font-bold text-ink-subtle dark:text-mist-subtle';
+          rm.addEventListener('click', () => { if (arrInputs().length > 2) { row.remove(); renumberArr(); } });
+          row.append(num, input, rm);
+          arrRows.appendChild(row);
+          renumberArr();
+        }
+        function renumberArr() {
+          [...arrRows.children].forEach((row, i) => { (row.firstElementChild as HTMLElement).textContent = String(i + 1); });
+          q('[data-arr-add]').classList.toggle('hidden', arrInputs().length >= 6);
+        }
+        function resetArr(values: string[] = ['', '', '']) {
+          arrRows.innerHTML = '';
+          values.forEach((v) => addArrRow(v));
+        }
+        q<HTMLButtonElement>('[data-arr-add]').addEventListener('click', () => addArrRow());
+
+        const stepTime = (d: number) => { tLimit = Math.min(120, Math.max(5, tLimit + d)); tVal.textContent = `${tLimit} ث`; };
+        q('[data-t-minus]').addEventListener('click', () => stepTime(-5));
+        q('[data-t-plus]').addEventListener('click', () => stepTime(5));
+
+        function resetForm(prefill?: any) {
+          clearErr();
+          tfVerdict = null; fixWordIndex = null; tLimit = 30;
+          qtext.value = ''; srcInput.value = ''; expl.value = '';
+          fixCorrect.value = ''; fixD1.value = ''; fixD2.value = '';
+          bankToggle.checked = false;
+          resetMcq(); resetArr();
+          if (prefill) {
+            fType = EDITOR_TYPES.includes(String(prefill.type)) ? String(prefill.type) : 'mcq';
+            qtext.value = String(prefill.questionText ?? '');
+            expl.value = String(prefill.explanation ?? '');
+            tLimit = Math.min(120, Math.max(5, Number(prefill.timeLimitSeconds) || 30));
+            bankToggle.checked = !!prefill.saveToBank;
+            const c = prefill.correctAnswer ?? {};
+            if (fType === 'mcq') {
+              const opts: string[] = Array.isArray(prefill.options) ? prefill.options.map(String) : ['', ''];
+              resetMcq(opts.length >= 2 ? opts : ['', ''], Number(c.optionIndex) || 0);
+            } else if (fType === 'true_false') {
+              tfVerdict = typeof c.boolValue === 'boolean' ? c.boolValue : null;
+            } else if (fType === 'fix_error') {
+              srcInput.value = String(prefill.sourceText ?? '');
+              fixWordIndex = typeof c.wordIndex === 'number' ? c.wordIndex : null;
+              const opts: string[] = Array.isArray(prefill.options) ? prefill.options.map(String) : [];
+              const correct = typeof c.optionIndex === 'number' ? (opts[c.optionIndex] ?? '') : '';
+              fixCorrect.value = correct;
+              const decoys = opts.filter((_, i) => i !== c.optionIndex);
+              fixD1.value = decoys[0] ?? ''; fixD2.value = decoys[1] ?? '';
+            } else if (fType === 'arrange_irab') {
+              srcInput.value = String(prefill.sourceText ?? '');
+              const opts: string[] = Array.isArray(prefill.options) ? prefill.options.map(String) : [];
+              const arrangement: number[] = Array.isArray(c.arrangement) ? c.arrangement : [];
+              const inOrder = arrangement.map((i) => opts[i] ?? '');
+              resetArr(inOrder.length >= 2 ? inOrder : ['', '', '']);
+            }
+          } else {
+            fType = 'mcq';
+          }
+          tVal.textContent = `${tLimit} ث`;
+          renderChips(); renderTypeSections();
+          updateCountBadge();
+        }
+
+        function updateCountBadge() {
+          const badge = q<HTMLElement>('[data-count-badge]');
+          badge.textContent = `الأسئلة: ${questions.length} من ${maxQ}`;
+          badge.classList.toggle('hidden', questions.length === 0);
+          q<HTMLElement>('[data-ed-title]').textContent = mode === 'edit' ? 'تعديل السؤال' : 'سؤال جديد';
+          ctaBtn.textContent = mode === 'edit' ? 'حفظ التعديل' : mode === 'append' ? 'أضف السؤال' : 'متابعة إلى المراجعة';
+          addAnotherBtn.parentElement!.classList.toggle('hidden', mode !== 'fresh');
+          backReview.classList.toggle('hidden', mode === 'fresh');
+        }
+
+        // The fix_error chip prefills the question box; an untouched prefill is
+        // still an "empty form" for continue purposes.
+        const formIsEmpty = () => {
+          const t = qtext.value.trim();
+          return (!t || t === FIX_INSTRUCTION) && !srcInput.value.trim();
+        };
+
+        function buildQuestion(): any | null {
+          const text = qtext.value.trim();
+          if (!text) { err('اكتب نص السؤال'); return null; }
+          const editing = editingIndex != null ? questions[editingIndex] : null;
+          let sourceText: string | null = null;
+          let options: string[] = [];
+          let optionIndex: number | null = null, wordIndex: number | null = null;
+          let boolValue: boolean | null = null, arrangement: number[] | null = null;
+
+          if (fType === 'mcq') {
+            const rows = mcqInputs().map((x) => x.value);
+            const nonBlank = rows.map((v, i) => ({ v: v.trim(), i })).filter((x) => x.v);
+            if (nonBlank.length < 2) { err('أضف خيارين غير فارغين على الأقل'); return null; }
+            if (!rows[mcqCorrectRow]?.trim()) { err('حدد الإجابة الصحيحة في خيار غير فارغ'); return null; }
+            options = nonBlank.map((x) => x.v);
+            optionIndex = nonBlank.findIndex((x) => x.i === mcqCorrectRow);
+          } else if (fType === 'true_false') {
+            if (tfVerdict == null) { err('اختر الحكم: صحيح أم خطأ'); return null; }
+            boolValue = tfVerdict;
+          } else if (fType === 'fix_error') {
+            const src = srcInput.value.trim();
+            const words = wordsOf(src);
+            if (words.length < 2) { err('اكتب جملة من كلمتين على الأقل'); return null; }
+            if (fixWordIndex == null || fixWordIndex >= words.length) { err('اضغط الكلمة الخاطئة في الجملة'); return null; }
+            const correct = fixCorrect.value.trim();
+            if (!correct) { err('اكتب الصورة الصحيحة للكلمة'); return null; }
+            if (correct === words[fixWordIndex]) { err('الصورة الصحيحة يجب أن تختلف عن الكلمة الخاطئة'); return null; }
+            // Duplicate decoys collapse silently (like the app); only correct==decoy errors.
+            const decoys = [...new Set([fixD1.value.trim(), fixD2.value.trim()].filter(Boolean))];
+            if (!decoys.length) { err('أضف مموهًا واحدًا على الأقل'); return null; }
+            if (decoys.includes(correct)) { err('المموهات يجب أن تختلف عن الصورة الصحيحة'); return null; }
+            options = shuffled([correct, ...decoys]);
+            optionIndex = options.indexOf(correct);
+            wordIndex = fixWordIndex;
+            sourceText = src;
+          } else if (fType === 'arrange_irab') {
+            const target = srcInput.value.trim();
+            if (!target) { err('اكتب الكلمة المستهدفة'); return null; }
+            const frags = arrInputs().map((x) => x.value.trim()).filter(Boolean);
+            if (frags.length < 2) { err('أضف جزأين غير فارغين على الأقل'); return null; }
+            if (new Set(frags).size !== frags.length) { err('أجزاء الإعراب يجب أن تكون مختلفة'); return null; }
+            const perm = nonIdentityPerm(frags.length);
+            options = perm.map((i) => frags[i]);
+            arrangement = frags.map((_, k) => perm.indexOf(k));
+            sourceText = target;
+          }
+
+          const srcChanged = editing ? String(editing.sourceText ?? '') !== String(sourceText ?? '') : true;
+          return {
+            id: editing ? editing.id : freshId(),
+            type: fType,
+            questionText: text,
+            sourceText,
+            options,
+            correctAnswer: { optionIndex, boolValue, wordIndex, arrangement },
+            explanation: expl.value.trim() || null,
+            grammarTopic: editing?.grammarTopic ?? null,
+            difficulty: editing?.difficulty ?? null,
+            timeLimitSeconds: tLimit,
+            sourceReference: editing && !srcChanged ? (editing.sourceReference ?? null) : null,
+            aiGenerated: editing?.aiGenerated ?? false,
+            saveToBank: bankToggle.checked,
+          };
+        }
+
+        function commitForm(): boolean {
+          const built = buildQuestion();
+          if (!built) return false;
+          if (editingIndex != null) { questions[editingIndex] = built; }
+          else {
+            if (questions.length >= maxQ) { err(`اكتمل المجلس، الحد الأقصى ${maxQ} أسئلة`); return false; }
+            questions.push(built);
+          }
+          markDirty();
+          return true;
+        }
+
+        ctaBtn.addEventListener('click', async () => {
+          if (mode === 'edit') {
+            if (!commitForm()) return;
+            editingIndex = null; mode = 'fresh';
+            bgSave(); enterReview();
+            return;
+          }
+          if (mode === 'append') {
+            if (!commitForm()) return;
+            bgSave(); enterReview();
+            return;
+          }
+          // fresh: commit any non-empty form, then save and review (like the app).
+          if (!formIsEmpty() && !commitForm()) return;
+          if (!questions.length) { err('أضف سؤالًا واحدًا على الأقل'); return; }
+          ctaBtn.disabled = true; addAnotherBtn.disabled = true; fromBankBtn.disabled = true;
+          await saveDraft();
+          ctaBtn.disabled = false; addAnotherBtn.disabled = false; fromBankBtn.disabled = false;
+          enterReview();
+        });
+
+        addAnotherBtn.addEventListener('click', () => {
+          if (commitForm()) { editingIndex = null; resetForm(); }
+        });
+
+        backReview.addEventListener('click', (e) => {
+          e.preventDefault();
+          editingIndex = null; mode = 'fresh';
+          enterReview();
+        });
+
+        // ── Bank sheet ──
+        const sheet = q<HTMLElement>('[data-bank-sheet]');
+        fromBankBtn.addEventListener('click', async () => {
+          sheet.classList.remove('hidden');
+          const list = q<HTMLElement>('[data-bank-list]');
+          list.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted text-center py-4">جارٍ التحميل</p>';
+          let docs: any[] = [];
+          try {
+            const s = await fs.getDocs(fs.query(fs.collection(db, 'majalis_bank', uid, 'questions'), fs.limit(100)));
+            docs = s.docs;
+          } catch { /* fall through to empty */ }
+          list.innerHTML = '';
+          q('[data-bank-empty]').classList.toggle('hidden', docs.length > 0);
+          docs.forEach((d) => {
+            let v: any; try { v = d.data(); } catch { return; }
+            const row = document.createElement('button');
+            row.type = 'button';
+            row.className = 'text-start rounded-xl border border-stone dark:border-coal-edge p-3.5 hover:border-purple';
+            row.innerHTML = `<span class="text-xs font-black text-ink-subtle dark:text-mist-subtle">${TYPE_LABELS[String(v.type)] ?? '؟'}</span><p class="mt-1 text-[15px] font-bold text-ink dark:text-mist leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden"></p>`;
+            row.querySelector('p')!.textContent = String(v.questionText ?? '');
+            row.addEventListener('click', () => {
+              if (questions.length >= maxQ) { sheet.classList.add('hidden'); err(`اكتمل المجلس، الحد الأقصى ${maxQ} أسئلة`); return; }
+              if (!isPremium && PREMIUM_TYPES.has(String(v.type))) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+              const c = v.correctAnswer ?? {};
+              // Bank reuse mints a FRESH id and drops provenance/bank flags (contract §2).
+              questions.push({
+                id: freshId(),
+                type: String(v.type ?? 'mcq'),
+                questionText: String(v.questionText ?? ''),
+                sourceText: v.sourceText == null ? null : String(v.sourceText),
+                options: Array.isArray(v.options) ? v.options.map(String) : [],
+                correctAnswer: {
+                  optionIndex: typeof c.optionIndex === 'number' ? c.optionIndex : null,
+                  boolValue: typeof c.boolValue === 'boolean' ? c.boolValue : null,
+                  wordIndex: typeof c.wordIndex === 'number' ? c.wordIndex : null,
+                  arrangement: Array.isArray(c.arrangement) ? c.arrangement : null,
+                },
+                explanation: v.explanation == null ? null : String(v.explanation),
+                grammarTopic: null, difficulty: null,
+                timeLimitSeconds: Number(v.timeLimitSeconds) || 30,
+                sourceReference: null, aiGenerated: false, saveToBank: false,
+              });
+              markDirty();
+              sheet.classList.add('hidden');
+              updateCountBadge();
+            });
+            list.appendChild(row);
+          });
+        });
+        q('[data-bank-close]').addEventListener('click', () => sheet.classList.add('hidden'));
+
+        // ── Review ──
+        const rErr = q<HTMLElement>('[data-r-err]');
+        function answerPreview(v: any): string {
+          const c = v.correctAnswer ?? {};
+          if (v.type === 'mcq') return String(v.options?.[c.optionIndex] ?? '؟');
+          if (v.type === 'true_false') return c.boolValue === true ? 'صحيح' : c.boolValue === false ? 'خطأ' : '؟';
+          if (v.type === 'tap_word') return String(wordsOf(v.sourceText)[c.wordIndex] ?? '؟');
+          if (v.type === 'fix_error') return `«${wordsOf(v.sourceText)[c.wordIndex] ?? '؟'}» صوابها «${v.options?.[c.optionIndex] ?? '؟'}»`;
+          if (v.type === 'arrange_irab') return (Array.isArray(c.arrangement) ? c.arrangement : []).map((i: number) => String(v.options?.[i] ?? '؟')).join(' ثم ');
+          return '؟';
+        }
+
+        function enterReview() {
+          rErr.classList.add('hidden');
+          q<HTMLElement>('[data-r-count]').textContent = `${questions.length} من ${maxQ} أسئلة`;
+          q('[data-ai-banner]').classList.toggle('hidden', !questions.some((x) => !!x.aiGenerated));
+          const list = q<HTMLElement>('[data-r-list]');
+          list.innerHTML = '';
+          questions.forEach((v, i) => list.appendChild(reviewCard(v, i)));
+          q<HTMLButtonElement>('[data-r-add]').classList.toggle('hidden', questions.length >= maxQ);
+          show('review');
+        }
+
+        function reviewCard(v: any, i: number) {
+          const el = document.createElement('div');
+          el.className = 'rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5';
+          el.innerHTML = `
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="w-7 h-7 rounded-full bg-purple/10 text-purple font-black text-sm flex items-center justify-center tabular-nums">${i + 1}</span>
+              <span class="rounded-full bg-paper-soft dark:bg-coal border border-stone dark:border-coal-edge px-2.5 py-0.5 text-xs font-black text-ink-soft dark:text-mist-soft">${TYPE_LABELS[String(v.type)] ?? '؟'}</span>
+              ${v.aiGenerated ? '<span class="rounded-full bg-purple/10 border border-purple/30 px-2.5 py-0.5 text-xs font-black text-purple">ذكاء اصطناعي</span>' : ''}
+              <span class="text-xs text-ink-subtle dark:text-mist-subtle tabular-nums">${Number(v.timeLimitSeconds) || 30} ث</span>
+            </div>
+            <p data-c-text class="mt-3 text-[15px] font-bold text-ink dark:text-mist leading-relaxed"></p>
+            <p data-c-src class="hidden mt-1.5 text-[15px] text-ink-soft dark:text-mist-soft leading-relaxed"></p>
+            <p class="mt-2 text-sm text-teal font-bold"><span data-c-ans></span></p>
+            <p data-c-expl class="hidden mt-1 text-sm text-ink-muted dark:text-mist-muted leading-relaxed"></p>`;
+          el.querySelector('[data-c-text]')!.textContent = String(v.questionText ?? '');
+          if (v.sourceText) {
+            const s = el.querySelector('[data-c-src]')!;
+            s.textContent = `«${v.sourceText}»`;
+            s.classList.remove('hidden');
+          }
+          el.querySelector('[data-c-ans]')!.textContent = `الإجابة: ${answerPreview(v)}`;
+          if (v.explanation) {
+            const x = el.querySelector('[data-c-expl]')!;
+            x.textContent = String(v.explanation);
+            x.classList.remove('hidden');
+          }
+          const row = document.createElement('div');
+          row.className = 'mt-4 flex items-center gap-2 flex-wrap';
+          const mk = (label: string, on: () => void, cls = 'rounded-lg border border-stone dark:border-coal-edge px-3 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft') => {
+            const b = document.createElement('button');
+            b.type = 'button'; b.className = cls; b.textContent = label;
+            b.addEventListener('click', on);
+            return b;
+          };
+          if (String(v.type) !== 'tap_word') {
+            row.appendChild(mk('تعديل', () => {
+              mode = 'edit'; editingIndex = i;
+              resetForm(v);
+              show('editor');
+            }));
+          }
+          row.appendChild(mk('حذف', () => {
+            questions.splice(i, 1); markDirty(); bgSave(); enterReview();
+          }));
+          if (i > 0) row.appendChild(mk('أعلى', () => {
+            [questions[i - 1], questions[i]] = [questions[i], questions[i - 1]];
+            markDirty(); bgSave(); enterReview();
+          }));
+          if (i < questions.length - 1) row.appendChild(mk('أسفل', () => {
+            [questions[i], questions[i + 1]] = [questions[i + 1], questions[i]];
+            markDirty(); bgSave(); enterReview();
+          }));
+          el.appendChild(row);
+          return el;
+        }
+
+        q('[data-r-add]').addEventListener('click', () => {
+          mode = 'append'; editingIndex = null;
+          resetForm();
+          show('editor');
+        });
+
+        let launching = false;
+        q<HTMLButtonElement>('[data-r-launch]').addEventListener('click', async (e) => {
+          if (launching) return;
+          launching = true;
+          const b = e.currentTarget as HTMLButtonElement;
+          b.disabled = true; b.textContent = 'جارٍ الحفظ';
+          const ok = await saveDraft();
+          if (!ok || !draftId) {
+            launching = false; b.disabled = false; b.textContent = 'أطلق المجلس مباشرة';
+            rErr.textContent = 'تعذر حفظ المجلس. تحقق من اتصالك وحاول مجددًا.';
+            rErr.classList.remove('hidden');
+            return;
+          }
+          location.href = `/majlis/live?draft=${encodeURIComponent(draftId)}`;
+        });
+
+        // ── Entry: resume an existing draft into review, or start fresh ──
+        if (draftId) {
+          try {
+            const snap = await fs.getDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', draftId));
+            if (!snap.exists()) {
+              q<HTMLElement>('[data-fatal-msg]').textContent = 'المسودة غير موجودة';
+              show('fatal'); return;
+            }
+            const d: any = snap.data() ?? {};
+            questions = Array.isArray(d.questions) ? d.questions.filter((x: any) => x && typeof x === 'object') : [];
+            enterReview();
+          } catch {
+            q<HTMLElement>('[data-fatal-msg]').textContent = 'تعذر فتح المسودة. تحقق من اتصالك وحاول مجددًا.';
+            show('fatal'); return;
+          }
+        } else {
+          resetForm();
+          show('editor');
+        }
+      });
+    }
+  }
+</script>
