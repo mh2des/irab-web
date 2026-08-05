@@ -16,17 +16,20 @@
 
 <div data-mhost-root dir="rtl" class="mx-auto w-full max-w-2xl">
 
-  <!-- Loading skeleton -->
-  <div data-v="loading">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 animate-pulse h-40"></div>
+  <!-- Loading skeleton: shaped like the cards it becomes -->
+  <div data-v="loading" class="grid gap-3">
+    <div class="skeleton h-10 w-40 rounded-xl"></div>
+    <div class="skeleton h-32 rounded-2xl"></div>
+    <div class="skeleton h-32 rounded-2xl"></div>
+    <div class="skeleton h-32 rounded-2xl"></div>
   </div>
 
   <!-- Sign-in gate -->
   <section data-v="gate" class="hidden">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+    <div class="card p-8 text-center">
       <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">سجّل الدخول لإدارة مجالسك</h1>
       <p class="mt-2 text-ink-muted dark:text-mist-muted">مسوداتك وسجل مجالسك وبنك أسئلتك، متزامنة بين التطبيق والويب.</p>
-      <a data-login-link href="/login?next=/majlis/host" class="mt-5 inline-block rounded-xl bg-purple text-white font-black px-8 py-3.5">تسجيل الدخول</a>
+      <a data-login-link href="/login?next=/majlis/host" class="btn-primary btn-lg mt-5">تسجيل الدخول</a>
     </div>
   </section>
 
@@ -41,9 +44,9 @@
     </div>
 
     <!-- Create CTA (same drafts on app and web) -->
-    <div class="mt-4 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5 flex items-center justify-between gap-4 flex-wrap">
+    <div class="card mt-4 p-5 flex items-center justify-between gap-4 flex-wrap">
       <p class="text-[15px] text-ink-muted dark:text-mist-muted">أنشئ مجلسًا هنا أو من التطبيق، فمسوداتك متزامنة بينهما.</p>
-      <a href="/majlis/create" class="rounded-xl bg-purple text-white font-black px-5 py-2.5 whitespace-nowrap">مجلس جديد</a>
+      <a href="/majlis/create" class="btn-primary">مجلس جديد</a>
     </div>
 
     <!-- Tabs -->
@@ -61,12 +64,13 @@
 
 <script>
   import { maybeSignedIn } from '../lib/session';
+  import { stagger, showAnimated } from '../lib/majlis-fx';
 
   const root = document.querySelector<HTMLElement>('[data-mhost-root]');
   if (root) {
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
     const views = ['loading', 'gate', 'hub'];
-    const show = (v: string) => views.forEach((x) => q(`[data-v="${x}"]`).classList.toggle('hidden', x !== v));
+    const show = (v: string) => showAnimated(root!, views, v);
 
     const TYPE_LABELS: Record<string, string> = {
       mcq: 'اختيار من متعدد', true_false: 'صواب وخطأ', tap_word: 'تحديد الكلمة',
@@ -135,7 +139,7 @@
 
         function card() {
           const el = document.createElement('div');
-          el.className = 'rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5';
+          el.className = 'card p-5';
           return el;
         }
         const btn = (label: string, cls: string) => {
@@ -162,7 +166,7 @@
           q('[data-empty]').classList.toggle('hidden', items.length > 0);
           q('[data-empty]').textContent = EMPTIES[tab];
           q('[data-note]').classList.toggle('hidden', !(tab === 'drafts' && drafts.length > 0));
-          items.forEach((make) => list.appendChild(make()));
+          items.forEach((make, i) => { const el = make(); stagger(el, i); list.appendChild(el); });
         }
 
         function draftCard(d: { id: string; title: string; count: number }) {
@@ -176,11 +180,11 @@
           el.querySelector('p:last-child')!.textContent = d.title || '؟';
           const row = document.createElement('div');
           row.className = 'mt-4 flex gap-2';
-          const host = btn('استضف الآن', 'flex-1 rounded-xl bg-purple text-white font-black py-3');
+          const host = btn('استضف الآن', 'btn-primary flex-1');
           host.addEventListener('click', () => { location.href = `/majlis/live?draft=${encodeURIComponent(d.id)}`; });
-          const edit = btn('متابعة', 'rounded-xl border border-stone dark:border-coal-edge px-4 text-sm font-bold text-ink-soft dark:text-mist-soft');
+          const edit = btn('متابعة', 'btn-ghost px-4 text-sm');
           edit.addEventListener('click', () => { location.href = `/majlis/create?draft=${encodeURIComponent(d.id)}`; });
-          const del = btn('حذف', 'rounded-xl border border-stone dark:border-coal-edge px-4 text-sm font-bold text-ink-muted dark:text-mist-muted');
+          const del = btn('حذف', 'btn-ghost px-4 text-sm');
           del.addEventListener('click', async () => {
             drafts = drafts.filter((x) => x.id !== d.id); render();
             try { await fs.deleteDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', d.id)); }
@@ -202,7 +206,7 @@
             </div>
             <p class="mt-2 font-bold text-lg text-ink dark:text-mist truncate"></p>`;
           el.querySelector('p:last-child')!.textContent = title;
-          const toggle = btn('التقرير', 'mt-4 w-full rounded-xl border border-stone dark:border-coal-edge py-3 text-sm font-black text-ink dark:text-mist');
+          const toggle = btn('التقرير', 'btn-ghost btn-block mt-4 text-sm');
           toggle.addEventListener('click', () => { location.href = `/majlis/report?room=${encodeURIComponent(r.id)}`; });
           el.appendChild(toggle);
           return el;
@@ -217,7 +221,7 @@
             </div>
             <p class="mt-2 text-[15px] font-bold text-ink dark:text-mist leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden"></p>`;
           el.querySelector('p:last-child')!.textContent = String(v.questionText ?? '');
-          const del = btn('حذف من البنك', 'mt-3 rounded-xl border border-stone dark:border-coal-edge px-4 py-2 text-sm font-bold text-ink-muted dark:text-mist-muted');
+          const del = btn('حذف من البنك', 'btn-ghost mt-3 px-4 text-sm');
           del.addEventListener('click', async () => {
             bank = bank.filter((x) => x.id !== b.id); render();
             try { await fs.deleteDoc(fs.doc(db, 'majalis_bank', uid, 'questions', b.id)); }
@@ -240,6 +244,7 @@
         const pill = q<HTMLElement>('[data-quota-pill]');
         pill.textContent = `مجالس اليوم: ${d.remaining ?? '؟'} من ${d.limit ?? '؟'}`;
         pill.classList.remove('hidden');
+        pill.classList.add('panel-in');
       } catch { /* pill stays hidden — the server still enforces */ }
     }
   }

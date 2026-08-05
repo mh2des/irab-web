@@ -22,22 +22,23 @@
 
 <div data-medit-root dir="rtl" class="mx-auto w-full max-w-2xl">
 
-  <div data-v="loading">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 animate-pulse h-40"></div>
+  <div data-v="loading" class="grid gap-3">
+    <div class="skeleton h-12 rounded-2xl"></div>
+    <div class="skeleton h-72 rounded-2xl"></div>
   </div>
 
   <section data-v="gate" class="hidden">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+    <div class="card p-8 text-center">
       <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">سجّل الدخول لإنشاء مجلسك</h1>
       <p class="mt-2 text-ink-muted dark:text-mist-muted">أنشئ أسئلة الإعراب مرة واحدة، واستضفها من الويب أو التطبيق.</p>
-      <a data-login-link href="/login?next=/majlis/create" class="mt-5 inline-block rounded-xl bg-purple text-white font-black px-8 py-3.5">تسجيل الدخول</a>
+      <a data-login-link href="/login?next=/majlis/create" class="btn-primary btn-lg mt-5">تسجيل الدخول</a>
     </div>
   </section>
 
   <section data-v="fatal" class="hidden">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+    <div class="card p-8 text-center">
       <h1 class="font-sans font-black text-xl text-ink dark:text-mist" data-fatal-msg></h1>
-      <a href="/majlis/host" class="mt-5 inline-block rounded-xl border border-stone dark:border-coal-edge px-6 py-3 font-bold text-ink-soft dark:text-mist-soft">العودة إلى مجالسي</a>
+      <a href="/majlis/host" class="btn-ghost mt-5">العودة إلى مجالسي</a>
     </div>
   </section>
 
@@ -69,7 +70,7 @@
       <div>
         <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" for="medit-qtext">نص السؤال</label>
         <textarea id="medit-qtext" data-qtext rows="2"
-          class="mt-2 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist leading-relaxed resize-y focus:outline-none focus:border-purple"
+          class="input mt-2 text-[15px] leading-relaxed resize-y"
           placeholder="اكتب سؤالك هنا"></textarea>
       </div>
 
@@ -77,7 +78,7 @@
       <div data-src-block class="hidden">
         <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" for="medit-src" data-src-label></label>
         <input id="medit-src" data-src type="text"
-          class="mt-2 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple" />
+          class="input mt-2 text-[15px]" />
       </div>
 
       <!-- MCQ -->
@@ -105,10 +106,10 @@
         </div>
         <div data-fix-stage2 class="hidden grid gap-2">
           <label class="text-sm font-bold text-ink-soft dark:text-mist-soft">الصورة الصحيحة للكلمة</label>
-          <input data-fix-correct type="text" class="w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-teal" />
+          <input data-fix-correct type="text" class="input text-[15px]" />
           <label class="text-sm font-bold text-ink-soft dark:text-mist-soft mt-1">مموهات، إجابات خاطئة مشابهة (واحد على الأقل)</label>
-          <input data-fix-d1 type="text" placeholder="مموه 1" class="w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple" />
-          <input data-fix-d2 type="text" placeholder="مموه 2 (اختياري)" class="w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple" />
+          <input data-fix-d1 type="text" placeholder="مموه 1" class="input text-[15px]" />
+          <input data-fix-d2 type="text" placeholder="مموه 2 (اختياري)" class="input text-[15px]" />
         </div>
       </div>
 
@@ -123,7 +124,7 @@
       <div>
         <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" for="medit-expl">شرح الإجابة (اختياري)</label>
         <input id="medit-expl" data-expl type="text"
-          class="mt-2 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple" />
+          class="input mt-2 text-[15px]" />
       </div>
 
       <!-- Time + bank -->
@@ -132,7 +133,7 @@
           <span class="text-sm font-bold text-ink-soft dark:text-mist-soft">مدة السؤال</span>
           <div class="flex items-center gap-2" dir="ltr">
             <button type="button" data-t-minus class="w-9 h-9 rounded-lg border border-stone dark:border-coal-edge font-black text-ink dark:text-mist">-</button>
-            <span data-t-val class="w-14 text-center font-black tabular-nums text-ink dark:text-mist">30 ث</span>
+            <span data-t-val class="w-16 text-center font-black tabular-nums whitespace-nowrap text-ink dark:text-mist">30 ث</span>
             <button type="button" data-t-plus class="w-9 h-9 rounded-lg border border-stone dark:border-coal-edge font-black text-ink dark:text-mist">+</button>
           </div>
         </div>
@@ -145,10 +146,10 @@
       <p data-form-err class="hidden text-sm font-bold text-rose-500"></p>
 
       <div class="grid gap-2">
-        <button type="button" data-continue class="rounded-xl bg-purple text-white font-black py-3.5">متابعة إلى المراجعة</button>
+        <button type="button" data-continue class="btn-primary btn-block">متابعة إلى المراجعة</button>
         <div class="grid grid-cols-2 gap-2">
-          <button type="button" data-add-another class="rounded-xl border border-stone dark:border-coal-edge py-3 text-sm font-black text-ink dark:text-mist">أضف سؤالًا آخر</button>
-          <button type="button" data-from-bank class="rounded-xl border border-stone dark:border-coal-edge py-3 text-sm font-black text-ink dark:text-mist">من بنك الأسئلة</button>
+          <button type="button" data-add-another class="btn-ghost text-sm">أضف سؤالًا آخر</button>
+          <button type="button" data-from-bank class="btn-ghost text-sm">من بنك الأسئلة</button>
         </div>
         <a data-back-review href="#" class="hidden text-center text-sm font-bold text-ink-muted dark:text-mist-muted py-1">رجوع إلى المراجعة دون حفظ هذا السؤال</a>
       </div>
@@ -192,7 +193,7 @@
         </div>
         <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" data-ai-text-label>النص المصدر (من 10 إلى 1000 حرف)</label>
         <textarea data-ai-text rows="5" maxlength="1000"
-          class="mt-2 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist leading-relaxed resize-y focus:outline-none focus:border-purple"
+          class="input mt-2 text-[15px] leading-relaxed resize-y"
           placeholder="الصق النص الذي تريد التوليد منه"></textarea>
       </div>
 
@@ -226,13 +227,13 @@
       <div data-ai-confirm class="hidden rounded-xl border border-stone dark:border-coal-edge p-4 grid gap-2">
         <p data-ai-confirm-msg class="text-sm text-ink dark:text-mist leading-relaxed"></p>
         <div class="flex gap-2 flex-wrap">
-          <button type="button" data-ai-confirm-go class="rounded-xl bg-purple text-white font-black px-4 py-2.5 text-sm"></button>
-          <button type="button" data-ai-confirm-up class="rounded-xl border border-purple text-purple font-black px-4 py-2.5 text-sm">ترقية</button>
-          <button type="button" data-ai-confirm-cancel class="rounded-xl border border-stone dark:border-coal-edge font-bold px-4 py-2.5 text-sm text-ink-muted dark:text-mist-muted">إلغاء</button>
+          <button type="button" data-ai-confirm-go class="btn-primary text-sm"></button>
+          <button type="button" data-ai-confirm-up class="btn-ghost text-sm">ترقية</button>
+          <button type="button" data-ai-confirm-cancel class="btn-ghost text-sm">إلغاء</button>
         </div>
       </div>
 
-      <button type="button" data-ai-generate class="rounded-xl bg-purple text-white font-black py-3.5">ولّد الأسئلة</button>
+      <button type="button" data-ai-generate class="btn-primary btn-block">ولّد الأسئلة</button>
       <button type="button" data-ai-back class="text-center text-sm font-bold text-ink-muted dark:text-mist-muted py-1">رجوع إلى الإنشاء اليدوي</button>
     </div>
     <p class="mt-4 text-center text-sm text-ink-subtle dark:text-mist-subtle">ستراجع كل الأسئلة المولّدة قبل إطلاق المجلس</p>
@@ -265,8 +266,8 @@
     <div data-r-list class="mt-4 grid gap-3"></div>
 
     <div class="mt-5 grid gap-2">
-      <button type="button" data-r-add class="rounded-xl border border-stone dark:border-coal-edge py-3 font-black text-ink dark:text-mist">أضف سؤالًا</button>
-      <button type="button" data-r-launch class="rounded-xl bg-purple text-white font-black py-4 text-lg">أطلق المجلس مباشرة</button>
+      <button type="button" data-r-add class="btn-ghost btn-block">أضف سؤالًا</button>
+      <button type="button" data-r-launch class="btn-primary btn-block btn-lg">أطلق المجلس مباشرة</button>
       <p data-r-err class="hidden text-center text-sm font-bold text-rose-500"></p>
       <a href="/majlis/host" class="text-center text-sm font-bold text-ink-muted dark:text-mist-muted py-1">حفظ والعودة إلى مجالسي</a>
     </div>
@@ -287,12 +288,13 @@
 
 <script>
   import { maybeSignedIn } from '../lib/session';
+  import { stagger, refire, showAnimated } from '../lib/majlis-fx';
 
   const root = document.querySelector<HTMLElement>('[data-medit-root]');
   if (root) {
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
     const views = ['loading', 'gate', 'fatal', 'editor', 'ai', 'review'];
-    const show = (v: string) => views.forEach((x) => q(`[data-v="${x}"]`).classList.toggle('hidden', x !== v));
+    const show = (v: string) => showAnimated(root!, views, v);
 
     const draftParam = new URLSearchParams(location.search).get('draft');
     if (draftParam) {
@@ -440,9 +442,7 @@
             const locked = !isPremium && PREMIUM_TYPES.has(t);
             const b = document.createElement('button');
             b.type = 'button';
-            b.className = 'rounded-full px-4 py-2 text-sm font-black border ' + (fType === t
-              ? 'bg-purple text-white border-purple'
-              : 'border-stone dark:border-coal-edge text-ink-soft dark:text-mist-soft');
+            b.className = fType === t ? 'mj-chip-on' : 'ex-chip';
             b.textContent = TYPE_LABELS[t] + (locked ? ' 🔒' : '');
             b.addEventListener('click', () => {
               if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
@@ -485,7 +485,7 @@
           const input = document.createElement('input');
           input.type = 'text'; input.value = value;
           input.placeholder = `الخيار ${i + 1}`;
-          input.className = 'flex-1 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple';
+          input.className = 'input flex-1 text-[15px]';
           row.append(radio, input);
           mcqRows.appendChild(row);
           if (mcqInputs().length >= 4) q('[data-mcq-add]').classList.add('hidden');
@@ -515,9 +515,9 @@
           words.forEach((w, i) => {
             const b = document.createElement('button');
             b.type = 'button';
-            b.className = 'rounded-lg px-3 py-1.5 text-[15px] font-bold border ' + (fixWordIndex === i
-              ? 'bg-rose-500 text-white border-rose-500'
-              : 'border-stone dark:border-coal-edge text-ink dark:text-mist');
+            b.className = 'rounded-lg px-3 py-1.5 text-[15px] font-bold border transition-all duration-150 active:scale-95 ' + (fixWordIndex === i
+              ? 'bg-rose-500 text-white border-rose-500 shadow-md'
+              : 'border-stone dark:border-coal-edge text-ink dark:text-mist hover:border-rose-400');
             b.textContent = w;
             b.addEventListener('click', () => { fixWordIndex = i; renderFixWords(); });
             fixWords.appendChild(b);
@@ -540,7 +540,7 @@
           const input = document.createElement('input');
           input.type = 'text'; input.value = value;
           input.placeholder = 'جزء من الإعراب';
-          input.className = 'flex-1 rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple';
+          input.className = 'input flex-1 text-[15px]';
           const rm = document.createElement('button');
           rm.type = 'button'; rm.textContent = 'حذف';
           rm.className = 'text-xs font-bold text-ink-subtle dark:text-mist-subtle';
@@ -715,9 +715,11 @@
           // fresh: commit any non-empty form, then save and review (like the app).
           if (!formIsEmpty() && !commitForm()) return;
           if (!questions.length) { err('أضف سؤالًا واحدًا على الأقل'); return; }
-          ctaBtn.disabled = true; addAnotherBtn.disabled = true; fromBankBtn.disabled = true;
+          ctaBtn.disabled = true; ctaBtn.classList.add('btn-busy');
+          addAnotherBtn.disabled = true; fromBankBtn.disabled = true;
           await saveDraft();
-          ctaBtn.disabled = false; addAnotherBtn.disabled = false; fromBankBtn.disabled = false;
+          ctaBtn.disabled = false; ctaBtn.classList.remove('btn-busy');
+          addAnotherBtn.disabled = false; fromBankBtn.disabled = false;
           enterReview();
         });
 
@@ -735,6 +737,7 @@
         const sheet = q<HTMLElement>('[data-bank-sheet]');
         fromBankBtn.addEventListener('click', async () => {
           sheet.classList.remove('hidden');
+          refire(sheet.firstElementChild as HTMLElement, 'panel-in');
           const list = q<HTMLElement>('[data-bank-list]');
           list.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted text-center py-4">جارٍ التحميل</p>';
           let docs: any[] = [];
@@ -801,14 +804,14 @@
           q('[data-ai-banner]').classList.toggle('hidden', !questions.some((x) => !!x.aiGenerated));
           const list = q<HTMLElement>('[data-r-list]');
           list.innerHTML = '';
-          questions.forEach((v, i) => list.appendChild(reviewCard(v, i)));
+          questions.forEach((v, i) => { const c = reviewCard(v, i); stagger(c, i); list.appendChild(c); });
           q<HTMLButtonElement>('[data-r-add]').classList.toggle('hidden', questions.length >= maxQ);
           show('review');
         }
 
         function reviewCard(v: any, i: number) {
           const el = document.createElement('div');
-          el.className = 'rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5';
+          el.className = 'card p-5';
           el.innerHTML = `
             <div class="flex items-center gap-2 flex-wrap">
               <span class="w-7 h-7 rounded-full bg-purple/10 text-purple font-black text-sm flex items-center justify-center tabular-nums">${i + 1}</span>
@@ -834,7 +837,7 @@
           }
           const row = document.createElement('div');
           row.className = 'mt-4 flex items-center gap-2 flex-wrap';
-          const mk = (label: string, on: () => void, cls = 'rounded-lg border border-stone dark:border-coal-edge px-3 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft') => {
+          const mk = (label: string, on: () => void, cls = 'rounded-lg border border-stone dark:border-coal-edge px-3 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft transition-all duration-200 hover:border-purple hover:text-purple active:scale-95') => {
             const b = document.createElement('button');
             b.type = 'button'; b.className = cls; b.textContent = label;
             b.addEventListener('click', on);
@@ -873,10 +876,10 @@
           if (launching) return;
           launching = true;
           const b = e.currentTarget as HTMLButtonElement;
-          b.disabled = true; b.textContent = 'جارٍ الحفظ';
+          b.disabled = true; b.classList.add('btn-busy');
           const ok = await saveDraft();
           if (!ok || !draftId) {
-            launching = false; b.disabled = false; b.textContent = 'أطلق المجلس مباشرة';
+            launching = false; b.disabled = false; b.classList.remove('btn-busy');
             rErr.textContent = 'تعذر حفظ المجلس. تحقق من اتصالك وحاول مجددًا.';
             rErr.classList.remove('hidden');
             return;
@@ -948,9 +951,7 @@
             const locked = !isPremium && !s.free;
             const b = document.createElement('button');
             b.type = 'button';
-            b.className = 'rounded-full px-4 py-2 text-sm font-black border ' + (aiSrc === s.key
-              ? 'bg-purple text-white border-purple'
-              : 'border-stone dark:border-coal-edge text-ink-soft dark:text-mist-soft');
+            b.className = aiSrc === s.key ? 'mj-chip-on' : 'ex-chip';
             b.textContent = s.label + (locked ? ' 🔒' : '');
             b.addEventListener('click', () => {
               aiClearErr();
@@ -975,9 +976,7 @@
             const on = aiTopics.has(t);
             const b = document.createElement('button');
             b.type = 'button';
-            b.className = 'rounded-full px-3.5 py-1.5 text-sm font-bold border ' + (on
-              ? 'bg-teal/10 text-teal border-teal'
-              : 'border-stone dark:border-coal-edge text-ink-soft dark:text-mist-soft');
+            b.className = on ? 'mj-chip-teal' : 'ex-chip';
             b.textContent = t;
             b.addEventListener('click', () => { on ? aiTopics.delete(t) : aiTopics.add(t); renderAiControls(); });
             topics.appendChild(b);
@@ -989,9 +988,7 @@
             const locked = !isPremium && k === 'advanced';
             const b = document.createElement('button');
             b.type = 'button';
-            b.className = 'rounded-xl border py-2.5 text-sm font-black ' + (aiDiff === k
-              ? 'bg-purple text-white border-purple'
-              : 'border-stone dark:border-coal-edge text-ink-soft dark:text-mist-soft');
+            b.className = (aiDiff === k ? 'mj-chip-on' : 'ex-chip') + ' justify-center';
             b.textContent = label + (locked ? ' 🔒' : '');
             b.addEventListener('click', () => {
               if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
@@ -1007,9 +1004,7 @@
             const on = aiTypes.has(t);
             const b = document.createElement('button');
             b.type = 'button';
-            b.className = 'rounded-full px-3.5 py-1.5 text-sm font-bold border ' + (on
-              ? 'bg-teal/10 text-teal border-teal'
-              : 'border-stone dark:border-coal-edge text-ink-soft dark:text-mist-soft');
+            b.className = on ? 'mj-chip-teal' : 'ex-chip';
             b.textContent = TYPE_LABELS[t] + (locked ? ' 🔒' : '');
             b.addEventListener('click', () => {
               if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
@@ -1124,7 +1119,12 @@
           let i = 0;
           step.textContent = AI_STEPS[0];
           ov.classList.remove('hidden');
-          stepTimer = setInterval(() => { i = (i + 1) % AI_STEPS.length; step.textContent = AI_STEPS[i]; }, 1900);
+          refire(ov.firstElementChild as HTMLElement, 'panel-in');
+          stepTimer = setInterval(() => {
+            i = (i + 1) % AI_STEPS.length;
+            step.textContent = AI_STEPS[i];
+            refire(step, 'panel-in');
+          }, 1900);
         }
         function stopOverlay() {
           if (stepTimer) { clearInterval(stepTimer); stepTimer = null; }

@@ -565,3 +565,59 @@
     .eyebrow::before { animation: none; transform: scaleX(1); opacity: 1; }
   }
 }
+
+/* ── Majlis motion layer: live-quiz energy on top of the Forge primitives.
+   Everything transform/opacity only; all guarded for reduced motion. ─────── */
+@layer components {
+  /* Player chip / new element pop: springy overshoot (Kahoot lobby energy). */
+  @keyframes mj-pop { from { opacity: 0; transform: scale(.55); } 60% { transform: scale(1.06); } to { opacity: 1; transform: scale(1); } }
+  .mj-pop { animation: mj-pop .38s cubic-bezier(.34, 1.56, .64, 1) both; }
+
+  /* Podium column rise: staged with inline animation-delay per rank. */
+  @keyframes mj-rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+  .mj-rise { animation: mj-rise .6s var(--ease-out-expo) both; }
+
+  /* Countdown / big number tick: re-added each tick to re-fire. */
+  @keyframes mj-tick { from { transform: scale(1.4); opacity: .3; } to { transform: scale(1); opacity: 1; } }
+  .mj-tick { animation: mj-tick .32s var(--ease-out-quart); }
+
+  /* Answer-distribution bars: compositor-only fill via scaleX(--ratio).
+     Page is RTL, so origin right = inline-start (fills grow rightward-to-left). */
+  .mj-bar-fill {
+    width: 100%;
+    transform: scaleX(var(--ratio, 0));
+    transform-origin: 100% 50%;
+    transition: transform .5s var(--ease-out-quart);
+  }
+
+  /* Selected chips: solid variants sharing .ex-chip geometry.
+     Purple = single-select (type, source, difficulty); teal = multi-select. */
+  .mj-chip-on, .mj-chip-teal {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    min-height: 2.35rem; padding: 0.48rem 0.85rem; border-radius: 0.5rem; cursor: pointer; white-space: nowrap;
+    font-family: var(--font-arabic); font-size: var(--text-small); font-weight: 700; line-height: 1;
+    transition: transform .2s var(--ease-out-quart), box-shadow .2s;
+  }
+  .mj-chip-on {
+    color: #fff; background: var(--color-purple); border: 1px solid var(--color-purple);
+    box-shadow: 0 6px 16px -6px color-mix(in srgb, var(--color-purple) 55%, transparent);
+  }
+  .mj-chip-teal {
+    color: var(--color-teal); background: color-mix(in srgb, var(--color-teal) 12%, transparent);
+    border: 1px solid var(--color-teal);
+  }
+  .dark .mj-chip-teal { color: color-mix(in srgb, var(--color-teal) 85%, white); }
+  .mj-chip-on:active, .mj-chip-teal:active { transform: scale(.97); }
+  @media (prefers-reduced-motion: reduce) { .mj-chip-on:active, .mj-chip-teal:active { transform: none; } }
+
+  /* Busy button: text yields to an inline spinner; blocks re-entry visually. */
+  .btn-busy { position: relative; color: transparent !important; pointer-events: none; }
+  .btn-busy::after {
+    content: ""; position: absolute; inset: 0; margin: auto;
+    width: 1.15rem; height: 1.15rem; border-radius: 9999px;
+    border: 2px solid rgb(255 255 255 / .35); border-top-color: #fff;
+    animation: mj-spin .7s linear infinite;
+  }
+  .btn-ghost.btn-busy::after { border-color: color-mix(in srgb, var(--color-purple) 30%, transparent); border-top-color: var(--color-purple); }
+  @keyframes mj-spin { to { transform: rotate(1turn); } }
+}

@@ -13,23 +13,31 @@
 
 <div data-mreport-root dir="rtl" class="mx-auto w-full max-w-2xl">
 
-  <div data-v="loading">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 animate-pulse h-40"></div>
+  <div data-v="loading" class="grid gap-3">
+    <div class="skeleton h-10 w-44 rounded-xl"></div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="skeleton h-24 rounded-2xl"></div>
+      <div class="skeleton h-24 rounded-2xl"></div>
+      <div class="skeleton h-24 rounded-2xl"></div>
+      <div class="skeleton h-24 rounded-2xl"></div>
+    </div>
+    <div class="skeleton h-16 rounded-2xl"></div>
+    <div class="skeleton h-16 rounded-2xl"></div>
   </div>
 
   <section data-v="gate" class="hidden">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+    <div class="card p-8 text-center">
       <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">سجّل الدخول لعرض التقرير</h1>
-      <a data-login-link href="/login?next=/majlis/host?tab=history" class="mt-5 inline-block rounded-xl bg-purple text-white font-black px-8 py-3.5">تسجيل الدخول</a>
+      <a data-login-link href="/login?next=/majlis/host?tab=history" class="btn-primary btn-lg mt-5">تسجيل الدخول</a>
     </div>
   </section>
 
   <section data-v="error" class="hidden">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+    <div class="card p-8 text-center">
       <h1 class="font-sans font-black text-xl text-ink dark:text-mist">تعذر تحميل التقرير. تحقق من اتصالك بالإنترنت وحاول مجددًا.</h1>
       <div class="mt-5 flex justify-center gap-2">
-        <button type="button" data-retry class="rounded-xl bg-purple text-white font-black px-6 py-3">حاول مجددًا</button>
-        <a href="/majlis/host?tab=history" class="rounded-xl border border-stone dark:border-coal-edge px-6 py-3 font-bold text-ink-soft dark:text-mist-soft">إلى السجل</a>
+        <button type="button" data-retry class="btn-primary">حاول مجددًا</button>
+        <a href="/majlis/host?tab=history" class="btn-ghost">إلى السجل</a>
       </div>
     </div>
   </section>
@@ -40,7 +48,7 @@
         <p class="text-sm font-bold text-teal">مجالس الإعراب</p>
         <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">تقرير المجلس</h1>
       </div>
-      <a href="/majlis/host?tab=history" class="rounded-xl border border-stone dark:border-coal-edge px-4 py-2 text-sm font-bold text-ink-soft dark:text-mist-soft">السجل</a>
+      <a href="/majlis/host?tab=history" class="btn-ghost px-4 text-sm">السجل</a>
     </div>
     <p data-r-title class="mt-2 text-[15px] font-bold text-ink-soft dark:text-mist-soft leading-relaxed"></p>
 
@@ -62,12 +70,13 @@
 
 <script>
   import { maybeSignedIn } from '../lib/session';
+  import { stagger, countUp, refire, showAnimated } from '../lib/majlis-fx';
 
   const root = document.querySelector<HTMLElement>('[data-mreport-root]');
   if (root) {
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
     const views = ['loading', 'gate', 'error', 'report'];
-    const show = (v: string) => views.forEach((x) => q(`[data-v="${x}"]`).classList.toggle('hidden', x !== v));
+    const show = (v: string) => showAnimated(root!, views, v);
 
     const roomId = new URLSearchParams(location.search).get('room');
     const TYPE_LABELS: Record<string, string> = {
@@ -128,13 +137,22 @@
       const per: any[] = Array.isArray(v.perQuestion) ? v.perQuestion : [];
       q<HTMLElement>('[data-r-title]').textContent = String(per[0]?.questionText ?? 'مجلس إعرابي');
 
-      const stat = (label: string, val: string) =>
-        `<div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft px-4 py-4 text-center"><p class="text-2xl font-black text-ink dark:text-mist tabular-nums">${val}</p><p class="mt-1 text-sm text-ink-subtle dark:text-mist-subtle">${label}</p></div>`;
-      q<HTMLElement>('[data-r-stats]').innerHTML =
-        stat('مشاركون', String(Number(v.participantCount) || 0)) +
-        stat('أسئلة', String(Number(v.qCount) || 0)) +
-        stat('متوسط الدقة', `${Math.round((Number(v.avgAccuracy) || 0) * 100)}%`) +
-        stat('أعلى نقاط', String(Number(v.topScore) || 0));
+      const statsWrap = q<HTMLElement>('[data-r-stats]');
+      statsWrap.innerHTML = '';
+      const stats: Array<{ label: string; val: number; suffix?: string }> = [
+        { label: 'مشاركون', val: Number(v.participantCount) || 0 },
+        { label: 'أسئلة', val: Number(v.qCount) || 0 },
+        { label: 'متوسط الدقة', val: Math.round((Number(v.avgAccuracy) || 0) * 100), suffix: '%' },
+        { label: 'أعلى نقاط', val: Number(v.topScore) || 0 },
+      ];
+      stats.forEach((s, i) => {
+        const el = document.createElement('div');
+        el.className = 'card px-4 py-4 text-center';
+        el.innerHTML = `<p data-num class="text-2xl font-black text-ink dark:text-mist tabular-nums">0</p><p class="mt-1 text-sm text-ink-subtle dark:text-mist-subtle">${s.label}</p>`;
+        stagger(el, i);
+        statsWrap.appendChild(el);
+        countUp(el.querySelector<HTMLElement>('[data-num]')!, s.val, { ms: 900, suffix: s.suffix });
+      });
 
       // Hardest / easiest
       const ext = q<HTMLElement>('[data-r-extremes]');
@@ -143,7 +161,7 @@
       const extremeCard = (label: string, cls: string, p: any) => {
         const el = document.createElement('button');
         el.type = 'button';
-        el.className = 'text-start rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-4 hover:border-purple';
+        el.className = 'card card-interactive text-start p-4';
         const pct = Math.round((Number(p.correctRate) || 0) * 100);
         el.innerHTML = `<div class="flex items-center justify-between gap-3"><span class="text-sm font-black ${cls}">${label}</span><span class="font-black tabular-nums ${cls}">${pct}%</span></div><p class="mt-1.5 text-[15px] font-bold text-ink dark:text-mist leading-relaxed" data-x-text></p>`;
         el.querySelector('[data-x-text]')!.textContent = String(p.questionText ?? '');
@@ -162,7 +180,8 @@
       // All questions with expandable drill-down
       const list = q<HTMLElement>('[data-r-questions]');
       list.innerHTML = '';
-      [...per].sort((a, b) => Number(a?.index) - Number(b?.index)).forEach((p) => list.appendChild(questionRow(p)));
+      [...per].sort((a, b) => Number(a?.index) - Number(b?.index))
+        .forEach((p, i) => { const row = questionRow(p); stagger(row, i); list.appendChild(row); });
 
       // Standings (all, stored score-desc)
       const st = q<HTMLElement>('[data-r-standings]');
@@ -171,6 +190,7 @@
       rows.forEach((p, i) => {
         const row = document.createElement('div');
         row.className = 'flex items-center gap-3 rounded-xl border border-stone dark:border-coal-edge bg-card dark:bg-coal-soft px-3.5 py-2.5';
+        stagger(row, i);
         row.innerHTML = `<span class="w-6 text-center font-black tabular-nums ${i === 0 ? 'text-purple' : 'text-ink-muted dark:text-mist-muted'}">${i + 1}</span>
           <img src="/majlis-avatars/a${((Number(p.avatar) || 0) % 64 + 64) % 64}.svg" width="28" height="28" alt="" class="w-7 h-7 rounded-full" />
           <span class="flex-1 font-bold text-[15px] text-ink dark:text-mist truncate"></span>
@@ -184,7 +204,7 @@
     function questionRow(p: any) {
       const el = document.createElement('div');
       el.setAttribute('data-q-row', String(Number(p?.index) || 0));
-      el.className = 'rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft overflow-hidden';
+      el.className = 'card overflow-hidden';
       const pct = Math.round((Number(p?.correctRate) || 0) * 100);
       const head = document.createElement('button');
       head.type = 'button';
@@ -194,8 +214,11 @@
       const body = document.createElement('div');
       body.className = 'hidden px-4 pb-4 grid gap-3';
       head.addEventListener('click', () => {
-        const open = body.classList.toggle('hidden');
-        if (!open && !body.childElementCount) fillDrilldown(body, p);
+        const nowHidden = body.classList.toggle('hidden');
+        if (!nowHidden) {
+          if (!body.childElementCount) fillDrilldown(body, p);
+          refire(body, 'panel-in');
+        }
       });
       el.append(head, body);
       return el;
@@ -257,12 +280,15 @@
       const total = Math.max(1, answered);
       const bars = document.createElement('div');
       bars.className = 'grid gap-1.5';
-      rows.forEach((r) => {
+      rows.forEach((r, i) => {
         const bar = document.createElement('div');
         bar.className = 'relative overflow-hidden rounded-xl border px-3.5 py-2 ' + (r.correct ? 'border-teal' : 'border-stone dark:border-coal-edge');
         const fill = document.createElement('div');
-        fill.className = 'absolute inset-y-0 start-0 ' + (r.correct ? 'bg-teal/15' : 'bg-purple/8');
-        fill.style.width = `${Math.round((r.count / total) * 100)}%`;
+        fill.className = 'mj-bar-fill absolute inset-y-0 start-0 ' + (r.correct ? 'bg-teal/15' : 'bg-purple/8');
+        fill.style.setProperty('--ratio', '0');
+        fill.style.transitionDelay = `${i * 70}ms`;
+        requestAnimationFrame(() => requestAnimationFrame(() =>
+          fill.style.setProperty('--ratio', String(r.count / total))));
         const line = document.createElement('div');
         line.className = 'relative flex items-center justify-between gap-3';
         line.innerHTML = `<span class="font-bold text-sm text-ink dark:text-mist truncate" data-b-label></span><span class="font-black tabular-nums text-xs ${r.correct ? 'text-teal' : 'text-ink-muted dark:text-mist-muted'}">${r.count}</span>`;

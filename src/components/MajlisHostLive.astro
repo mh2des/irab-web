@@ -27,7 +27,7 @@
 
   <!-- BOOT / launch -->
   <section data-v="boot">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-10 text-center">
+    <div class="card p-10 text-center">
       <p data-boot-msg class="font-bold text-lg text-ink dark:text-mist">جارٍ تجهيز المجلس…</p>
       <div class="mt-3 flex justify-center gap-1.5" aria-hidden="true">
         <span class="ml-dot"></span><span class="ml-dot" style="animation-delay:.2s"></span><span class="ml-dot" style="animation-delay:.4s"></span>
@@ -37,45 +37,50 @@
 
   <!-- FATAL -->
   <section data-v="fatal" class="hidden">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+    <div class="card p-8 text-center">
       <h2 class="font-sans font-black text-2xl text-ink dark:text-mist">تعذّر فتح المجلس</h2>
       <p data-fatal-msg class="mt-2 text-ink-muted dark:text-mist-muted"></p>
-      <a href="/majlis/host" class="mt-5 inline-block rounded-xl bg-purple text-white font-black px-6 py-3">عودة إلى مجالسي</a>
+      <a href="/majlis/host" class="btn-primary mt-5">عودة إلى مجالسي</a>
     </div>
   </section>
 
   <!-- QUOTA -->
   <section data-v="quota" class="hidden">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+    <div class="card p-8 text-center">
       <h2 class="font-sans font-black text-2xl text-ink dark:text-mist">استنفدت حصة المجالس لليوم</h2>
       <p data-quota-msg class="mt-2 text-ink-muted dark:text-mist-muted"></p>
-      <button data-quota-upgrade class="hidden mt-5 rounded-xl bg-purple text-white font-black px-6 py-3">رقِّ إلى إعراب بلس</button>
+      <button data-quota-upgrade class="hidden btn-primary mt-5">رقِّ إلى إعراب بلس</button>
       <p class="mt-4"><a href="/majlis/host" class="text-sm font-bold text-teal underline underline-offset-4">عودة إلى مجالسي</a></p>
     </div>
   </section>
 
   <!-- LOBBY -->
   <section data-v="lobby" class="hidden">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6 sm:p-8 text-center">
-      <p class="text-sm font-bold text-teal">مجلس مباشر</p>
-      <h1 class="font-sans font-black text-2xl mt-1 text-ink dark:text-mist">ادعُ اللاعبين</h1>
-      <div data-pin-view dir="ltr" class="mt-5 flex gap-2 justify-center"></div>
-      <p class="mt-3 text-sm text-ink-muted dark:text-mist-muted">على irab.app/majlis أو من تطبيق إعراب</p>
-      <div class="mt-5 grid place-items-center">
-        <canvas data-qr class="rounded-xl border border-stone dark:border-coal-edge bg-white p-2"></canvas>
-      </div>
-      <div class="mt-5 flex gap-2 justify-center flex-wrap">
-        <button data-copy-link class="rounded-xl border border-stone dark:border-coal-edge px-4 py-2.5 text-sm font-bold text-ink-soft dark:text-mist-soft">انسخ رابط الدخول</button>
-        <button data-lock-toggle class="rounded-xl border border-stone dark:border-coal-edge px-4 py-2.5 text-sm font-bold text-ink-soft dark:text-mist-soft">أغلق باب الانضمام</button>
+    <div class="card relative overflow-hidden p-6 sm:p-8 text-center">
+      <div class="mj-blob mj-blob-a" aria-hidden="true"></div>
+      <div class="mj-blob mj-blob-b" aria-hidden="true"></div>
+      <div class="relative">
+        <p class="text-sm font-bold text-teal">مجلس مباشر</p>
+        <h1 class="font-sans font-black text-2xl mt-1 text-ink dark:text-mist">ادعُ اللاعبين</h1>
+        <button data-pin-view dir="ltr" type="button" title="انقر لنسخ رابط الدخول"
+          class="mt-5 flex gap-2 justify-center mx-auto cursor-pointer transition-transform duration-200 active:scale-[.98]"></button>
+        <p data-invite-hint class="mt-3 text-sm text-ink-muted dark:text-mist-muted">على irab.app/majlis أو من تطبيق إعراب، وانقر الرمز لنسخ الرابط</p>
+        <div class="mt-5 grid place-items-center">
+          <canvas data-qr class="rounded-xl border border-stone dark:border-coal-edge bg-white p-2"></canvas>
+        </div>
+        <div class="mt-5 flex gap-2 justify-center flex-wrap">
+          <button data-copy-link class="btn-ghost text-sm">انسخ رابط الدخول</button>
+          <button data-lock-toggle class="btn-ghost text-sm">أغلق باب الانضمام</button>
+        </div>
       </div>
     </div>
 
-    <div class="mt-4 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5">
-      <p class="text-sm font-bold text-ink-soft dark:text-mist-soft"><span data-lobby-count>0</span> <span data-lobby-cap></span></p>
+    <div class="card mt-4 p-5">
+      <p class="text-sm font-bold text-ink-soft dark:text-mist-soft"><span data-lobby-count class="inline-block font-black">0</span> <span data-lobby-cap></span><span data-waiting-dots class="inline-block"></span></p>
       <div data-lobby-players class="mt-3 flex flex-wrap gap-2"></div>
     </div>
 
-    <button data-start-btn class="mt-4 w-full rounded-xl bg-purple text-white text-lg font-black py-4 disabled:opacity-40">ابدأ المجلس</button>
+    <button data-start-btn class="btn-primary btn-block btn-lg mt-4">ابدأ المجلس</button>
   </section>
 
   <!-- GAME (question live: countdown overlay OR question + live bars) -->
@@ -93,25 +98,25 @@
           <span data-time-left class="text-xl font-black tabular-nums w-9 text-center"></span>
         </div>
       </div>
-      <div class="mt-3 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6">
+      <div class="card mt-3 p-6">
         <p data-q-text class="text-xl sm:text-2xl font-bold leading-relaxed text-ink dark:text-mist"></p>
         <p data-q-source class="hidden mt-3 rounded-xl bg-paper-soft dark:bg-coal px-4 py-3 text-lg leading-loose text-ink-soft dark:text-mist-soft"></p>
       </div>
       <div data-live-bars class="mt-4 grid gap-2"></div>
-      <button data-close-btn class="mt-4 w-full rounded-xl border border-stone dark:border-coal-edge py-3.5 font-black text-ink dark:text-mist">أنهِ السؤال الآن</button>
+      <button data-close-btn class="btn-ghost btn-block mt-4">أنهِ السؤال الآن</button>
     </div>
   </section>
 
   <!-- REVEAL -->
   <section data-v="reveal" class="hidden">
-    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6">
+    <div class="card p-6">
       <p class="text-sm font-bold text-teal">الإجابة الصحيحة</p>
       <p data-reveal-correct class="mt-1 text-lg font-bold text-ink dark:text-mist"></p>
       <p data-reveal-stats class="mt-1 text-sm text-ink-subtle dark:text-mist-subtle"></p>
       <p data-reveal-explain class="hidden mt-3 text-[15px] leading-relaxed text-ink-muted dark:text-mist-muted"></p>
     </div>
     <div data-reveal-bars class="mt-4 grid gap-2"></div>
-    <button data-next-btn class="mt-4 w-full rounded-xl bg-purple text-white text-lg font-black py-4 disabled:opacity-40"></button>
+    <button data-next-btn class="btn-primary btn-block btn-lg mt-4"></button>
   </section>
 
   <!-- LEADERBOARD (3s hold) -->
@@ -123,12 +128,13 @@
   <!-- PODIUM -->
   <section data-v="podium" class="hidden text-center">
     <h2 class="font-sans font-black text-3xl text-ink dark:text-mist">انتهى المجلس</h2>
+    <div data-podium-top class="mt-8 grid grid-cols-3 items-end gap-3 max-w-md mx-auto"></div>
     <div data-podium-list class="mt-6 grid gap-2 text-start"></div>
-    <div class="mt-6 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6">
+    <div class="card mt-6 p-6">
       <p class="text-ink-muted dark:text-mist-muted text-[15px]">تقرير المجلس الكامل متاح في سجل مجالسك.</p>
       <div class="mt-4 flex gap-2 justify-center flex-wrap">
-        <a href="/majlis/host?tab=history" class="rounded-xl bg-teal text-white font-black px-6 py-3">افتح التقرير</a>
-        <a href="/majlis/host" class="rounded-xl border border-stone dark:border-coal-edge px-6 py-3 font-black text-ink dark:text-mist">مجالسي</a>
+        <a data-report-link href="/majlis/host?tab=history" class="lift rounded-xl bg-teal text-white font-black px-6 py-3">افتح التقرير</a>
+        <a href="/majlis/host" class="btn-ghost">مجالسي</a>
       </div>
     </div>
   </section>
@@ -147,11 +153,24 @@
   }
   @keyframes ml-pulse { 0%,100% { opacity:.25; transform:scale(1);} 50% { opacity:1; transform:scale(1.25);} }
   @media (prefers-reduced-motion: reduce) { .ml-dot { animation: none; opacity:.6; } }
+
+  /* Ambient lobby heartbeat: two slow-drifting brand blobs behind the PIN
+     card (the visual analog of Kahoot's lobby music). */
+  .mj-blob {
+    position: absolute; width: 260px; height: 260px; border-radius: 9999px;
+    filter: blur(60px); opacity: .13; pointer-events: none;
+  }
+  .mj-blob-a { background: var(--color-purple); top: -70px; inset-inline-start: -50px; animation: mj-drift-a 24s ease-in-out infinite alternate; }
+  .mj-blob-b { background: var(--color-teal); bottom: -80px; inset-inline-end: -60px; animation: mj-drift-b 28s ease-in-out infinite alternate; }
+  @keyframes mj-drift-a { to { transform: translate(45px, 35px) scale(1.15); } }
+  @keyframes mj-drift-b { to { transform: translate(-40px, -30px) scale(1.1); } }
+  @media (prefers-reduced-motion: reduce) { .mj-blob { animation: none; } }
 </style>
 
 <script>
   import { maybeSignedIn } from '../lib/session';
   import { confetti, sfx } from '../lib/celebrate';
+  import { stagger, countUp, refire, showAnimated } from '../lib/majlis-fx';
 
   const root = document.querySelector<HTMLElement>('[data-mlive-root]');
   if (root) {
@@ -159,10 +178,18 @@
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
     const views = ['boot', 'fatal', 'quota', 'lobby', 'game', 'reveal', 'board', 'podium'];
     function show(v: string) {
-      views.forEach((x) => q(`[data-v="${x}"]`).classList.toggle('hidden', x !== v));
+      showAnimated(root!, views, v);
       q('[data-end-wrap]').classList.toggle('hidden', !['lobby', 'game', 'reveal', 'board'].includes(v));
       window.scrollTo({ top: 0 });
     }
+    // Quick scale bump for live counters (player joins, answers arriving).
+    const bump = (el: HTMLElement) => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      el.animate(
+        [{ transform: 'scale(1)' }, { transform: 'scale(1.25)' }, { transform: 'scale(1)' }],
+        { duration: 250, easing: 'ease-out' },
+      );
+    };
 
     const draftId = new URLSearchParams(location.search).get('draft') ?? '';
     if (!draftId) { fatal('لا توجد مسودة محددة. افتح مجلسًا من صفحة مجالسي.'); }
@@ -246,19 +273,29 @@
 
         // ── Lobby chrome ──────────────────────────────────────────────────
         const pinView = q<HTMLElement>('[data-pin-view]');
-        for (const ch of pin) {
+        [...pin].forEach((ch, i) => {
           const b = document.createElement('div');
-          b.className = 'w-12 h-16 rounded-xl border-2 border-purple bg-card dark:bg-coal-soft grid place-items-center text-3xl font-black text-ink dark:text-mist';
+          b.className = 'w-12 h-16 sm:w-14 sm:h-[4.5rem] rounded-xl border-2 border-purple bg-card dark:bg-coal-soft grid place-items-center text-3xl sm:text-4xl font-black text-ink dark:text-mist tabular-nums';
           b.textContent = ch;
+          b.classList.add('mj-pop');
+          b.style.animationDelay = `${i * 70}ms`;
           pinView.appendChild(b);
-        }
+        });
         const joinUrl = `https://irab.app/majlis?pin=${pin}`;
         import('qrcode').then((QR) =>
           QR.toCanvas(q<HTMLCanvasElement>('[data-qr]'), joinUrl, { width: 200, margin: 1 })
         ).catch(() => q('[data-qr]').classList.add('hidden'));
-        q('[data-copy-link]').addEventListener('click', async () => {
-          try { await navigator.clipboard.writeText(joinUrl); q('[data-copy-link]').textContent = 'نُسخ ✓'; } catch { /* ignore */ }
-        });
+        const copyJoin = async (label: HTMLElement) => {
+          try {
+            await navigator.clipboard.writeText(joinUrl);
+            const prev = label.textContent;
+            label.textContent = 'نُسخ الرابط ✓';
+            setTimeout(() => { label.textContent = prev; }, 2000);
+          } catch { /* ignore */ }
+        };
+        // Kahoot affordance: the PIN itself copies the join link.
+        pinView.addEventListener('click', () => copyJoin(q<HTMLElement>('[data-invite-hint]')));
+        q('[data-copy-link]').addEventListener('click', () => copyJoin(q<HTMLElement>('[data-copy-link]')));
         q('[data-lock-toggle]').addEventListener('click', () => {
           rt.set(rt.ref(db, `rooms/${roomId}/meta/joinLocked`), !(meta?.joinLocked === true)).catch(() => {});
         });
@@ -316,7 +353,7 @@
         }
         function setStartBusy(b: boolean) {
           const btn = q<HTMLButtonElement>('[data-start-btn]');
-          btn.disabled = b; btn.textContent = b ? 'جارٍ البدء…' : 'ابدأ المجلس';
+          btn.disabled = b; btn.classList.toggle('btn-busy', b);
         }
 
         async function enterQuestion(index: number) {
@@ -401,6 +438,7 @@
         }
 
         // ── Ticker (countdown + timer) ────────────────────────────────────
+        let lastCountNum = ''; let lastLeft = -1;
         function startTick() {
           stopTick();
           tick = window.setInterval(() => {
@@ -410,11 +448,18 @@
             q('[data-game-count]').classList.toggle('hidden', !inCount);
             q('[data-game-live]').classList.toggle('hidden', inCount);
             if (inCount) {
-              q('[data-count-num]').textContent = String(Math.min(3, Math.max(1, Math.ceil((startAt - now()) / 1000))));
+              const v = String(Math.min(3, Math.max(1, Math.ceil((startAt - now()) / 1000))));
+              const el = q<HTMLElement>('[data-count-num]');
+              if (v !== lastCountNum) { el.textContent = v; refire(el, 'mj-tick'); lastCountNum = v; }
             } else {
               const left = Math.max(0, Math.ceil((endAt - now()) / 1000));
               const el = q<HTMLElement>('[data-time-left]');
-              el.textContent = String(left);
+              if (left !== lastLeft) {
+                el.textContent = String(left);
+                // Urgency escalation: the final 5 seconds tick visibly.
+                if (left <= 5) refire(el, 'mj-tick');
+                lastLeft = left;
+              }
               el.style.color = left > 10 ? 'var(--color-teal)' : left > 5 ? '#B8860B' : '#C0392B';
             }
           }, 200);
@@ -422,15 +467,22 @@
         function stopTick() { if (tick) { clearInterval(tick); tick = undefined; } }
 
         // ── Rendering ─────────────────────────────────────────────────────
+        // Pop only GENUINELY new players (Kahoot lobby energy), bump the count.
+        const seenPlayers = new Set<string>();
+        let lastCount = 0;
         function renderPlayers() {
-          q('[data-lobby-count]').textContent = String(participants.length);
+          const countEl = q<HTMLElement>('[data-lobby-count]');
+          countEl.textContent = String(participants.length);
+          if (participants.length !== lastCount) { bump(countEl); lastCount = participants.length; }
           q('[data-lobby-cap]').textContent = `من ${maxPlayers} في المجلس`;
+          q('[data-waiting-dots]').textContent = participants.length === 0 ? '، بانتظار أول لاعب…' : '';
           const wrap = q<HTMLElement>('[data-lobby-players]');
           wrap.innerHTML = '';
           for (const p of participants) {
             const chip = document.createElement('span');
-            chip.className = 'inline-flex items-center gap-1.5 rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-2.5 py-1 text-sm font-bold ' +
+            chip.className = 'inline-flex items-center gap-1.5 rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-2.5 py-1 text-sm font-bold transition-opacity duration-300 ' +
               (p.connected ? 'text-ink-soft dark:text-mist-soft' : 'text-ink-subtle dark:text-mist-subtle opacity-60');
+            if (!seenPlayers.has(p.uid)) { seenPlayers.add(p.uid); chip.classList.add('mj-pop'); }
             const img = document.createElement('img');
             img.src = avatarUrl(p.avatar); img.alt = ''; img.width = 20; img.height = 20;
             img.className = 'w-5 h-5 rounded-full';
@@ -439,9 +491,13 @@
           }
         }
 
+        let lastAnswered = 0;
         function renderAnsweredPill() {
           const connected = participants.filter((p) => p.connected).length;
-          q('[data-answered-pill]').textContent = `أجاب ${Object.keys(answers).length} من ${connected}`;
+          const n = Object.keys(answers).length;
+          const pill = q<HTMLElement>('[data-answered-pill]');
+          pill.textContent = `أجاب ${n} من ${connected}`;
+          if (n !== lastAnswered) { bump(pill); lastAnswered = n; }
         }
 
         // Distribution keys mirror the server: list → 'a,b', {w,o} → 'w|o', scalar → String.
@@ -482,30 +538,51 @@
         }
 
         function barEl(row: BarRow, total: number, correct: boolean | null) {
+          const ratio = row.count / Math.max(1, total);
           const el = document.createElement('div');
+          el.dataset.key = row.key;
           el.className = 'rounded-xl border px-3.5 py-2.5 relative overflow-hidden ' +
-            (correct === true ? 'border-teal' : 'border-stone dark:border-coal-edge');
+            (correct === true ? 'border-teal' : correct === false ? 'border-stone dark:border-coal-edge opacity-75' : 'border-stone dark:border-coal-edge');
           const fill = document.createElement('div');
-          fill.className = 'absolute inset-y-0 start-0 ' + (correct === true ? 'bg-teal/15' : 'bg-purple/8');
-          fill.style.width = `${Math.round((row.count / Math.max(1, total)) * 100)}%`;
+          fill.dataset.fill = '';
+          fill.className = 'mj-bar-fill absolute inset-y-0 start-0 ' + (correct === true ? 'bg-teal/15' : 'bg-purple/8');
+          fill.style.setProperty('--ratio', String(ratio));
           const line = document.createElement('div');
           line.className = 'relative flex items-center justify-between gap-3';
           const label = document.createElement('span');
           label.className = 'font-bold text-[15px] text-ink dark:text-mist truncate';
           label.textContent = row.label;
           const n = document.createElement('span');
+          n.dataset.count = '';
           n.className = 'font-black tabular-nums text-sm ' + (correct === true ? 'text-teal' : 'text-ink-muted dark:text-mist-muted');
-          n.textContent = `${Math.round((row.count / Math.max(1, total)) * 100)}%`;
+          n.textContent = `${Math.round(ratio * 100)}%`;
           line.append(label, n);
           el.append(fill, line);
           return el;
         }
 
+        // Keyed update: existing bars ANIMATE to their new ratio instead of
+        // being rebuilt, so counts arriving live feel like Kahoot's console.
         function renderLiveBars() {
           const wrap = q<HTMLElement>('[data-live-bars]');
-          wrap.innerHTML = '';
           const total = Object.keys(answers).length;
-          for (const row of barRows()) wrap.appendChild(barEl(row, total, null));
+          const rows = barRows();
+          const wanted = new Set(rows.map((r) => r.key));
+          [...wrap.children].forEach((c) => {
+            if (!wanted.has((c as HTMLElement).dataset.key ?? '')) c.remove();
+          });
+          for (const row of rows) {
+            const existing = wrap.querySelector<HTMLElement>(`[data-key="${CSS.escape(row.key)}"]`);
+            if (!existing) {
+              const el = barEl(row, total, null);
+              el.classList.add('panel-in');
+              wrap.appendChild(el);
+            } else {
+              const ratio = row.count / Math.max(1, total);
+              existing.querySelector<HTMLElement>('[data-fill]')!.style.setProperty('--ratio', String(ratio));
+              existing.querySelector<HTMLElement>('[data-count]')!.textContent = `${Math.round(ratio * 100)}%`;
+            }
+          }
         }
 
         function correctKeyOf(r: any): string {
@@ -538,8 +615,18 @@
                 : reveal?.correctDisplay ?? '؟';
             rows.push({ key, label, count: 0 });
           }
+          // Reveal grammar: bars grow from zero with a stagger, correct stays
+          // lit, wrong rows recede (barEl correct===false dims them).
           const total = Object.keys(answers).length;
-          for (const row of rows) wrap.appendChild(barEl(row, total, row.key === key));
+          rows.forEach((row, i) => {
+            const el = barEl(row, total, row.key === key);
+            const fill = el.querySelector<HTMLElement>('[data-fill]')!;
+            const target = fill.style.getPropertyValue('--ratio');
+            fill.style.setProperty('--ratio', '0');
+            fill.style.transitionDelay = `${i * 80}ms`;
+            wrap.appendChild(el);
+            requestAnimationFrame(() => requestAnimationFrame(() => fill.style.setProperty('--ratio', target)));
+          });
 
           const nextBtn = q<HTMLButtonElement>('[data-next-btn]');
           const last = idx >= Number(meta?.qCount ?? 1) - 1;
@@ -563,19 +650,57 @@
           const list = q<HTMLElement>('[data-board-list]');
           list.innerHTML = '';
           [...participants].sort((a, b) => b.score - a.score).slice(0, 5)
-            .forEach((p, i) => list.appendChild(boardRow(p, i)));
+            .forEach((p, i) => { const r = boardRow(p, i); stagger(r, i); list.appendChild(r); });
           show('board');
         }
 
+        // Kahoot's podium moment: columns land in suspense order (3rd, then
+        // 2nd, then 1st), scores count up as each lands, confetti only after
+        // the winner appears.
         let celebrated = false;
         function renderPodium() {
+          const sorted = [...participants].sort((a, b) => b.score - a.score);
+          const top = q<HTMLElement>('[data-podium-top]');
+          top.innerHTML = '';
+          const cols = [
+            { rank: 1, delay: 600, medal: '🥈', h: 'h-24', cls: 'bg-teal/15 border-teal/40' },
+            { rank: 0, delay: 1200, medal: '🥇', h: 'h-32', cls: 'bg-purple/15 border-purple/40' },
+            { rank: 2, delay: 0, medal: '🥉', h: 'h-20', cls: 'bg-paper-soft dark:bg-coal border-stone dark:border-coal-edge' },
+          ];
+          const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          for (const c of cols) {
+            const cell = document.createElement('div');
+            cell.className = 'grid gap-1.5 justify-items-center self-end w-full';
+            const p = sorted[c.rank];
+            if (p) {
+              if (!reduced) { cell.classList.add('mj-rise'); cell.style.animationDelay = `${c.delay}ms`; }
+              const img = document.createElement('img');
+              img.src = avatarUrl(p.avatar); img.alt = ''; img.width = 44; img.height = 44;
+              img.className = 'w-11 h-11 rounded-full';
+              const name = document.createElement('p');
+              name.className = 'font-bold text-sm text-ink dark:text-mist max-w-[7.5rem] truncate';
+              name.textContent = p.name;
+              const score = document.createElement('p');
+              score.className = 'font-black tabular-nums text-ink-soft dark:text-mist-soft';
+              score.textContent = '0';
+              const bar = document.createElement('div');
+              bar.className = `w-full rounded-t-xl border ${c.cls} ${c.h} grid place-items-center text-2xl`;
+              bar.textContent = c.medal;
+              cell.append(img, name, score, bar);
+              setTimeout(() => countUp(score, p.score, { ms: 800 }), reduced ? 0 : c.delay + 250);
+            }
+            top.appendChild(cell);
+          }
           const list = q<HTMLElement>('[data-podium-list]');
           list.innerHTML = '';
-          const sorted = [...participants].sort((a, b) => b.score - a.score);
-          sorted.forEach((p, i) => list.appendChild(boardRow(p, i)));
+          sorted.slice(3).forEach((p, i) => { const r = boardRow(p, i + 3); stagger(r, i); list.appendChild(r); });
           show('podium');
-          if (!celebrated && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            celebrated = true; confetti(); try { sfx.finish(1); } catch { /* ignore */ }
+          if (!celebrated) {
+            celebrated = true;
+            setTimeout(() => {
+              if (!reduced) confetti();
+              try { sfx.finish(1); } catch { /* ignore */ }
+            }, reduced ? 0 : 1600);
           }
         }
 
