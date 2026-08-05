@@ -51,6 +51,12 @@
       <span data-count-badge class="hidden rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3.5 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
     </div>
 
+    <!-- Manual / AI mode switch (fresh flow only, like the app) -->
+    <div data-mode-switch class="mt-4 rounded-2xl border border-stone dark:border-coal-edge bg-paper-soft dark:bg-coal p-1.5 grid grid-cols-2 gap-1">
+      <button type="button" data-mode-btn="manual" class="rounded-xl py-2.5 text-sm font-black bg-purple text-white">يدويًّا</button>
+      <button type="button" data-mode-btn="ai" class="rounded-xl py-2.5 text-sm font-black text-ink-muted dark:text-mist-muted">بالذكاء الاصطناعي</button>
+    </div>
+
     <div class="mt-5 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5 grid gap-5">
 
       <!-- Type chips -->
@@ -150,6 +156,96 @@
     <p class="mt-4 text-center text-sm text-ink-subtle dark:text-mist-subtle">المسودات لا تُحتسب من حصتك اليومية حتى تبدأ المجلس</p>
   </section>
 
+  <!-- ═══ AI setup ═══ -->
+  <section data-v="ai" class="hidden">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <div>
+        <p class="text-sm font-bold text-teal">مجالس الإعراب</p>
+        <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">توليد بالذكاء الاصطناعي</h1>
+      </div>
+      <span data-ai-quota class="hidden rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3.5 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
+    </div>
+
+    <div class="mt-5 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5 grid gap-5">
+
+      <div>
+        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">مصدر الأسئلة</p>
+        <div data-ai-src-seg class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <!-- Topic -->
+      <div data-ai-topic-block>
+        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">اختر موضوعًا أو أكثر</p>
+        <div data-ai-topics class="flex flex-wrap gap-2"></div>
+        <input data-ai-topic-free type="text" placeholder="أو اكتب موضوعًا آخر"
+          class="mt-3 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple" />
+      </div>
+
+      <!-- Text / Photo -->
+      <div data-ai-text-block class="hidden">
+        <div data-ai-photo-row class="hidden mb-3">
+          <label class="inline-flex items-center gap-2 rounded-xl border border-stone dark:border-coal-edge px-4 py-2.5 text-sm font-black text-ink dark:text-mist cursor-pointer">
+            اختر صورة من الكتاب
+            <input data-ai-photo type="file" accept="image/*" class="hidden" />
+          </label>
+          <span data-ai-ocr-status class="ms-3 text-sm text-ink-muted dark:text-mist-muted"></span>
+        </div>
+        <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" data-ai-text-label>النص المصدر (من 10 إلى 1000 حرف)</label>
+        <textarea data-ai-text rows="5" maxlength="1000"
+          class="mt-2 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist leading-relaxed resize-y focus:outline-none focus:border-purple"
+          placeholder="الصق النص الذي تريد التوليد منه"></textarea>
+      </div>
+
+      <!-- Smart review -->
+      <div data-ai-review-block class="hidden">
+        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">نقاط الضعف من مجالسك الأخيرة</p>
+        <div data-ai-weak class="grid gap-1.5"></div>
+      </div>
+
+      <div>
+        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">المستوى</p>
+        <div data-ai-diff-seg class="grid grid-cols-3 gap-2"></div>
+      </div>
+
+      <div class="flex items-center justify-between gap-4 flex-wrap">
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-bold text-ink-soft dark:text-mist-soft">عدد الأسئلة</span>
+          <div class="flex items-center gap-2" dir="ltr">
+            <button type="button" data-ai-c-minus class="w-9 h-9 rounded-lg border border-stone dark:border-coal-edge font-black text-ink dark:text-mist">-</button>
+            <span data-ai-c-val class="w-8 text-center font-black tabular-nums text-ink dark:text-mist">5</span>
+            <button type="button" data-ai-c-plus class="w-9 h-9 rounded-lg border border-stone dark:border-coal-edge font-black text-ink dark:text-mist">+</button>
+          </div>
+        </div>
+        <div>
+          <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">أنواع الأسئلة</p>
+          <div data-ai-type-chips class="flex flex-wrap gap-2"></div>
+        </div>
+      </div>
+
+      <p data-ai-err class="hidden text-sm font-bold text-rose-500"></p>
+      <div data-ai-confirm class="hidden rounded-xl border border-stone dark:border-coal-edge p-4 grid gap-2">
+        <p data-ai-confirm-msg class="text-sm text-ink dark:text-mist leading-relaxed"></p>
+        <div class="flex gap-2 flex-wrap">
+          <button type="button" data-ai-confirm-go class="rounded-xl bg-purple text-white font-black px-4 py-2.5 text-sm"></button>
+          <button type="button" data-ai-confirm-up class="rounded-xl border border-purple text-purple font-black px-4 py-2.5 text-sm">ترقية</button>
+          <button type="button" data-ai-confirm-cancel class="rounded-xl border border-stone dark:border-coal-edge font-bold px-4 py-2.5 text-sm text-ink-muted dark:text-mist-muted">إلغاء</button>
+        </div>
+      </div>
+
+      <button type="button" data-ai-generate class="rounded-xl bg-purple text-white font-black py-3.5">ولّد الأسئلة</button>
+      <button type="button" data-ai-back class="text-center text-sm font-bold text-ink-muted dark:text-mist-muted py-1">رجوع إلى الإنشاء اليدوي</button>
+    </div>
+    <p class="mt-4 text-center text-sm text-ink-subtle dark:text-mist-subtle">ستراجع كل الأسئلة المولّدة قبل إطلاق المجلس</p>
+
+    <!-- Generation overlay -->
+    <div data-ai-overlay class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-6">
+      <div class="w-full max-w-sm rounded-2xl bg-card dark:bg-coal-soft border border-card-edge dark:border-coal-edge p-8 text-center">
+        <div class="w-10 h-10 mx-auto rounded-full border-4 border-purple border-t-transparent animate-spin"></div>
+        <p data-ai-step class="mt-5 font-bold text-ink dark:text-mist"></p>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ Review ═══ -->
   <section data-v="review" class="hidden">
     <div class="flex items-center justify-between gap-3 flex-wrap">
@@ -163,6 +259,8 @@
     <div data-ai-banner class="hidden mt-4 rounded-2xl border border-purple/30 bg-purple/5 p-4 text-sm text-ink-soft dark:text-mist-soft leading-relaxed">
       بعض الأسئلة مولّدة بالذكاء الاصطناعي. راجعها وتأكد من صحتها قبل الانطلاق، فأنت المسؤول عما يُعرض في مجلسك.
     </div>
+
+    <p data-r-notice class="hidden mt-4 rounded-xl border border-stone dark:border-coal-edge bg-paper-soft dark:bg-coal px-4 py-3 text-sm font-bold text-ink-soft dark:text-mist-soft"></p>
 
     <div data-r-list class="mt-4 grid gap-3"></div>
 
@@ -193,7 +291,7 @@
   const root = document.querySelector<HTMLElement>('[data-medit-root]');
   if (root) {
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
-    const views = ['loading', 'gate', 'fatal', 'editor', 'review'];
+    const views = ['loading', 'gate', 'fatal', 'editor', 'ai', 'review'];
     const show = (v: string) => views.forEach((x) => q(`[data-v="${x}"]`).classList.toggle('hidden', x !== v));
 
     const draftParam = new URLSearchParams(location.search).get('draft');
@@ -224,6 +322,7 @@
         if (!u || u.isAnonymous) { show('gate'); return; }
         if (started) return;
         started = true;
+        const user = u;
         const uid = u.uid;
 
         let isPremium = false;
@@ -514,6 +613,7 @@
           ctaBtn.textContent = mode === 'edit' ? 'حفظ التعديل' : mode === 'append' ? 'أضف السؤال' : 'متابعة إلى المراجعة';
           addAnotherBtn.parentElement!.classList.toggle('hidden', mode !== 'fresh');
           backReview.classList.toggle('hidden', mode === 'fresh');
+          q('[data-mode-switch]').classList.toggle('hidden', mode !== 'fresh');
         }
 
         // The fix_error chip prefills the question box; an untouched prefill is
@@ -696,6 +796,7 @@
 
         function enterReview() {
           rErr.classList.add('hidden');
+          q('[data-r-notice]').classList.add('hidden');
           q<HTMLElement>('[data-r-count]').textContent = `${questions.length} من ${maxQ} أسئلة`;
           q('[data-ai-banner]').classList.toggle('hidden', !questions.some((x) => !!x.aiGenerated));
           const list = q<HTMLElement>('[data-r-list]');
@@ -782,6 +883,350 @@
           }
           location.href = `/majlis/live?draft=${encodeURIComponent(draftId)}`;
         });
+
+        // ═══ AI generation (contract: AI Generation + Quotas section) ═══
+        const API_PRIMARY = 'https://api.irab.app';
+        const API_FALLBACK = 'https://irab-api-v2.mansourhassan783.workers.dev';
+        // Fallback host only on network-level failure (never 4xx/5xx, never
+        // timeout); one full retry after a forced token refresh on 401.
+        async function workerPost(path: string, body: any, timeoutMs = 60000): Promise<Response> {
+          const attempt = async (base: string, token: string) => {
+            const ctl = new AbortController();
+            const t = setTimeout(() => ctl.abort(), timeoutMs);
+            try {
+              return await fetch(base + path, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=utf-8', Authorization: `Bearer ${token}` },
+                body: JSON.stringify(body),
+                signal: ctl.signal,
+              });
+            } finally { clearTimeout(t); }
+          };
+          const run = async (token: string) => {
+            try { return await attempt(API_PRIMARY, token); }
+            catch (e: any) {
+              if (e?.name === 'AbortError') throw e;
+              return attempt(API_FALLBACK, token);
+            }
+          };
+          let res = await run(await user.getIdToken());
+          if (res.status === 401) res = await run(await user.getIdToken(true));
+          return res;
+        }
+
+        const AI_TOPICS = ['المبتدأ والخبر', 'كان وأخواتها', 'إن وأخواتها', 'الفاعل والمفعول به', 'الحال والتمييز', 'الجار والمجرور', 'الأفعال الخمسة', 'المنصوبات'];
+        const AI_SOURCES: Array<{ key: string; label: string; free: boolean }> = [
+          { key: 'topic', label: 'موضوع', free: true },
+          { key: 'text', label: 'من نص', free: false },
+          { key: 'photo', label: 'صورة من الكتاب', free: false },
+          { key: 'review', label: 'مراجعة ذكية', free: false },
+        ];
+        const AI_STEPS = ['نقرأ المصدر ونحدد المفاهيم', 'نصوغ الأسئلة بأنواعها', 'ندقق الإعراب والإجابات', 'نجهز مجلسك للمراجعة'];
+
+        let aiSrc = 'topic';
+        const aiTopics = new Set<string>();
+        const aiTypes = new Set<string>(['mcq', 'true_false']);
+        let aiDiff = 'intermediate';
+        let aiCount = 5;
+        let aiQuota: { used: number; limit: number; remaining: number } | null = null;
+        let ocrDone = false;
+        let weakFocus = '';
+        let aiBusy = false;
+        let stepTimer: ReturnType<typeof setInterval> | null = null;
+
+        const aiErrEl = q<HTMLElement>('[data-ai-err]');
+        const aiText = q<HTMLTextAreaElement>('[data-ai-text]');
+        const aiTopicFree = q<HTMLInputElement>('[data-ai-topic-free]');
+        const aiConfirm = q<HTMLElement>('[data-ai-confirm]');
+        const aiErr = (m: string) => { aiErrEl.textContent = m; aiErrEl.classList.remove('hidden'); };
+        const aiClearErr = () => { aiErrEl.classList.add('hidden'); aiConfirm.classList.add('hidden'); };
+
+        function renderAiControls() {
+          const seg = q<HTMLElement>('[data-ai-src-seg]');
+          seg.innerHTML = '';
+          for (const s of AI_SOURCES) {
+            const locked = !isPremium && !s.free;
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'rounded-full px-4 py-2 text-sm font-black border ' + (aiSrc === s.key
+              ? 'bg-purple text-white border-purple'
+              : 'border-stone dark:border-coal-edge text-ink-soft dark:text-mist-soft');
+            b.textContent = s.label + (locked ? ' 🔒' : '');
+            b.addEventListener('click', () => {
+              aiClearErr();
+              if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+              const was = aiSrc; aiSrc = s.key;
+              // Entering photo mode clears stale text + the OCR-done flag (app parity).
+              if (s.key === 'photo' && was !== 'photo') { aiText.value = ''; ocrDone = false; q<HTMLElement>('[data-ai-ocr-status]').textContent = ''; }
+              if (s.key === 'review') mineWeakPoints();
+              renderAiControls();
+            });
+            seg.appendChild(b);
+          }
+          q('[data-ai-topic-block]').classList.toggle('hidden', aiSrc !== 'topic');
+          q('[data-ai-text-block]').classList.toggle('hidden', aiSrc !== 'text' && aiSrc !== 'photo');
+          q('[data-ai-photo-row]').classList.toggle('hidden', aiSrc !== 'photo');
+          q<HTMLElement>('[data-ai-text-label]').textContent = aiSrc === 'photo' ? 'النص المستخرج من الصورة (يمكنك تعديله)' : 'النص المصدر (من 10 إلى 1000 حرف)';
+          q('[data-ai-review-block]').classList.toggle('hidden', aiSrc !== 'review');
+
+          const topics = q<HTMLElement>('[data-ai-topics]');
+          topics.innerHTML = '';
+          for (const t of AI_TOPICS) {
+            const on = aiTopics.has(t);
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'rounded-full px-3.5 py-1.5 text-sm font-bold border ' + (on
+              ? 'bg-teal/10 text-teal border-teal'
+              : 'border-stone dark:border-coal-edge text-ink-soft dark:text-mist-soft');
+            b.textContent = t;
+            b.addEventListener('click', () => { on ? aiTopics.delete(t) : aiTopics.add(t); renderAiControls(); });
+            topics.appendChild(b);
+          }
+
+          const diffs = q<HTMLElement>('[data-ai-diff-seg]');
+          diffs.innerHTML = '';
+          for (const [k, label] of [['beginner', 'مبتدئ'], ['intermediate', 'متوسط'], ['advanced', 'متقدم']] as const) {
+            const locked = !isPremium && k === 'advanced';
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'rounded-xl border py-2.5 text-sm font-black ' + (aiDiff === k
+              ? 'bg-purple text-white border-purple'
+              : 'border-stone dark:border-coal-edge text-ink-soft dark:text-mist-soft');
+            b.textContent = label + (locked ? ' 🔒' : '');
+            b.addEventListener('click', () => {
+              if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+              aiDiff = k; renderAiControls();
+            });
+            diffs.appendChild(b);
+          }
+
+          const typeChips = q<HTMLElement>('[data-ai-type-chips]');
+          typeChips.innerHTML = '';
+          for (const t of ['mcq', 'true_false', 'fix_error']) {
+            const locked = !isPremium && t === 'fix_error';
+            const on = aiTypes.has(t);
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'rounded-full px-3.5 py-1.5 text-sm font-bold border ' + (on
+              ? 'bg-teal/10 text-teal border-teal'
+              : 'border-stone dark:border-coal-edge text-ink-soft dark:text-mist-soft');
+            b.textContent = TYPE_LABELS[t] + (locked ? ' 🔒' : '');
+            b.addEventListener('click', () => {
+              if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+              // At least one type must stay selected (app parity).
+              if (on && aiTypes.size === 1) return;
+              on ? aiTypes.delete(t) : aiTypes.add(t);
+              renderAiControls();
+            });
+            typeChips.appendChild(b);
+          }
+
+          q<HTMLElement>('[data-ai-c-val]').textContent = String(aiCount);
+        }
+        q('[data-ai-c-minus]').addEventListener('click', () => { aiCount = Math.max(1, aiCount - 1); renderAiControls(); });
+        q('[data-ai-c-plus]').addEventListener('click', () => { aiCount = Math.min(10, aiCount + 1); renderAiControls(); });
+
+        async function probeAiQuota() {
+          try {
+            const res = await workerPost('/api/majalis-generate', { probe: true }, 20000);
+            if (!res.ok) return;
+            const j: any = await res.json();
+            const qd = j?.data?.quota;
+            if (qd && typeof qd.remaining === 'number') {
+              aiQuota = { used: Number(qd.used) || 0, limit: Number(qd.limit) || 0, remaining: Number(qd.remaining) || 0 };
+              const pill = q<HTMLElement>('[data-ai-quota]');
+              pill.textContent = `حصة اليوم: ${aiQuota.remaining} من ${aiQuota.limit}`;
+              pill.classList.remove('hidden');
+            }
+          } catch { /* row stays hidden */ }
+        }
+
+        // Smart review: mine weak points from the host's last 5 reports
+        // (answeredCount > 0 and correctRate <= 0.6, worst 6 by wrong pct).
+        async function mineWeakPoints() {
+          const wrap = q<HTMLElement>('[data-ai-weak]');
+          wrap.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted">جارٍ قراءة مجالسك الأخيرة</p>';
+          weakFocus = '';
+          try {
+            const s = await fs.getDocs(fs.query(
+              fs.collection(db, 'majalis_reports'),
+              fs.where('hostUid', '==', uid),
+              fs.orderBy('finishedAt', 'desc'),
+              fs.limit(5),
+            ));
+            const seen = new Set<string>();
+            const weak: Array<{ label: string; wrongPct: number }> = [];
+            for (const d of s.docs) {
+              let v: any; try { v = d.data(); } catch { continue; }
+              const per = Array.isArray(v?.perQuestion) ? v.perQuestion : [];
+              for (const rq of per) {
+                const answered = Number(rq?.answeredCount) || 0;
+                const rate = Number(rq?.correctRate);
+                if (answered === 0 || !(rate <= 0.6)) continue;
+                const label = String(rq?.questionText ?? '') + (rq?.sourceText ? ` «${rq.sourceText}»` : '');
+                if (!label.trim() || seen.has(label)) continue;
+                seen.add(label);
+                weak.push({ label, wrongPct: Math.round((1 - rate) * 100) });
+              }
+            }
+            weak.sort((a, b) => b.wrongPct - a.wrongPct);
+            const top = weak.slice(0, 6);
+            wrap.innerHTML = '';
+            if (!top.length) {
+              wrap.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted leading-relaxed">لا نقاط ضعف كافية بعد. أدر بعض المجالس أولًا ثم عد إلى المراجعة الذكية.</p>';
+              return;
+            }
+            let focus = top.map((w) => `أخطأ ${w.wrongPct}% في: ${w.label}`).join('؛');
+            if (focus.length > 580) focus = focus.slice(0, 580);
+            weakFocus = focus;
+            top.forEach((w) => {
+              const row = document.createElement('div');
+              row.className = 'rounded-xl border border-stone dark:border-coal-edge px-3.5 py-2.5 text-sm text-ink dark:text-mist leading-relaxed';
+              row.textContent = `أخطأ ${w.wrongPct}% في: ${w.label}`;
+              wrap.appendChild(row);
+            });
+          } catch {
+            wrap.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted">تعذر قراءة مجالسك. حاول مجددًا.</p>';
+          }
+        }
+
+        // Photo → resize (max width 1600, JPEG 0.82) → /api/ocr → textarea.
+        q<HTMLInputElement>('[data-ai-photo]').addEventListener('change', async (e) => {
+          const file = (e.currentTarget as HTMLInputElement).files?.[0];
+          if (!file) return;
+          const status = q<HTMLElement>('[data-ai-ocr-status]');
+          status.textContent = 'جارٍ قراءة الصورة';
+          try {
+            const bmp = await createImageBitmap(file);
+            const scale = Math.min(1, 1600 / bmp.width);
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.round(bmp.width * scale);
+            canvas.height = Math.round(bmp.height * scale);
+            canvas.getContext('2d')!.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+            const b64 = canvas.toDataURL('image/jpeg', 0.82).split(',')[1] ?? '';
+            const res = await workerPost('/api/ocr', { imageBase64: b64, mimeType: 'image/jpeg' }, 60000);
+            const j: any = await res.json().catch(() => null);
+            if (res.status === 403) { status.textContent = ''; (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+            if (!res.ok) { status.textContent = 'تعذر استخراج النص. حاول بصورة أوضح.'; return; }
+            const text = String(j?.data?.text ?? '').trim();
+            if (text.length < 10) { status.textContent = 'لم نجد نصًّا كافيًا في الصورة. حاول بصورة أوضح.'; ocrDone = false; return; }
+            aiText.value = text.slice(0, 1000);
+            ocrDone = true;
+            status.textContent = 'تم استخراج النص، راجعه وعدّله إن احتجت';
+          } catch {
+            status.textContent = 'تعذر قراءة الصورة. حاول مجددًا.';
+          }
+        });
+
+        function startOverlay() {
+          const ov = q<HTMLElement>('[data-ai-overlay]');
+          const step = q<HTMLElement>('[data-ai-step]');
+          let i = 0;
+          step.textContent = AI_STEPS[0];
+          ov.classList.remove('hidden');
+          stepTimer = setInterval(() => { i = (i + 1) % AI_STEPS.length; step.textContent = AI_STEPS[i]; }, 1900);
+        }
+        function stopOverlay() {
+          if (stepTimer) { clearInterval(stepTimer); stepTimer = null; }
+          q('[data-ai-overlay]').classList.add('hidden');
+        }
+
+        async function runGenerate() {
+          aiClearErr();
+          if (aiBusy) return;
+
+          // Exactly one source key (server rejects none; app never sends two).
+          const body: any = { count: aiCount, types: [...aiTypes], difficulty: aiDiff };
+          if (aiSrc === 'topic') {
+            const topic = [...aiTopics, aiTopicFree.value.trim()].filter(Boolean).join('، ');
+            if (!topic) { aiErr('اختر موضوعًا أو اكتب واحدًا'); return; }
+            body.topic = topic;
+          } else if (aiSrc === 'text' || aiSrc === 'photo') {
+            const t = aiText.value.trim();
+            if (aiSrc === 'photo' && !ocrDone) { aiErr('اختر صورة أولًا ليُستخرج نصها'); return; }
+            if (t.length < 10) { aiErr('اكتب نصًّا من 10 أحرف على الأقل'); return; }
+            body.sourceText = t;
+          } else {
+            if (!weakFocus) { aiErr('لا نقاط ضعف كافية بعد. أدر بعض المجالس أولًا.'); return; }
+            body.focus = weakFocus;
+          }
+
+          const room = maxQ - questions.length;
+          if (room <= 0) { aiErr(`اكتمل المجلس، الحد الأقصى ${maxQ} أسئلة`); return; }
+
+          // Pre-flight quota gate: never silently short-order.
+          if (aiQuota) {
+            if (aiQuota.remaining <= 0) {
+              aiErr(`استنفدت حصة أسئلة الذكاء الاصطناعي اليوم (${aiQuota.used} من ${aiQuota.limit}). تتجدد يوميًّا.`);
+              if (!isPremium) (window as any).IrabPaywall?.show({ reason: 'limit' });
+              return;
+            }
+            if (aiCount > aiQuota.remaining) {
+              const msg = q<HTMLElement>('[data-ai-confirm-msg]');
+              msg.textContent = `بقي لك ${aiQuota.remaining} من حصة اليوم، وطلبت ${aiCount} أسئلة.`;
+              const go = q<HTMLButtonElement>('[data-ai-confirm-go]');
+              go.textContent = `ولّد المتبقي ${aiQuota.remaining}`;
+              q('[data-ai-confirm-up]').classList.toggle('hidden', isPremium);
+              aiConfirm.classList.remove('hidden');
+              return;
+            }
+          }
+
+          aiBusy = true;
+          startOverlay();
+          try {
+            const res = await workerPost('/api/majalis-generate', body, 60000);
+            const j: any = await res.json().catch(() => null);
+            if (res.status === 429 && j?.error === 'majalis_ai_quota') {
+              aiQuota = { used: Number(j.used) || 0, limit: Number(j.limit) || 0, remaining: 0 };
+              aiErr(`استنفدت حصة أسئلة الذكاء الاصطناعي اليوم (${aiQuota.used} من ${aiQuota.limit}). تتجدد يوميًّا.`);
+              if (!isPremium) (window as any).IrabPaywall?.show({ reason: 'limit' });
+              return;
+            }
+            if (res.status === 403) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+            const maps: any[] = Array.isArray(j?.data?.questions) ? j.data.questions : [];
+            if (!res.ok || !maps.length) { aiErr('تعذر التوليد. حاول مجددًا.'); return; }
+
+            // Server-validated wire questions go into the draft VERBATIM.
+            const toAdd = maps.slice(0, room);
+            questions.push(...toAdd);
+            markDirty();
+            const qd = j?.data?.quota;
+            if (qd && typeof qd.remaining === 'number') {
+              aiQuota = { used: Number(qd.used) || 0, limit: Number(qd.limit) || 0, remaining: Number(qd.remaining) || 0 };
+            }
+            bgSave();
+            enterReview();
+            if (toAdd.length < aiCount) {
+              const note = q<HTMLElement>('[data-r-notice]');
+              note.textContent = `تم توليد ${toAdd.length} من ${aiCount}. يمكنك إضافة البقية يدويًّا.`;
+              note.classList.remove('hidden');
+            }
+          } catch (e: any) {
+            aiErr(e?.name === 'AbortError' ? 'استغرق التوليد وقتًا طويلًا. حاول مجددًا.' : 'تعذر التوليد. تحقق من اتصالك وحاول مجددًا.');
+          } finally {
+            aiBusy = false;
+            stopOverlay();
+          }
+        }
+        q('[data-ai-generate]').addEventListener('click', () => { runGenerate(); });
+        q('[data-ai-confirm-go]').addEventListener('click', () => {
+          aiCount = Math.max(1, aiQuota?.remaining ?? 1);
+          aiConfirm.classList.add('hidden');
+          renderAiControls();
+          runGenerate();
+        });
+        q('[data-ai-confirm-up]').addEventListener('click', () => (window as any).IrabPaywall?.show({ reason: 'limit' }));
+        q('[data-ai-confirm-cancel]').addEventListener('click', () => aiConfirm.classList.add('hidden'));
+
+        function enterAi() {
+          aiClearErr();
+          renderAiControls();
+          probeAiQuota();
+          show('ai');
+        }
+        q('[data-mode-btn="ai"]').addEventListener('click', () => enterAi());
+        q('[data-ai-back]').addEventListener('click', () => show('editor'));
 
         // ── Entry: resume an existing draft into review, or start fresh ──
         if (draftId) {
