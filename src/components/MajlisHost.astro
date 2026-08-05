@@ -1,0 +1,279 @@
+---
+/**
+ * MajlisHost — the host hub (مجالسي): drafts, history (reports), question
+ * bank. Reads/writes the SAME Firestore the app uses (verified contract in
+ * docs/majlis-host-contracts.md):
+ *   drafts : majalis_drafts/{uid}/drafts  orderBy updatedAt desc limit 30
+ *   history: majalis_reports where hostUid==uid orderBy finishedAt desc limit 20
+ *   bank   : majalis_bank/{uid}/questions limit 100 (NO orderBy — docs have no timestamp)
+ * Deletes are direct doc deletes (owner-only rules), optimistic UI.
+ * Quota pill via callable majalisQuotaStatus {used, limit, remaining,
+ * nextFreeAtMs, isPremium}. Cache-first then server refresh, per-doc
+ * parse-or-skip — mirrors the app's resilience. Western digits (owner call).
+ * Thmanyah only: headings carry font-sans to beat the global display-font rule.
+ */
+---
+
+<div data-mhost-root dir="rtl" class="mx-auto w-full max-w-2xl">
+
+  <!-- Loading skeleton -->
+  <div data-v="loading">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 animate-pulse h-40"></div>
+  </div>
+
+  <!-- Sign-in gate -->
+  <section data-v="gate" class="hidden">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+      <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">سجّل الدخول لإدارة مجالسك</h1>
+      <p class="mt-2 text-ink-muted dark:text-mist-muted">مسوداتك وسجل مجالسك وبنك أسئلتك، متزامنة بين التطبيق والويب.</p>
+      <a data-login-link href="/login?next=/majlis/host" class="mt-5 inline-block rounded-xl bg-purple text-white font-black px-8 py-3.5">تسجيل الدخول</a>
+    </div>
+  </section>
+
+  <!-- Hub -->
+  <section data-v="hub" class="hidden">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <div>
+        <p class="text-sm font-bold text-teal">مجالس الإعراب</p>
+        <h1 class="font-sans font-black text-3xl text-ink dark:text-mist">مجالسي</h1>
+      </div>
+      <span data-quota-pill class="hidden rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3.5 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
+    </div>
+
+    <!-- Creation note (editor lands on web in the next slice) -->
+    <div class="mt-4 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5 flex items-center justify-between gap-4 flex-wrap">
+      <p class="text-[15px] text-ink-muted dark:text-mist-muted">أنشئ مجلسًا جديدًا من تطبيق إعراب، وستظهر مسودته هنا فورًا لتستضيفه من الويب.</p>
+      <a href="/#download" class="rounded-xl border border-stone dark:border-coal-edge px-4 py-2.5 text-sm font-bold text-ink-soft dark:text-mist-soft whitespace-nowrap">افتح التطبيق</a>
+    </div>
+
+    <!-- Tabs -->
+    <div class="mt-6 rounded-2xl border border-stone dark:border-coal-edge bg-paper-soft dark:bg-coal p-1.5 grid grid-cols-3 gap-1" role="tablist">
+      <button data-tab="drafts" role="tab" class="rounded-xl py-2.5 text-sm font-black">المسودات</button>
+      <button data-tab="history" role="tab" class="rounded-xl py-2.5 text-sm font-black">السجل</button>
+      <button data-tab="bank" role="tab" class="rounded-xl py-2.5 text-sm font-black">بنك الأسئلة</button>
+    </div>
+
+    <div data-list class="mt-4 grid gap-3"></div>
+    <p data-empty class="hidden mt-6 text-center text-ink-muted dark:text-mist-muted text-[15px] leading-relaxed px-6"></p>
+    <p data-note class="hidden mt-4 text-center text-sm text-ink-subtle dark:text-mist-subtle">المسودات لا تُحتسب من حصتك اليومية حتى تبدأ المجلس</p>
+  </section>
+</div>
+
+<script>
+  import { maybeSignedIn } from '../lib/session';
+
+  const root = document.querySelector<HTMLElement>('[data-mhost-root]');
+  if (root) {
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const views = ['loading', 'gate', 'hub'];
+    const show = (v: string) => views.forEach((x) => q(`[data-v="${x}"]`).classList.toggle('hidden', x !== v));
+
+    const TYPE_LABELS: Record<string, string> = {
+      mcq: 'اختيار من متعدد', true_false: 'صواب وخطأ', tap_word: 'تحديد الكلمة',
+      fix_error: 'صحّح الخطأ', arrange_irab: 'ترتيب الإعراب',
+    };
+    const participantsLabel = (n: number) =>
+      n === 0 ? 'بلا مشاركين' : n === 1 ? 'مشارك واحد' : n === 2 ? 'مشاركان'
+        : n <= 10 ? `${n} مشاركين` : `${n} مشاركًا`;
+
+    if (!maybeSignedIn()) { show('gate'); }
+    else init();
+
+    async function init() {
+      const [{ onAuth }, fb] = await Promise.all([import('../lib/auth'), import('../lib/firebase')]);
+      const fs = await import('firebase/firestore');
+      const db = fs.getFirestore(fb.app);
+
+      onAuth(async (u) => {
+        if (!u || u.isAnonymous) { show('gate'); return; }
+        const uid = u.uid;
+        show('hub');
+        loadQuota(fb.app);
+
+        type Tab = 'drafts' | 'history' | 'bank';
+        const tabParam = new URLSearchParams(location.search).get('tab');
+        let tab: Tab = tabParam === 'history' || tabParam === 'bank' ? tabParam : 'drafts';
+        let drafts: Array<{ id: string; title: string; count: number }> = [];
+        let reports: Array<{ id: string; data: any }> = [];
+        let bank: Array<{ id: string; data: any }> = [];
+
+        const tabBtns = root!.querySelectorAll<HTMLButtonElement>('[data-tab]');
+        tabBtns.forEach((b) => b.addEventListener('click', () => { tab = b.dataset.tab as Tab; render(); }));
+
+        // Cache-first, then server — one corrupt doc never blanks a tab.
+        async function loadList(qy: any, apply: (docs: any[]) => void) {
+          try {
+            const c = await fs.getDocsFromCache(qy);
+            if (!c.empty) apply(c.docs);
+            render();
+          } catch { /* no cache */ }
+          try {
+            const s = await fs.getDocs(qy);
+            apply(s.docs);
+          } catch { /* offline with no cache: settle on what we have */ }
+          render();
+        }
+
+        loadList(
+          fs.query(fs.collection(db, 'majalis_drafts', uid, 'drafts'), fs.orderBy('updatedAt', 'desc'), fs.limit(30)),
+          (docs) => { drafts = docs.flatMap((d) => { try { const v = d.data(); return [{ id: d.id, title: String(v.title ?? '؟'), count: Array.isArray(v.questions) ? v.questions.length : 0 }]; } catch { return []; } }); },
+        );
+        loadList(
+          fs.query(fs.collection(db, 'majalis_reports'), fs.where('hostUid', '==', uid), fs.orderBy('finishedAt', 'desc'), fs.limit(20)),
+          (docs) => { reports = docs.flatMap((d) => { try { return [{ id: d.id, data: d.data() }]; } catch { return []; } }); },
+        );
+        loadList(
+          fs.query(fs.collection(db, 'majalis_bank', uid, 'questions'), fs.limit(100)),
+          (docs) => { bank = docs.flatMap((d) => { try { return [{ id: d.id, data: d.data() }]; } catch { return []; } }); },
+        );
+
+        const EMPTIES: Record<Tab, string> = {
+          drafts: 'لا مسودات بعد. أنشئ مجلسًا وستُحفظ مسودته هنا تلقائيًّا.',
+          history: 'لا مجالس منتهية بعد. أطلق مجلسك الأول وستجد تقاريره هنا.',
+          bank: 'بنك أسئلتك فارغ. فعّل «حفظ في بنك الأسئلة» عند إنشاء سؤال ليظهر هنا.',
+        };
+
+        function card() {
+          const el = document.createElement('div');
+          el.className = 'rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5';
+          return el;
+        }
+        const btn = (label: string, cls: string) => {
+          const b = document.createElement('button');
+          b.type = 'button'; b.className = cls; b.textContent = label; return b;
+        };
+
+        function render() {
+          tabBtns.forEach((b) => {
+            const on = b.dataset.tab === tab;
+            b.className = 'rounded-xl py-2.5 text-sm font-black ' + (on
+              ? 'bg-purple text-white'
+              : 'text-ink-muted dark:text-mist-muted hover:text-ink dark:hover:text-mist');
+          });
+          const list = q<HTMLElement>('[data-list]');
+          list.innerHTML = '';
+          q('[data-note]').classList.toggle('hidden', tab !== 'drafts' || drafts.length === 0 ? tab !== 'drafts' : false);
+
+          const items: Array<() => HTMLElement> =
+            tab === 'drafts' ? drafts.map((d) => () => draftCard(d))
+            : tab === 'history' ? reports.map((r) => () => reportCard(r))
+            : bank.map((b) => () => bankCard(b));
+
+          q('[data-empty]').classList.toggle('hidden', items.length > 0);
+          q('[data-empty]').textContent = EMPTIES[tab];
+          q('[data-note]').classList.toggle('hidden', !(tab === 'drafts' && drafts.length > 0));
+          items.forEach((make) => list.appendChild(make()));
+        }
+
+        function draftCard(d: { id: string; title: string; count: number }) {
+          const el = card();
+          el.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="rounded-full bg-paper-soft dark:bg-coal border border-stone dark:border-coal-edge px-2.5 py-0.5 text-xs font-black text-ink-soft dark:text-mist-soft">مسودة</span>
+              <span class="text-xs text-ink-subtle dark:text-mist-subtle">${d.count} أسئلة</span>
+            </div>
+            <p class="mt-2 font-bold text-lg text-ink dark:text-mist truncate"></p>`;
+          el.querySelector('p:last-child')!.textContent = d.title || '؟';
+          const row = document.createElement('div');
+          row.className = 'mt-4 flex gap-2';
+          const host = btn('استضف الآن', 'flex-1 rounded-xl bg-purple text-white font-black py-3');
+          host.addEventListener('click', () => { location.href = `/majlis/live?draft=${encodeURIComponent(d.id)}`; });
+          const del = btn('حذف', 'rounded-xl border border-stone dark:border-coal-edge px-4 text-sm font-bold text-ink-muted dark:text-mist-muted');
+          del.addEventListener('click', async () => {
+            drafts = drafts.filter((x) => x.id !== d.id); render();
+            try { await fs.deleteDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', d.id)); }
+            catch { drafts = [...drafts, d]; render(); }
+          });
+          row.append(host, del);
+          el.appendChild(row);
+          return el;
+        }
+
+        function reportCard(r: { id: string; data: any }) {
+          const v = r.data ?? {};
+          const title = String(v.perQuestion?.[0]?.questionText ?? 'مجلس إعرابي');
+          const el = card();
+          el.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="rounded-full bg-teal/10 border border-teal/30 px-2.5 py-0.5 text-xs font-black text-teal">منتهٍ</span>
+              <span class="text-xs text-ink-subtle dark:text-mist-subtle">${participantsLabel(Number(v.participantCount ?? 0))}</span>
+            </div>
+            <p class="mt-2 font-bold text-lg text-ink dark:text-mist truncate"></p>
+            <div data-more class="hidden mt-4 grid gap-3"></div>`;
+          el.querySelector('p')!.textContent = title;
+          const more = el.querySelector<HTMLElement>('[data-more]')!;
+          const toggle = btn('التقرير', 'mt-4 w-full rounded-xl border border-stone dark:border-coal-edge py-3 text-sm font-black text-ink dark:text-mist');
+          toggle.addEventListener('click', () => {
+            const open = more.classList.toggle('hidden');
+            toggle.textContent = open ? 'التقرير' : 'إخفاء';
+            if (!open && !more.childElementCount) fillReport(more, v);
+          });
+          el.appendChild(toggle);
+          return el;
+        }
+
+        function fillReport(more: HTMLElement, v: any) {
+          const stat = (label: string, val: string) =>
+            `<div class="rounded-xl bg-paper-soft dark:bg-coal px-3 py-2.5 text-center"><p class="text-lg font-black text-ink dark:text-mist">${val}</p><p class="text-xs text-ink-subtle dark:text-mist-subtle">${label}</p></div>`;
+          const grid = document.createElement('div');
+          grid.className = 'grid grid-cols-4 gap-2';
+          grid.innerHTML =
+            stat('مشاركون', String(v.participantCount ?? 0)) +
+            stat('أسئلة', String(v.qCount ?? 0)) +
+            stat('الدقة', `${Math.round((Number(v.avgAccuracy) || 0) * 100)}%`) +
+            stat('أعلى نقاط', String(v.topScore ?? 0));
+          more.appendChild(grid);
+          const rows = Array.isArray(v.participants) ? v.participants : [];
+          if (rows.length) {
+            const standings = document.createElement('div');
+            standings.className = 'grid gap-1.5';
+            rows.slice(0, 10).forEach((p: any, i: number) => {
+              const row = document.createElement('div');
+              row.className = 'flex items-center gap-3 rounded-xl border border-stone dark:border-coal-edge px-3 py-2';
+              row.innerHTML = `<span class="w-6 text-center font-black ${i === 0 ? 'text-purple' : 'text-ink-muted dark:text-mist-muted'}">${i + 1}</span>
+                <img src="/majlis-avatars/a${((Number(p.avatar) || 0) % 64 + 64) % 64}.svg" width="24" height="24" alt="" class="w-6 h-6 rounded-full" />
+                <span class="flex-1 font-bold text-sm text-ink dark:text-mist truncate"></span>
+                <span class="font-black text-sm tabular-nums text-ink-soft dark:text-mist-soft">${Number(p.score) || 0}</span>`;
+              row.querySelector('span.flex-1')!.textContent = String(p.name ?? '؟');
+              standings.appendChild(row);
+            });
+            more.appendChild(standings);
+          }
+        }
+
+        function bankCard(b: { id: string; data: any }) {
+          const v = b.data ?? {};
+          const el = card();
+          el.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="rounded-full bg-paper-soft dark:bg-coal border border-stone dark:border-coal-edge px-2.5 py-0.5 text-xs font-black text-ink-soft dark:text-mist-soft">${TYPE_LABELS[String(v.type)] ?? String(v.type ?? '؟')}</span>
+            </div>
+            <p class="mt-2 text-[15px] font-bold text-ink dark:text-mist leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden"></p>`;
+          el.querySelector('p:last-child')!.textContent = String(v.questionText ?? '');
+          const del = btn('حذف من البنك', 'mt-3 rounded-xl border border-stone dark:border-coal-edge px-4 py-2 text-sm font-bold text-ink-muted dark:text-mist-muted');
+          del.addEventListener('click', async () => {
+            bank = bank.filter((x) => x.id !== b.id); render();
+            try { await fs.deleteDoc(fs.doc(db, 'majalis_bank', uid, 'questions', b.id)); }
+            catch { bank = [...bank, b]; render(); }
+          });
+          el.appendChild(del);
+          return el;
+        }
+
+        render();
+      });
+    }
+
+    async function loadQuota(app: unknown) {
+      try {
+        const { getFunctions, httpsCallable } = await import('firebase/functions');
+        const call = httpsCallable(getFunctions(app as any, 'us-central1'), 'majalisQuotaStatus');
+        const res: any = await call({});
+        const d = res?.data ?? {};
+        const pill = q<HTMLElement>('[data-quota-pill]');
+        pill.textContent = `مجالس اليوم: ${d.remaining ?? '؟'} من ${d.limit ?? '؟'}`;
+        pill.classList.remove('hidden');
+      } catch { /* pill stays hidden — the server still enforces */ }
+    }
+  }
+</script>

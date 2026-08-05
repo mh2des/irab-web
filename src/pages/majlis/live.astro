@@ -1,0 +1,20 @@
+---
+/**
+ * /majlis/live?draft=<draftId>: the live HOST console. Creates a room from
+ * the draft via majalisCreateRoom, then runs the full game: lobby (PIN + QR
+ * + join lock), questions with live answer bars, reveal, leaderboard,
+ * podium. Login-gated island, noindex.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import MajlisHostLive from '../../components/MajlisHostLive.astro';
+import Paywall from '../../components/Paywall.astro';
+---
+<BaseLayout lang="ar" title="مجلس مباشر · إعراب" description="أدر مجلس إعراب مباشرًا: رمز الدخول، الأسئلة، النتائج.">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <Nav lang="ar" />
+  <main class="px-4 sm:px-6 py-8 md:py-12">
+    <MajlisHostLive />
+  </main>
+  <Paywall lang="ar" />
+</BaseLayout>

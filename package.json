@@ -40,7 +40,11 @@
     "jspdf": "^4.2.1",
     "lucide-static": "^1.14.0",
     "motion": "^12.40.0",
+    "qrcode": "^1.5.4",
     "tailwindcss": "^4.2.4",
     "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/qrcode": "^1.5.6"
   }
 }

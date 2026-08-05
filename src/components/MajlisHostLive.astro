@@ -1,0 +1,611 @@
+---
+/**
+ * MajlisHostLive — the live HOST console for مجالس الإعراب on web.
+ *
+ * Mirrors the app's host flow against the verified contract
+ * (docs/majlis-host-contracts.md):
+ *   launch : callable majalisCreateRoom {draftId} → {roomId, pin, quizId, maxPlayers}
+ *   lobby  : participants stream, joinLocked RTDB toggle, QR = irab.app/majlis?pin=
+ *   start  : majalisStartQuestion {roomId, questionIndex} → {startAt, endAt}
+ *   during : read publicQ/{i}; host-only answers/{i} stream drives the live
+ *            bars + "answered x of y"; early close when all connected
+ *            answered; auto close at endAt; manual close button
+ *   close  : majalisCloseQuestion (guarded: only while questionLive, errors
+ *            swallowed — the server elects a single scorer)
+ *   next   : host-only RTDB write meta/status answerReview→leaderboard,
+ *            hold 3s, start next; last question → majalisFinish
+ *   podium : top-3 + standings from participants; awardXP majalis_hosted
+ *            (idempotencyKey = majalis_hosted_<roomId>, once per majlis)
+ * The VIEW follows meta.status (like the app's flow screen), host actions
+ * only issue calls. hostPresence is event-driven onDisconnect, not a timer.
+ * Machine error codes arrive in error.message (MAJLIS_QUOTA, PREMIUM_TYPES,
+ * RATE_LIMITED, QUESTION_NOT_LIVE...). Western digits (owner decision).
+ */
+---
+
+<div data-mlive-root dir="rtl" class="mx-auto w-full max-w-2xl">
+
+  <!-- BOOT / launch -->
+  <section data-v="boot">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-10 text-center">
+      <p data-boot-msg class="font-bold text-lg text-ink dark:text-mist">جارٍ تجهيز المجلس…</p>
+      <div class="mt-3 flex justify-center gap-1.5" aria-hidden="true">
+        <span class="ml-dot"></span><span class="ml-dot" style="animation-delay:.2s"></span><span class="ml-dot" style="animation-delay:.4s"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FATAL -->
+  <section data-v="fatal" class="hidden">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+      <h2 class="font-sans font-black text-2xl text-ink dark:text-mist">تعذّر فتح المجلس</h2>
+      <p data-fatal-msg class="mt-2 text-ink-muted dark:text-mist-muted"></p>
+      <a href="/majlis/host" class="mt-5 inline-block rounded-xl bg-purple text-white font-black px-6 py-3">عودة إلى مجالسي</a>
+    </div>
+  </section>
+
+  <!-- QUOTA -->
+  <section data-v="quota" class="hidden">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-8 text-center">
+      <h2 class="font-sans font-black text-2xl text-ink dark:text-mist">استنفدت حصة المجالس لليوم</h2>
+      <p data-quota-msg class="mt-2 text-ink-muted dark:text-mist-muted"></p>
+      <button data-quota-upgrade class="hidden mt-5 rounded-xl bg-purple text-white font-black px-6 py-3">رقِّ إلى إعراب بلس</button>
+      <p class="mt-4"><a href="/majlis/host" class="text-sm font-bold text-teal underline underline-offset-4">عودة إلى مجالسي</a></p>
+    </div>
+  </section>
+
+  <!-- LOBBY -->
+  <section data-v="lobby" class="hidden">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6 sm:p-8 text-center">
+      <p class="text-sm font-bold text-teal">مجلس مباشر</p>
+      <h1 class="font-sans font-black text-2xl mt-1 text-ink dark:text-mist">ادعُ اللاعبين</h1>
+      <div data-pin-view dir="ltr" class="mt-5 flex gap-2 justify-center"></div>
+      <p class="mt-3 text-sm text-ink-muted dark:text-mist-muted">على irab.app/majlis أو من تطبيق إعراب</p>
+      <div class="mt-5 grid place-items-center">
+        <canvas data-qr class="rounded-xl border border-stone dark:border-coal-edge bg-white p-2"></canvas>
+      </div>
+      <div class="mt-5 flex gap-2 justify-center flex-wrap">
+        <button data-copy-link class="rounded-xl border border-stone dark:border-coal-edge px-4 py-2.5 text-sm font-bold text-ink-soft dark:text-mist-soft">انسخ رابط الدخول</button>
+        <button data-lock-toggle class="rounded-xl border border-stone dark:border-coal-edge px-4 py-2.5 text-sm font-bold text-ink-soft dark:text-mist-soft">أغلق باب الانضمام</button>
+      </div>
+    </div>
+
+    <div class="mt-4 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5">
+      <p class="text-sm font-bold text-ink-soft dark:text-mist-soft"><span data-lobby-count>0</span> <span data-lobby-cap></span></p>
+      <div data-lobby-players class="mt-3 flex flex-wrap gap-2"></div>
+    </div>
+
+    <button data-start-btn class="mt-4 w-full rounded-xl bg-purple text-white text-lg font-black py-4 disabled:opacity-40">ابدأ المجلس</button>
+  </section>
+
+  <!-- GAME (question live: countdown overlay OR question + live bars) -->
+  <section data-v="game" class="hidden">
+    <div data-game-count class="hidden rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft py-20 text-center">
+      <p class="text-sm font-bold text-ink-muted dark:text-mist-muted">استعد…</p>
+      <div data-count-num class="font-sans font-black text-8xl text-purple mt-2">3</div>
+    </div>
+
+    <div data-game-live class="hidden">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <p class="text-sm font-bold text-ink-muted dark:text-mist-muted">سؤال <span data-q-num></span></p>
+        <div class="flex items-center gap-3">
+          <span data-answered-pill class="rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3 py-1 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
+          <span data-time-left class="text-xl font-black tabular-nums w-9 text-center"></span>
+        </div>
+      </div>
+      <div class="mt-3 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6">
+        <p data-q-text class="text-xl sm:text-2xl font-bold leading-relaxed text-ink dark:text-mist"></p>
+        <p data-q-source class="hidden mt-3 rounded-xl bg-paper-soft dark:bg-coal px-4 py-3 text-lg leading-loose text-ink-soft dark:text-mist-soft"></p>
+      </div>
+      <div data-live-bars class="mt-4 grid gap-2"></div>
+      <button data-close-btn class="mt-4 w-full rounded-xl border border-stone dark:border-coal-edge py-3.5 font-black text-ink dark:text-mist">أنهِ السؤال الآن</button>
+    </div>
+  </section>
+
+  <!-- REVEAL -->
+  <section data-v="reveal" class="hidden">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6">
+      <p class="text-sm font-bold text-teal">الإجابة الصحيحة</p>
+      <p data-reveal-correct class="mt-1 text-lg font-bold text-ink dark:text-mist"></p>
+      <p data-reveal-stats class="mt-1 text-sm text-ink-subtle dark:text-mist-subtle"></p>
+      <p data-reveal-explain class="hidden mt-3 text-[15px] leading-relaxed text-ink-muted dark:text-mist-muted"></p>
+    </div>
+    <div data-reveal-bars class="mt-4 grid gap-2"></div>
+    <button data-next-btn class="mt-4 w-full rounded-xl bg-purple text-white text-lg font-black py-4 disabled:opacity-40"></button>
+  </section>
+
+  <!-- LEADERBOARD (3s hold) -->
+  <section data-v="board" class="hidden">
+    <h2 class="font-sans font-black text-2xl text-center text-ink dark:text-mist">المتصدرون</h2>
+    <div data-board-list class="mt-4 grid gap-2"></div>
+  </section>
+
+  <!-- PODIUM -->
+  <section data-v="podium" class="hidden text-center">
+    <h2 class="font-sans font-black text-3xl text-ink dark:text-mist">انتهى المجلس</h2>
+    <div data-podium-list class="mt-6 grid gap-2 text-start"></div>
+    <div class="mt-6 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6">
+      <p class="text-ink-muted dark:text-mist-muted text-[15px]">تقرير المجلس الكامل متاح في سجل مجالسك.</p>
+      <div class="mt-4 flex gap-2 justify-center flex-wrap">
+        <a href="/majlis/host?tab=history" class="rounded-xl bg-teal text-white font-black px-6 py-3">افتح التقرير</a>
+        <a href="/majlis/host" class="rounded-xl border border-stone dark:border-coal-edge px-6 py-3 font-black text-ink dark:text-mist">مجالسي</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- End-majlis affordance shown during lobby/game/reveal/board -->
+  <div data-end-wrap class="hidden mt-6 text-center">
+    <button data-end-btn class="text-sm font-bold text-ink-subtle dark:text-mist-subtle underline underline-offset-4">إنهاء المجلس للجميع</button>
+  </div>
+</div>
+
+<style>
+  .ml-dot {
+    width: 8px; height: 8px; border-radius: 9999px;
+    background: var(--color-teal); opacity: .35;
+    animation: ml-pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes ml-pulse { 0%,100% { opacity:.25; transform:scale(1);} 50% { opacity:1; transform:scale(1.25);} }
+  @media (prefers-reduced-motion: reduce) { .ml-dot { animation: none; opacity:.6; } }
+</style>
+
+<script>
+  import { maybeSignedIn } from '../lib/session';
+  import { confetti, sfx } from '../lib/celebrate';
+
+  const root = document.querySelector<HTMLElement>('[data-mlive-root]');
+  if (root) {
+    const RTDB_URL = 'https://arabic-grammar-app-43de9-default-rtdb.firebaseio.com';
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const views = ['boot', 'fatal', 'quota', 'lobby', 'game', 'reveal', 'board', 'podium'];
+    function show(v: string) {
+      views.forEach((x) => q(`[data-v="${x}"]`).classList.toggle('hidden', x !== v));
+      q('[data-end-wrap]').classList.toggle('hidden', !['lobby', 'game', 'reveal', 'board'].includes(v));
+      window.scrollTo({ top: 0 });
+    }
+
+    const draftId = new URLSearchParams(location.search).get('draft') ?? '';
+    if (!draftId) { fatal('لا توجد مسودة محددة. افتح مجلسًا من صفحة مجالسي.'); }
+    else if (!maybeSignedIn()) { location.href = `/login?next=${encodeURIComponent('/majlis/live?draft=' + draftId)}`; }
+    else init();
+
+    function fatal(msg: string) { q('[data-fatal-msg]').textContent = msg; show('fatal'); }
+
+    async function init() {
+      const [{ onAuth }, fb] = await Promise.all([import('../lib/auth'), import('../lib/firebase')]);
+      const rt = await import('firebase/database');
+      const { getFunctions, httpsCallable } = await import('firebase/functions');
+      const fns = getFunctions(fb.app, 'us-central1');
+      const db = rt.getDatabase(fb.app, RTDB_URL);
+
+      let launched = false;
+      onAuth((u) => {
+        if (!u || u.isAnonymous) { location.href = `/login?next=${encodeURIComponent('/majlis/live?draft=' + draftId)}`; return; }
+        if (launched) return;
+        launched = true;
+        run(u.uid);
+      });
+
+      async function run(uid: string) {
+        // ── Room state ────────────────────────────────────────────────────
+        let roomId = ''; let pin = ''; let maxPlayers = 20;
+        let meta: any = null; let serverOffset = 0;
+        let participants: Array<{ uid: string; name: string; avatar: number; score: number; connected: boolean }> = [];
+        let qIndex = -1; let qData: any = null; let answers: Record<string, any> = {};
+        let reveal: any = null; let busy = false; let finished = false;
+        let answersUnsub: (() => void) | null = null;
+        let closeTimer: number | undefined; let tick: number | undefined;
+        const now = () => Date.now() + serverOffset;
+        const avatarUrl = (i: number) => `/majlis-avatars/a${((Number(i) || 0) % 64 + 64) % 64}.svg`;
+
+        const call = async (name: string, payload: unknown) => {
+          const res: any = await httpsCallable(fns, name)(payload);
+          return res?.data;
+        };
+
+        // ── Launch ────────────────────────────────────────────────────────
+        try {
+          const res = await call('majalisCreateRoom', { draftId });
+          roomId = res.roomId; pin = String(res.pin); maxPlayers = Number(res.maxPlayers) || 20;
+        } catch (e: any) {
+          const m = String(e?.message ?? '');
+          if (m.includes('PREMIUM_TYPES')) {
+            fatal('هذه المسودة تتضمن أنواع أسئلة حصرية لمشتركي إعراب بلس.');
+            (window as any).IrabPaywall?.show({ reason: 'limit' });
+          } else if (m.includes('RATE_LIMITED')) fatal('محاولات إنشاء كثيرة، انتظر قليلًا ثم جرّب مجددًا.');
+          else if (m.includes('Draft not found')) fatal('لم نجد هذه المسودة. ربما حُذفت من جهاز آخر.');
+          else if (m.includes('no questions')) fatal('هذه المسودة بلا أسئلة.');
+          else if (m.includes('at most')) fatal('عدد الأسئلة يتجاوز حد خطتك الحالية.');
+          else fatal('تعذّر إنشاء المجلس، تحقق من اتصالك ثم جرّب مجددًا.');
+          return;
+        }
+
+        // ── Streams + presence ────────────────────────────────────────────
+        rt.onValue(rt.ref(db, '.info/serverTimeOffset'), (s) => { serverOffset = s.val() ?? 0; });
+        const presRef = rt.ref(db, `rooms/${roomId}/hostPresence`);
+        rt.onValue(rt.ref(db, '.info/connected'), (s) => {
+          if (s.val() !== true) return;
+          rt.onDisconnect(presRef).set({ connected: false, lastSeen: rt.serverTimestamp() }).then(() =>
+            rt.set(presRef, { connected: true, lastSeen: rt.serverTimestamp() })
+          ).catch(() => {});
+        });
+        rt.onValue(rt.ref(db, `rooms/${roomId}/participants`), (s) => {
+          const val = s.val() ?? {};
+          participants = Object.entries<any>(val).map(([id, p]) => ({
+            uid: id,
+            name: String(p?.profile?.displayName ?? '؟'),
+            avatar: Number(p?.profile?.avatar) || 0,
+            score: Number(p?.score) || 0,
+            connected: p?.presence?.connected === true,
+            joinedAt: Number(p?.profile?.joinedAt) || 0,
+          })).sort((a: any, b: any) => a.joinedAt - b.joinedAt);
+          renderPlayers();
+          maybeEarlyClose();
+        });
+        rt.onValue(rt.ref(db, `rooms/${roomId}/meta`), (s) => onMeta(s.val()));
+
+        // ── Lobby chrome ──────────────────────────────────────────────────
+        const pinView = q<HTMLElement>('[data-pin-view]');
+        for (const ch of pin) {
+          const b = document.createElement('div');
+          b.className = 'w-12 h-16 rounded-xl border-2 border-purple bg-card dark:bg-coal-soft grid place-items-center text-3xl font-black text-ink dark:text-mist';
+          b.textContent = ch;
+          pinView.appendChild(b);
+        }
+        const joinUrl = `https://irab.app/majlis?pin=${pin}`;
+        import('qrcode').then((QR) =>
+          QR.toCanvas(q<HTMLCanvasElement>('[data-qr]'), joinUrl, { width: 200, margin: 1 })
+        ).catch(() => q('[data-qr]').classList.add('hidden'));
+        q('[data-copy-link]').addEventListener('click', async () => {
+          try { await navigator.clipboard.writeText(joinUrl); q('[data-copy-link]').textContent = 'نُسخ ✓'; } catch { /* ignore */ }
+        });
+        q('[data-lock-toggle]').addEventListener('click', () => {
+          rt.set(rt.ref(db, `rooms/${roomId}/meta/joinLocked`), !(meta?.joinLocked === true)).catch(() => {});
+        });
+        q('[data-start-btn]').addEventListener('click', () => start(0));
+        q('[data-close-btn]').addEventListener('click', () => guardedClose());
+        q('[data-end-btn]').addEventListener('click', () => {
+          if (confirm('سينتهي المجلس لجميع اللاعبين. متابعة؟')) finish();
+        });
+
+        const beforeUnload = (e: BeforeUnloadEvent) => { if (!finished) { e.preventDefault(); } };
+        window.addEventListener('beforeunload', beforeUnload);
+
+        show('lobby');
+        startTick();
+
+        // ── View follows meta.status ──────────────────────────────────────
+        async function onMeta(m: any) {
+          if (m == null) {
+            if (!finished) fatal('أُغلق المجلس.');
+            return;
+          }
+          meta = m;
+          q('[data-lock-toggle]').textContent = m.joinLocked === true ? 'افتح باب الانضمام' : 'أغلق باب الانضمام';
+          const idx = Number(m.currentQuestionIndex ?? 0);
+          switch (m.status) {
+            case 'lobby': if (!finished) show('lobby'); break;
+            case 'questionLive':
+              if (idx !== qIndex || qData == null) await enterQuestion(idx);
+              show('game');
+              break;
+            case 'answerReview':
+              if (!reveal || reveal.__idx !== idx) await loadReveal(idx);
+              renderReveal(idx);
+              break;
+            case 'leaderboard': renderBoard(); break;
+            case 'finished': onFinished(); break;
+          }
+        }
+
+        // ── Question lifecycle ────────────────────────────────────────────
+        async function start(index: number) {
+          if (busy || finished) return;
+          busy = true;
+          setStartBusy(true);
+          try {
+            await call('majalisStartQuestion', { roomId, questionIndex: index });
+          } catch (e: any) {
+            const m = String(e?.message ?? '');
+            if (m.includes('MAJLIS_QUOTA')) { await showQuota(); busy = false; setStartBusy(false); return; }
+            if (m.includes('QUESTION_ALREADY_PLAYED')) { busy = false; setStartBusy(false); return start(index + 1); }
+            alertMsg(m.includes('RATE_LIMITED') ? 'محاولات كثيرة، انتظر قليلًا.' : 'تعذّر بدء السؤال، جرّب مجددًا.');
+          }
+          busy = false;
+          setStartBusy(false);
+        }
+        function setStartBusy(b: boolean) {
+          const btn = q<HTMLButtonElement>('[data-start-btn]');
+          btn.disabled = b; btn.textContent = b ? 'جارٍ البدء…' : 'ابدأ المجلس';
+        }
+
+        async function enterQuestion(index: number) {
+          qIndex = index; qData = null; answers = {}; reveal = null;
+          if (answersUnsub) { answersUnsub(); answersUnsub = null; }
+          if (closeTimer) { clearTimeout(closeTimer); closeTimer = undefined; }
+          try {
+            const snap = await rt.get(rt.ref(db, `rooms/${roomId}/publicQ/${index}`));
+            qData = snap.val();
+          } catch { /* retry via meta re-fire */ }
+          q('[data-q-num]').textContent = `${index + 1} من ${meta?.qCount ?? '؟'}`;
+          q('[data-q-text]').textContent = qData?.questionText ?? '';
+          const src = q<HTMLElement>('[data-q-source]');
+          src.classList.toggle('hidden', !qData?.sourceText);
+          if (qData?.sourceText) src.textContent = qData.sourceText;
+
+          const unsub = rt.onValue(rt.ref(db, `rooms/${roomId}/answers/${index}`), (s) => {
+            const val = s.val() ?? {};
+            answers = {};
+            for (const [pid, a] of Object.entries<any>(val)) answers[pid] = a?.answer;
+            renderLiveBars();
+            renderAnsweredPill();
+            maybeEarlyClose();
+          });
+          answersUnsub = () => unsub();
+
+          // Auto close at endAt (server truth re-checked on fire via guard).
+          const delay = Math.min(300000, Math.max(500, (meta?.questionEndAt ?? 0) - now()));
+          closeTimer = window.setTimeout(() => guardedClose(), delay);
+        }
+
+        function maybeEarlyClose() {
+          if (meta?.status !== 'questionLive') return;
+          const connected = participants.filter((p) => p.connected).length;
+          if (connected > 0 && Object.keys(answers).length >= connected) guardedClose();
+        }
+
+        // Only while questionLive, never concurrently; errors swallowed —
+        // the server elects a single scorer and meta will flip regardless.
+        async function guardedClose() {
+          if (busy || finished || meta?.status !== 'questionLive') return;
+          busy = true;
+          try { await call('majalisCloseQuestion', { roomId, questionIndex: qIndex }); }
+          catch { /* QUESTION_NOT_LIVE race — meta stream resolves the truth */ }
+          busy = false;
+        }
+
+        async function loadReveal(idx: number, attempt = 0) {
+          try {
+            const snap = await rt.get(rt.ref(db, `rooms/${roomId}/reveal/${idx}`));
+            if (snap.exists()) { reveal = { ...snap.val(), __idx: idx }; return; }
+          } catch { /* not readable yet */ }
+          if (attempt < 20) { await new Promise((r) => setTimeout(r, 200)); return loadReveal(idx, attempt + 1); }
+        }
+
+        async function showLeaderboardThenNext() {
+          if (busy || finished) return;
+          busy = true;
+          try {
+            await rt.set(rt.ref(db, `rooms/${roomId}/meta/status`), 'leaderboard');
+            await new Promise((r) => setTimeout(r, 3000));
+          } catch { /* rules refused (state changed) */ }
+          busy = false;
+          if (!finished) start(qIndex + 1);
+        }
+
+        async function finish() {
+          if (finished) return;
+          try { await call('majalisFinish', { roomId }); } catch { /* idempotent server-side */ }
+        }
+
+        function onFinished() {
+          if (finished) return;
+          finished = true;
+          window.removeEventListener('beforeunload', beforeUnload);
+          if (closeTimer) clearTimeout(closeTimer);
+          if (answersUnsub) { answersUnsub(); answersUnsub = null; }
+          stopTick();
+          renderPodium();
+          // Hosting XP — once per majlis, keyed by roomId so retries can't double-award.
+          call('awardXP', { source: 'majalis_hosted', idempotencyKey: `majalis_hosted_${roomId}` }).catch(() => {});
+        }
+
+        // ── Ticker (countdown + timer) ────────────────────────────────────
+        function startTick() {
+          stopTick();
+          tick = window.setInterval(() => {
+            if (meta?.status !== 'questionLive') return;
+            const startAt = meta.questionStartAt ?? 0; const endAt = meta.questionEndAt ?? 0;
+            const inCount = now() < startAt;
+            q('[data-game-count]').classList.toggle('hidden', !inCount);
+            q('[data-game-live]').classList.toggle('hidden', inCount);
+            if (inCount) {
+              q('[data-count-num]').textContent = String(Math.min(3, Math.max(1, Math.ceil((startAt - now()) / 1000))));
+            } else {
+              const left = Math.max(0, Math.ceil((endAt - now()) / 1000));
+              const el = q<HTMLElement>('[data-time-left]');
+              el.textContent = String(left);
+              el.style.color = left > 10 ? 'var(--color-teal)' : left > 5 ? '#B8860B' : '#C0392B';
+            }
+          }, 200);
+        }
+        function stopTick() { if (tick) { clearInterval(tick); tick = undefined; } }
+
+        // ── Rendering ─────────────────────────────────────────────────────
+        function renderPlayers() {
+          q('[data-lobby-count]').textContent = String(participants.length);
+          q('[data-lobby-cap]').textContent = `من ${maxPlayers} في المجلس`;
+          const wrap = q<HTMLElement>('[data-lobby-players]');
+          wrap.innerHTML = '';
+          for (const p of participants) {
+            const chip = document.createElement('span');
+            chip.className = 'inline-flex items-center gap-1.5 rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-2.5 py-1 text-sm font-bold ' +
+              (p.connected ? 'text-ink-soft dark:text-mist-soft' : 'text-ink-subtle dark:text-mist-subtle opacity-60');
+            const img = document.createElement('img');
+            img.src = avatarUrl(p.avatar); img.alt = ''; img.width = 20; img.height = 20;
+            img.className = 'w-5 h-5 rounded-full';
+            chip.append(img, document.createTextNode(p.name));
+            wrap.appendChild(chip);
+          }
+        }
+
+        function renderAnsweredPill() {
+          const connected = participants.filter((p) => p.connected).length;
+          q('[data-answered-pill]').textContent = `أجاب ${Object.keys(answers).length} من ${connected}`;
+        }
+
+        // Distribution keys mirror the server: list → 'a,b', {w,o} → 'w|o', scalar → String.
+        const answerKey = (a: unknown): string =>
+          Array.isArray(a) ? a.join(',')
+            : a !== null && typeof a === 'object' ? `${(a as any).w}|${(a as any).o}`
+            : String(a);
+
+        type BarRow = { key: string; label: string; count: number };
+        function barRows(): BarRow[] {
+          const counts: Record<string, number> = {};
+          for (const a of Object.values(answers)) counts[answerKey(a)] = (counts[answerKey(a)] ?? 0) + 1;
+          const type = qData?.type; const options: string[] = qData?.options ?? [];
+          const words = String(qData?.sourceText ?? '').split(/\s+/).filter(Boolean);
+          let rows: BarRow[] = [];
+          if (type === 'mcq') rows = options.map((o, i) => ({ key: String(i), label: o, count: counts[String(i)] ?? 0 }));
+          else if (type === 'true_false') rows = [
+            { key: 'true', label: 'صواب', count: counts['true'] ?? 0 },
+            { key: 'false', label: 'خطأ', count: counts['false'] ?? 0 },
+          ];
+          else if (type === 'tap_word') rows = words.map((w, i) => ({ key: String(i), label: w, count: counts[String(i)] ?? 0 }));
+          else {
+            // fix_error / arrange_irab: observation-driven, sorted by count desc
+            rows = Object.entries(counts).map(([key, count]) => {
+              let label = 'أخرى';
+              if (key !== 'other') {
+                if (type === 'fix_error') {
+                  const [w, o] = key.split('|').map(Number);
+                  label = `«${words[w] ?? '؟'}» صوابها «${options[o] ?? '؟'}»`;
+                } else {
+                  label = key.split(',').map((i) => options[Number(i)] ?? '؟').join(' ');
+                }
+              }
+              return { key, label, count };
+            }).sort((a, b) => b.count - a.count);
+          }
+          return rows;
+        }
+
+        function barEl(row: BarRow, total: number, correct: boolean | null) {
+          const el = document.createElement('div');
+          el.className = 'rounded-xl border px-3.5 py-2.5 relative overflow-hidden ' +
+            (correct === true ? 'border-teal' : 'border-stone dark:border-coal-edge');
+          const fill = document.createElement('div');
+          fill.className = 'absolute inset-y-0 start-0 ' + (correct === true ? 'bg-teal/15' : 'bg-purple/8');
+          fill.style.width = `${Math.round((row.count / Math.max(1, total)) * 100)}%`;
+          const line = document.createElement('div');
+          line.className = 'relative flex items-center justify-between gap-3';
+          const label = document.createElement('span');
+          label.className = 'font-bold text-[15px] text-ink dark:text-mist truncate';
+          label.textContent = row.label;
+          const n = document.createElement('span');
+          n.className = 'font-black tabular-nums text-sm ' + (correct === true ? 'text-teal' : 'text-ink-muted dark:text-mist-muted');
+          n.textContent = `${Math.round((row.count / Math.max(1, total)) * 100)}%`;
+          line.append(label, n);
+          el.append(fill, line);
+          return el;
+        }
+
+        function renderLiveBars() {
+          const wrap = q<HTMLElement>('[data-live-bars]');
+          wrap.innerHTML = '';
+          const total = Object.keys(answers).length;
+          for (const row of barRows()) wrap.appendChild(barEl(row, total, null));
+        }
+
+        function correctKeyOf(r: any): string {
+          const c = r?.correctAnswer ?? {}; const type = qData?.type;
+          if (type === 'true_false') return String(c.boolValue);
+          if (type === 'fix_error') return `${c.wordIndex}|${c.optionIndex}`;
+          if (type === 'arrange_irab') return (c.arrangement ?? []).join(',');
+          if (type === 'tap_word') return String(c.wordIndex);
+          return String(c.optionIndex);
+        }
+
+        function renderReveal(idx: number) {
+          q('[data-reveal-correct]').textContent = reveal?.correctDisplay ?? '';
+          q('[data-reveal-stats]').textContent = `أجاب ${reveal?.answeredCount ?? 0} من ${participants.length}`;
+          const ex = q<HTMLElement>('[data-reveal-explain]');
+          ex.classList.toggle('hidden', !reveal?.explanation);
+          if (reveal?.explanation) ex.textContent = reveal.explanation;
+
+          const wrap = q<HTMLElement>('[data-reveal-bars]');
+          wrap.innerHTML = '';
+          const key = correctKeyOf(reveal);
+          const rows = barRows();
+          if (!rows.some((r) => r.key === key)) {
+            const c = reveal?.correctAnswer ?? {}; const options: string[] = qData?.options ?? [];
+            const words = String(qData?.sourceText ?? '').split(/\s+/).filter(Boolean);
+            const label = qData?.type === 'fix_error'
+              ? `«${words[c.wordIndex] ?? '؟'}» صوابها «${options[c.optionIndex] ?? '؟'}»`
+              : qData?.type === 'arrange_irab'
+                ? (c.arrangement ?? []).map((i: number) => options[i] ?? '؟').join(' ')
+                : reveal?.correctDisplay ?? '؟';
+            rows.push({ key, label, count: 0 });
+          }
+          const total = Object.keys(answers).length;
+          for (const row of rows) wrap.appendChild(barEl(row, total, row.key === key));
+
+          const nextBtn = q<HTMLButtonElement>('[data-next-btn]');
+          const last = idx >= Number(meta?.qCount ?? 1) - 1;
+          nextBtn.textContent = last ? 'أنهِ المجلس واعرض النتائج' : 'المتصدرون ثم السؤال التالي';
+          nextBtn.onclick = () => { last ? finish() : showLeaderboardThenNext(); };
+          show('reveal');
+        }
+
+        function boardRow(p: { name: string; avatar: number; score: number }, i: number) {
+          const row = document.createElement('div');
+          row.className = 'flex items-center gap-3 rounded-xl border border-card-edge dark:border-coal-edge bg-card dark:bg-coal-soft px-4 py-3';
+          row.innerHTML = `<span class="w-7 text-center font-black ${i === 0 ? 'text-purple' : 'text-ink-muted dark:text-mist-muted'}">${i + 1}</span>
+            <img src="${avatarUrl(p.avatar)}" width="32" height="32" alt="" class="w-8 h-8 rounded-full" />
+            <span class="flex-1 font-bold text-ink dark:text-mist truncate"></span>
+            <span class="font-black tabular-nums text-ink-soft dark:text-mist-soft">${p.score}</span>`;
+          row.querySelector('span.flex-1')!.textContent = p.name;
+          return row;
+        }
+
+        function renderBoard() {
+          const list = q<HTMLElement>('[data-board-list]');
+          list.innerHTML = '';
+          [...participants].sort((a, b) => b.score - a.score).slice(0, 5)
+            .forEach((p, i) => list.appendChild(boardRow(p, i)));
+          show('board');
+        }
+
+        let celebrated = false;
+        function renderPodium() {
+          const list = q<HTMLElement>('[data-podium-list]');
+          list.innerHTML = '';
+          const sorted = [...participants].sort((a, b) => b.score - a.score);
+          sorted.forEach((p, i) => list.appendChild(boardRow(p, i)));
+          show('podium');
+          if (!celebrated && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            celebrated = true; confetti(); try { sfx.finish(1); } catch { /* ignore */ }
+          }
+        }
+
+        async function showQuota() {
+          try {
+            const d: any = await call('majalisQuotaStatus', {});
+            const next = d?.nextFreeAtMs ? new Date(d.nextFreeAtMs) : null;
+            q('[data-quota-msg]').textContent =
+              `استخدمت ${d?.used ?? '؟'} من ${d?.limit ?? '؟'} مجالس خلال 24 ساعة.` +
+              (next ? ` تتجدد حصتك ${next.toLocaleTimeString('ar-u-nu-latn', { hour: '2-digit', minute: '2-digit' })}.` : '');
+            const up = q<HTMLElement>('[data-quota-upgrade]');
+            if (d?.isPremium !== true) {
+              up.classList.remove('hidden');
+              up.addEventListener('click', () => (window as any).IrabPaywall?.show({ reason: 'limit' }));
+            }
+          } catch {
+            q('[data-quota-msg]').textContent = 'بلغت حد المجالس اليومي لخطتك.';
+          }
+          show('quota');
+        }
+
+        function alertMsg(msg: string) {
+          // Lightweight, non-blocking toast.
+          const t = document.createElement('div');
+          t.className = 'fixed bottom-6 inset-x-0 mx-auto w-fit max-w-[90vw] rounded-xl bg-ink text-paper dark:bg-mist dark:text-coal px-4 py-3 text-sm font-bold z-50';
+          t.textContent = msg;
+          document.body.appendChild(t);
+          setTimeout(() => t.remove(), 3500);
+        }
+      }
+    }
+  }
+</script>
