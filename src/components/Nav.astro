@@ -90,13 +90,13 @@ const isActive = (href: string) =>
         <a href={toolHref}           class:list={['nav-link', { 'is-active': isActive(toolHref) }]}       aria-current={isActive(toolHref) ? 'page' : undefined}>{t.tryDemo}</a>
         <a href={practiceHref}       class:list={['nav-link', { 'is-active': isActive(practiceHref) }]}   aria-current={isActive(practiceHref) ? 'page' : undefined}>{t.practice}</a>
         <a href={challengesHref}     class:list={['nav-link', { 'is-active': isActive(challengesHref) }]} aria-current={isActive(challengesHref) ? 'page' : undefined}>{t.challenges}</a>
+        {lang === 'ar'
+          ? <a href={majalisHref} class:list={['nav-link', { 'is-active': isActive(majalisHref) }]} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis} <span class="nav-new">{t.newBadge}</span></a>
+          : <a href={`${home}#features`} class="nav-link">{t.features}</a>}
         <a href={dictionaryHref}     class:list={['nav-link', { 'is-active': isActive(dictionaryHref) }]} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
         <a href={quranHref}          class:list={['nav-link', { 'is-active': isActive(quranHref) }]}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
         <a href={libraryHref}        class:list={['nav-link', { 'is-active': isActive(libraryHref) }]}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
         <a href={pricingHref}        class:list={['nav-link', { 'is-active': isActive(pricingHref) }]}     aria-current={isActive(pricingHref) ? 'page' : undefined}>{t.pricing}</a>
-        {lang === 'ar'
-          ? <a href={majalisHref} class:list={['nav-link', { 'is-active': isActive(majalisHref) }]} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis} <span class="nav-new">{t.newBadge}</span></a>
-          : <a href={`${home}#features`} class="nav-link">{t.features}</a>}
       </div>
 
       {/* Right cluster, desktop */}
@@ -171,14 +171,14 @@ const isActive = (href: string) =>
         <a href={toolHref}           class:list={['nav-mlink', isActive(toolHref) && 'is-active']}       aria-current={isActive(toolHref) ? 'page' : undefined}>{t.tryDemo}</a>
         <a href={practiceHref}       class:list={['nav-mlink', isActive(practiceHref) && 'is-active']}   aria-current={isActive(practiceHref) ? 'page' : undefined}>{t.practice}</a>
         <a href={challengesHref}     class:list={['nav-mlink', isActive(challengesHref) && 'is-active']} aria-current={isActive(challengesHref) ? 'page' : undefined}>{t.challenges}</a>
+        {lang === 'ar'
+          ? <a href={majalisHref} class:list={['nav-mlink', isActive(majalisHref) && 'is-active']} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis} <span class="nav-new">{t.newBadge}</span></a>
+          : <a href={`${home}#features`} class="nav-mlink">{t.features}</a>}
         <a href={dictionaryHref}     class:list={['nav-mlink', isActive(dictionaryHref) && 'is-active']} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
         <a href={quranHref}          class:list={['nav-mlink', isActive(quranHref) && 'is-active']}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
         <a href={libraryHref}        class:list={['nav-mlink', isActive(libraryHref) && 'is-active']}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
         <a href={pricingHref}        class:list={['nav-mlink', isActive(pricingHref) && 'is-active']}     aria-current={isActive(pricingHref) ? 'page' : undefined}>{t.pricing}</a>
         <a href={plusHref} data-plus-chip class="nav-mlink nav-mlink-plus hidden">⚡ {t.plus}</a>
-        {lang === 'ar'
-          ? <a href={majalisHref} class:list={['nav-mlink', isActive(majalisHref) && 'is-active']} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis} <span class="nav-new">{t.newBadge}</span></a>
-          : <a href={`${home}#features`} class="nav-mlink">{t.features}</a>}
         <a href={signinHref} data-signin-link class="block py-3 font-display text-h3 tracking-tight text-purple hover:text-purple-deep transition-colors">{t.signin}</a>
         <a href={appHref} data-app-link class="hidden py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.myApp}</a>
 
