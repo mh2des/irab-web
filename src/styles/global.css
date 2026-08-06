@@ -621,3 +621,59 @@
   .btn-ghost.btn-busy::after { border-color: color-mix(in srgb, var(--color-purple) 30%, transparent); border-top-color: var(--color-purple); }
   @keyframes mj-spin { to { transform: rotate(1turn); } }
 }
+
+/* ── Accordion motion (unlumen motion-accordion): height animation is driven
+   from ui-fx.ts (WAAPI); the + icon spins 180° with a springy overshoot and
+   its vertical bar fades so it lands as a minus, like the original.
+   No scale-on-rest: CSS scale moves the card's visible edges without moving
+   its layout box, so neighbors stop tracking the edge and the gap breathes.
+   .acc-on/.acc-open are stamped by the script; the [open]-based fallbacks
+   keep icon state correct when JS never ran. ─────────────────────────── */
+@layer components {
+  details[data-acc] > summary { cursor: pointer; }
+
+  .acc-icon {
+    transition: rotate .5s cubic-bezier(.34, 1.56, .64, 1),
+                background-color .25s, color .25s;
+  }
+  .acc-icon .acc-v { transition: opacity .2s ease-out; }
+  details[data-acc].acc-open .acc-icon,
+  details[data-acc]:not(.acc-on)[open] .acc-icon { rotate: 180deg; }
+  details[data-acc].acc-open .acc-icon .acc-v,
+  details[data-acc]:not(.acc-on)[open] .acc-icon .acc-v { opacity: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .acc-icon { transition: background-color .25s, color .25s; }
+    .acc-icon .acc-v { transition: none; }
+    details[data-acc][open] .acc-icon { rotate: 180deg; }
+    details[data-acc][open] .acc-icon .acc-v { opacity: 0; }
+  }
+}
+
+/* Accordion open-state colors, keyed to .acc-open (stamped/removed by the
+   script the moment the toggle starts) so they travel WITH the height
+   animation; [open]-keyed styles revert only after the collapse finishes and
+   read as a second step. Unlayered on purpose: they must beat the bg-*
+   utilities sitting on the icon element. */
+details[data-acc].acc-open summary h3,
+details[data-acc]:not(.acc-on)[open] summary h3 { color: var(--color-purple); }
+details[data-acc].acc-open .acc-icon,
+details[data-acc]:not(.acc-on)[open] .acc-icon { background: var(--color-purple); color: #fff; }
+
+/* ── CTA breathing glow (unlumen glow-button, breathe mode): a blurred
+   brand-gradient layer behind the button that slowly swells and fades. ──── */
+@layer components {
+  .btn-glow-breathe { position: relative; z-index: 0; }
+  .btn-glow-breathe::before {
+    content: ""; position: absolute; inset: -0.4rem; z-index: -1;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, var(--color-purple), var(--color-teal));
+    filter: blur(16px); opacity: 0.35;
+    animation: glow-breathe 5s ease-in-out infinite;
+  }
+  @keyframes glow-breathe {
+    0%, 100% { opacity: 0.28; transform: scale(0.97); }
+    50%      { opacity: 0.55; transform: scale(1.05); }
+  }
+  @media (prefers-reduced-motion: reduce) { .btn-glow-breathe::before { animation: none; } }
+}

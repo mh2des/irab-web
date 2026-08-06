@@ -35,16 +35,18 @@ const schema = {
     <p class="eyebrow mb-4">{t.eyebrow}</p>
     <h2 class:list={[titleClass, 'text-[clamp(1.75rem,3.5vw,2.5rem)] tracking-tight mb-10']}>{t.title}</h2>
 
-    <div class="divide-y divide-stone dark:divide-coal-edge border-y border-stone dark:border-coal-edge">
+    <div class="flex flex-col gap-2.5" data-acc-group>
       {items.map((f) => (
-        <details class="group py-5 cursor-pointer">
-          <summary class="flex items-start justify-between gap-4 list-none [&::-webkit-details-marker]:hidden">
-            <h3 class:list={[titleClass, 'text-h3 leading-snug']}>{f.q}</h3>
-            <span class="shrink-0 mt-1 transition-transform duration-300 group-open:rotate-45">
-              <svg class="w-4 h-4 text-ink/40 dark:text-mist/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <details class="card overflow-hidden group" data-acc>
+          <summary class="flex items-center justify-between gap-4 list-none select-none px-5 py-5 md:px-6 [&::-webkit-details-marker]:hidden">
+            <h3 class:list={[titleClass, 'text-h3 leading-snug transition-colors duration-200 group-hover:text-purple']}>{f.q}</h3>
+            <span class="acc-icon shrink-0 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 text-purple">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path class="acc-v" d="M12 5v14"/><path d="M5 12h14"/></svg>
             </span>
           </summary>
-          <p class:list={[bodyClass, 'mt-3 text-body text-ink/70 dark:text-mist/70 pe-10']}>{f.a}</p>
+          <div class="acc-panel px-5 md:px-6 pb-6">
+            <p class:list={[bodyClass, 'text-body text-ink/70 dark:text-mist/70 pe-10']}>{f.a}</p>
+          </div>
         </details>
       ))}
     </div>

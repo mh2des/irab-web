@@ -128,7 +128,7 @@ const faqs = [
                   'product-card group relative overflow-hidden p-6 md:p-7',
                   f.span,
                 ]}
-                data-reveal data-reveal-delay={String(i * 60)}
+                data-reveal data-reveal-delay={String(i * 60)} data-tilt="5"
               >
                 <div class="flex items-start justify-between gap-4 mb-4">
                   <h3 class="font-arabic font-bold text-[clamp(1.35rem,2.4vw,2rem)] leading-snug">{f.title}</h3>
@@ -305,13 +305,13 @@ const faqs = [
             </p>
           </div>
 
-          <div class="md:col-span-2 space-y-3">
+          <div class="md:col-span-2 space-y-3" data-acc-group>
             {faqs.map((f) => (
-              <details class="faq-card group cursor-pointer">
+              <details class="faq-card group cursor-pointer" data-acc>
                 <summary class="flex items-start justify-between gap-6 list-none p-5 md:p-6 [&::-webkit-details-marker]:hidden">
-                  <h3 class="font-arabic font-bold text-h3 leading-snug pl-4 transition-colors duration-200 group-hover:text-purple group-open:text-purple">{f.q}</h3>
-                  <span class="shrink-0 mt-1 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 group-open:bg-purple text-purple group-open:text-white transition-all duration-300 group-open:rotate-45">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                  <h3 class="font-arabic font-bold text-h3 leading-snug pl-4 transition-colors duration-200 group-hover:text-purple">{f.q}</h3>
+                  <span class="acc-icon shrink-0 mt-1 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 text-purple">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path class="acc-v" d="M12 5v14"/><path d="M5 12h14"/></svg>
                   </span>
                 </summary>
                 <div class="faq-answer px-5 md:px-6 pb-6">
@@ -412,8 +412,7 @@ const faqs = [
     .audience-card:hover,
     .proof-card:hover,
     .pricing-card:hover,
-    .faq-card:hover,
-    .faq-card[open] {
+    .faq-card:not(.acc-open):hover {
       transform: translate3d(0, -7px, 0);
       border-color: color-mix(in srgb, var(--color-ink) 18%, var(--color-card-edge));
       box-shadow:
@@ -426,8 +425,29 @@ const faqs = [
     :global(.dark) .audience-card:hover,
     :global(.dark) .proof-card:hover,
     :global(.dark) .pricing-card:hover,
-    :global(.dark) .faq-card:hover,
-    :global(.dark) .faq-card[open] {
+    :global(.dark) .faq-card:not(.acc-open):hover {
+      border-color: color-mix(in srgb, var(--color-purple) 32%, var(--color-coal-edge));
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.06),
+        0 4px 14px -8px rgb(0 0 0 / 0.62),
+        0 30px 68px -34px rgb(0 0 0 / 0.82);
+    }
+
+    /* Open FAQ card: the border/shadow emphasis WITHOUT the hover lift.
+       A transform here moves the card's visible edges but not its layout
+       box, so neighbors stop tracking it and the motion reads as two-step.
+       Keyed to .acc-open (stamped immediately) so it reverts WITH the
+       collapse, not after it; [open]:not(.acc-on) covers no-JS. */
+    .faq-card.acc-open,
+    .faq-card[open]:not(.acc-on) {
+      border-color: color-mix(in srgb, var(--color-ink) 18%, var(--color-card-edge));
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.82),
+        0 8px 18px -10px rgb(23 56 71 / 0.18),
+        0 28px 62px -32px rgb(23 56 71 / 0.34);
+    }
+    :global(.dark) .faq-card.acc-open,
+    :global(.dark) .faq-card[open]:not(.acc-on) {
       border-color: color-mix(in srgb, var(--color-purple) 32%, var(--color-coal-edge));
       box-shadow:
         inset 0 1px 0 rgb(255 255 255 / 0.06),

@@ -23,8 +23,7 @@ const t = lang === 'ar'
       newBadge: 'جديد',
       signin:   'دخول',
       myApp:    'حسابي',
-      plus:     'بلس',
-      cta:      'جرِّب الآن',
+      cta:      'جرِّب بلس',
       menu:     'القائمة',
       close:    'إغلاق',
     }
@@ -41,8 +40,7 @@ const t = lang === 'ar'
       newBadge: 'New',
       signin:   'Sign in',
       myApp:    'Profile',
-      plus:     'Plus',
-      cta:      'Try the analyzer',
+      cta:      'Try Plus',
       menu:     'Menu',
       close:    'Close',
     };
@@ -124,16 +122,14 @@ const isActive = (href: string) =>
         <ThemeToggle />
 
         <a href={signinHref} data-signin-link class="nav-link">{t.signin}</a>
-        <a href={plusHref} data-plus-chip class="nav-plus hidden">
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M13 2 4.7 13.2h5.6L11 22l8.3-11.2h-5.6z"/></svg>
-          {t.plus}
-        </a>
         <a href={appHref} data-app-link class="nav-link nav-link-feature hidden">{t.myApp}</a>
 
         <a
-          href={`${home}#demo`}
-          class="inline-flex items-center gap-2 px-4 py-2 bg-ink dark:bg-mist text-paper dark:text-coal text-caption font-bold tracking-tight rounded-lg hover:bg-purple dark:hover:bg-purple hover:text-white lift"
+          href={plusHref}
+          data-upsell-cta
+          class="inline-flex items-center gap-2 px-4 py-2 whitespace-nowrap bg-ink dark:bg-mist text-paper dark:text-coal text-caption font-bold tracking-tight rounded-lg hover:bg-purple dark:hover:bg-purple hover:text-white lift"
         >
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" class="w-3.5 h-3.5"><path d="M13 2 4.7 13.2h5.6L11 22l8.3-11.2h-5.6z"/></svg>
           {t.cta}
         </a>
       </div>
@@ -178,7 +174,6 @@ const isActive = (href: string) =>
         <a href={quranHref}          class:list={['nav-mlink', isActive(quranHref) && 'is-active']}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
         <a href={libraryHref}        class:list={['nav-mlink', isActive(libraryHref) && 'is-active']}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
         <a href={pricingHref}        class:list={['nav-mlink', isActive(pricingHref) && 'is-active']}     aria-current={isActive(pricingHref) ? 'page' : undefined}>{t.pricing}</a>
-        <a href={plusHref} data-plus-chip class="nav-mlink nav-mlink-plus hidden">⚡ {t.plus}</a>
         <a href={signinHref} data-signin-link class="block py-3 font-display text-h3 tracking-tight text-purple hover:text-purple-deep transition-colors">{t.signin}</a>
         <a href={appHref} data-app-link class="hidden py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.myApp}</a>
 
@@ -200,9 +195,11 @@ const isActive = (href: string) =>
         </div>
 
         <a
-          href={`${home}#demo`}
+          href={plusHref}
+          data-upsell-cta
           class="mt-3 inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-ink dark:bg-mist text-paper dark:text-coal font-bold tracking-tight rounded-lg hover:bg-purple dark:hover:bg-purple hover:text-white lift"
         >
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" class="w-4 h-4"><path d="M13 2 4.7 13.2h5.6L11 22l8.3-11.2h-5.6z"/></svg>
           {t.cta}
         </a>
       </div>
@@ -213,11 +210,35 @@ const isActive = (href: string) =>
 <style>
   /* Segmented pill bar holding the links (screenshot inspiration). */
   .nav-bar {
+    position: relative;
     background: color-mix(in srgb, var(--color-stone) 40%, transparent);
     border-radius: 0.75rem;
     padding: 0.3rem;
   }
   :global(.dark) .nav-bar { background: color-mix(in srgb, var(--color-coal-edge) 45%, transparent); }
+
+  /* Sliding hover highlight (unlumen Highlight port): one shared pill that
+     springs between links; geometry is driven from the script below. */
+  .nav-link { position: relative; z-index: 1; }
+  :global(.nav-glide) {
+    position: absolute; left: 0; top: 0; z-index: 0;
+    border-radius: 0.5rem; opacity: 0; pointer-events: none;
+    background: var(--color-paper);
+    box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--color-purple) 50%, transparent),
+                0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent);
+    transition: opacity .18s var(--ease-out-quart);
+  }
+  :global(.dark .nav-glide) {
+    background: var(--color-coal-soft);
+    box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--color-purple) 60%, transparent);
+  }
+  :global(.nav-glide.on) { opacity: 1; }
+  /* While the glide pill is live it carries the pill visual; the per-link
+     hover/active backgrounds would double it. Text colors stay from above. */
+  .nav-bar.has-glide .nav-link:hover,
+  .nav-bar.has-glide .nav-link.is-active {
+    background: transparent; box-shadow: none; transform: none;
+  }
 
   /* Each link is a pill that fills + lifts with a soft shadow on hover. */
   .nav-link {
@@ -257,7 +278,8 @@ const isActive = (href: string) =>
     box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--color-purple) 60%, transparent);
   }
 
-  /* «جديد» badge on the majalis nav item. */
+  /* «جديد» badge on the majalis nav item (unlumen glowing-badge treatment:
+     soft ambient glow + a pinging status dot). */
   .nav-new {
     display: inline-block; vertical-align: middle;
     margin-inline-start: 0.15rem; padding: 0.1rem 0.45rem;
@@ -265,8 +287,21 @@ const isActive = (href: string) =>
     color: var(--color-teal);
     background: color-mix(in srgb, var(--color-teal) 14%, transparent);
     border: 1px solid color-mix(in srgb, var(--color-teal) 35%, transparent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-teal) 28%, transparent);
   }
   :global(.dark) .nav-new { color: color-mix(in srgb, var(--color-teal) 85%, white); }
+  .nav-new::before {
+    content: ''; display: inline-block; width: 0.3rem; height: 0.3rem;
+    margin-inline-end: 0.3rem; margin-bottom: 0.12rem;
+    border-radius: 999px; background: var(--color-teal); vertical-align: middle;
+    animation: nav-ping 2s ease-in-out infinite;
+  }
+  @keyframes nav-ping {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-teal) 55%, transparent); }
+    70%  { box-shadow: 0 0 0 5px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+  @media (prefers-reduced-motion: reduce) { .nav-new::before { animation: none; } }
 
   /* The Quran-i'rab feature: teal accent so it stands out as the key feature. */
   .nav-link-feature { color: var(--color-teal); font-weight: 700; }
@@ -280,25 +315,6 @@ const isActive = (href: string) =>
   :global(.dark) .nav-link-feature:hover { color: color-mix(in srgb, var(--color-teal) 88%, white); background: var(--color-coal-soft); }
 
   /* Mobile menu links — large display rows; active page is highlighted. */
-  /* Plus upgrade chip: quiet but unmistakable. */
-  .nav-plus {
-    display: inline-flex; align-items: center; gap: 0.3rem;
-    padding: 0.45rem 0.8rem; border-radius: 999px;
-    font-weight: 700; white-space: nowrap;
-    color: var(--color-purple-deep);
-    background: color-mix(in srgb, var(--color-purple) 12%, transparent);
-    border: 1px solid color-mix(in srgb, var(--color-purple) 30%, transparent);
-    transition: background .2s, color .2s, transform .2s;
-  }
-  .nav-plus svg { width: 0.85rem; height: 0.85rem; }
-  .nav-plus:hover { background: var(--color-purple); color: #fff; transform: translateY(-1.5px); }
-  :global(.dark) .nav-plus { color: color-mix(in srgb, var(--color-purple) 70%, white); background: color-mix(in srgb, var(--color-purple) 20%, transparent); }
-  :global(.dark) .nav-plus:hover { background: var(--color-purple); color: #fff; }
-  .nav-plus.hidden { display: none; }
-  .nav-mlink-plus { color: var(--color-purple-deep); font-weight: 700; }
-  :global(.dark) .nav-mlink-plus { color: color-mix(in srgb, var(--color-purple) 70%, white); }
-  .nav-mlink-plus.hidden { display: none; }
-
   .nav-mlink {
     display: block; padding: 0.75rem 0.85rem;
     border-radius: 0.5rem;
@@ -318,13 +334,13 @@ const isActive = (href: string) =>
   if (maybeSignedIn()) {
     document.querySelectorAll<HTMLElement>('[data-signin-link]').forEach((el) => el.classList.add('hidden'));
     document.querySelectorAll<HTMLElement>('[data-app-link]').forEach((el) => el.classList.remove('hidden'));
-    // Upgrade chip for signed-in FREE users. 'irab-premium' is a cached copy
-    // of the last /v1/me answer (written by entitlement.fetchMe) — a stale
-    // '1' only hides the chip, never blocks anything, so no Firebase needed.
+    // Hide the «جرِّب بلس» CTA for already-premium users. 'irab-premium' is a
+    // cached copy of the last /v1/me answer (written by entitlement.fetchMe);
+    // a stale value only shows/hides the button, never blocks anything.
     let premium = false;
-    try { premium = localStorage.getItem('irab-premium') === '1'; } catch { /* show the chip */ }
-    if (!premium) {
-      document.querySelectorAll<HTMLElement>('[data-plus-chip]').forEach((el) => el.classList.remove('hidden'));
+    try { premium = localStorage.getItem('irab-premium') === '1'; } catch { /* keep the CTA */ }
+    if (premium) {
+      document.querySelectorAll<HTMLElement>('[data-upsell-cta]').forEach((el) => el.classList.add('hidden'));
     }
   }
 
@@ -367,4 +383,82 @@ const isActive = (href: string) =>
   window.addEventListener('resize', () => {
     if (window.innerWidth >= 1280) closeMenu();
   });
+
+  // ── Sliding hover highlight across the desktop nav (unlumen Highlight).
+  // One shared pill springs between links (stiffness 1250 / damping 40 /
+  // mass 0.5 ≈ the original), parks on the active tab, fades out otherwise.
+  const bar = document.querySelector<HTMLElement>('.nav-bar');
+  if (bar &&
+      matchMedia('(hover: hover) and (pointer: fine)').matches &&
+      !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const glide = document.createElement('span');
+    glide.className = 'nav-glide';
+    glide.setAttribute('aria-hidden', 'true');
+    bar.prepend(glide);
+    bar.classList.add('has-glide');
+
+    const K = 1250, D = 40, M = 0.5;
+    type Axis = { x: number; v: number };
+    const ax = { x: { x: 0, v: 0 }, y: { x: 0, v: 0 }, w: { x: 0, v: 0 }, h: { x: 0, v: 0 } };
+    const target = { x: 0, y: 0, w: 0, h: 0 };
+    let current: HTMLElement | null = null;
+    let visible = false;
+    let raf = 0, last = 0;
+
+    const stepAxis = (a: Axis, t: number, dt: number) => {
+      while (dt > 0) {
+        const h = Math.min(dt, 0.008);
+        a.v += ((-K * (a.x - t) - D * a.v) / M) * h;
+        a.x += a.v * h;
+        dt -= h;
+      }
+    };
+    const done = (a: Axis, t: number) => Math.abs(a.x - t) < 0.3 && Math.abs(a.v) < 0.3;
+
+    const loop = (t: number) => {
+      const dt = Math.min((t - last) / 1000, 0.032);
+      last = t;
+      stepAxis(ax.x, target.x, dt); stepAxis(ax.y, target.y, dt);
+      stepAxis(ax.w, target.w, dt); stepAxis(ax.h, target.h, dt);
+      glide.style.setProperty('translate', `${ax.x.x.toFixed(2)}px ${ax.y.x.toFixed(2)}px`);
+      glide.style.width = `${ax.w.x.toFixed(2)}px`;
+      glide.style.height = `${ax.h.x.toFixed(2)}px`;
+      raf = done(ax.x, target.x) && done(ax.y, target.y) && done(ax.w, target.w) && done(ax.h, target.h)
+        ? 0 : requestAnimationFrame(loop);
+    };
+    const kick = () => { if (!raf) { last = performance.now(); raf = requestAnimationFrame(loop); } };
+
+    const show = (link: HTMLElement, instant = false) => {
+      current = link;
+      target.x = link.offsetLeft; target.y = link.offsetTop;
+      target.w = link.offsetWidth; target.h = link.offsetHeight;
+      if (instant || !visible) {
+        ax.x = { x: target.x, v: 0 }; ax.y = { x: target.y, v: 0 };
+        ax.w = { x: target.w, v: 0 }; ax.h = { x: target.h, v: 0 };
+      }
+      visible = true;
+      glide.classList.add('on');
+      kick();
+    };
+    const park = (instant = false) => {
+      const active = bar.querySelector<HTMLElement>('.nav-link.is-active');
+      if (active) {
+        show(active, instant);
+      } else {
+        visible = false;
+        current = null;
+        glide.classList.remove('on');
+      }
+    };
+
+    bar.querySelectorAll<HTMLElement>('.nav-link').forEach((link) => {
+      link.addEventListener('mouseenter', () => show(link));
+    });
+    bar.addEventListener('mouseleave', () => park());
+
+    park(true);
+    // Re-measure once webfonts land and on resize (link widths shift).
+    document.fonts?.ready.then(() => { if (current) show(current, true); });
+    window.addEventListener('resize', () => { if (current) show(current, true); });
+  }
 </script>

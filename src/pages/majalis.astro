@@ -60,7 +60,7 @@ const faqs = [
             أنشئ أسئلة إعراب يدويًّا أو بالذكاء الاصطناعي، شارك رمز الدخول، ولينضم طلابك مجانًا من أي متصفح أو من التطبيق. نقاط بالسرعة والدقة، شرح نحوي بعد كل سؤال، وتقرير كامل في الختام.
           </p>
           <div class="mt-8 flex flex-wrap gap-3" data-reveal data-reveal-delay="300">
-            <a href="/majlis/create" class="btn-primary btn-lg">أنشئ مجلسك مجانًا</a>
+            <a href="/majlis/create" class="btn-primary btn-lg btn-glow-breathe" data-magnetic>أنشئ مجلسك مجانًا</a>
             <a href="/majlis" class="btn-ghost btn-lg">عندك رمز؟ انضم الآن</a>
           </div>
           <p class="mt-4 text-small text-ink-subtle dark:text-mist-subtle font-arabic" data-reveal data-reveal-delay="350">
@@ -102,7 +102,7 @@ const faqs = [
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {features.map((f, i) => (
-            <div class="card p-6 md:p-7" data-reveal data-reveal-delay={String((i % 3) * 80)}>
+            <div class="card p-6 md:p-7" data-reveal data-reveal-delay={String((i % 3) * 80)} data-tilt="5">
               <h3 class="font-arabic font-bold text-[1.25rem] leading-snug mb-3">{f.title}</h3>
               <p class="font-arabic text-small text-ink-muted dark:text-mist-muted leading-loose">{f.body}</p>
             </div>
@@ -173,7 +173,7 @@ const faqs = [
             أنشئ الأسئلة، شارك الرمز، وشاهد صفك يتنافس على الإعراب.
           </p>
           <div class="flex flex-wrap gap-3 justify-center" data-reveal data-reveal-delay="200">
-            <a href="/majlis/create" class="btn-primary btn-lg">أنشئ مجلسك مجانًا</a>
+            <a href="/majlis/create" class="btn-primary btn-lg btn-glow-breathe" data-magnetic>أنشئ مجلسك مجانًا</a>
             <a href="/majlis" class="inline-flex items-center justify-center min-h-[3.25rem] px-7 rounded-lg font-bold border border-paper/30 dark:border-coal/30 hover:border-paper dark:hover:border-coal transition-colors duration-200">انضم برمز</a>
           </div>
         </div>
