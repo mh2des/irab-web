@@ -84,8 +84,11 @@
       vt.finished.then(unfreeze, unfreeze);
       vt.ready.then(() => {
         root.animate(
+          // ease-in, not ease-in-out: an expanding circle that decelerates
+          // reads as a stall (the edge crawls through the largest remaining
+          // area, then "pops"). Accelerating to the finish feels continuous.
           { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-          { duration: 500, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' },
+          { duration: 450, easing: 'ease-in', pseudoElement: '::view-transition-new(root)' },
         );
       }).catch(() => { /* transition skipped (rapid toggling): theme still applied */ });
     });
