@@ -42,6 +42,11 @@ function initMagnetic() {
   let last = 0;
 
   const loop = (t: number) => {
+    // Hold all style writes while a theme view-transition is sweeping:
+    // live-page mutations force Chrome to re-raster the whole sweep.
+    if (document.documentElement.classList.contains('vt-active')) {
+      last = t; raf = requestAnimationFrame(loop); return;
+    }
     const dt = Math.min((t - last) / 1000, 0.032);
     last = t;
     let busy = false;
@@ -88,6 +93,9 @@ function initTilt() {
     let trx = 0, tryy = 0, tlift = 0, raf = 0, last = 0, over = false;
 
     const loop = (t: number) => {
+      if (document.documentElement.classList.contains('vt-active')) {
+        last = t; raf = requestAnimationFrame(loop); return;
+      }
       const dt = Math.min((t - last) / 1000, 0.032);
       last = t;
       step(rx, trx, K, D, M, dt);

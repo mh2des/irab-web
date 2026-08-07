@@ -416,6 +416,10 @@ const isActive = (href: string) =>
     const done = (a: Axis, t: number) => Math.abs(a.x - t) < 0.3 && Math.abs(a.v) < 0.3;
 
     const loop = (t: number) => {
+      // Hold writes while a theme view-transition sweeps (see ui-fx.ts).
+      if (document.documentElement.classList.contains('vt-active')) {
+        last = t; raf = requestAnimationFrame(loop); return;
+      }
       const dt = Math.min((t - last) / 1000, 0.032);
       last = t;
       stepAxis(ax.x, target.x, dt); stepAxis(ax.y, target.y, dt);

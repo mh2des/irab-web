@@ -1,10 +1,14 @@
 ---
 /**
- * ThemeToggle, light/dark switch.
+ * ThemeToggle, light/dark switch (unlumen theme-switch port).
  *
  * No icon flicker on load: BaseLayout's no-flash script runs first and
- * sets `.dark` on <html> before paint. The CSS-only icon swap below
- * mirrors that state instantly.
+ * sets `.dark` on <html> before paint; the icon states below key off that
+ * class instantly. Clicking swaps the sun ↔ moon with a springy
+ * rotate/scale, and where the View Transition API exists the new theme
+ * sweeps in as a circle from the click point (see theme-reveal in
+ * global.css). Unsupported browsers and reduced-motion users get an
+ * instant change.
  */
 ---
 <button
@@ -12,28 +16,78 @@
   data-theme-toggle
   aria-label="Toggle dark mode"
   class:list={[
-    'group relative grid place-items-center w-9 h-9 rounded-full',
+    'group relative grid place-items-center w-9 h-9 rounded-full overflow-hidden',
     'text-ink/60 hover:text-ink dark:text-mist/60 dark:hover:text-mist',
     'transition-colors duration-200',
   ]}
 >
   {/* Sun (visible in dark mode → click to go light) */}
-  <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <svg class="tt-icon tt-sun w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <circle cx="12" cy="12" r="4"/>
     <path d="M12 2v2M12 20v2M22 12h-2M4 12H2M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41M19.07 19.07l-1.41-1.41M6.34 6.34L4.93 4.93"/>
   </svg>
   {/* Moon (visible in light mode → click to go dark) */}
-  <svg class="w-4 h-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <svg class="tt-icon tt-moon w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
   </svg>
 </button>
 
+<style>
+  /* Both icons share the button's single grid cell; the inactive one is
+     spun away and shrunk, the active one springs upright. Keyed off the
+     html.dark class so the swap animates exactly when the theme flips. */
+  .tt-icon {
+    grid-area: 1 / 1;
+    transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), opacity .2s ease-out;
+  }
+  .tt-sun  { opacity: 0; transform: rotate(-90deg) scale(.4); }
+  .tt-moon { opacity: 1; transform: rotate(0) scale(1); }
+  :global(.dark) .tt-sun  { opacity: 1; transform: rotate(0) scale(1); }
+  :global(.dark) .tt-moon { opacity: 0; transform: rotate(90deg) scale(.4); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tt-icon { transition: opacity .2s ease-out; }
+  }
+</style>
+
 <script>
   const STORAGE_KEY = 'irab-theme';
+
+  const applyToggle = () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    try { localStorage.setItem(STORAGE_KEY, isDark ? 'dark' : 'light'); } catch { /* private mode */ }
+  };
+
   document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.toggle('dark');
-      try { localStorage.setItem(STORAGE_KEY, isDark ? 'dark' : 'light'); } catch {}
+    btn.addEventListener('click', (e) => {
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!document.startViewTransition || reduced) {
+        applyToggle();
+        return;
+      }
+      // Circular reveal from the click point; keyboard "clicks" report
+      // (0,0) so those grow from the button's center instead. The clip
+      // animation is driven through WAAPI with concrete px values rather
+      // than CSS-var keyframes: var-based keyframes can't be composited,
+      // and the main-thread fallback visibly stalls at large radii.
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX || r.left + r.width / 2;
+      const y = e.clientY || r.top + r.height / 2;
+      const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      // The "new" side of a view transition is live, so every frame of the
+      // sweep re-composites the page. vt-active freezes the costly layers
+      // (backdrop-blur nav, ambient/glow animations) until it finishes.
+      const root = document.documentElement;
+      root.classList.add('vt-active');
+      const vt = document.startViewTransition(applyToggle);
+      const unfreeze = () => root.classList.remove('vt-active');
+      vt.finished.then(unfreeze, unfreeze);
+      vt.ready.then(() => {
+        root.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          { duration: 500, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' },
+        );
+      }).catch(() => { /* transition skipped (rapid toggling): theme still applied */ });
     });
   });
 </script>
