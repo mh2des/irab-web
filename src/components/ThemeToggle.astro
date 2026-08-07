@@ -84,11 +84,12 @@
       vt.finished.then(unfreeze, unfreeze);
       vt.ready.then(() => {
         root.animate(
-          // ease-in, not ease-in-out: an expanding circle that decelerates
-          // reads as a stall (the edge crawls through the largest remaining
-          // area, then "pops"). Accelerating to the finish feels continuous.
+          // linear + short: motion starts the very first frame (ease-in has a
+          // dead zone after the click that reads as lag), and a linear radius
+          // still finishes fast because circle coverage accelerates with r.
+          // Deceleration curves are worse: the edge crawls, then "pops".
           { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-          { duration: 450, easing: 'ease-in', pseudoElement: '::view-transition-new(root)' },
+          { duration: 350, easing: 'linear', pseudoElement: '::view-transition-new(root)' },
         );
       }).catch(() => { /* transition skipped (rapid toggling): theme still applied */ });
     });
