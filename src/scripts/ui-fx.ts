@@ -140,8 +140,6 @@ function initTilt() {
 }
 
 function initAccordion() {
-  const items = [...document.querySelectorAll<HTMLDetailsElement>('details[data-acc]')];
-  if (!items.length) return;
   // quart-out ≈ the original's near-critically-damped height spring (340/34/.9).
   // Open and close share ONE duration so a single-open swap (one item closing
   // while another opens) shifts the list uniformly instead of in two steps.
@@ -162,12 +160,12 @@ function initAccordion() {
     const wasOpen = det.open;
     const live = getComputedStyle(panel);
     const from = wasOpen
-      ? { height: `${panel.getBoundingClientRect().height}px`, paddingTop: live.paddingTop, paddingBottom: live.paddingBottom, opacity: live.opacity }
-      : { height: '0px', paddingTop: '0px', paddingBottom: '0px', opacity: '0' };
+      ? { height: `${panel.getBoundingClientRect().height}px`, paddingTop: live.paddingTop, paddingBottom: live.paddingBottom, marginTop: live.marginTop, marginBottom: live.marginBottom, opacity: live.opacity }
+      : { height: '0px', paddingTop: '0px', paddingBottom: '0px', marginTop: '0px', marginBottom: '0px', opacity: '0' };
     running.get(det)?.cancel();
     det.open = true;
     const rest = getComputedStyle(panel);
-    const to = { height: `${panel.scrollHeight}px`, paddingTop: rest.paddingTop, paddingBottom: rest.paddingBottom, opacity: '1' };
+    const to = { height: `${panel.scrollHeight}px`, paddingTop: rest.paddingTop, paddingBottom: rest.paddingBottom, marginTop: rest.marginTop, marginBottom: rest.marginBottom, opacity: '1' };
     panel.style.overflow = 'hidden';
     const a = panel.animate([from, to], { duration: MS, easing: EASE });
     a.onfinish = () => { panel.style.removeProperty('overflow'); };
@@ -185,11 +183,11 @@ function initAccordion() {
     det.classList.remove('acc-open');
     if (!panel) { det.open = false; return; }
     const live = getComputedStyle(panel);
-    const from = { height: `${panel.getBoundingClientRect().height}px`, paddingTop: live.paddingTop, paddingBottom: live.paddingBottom, opacity: live.opacity };
+    const from = { height: `${panel.getBoundingClientRect().height}px`, paddingTop: live.paddingTop, paddingBottom: live.paddingBottom, marginTop: live.marginTop, marginBottom: live.marginBottom, opacity: live.opacity };
     running.get(det)?.cancel();
     panel.style.overflow = 'hidden';
     const a = panel.animate(
-      [from, { height: '0px', paddingTop: '0px', paddingBottom: '0px', opacity: '0' }],
+      [from, { height: '0px', paddingTop: '0px', paddingBottom: '0px', marginTop: '0px', marginBottom: '0px', opacity: '0' }],
       { duration: MS, easing: EASE, fill: 'forwards' },
     );
     a.onfinish = () => {
@@ -204,21 +202,30 @@ function initAccordion() {
     );
   };
 
-  for (const det of items) {
+  // Stamp server-rendered items so the no-JS [open] CSS fallbacks stand down.
+  document.querySelectorAll<HTMLDetailsElement>('details[data-acc]').forEach((det) => {
     det.classList.add('acc-on');
     if (det.open) det.classList.add('acc-open');
-    det.querySelector(':scope > summary')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (det.classList.contains('acc-open')) {
-        closeDet(det);
-      } else {
-        det.closest('[data-acc-group]')
-          ?.querySelectorAll<HTMLDetailsElement>('details[data-acc].acc-open')
-          .forEach((other) => { if (other !== det) closeDet(other); });
-        openDet(det);
-      }
-    });
-  }
+  });
+
+  // Delegated so dynamically injected accordions (analyzer word details)
+  // are enhanced without any re-binding.
+  document.addEventListener('click', (e) => {
+    const target = e.target instanceof Element ? e.target : null;
+    const summary = target?.closest('summary');
+    const det = summary?.parentElement;
+    if (!(det instanceof HTMLDetailsElement) || !det.matches('details[data-acc]')) return;
+    e.preventDefault();
+    det.classList.add('acc-on');
+    if (det.classList.contains('acc-open')) {
+      closeDet(det);
+    } else {
+      det.closest('[data-acc-group]')
+        ?.querySelectorAll<HTMLDetailsElement>('details[data-acc].acc-open')
+        .forEach((other) => { if (other !== det) closeDet(other); });
+      openDet(det);
+    }
+  });
 }
 
 const noMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;

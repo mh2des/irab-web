@@ -273,7 +273,7 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
     </section>
 
     <div class="profile-info-rail">
-      <details class="usage-disclosure">
+      <details class="usage-disclosure" data-acc>
         <summary>
           <span>
             <span class="app-kicker">{t.today}</span>
@@ -1572,7 +1572,8 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
     transition: transform .2s var(--ease-out-quart);
   }
   :global(.dark) .usage-disclosure summary svg { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
-  .usage-disclosure[open] summary svg { transform: rotate(180deg); }
+  .usage-disclosure.acc-open summary svg,
+  .usage-disclosure[open]:not(.acc-on) summary svg { transform: rotate(180deg); }
   .usage-inline-list {
     display: grid;
     gap: 0.45rem;

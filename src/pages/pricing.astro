@@ -209,13 +209,13 @@ const faqSchema = {
     <Section size="sm" class="!pt-0">
       <Container size="narrow">
         <h2 class="font-arabic-display font-bold text-[clamp(1.5rem,3.2vw,2.1rem)] text-center mb-8" data-reveal>أسئلة قبل الاشتراك</h2>
-        <div class="space-y-3 max-w-2xl mx-auto">
+        <div class="space-y-3 max-w-2xl mx-auto" data-acc-group>
           {faqs.map((f) => (
-            <details class="pr-faq group cursor-pointer" data-reveal>
+            <details class="pr-faq group cursor-pointer" data-reveal data-acc>
               <summary class="flex items-start justify-between gap-6 list-none p-5 [&::-webkit-details-marker]:hidden">
-                <h3 class="font-arabic font-bold text-h3 leading-snug transition-colors duration-200 group-hover:text-purple group-open:text-purple">{f.q}</h3>
-                <span class="shrink-0 mt-1 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 group-open:bg-purple text-purple group-open:text-white transition-all duration-300 group-open:rotate-45">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                <h3 class="font-arabic font-bold text-h3 leading-snug transition-colors duration-200 group-hover:text-purple">{f.q}</h3>
+                <span class="acc-icon shrink-0 mt-1 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 text-purple">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path class="acc-v" d="M12 5v14"/><path d="M5 12h14"/></svg>
                 </span>
               </summary>
               <div class="px-5 pb-6">
@@ -322,8 +322,13 @@ const faqSchema = {
     transition: border-color 0.25s, box-shadow 0.3s;
   }
   :global(.dark) .pr-faq { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
-  .pr-faq:hover, .pr-faq[open] { border-color: color-mix(in srgb, var(--color-purple) 35%, var(--color-card-edge)); }
-  .pr-faq[open] { box-shadow: var(--shadow-lift); }
+  /* Open state keyed to .acc-open (stamped instantly by ui-fx) so it reverts
+     with the collapse, not after it; [open]:not(.acc-on) covers no-JS. */
+  .pr-faq:hover,
+  .pr-faq.acc-open,
+  .pr-faq[open]:not(.acc-on) { border-color: color-mix(in srgb, var(--color-purple) 35%, var(--color-card-edge)); }
+  .pr-faq.acc-open,
+  .pr-faq[open]:not(.acc-on) { box-shadow: var(--shadow-lift); }
 
   /* ── Comparison table ────────────────────────────────────────────── */
   .pr-table {

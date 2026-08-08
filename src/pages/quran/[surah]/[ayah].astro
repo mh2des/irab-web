@@ -126,9 +126,9 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
         {(sarfHtml || balaghaHtml || fawaidHtml) && (
           <section class="blk">
             <h2>الصرف والبلاغة والفوائد</h2>
-            {sarfHtml && <details class="exp"><summary>الصرف</summary><div class="irab-html classical-naskh" set:html={sarfHtml} /></details>}
-            {balaghaHtml && <details class="exp"><summary>البلاغة</summary><div class="irab-html classical-naskh" set:html={balaghaHtml} /></details>}
-            {fawaidHtml && <details class="exp"><summary>الفوائد</summary><div class="irab-html classical-naskh" set:html={fawaidHtml} /></details>}
+            {sarfHtml && <details class="exp" data-acc><summary>الصرف</summary><div class="irab-html classical-naskh" set:html={sarfHtml} /></details>}
+            {balaghaHtml && <details class="exp" data-acc><summary>البلاغة</summary><div class="irab-html classical-naskh" set:html={balaghaHtml} /></details>}
+            {fawaidHtml && <details class="exp" data-acc><summary>الفوائد</summary><div class="irab-html classical-naskh" set:html={fawaidHtml} /></details>}
           </section>
         )}
 
@@ -182,9 +182,9 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
         {faqs.length > 0 && (
           <section class="blk">
             <h2>أسئلة شائعة</h2>
-            <div class="faq">
+            <div class="faq" data-acc-group>
               {faqs.map((f) => (
-                <details class="exp"><summary>{f.q}</summary><p class="classical-naskh faq-a">{f.a}</p></details>
+                <details class="exp" data-acc><summary>{f.q}</summary><p class="classical-naskh faq-a">{f.a}</p></details>
               ))}
             </div>
           </section>
@@ -304,7 +304,8 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
     font-family: var(--font-arabic-display); color: var(--color-ink);
   }
   :global(.dark) .exp summary { color: var(--color-mist); }
-  .exp[open] summary { color: var(--color-purple); }
+  .exp.acc-open summary,
+  .exp[open]:not(.acc-on) summary { color: var(--color-purple); }
   .exp > div, .exp > p { padding: 0.4rem 0 0.9rem; line-height: 2.1; font-size: 1.6rem; }
   .exp summary { font-size: 1.5rem; }
   .faq-a { color: color-mix(in srgb, var(--color-ink) 80%, transparent); }

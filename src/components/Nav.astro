@@ -57,7 +57,10 @@ const signinHref = lang === 'ar' ? '/login' : '/en/login'; // web account
 const appHref = lang === 'ar' ? '/app' : '/en/app'; // signed in web app hub
 const pricingHref = '/pricing'; // single shared pricing page (no EN twin yet)
 const majalisHref = '/majalis'; // live-quiz landing (AR only; EN nav keeps Features)
-const plusHref = `${appHref}?checkout=annual`; // upgrade chip → auto-opens checkout
+// «جرِّب بلس» goes to the plan chooser, NOT straight into a checkout: the
+// user picks annual (with trial) or monthly there, then /app?checkout=<plan>
+// opens the payment overlay. (Owner decision 2026-08-07.)
+const plusHref = pricingHref;
 
 // Equivalent URL in the other language for the toggle. AR → EN goes through
 // enTwinFor so we never link to a 404 (most Quran pages have no EN twin yet);
