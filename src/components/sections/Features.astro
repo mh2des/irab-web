@@ -1,77 +1,99 @@
 ---
+/**
+ * Features (EN homepage): the same Pépite-style sticky stacked deck as the
+ * Arabic homepage. Shared CSS lives in global.css (.stack-*); each li sticks
+ * below the nav with a staggered top so the next card slides over it, and a
+ * sticky companion panel carries the section story + CTAs.
+ */
 import Container from '../Container.astro';
 import Section from '../Section.astro';
 
 const features = [
   {
-    title: 'AI i\'rab analyzer',
-    body: 'Word by word grammatical breakdown for Arabic sentences: type, syntactic role, i\'rab, case marker, details, vocalization, correction notes, and a plain explanation.',
-    span: 'md:col-span-2',
+    title: "AI i'rab analyzer",
+    body: "Word by word grammatical breakdown for Arabic sentences: type, syntactic role, i'rab, case marker, details, vocalization, correction notes, and a plain explanation.",
   },
   {
     title: 'Quran-ready',
-    body: 'Paste an ayah and study its structure word by word. Irab is a classical-Arabic study helper, not a qira\'at comparison tool or a replacement for a teacher.',
-    span: '',
+    body: "Paste an ayah and study its structure word by word. Irab is a classical-Arabic study helper, not a qira'at comparison tool or a replacement for a teacher.",
   },
   {
     title: 'Three dictionaries, one app',
     body: 'Smart (AI powered, modern Arabic). Traditional (13 heritage works including Lisan al-Arab). Dialect (30,000+ entries across 8 regions: Egyptian, Levantine, Palestinian, Gulf, Maghrebi, Iraqi, Yemeni, Sudanese: fully offline).',
-    span: 'md:col-span-2',
   },
   {
     title: '576 practice sentences',
-    body: 'progressive difficulty with instant feedback. From your first مرفوع to advanced مفعول لأجله.',
-    span: '',
+    body: 'Progressive difficulty with instant feedback. From your first مرفوع to advanced مفعول لأجله.',
   },
   {
     title: 'Challenge system',
     body: '7-bab campaign, daily challenge, XP, streaks, 10 ranks, badges, and leaderboards. Arena and Speak & Parse are planned for later.',
-    span: '',
   },
   {
     title: 'Mastery certificates',
     body: 'Annual Plus learners can claim shareable certificates after completing a level with strong topic accuracy, proof of real progress.',
-    span: 'md:col-span-2',
   },
   {
-    title: 'Library of 47 classical grammar books (25,000+ chapters)',
-    body: 'Search and read classical references across nahw, sarf, balagha, and i\'rab, with bookmarks, themes, and continue-reading support.',
-    span: '',
+    title: '47 classical grammar books',
+    body: "Search and read classical references across nahw, sarf, balagha, and i'rab (25,000+ chapters), with bookmarks, themes, and continue-reading support.",
   },
   {
     title: 'Voice + OCR',
     body: 'Speak a sentence for analysis, or use Plus OCR to scan Arabic text from a page, crop it, select the text, and parse it.',
-    span: 'md:col-span-2',
   },
+];
+
+// Same brand-color cycle + hand-stacked rotations as the Arabic deck.
+const stackLook = [
+  { variant: 'stack-purple', rot: -1.2 },
+  { variant: 'stack-light stack-accent-purple', rot: 1.1 },
+  { variant: 'stack-teal', rot: -1 },
+  { variant: 'stack-ink', rot: 1 },
+  { variant: 'stack-light stack-accent-teal', rot: -0.7 },
+  { variant: 'stack-purple-deep', rot: 1.1 },
+  { variant: 'stack-light stack-accent-purple', rot: -1 },
+  { variant: 'stack-teal-deep', rot: 0.8 },
 ];
 ---
 <Section id="features">
-  <Container>
-    <div class="max-w-2xl mb-16">
-      <p class="eyebrow mb-4" data-reveal>The product</p>
-      <h2 class="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.1] tracking-tight" data-reveal data-reveal-delay="100">
-        A complete Arabic grammar workbench.
-      </h2>
-    </div>
+  <Container size="wide">
+    <div class="stack-layout">
+      {/* Stationary companion: sticks in place while the deck stacks beside it. */}
+      <aside class="stack-intro" data-reveal>
+        <img src="/brand-mark.png" alt="" width="72" height="72" loading="lazy" class="stack-intro-mark" />
+        <p class="eyebrow mb-4">The product</p>
+        <h2 class="font-display text-[clamp(1.7rem,3vw,2.5rem)] leading-[1.15] tracking-tight">
+          A complete Arabic grammar workbench.
+        </h2>
+        <p class="text-body text-ink-muted dark:text-mist-muted leading-relaxed mt-5">
+          Every card here is a real feature working in Irab today, from the instant analyzer to mastery certificates. Scroll to flip through them, card by card.
+        </p>
+        <div class="flex flex-wrap gap-3 mt-8">
+          <a href="#demo" class="btn-primary">Try the analyzer</a>
+          <a href="#app" class="btn-ghost">Get the app</a>
+        </div>
+        <p class="stack-hint" aria-hidden="true">
+          Scroll to flip the cards
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m6 9 6 6 6-6"/></svg>
+        </p>
+      </aside>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-      {features.map((f, i) => {
-        const accentClass = i % 2 === 0 ? 'text-purple-deep dark:text-purple' : 'text-teal-deep dark:text-teal';
-        return (
-          <article
-            class:list={['group card card-interactive relative p-7 md:p-8', f.span]}
-            data-reveal data-reveal-delay={String(i * 60)}
-          >
-            <div class="flex items-start justify-between gap-4 mb-3">
-              <h3 class="font-display text-h3 leading-tight">{f.title}</h3>
-              <span class:list={[accentClass, 'font-mono text-caption mt-1.5 tabular-nums tracking-wider font-bold']}>
-                {String(i + 1).padStart(2, '0')}
-              </span>
-            </div>
-            <p class="text-body text-ink-muted dark:text-mist-muted leading-relaxed">{f.body}</p>
-          </article>
-        );
-      })}
+      <ul class="stack-deck">
+        {features.map((f, i) => {
+          const look = stackLook[i % stackLook.length];
+          return (
+            <li class="stack-item" style={`z-index:${i + 1}; top:calc(var(--stack-top) + ${i} * var(--stack-peek));`}>
+              <article class:list={['stack-card', look.variant]} style={`rotate:${look.rot}deg;`} data-tilt="3">
+                <p class="stack-num font-mono tabular-nums" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+                <div>
+                  <h3 class="font-display stack-title">{f.title}</h3>
+                  <p class="stack-text leading-relaxed">{f.body}</p>
+                </div>
+              </article>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   </Container>
 </Section>

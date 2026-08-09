@@ -762,3 +762,122 @@ details.acc-card:active {
   }
   @media (prefers-reduced-motion: reduce) { .btn-glow-breathe::before { animation: none; } }
 }
+
+/* ── Stacked feature deck (shared by the AR and EN homepages) ──────── */
+/* ── Features: sticky stacked deck ──────────────────────────────
+   Each li sticks below the nav with a staggered top; the next card
+   scrolls over the previous, building a hand-stacked deck. Pure CSS,
+   no scroll listeners. Cards keep [data-tilt] on hover: the tilt's
+   inline transform composes with the rotate property set per card. */
+/* Two-column split (Pépite-style): the intro panel sticks in place at
+   the deck's own stick line while the cards pile up beside it. Intro
+   first in DOM = inline-start = the RIGHT column in RTL. Below lg the
+   intro flows normally above the deck. */
+.stack-layout {
+  --stack-top: 5.5rem;
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+@media (min-width: 1024px) {
+  .stack-layout { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 3rem; }
+  .stack-intro { position: sticky; top: var(--stack-top); }
+}
+.stack-intro {
+  border-radius: 1.75rem;
+  border: 1px solid var(--color-card-edge);
+  background: var(--color-card);
+  padding: clamp(1.75rem, 3.2vw, 2.75rem);
+  box-shadow:
+    0 2px 8px -4px rgb(23 56 71 / 0.1),
+    0 20px 48px -24px rgb(23 56 71 / 0.28);
+}
+.dark .stack-intro {
+  background: var(--color-coal-soft);
+  border-color: var(--color-coal-edge);
+  box-shadow:
+    0 2px 10px -5px rgb(0 0 0 / 0.5),
+    0 22px 52px -26px rgb(0 0 0 / 0.7);
+}
+.stack-intro-mark {
+  width: 4.25rem; height: 4.25rem; border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 24px -10px rgb(23 56 71 / 0.35);
+}
+.stack-hint {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-top: 2.25rem;
+  font-size: var(--text-small);
+  color: var(--color-ink-subtle);
+}
+.dark .stack-hint { color: var(--color-mist-subtle); }
+.stack-hint svg { animation: hint-bob 1.6s ease-in-out infinite; }
+@keyframes hint-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(5px); }
+}
+@media (prefers-reduced-motion: reduce) { .stack-hint svg { animation: none; } }
+
+.stack-deck {
+  --stack-peek: 2.1rem;
+  position: relative;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0 0 3.5rem;
+  max-width: 46rem;
+  width: 100%;
+}
+.stack-item { position: sticky; }
+.stack-card {
+  display: flex; flex-direction: column; justify-content: space-between;
+  gap: 1.75rem;
+  min-height: clamp(19rem, 46vh, 23rem);
+  border-radius: 1.75rem;
+  border: 1px solid transparent;
+  padding: clamp(1.5rem, 3.2vw, 2.4rem);
+  box-shadow:
+    0 4px 12px -6px rgb(23 56 71 / 0.14),
+    0 24px 54px -22px rgb(23 56 71 / 0.38);
+}
+.dark .stack-card {
+  box-shadow:
+    0 4px 14px -8px rgb(0 0 0 / 0.55),
+    0 26px 60px -24px rgb(0 0 0 / 0.8);
+}
+.stack-num {
+  font-size: clamp(3.2rem, 7vw, 4.6rem);
+  line-height: 1; font-weight: 700; letter-spacing: -0.05em;
+  opacity: 0.92;
+}
+.stack-title { font-size: clamp(1.35rem, 2.6vw, 1.85rem); line-height: 1.4; margin-bottom: 0.65rem; }
+.stack-text { font-size: clamp(0.95rem, 1.7vw, 1.06rem); opacity: 0.94; max-width: 36rem; }
+.stack-link {
+  display: inline-block; margin-top: 1rem; color: inherit;
+  text-decoration: underline; text-underline-offset: 5px;
+  transition: opacity .2s;
+}
+.stack-link:hover { opacity: .75; }
+
+.stack-purple      { background: var(--color-purple); color: #fff; }
+.stack-purple-deep { background: var(--color-purple-deep); color: #fff; }
+.stack-teal        { background: var(--color-teal); color: #fff; }
+.stack-teal-deep   { background: var(--color-teal-deep); color: #fff; }
+.stack-ink         { background: var(--color-ink); color: var(--color-paper); }
+.dark .stack-ink { background: var(--color-mist); color: var(--color-coal); }
+.stack-light {
+  background: var(--color-card); color: var(--color-ink);
+  border-color: var(--color-card-edge);
+}
+.dark .stack-light {
+  background: var(--color-coal-soft); color: var(--color-mist);
+  border-color: var(--color-coal-edge);
+}
+.stack-light .stack-text { color: var(--color-ink-muted); opacity: 1; }
+.dark .stack-light .stack-text { color: var(--color-mist-muted); }
+.stack-accent-purple .stack-num { color: var(--color-purple); }
+.stack-accent-teal .stack-num { color: var(--color-teal); }
+.stack-light .stack-link { color: var(--color-purple); }
+
+@media (max-width: 640px) {
+  .stack-deck { --stack-top: 4.75rem; --stack-peek: 1.4rem; }
+}
