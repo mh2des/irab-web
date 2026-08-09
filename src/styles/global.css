@@ -688,6 +688,63 @@ details[data-acc]:not(.acc-on)[open] summary h3 { color: var(--color-purple); }
 details[data-acc].acc-open .acc-icon,
 details[data-acc]:not(.acc-on)[open] .acc-icon { background: var(--color-purple); color: #fff; }
 
+/* Pointer spotlight for .spot-card: a soft brand glow inside the card that
+   tracks the cursor (--spot-x/y set by ui-fx) and cross-fades between cards
+   as the pointer travels, so moving across a grid reads as one continuous
+   motion. Decorative and pointer-events-free; fine pointers only. */
+.spot-card { position: relative; }
+.spot-card::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  pointer-events: none; opacity: 0; z-index: 1;
+  background: radial-gradient(320px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    color-mix(in srgb, var(--color-purple) 9%, transparent), transparent 65%);
+  transition: opacity .45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.dark .spot-card::after {
+  background: radial-gradient(320px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    color-mix(in srgb, var(--color-purple) 14%, transparent), transparent 65%);
+}
+@media (hover: hover) and (pointer: fine) {
+  .spot-card:hover::after { opacity: 1; }
+}
+
+/* Card-accordion hover: the homepage FAQ's lift, shared by every card-style
+   accordion (.acc-card on the <details>). Open items don't lift (a transform
+   moves the visible edges without the layout box — neighbors stop tracking).
+   Unlayered + element-qualified so it outranks scoped per-page base styles. */
+details.acc-card {
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 420ms var(--ease-out-quart),
+    box-shadow 420ms var(--ease-out-quart),
+    border-color 320ms var(--ease-out-quart),
+    background-color 320ms var(--ease-out-quart);
+  will-change: transform;
+}
+details.acc-card:not(.acc-open):hover {
+  transform: translate3d(0, -7px, 0);
+  border-color: color-mix(in srgb, var(--color-ink) 18%, var(--color-card-edge));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.82),
+    0 8px 18px -10px rgb(23 56 71 / 0.18),
+    0 28px 62px -32px rgb(23 56 71 / 0.34);
+}
+.dark details.acc-card:not(.acc-open):hover {
+  border-color: color-mix(in srgb, var(--color-purple) 32%, var(--color-coal-edge));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 4px 14px -8px rgb(0 0 0 / 0.62),
+    0 30px 68px -34px rgb(0 0 0 / 0.82);
+}
+details.acc-card:active {
+  transform: translate3d(0, -2px, 0) scale(0.992);
+  transition-duration: 120ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  details.acc-card:not(.acc-open):hover,
+  details.acc-card:active { transform: none; }
+}
+
 /* ── CTA breathing glow (unlumen glow-button, breathe mode): a blurred
    brand-gradient layer behind the button that slowly swells and fades. ──── */
 @layer components {

@@ -9,6 +9,9 @@
  *                        height + content slide, single-open inside a
  *                        [data-acc-group]. Falls back to instant native
  *                        toggling without JS or under reduced motion.
+ *   .spot-card           a soft radial spotlight inside the card follows
+ *                        the pointer (CSS vars --spot-x/y; the glow itself
+ *                        lives in global.css)
  *
  * Loaded once per page from BaseLayout. Fine pointers only, and everything
  * no-ops under prefers-reduced-motion. Effects write the CSS `translate`
@@ -228,9 +231,20 @@ function initAccordion() {
   });
 }
 
+function initSpotlight() {
+  for (const card of document.querySelectorAll<HTMLElement>('.spot-card')) {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--spot-x', `${(e.clientX - r.left).toFixed(1)}px`);
+      card.style.setProperty('--spot-y', `${(e.clientY - r.top).toFixed(1)}px`);
+    }, { passive: true });
+  }
+}
+
 const noMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (!noMotion && matchMedia('(hover: hover) and (pointer: fine)').matches) {
   initMagnetic();
   initTilt();
+  initSpotlight();
 }
 if (!noMotion) initAccordion();

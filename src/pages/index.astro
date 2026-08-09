@@ -28,6 +28,23 @@ const features = [
   { title: 'إدخال صوتي + OCR', body: 'تكلّم بالجملة ليحلّلها التطبيق. ومع Plus يمكنك تصوير النص العربي، قصّه، اختيار النص، ثم إعرابه.', span: 'md:col-span-2' },
 ];
 
+// Stacked-deck presentation for the features section: as the page scrolls,
+// each card sticks below the nav and the next slides over it (pure CSS
+// position:sticky with staggered tops). Brand-color cycle + a light
+// hand-stacked rotation per card; the CSS rotate property composes with the
+// tilt effect's inline transform, so both coexist.
+const stackLook = [
+  { variant: 'stack-purple', rot: -1.2 },
+  { variant: 'stack-light stack-accent-purple', rot: 1.1 },
+  { variant: 'stack-teal', rot: -1 },
+  { variant: 'stack-ink', rot: 1 },
+  { variant: 'stack-light stack-accent-teal', rot: -0.7 },
+  { variant: 'stack-purple-deep', rot: 1.1 },
+  { variant: 'stack-light stack-accent-purple', rot: -1 },
+  { variant: 'stack-teal-deep', rot: 0.8 },
+  { variant: 'stack-ink', rot: -0.9 },
+];
+
 const faqs = [
   { q: 'ما هو الإعراب؟', a: 'الإعراب هو نظام بيان الموقع النحوي ووظيفة الكلمة في الجملة العربية. يُحدّد ما إذا كانت الكلمة فاعلًا أو مفعولًا أو مضافًا إليه، ويبيّن العلاقة بين كل كلمة وأخرى. الإعراب هو الفرق بين فكّ رموز اللغة والقراءة الحقيقية.' },
   { q: 'كيف يعمل المحلل بالذكاء الاصطناعي؟', a: 'يستخدم إعراب مسارًا نحويًا مدعومًا بـ Gemini عبر Cloudflare Worker آمن. كل تحليل يحدّد نوع الكلمة، إعرابها، وظيفتها، علامتها، التشكيل الكامل، وملاحظة التصحيح عند الحاجة. هذا هو نفس مسار التحليل في التطبيق والعرض المباشر.' },
@@ -112,35 +129,48 @@ const faqs = [
 
     {/* ── Features ─────────────────────────────────────────────────── */}
     <Section id="features">
-      <Container>
-        <div class="max-w-2xl mb-16">
-          <p class="eyebrow mb-4" data-reveal>المنتج</p>
-          <h2 class="font-arabic font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
-            ورشة عمل كاملة لقواعد العربية.
-          </h2>
-        </div>
+      <Container size="wide">
+        <div class="stack-layout">
+          {/* Stationary companion (Pépite-style): sticks in place while the
+              deck stacks beside it, and carries the section's story + CTAs. */}
+          <aside class="stack-intro" data-reveal>
+            <img src="/brand-mark.png" alt="" width="72" height="72" loading="lazy" class="stack-intro-mark" />
+            <p class="eyebrow mb-4">المنتج</p>
+            <h2 class="font-arabic font-bold text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.3] tracking-tight">
+              ورشة عمل كاملة لقواعد العربية.
+            </h2>
+            <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose mt-5">
+              كل بطاقة من هذه البطاقات التسع مزية تعمل اليوم في إعراب، من المحلل الفوري إلى مجالس الإعراب المباشرة. مرّر لتقلّبها بطاقة بطاقة.
+            </p>
+            <div class="flex flex-wrap gap-3 mt-8">
+              <a href="#demo" class="btn-primary">جرّب المحلل الآن</a>
+              <a href="#app" class="btn-ghost">حمّل التطبيق</a>
+            </div>
+            <p class="stack-hint font-arabic" aria-hidden="true">
+              مرّر لتقليب البطاقات
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m6 9 6 6 6-6"/></svg>
+            </p>
+          </aside>
 
-        <div class="product-grid grid grid-cols-1 md:grid-cols-3 gap-4">
+          <ul class="stack-deck">
           {features.map((f, i) => {
+            const look = stackLook[i % stackLook.length];
             return (
-              <article
-                class:list={[
-                  'product-card group relative overflow-hidden p-6 md:p-7',
-                  f.span,
-                ]}
-                data-reveal data-reveal-delay={String(i * 60)} data-tilt="5"
-              >
-                <div class="flex items-start justify-between gap-4 mb-4">
-                  <h3 class="font-arabic font-bold text-[clamp(1.35rem,2.4vw,2rem)] leading-snug">{f.title}</h3>
-                  <span class="product-index font-mono tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-                </div>
-                <p class="font-arabic text-small text-ink-muted dark:text-mist-muted leading-loose max-w-[48rem]">{f.body}</p>
-                {'href' in f && (
-                  <a href={f.href} class="inline-block mt-4 font-arabic font-bold text-purple hover:text-purple-deep text-small transition-colors duration-200">{f.linkLabel}</a>
-                )}
-              </article>
+              <li class="stack-item" style={`z-index:${i + 1}; top:calc(var(--stack-top) + ${i} * var(--stack-peek));`}>
+                <article class:list={['stack-card', look.variant]} style={`rotate:${look.rot}deg;`} data-tilt="3">
+                  <p class="stack-num font-mono tabular-nums" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+                  <div>
+                    <h3 class="font-arabic font-bold stack-title">{f.title}</h3>
+                    <p class="font-arabic stack-text leading-loose">{f.body}</p>
+                    {'href' in f && (
+                      <a href={f.href} class="stack-link font-arabic font-bold">{f.linkLabel}</a>
+                    )}
+                  </div>
+                </article>
+              </li>
             );
           })}
+          </ul>
         </div>
       </Container>
     </Section>
@@ -156,7 +186,7 @@ const faqs = [
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div class="audience-card audience-card-purple p-7 md:p-8" data-reveal>
+          <div class="audience-card audience-card-purple spot-card p-7 md:p-8" data-reveal>
             <p class="audience-kicker font-arabic font-bold mb-5">الطلاب</p>
             <h3 class="font-arabic font-bold text-h2 leading-tight mb-6">من البسملة إلى البقرة.</h3>
             <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose">
@@ -164,7 +194,7 @@ const faqs = [
             </p>
           </div>
 
-          <div class="audience-card audience-card-teal p-7 md:p-8" data-reveal data-reveal-delay="100">
+          <div class="audience-card audience-card-teal spot-card p-7 md:p-8" data-reveal data-reveal-delay="100">
             <p class="audience-kicker font-arabic font-bold mb-5">المعلّمون</p>
             <h3 class="font-arabic font-bold text-h2 leading-tight mb-6">افحص في ثوانٍ.</h3>
             <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose mb-6">
@@ -173,7 +203,7 @@ const faqs = [
             <a href="/teachers" class="audience-link font-arabic font-bold text-teal hover:text-teal-deep text-small transition-colors duration-200">للمدارس والأكاديميات</a>
           </div>
 
-          <div class="audience-card audience-card-ink p-7 md:p-8" data-reveal data-reveal-delay="200">
+          <div class="audience-card audience-card-ink spot-card p-7 md:p-8" data-reveal data-reveal-delay="200">
             <p class="audience-kicker font-arabic font-bold mb-5">طلاب العلم</p>
             <h3 class="font-arabic font-bold text-h2 leading-tight mb-6">رأي ثانٍ، فوريّ.</h3>
             <p class="font-arabic text-body text-ink-muted dark:text-mist-muted leading-loose">
@@ -208,7 +238,7 @@ const faqs = [
             { body: 'تطبيق عظيم، يعمل على جهازي ماك وهذا الذي أبهرني. شكرًا جزيلًا.', name: 'مستخدم App Store', detail: '★★★★★ · App Store' },
             { body: 'خطوة ممتازة، بالتوفيق.', name: 'Albahr Malek', detail: '★★★★★ · App Store' },
           ].map((q, i) => (
-            <figure class:list={['proof-card p-6', i === 1 || i === 5 ? 'lg:col-span-2' : '']} data-reveal data-reveal-delay={String(i * 60)}>
+            <figure class:list={['proof-card spot-card p-6', i === 1 || i === 5 ? 'lg:col-span-2' : '']} data-reveal data-reveal-delay={String(i * 60)}>
               <div class="proof-stars flex items-center gap-1 mb-5" aria-label="٥ من ٥">
                 {Array.from({ length: 5 }).map(() => (
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-marfu);"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -239,7 +269,7 @@ const faqs = [
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <div class="pricing-card home-card home-card-teal relative p-8 md:p-10 flex flex-col" data-reveal>
+          <div class="pricing-card home-card home-card-teal spot-card relative p-8 md:p-10 flex flex-col" data-reveal>
             <span class="pricing-ribbon absolute -top-3 right-8 px-4 py-1.5 bg-teal text-white text-small font-arabic font-bold rounded-full">ابدأ هنا</span>
             <div class="flex items-baseline justify-between gap-3 mb-2 mt-2">
               <h3 class="font-arabic-display text-h2 leading-tight">مجاني</h3>
@@ -260,7 +290,7 @@ const faqs = [
             </a>
           </div>
 
-          <div class="pricing-card home-card home-card-purple relative p-8 md:p-10 flex flex-col" data-reveal data-reveal-delay="100">
+          <div class="pricing-card home-card home-card-purple spot-card relative p-8 md:p-10 flex flex-col" data-reveal data-reveal-delay="100">
             <span class="pricing-ribbon absolute -top-3 right-8 px-4 py-1.5 bg-purple text-white text-small font-arabic font-bold rounded-full">للجادّين</span>
             <div class="flex items-baseline justify-between gap-3 mb-2 mt-2">
               <h3 class="font-arabic-display text-h2 leading-tight">Irab Plus</h3>
@@ -307,7 +337,7 @@ const faqs = [
 
           <div class="md:col-span-2 space-y-3" data-acc-group>
             {faqs.map((f) => (
-              <details class="faq-card group cursor-pointer" data-acc>
+              <details class="faq-card group cursor-pointer spot-card" data-acc>
                 <summary class="flex items-start justify-between gap-6 list-none p-5 md:p-6 [&::-webkit-details-marker]:hidden">
                   <h3 class="font-arabic font-bold text-h3 leading-snug pl-4 transition-colors duration-200 group-hover:text-purple">{f.q}</h3>
                   <span class="acc-icon shrink-0 mt-1 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 text-purple">
@@ -369,14 +399,154 @@ const faqs = [
   </script>
 
   <style>
+    /* Shared card family: clear rest-state definition (visible border +
+       seated shadow), silky shared transition for the hover lift. */
     .product-card,
     .audience-card,
     .proof-card,
-    .pricing-card,
+    .pricing-card {
+      position: relative;
+      background: var(--color-card);
+      border: 1px solid color-mix(in srgb, var(--color-ink) 12%, var(--color-card-edge));
+      border-radius: 0.75rem;
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.78),
+        0 1px 2px rgb(23 56 71 / 0.05),
+        0 10px 22px -18px rgb(23 56 71 / 0.18),
+        0 18px 44px -34px rgb(23 56 71 / 0.2);
+      transform: translate3d(0, 0, 0);
+      transition:
+        transform 420ms var(--ease-out-quart),
+        box-shadow 420ms var(--ease-out-quart),
+        border-color 320ms var(--ease-out-quart),
+        background-color 320ms var(--ease-out-quart),
+        filter 320ms var(--ease-out-quart);
+      transform-origin: center;
+      will-change: transform;
+    }
+
+    /* ── Features: sticky stacked deck ──────────────────────────────
+       Each li sticks below the nav with a staggered top; the next card
+       scrolls over the previous, building a hand-stacked deck. Pure CSS,
+       no scroll listeners. Cards keep [data-tilt] on hover: the tilt's
+       inline transform composes with the rotate property set per card. */
+    /* Two-column split (Pépite-style): the intro panel sticks in place at
+       the deck's own stick line while the cards pile up beside it. Intro
+       first in DOM = inline-start = the RIGHT column in RTL. Below lg the
+       intro flows normally above the deck. */
+    .stack-layout {
+      --stack-top: 5.5rem;
+      display: grid;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (min-width: 1024px) {
+      .stack-layout { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 3rem; }
+      .stack-intro { position: sticky; top: var(--stack-top); }
+    }
+    .stack-intro {
+      border-radius: 1.75rem;
+      border: 1px solid var(--color-card-edge);
+      background: var(--color-card);
+      padding: clamp(1.75rem, 3.2vw, 2.75rem);
+      box-shadow:
+        0 2px 8px -4px rgb(23 56 71 / 0.1),
+        0 20px 48px -24px rgb(23 56 71 / 0.28);
+    }
+    :global(.dark) .stack-intro {
+      background: var(--color-coal-soft);
+      border-color: var(--color-coal-edge);
+      box-shadow:
+        0 2px 10px -5px rgb(0 0 0 / 0.5),
+        0 22px 52px -26px rgb(0 0 0 / 0.7);
+    }
+    .stack-intro-mark {
+      width: 4.25rem; height: 4.25rem; border-radius: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 24px -10px rgb(23 56 71 / 0.35);
+    }
+    .stack-hint {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-top: 2.25rem;
+      font-size: var(--text-small);
+      color: var(--color-ink-subtle);
+    }
+    :global(.dark) .stack-hint { color: var(--color-mist-subtle); }
+    .stack-hint svg { animation: hint-bob 1.6s ease-in-out infinite; }
+    @keyframes hint-bob {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(5px); }
+    }
+    @media (prefers-reduced-motion: reduce) { .stack-hint svg { animation: none; } }
+
+    .stack-deck {
+      --stack-peek: 2.1rem;
+      position: relative;
+      list-style: none;
+      margin: 0 auto;
+      padding: 0 0 3.5rem;
+      max-width: 46rem;
+      width: 100%;
+    }
+    .stack-item { position: sticky; }
+    .stack-card {
+      display: flex; flex-direction: column; justify-content: space-between;
+      gap: 1.75rem;
+      min-height: clamp(19rem, 46vh, 23rem);
+      border-radius: 1.75rem;
+      border: 1px solid transparent;
+      padding: clamp(1.5rem, 3.2vw, 2.4rem);
+      box-shadow:
+        0 4px 12px -6px rgb(23 56 71 / 0.14),
+        0 24px 54px -22px rgb(23 56 71 / 0.38);
+    }
+    :global(.dark) .stack-card {
+      box-shadow:
+        0 4px 14px -8px rgb(0 0 0 / 0.55),
+        0 26px 60px -24px rgb(0 0 0 / 0.8);
+    }
+    .stack-num {
+      font-size: clamp(3.2rem, 7vw, 4.6rem);
+      line-height: 1; font-weight: 700; letter-spacing: -0.05em;
+      opacity: 0.92;
+    }
+    .stack-title { font-size: clamp(1.35rem, 2.6vw, 1.85rem); line-height: 1.4; margin-bottom: 0.65rem; }
+    .stack-text { font-size: clamp(0.95rem, 1.7vw, 1.06rem); opacity: 0.94; max-width: 36rem; }
+    .stack-link {
+      display: inline-block; margin-top: 1rem; color: inherit;
+      text-decoration: underline; text-underline-offset: 5px;
+      transition: opacity .2s;
+    }
+    .stack-link:hover { opacity: .75; }
+
+    .stack-purple      { background: var(--color-purple); color: #fff; }
+    .stack-purple-deep { background: var(--color-purple-deep); color: #fff; }
+    .stack-teal        { background: var(--color-teal); color: #fff; }
+    .stack-teal-deep   { background: var(--color-teal-deep); color: #fff; }
+    .stack-ink         { background: var(--color-ink); color: var(--color-paper); }
+    :global(.dark) .stack-ink { background: var(--color-mist); color: var(--color-coal); }
+    .stack-light {
+      background: var(--color-card); color: var(--color-ink);
+      border-color: var(--color-card-edge);
+    }
+    :global(.dark) .stack-light {
+      background: var(--color-coal-soft); color: var(--color-mist);
+      border-color: var(--color-coal-edge);
+    }
+    .stack-light .stack-text { color: var(--color-ink-muted); opacity: 1; }
+    :global(.dark) .stack-light .stack-text { color: var(--color-mist-muted); }
+    .stack-accent-purple .stack-num { color: var(--color-purple); }
+    .stack-accent-teal .stack-num { color: var(--color-teal); }
+    .stack-light .stack-link { color: var(--color-purple); }
+
+    @media (max-width: 640px) {
+      .stack-deck { --stack-top: 4.75rem; --stack-peek: 1.4rem; }
+    }
+
     .faq-card {
       position: relative;
       background: var(--color-card);
-      border: 1px solid var(--color-card-edge);
+      border: 1px solid color-mix(in srgb, var(--color-ink) 12%, var(--color-card-edge));
       border-radius: 0.75rem;
       box-shadow:
         inset 0 1px 0 rgb(255 255 255 / 0.78),
@@ -400,7 +570,7 @@ const faqs = [
     :global(.dark) .pricing-card,
     :global(.dark) .faq-card {
       background: var(--color-coal-soft);
-      border-color: var(--color-coal-edge);
+      border-color: color-mix(in srgb, var(--color-mist) 10%, var(--color-coal-edge));
       box-shadow:
         inset 0 1px 0 rgb(255 255 255 / 0.04),
         0 2px 8px -3px rgb(0 0 0 / 0.42),

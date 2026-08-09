@@ -37,7 +37,7 @@ const schema = {
 
     <div class="flex flex-col gap-2.5" data-acc-group>
       {items.map((f) => (
-        <details class="card overflow-hidden group" data-acc>
+        <details class="card overflow-hidden group acc-card" data-acc>
           <summary class="flex items-center justify-between gap-4 list-none select-none px-5 py-5 md:px-6 [&::-webkit-details-marker]:hidden">
             <h3 class:list={[titleClass, 'text-h3 leading-snug transition-colors duration-200 group-hover:text-purple']}>{f.q}</h3>
             <span class="acc-icon shrink-0 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 text-purple">

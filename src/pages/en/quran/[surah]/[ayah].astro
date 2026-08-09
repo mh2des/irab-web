@@ -86,7 +86,7 @@ const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
             <h2>Frequently asked</h2>
             <div class="faq" data-acc-group>
               {ayah.faqs_en.map((f) => (
-                <details class="exp" data-acc><summary>{f.q}</summary><p class="faq-a">{f.a}</p></details>
+                <details class="exp acc-card" data-acc><summary>{f.q}</summary><p class="faq-a">{f.a}</p></details>
               ))}
             </div>
           </section>
@@ -215,6 +215,7 @@ const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
   :global(.dark) .exp { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
   .exp summary { cursor: pointer; font-weight: 600; padding: 0.6rem 0; font-size: 1.05rem; color: var(--color-ink); }
   :global(.dark) .exp summary { color: var(--color-mist); }
+  .exp:hover summary,
   .exp.acc-open summary,
   .exp[open]:not(.acc-on) summary { color: var(--color-purple); }
   .faq-a { padding: 0.2rem 0 0.9rem; line-height: 1.8; font-size: 1.05rem; color: color-mix(in srgb, var(--color-ink) 80%, transparent); }
