@@ -1,60 +1,55 @@
 ---
 /**
- * /pricing: public pricing page for Irab Plus (Arabic).
+ * /en/pricing: English twin of the Arabic pricing page.
  *
- * Doubles as the page Paddle's verification (and reviewers/AEO) read to learn
- * what we sell. Shows the two plans + what's included, notes Paddle as Merchant
- * of Record and that tax is added at checkout. Indexed (SEO).
- *
- * Design: calm, premium, conversion-focused. Ambient brand glows, a featured
- * annual card with a breathing halo, a free-vs-Plus comparison, and staggered
- * GSAP reveals (the site-wide [data-reveal] system). Every claim mirrors the
- * verified homepage/tool copy. CTAs carry the plan (/app?checkout=…) and the
- * page stays Firebase-free.
+ * Same structure, styles, and verified claims as /pricing: two plans,
+ * free-vs-Plus comparison, what Plus unlocks, pre-purchase FAQ (animated
+ * accordion), final CTA. CTAs carry the plan to /en/app?checkout=… and the
+ * page stays Firebase-free. Payments via Paddle (Merchant of Record).
  */
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Nav from '../components/Nav.astro';
-import Container from '../components/Container.astro';
-import Section from '../components/Section.astro';
-import Footer from '../components/sections/Footer.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Container from '../../components/Container.astro';
+import Section from '../../components/Section.astro';
+import Footer from '../../components/sections/Footer.astro';
 
 const features = [
-  { t: 'تحليلات إعرابية غير محدودة', b: 'أعرِب ما شئت متى شئت: كلمة بكلمة، بالنوع والوظيفة والعلامة والتشكيل.', i: 'M12 12c-2-2.67-4-4-6-4a4 4 0 0 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4Z' },
-  { t: 'تقييمٌ فوري لإعرابك أنت', b: 'أعرِب بنفسك واحصل على تصحيحٍ وشرح لكل كلمة: الميزة التي تصنع الإتقان.', i: 'M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4 12 14.01l-3-3' },
-  { t: 'بنك التدريب الكامل: ٥٧٦ جملة', b: 'جملٌ منتقاة بمستويات متدرّجة، بدل مستويين في الخطة المجانية.', i: 'M12 2 2 7l10 5 10-5-10-5ZM2 17l10 5 10-5M2 12l10 5 10-5' },
-  { t: 'كل أبواب التحدّي السبعة', b: 'مع الشروحات المدفوعة لكل إجابة، لا البابين الأولين فقط.', i: 'M6 9H4.5a2.5 2.5 0 0 1 0-5H6m12 5h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22m7-7.34V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z' },
-  { t: 'المعجم الذكي بلا حدود', b: 'بحثٌ غير محدود بالذكاء الاصطناعي، بدل ٥ عمليات يوميًّا.', i: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2V3Zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7V3Z' },
-  { t: 'إدخال صوتي وتصوير النص', b: 'تكلّم بالجملة أو صوّرها بكاميرا OCR ثم أعرِبها مباشرة.', i: 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2v11ZM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z' },
-  { t: 'تصدير PDF وبطاقات مشاركة', b: 'صدّر تحليلاتك وشارك بطاقاتٍ أنيقة بلا علامةٍ مائية.', i: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3' },
-  { t: 'شهادات الإتقان', b: 'على الخطة السنوية: شهادة قابلة للمشاركة بعد إتقان كل موضوع.', i: 'M12 15a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm0 0 3.5 7L12 20l-3.5 2 3.5-7Z' },
+  { t: "Unlimited i'rab analyses", b: 'Parse anything, anytime: word by word, with type, role, case marker, and vocalization.', i: 'M12 12c-2-2.67-4-4-6-4a4 4 0 0 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4Z' },
+  { t: "Instant grading of your i'rab", b: 'Write the i\'rab yourself and get corrections with per-word explanations: the feature that builds mastery.', i: 'M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4 12 14.01l-3-3' },
+  { t: 'The full practice bank: 576', b: 'Curated sentences across progressive levels, instead of two levels on the free plan.', i: 'M12 2 2 7l10 5 10-5-10-5ZM2 17l10 5 10-5M2 12l10 5 10-5' },
+  { t: 'All seven challenge babs', b: 'With full explanations for every answer, not just the first two babs.', i: 'M6 9H4.5a2.5 2.5 0 0 1 0-5H6m12 5h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22m7-7.34V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z' },
+  { t: 'Smart Dictionary, unlimited', b: 'Unlimited AI-powered lookups, instead of 5 per day.', i: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2V3Zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7V3Z' },
+  { t: 'Voice input and OCR', b: 'Speak a sentence, or capture it with the OCR camera and parse it directly.', i: 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2v11ZM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z' },
+  { t: 'PDF export and share cards', b: 'Export your analyses and share elegant cards with no watermark.', i: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3' },
+  { t: 'Mastery certificates', b: 'On the annual plan: a shareable certificate after mastering each topic.', i: 'M12 15a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm0 0 3.5 7L12 20l-3.5 2 3.5-7Z' },
 ];
 
 const compare = [
-  { f: 'التحليلات الإعرابية', free: '٣ يوميًّا', plus: 'غير محدودة' },
-  { f: 'تقييم إعرابك الخاص', free: null, plus: 'مع شرحٍ لكل كلمة' },
-  { f: 'بنك التدريب', free: 'المستويان ١–٢', plus: '٥٧٦ جملة كاملة' },
-  { f: 'أبواب التحدّيات', free: 'البابان ١–٢', plus: 'كل الأبواب السبعة' },
-  { f: 'المعجم الذكي', free: '٥ عمليات يوميًّا', plus: 'بلا حدود' },
-  { f: 'OCR وتصدير PDF', free: null, plus: 'مضمّنان' },
-  { f: 'شهادات الإتقان', free: null, plus: 'مع الخطة السنوية' },
+  { f: "I'rab analyses", free: '3 per day', plus: 'Unlimited' },
+  { f: "Grading your own i'rab", free: null, plus: 'With per-word explanations' },
+  { f: 'Practice bank', free: 'Levels 1–2', plus: 'All 576 sentences' },
+  { f: 'Challenge babs', free: 'Babs 1–2', plus: 'All seven babs' },
+  { f: 'Smart Dictionary', free: '5 lookups per day', plus: 'Unlimited' },
+  { f: 'OCR & PDF export', free: null, plus: 'Included' },
+  { f: 'Mastery certificates', free: null, plus: 'With the annual plan' },
 ];
 
 const faqs = [
-  { q: 'هل التجربة المجانية مجانية فعلًا؟', a: 'نعم. عند اختيار الخطة السنوية تدفع ٠٫٠٠$ اليوم، ولك ٧ أيام كاملة بكل الميزات. إن ألغيت قبل انتهائها فلن تُحاسَب، وإلا بدأ الاشتراك السنوي ٣٥٫٩٩$.' },
-  { q: 'هل يعمل الاشتراك على الويب والتطبيق معًا؟', a: 'نعم. اشتراكٌ واحد بحسابك نفسه يفتح كل شيء على الموقع وفي تطبيق iOS وAndroid، أينما سجّلت دخولك.' },
-  { q: 'ماذا يحدث إذا ألغيت؟', a: 'تُلغي في أي وقت، ويبقى وصولك الكامل حتى نهاية الفترة المدفوعة، ثم تعود تلقائيًّا إلى الخطة المجانية دون فقدان حسابك أو تقدّمك.' },
-  { q: 'كيف تتم معالجة الدفع؟', a: 'عبر Paddle (بائع التسجيل)، بأمانٍ كامل وببطاقات الدفع الشائعة وPayPal وApple Pay وGoogle Pay. تُضاف الضرائب عند الدفع حسب بلدك، وقد تختلف الأسعار الإقليمية.' },
+  { q: 'Is the free trial really free?', a: 'Yes. Choose the annual plan and you pay $0.00 today, with 7 full days of every feature. Cancel before the trial ends and you won\'t be charged; otherwise the $35.99 annual subscription begins.' },
+  { q: 'Does one subscription work on both web and app?', a: 'Yes. One subscription with the same account unlocks everything on the site and in the iOS and Android apps, wherever you sign in.' },
+  { q: 'What happens if I cancel?', a: 'Cancel anytime and keep full access until the end of the paid period. You then return automatically to the free plan without losing your account or progress.' },
+  { q: 'How are payments processed?', a: 'Through Paddle (Merchant of Record), securely, with major cards, PayPal, Apple Pay, and Google Pay. Tax is added at checkout based on your country, and regional prices may vary.' },
 ];
 
 const offerSchema = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: 'Irab Plus',
-  description: 'اشتراك إعراب بلس: يفتح كلّ ميزات إعراب على الويب والتطبيق بحسابٍ واحد.',
+  description: 'Irab Plus subscription: unlocks every Irab feature on the web and in the app with one account.',
   brand: { '@type': 'Brand', name: 'Irab' },
   offers: [
-    { '@type': 'Offer', name: 'شهري', price: '4.99', priceCurrency: 'USD', url: 'https://irab.app/pricing', availability: 'https://schema.org/InStock' },
-    { '@type': 'Offer', name: 'سنوي', price: '35.99', priceCurrency: 'USD', url: 'https://irab.app/pricing', availability: 'https://schema.org/InStock' },
+    { '@type': 'Offer', name: 'Monthly', price: '4.99', priceCurrency: 'USD', url: 'https://irab.app/en/pricing', availability: 'https://schema.org/InStock' },
+    { '@type': 'Offer', name: 'Annual', price: '35.99', priceCurrency: 'USD', url: 'https://irab.app/en/pricing', availability: 'https://schema.org/InStock' },
   ],
 };
 const faqSchema = {
@@ -64,17 +59,16 @@ const faqSchema = {
 };
 ---
 <BaseLayout
-  lang="ar"
-  hasEn
-  title="الأسعار: إعراب بلس · تجربة مجانية ٧ أيام | إعراب"
-  description="اشترك في إعراب بلس: ٤٫٩٩$ شهريًّا أو ٣٥٫٩٩$ سنويًّا (تجربة مجانية ٧ أيام). يفتح كلّ الميزات على الويب والتطبيق بحسابٍ واحد. الدفع عبر Paddle."
+  lang="en"
+  title="Pricing: Irab Plus · 7-day free trial | Irab"
+  description="Subscribe to Irab Plus: $4.99/month or $35.99/year with a 7-day free trial. One subscription unlocks everything on the web and in the app. Payments via Paddle."
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(offerSchema)} is:inline />
     <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
   </Fragment>
 
-  <Nav lang="ar" />
+  <Nav lang="en" />
 
   <main class="pr-page relative overflow-hidden">
     {/* Ambient brand glows: calm, slow, behind everything. */}
@@ -85,12 +79,12 @@ const faqSchema = {
     <Section size="sm" class="relative">
       <Container size="narrow">
         <div class="text-center">
-          <p class="eyebrow justify-center mb-4" data-reveal>الأسعار</p>
-          <h1 class="font-arabic-display font-bold text-[clamp(2.2rem,5.5vw,3.6rem)] leading-[1.15] tracking-tight mb-5" data-reveal data-reveal-delay="80">
-            اشتراكٌ واحد،<br class="sm:hidden" /> يفتح كلَّ شيء.
+          <p class="eyebrow justify-center mb-4" data-reveal>Pricing</p>
+          <h1 class="font-display text-[clamp(2.2rem,5.5vw,3.6rem)] leading-[1.1] tracking-tight mb-5" data-reveal data-reveal-delay="80">
+            One subscription,<br class="sm:hidden" /> unlocks everything.
           </h1>
-          <p class="font-arabic text-body-lg text-ink/65 dark:text-mist/65 max-w-xl mx-auto leading-loose" data-reveal data-reveal-delay="160">
-            ابدأ مجانًا اليوم. ومتى اشتركت في إعراب بلس فُتح كلُّ شيء على الموقع وفي التطبيق: بالحساب نفسه.
+          <p class="text-body-lg text-ink/65 dark:text-mist/65 max-w-xl mx-auto leading-relaxed" data-reveal data-reveal-delay="160">
+            Start free today. When you subscribe to Irab Plus, everything unlocks on the site and in the app, with the same account.
           </p>
         </div>
       </Container>
@@ -103,52 +97,52 @@ const faqSchema = {
 
           {/* Annual: featured */}
           <div class="pr-card pr-card-featured p-8 md:p-9 flex flex-col" data-reveal>
-            <span class="pr-ribbon">الأفضل قيمة · وفّر ٤٠٪</span>
+            <span class="pr-ribbon">Best value · Save 40%</span>
 
-            <p class="font-arabic-display text-h3 mb-4 mt-1">سنوي</p>
+            <p class="font-display text-h3 mb-4 mt-1">Annual</p>
             <p class="flex items-baseline gap-2 mb-1">
-              <span class="font-arabic-display text-[3.2rem] leading-none tracking-tight">٣٥٫٩٩$</span>
-              <span class="text-ink/60 dark:text-mist/60 text-small">/ سنويًّا</span>
+              <span class="font-display text-[3.2rem] leading-none tracking-tight">$35.99</span>
+              <span class="text-ink/60 dark:text-mist/60 text-small">/ year</span>
             </p>
-            <p class="font-arabic text-small text-purple-deep dark:text-purple font-bold mb-6">≈ ٣٫٠٠$ شهريًّا فقط</p>
+            <p class="text-small text-purple-deep dark:text-purple font-bold mb-6">≈ just $3.00 a month</p>
 
             <ul class="pr-perks flex-1">
-              <li>تجربة مجانية ٧ أيام: تدفع ٠٫٠٠$ اليوم</li>
-              <li>كل ميزات بلس، بلا استثناء</li>
-              <li>شهادات الإتقان القابلة للمشاركة</li>
+              <li>7-day free trial: pay $0.00 today</li>
+              <li>Every Plus feature, no exceptions</li>
+              <li>Shareable mastery certificates</li>
             </ul>
 
-            <a href="/app?checkout=annual" class="btn-primary btn-block btn-lg mt-7">
-              ابدأ التجربة المجانية
-              <svg class="pr-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
+            <a href="/en/app?checkout=annual" class="btn-primary btn-block btn-lg mt-7">
+              Start your free trial
+              <svg class="pr-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
             </a>
-            <p class="text-caption text-ink/55 dark:text-mist/55 text-center mt-3">لن تُحاسَب اليوم · تذكّر الإلغاء قبل اليوم السابع إن غيّرت رأيك</p>
+            <p class="text-caption text-ink/55 dark:text-mist/55 text-center mt-3">You won't be charged today · Cancel before day 7 if you change your mind</p>
           </div>
 
           {/* Monthly: quiet */}
           <div class="pr-card p-8 md:p-9 flex flex-col" data-reveal data-reveal-delay="120">
-            <p class="font-arabic-display text-h3 mb-4 mt-1">شهري</p>
+            <p class="font-display text-h3 mb-4 mt-1">Monthly</p>
             <p class="flex items-baseline gap-2 mb-1">
-              <span class="font-arabic-display text-[3.2rem] leading-none tracking-tight">٤٫٩٩$</span>
-              <span class="text-ink/60 dark:text-mist/60 text-small">/ شهريًّا</span>
+              <span class="font-display text-[3.2rem] leading-none tracking-tight">$4.99</span>
+              <span class="text-ink/60 dark:text-mist/60 text-small">/ month</span>
             </p>
-            <p class="font-arabic text-small text-ink/55 dark:text-mist/55 mb-6">مرونة كاملة، شهرًا بشهر</p>
+            <p class="text-small text-ink/55 dark:text-mist/55 mb-6">Full flexibility, month to month</p>
 
             <ul class="pr-perks flex-1">
-              <li>كل ميزات بلس نفسها</li>
-              <li>يُجدَّد شهريًّا، ألغِ متى شئت</li>
-              <li>ابدأ الآن وبدّل إلى السنوي لاحقًا</li>
+              <li>The same full Plus feature set</li>
+              <li>Renews monthly, cancel anytime</li>
+              <li>Start now, switch to annual later</li>
             </ul>
 
-            <a href="/app?checkout=monthly" class="btn-ghost btn-block btn-lg mt-7">اشترك شهريًّا</a>
-            <p class="text-caption text-ink/55 dark:text-mist/55 text-center mt-3">بلا التزامٍ طويل: توقّف متى أردت</p>
+            <a href="/en/app?checkout=monthly" class="btn-ghost btn-block btn-lg mt-7">Subscribe monthly</a>
+            <p class="text-caption text-ink/55 dark:text-mist/55 text-center mt-3">No long commitment: stop whenever you want</p>
           </div>
         </div>
 
         <p class="text-caption text-ink/60 dark:text-mist/60 text-center mt-8 max-w-xl mx-auto leading-relaxed" data-reveal>
-          الأسعار الإقليمية قد تختلف، وتُضاف الضرائب عند الدفع حسب بلدك. الدفع عبر <strong>Paddle</strong> (بائع التسجيل). راجع
-          <a href="/refund" class="text-purple hover:text-purple-deep underline underline-offset-2">سياسة الاسترداد</a> و
-          <a href="/terms" class="text-purple hover:text-purple-deep underline underline-offset-2">الشروط</a>.
+          Regional prices may vary, and tax is added at checkout based on your country. Payments are processed by <strong>Paddle</strong> (Merchant of Record). See the
+          <a href="/refund" class="text-purple hover:text-purple-deep underline underline-offset-2">refund policy</a> and
+          <a href="/terms" class="text-purple hover:text-purple-deep underline underline-offset-2">terms</a>.
         </p>
       </Container>
     </Section>
@@ -157,23 +151,23 @@ const faqSchema = {
     <Section class="section-tint border-y border-stone dark:border-coal-edge">
       <Container size="narrow">
         <div class="text-center mb-10">
-          <p class="eyebrow justify-center mb-4" data-reveal>المقارنة بوضوح</p>
-          <h2 class="font-arabic-display font-bold text-[clamp(1.7rem,3.8vw,2.6rem)] leading-[1.25] tracking-tight" data-reveal data-reveal-delay="80">
-            المجاني كريم. وبلس بلا سقف.
+          <p class="eyebrow justify-center mb-4" data-reveal>The comparison, plainly</p>
+          <h2 class="font-display text-[clamp(1.7rem,3.8vw,2.6rem)] leading-[1.15] tracking-tight" data-reveal data-reveal-delay="80">
+            Free is generous. Plus has no ceiling.
           </h2>
         </div>
 
-        <div class="pr-table" data-reveal role="table" aria-label="مقارنة الخطة المجانية بإعراب بلس">
+        <div class="pr-table" data-reveal role="table" aria-label="Free plan vs Irab Plus comparison">
           <div class="pr-row pr-row-head" role="row">
-            <span role="columnheader" class="text-start">الميزة</span>
-            <span role="columnheader">المجاني</span>
-            <span role="columnheader" class="pr-col-plus">بلس</span>
+            <span role="columnheader" class="text-start">Feature</span>
+            <span role="columnheader">Free</span>
+            <span role="columnheader" class="pr-col-plus">Plus</span>
           </div>
           {compare.map((r) => (
             <div class="pr-row" role="row">
               <span role="cell" class="text-start font-semibold">{r.f}</span>
               <span role="cell" class="text-ink/60 dark:text-mist/60">
-                {r.free ?? <svg class="pr-dash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-label="غير متاح"><path d="M5 12h14"/></svg>}
+                {r.free ?? <svg class="pr-dash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-label="Not included"><path d="M5 12h14"/></svg>}
               </span>
               <span role="cell" class="pr-col-plus font-semibold">{r.plus}</span>
             </div>
@@ -186,9 +180,9 @@ const faqSchema = {
     <Section>
       <Container>
         <div class="text-center mb-12">
-          <p class="eyebrow justify-center mb-4" data-reveal>ماذا يفتح لك بلس</p>
-          <h2 class="font-arabic-display font-bold text-[clamp(1.7rem,3.8vw,2.6rem)] leading-[1.25] tracking-tight" data-reveal data-reveal-delay="80">
-            كلُّ ما تحتاجه لتُتقن الإعراب فعلًا.
+          <p class="eyebrow justify-center mb-4" data-reveal>What Plus unlocks</p>
+          <h2 class="font-display text-[clamp(1.7rem,3.8vw,2.6rem)] leading-[1.15] tracking-tight" data-reveal data-reveal-delay="80">
+            Everything you need to truly master i'rab.
           </h2>
         </div>
 
@@ -198,8 +192,8 @@ const faqSchema = {
               <span class="pr-feature-ic" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={f.i}/></svg>
               </span>
-              <h3 class="font-arabic font-bold text-h3 leading-snug mb-2">{f.t}</h3>
-              <p class="font-arabic text-small text-ink/65 dark:text-mist/65 leading-relaxed">{f.b}</p>
+              <h3 class="font-display text-h3 leading-snug mb-2">{f.t}</h3>
+              <p class="text-small text-ink/65 dark:text-mist/65 leading-relaxed">{f.b}</p>
             </article>
           ))}
         </div>
@@ -209,18 +203,18 @@ const faqSchema = {
     {/* ── FAQ ──────────────────────────────────────────────────────── */}
     <Section size="sm" class="!pt-0">
       <Container size="narrow">
-        <h2 class="font-arabic-display font-bold text-[clamp(1.5rem,3.2vw,2.1rem)] text-center mb-8" data-reveal>أسئلة قبل الاشتراك</h2>
+        <h2 class="font-display text-[clamp(1.5rem,3.2vw,2.1rem)] text-center mb-8" data-reveal>Questions before subscribing</h2>
         <div class="space-y-3 max-w-2xl mx-auto" data-acc-group>
           {faqs.map((f) => (
             <details class="pr-faq group cursor-pointer acc-card" data-reveal data-acc>
               <summary class="flex items-start justify-between gap-6 list-none p-5 [&::-webkit-details-marker]:hidden">
-                <h3 class="font-arabic font-bold text-h3 leading-snug transition-colors duration-200 group-hover:text-purple">{f.q}</h3>
+                <h3 class="font-display text-h3 leading-snug transition-colors duration-200 group-hover:text-purple">{f.q}</h3>
                 <span class="acc-icon shrink-0 mt-1 grid place-items-center w-8 h-8 rounded-full bg-purple/8 group-hover:bg-purple/15 text-purple">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path class="acc-v" d="M12 5v14"/><path d="M5 12h14"/></svg>
                 </span>
               </summary>
               <div class="px-5 pb-6">
-                <p class="font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose">{f.a}</p>
+                <p class="text-body text-ink/70 dark:text-mist/70 leading-relaxed">{f.a}</p>
               </div>
             </details>
           ))}
@@ -232,18 +226,18 @@ const faqSchema = {
     <Section size="sm" class="!pt-0">
       <Container size="narrow">
         <div class="pr-final text-center p-10 md:p-14" data-reveal>
-          <h2 class="font-arabic-display font-bold text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.2] text-white mb-4">جرّب بلس ٧ أيام. مجانًا.</h2>
-          <p class="font-arabic text-body-lg text-white/85 leading-loose max-w-md mx-auto mb-8">لن تدفع شيئًا اليوم، وستشعر بالفرق من أول جملةٍ تُعربها.</p>
-          <a href="/app?checkout=annual" class="pr-final-btn lift">
-            ابدأ تجربتك المجانية الآن
+          <h2 class="font-display text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.1] text-white mb-4">Try Plus free for 7 days.</h2>
+          <p class="text-body-lg text-white/85 leading-relaxed max-w-md mx-auto mb-8">You pay nothing today, and you'll feel the difference from the first sentence you parse.</p>
+          <a href="/en/app?checkout=annual" class="pr-final-btn lift">
+            Start your free trial now
           </a>
-          <p class="text-caption text-white/70 mt-4">٧ أيام مجانًا ثم ٣٥٫٩٩$ سنويًّا · ألغِ في أيّ وقت</p>
+          <p class="text-caption text-white/70 mt-4">7 days free, then $35.99/year · Cancel anytime</p>
         </div>
       </Container>
     </Section>
   </main>
 
-  <Footer lang="ar" />
+  <Footer lang="en" />
 </BaseLayout>
 
 <style>
@@ -284,12 +278,12 @@ const faqSchema = {
   .pr-ribbon {
     position: absolute; top: -0.85rem; inset-inline-start: 1.75rem;
     padding: 0.35rem 0.9rem; border-radius: 999px;
-    font-family: var(--font-arabic); font-size: 0.85rem; font-weight: 700;
+    font-size: 0.85rem; font-weight: 700;
     color: #fff; background: var(--color-purple);
     box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--color-purple) 80%, transparent);
   }
 
-  .pr-perks { display: flex; flex-direction: column; gap: 0.65rem; font-family: var(--font-arabic); }
+  .pr-perks { display: flex; flex-direction: column; gap: 0.65rem; }
   .pr-perks li {
     position: relative; padding-inline-start: 1.6rem;
     font-size: 1rem; line-height: 1.7;
@@ -309,10 +303,9 @@ const faqSchema = {
     transform: rotate(-45deg);
   }
 
-  /* Forward arrow: in RTL "onward" points left, so the left-pointing path
-     stays unflipped and nudges further left on hover. */
+  /* Forward arrow (LTR: onward points right, nudges further right on hover). */
   .pr-cta-arrow { width: 1.05rem; height: 1.05rem; margin-inline-start: 0.4rem; transition: transform 0.25s; }
-  :global(a:hover) > .pr-cta-arrow { transform: translateX(-3px); }
+  :global(a:hover) > .pr-cta-arrow { transform: translateX(3px); }
 
   /* ── FAQ cards (homepage look, local styles) ─────────────────────── */
   .pr-faq {
@@ -342,7 +335,7 @@ const faqSchema = {
   .pr-row {
     display: grid; grid-template-columns: 1.4fr 1fr 1fr; align-items: center;
     gap: 0.75rem; padding: 0.9rem 1.25rem; text-align: center;
-    font-family: var(--font-arabic); font-size: 0.98rem;
+    font-size: 0.98rem;
     border-bottom: 1px solid color-mix(in srgb, var(--color-card-edge) 70%, transparent);
   }
   :global(.dark) .pr-row { border-color: color-mix(in srgb, var(--color-coal-edge) 80%, transparent); }
@@ -385,7 +378,7 @@ const faqSchema = {
   .pr-final-btn {
     display: inline-flex; align-items: center; justify-content: center;
     padding: 0.95rem 2.2rem; border-radius: 999px;
-    font-family: var(--font-arabic); font-weight: 700; font-size: 1.1rem;
+    font-weight: 700; font-size: 1.1rem;
     color: var(--color-purple-deep); background: #fff;
     box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.35);
   }

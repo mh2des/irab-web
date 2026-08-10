@@ -20,7 +20,6 @@ const t = lang === 'ar'
       pricing:  'الأسعار',
       features: 'المميزات',
       majalis:  'المجالس',
-      newBadge: 'جديد',
       signin:   'دخول',
       myApp:    'حسابي',
       cta:      'جرِّب بلس',
@@ -37,7 +36,6 @@ const t = lang === 'ar'
       pricing:  'Pricing',
       features: 'Features',
       majalis:  'Majalis',
-      newBadge: 'New',
       signin:   'Sign in',
       myApp:    'Profile',
       cta:      'Try Plus',
@@ -55,7 +53,7 @@ const dictionaryHref = lang === 'ar' ? '/dictionary' : '/en/dictionary'; // smar
 const libraryHref = lang === 'ar' ? '/library' : '/en/library'; // classical grammar library
 const signinHref = lang === 'ar' ? '/login' : '/en/login'; // web account
 const appHref = lang === 'ar' ? '/app' : '/en/app'; // signed in web app hub
-const pricingHref = '/pricing'; // single shared pricing page (no EN twin yet)
+const pricingHref = lang === 'ar' ? '/pricing' : '/en/pricing';
 const majalisHref = '/majalis'; // live-quiz landing (AR only; EN nav keeps Features)
 // «جرِّب بلس» goes to the plan chooser, NOT straight into a checkout: the
 // user picks annual (with trial) or monthly there, then /app?checkout=<plan>
@@ -92,7 +90,7 @@ const isActive = (href: string) =>
         <a href={practiceHref}       class:list={['nav-link', { 'is-active': isActive(practiceHref) }]}   aria-current={isActive(practiceHref) ? 'page' : undefined}>{t.practice}</a>
         <a href={challengesHref}     class:list={['nav-link', { 'is-active': isActive(challengesHref) }]} aria-current={isActive(challengesHref) ? 'page' : undefined}>{t.challenges}</a>
         {lang === 'ar'
-          ? <a href={majalisHref} class:list={['nav-link', { 'is-active': isActive(majalisHref) }]} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis} <span class="nav-new">{t.newBadge}</span></a>
+          ? <a href={majalisHref} class:list={['nav-link', { 'is-active': isActive(majalisHref) }]} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis}</a>
           : <a href={`${home}#features`} class="nav-link">{t.features}</a>}
         <a href={dictionaryHref}     class:list={['nav-link', { 'is-active': isActive(dictionaryHref) }]} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
         <a href={quranHref}          class:list={['nav-link', { 'is-active': isActive(quranHref) }]}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
@@ -171,7 +169,7 @@ const isActive = (href: string) =>
         <a href={practiceHref}       class:list={['nav-mlink', isActive(practiceHref) && 'is-active']}   aria-current={isActive(practiceHref) ? 'page' : undefined}>{t.practice}</a>
         <a href={challengesHref}     class:list={['nav-mlink', isActive(challengesHref) && 'is-active']} aria-current={isActive(challengesHref) ? 'page' : undefined}>{t.challenges}</a>
         {lang === 'ar'
-          ? <a href={majalisHref} class:list={['nav-mlink', isActive(majalisHref) && 'is-active']} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis} <span class="nav-new">{t.newBadge}</span></a>
+          ? <a href={majalisHref} class:list={['nav-mlink', isActive(majalisHref) && 'is-active']} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis}</a>
           : <a href={`${home}#features`} class="nav-mlink">{t.features}</a>}
         <a href={dictionaryHref}     class:list={['nav-mlink', isActive(dictionaryHref) && 'is-active']} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
         <a href={quranHref}          class:list={['nav-mlink', isActive(quranHref) && 'is-active']}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
@@ -280,31 +278,6 @@ const isActive = (href: string) =>
     background: var(--color-coal-soft);
     box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--color-purple) 60%, transparent);
   }
-
-  /* «جديد» badge on the majalis nav item (unlumen glowing-badge treatment:
-     soft ambient glow + a pinging status dot). */
-  .nav-new {
-    display: inline-block; vertical-align: middle;
-    margin-inline-start: 0.15rem; padding: 0.1rem 0.45rem;
-    border-radius: 999px; font-size: 0.7rem; font-weight: 700; line-height: 1.4;
-    color: var(--color-teal);
-    background: color-mix(in srgb, var(--color-teal) 14%, transparent);
-    border: 1px solid color-mix(in srgb, var(--color-teal) 35%, transparent);
-    box-shadow: 0 0 12px color-mix(in srgb, var(--color-teal) 28%, transparent);
-  }
-  :global(.dark) .nav-new { color: color-mix(in srgb, var(--color-teal) 85%, white); }
-  .nav-new::before {
-    content: ''; display: inline-block; width: 0.3rem; height: 0.3rem;
-    margin-inline-end: 0.3rem; margin-bottom: 0.12rem;
-    border-radius: 999px; background: var(--color-teal); vertical-align: middle;
-    animation: nav-ping 2s ease-in-out infinite;
-  }
-  @keyframes nav-ping {
-    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-teal) 55%, transparent); }
-    70%  { box-shadow: 0 0 0 5px transparent; }
-    100% { box-shadow: 0 0 0 0 transparent; }
-  }
-  @media (prefers-reduced-motion: reduce) { .nav-new::before { animation: none; } }
 
   /* The Quran-i'rab feature: teal accent so it stands out as the key feature. */
   .nav-link-feature { color: var(--color-teal); font-weight: 700; }
