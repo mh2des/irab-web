@@ -62,6 +62,7 @@ const t = lang === 'ar'
       refresh: 'تحديث الصفحة',
       checkoutError: 'تعذّر فتح صفحة الدفع. تحقّق من اتصالك بالإنترنت أو عطّل مانع الإعلانات، ثم أعد المحاولة.',
       close: 'إغلاق',
+      signedIn: 'الحساب الحالي:',
     }
   : {
       eyebrow: 'Irab Plus',
@@ -97,6 +98,7 @@ const t = lang === 'ar'
       refresh: 'Refresh page',
       checkoutError: "Couldn't open the checkout. Check your connection or disable ad-blockers, then try again.",
       close: 'Close',
+      signedIn: 'Signed in as',
     };
 ---
 
@@ -161,6 +163,17 @@ const t = lang === 'ar'
           <a href={pricing} class="pw-plan-link">{t.pricing}</a>
         )}
         <p data-pw-error class="pw-error pw-hidden" role="alert">{t.checkoutError}</p>
+        {/*
+          Which account is about to be charged. A subscriber paid on one Google
+          address, later signed in with a second address of his own, saw the free
+          plan and wrote in convinced the payment had failed. Nothing on screen
+          told him which account he was looking at.
+        */}
+        <p data-pw-account class="pw-account pw-hidden">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/></svg>
+          <span>{t.signedIn}</span>
+          <span data-pw-account-email dir="ltr" class="pw-account-email"></span>
+        </p>
         <p class="pw-fineprint">
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           {t.secure}
@@ -333,6 +346,20 @@ const t = lang === 'ar'
   .dark .pw-fineprint { color: color-mix(in srgb, var(--color-mist) 56%, transparent); }
   .pw-fineprint svg { width: 0.9rem; height: 0.9rem; flex: none; }
 
+  .pw-account {
+    display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+    margin-top: 0.9rem; text-align: center; font-size: 0.78rem;
+    color: color-mix(in srgb, var(--color-ink) 52%, transparent);
+  }
+  .dark .pw-account { color: color-mix(in srgb, var(--color-mist) 52%, transparent); }
+  .pw-account svg { width: 0.85rem; height: 0.85rem; flex: none; }
+  .pw-account-email {
+    font-weight: 600; max-width: 16rem;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+  }
+  .dark .pw-account-email { color: color-mix(in srgb, var(--color-mist) 78%, transparent); }
+
   /* Activating state */
   .pw-error {
     margin-top: 0.9rem; padding: 0.7rem 0.95rem; border-radius: 10px;
@@ -397,6 +424,8 @@ const t = lang === 'ar'
       const titleEl = q<HTMLElement>('[data-pw-title]');
       const bodyEl = q<HTMLElement>('[data-pw-body]');
       const errorEl = root.querySelector<HTMLElement>('[data-pw-error]');
+      const accountEl = root.querySelector<HTMLElement>('[data-pw-account]');
+      const accountEmailEl = root.querySelector<HTMLElement>('[data-pw-account-email]');
       const actTitle = q<HTMLElement>('[data-pw-act-title]');
       const actBody = q<HTMLElement>('[data-pw-act-body]');
       const spinner = q<HTMLElement>('[data-pw-spinner]');
@@ -429,6 +458,17 @@ const t = lang === 'ar'
         titleEl.textContent = copy.title;
         bodyEl.textContent = copy.body;
         errorEl?.classList.add('pw-hidden');
+        // Resolve the account asynchronously; the paywall must never wait on it.
+        // Hidden until an email is actually known, so signed-out visitors and
+        // accounts without an email address see nothing rather than a blank label.
+        accountEl?.classList.add('pw-hidden');
+        void currentUser()
+          .then((u) => {
+            if (!u?.email || !accountEl || !accountEmailEl) return;
+            accountEmailEl.textContent = u.email;
+            accountEl.classList.remove('pw-hidden');
+          })
+          .catch(() => { /* identity is a nicety here, never a blocker */ });
         mainView.classList.remove('pw-hidden');
         activating.classList.add('pw-hidden');
         root!.classList.remove('pw-hidden');

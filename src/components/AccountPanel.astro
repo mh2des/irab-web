@@ -101,6 +101,13 @@ const t = lang === 'ar'
         </div>
         <p data-plan class="plan-name">{t.planChecking}</p>
         <p data-plan-note class="plan-note"></p>
+        {/*
+          Shown only on the free plan. A subscriber paid on one Google address,
+          signed in later with a second address of his own, and read "Free plan"
+          as proof the payment had failed. His email was already on this page and
+          that was not enough: nothing connected the address to the plan he saw.
+        */}
+        <p data-plan-hint class="plan-hint hidden"></p>
         <button type="button" data-upgrade class="upgrade-action hidden">
           <span>{t.upgrade}</span>
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={chev}/></svg>
@@ -283,6 +290,11 @@ const t = lang === 'ar'
   .plan-state { border-radius: 999px; padding: 0.28rem 0.65rem; color: white; background: var(--color-teal); font-size: 0.78rem; }
   .plan-name { margin-top: 0.5rem; font-family: var(--font-sans); font-size: clamp(2rem, 3vw, 2.75rem); font-weight: 900; line-height: 1.12; }
   .plan-note { margin-top: 0.9rem; color: rgb(255 255 255 / 0.8); font-size: 0.98rem; line-height: 1.75; }
+  .plan-hint {
+    margin-top: 0.8rem; padding-top: 0.8rem;
+    border-top: 1px solid rgb(255 255 255 / 0.14);
+    color: rgb(255 255 255 / 0.62); font-size: 0.86rem; line-height: 1.65;
+  }
   .upgrade-action {
     width: 100%; min-height: 3.2rem; margin-top: 1.15rem; display: flex; align-items: center; justify-content: space-between; gap: 0.7rem;
     border-radius: 0.75rem; padding: 0.72rem 0.9rem; color: white; background: var(--color-purple); border: 1px solid color-mix(in srgb, white 18%, var(--color-purple));
@@ -439,10 +451,12 @@ const t = lang === 'ar'
     const planText = lang === 'ar'
       ? { free: 'الخطة المجانية', plus: 'إعراب بلس',
           noteFree: 'لديك ٣ تحليلات يوميًّا. يفتح إعراب بلس التحليل غير المحدود وجميع مستويات التحديات ومزايا إضافية في التطبيق.',
-          notePlus: 'اشتراكك مفعّل على جميع أجهزتك: الويب والتطبيق.' }
+          notePlus: 'اشتراكك مفعّل على جميع أجهزتك: الويب والتطبيق.',
+          hintFree: 'اشتركت من قبل ولا يظهر اشتراكك؟ تأكّد أنك داخل بالحساب نفسه الذي دفعت به. أنت الآن داخل بحساب @email' }
       : { free: 'Free plan', plus: 'Irab Plus',
           noteFree: 'You get 3 analyses a day. Irab Plus unlocks unlimited i\'rab, every challenge level, and additional app features.',
-          notePlus: 'Your subscription is active on all your devices: web and mobile.' };
+          notePlus: 'Your subscription is active on all your devices: web and mobile.',
+          hintFree: 'Already subscribed but not seeing it here? Check that you are signed in with the address you paid with. You are currently signed in as @email' };
     const memberSince = lang === 'ar' ? 'عضو منذ' : 'Member since';
 
     onAuth((user) => {
@@ -505,6 +519,7 @@ const t = lang === 'ar'
       const planEl = q<HTMLElement>('[data-plan]');
       const planBadge = q<HTMLElement>('[data-plan-badge]');
       const planNote = q<HTMLElement>('[data-plan-note]');
+      const planHint = q<HTMLElement>('[data-plan-hint]');
       const upgrade = q<HTMLButtonElement>('[data-upgrade]');
       fetchMe(user).then((me) => {
         const premium = me?.premium === true;
@@ -514,6 +529,10 @@ const t = lang === 'ar'
           planBadge.textContent = lang === 'ar' ? 'مفعّل' : 'Active';
           planBadge.classList.remove('hidden');
         } else {
+          if (user.email) {
+            planHint.textContent = planText.hintFree.replace('@email', user.email);
+            planHint.classList.remove('hidden');
+          }
           upgrade.classList.remove('hidden');
           upgrade.addEventListener('click', () => {
             const paywall = (window as any).IrabPaywall;
@@ -522,8 +541,14 @@ const t = lang === 'ar'
           });
         }
       }).catch(() => {
+        // The lookup failed, so this "Free plan" may be wrong. That is exactly
+        // when a paying subscriber needs the account hint most.
         planEl.textContent = planText.free;
         planNote.textContent = planText.noteFree;
+        if (user.email) {
+          planHint.textContent = planText.hintFree.replace('@email', user.email);
+          planHint.classList.remove('hidden');
+        }
         upgrade.classList.remove('hidden');
       });
     });
