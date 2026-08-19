@@ -66,6 +66,7 @@ const groups: { title: string; accent: string; lessons: { slug: string; title: s
       { slug: 'al-tamyiz', title: 'التمييز', blurb: 'تمييز الذات وتمييز النسبة' },
       { slug: 'al-munada', title: 'المنادى', blurb: 'أنواعه الخمسة وبناؤه ونصبه' },
       { slug: 'al-istithna', title: 'الاستثناء', blurb: 'إلا وغير وأحكام المستثنى' },
+      { slug: 'al-adad', title: 'العدد', blurb: 'التذكير والتأنيث وتمييز العدد' },
     ],
   },
   {
@@ -86,6 +87,15 @@ const groups: { title: string; accent: string; lessons: { slug: string; title: s
       { slug: 'huruf-al-jarr', title: 'حروف الجر', blurb: 'معانيها وعملها والتعلق' },
       { slug: 'nasb-al-mudari', title: 'نصب المضارع', blurb: 'أدوات النصب وعلاماته' },
       { slug: 'jazm-al-mudari', title: 'جزم المضارع', blurb: 'أدوات الجزم وأثرها' },
+      { slug: 'uslub-al-shart', title: 'أسلوب الشرط', blurb: 'أدواته وجوابه واقترانه بالفاء' },
+    ],
+  },
+  {
+    title: 'المبنيات',
+    accent: 'var(--color-teal)',
+    lessons: [
+      { slug: 'al-damair', title: 'الضمائر', blurb: 'المنفصل والمتصل والمستتر ومحالها' },
+      { slug: 'al-asma-al-mawsula', title: 'الأسماء الموصولة', blurb: 'الصلة والعائد ومحل الموصول' },
     ],
   },
 ];
@@ -101,11 +111,11 @@ const numbered = groups.map((g, gi) => {
   return { ...g, no: hindi(gi + 1, true), lessons };
 });
 
-// 55 counted at build-review time with grep -o '﴿' src/pages/duroos/*.astro.
+// 68 counted at build-review time with grep -o '﴿' src/pages/duroos/*.astro.
 const stats = [
   { value: hindi(totalLessons), label: 'درسًا' },
   { value: hindi(groups.length), label: 'أبواب' },
-  { value: `${hindi(55)}+`, label: 'شاهدًا قرآنيًا' },
+  { value: `${hindi(68)}+`, label: 'شاهدًا قرآنيًا' },
   { value: '١٠٠٪', label: 'مجاني' },
 ];
 ---
