@@ -5,8 +5,10 @@ import Section from '../Section.astro';
 <Section size="lg" class="relative overflow-hidden" id="hero">
   {/* Ambient brand watermark: sits behind the calligraphic word, very subtle */}
   <img
-    src="/brand-watermark.png"
+    src="/brand-watermark.webp"
     alt=""
+    fetchpriority="high"
+    decoding="async"
     aria-hidden="true"
     class="hero-watermark pointer-events-none select-none absolute inset-x-0 mx-auto top-1/2 -translate-y-1/2 w-[80%] max-w-[900px] opacity-[0.04] dark:opacity-[0.08] dark:invert"
   />

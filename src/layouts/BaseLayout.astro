@@ -154,10 +154,14 @@ const hasAlternate = lang === 'en' || hasEn;
   <slot />
 
   {/* Site-wide scroll-in reveals: any [data-reveal] fades up on enter.
-      ES module → runs once per page even if a page also imports it. */}
+      Loaded AFTER window load: GSAP + the fx bundle were executing during
+      initial render and starving the main thread (TBT 690ms), which held the
+      hero image's decode+paint hostage. Nothing here is needed for first
+      paint — scroll-reveal now leaves in-viewport content untouched anyway. */}
   <script>
-    import '../scripts/scroll-reveal';
-    import '../scripts/ui-fx';
+    const boot = () => { import('../scripts/scroll-reveal'); import('../scripts/ui-fx'); };
+    if (document.readyState === 'complete') boot();
+    else window.addEventListener('load', boot, { once: true });
   </script>
 </body>
 </html>

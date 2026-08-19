@@ -23,6 +23,16 @@ document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
     return;
   }
 
+  // Never hide what the visitor can already see. This script loads after the
+  // HTML has painted, so setting opacity:0 on in-viewport elements un-renders
+  // the hero and re-reveals it ~1s later — Lighthouse measured the homepage
+  // LCP at 5.2s with 3.3s of pure render delay from exactly this. Elements
+  // already on screen keep their server-rendered paint; everything below the
+  // fold still gets the scroll-in entrance.
+  const r = el.getBoundingClientRect();
+  const inView = r.top < window.innerHeight * 0.88 && r.bottom > 0;
+  if (inView) return;
+
   gsap.set(el, { opacity: 0, y: 24 });
   ScrollTrigger.create({
     trigger: el,
