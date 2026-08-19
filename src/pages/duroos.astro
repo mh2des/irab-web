@@ -4,23 +4,35 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/sections/Footer.astro';
 import Container from '../components/Container.astro';
 import ArticleHero from '../components/ArticleHero.astro';
+import ArticleCta from '../components/ArticleCta.astro';
 
 // Hub for the grammar lessons. Every lesson below exists as
 // src/pages/duroos/<slug>.astro; keep the two in step when adding lessons.
-const groups: { title: string; lessons: { slug: string; title: string; blurb: string }[] }[] = [
+//
+// Design notes:
+// - Group accents reuse the site's i'rab case colors (--color-marfu purple,
+//   --color-majrur teal, --color-jazm warm gold): meaningful color on a
+//   lessons page, not decoration. Each card carries its group accent in a
+//   CSS custom property consumed by hover states.
+// - Aref Ruqaa (font-arabic-display) appears ONLY at large sizes and on
+//   labels of two words or fewer, per the usage rule in global.css. Card
+//   titles are the body face in bold: readable first.
+const groups: { title: string; accent: string; lessons: { slug: string; title: string; blurb: string }[] }[] = [
   {
     title: 'الجملة وأركانها',
+    accent: 'var(--color-purple)',
     lessons: [
       { slug: 'al-jumla-al-ismiyya', title: 'الجملة الاسمية', blurb: 'ركناها وأحكامها وصور الخبر' },
       { slug: 'al-mubtada-wal-khabar', title: 'المبتدأ والخبر', blurb: 'أنواعهما وحالات الرفع' },
       { slug: 'al-jumla-al-filiyya', title: 'الجملة الفعلية', blurb: 'الفعل والفاعل والمفعول وترتيبها' },
-      { slug: 'al-fail', title: 'الفاعل', blurb: 'أحكامه وصوره الثلاث' },
+      { slug: 'al-fail', title: 'الفاعل', blurb: 'أحكامه الأربعة وصوره' },
       { slug: 'naib-al-fail', title: 'نائب الفاعل', blurb: 'البناء للمجهول وأحكامه' },
       { slug: 'al-maful-bih', title: 'المفعول به', blurb: 'علامات نصبه وتقديمه وتأخيره' },
     ],
   },
   {
     title: 'علامات الإعراب',
+    accent: 'var(--color-jazm)',
     lessons: [
       { slug: 'alamat-al-irab', title: 'علامات الإعراب', blurb: 'الأصلية والفرعية وما ينوب عن ماذا' },
       { slug: 'al-afal-al-khamsa', title: 'الأفعال الخمسة', blurb: 'ثبوت النون وحذفها' },
@@ -30,13 +42,15 @@ const groups: { title: string; lessons: { slug: string; title: string; blurb: st
   },
   {
     title: 'النواسخ',
+    accent: 'var(--color-teal)',
     lessons: [
       { slug: 'kana-wa-akhawatuha', title: 'كان وأخواتها', blurb: 'عملها واسمها وخبرها' },
-      { slug: 'inna-wa-akhawatuha', title: 'إنّ وأخواتها', blurb: 'عملها ومعانيها وكسر الهمزة وفتحها' },
+      { slug: 'inna-wa-akhawatuha', title: 'إنّ وأخواتها', blurb: 'عملها وكسر الهمزة وفتحها' },
     ],
   },
   {
     title: 'المنصوبات والتوابع',
+    accent: 'var(--color-purple)',
     lessons: [
       { slug: 'al-hal', title: 'الحال', blurb: 'أنواعها وصاحب الحال' },
       { slug: 'al-tamyiz', title: 'التمييز', blurb: 'تمييز الذات وتمييز النسبة' },
@@ -46,14 +60,34 @@ const groups: { title: string; lessons: { slug: string; title: string; blurb: st
     ],
   },
   {
-    title: 'الجر والفعل المضارع',
+    title: 'الجر والمضارع',
+    accent: 'var(--color-teal)',
     lessons: [
-      { slug: 'al-idafa', title: 'الإضافة', blurb: 'المعنوية واللفظية وأحكام المضاف إليه' },
+      { slug: 'al-idafa', title: 'الإضافة', blurb: 'المعنوية واللفظية والمضاف إليه' },
       { slug: 'huruf-al-jarr', title: 'حروف الجر', blurb: 'معانيها وعملها والتعلق' },
       { slug: 'nasb-al-mudari', title: 'نصب المضارع', blurb: 'أدوات النصب وعلاماته' },
       { slug: 'jazm-al-mudari', title: 'جزم المضارع', blurb: 'أدوات الجزم وأثرها' },
     ],
   },
+];
+
+// Arabic-Indic numerals for ordinals and the running lesson counter.
+const hindi = (n: number, pad = false): string =>
+  String(n).padStart(pad ? 2 : 1, '0').replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)]);
+
+const totalLessons = groups.reduce((n, g) => n + g.lessons.length, 0);
+let running = 0;
+const numbered = groups.map((g, gi) => {
+  const lessons = g.lessons.map((l) => ({ ...l, no: hindi(++running, true) }));
+  return { ...g, no: hindi(gi + 1, true), lessons };
+});
+
+// 35 counted at build-review time with grep -o '﴿' src/pages/duroos/*.astro.
+const stats = [
+  { value: hindi(totalLessons), label: 'درسًا' },
+  { value: hindi(groups.length), label: 'أبواب' },
+  { value: `${hindi(35)}+`, label: 'شاهدًا قرآنيًا' },
+  { value: '١٠٠٪', label: 'مجاني' },
 ];
 ---
 <BaseLayout
@@ -66,36 +100,79 @@ const groups: { title: string; lessons: { slug: string; title: string; blurb: st
   <ArticleHero
     lang="ar"
     eyebrow="دروس النحو"
-    title="أبواب النحو، درسًا درسًا"
-    summary="كل درس يشرح بابًا واحدًا من أبواب الإعراب: القاعدة بلغة واضحة، ثم أمثلة معربة إعرابًا كاملًا كما تُكتب في كتب النحو، ثم الأخطاء الشائعة. اقرأ الدرس، ثم جرّب ما تعلمته على أي جملة في محلّل الإعراب."
-  />
+    title="أبواب الإعراب"
+    summary="كل درس يشرح بابًا واحدًا: القاعدة بلغة واضحة، ثم أمثلة معربة إعرابًا كاملًا كما تُكتب في كتب النحو، ثم الأخطاء الشائعة. اقرأ الدرس، ثم جرّب ما تعلمته على أي جملة في محلّل الإعراب."
+  >
+    <div class="mt-9 flex flex-wrap gap-3" data-reveal data-reveal-delay="240">
+      {stats.map((s) => (
+        <span class="inline-flex items-baseline gap-2 rounded-full border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft px-4 py-2 shadow-[0_1px_2px_rgb(23_56_71/0.05)]">
+          <strong class="font-arabic font-bold text-ink dark:text-mist">{s.value}</strong>
+          <span class="text-small text-ink-subtle dark:text-mist-subtle font-arabic">{s.label}</span>
+        </span>
+      ))}
+    </div>
+  </ArticleHero>
 
-  <section class="py-10 md:py-14">
+  <section class="py-14 md:py-20">
     <Container>
-      <div class="space-y-14">
-        {groups.map((g) => (
-          <div>
-            <h2 class="font-arabic-display font-bold text-2xl md:text-3xl mb-6">{g.title}</h2>
-            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {g.lessons.map((l) => (
+      <div class="space-y-20">
+        {numbered.map((g) => (
+          <div style={`--acc: ${g.accent}`}>
+            {/* Group header: big Ruqaa ordinal + readable bold title + count + rule */}
+            <div class="flex items-center gap-4 md:gap-5 mb-8" data-reveal>
+              <span
+                class="font-arabic-display font-bold text-4xl md:text-5xl leading-none select-none"
+                style="color: color-mix(in srgb, var(--acc) 38%, transparent)"
+                aria-hidden="true"
+              >{g.no}</span>
+              <h2 class="font-arabic font-bold text-2xl md:text-[1.75rem] text-ink dark:text-mist">{g.title}</h2>
+              <span
+                class="rounded-full px-3 py-1 text-small font-arabic font-semibold"
+                style="color: var(--acc); background: color-mix(in srgb, var(--acc) 10%, transparent)"
+              >{g.lessons.length === 2 ? 'درسان' : `${hindi(g.lessons.length)} دروس`}</span>
+              <span class="hidden sm:block flex-1 h-px bg-stone dark:bg-coal-edge"></span>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {g.lessons.map((l, i) => (
                 <a
                   href={`/duroos/${l.slug}`}
-                  class="group block rounded-xl border border-ink/10 dark:border-mist/10 p-5 hover:border-purple dark:hover:border-purple transition-colors duration-200"
+                  class="group relative flex flex-col rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6 md:p-7 shadow-[0_1px_3px_rgb(23_56_71/0.06)] transition-[transform,box-shadow,border-color] duration-300 [transition-timing-function:var(--ease-out-quart)] hover:-translate-y-1.5 hover:border-[color:color-mix(in_srgb,var(--acc)_55%,transparent)] hover:shadow-[0_24px_48px_-20px_color-mix(in_srgb,var(--acc)_38%,transparent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--acc)]"
+                  data-reveal
+                  data-reveal-delay={String((i % 3) * 80)}
                 >
-                  <span class="font-arabic-display font-bold text-lg text-ink dark:text-mist group-hover:text-purple-deep dark:group-hover:text-purple transition-colors duration-200">{l.title}</span>
-                  <p class="mt-1.5 text-small text-ink/60 dark:text-mist/60 font-arabic leading-relaxed">{l.blurb}</p>
+                  {/* Running lesson number, quiet in the corner until hover */}
+                  <span
+                    class="absolute top-5 left-6 font-arabic-display text-2xl leading-none select-none transition-colors duration-300"
+                    style="color: color-mix(in srgb, var(--acc) 26%, transparent)"
+                    aria-hidden="true"
+                  >{l.no}</span>
+
+                  <h3 class="font-arabic font-bold text-xl text-ink dark:text-mist pl-10 transition-colors duration-300 group-hover:text-[color:var(--acc)]">{l.title}</h3>
+                  <p class="mt-2.5 flex-1 text-small text-ink-subtle dark:text-mist-subtle font-arabic leading-relaxed">{l.blurb}</p>
+
+                  <span class="mt-6 pt-4 border-t border-stone dark:border-coal-edge flex items-center justify-between">
+                    <span class="text-small font-arabic font-semibold" style="color: var(--acc)">اقرأ الدرس</span>
+                    {/* Forward in RTL points left; nudges further on hover */}
+                    <svg
+                      class="w-4 h-4 transition-transform duration-300 [transition-timing-function:var(--ease-out-quart)] group-hover:-translate-x-1.5"
+                      style="color: var(--acc)"
+                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                    ><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+                  </span>
                 </a>
               ))}
             </div>
           </div>
         ))}
       </div>
-
-      <p class="mt-14 text-center text-ink/70 dark:text-mist/70 font-arabic leading-loose max-w-2xl mx-auto">
-        الدروس نظرية، والإتقان تطبيق. ألصق أي جملة في <a href="/" class="text-purple hover:text-purple-deep font-bold transition-colors duration-200">محلّل الإعراب</a> وشاهد القاعدة تعمل كلمة بكلمة، أو تدرّب مع التصحيح الفوري في <a href="/practice" class="text-purple hover:text-purple-deep font-bold transition-colors duration-200">التدريب</a>.
-      </p>
     </Container>
   </section>
+
+  <ArticleCta lang="ar">
+    <span slot="title">النظرية نصف الطريق.</span>
+    ألصق أي جملة في محلّل الإعراب على الصفحة الرئيسية وشاهد قاعدة الدرس تعمل كلمة بكلمة، أو تدرّب مع التصحيح الفوري في قسم التدريب.
+  </ArticleCta>
 
   <Footer lang="ar" />
 </BaseLayout>

@@ -33,11 +33,38 @@ const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-rela
     ]}
   />
 
+  {/* Soft ambient wash: two large radial glows behind the text column give the
+      hero depth without competing with the page texture. */}
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0"
+    style="background:
+      radial-gradient(42rem 22rem at 78% 0%, color-mix(in srgb, var(--color-purple) 7%, transparent), transparent 70%),
+      radial-gradient(36rem 20rem at 12% 100%, color-mix(in srgb, var(--color-teal) 6%, transparent), transparent 70%);"
+  ></div>
+
   <Container size="narrow">
     <div class="relative py-20 md:py-28">
-      {eyebrow && <p class="eyebrow mb-6" data-reveal>{eyebrow}</p>}
-      <h1 class:list={[titleClass, titleSize, 'leading-[1.1] tracking-tight']} data-reveal data-reveal-delay="80">{title}</h1>
-      <p class:list={[summaryClass, 'mt-8 text-body-lg text-ink/80 dark:text-mist/80 max-w-2xl']} data-reveal data-reveal-delay="160">{summary}</p>
+      {eyebrow && (
+        <p
+          class="eyebrow mb-8 rounded-full border border-purple/25 bg-purple/[0.07] dark:border-purple/40 dark:bg-purple/15 px-4 py-1.5"
+          data-reveal
+        >
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 6.8L21 9l-5.2 4 1.8 7L12 16.6 6.4 20l1.8-7L3 9l6.6-.2z"/></svg>
+          {eyebrow}
+        </p>
+      )}
+      {/* Aref Ruqaa's ascenders and swashes overflow the em box: at leading-[1.1]
+          they collided with the eyebrow above (visible on every article page).
+          Arabic display titles get the line-height the face actually needs. */}
+      <h1
+        class:list={[titleClass, titleSize, 'tracking-tight', lang === 'ar' ? 'leading-[1.45] pb-1' : 'leading-[1.1]']}
+        data-reveal
+        data-reveal-delay="80"
+      >{title}</h1>
+      <p class:list={[summaryClass, 'mt-6 text-body-lg text-ink/80 dark:text-mist/80 max-w-2xl']} data-reveal data-reveal-delay="160">{summary}</p>
+      {/* Optional meta row (chips/stats) a page can inject under the summary. */}
+      <slot />
     </div>
   </Container>
 </header>
