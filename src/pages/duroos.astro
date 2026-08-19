@@ -27,7 +27,16 @@ const groups: { title: string; accent: string; lessons: { slug: string; title: s
       { slug: 'al-jumla-al-filiyya', title: 'الجملة الفعلية', blurb: 'الفعل والفاعل والمفعول وترتيبها' },
       { slug: 'al-fail', title: 'الفاعل', blurb: 'أحكامه الأربعة وصوره' },
       { slug: 'naib-al-fail', title: 'نائب الفاعل', blurb: 'البناء للمجهول وأحكامه' },
+    ],
+  },
+  {
+    title: 'المفاعيل',
+    accent: 'var(--color-teal)',
+    lessons: [
       { slug: 'al-maful-bih', title: 'المفعول به', blurb: 'علامات نصبه وتقديمه وتأخيره' },
+      { slug: 'al-maful-al-mutlaq', title: 'المفعول المطلق', blurb: 'أنواعه الثلاثة وما ينوب عنه' },
+      { slug: 'al-maful-li-ajlih', title: 'المفعول لأجله', blurb: 'شروط نصبه وأحواله' },
+      { slug: 'al-maful-fih', title: 'المفعول فيه', blurb: 'ظرف الزمان وظرف المكان' },
     ],
   },
   {
@@ -42,26 +51,36 @@ const groups: { title: string; accent: string; lessons: { slug: string; title: s
   },
   {
     title: 'النواسخ',
-    accent: 'var(--color-teal)',
+    accent: 'var(--color-purple)',
     lessons: [
       { slug: 'kana-wa-akhawatuha', title: 'كان وأخواتها', blurb: 'عملها واسمها وخبرها' },
       { slug: 'inna-wa-akhawatuha', title: 'إنّ وأخواتها', blurb: 'عملها وكسر الهمزة وفتحها' },
+      { slug: 'la-nafiya-lil-jins', title: 'لا النافية للجنس', blurb: 'عملها وشروطها ولا إله إلا الله' },
     ],
   },
   {
-    title: 'المنصوبات والتوابع',
-    accent: 'var(--color-purple)',
+    title: 'المنصوبات والأساليب',
+    accent: 'var(--color-teal)',
     lessons: [
       { slug: 'al-hal', title: 'الحال', blurb: 'أنواعها وصاحب الحال' },
       { slug: 'al-tamyiz', title: 'التمييز', blurb: 'تمييز الذات وتمييز النسبة' },
+      { slug: 'al-munada', title: 'المنادى', blurb: 'أنواعه الخمسة وبناؤه ونصبه' },
+      { slug: 'al-istithna', title: 'الاستثناء', blurb: 'إلا وغير وأحكام المستثنى' },
+    ],
+  },
+  {
+    title: 'التوابع',
+    accent: 'var(--color-jazm)',
+    lessons: [
       { slug: 'al-naat', title: 'النعت', blurb: 'الحقيقي والسببي والمطابقة' },
       { slug: 'al-atf', title: 'العطف', blurb: 'حروفه ومعانيها وإعراب المعطوف' },
       { slug: 'al-badal', title: 'البدل', blurb: 'أنواعه الثلاثة وإعرابه' },
+      { slug: 'al-tawkid', title: 'التوكيد', blurb: 'اللفظي والمعنوي وألفاظه' },
     ],
   },
   {
     title: 'الجر والمضارع',
-    accent: 'var(--color-teal)',
+    accent: 'var(--color-purple)',
     lessons: [
       { slug: 'al-idafa', title: 'الإضافة', blurb: 'المعنوية واللفظية والمضاف إليه' },
       { slug: 'huruf-al-jarr', title: 'حروف الجر', blurb: 'معانيها وعملها والتعلق' },
@@ -82,11 +101,11 @@ const numbered = groups.map((g, gi) => {
   return { ...g, no: hindi(gi + 1, true), lessons };
 });
 
-// 35 counted at build-review time with grep -o '﴿' src/pages/duroos/*.astro.
+// 55 counted at build-review time with grep -o '﴿' src/pages/duroos/*.astro.
 const stats = [
   { value: hindi(totalLessons), label: 'درسًا' },
   { value: hindi(groups.length), label: 'أبواب' },
-  { value: `${hindi(35)}+`, label: 'شاهدًا قرآنيًا' },
+  { value: `${hindi(55)}+`, label: 'شاهدًا قرآنيًا' },
   { value: '١٠٠٪', label: 'مجاني' },
 ];
 ---

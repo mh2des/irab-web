@@ -1,6 +1,14 @@
 ---
 /**
  * ArticleSection, H2 + 60-word lead + body slot.
+ *
+ * Reading-rhythm design (2026-08): long lessons stacked six identical
+ * blocks and read as a wall. Each section now opens with an auto-numbered
+ * ordinal chip + title + growing rule, the lead renders as a "rule card"
+ * callout, and recurring content patterns are styled globally below:
+ * inline Arabic examples (<span class="ar">) become tinted pills, and the
+ * bold label that opens an example paragraph becomes a small chip. The
+ * accent is themeable per page via --sec-acc (defaults to brand purple).
  */
 import Container from './Container.astro';
 
@@ -17,10 +25,14 @@ const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
 const leadClass  = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxed';
 const bodyClass  = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxed';
 ---
-<section id={id} class:list={['py-12 md:py-16', className]}>
+<section id={id} class:list={['article-sec py-12 md:py-16', lang === 'ar' ? 'sec-ar' : 'sec-en', className]}>
   <Container size="narrow">
-    <h2 class:list={[titleClass, 'text-[clamp(1.75rem,3.5vw,2.5rem)] leading-tight tracking-tight mb-6']}>{title}</h2>
-    <p class:list={[leadClass, 'text-body-lg text-ink/80 dark:text-mist/80 mb-6']}>{lead}</p>
+    <div class="flex items-center gap-4 mb-7" data-reveal>
+      <span class="sec-no" aria-hidden="true"></span>
+      <h2 class:list={[titleClass, 'text-[clamp(1.6rem,3.2vw,2.25rem)] leading-[1.45] tracking-tight']}>{title}</h2>
+      <span class="hidden md:block flex-1 h-px bg-stone dark:bg-coal-edge"></span>
+    </div>
+    <p class:list={[leadClass, 'sec-lead text-body-lg mb-8']} data-reveal data-reveal-delay="80">{lead}</p>
     <div class:list={['prose-irab text-body text-ink/75 dark:text-mist/75 space-y-4', bodyClass]}>
       <slot />
     </div>
@@ -28,9 +40,66 @@ const bodyClass  = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxe
 </section>
 
 <style is:global>
+  /* ── Section numbering: CSS counters, no per-page wiring needed ────── */
+  body { counter-reset: irab-sec; }
+  .article-sec { counter-increment: irab-sec; }
+  .article-sec .sec-no {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    font-family: var(--font-arabic-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1;
+    color: var(--sec-acc, var(--color-purple));
+    background: color-mix(in srgb, var(--sec-acc, var(--color-purple)) 9%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sec-acc, var(--color-purple)) 22%, transparent);
+  }
+  .sec-ar .sec-no::before { content: counter(irab-sec, arabic-indic); }
+  .sec-en .sec-no::before { content: counter(irab-sec, decimal-leading-zero); font-family: var(--font-mono); font-size: 0.95rem; }
+
+  /* ── Lead = the "rule card": the قاعدة of the section, set apart ────── */
+  .article-sec .sec-lead {
+    position: relative;
+    padding: 1.1rem 1.35rem;
+    border-radius: 1rem;
+    border: 1px solid color-mix(in srgb, var(--sec-acc, var(--color-purple)) 16%, transparent);
+    border-inline-start: 3px solid color-mix(in srgb, var(--sec-acc, var(--color-purple)) 65%, transparent);
+    background: color-mix(in srgb, var(--sec-acc, var(--color-purple)) 5%, transparent);
+    color: color-mix(in srgb, var(--color-ink) 88%, transparent);
+  }
+  .dark .article-sec .sec-lead {
+    background: color-mix(in srgb, var(--sec-acc, var(--color-purple)) 10%, transparent);
+    color: color-mix(in srgb, var(--color-mist) 88%, transparent);
+  }
+
   .prose-irab p { margin: 0; }
-  .prose-irab strong { color: var(--color-ink); font-weight: 500; }
+  .prose-irab strong { color: var(--color-ink); font-weight: 600; }
   .dark .prose-irab strong { color: var(--color-mist); }
+
+  /* Example labels ("المثال الأول:", "الإعراب:") open their paragraph as a
+     small chip: worked examples become visually anchored blocks. */
+  .prose-irab p > strong:first-child {
+    display: inline-block;
+    font-size: 0.85em;
+    line-height: 1.6;
+    padding: 0.05em 0.7em;
+    margin-inline-end: 0.45em;
+    border-radius: 999px;
+    color: var(--sec-acc, var(--color-purple));
+    background: color-mix(in srgb, var(--sec-acc, var(--color-purple)) 9%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sec-acc, var(--color-purple)) 20%, transparent);
+  }
+  /* List lead-ins stay inline, colored instead of chipped (less noise). */
+  .prose-irab li > strong:first-child {
+    color: var(--sec-acc, var(--color-purple));
+    font-weight: 700;
+  }
+  .prose-irab li::marker { color: color-mix(in srgb, var(--sec-acc, var(--color-purple)) 60%, transparent); }
+
   .prose-irab a { color: var(--color-purple); text-decoration-thickness: 1px; text-underline-offset: 4px; }
   .prose-irab a:hover { color: var(--color-purple-deep); text-decoration: underline; }
   .prose-irab ul { list-style: disc; padding-inline-start: 1.5rem; margin: 0.5rem 0; }
@@ -56,6 +125,26 @@ const bodyClass  = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxe
     font-style: italic;
   }
   .dark .prose-irab blockquote { color: var(--color-mist); }
-  .prose-irab .ar { font-family: var(--font-arabic); direction: rtl; unicode-bidi: isolate; }
+
+  /* Inline Arabic examples read as highlighted phrases, not plain prose:
+     the vocalized شاهد is the heart of every lesson, so it gets a pill. */
+  .prose-irab .ar {
+    font-family: var(--font-arabic);
+    direction: rtl;
+    unicode-bidi: isolate;
+    /* inline (not inline-block) so long verses wrap; clone keeps the pill
+       shape on every wrapped line. */
+    padding: 0.05em 0.45em;
+    -webkit-box-decoration-break: clone;
+    border-radius: 0.5em;
+    font-weight: 600;
+    color: var(--color-ink);
+    background: color-mix(in srgb, var(--sec-acc, var(--color-purple)) 7%, transparent);
+    box-decoration-break: clone;
+  }
+  .dark .prose-irab .ar {
+    color: var(--color-mist);
+    background: color-mix(in srgb, var(--sec-acc, var(--color-purple)) 14%, transparent);
+  }
   .prose-irab .en { font-family: var(--font-sans); direction: ltr; unicode-bidi: isolate; }
 </style>
