@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import Container from '../components/Container.astro';
+import ArticleHero from '../components/ArticleHero.astro';
+
+// Hub for the grammar lessons. Every lesson below exists as
+// src/pages/duroos/<slug>.astro; keep the two in step when adding lessons.
+const groups: { title: string; lessons: { slug: string; title: string; blurb: string }[] }[] = [
+  {
+    title: 'الجملة وأركانها',
+    lessons: [
+      { slug: 'al-jumla-al-ismiyya', title: 'الجملة الاسمية', blurb: 'ركناها وأحكامها وصور الخبر' },
+      { slug: 'al-mubtada-wal-khabar', title: 'المبتدأ والخبر', blurb: 'أنواعهما وحالات الرفع' },
+      { slug: 'al-jumla-al-filiyya', title: 'الجملة الفعلية', blurb: 'الفعل والفاعل والمفعول وترتيبها' },
+      { slug: 'al-fail', title: 'الفاعل', blurb: 'أحكامه وصوره الثلاث' },
+      { slug: 'naib-al-fail', title: 'نائب الفاعل', blurb: 'البناء للمجهول وأحكامه' },
+      { slug: 'al-maful-bih', title: 'المفعول به', blurb: 'علامات نصبه وتقديمه وتأخيره' },
+    ],
+  },
+  {
+    title: 'علامات الإعراب',
+    lessons: [
+      { slug: 'alamat-al-irab', title: 'علامات الإعراب', blurb: 'الأصلية والفرعية وما ينوب عن ماذا' },
+      { slug: 'al-afal-al-khamsa', title: 'الأفعال الخمسة', blurb: 'ثبوت النون وحذفها' },
+      { slug: 'al-asma-al-khamsa', title: 'الأسماء الخمسة', blurb: 'شروط إعرابها بالحروف' },
+      { slug: 'al-mamnu-min-al-sarf', title: 'الممنوع من الصرف', blurb: 'أسبابه وجرّه بالفتحة' },
+    ],
+  },
+  {
+    title: 'النواسخ',
+    lessons: [
+      { slug: 'kana-wa-akhawatuha', title: 'كان وأخواتها', blurb: 'عملها واسمها وخبرها' },
+      { slug: 'inna-wa-akhawatuha', title: 'إنّ وأخواتها', blurb: 'عملها ومعانيها وكسر الهمزة وفتحها' },
+    ],
+  },
+  {
+    title: 'المنصوبات والتوابع',
+    lessons: [
+      { slug: 'al-hal', title: 'الحال', blurb: 'أنواعها وصاحب الحال' },
+      { slug: 'al-tamyiz', title: 'التمييز', blurb: 'تمييز الذات وتمييز النسبة' },
+      { slug: 'al-naat', title: 'النعت', blurb: 'الحقيقي والسببي والمطابقة' },
+      { slug: 'al-atf', title: 'العطف', blurb: 'حروفه ومعانيها وإعراب المعطوف' },
+      { slug: 'al-badal', title: 'البدل', blurb: 'أنواعه الثلاثة وإعرابه' },
+    ],
+  },
+  {
+    title: 'الجر والفعل المضارع',
+    lessons: [
+      { slug: 'al-idafa', title: 'الإضافة', blurb: 'المعنوية واللفظية وأحكام المضاف إليه' },
+      { slug: 'huruf-al-jarr', title: 'حروف الجر', blurb: 'معانيها وعملها والتعلق' },
+      { slug: 'nasb-al-mudari', title: 'نصب المضارع', blurb: 'أدوات النصب وعلاماته' },
+      { slug: 'jazm-al-mudari', title: 'جزم المضارع', blurb: 'أدوات الجزم وأثرها' },
+    ],
+  },
+];
+---
+<BaseLayout
+  lang="ar"
+  title="دروس النحو: شرح أبواب الإعراب درسًا درسًا · إعراب"
+  description="دروس نحو مجانية بشرح واضح وأمثلة معربة إعرابًا كاملًا: الجملة الاسمية والفعلية، علامات الإعراب، كان وإنّ وأخواتهما، الحال والتمييز والنعت، حروف الجر وأدوات نصب المضارع وجزمه."
+>
+  <Nav lang="ar" />
+
+  <ArticleHero
+    lang="ar"
+    eyebrow="دروس النحو"
+    title="أبواب النحو، درسًا درسًا"
+    summary="كل درس يشرح بابًا واحدًا من أبواب الإعراب: القاعدة بلغة واضحة، ثم أمثلة معربة إعرابًا كاملًا كما تُكتب في كتب النحو، ثم الأخطاء الشائعة. اقرأ الدرس، ثم جرّب ما تعلمته على أي جملة في محلّل الإعراب."
+  />
+
+  <section class="py-10 md:py-14">
+    <Container>
+      <div class="space-y-14">
+        {groups.map((g) => (
+          <div>
+            <h2 class="font-arabic-display font-bold text-2xl md:text-3xl mb-6">{g.title}</h2>
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {g.lessons.map((l) => (
+                <a
+                  href={`/duroos/${l.slug}`}
+                  class="group block rounded-xl border border-ink/10 dark:border-mist/10 p-5 hover:border-purple dark:hover:border-purple transition-colors duration-200"
+                >
+                  <span class="font-arabic-display font-bold text-lg text-ink dark:text-mist group-hover:text-purple-deep dark:group-hover:text-purple transition-colors duration-200">{l.title}</span>
+                  <p class="mt-1.5 text-small text-ink/60 dark:text-mist/60 font-arabic leading-relaxed">{l.blurb}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-14 text-center text-ink/70 dark:text-mist/70 font-arabic leading-loose max-w-2xl mx-auto">
+        الدروس نظرية، والإتقان تطبيق. ألصق أي جملة في <a href="/" class="text-purple hover:text-purple-deep font-bold transition-colors duration-200">محلّل الإعراب</a> وشاهد القاعدة تعمل كلمة بكلمة، أو تدرّب مع التصحيح الفوري في <a href="/practice" class="text-purple hover:text-purple-deep font-bold transition-colors duration-200">التدريب</a>.
+      </p>
+    </Container>
+  </section>
+
+  <Footer lang="ar" />
+</BaseLayout>
