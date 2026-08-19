@@ -137,6 +137,11 @@ const hasAlternate = lang === 'en' || hasEn;
 
   <script type="application/ld+json" set:html={JSON.stringify(webSite)} is:inline />
 
+  {/* Smart App Banner: Safari on iPhone/iPad shows a native "open in App
+      Store" strip on every page. WhatsApp is the app's #1 referrer and web
+      visitors on iOS are one tap from the store. */}
+  <meta name="apple-itunes-app" content="app-id=6765811277" />
+
   <slot name="head" />
 
   <!-- Cloudflare Web Analytics: free, cookieless, no consent banner needed.
