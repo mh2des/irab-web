@@ -213,6 +213,11 @@ const whys = [
 </BaseLayout>
 
 <style>
+  /* On phones the analyzer is the answer this page exists for: pull the demo
+     section up under the hero so the input and its button sit in the first screen. */
+  @media (max-width: 47.99rem) {
+    :global(#demo) { padding-top: 1.5rem; }
+  }
   .ex-sentence { font-size: 1.6rem; line-height: 1.9; color: var(--color-ink); margin-bottom: 1rem; }
   :global(.dark) .ex-sentence { color: var(--color-mist); }
   .ex-list { display: grid; gap: 0.55rem; margin: 0 0 1rem; }
@@ -229,8 +234,9 @@ const whys = [
   :global(.dark) .ex-note { color: color-mix(in srgb, var(--color-mist) 65%, transparent); border-top-color: var(--color-coal-edge); }
   .ex-links { display: flex; flex-wrap: wrap; gap: 0.4rem 0.6rem; margin-top: 0.6rem; }
   .ex-links a {
+    display: inline-flex; align-items: center; min-height: 2.5rem;
     font-size: 0.95rem; font-weight: 700; color: var(--color-teal); text-decoration: none;
-    padding: 0.15rem 0.6rem; border-radius: 999px;
+    padding: 0.3rem 0.8rem; border-radius: 999px;
     border: 1px solid color-mix(in srgb, var(--color-teal) 40%, transparent);
   }
   .ex-links a:hover { background: color-mix(in srgb, var(--color-teal) 10%, transparent); }

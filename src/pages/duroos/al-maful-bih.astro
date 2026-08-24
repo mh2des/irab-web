@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="المفعول به: علامات نصبه وأحكامه بالأمثلة · إعراب"
   description="شرح المفعول به: تعريفه، علامات نصبه بالفتحة والياء والكسرة، تقديمه وتأخيره، تعدده، وأمثلة معربة إعرابًا كاملًا من القرآن والنصوص الفصيحة."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="المفعول به" description="شرح المفعول به: تعريفه، علامات نصبه بالفتحة والياء والكسرة، تقديمه وتأخيره، تعدده، وأمثلة معربة إعرابًا كاملًا من القرآن والنصوص الفصيحة." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="المفعول به"
     summary="المفعول به اسم منصوب يقع عليه فعل الفاعل، وهو أشهر المنصوبات وأكثرها دورانًا في الكلام. هذا الدرس يشرح تعريفه وعلامات نصبه الأصلية والفرعية، ومتى يتقدم على الفاعل أو يتعدد أو يحذف، مع أمثلة معربة إعرابًا كاملًا كما تكتب في كتب النحو."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

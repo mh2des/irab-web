@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -38,6 +40,7 @@ const faqs = [
 lang="en"   title="What is nahw? Arabic syntax explained · Irab"
   description="Nahw (نحو) is the science of Arabic syntax, how words build sentences. A complete guide to nahw fundamentals, sentence types, and the relationship between nahw and i'rab."
 >
+  <ArticleSchema slot="head" lang="en" kind="article" headline="What is nahw?" description="Nahw (نحو) is the science of Arabic syntax, how words build sentences. A complete guide to nahw fundamentals, sentence types, and the relationship between nahw and i'rab." />
   <Nav lang="en" />
 
   <ArticleHero
@@ -45,6 +48,7 @@ lang="en"   title="What is nahw? Arabic syntax explained · Irab"
     title="What is nahw?"
     summary="Nahw (نحو) is the science of Arabic syntax, the system of rules that govern how Arabic words combine into meaningful sentences. It defines sentence structure, determines case endings, and explains the relationship between every word in a phrase. Together with sarf (morphology), nahw forms the foundation of classical Arabic study. This guide covers nahw fundamentals, sentence types, and how it relates to i'rab."
   />
+  <Byline lang="en" kind="article" />
 
   <ArticleSection
     id="definition"

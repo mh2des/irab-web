@@ -1,0 +1,130 @@
+---
+/**
+ * /press: boilerplate, fact sheet, founder line, brand assets, press contact.
+ * Every fact here is verifiable in the product; do not add numbers that are
+ * not (downloads, ratings, user counts).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Schema from '../components/Schema.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import ArticleHero from '../components/ArticleHero.astro';
+import ArticleSection from '../components/ArticleSection.astro';
+
+const facts = [
+  { k: 'الاسم', v: 'إعراب (Irab) · irab.app' },
+  { k: 'ما هو', v: 'محلّل إعراب بالذكاء الاصطناعي، وتطبيق لتعلّم النحو بالتطبيق والتقييم الفوري' },
+  { k: 'المنصّات', v: 'iOS وAndroid والويب، بحساب واحد' },
+  { k: 'اللغات', v: 'واجهة عربية وإنجليزية' },
+  { k: 'المحلّل', v: 'إعراب أيّ جملة عربية كلمةً كلمة: النوع، الوظيفة، الإعراب، العلامة وسببها، والتشكيل الكامل' },
+  { k: 'التدريب', v: 'يُعرِب المتعلّم بنفسه ويحصل على تقييم يبيّن موضع الخطأ، مع بنك تمارين وسبعة مستويات من التحديات' },
+  { k: 'للمعلّمين', v: 'مجالس الإعراب: مسابقات مباشرة يستضيفها المعلّم وينضمّ إليها الطلاب من أيّ متصفح' },
+  { k: 'إعراب القرآن', v: '٦٢٣٦ آية منقولة عن «الجدول في إعراب القرآن» لمحمود صافي، مع ذكر المصدر في كلّ صفحة' },
+  { k: 'الدروس', v: '٣٢ درسًا في أبواب النحو، مكتوبة ومراجَعة قبل النشر' },
+  { k: 'المعاجم', v: 'ثلاثة معاجم في التطبيق: ذكي، وتراثي من ١٣ كتابًا عبر قاموس، ولهجات بأكثر من ٣٠ ألف مدخل' },
+  { k: 'النموذج', v: 'مجاني، مع اشتراك اختياري «إعراب بلس»؛ الأسعار في صفحة الأسعار' },
+  { k: 'المؤسّس', v: 'منصور حسن (Mansoor Hasan Shokla)' },
+  { k: 'المقرّ', v: 'ألور ستار، كيدا، ماليزيا' },
+];
+
+const assets = [
+  { name: 'العلامة (PNG)', href: '/brand-mark.png' },
+  { name: 'أيقونة التطبيق ٥١٢ (PNG)', href: '/icons/Icon-512.png' },
+  { name: 'الشعار المتّجهي (SVG)', href: '/favicon.svg' },
+  { name: 'صورة المشاركة (PNG)', href: '/og-default.png' },
+];
+---
+<BaseLayout
+  lang="ar"
+  hasEn
+  title="إعراب للصحافة: نبذة وحقائق وشعارات · إعراب"
+  description="ما تحتاجه للكتابة عن إعراب: نبذة تعريفية بالعربية والإنجليزية، ورقة حقائق موثّقة عن المحلّل والتدريب وإعراب القرآن والدروس، وشعارات للتحميل، وبريد الصحافة."
+>
+  <Schema slot="head" />
+  <Nav lang="ar" />
+
+  <ArticleHero
+    lang="ar"
+    eyebrow="للصحافة"
+    title="إعراب للصحافة"
+    summary="كلّ ما تحتاجه للكتابة عن إعراب في صفحة واحدة: نبذة جاهزة للاقتباس، وحقائق يمكن التحقّق منها في المنتج نفسه، وشعارات بجودة عالية، وعنوان يصلك منه ردّ من المؤسّس مباشرة."
+  />
+
+  <ArticleSection
+    lang="ar"
+    id="boilerplate"
+    title="نبذة تعريفية"
+    lead="فقرة واحدة تصلح للاقتباس كما هي، بالعربية ثم بالإنجليزية."
+  >
+    <blockquote class="boiler" dir="rtl">إعراب تطبيقٌ وموقعٌ لتعلّم قواعد اللغة العربية بالتطبيق: يُعرِب أيّ جملة عربية كلمةً كلمة بالذكاء الاصطناعي، ويتيح للمتعلّم أن يُعرِب بنفسه فيحصل على تقييم فوري يبيّن موضع الخطأ، مع بنك تمارين وتحدّيات ومجالس إعراب مباشرة للمعلّمين، ودروس نحو مراجَعة، وإعراب القرآن الكريم كاملًا منقولًا عن «الجدول في إعراب القرآن» مع ذكر المصدر. متاح على iOS وAndroid والويب بحساب واحد، ويبنيه منصور حسن من ألور ستار في ماليزيا.</blockquote>
+    <blockquote class="boiler" dir="ltr" lang="en">Irab is an app and website for learning Arabic grammar by doing it: it parses any Arabic sentence word by word with AI, lets learners do the i'rab themselves and get instant grading that points to the exact mistake, and adds a practice bank, challenges, live i'rab rooms for teachers, reviewed grammar lessons, and the complete i'rab of the Quran quoted from «الجدول في إعراب القرآن» with the source credited. Available on iOS, Android and the web with one account, Irab is built by Mansoor Hasan Shokla in Alor Setar, Malaysia.</blockquote>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="facts"
+    title="ورقة حقائق"
+    lead="حقائق يمكن التحقّق من كلّ واحدة منها في الموقع أو التطبيق. لا نذكر أرقام تنزيلات أو تقييمات هنا؛ فاسألنا عنها وقت الكتابة."
+  >
+    <dl class="facts">
+      {facts.map((f) => (
+        <div><dt>{f.k}</dt><dd>{f.v}</dd></div>
+      ))}
+    </dl>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="founder"
+    title="المؤسّس"
+    lead="منصور حسن (Mansoor Hasan Shokla): مؤسّس إعراب ومطوّره، طالب علوم حاسوب بتخصّص علم البيانات في جامعة البخاري الدولية بماليزيا، ومعلّم لغة عربية سابق للناطقين بغيرها في الجامعة نفسها."
+  >
+    <p>سيرة أوسع وروابط حساباته في صفحة <a href="/about#mansoor">عن إعراب</a>. متاح للمقابلات بالعربية والإنجليزية عبر press@irab.app.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="assets"
+    title="الشعار والصور"
+    lead="يجوز استخدام الشعار في التغطية الصحفية دون تعديل ألوانه أو نِسَبه. لقطات من التطبيق والموقع نرسلها عند الطلب."
+  >
+    <ul class="assets" role="list">
+      {assets.map((a) => (
+        <li><a href={a.href} download>{a.name}</a><span class="asset-path" dir="ltr">irab.app{a.href}</span></li>
+      ))}
+    </ul>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="contact"
+    title="التواصل الصحفي"
+    lead="press@irab.app يصل إلى المؤسّس مباشرة. اذكر الوسيلة والموعد المطلوب، ونردّ في أقرب وقت ممكن."
+  >
+    <p><a href="mailto:press@irab.app">press@irab.app</a> · وللأسئلة العامة <a href="/contact">صفحة تواصل</a>.</p>
+  </ArticleSection>
+
+  <Footer lang="ar" />
+</BaseLayout>
+
+<style>
+  .boiler {
+    margin: 0 0 1rem; padding: 1.1rem 1.3rem; border-radius: 14px; line-height: 2;
+    background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
+    color: var(--color-ink);
+  }
+  :global(.dark) .boiler { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
+  .boiler[lang="en"] { font-family: var(--font-sans, inherit); line-height: 1.7; text-align: left; }
+  .facts { display: grid; gap: 0.6rem; margin: 0; }
+  .facts div { display: grid; grid-template-columns: 8rem 1fr; gap: 0.6rem; align-items: baseline; padding-bottom: 0.6rem; border-bottom: 1px solid var(--color-card-edge); }
+  :global(.dark) .facts div { border-bottom-color: var(--color-coal-edge); }
+  .facts dt { font-weight: 700; color: var(--color-ink); }
+  :global(.dark) .facts dt { color: var(--color-mist); }
+  .facts dd { margin: 0; line-height: 1.9; }
+  .assets { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem; }
+  .assets li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.9rem; }
+  .assets a { font-weight: 700; color: var(--color-purple); text-underline-offset: 3px; }
+  .asset-path { font-family: var(--font-mono, monospace); font-size: 0.85rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); unicode-bidi: isolate; }
+  :global(.dark) .asset-path { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  @media (max-width: 40rem) { .facts div { grid-template-columns: 1fr; gap: 0.1rem; } }
+</style>

@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="أسلوب الشرط: أدواته وجوابه واقترانه بالفاء · إعراب"
   description="شرح أسلوب الشرط: أركانه، الأدوات الجازمة وغير الجازمة، إعراب إذا ولو ولولا، مواضع اقتران الجواب بالفاء السبعة، وحذف الشرط والجواب، بأمثلة قرآنية معربة."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="أسلوب الشرط" description="شرح أسلوب الشرط: أركانه، الأدوات الجازمة وغير الجازمة، إعراب إذا ولو ولولا، مواضع اقتران الجواب بالفاء السبعة، وحذف الشرط والجواب، بأمثلة قرآنية معربة." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="أسلوب الشرط"
     summary="الشرط تعليق أمر على أمر: لا يقع الجواب حتى يقع الشرط. أدواته قسمان: جازمة تعمل في المضارع، وغير جازمة كإذا ولو ولولا. وأدق مسائله اقتران الجواب بالفاء ومحل جملة الجواب. هذا الدرس يجمع الباب كله بأمثلة قرآنية معربة كاملة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

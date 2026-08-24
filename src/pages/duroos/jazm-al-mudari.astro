@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="جزم الفعل المضارع: الجوازم وعلاماته · إعراب"
   description="شرح جزم المضارع: الأدوات التي تجزم فعلًا واحدًا (لم، لما، لام الأمر، لا الناهية) وأدوات الشرط الجازمة لفعلين، وعلامات الجزم بالسكون وحذف حرف العلة وحذف النون."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="جزم الفعل المضارع" description="شرح جزم المضارع: الأدوات التي تجزم فعلًا واحدًا (لم، لما، لام الأمر، لا الناهية) وأدوات الشرط الجازمة لفعلين، وعلامات الجزم بالسكون وحذف حرف العلة وحذف النون." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="جزم الفعل المضارع"
     summary="الجزم أثر يختص بالفعل المضارع، تحدثه أدوات قسمها النحاة قسمين: ما يجزم فعلًا واحدًا، وما يجزم فعلين في أسلوب الشرط. وعلاماته ثلاث: السكون، وحذف حرف العلة، وحذف النون. هذا الدرس يجمع الأدوات والعلامات بأمثلة قرآنية معربة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

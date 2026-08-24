@@ -101,8 +101,12 @@ function* walk(dir) {
 const noindexRe = /<meta\b[^>]*\bname=["'](?:robots|googlebot)["'][^>]*\bcontent=["'][^"']*noindex[^"']*["'][^>]*>|<meta\b[^>]*\bcontent=["'][^"']*noindex[^"']*["'][^>]*\bname=["'](?:robots|googlebot)["'][^>]*>/i;
 const canonicalRe = /<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']([^"']+)["']|<link\b[^>]*\bhref=["']([^"']+)["'][^>]*\brel=["']canonical["']/i;
 
-const groups = { pages: [], duroos: [], 'quran-ar': [], 'quran-en': [] };
+const groups = { pages: [], duroos: [], 'quran-ar': [], 'quran-en': [], dictionary: [] };
 let skippedNoindex = 0, skippedCanonical = 0;
+const normalise = (u) => {
+  if (!u) return null;
+  try { return encodeURI(decodeURI(u)); } catch { return u; }
+};
 
 for (const file of walk(DIST)) {
   const rel = relative(DIST, dirname(file)).split(sep).join('/');
@@ -111,13 +115,17 @@ for (const file of walk(DIST)) {
   if (noindexRe.test(html)) { skippedNoindex++; continue; }
   const cm = html.match(canonicalRe);
   const canonical = cm ? (cm[1] || cm[2]) : null;
-  const self = path === '/' ? `${SITE}/` : `${SITE}${path}`;
-  if (canonical !== self) { skippedCanonical++; continue; }
+  // Percent-encode non-ASCII path segments (future /dictionary/<Arabic word>
+  // pages): sitemap <loc> values must be valid URIs. Compare canonicals in
+  // the same normalised form so an already-encoded canonical still matches.
+  const self = path === '/' ? `${SITE}/` : `${SITE}${encodeURI(path)}`;
+  if (normalise(canonical) !== self) { skippedCanonical++; continue; }
 
   const group =
     path === '/quran' || path.startsWith('/quran/') ? 'quran-ar'
     : path === '/en/quran' || path.startsWith('/en/quran/') ? 'quran-en'
     : path === '/duroos' || path.startsWith('/duroos/') ? 'duroos'
+    : path.startsWith('/dictionary/') ? 'dictionary'
     : 'pages';
   groups[group].push({ loc: self, lastmod: lastmodFor(path) });
 }
@@ -127,6 +135,9 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, 
 const sortByLoc = (a, b) => a.loc.localeCompare(b.loc);
 const children = [];
 for (const [name, urls] of Object.entries(groups)) {
+  // A section with no indexable pages yet (e.g. dictionary before its first
+  // batch) gets no file and no index entry: an empty child sitemap is noise.
+  if (urls.length === 0) { console.log(`build-sitemaps: sitemap-${name}.xml skipped (0 URLs)`); continue; }
   urls.sort(sortByLoc);
   const body = urls
     .map((u) => `<url><loc>${esc(u.loc)}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}</url>`)

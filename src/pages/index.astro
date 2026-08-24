@@ -74,6 +74,8 @@ const faqs = [
       <img
         src="/brand-watermark.webp"
         alt=""
+        width="900"
+        height="751"
         fetchpriority="high"
         decoding="async"
         aria-hidden="true"
@@ -364,6 +366,8 @@ const faqs = [
         src="/brand-watermark.webp"
         alt=""
         aria-hidden="true"
+        width="900"
+        height="751"
         class="pointer-events-none select-none absolute -left-12 -bottom-16 w-[40%] max-w-[480px] opacity-[0.06] dark:opacity-[0.08] invert dark:invert-0"
       />
       <Container>
@@ -588,6 +592,9 @@ const faqs = [
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
+      /* 44px touch target without changing the visual weight of the link */
+      min-height: 2.75rem;
+      padding-block: 0.4rem;
     }
 
     .audience-link::after {

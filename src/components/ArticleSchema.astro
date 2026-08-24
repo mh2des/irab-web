@@ -1,0 +1,69 @@
+---
+/**
+ * ArticleSchema: JSON-LD for authored articles (lessons and guides).
+ *
+ * Emits an Article with a named author (Mansoor Hasan, entity id
+ * https://irab.app/about#mansoor), the publisher, real datePublished /
+ * dateModified from git, and the canonical URL. Lessons are additionally
+ * typed as LearningResource. Author and publisher are written inline with
+ * their @ids so the block resolves on its own page and also links to the
+ * Person on /about and the Organization in Schema.astro.
+ *
+ * Use with slot="head" inside BaseLayout.
+ */
+import { firstCommitDate, lastCommitDate, sourceFileFor } from '../lib/content-dates';
+
+interface Props {
+  headline: string;
+  description: string;
+  lang?: 'ar' | 'en';
+  kind?: 'lesson' | 'article';
+  /** Override the source file (repo-relative) when the URL does not map 1:1. */
+  file?: string;
+}
+
+const { headline, description, lang = 'ar', kind = 'article', file } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(path, Astro.site).toString();
+const source = file ?? sourceFileFor(path);
+const published = source ? firstCommitDate(source) : undefined;
+const modified = source ? lastCommitDate(source) : undefined;
+
+const author = {
+  '@type': 'Person',
+  '@id': 'https://irab.app/about#mansoor',
+  name: 'Mansoor Hasan Shokla',
+  alternateName: 'منصور حسن',
+  url: 'https://irab.app/about',
+};
+
+const publisher = {
+  '@type': 'Organization',
+  '@id': 'https://irab.app/#organization',
+  name: 'Irab',
+  alternateName: 'إعراب',
+  url: 'https://irab.app',
+  logo: { '@type': 'ImageObject', url: 'https://irab.app/icons/Icon-512.png' },
+};
+
+const article: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline,
+  description,
+  inLanguage: lang,
+  url: canonical,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+  author,
+  publisher,
+  isPartOf: { '@type': 'WebSite', name: 'Irab', url: 'https://irab.app' },
+};
+if (kind === 'lesson') {
+  article.additionalType = 'https://schema.org/LearningResource';
+  article.learningResourceType = 'Lesson';
+  article.about = { '@type': 'Thing', name: lang === 'ar' ? 'النحو العربي' : 'Arabic grammar' };
+}
+if (published) article.datePublished = published;
+if (modified) article.dateModified = modified;
+---
+<script type="application/ld+json" set:html={JSON.stringify(article)} is:inline />

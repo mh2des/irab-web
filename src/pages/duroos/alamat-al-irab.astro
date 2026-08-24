@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="علامات الإعراب: الأصلية والفرعية · إعراب"
   description="علامات الإعراب الأصلية والفرعية في النحو العربي: الضمة والفتحة والكسرة والسكون، وما ينوب عنها من الواو والألف والياء والنون، مع أمثلة إعراب كاملة."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="علامات الإعراب" description="علامات الإعراب الأصلية والفرعية في النحو العربي: الضمة والفتحة والكسرة والسكون، وما ينوب عنها من الواو والألف والياء والنون، مع أمثلة إعراب كاملة." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="علامات الإعراب"
     summary="علامات الإعراب هي الرموز التي يتغير بها آخر الكلمة المعربة بحسب موقعها من الجملة. أصولها أربع: الضمة والفتحة والكسرة والسكون، وتنوب عنها علامات فرعية في سبعة أبواب كالمثنى والجموع والأسماء الخمسة والأفعال الخمسة. هذا الدرس يعرض العلامات الأصلية ثم مواضع النيابة كلها، مع أمثلة معربة إعرابا كاملا على طريقة كتب النحو."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

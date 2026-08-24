@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -38,6 +40,7 @@ const faqs = [
 lang="en"   title="What is i'rab? A complete guide to Arabic grammatical analysis · Irab"
   description="I'rab is the Arabic system of marking case endings to show each word's syntactic role. A complete 2026 guide to what i'rab is, why it matters for Quran study, and how to learn it."
 >
+  <ArticleSchema slot="head" lang="en" kind="article" headline="What is i'rab?" description="I'rab is the Arabic system of marking case endings to show each word's syntactic role. A complete 2026 guide to what i'rab is, why it matters for Quran study, and how to learn it." />
   <Nav lang="en" />
 
   <ArticleHero
@@ -45,6 +48,7 @@ lang="en"   title="What is i'rab? A complete guide to Arabic grammatical analysi
     title="What is i'rab?"
     summary="I'rab (إعراب) is the Arabic grammatical system that marks each word's case and function within a sentence. Where English uses word order to show meaning, Arabic uses case endings, and i'rab is the practice of identifying them. It's the difference between decoding Arabic and truly reading it. This guide covers what i'rab is, the four cases, why it matters for Quran study, and how to start learning it today."
   />
+  <Byline lang="en" kind="article" />
 
   <ArticleSection
     id="definition"

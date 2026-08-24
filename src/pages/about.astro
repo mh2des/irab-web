@@ -1,0 +1,127 @@
+---
+/**
+ * /about: who builds Irab, why, and how to reach us. The entity page the
+ * Organization schema's `founder` and every article's `author` point at
+ * (Person @id https://irab.app/about#mansoor, emitted by Schema.astro).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Schema from '../components/Schema.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import ArticleHero from '../components/ArticleHero.astro';
+import ArticleSection from '../components/ArticleSection.astro';
+import ArticleCta from '../components/ArticleCta.astro';
+
+const profiles = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mansoor-shokla-1a9781353' },
+  { label: 'GitHub', href: 'https://github.com/mh2des' },
+  { label: 'الموقع الشخصي', href: 'https://me.qamoos.org' },
+  { label: 'X', href: 'https://x.com/irab_app' },
+  { label: 'Instagram', href: 'https://www.instagram.com/irab.app' },
+];
+---
+<BaseLayout
+  lang="ar"
+  hasEn
+  title="عن إعراب: من يبني الموقع والتطبيق ولماذا · إعراب"
+  description="إعراب مشروع مستقل يبنيه منصور حسن، طالب علوم حاسوب ومعلّم عربية سابق في ماليزيا: محلّل إعراب بالذكاء الاصطناعي، تدريب بتقييم فوري، دروس نحو، وإعراب القرآن."
+>
+  <Schema slot="head" person />
+  <Nav lang="ar" />
+
+  <ArticleHero
+    lang="ar"
+    eyebrow="من نحن"
+    title="عن إعراب"
+    summary="إعراب أداةٌ وتطبيقٌ لتعلّم قواعد العربية بالتطبيق لا بالحفظ: يُعرِب أيّ جملة كلمةً كلمة بالذكاء الاصطناعي، وتُعرِب أنت بنفسك فتحصل على تقييم فوري، وتجد إلى جانب ذلك دروس النحو وإعراب القرآن كاملًا. يبنيه مطوّر واحد من طلبة العلم في ماليزيا، لكلّ دارس للعربية في العالم."
+  />
+
+  <ArticleSection
+    lang="ar"
+    id="what"
+    title="ما إعراب؟"
+    lead="محلّل إعراب بالذكاء الاصطناعي، وتدريب على الإعراب بتقييم فوري، ومراجع موثّقة: هذه الأركان الثلاثة التي يقوم عليها الموقع والتطبيق."
+  >
+    <p><strong>المحلّل.</strong> تكتب جملة عربية فتحصل على إعرابها كلمة بكلمة: النوع، والوظيفة، والإعراب، والعلامة وسببها، والتشكيل الكامل. متاح مجانًا على الويب في <a href="/tool">محلّل الإعراب</a> بحدّ يومي، وفي التطبيق.</p>
+    <p><strong>التدريب.</strong> تُعرِب الجملة بنفسك، فيقارن المحرّك إجابتك بالتحليل الصحيح ويبيّن لك موضع الخطأ تحديدًا، مع بنك تمارين وسبعة مستويات من التحديات. وللمعلّمين <a href="/majalis">مجالس الإعراب</a>: مسابقات مباشرة يستضيفها المعلّم وينضمّ إليها طلابه من أيّ متصفح.</p>
+    <p><strong>المراجع.</strong> <a href="/quran">إعراب القرآن الكريم</a> كاملًا (٦٢٣٦ آية) منقولًا عن «الجدول في إعراب القرآن» لمحمود صافي مع ذكر المصدر في كلّ صفحة، و<a href="/duroos">دروس النحو</a> المكتوبة والمراجَعة قبل النشر، وثلاثة معاجم في التطبيق: ذكي، وتراثي، ولهجات.</p>
+    <p>حساب واحد يعمل على iOS وAndroid والويب، مجانًا مع اشتراك «إعراب بلس» الاختياري لمن أراد المزيد.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="why"
+    title="لماذا بنيناه"
+    lead="بدأ إعراب من حاجة شخصية: طالب يريد أن يتقن الإعراب ولا يجد المعلّم والوقت معًا. الأدوات الموجودة إمّا تعطيك الجواب بلا فهم، أو تعطيك القاعدة بلا تطبيق."
+  >
+    <p>نرى أنّ الإعراب مهارة تُكتسب بالممارسة المصحَّحة لا بحفظ الجداول. لذلك يشرح المحلّل ولا يكتفي بالوسم، ويقيّم التدريب ويسمّي موضع الخطأ، ويُذكر المرجع باسمه حين ننقل. وحين نخطئ نصحّح في الصفحة نفسها، كما تجد في <a href="/methodology">منهجيتنا</a>.</p>
+    <p>إعراب مشروع مستقلّ بلا إعلانات، يموّله اشتراك «إعراب بلس» الاختياري، ويبقى جوهره مجانيًّا: المحلّل بحدّ يومي، والدروس، وإعراب القرآن.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="who"
+    title="من يبني إعراب"
+    lead="إعراب يبنيه ويطوّره منصور حسن (Mansoor Hasan Shokla)، مؤسّس المشروع ومطوّره، من ألور ستار في ولاية كيدا بماليزيا."
+  >
+    <div class="person" id="mansoor">
+      <p class="person-name"><span class="font-arabic-display">منصور حسن</span> <span class="person-latin">Mansoor Hasan Shokla</span></p>
+      <p class="person-role">مؤسّس إعراب ومطوّره</p>
+      <dl class="person-facts">
+        <div><dt>الدراسة</dt><dd>بكالوريوس علوم الحاسوب، تخصّص علم البيانات، جامعة البخاري الدولية (AIU) في ماليزيا، والتخرّج المتوقّع سنة ٢٠٢٦.</dd></div>
+        <div><dt>التدريس</dt><dd>معلّم لغة عربية للناطقين بغيرها في جامعة البخاري الدولية من ٢٠٢٣ إلى ٢٠٢٤: دروس منظّمة في المحادثة والقواعد والكتابة لطلاب من جنسيات متعدّدة.</dd></div>
+        <div><dt>النشاط</dt><dd>رئيس نادي البخاري القرآني والإسلامي (ALQISC) وعضو لجنته منذ ٢٠٢٣.</dd></div>
+        <div><dt>الجوائز</dt><dd>المركز الأول في مسابقة القرآن الكريم بجامعة البخاري (٢٠٢٤)، والمركز الأول في مسابقة Code Quest بكلية الحوسبة (٢٠٢٤).</dd></div>
+        <div><dt>مشاريع أخرى</dt><dd><a href="https://qamoos.org" rel="noopener">قاموس</a>: منصّة لغوية عربية تضمّ أكثر من ١٨٩ ألف مدخل معجمي و٣٦ ألف بيت شعر.</dd></div>
+        <div><dt>اللغات</dt><dd>العربية لغة أمّ، والإنجليزية بطلاقة.</dd></div>
+      </dl>
+      <ul class="person-links" role="list">
+        {profiles.map((p) => (
+          <li><a href={p.href} rel="me noopener" target="_blank">{p.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="contact"
+    title="تواصل معنا"
+    lead="نرحّب بكلّ تصحيح واقتراح. راسلنا على hello@irab.app، وللدعم support@irab.app، وللصحافة press@irab.app."
+  >
+    <p>تجد كلّ العناوين وما يخصّ كلًّا منها في صفحة <a href="/contact">تواصل</a>، وتجد في <a href="/methodology">منهجيتنا</a> كيف نكتب ونراجع ونصحّح. وإن كنت من أهل العلم ووجدت في المحتوى ما يحتاج مراجعة، فمراسلتك لنا صدقة نشكرك عليها.</p>
+  </ArticleSection>
+
+  <ArticleCta lang="ar">
+    <span slot="title">جرّب المحلّل بنفسك.</span>
+    ألصق أيّ جملة عربية في التجربة المباشرة، أو حمّل التطبيق وتدرّب على الإعراب بتقييم فوري.
+  </ArticleCta>
+
+  <Footer lang="ar" />
+</BaseLayout>
+
+<style>
+  .person {
+    border: 1px solid var(--color-card-edge); border-radius: 16px; padding: 1.4rem 1.5rem 1.2rem;
+    background: var(--color-card); box-shadow: var(--shadow-card);
+  }
+  :global(.dark) .person { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .person-name { font-size: 1.6rem; font-weight: 700; color: var(--color-ink); margin: 0 0 0.15rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.9rem; }
+  :global(.dark) .person-name { color: var(--color-mist); }
+  .person-latin { font-family: var(--font-sans, inherit); font-size: 1rem; font-weight: 500; color: color-mix(in srgb, var(--color-ink) 60%, transparent); direction: ltr; }
+  :global(.dark) .person-latin { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .person-role { margin: 0 0 1rem; color: var(--color-purple); font-weight: 700; }
+  .person-facts { display: grid; gap: 0.7rem; margin: 0 0 1.1rem; }
+  .person-facts div { display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.6rem; align-items: baseline; }
+  .person-facts dt { font-weight: 700; color: var(--color-ink); }
+  :global(.dark) .person-facts dt { color: var(--color-mist); }
+  .person-facts dd { margin: 0; line-height: 1.9; }
+  .person-links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .person-links a {
+    display: inline-block; padding: 0.25rem 0.8rem; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 0.95rem;
+    color: var(--color-teal); border: 1px solid color-mix(in srgb, var(--color-teal) 40%, transparent);
+  }
+  .person-links a:hover { background: color-mix(in srgb, var(--color-teal) 10%, transparent); }
+  .person-links a:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
+  @media (max-width: 40rem) { .person-facts div { grid-template-columns: 1fr; gap: 0.15rem; } }
+</style>

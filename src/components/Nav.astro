@@ -105,7 +105,7 @@ const isActive = (href: string) =>
           <a
             href={lang === 'ar' ? path : otherUrl}
             class:list={[
-              'px-2.5 py-1 rounded-md transition-colors duration-200',
+              'px-3 py-2 rounded-md transition-colors duration-200',
               lang === 'ar' ? 'bg-paper dark:bg-coal text-ink dark:text-mist shadow-sm' : 'text-ink/50 dark:text-mist/50 hover:text-ink dark:hover:text-mist',
             ]}
             aria-current={lang === 'ar' ? 'true' : 'false'}
@@ -113,7 +113,7 @@ const isActive = (href: string) =>
           <a
             href={lang === 'en' ? path : otherUrl}
             class:list={[
-              'px-2.5 py-1 rounded-md transition-colors duration-200',
+              'px-3 py-2 rounded-md transition-colors duration-200',
               lang === 'en' ? 'bg-paper dark:bg-coal text-ink dark:text-mist shadow-sm' : 'text-ink/50 dark:text-mist/50 hover:text-ink dark:hover:text-mist',
             ]}
             aria-current={lang === 'en' ? 'true' : 'false'}

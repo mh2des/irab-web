@@ -12,9 +12,22 @@ interface FaqItem { q: string; a: string; }
 
 interface Props {
   faqs?: FaqItem[];
+  /** Also emit the founder's Person entity (used on /about and /en/about). */
+  person?: boolean;
 }
 
-const { faqs = [] } = Astro.props;
+const { faqs = [], person = false } = Astro.props;
+
+const ORG_ID = 'https://irab.app/#organization';
+const PERSON_ID = 'https://irab.app/about#mansoor';
+
+const SOCIAL = [
+  'https://www.instagram.com/irab.app',
+  'https://x.com/irab_app',
+  'https://play.google.com/store/apps/details?id=com.irabapp.arabic',
+  'https://apps.apple.com/app/id6765811277',
+  'https://github.com/mh2des',
+];
 
 const mobileApp = {
   '@context': 'https://schema.org',
@@ -35,32 +48,67 @@ const mobileApp = {
     availability: 'https://schema.org/InStock',
     description: 'Free with optional Irab Plus subscription.',
   },
-  publisher: {
-    '@type': 'Organization',
-    name: 'Irab',
-    url: 'https://irab.app',
-  },
+  publisher: { '@id': ORG_ID },
   downloadUrl: [
     'https://play.google.com/store/apps/details?id=com.irabapp.arabic',
     'https://apps.apple.com/app/id6765811277',
   ],
 };
 
+// The entity every article's `author` and the app's `publisher` resolve to.
+// Founder is referenced by @id; the Person itself is emitted on /about.
 const organization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': ORG_ID,
   name: 'Irab',
   alternateName: ['إعراب', 'IrabApp'],
   url: 'https://irab.app',
-  logo: 'https://irab.app/icons/Icon-512.png',
+  logo: { '@type': 'ImageObject', url: 'https://irab.app/icons/Icon-512.png', width: 512, height: 512 },
   description:
-    'Irab builds AI powered tools for studying Arabic grammar and the Quran. Founded in 2025.',
-  founder: { '@type': 'Person', name: 'Mansour Shakla' },
-  sameAs: [
-    'https://play.google.com/store/apps/details?id=com.irabapp.arabic',
-    'https://apps.apple.com/app/id6765811277',
+    "Irab builds AI powered tools for learning Arabic grammar by doing it: a word-by-word i'rab analyzer, graded practice, reviewed lessons, and the complete i'rab of the Quran.",
+  founder: { '@id': PERSON_ID },
+  email: 'mailto:hello@irab.app',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Alor Setar',
+    addressRegion: 'Kedah',
+    addressCountry: 'MY',
+  },
+  contactPoint: [
+    { '@type': 'ContactPoint', contactType: 'customer support', email: 'support@irab.app', availableLanguage: ['ar', 'en'] },
+    { '@type': 'ContactPoint', contactType: 'public relations', email: 'press@irab.app', availableLanguage: ['ar', 'en'] },
   ],
+  sameAs: SOCIAL,
 };
+
+const founder = person
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      '@id': PERSON_ID,
+      name: 'Mansoor Hasan Shokla',
+      alternateName: 'منصور حسن',
+      url: 'https://irab.app/about',
+      jobTitle: 'Founder and developer, Irab',
+      worksFor: { '@id': ORG_ID },
+      alumniOf: { '@type': 'CollegeOrUniversity', name: 'Albukhary International University' },
+      homeLocation: {
+        '@type': 'Place',
+        address: { '@type': 'PostalAddress', addressLocality: 'Alor Setar', addressRegion: 'Kedah', addressCountry: 'MY' },
+      },
+      knowsLanguage: ['ar', 'en'],
+      knowsAbout: ['Arabic grammar', "I'rab", 'Nahw', 'Natural language processing'],
+      email: 'mailto:hello@irab.app',
+      sameAs: [
+        'https://www.linkedin.com/in/mansoor-shokla-1a9781353',
+        'https://github.com/mh2des',
+        'https://me.qamoos.org',
+        'https://x.com/irab_app',
+        'https://www.instagram.com/irab.app',
+      ],
+    }
+  : null;
 
 const faqPage = faqs.length
   ? {
@@ -76,4 +124,5 @@ const faqPage = faqs.length
 ---
 <script type="application/ld+json" set:html={JSON.stringify(mobileApp)} is:inline />
 <script type="application/ld+json" set:html={JSON.stringify(organization)} is:inline />
+{founder && <script type="application/ld+json" set:html={JSON.stringify(founder)} is:inline />}
 {faqPage && <script type="application/ld+json" set:html={JSON.stringify(faqPage)} is:inline />}

@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="نائب الفاعل: البناء للمجهول وأحكامه بالأمثلة · إعراب"
   description="شرح نائب الفاعل: بناء الماضي والمضارع للمجهول، ما ينوب عن الفاعل المحذوف، علامات رفع النائب، والفرق بينه وبين المفعول به، مع أمثلة معربة إعرابًا كاملًا."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="نائب الفاعل" description="شرح نائب الفاعل: بناء الماضي والمضارع للمجهول، ما ينوب عن الفاعل المحذوف، علامات رفع النائب، والفرق بينه وبين المفعول به، مع أمثلة معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="نائب الفاعل"
     summary="إذا حُذف الفاعل من الجملة وبُني الفعل للمجهول، ناب عن الفاعل غيرُه وأخذ أحكامه كلها: الرفع، والعمدة، وتأنيث الفعل. هذا الدرس يشرح كيف يُبنى الفعل للمجهول، وما الذي ينوب عن الفاعل، وكيف يُعرب النائب، مع التنبيه على الفرق الجوهري بينه وبين المفعول به."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

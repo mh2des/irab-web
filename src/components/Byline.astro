@@ -1,0 +1,72 @@
+---
+/**
+ * Byline: who wrote the page, that it was reviewed, and when it last changed.
+ *
+ * Sits directly under ArticleHero on lessons and guides. The date is the
+ * source file's last git commit (src/lib/content-dates.ts), so it only moves
+ * when the content does. Omitted entirely when no date can be determined.
+ */
+import Container from './Container.astro';
+import { lastCommitDate, sourceFileFor, formatDate } from '../lib/content-dates';
+
+interface Props {
+  lang?: 'ar' | 'en';
+  /** 'lesson' wording ("يُراجع كل درس قبل النشر") vs. generic article wording. */
+  kind?: 'lesson' | 'article';
+  /** Override the source file (repo-relative) when the URL does not map 1:1. */
+  file?: string;
+}
+
+const { lang = 'ar', kind = 'article', file } = Astro.props;
+const source = file ?? sourceFileFor(Astro.url.pathname);
+const iso = source ? lastCommitDate(source) : undefined;
+const shown = iso ? formatDate(iso, lang) : undefined;
+
+const t = lang === 'ar'
+  ? {
+      by: 'بقلم منصور حسن',
+      about: '/about',
+      reviewed: kind === 'lesson' ? 'يُراجع كل درس قبل النشر' : 'يُراجع قبل النشر',
+      updated: 'آخر تحديث',
+    }
+  : {
+      by: 'By Mansoor Hasan Shokla',
+      about: '/en/about',
+      reviewed: 'Reviewed before publishing',
+      updated: 'Updated',
+    };
+---
+<Container size="narrow">
+  <p class:list={['byline', lang === 'ar' ? 'font-arabic' : '']} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+    <a href={t.about} rel="author">{t.by}</a>
+    <span class="byline-sep" aria-hidden="true">·</span>
+    <a href="/methodology#editorial">{t.reviewed}</a>
+    {shown && (
+      <>
+        <span class="byline-sep" aria-hidden="true">·</span>
+        <span>{t.updated} <time datetime={iso}>{shown}</time></span>
+      </>
+    )}
+  </p>
+</Container>
+
+<style>
+  .byline {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.6rem;
+    margin: -0.5rem 0 0; padding: 0.5rem 0 0;
+    font-size: 1rem; line-height: 1.6;
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
+  }
+  :global(.dark) .byline {
+    color: color-mix(in srgb, var(--color-mist) 62%, transparent);
+    border-top-color: color-mix(in srgb, var(--color-mist) 12%, transparent);
+  }
+  /* Links get a 44px tap height on phones without changing the visual rhythm. */
+  .byline a { color: inherit; text-decoration: none; text-underline-offset: 3px; display: inline-block; padding-block: 0.6rem; }
+  .byline a:hover { color: var(--color-purple); text-decoration: underline; }
+  .byline a:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; border-radius: 3px; }
+  .byline-sep { color: color-mix(in srgb, var(--color-ink) 35%, transparent); }
+  :global(.dark) .byline-sep { color: color-mix(in srgb, var(--color-mist) 35%, transparent); }
+  .byline time { font-variant-numeric: tabular-nums; }
+</style>

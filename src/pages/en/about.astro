@@ -1,0 +1,125 @@
+---
+/**
+ * /en/about: English twin of /about. Same facts, same Person entity
+ * (https://irab.app/about#mansoor via Schema.astro `person`).
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Schema from '../../components/Schema.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleSection from '../../components/ArticleSection.astro';
+import ArticleCta from '../../components/ArticleCta.astro';
+
+const profiles = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mansoor-shokla-1a9781353' },
+  { label: 'GitHub', href: 'https://github.com/mh2des' },
+  { label: 'Personal site', href: 'https://me.qamoos.org' },
+  { label: 'X', href: 'https://x.com/irab_app' },
+  { label: 'Instagram', href: 'https://www.instagram.com/irab.app' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="About Irab: who builds it, and why · Irab"
+  description="Independent Arabic grammar project by Mansoor Hasan Shokla, a CS student and former Arabic instructor in Malaysia: AI i'rab analyzer, graded practice, lessons."
+>
+  <Schema slot="head" person />
+  <Nav lang="en" />
+
+  <ArticleHero
+    lang="en"
+    eyebrow="About"
+    title="About Irab"
+    summary="Irab is a tool and an app for learning Arabic grammar by doing it, not by memorising tables: it parses any sentence word by word with AI, lets you do the i'rab yourself and get graded instantly, and backs that with reviewed lessons and the complete i'rab of the Quran. It is built by one developer, a student of the language in Malaysia, for every learner of Arabic."
+  />
+
+  <ArticleSection
+    lang="en"
+    id="what"
+    title="What Irab is"
+    lead="An AI i'rab analyzer, graded practice, and documented references: the three pillars the site and the app stand on."
+  >
+    <p><strong>The analyzer.</strong> Paste an Arabic sentence and get its i'rab word by word: part of speech, syntactic role, case, the case marker and why, and full vowelisation. Free on the web at the <a href="/en/tool">i'rab analyzer</a> with a daily limit, and in the app.</p>
+    <p><strong>Practice.</strong> You do the i'rab yourself; the engine compares your answer with the correct analysis and points to the exact mistake, with a practice bank and seven challenge levels. For teachers there are live i'rab rooms (<span lang="ar">مجالس الإعراب</span>): a teacher hosts a quiz and students join from any browser.</p>
+    <p><strong>References.</strong> The complete <a href="/en/quran">i'rab of the Quran</a> (6,236 ayat) quoted from Mahmoud Safi's <span lang="ar">«الجدول في إعراب القرآن»</span> with the source named on every page, <a href="/duroos">grammar lessons</a> (in Arabic) written and reviewed before publishing, and three dictionaries in the app: smart, classical and dialect.</p>
+    <p>One account works on iOS, Android and the web, free with an optional Irab Plus subscription.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="why"
+    title="Why we built it"
+    lead="Irab started from a personal need: a student who wanted to master i'rab and could not find the teacher and the time together. Existing tools either give you the answer without understanding, or the rule without practice."
+  >
+    <p>We think i'rab is a skill learned by corrected practice, not by memorising tables. So the analyzer explains instead of tagging, practice grades and names the mistake, and the reference is credited by name whenever we quote. When we get something wrong we fix it on the page itself, as described in our <a href="/methodology">methodology</a> (Arabic).</p>
+    <p>Irab is independent and ad-free, funded by the optional Irab Plus subscription; the core stays free: the analyzer with a daily limit, the lessons, and the Quran i'rab.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="who"
+    title="Who builds Irab"
+    lead="Irab is built and maintained by Mansoor Hasan Shokla (in Arabic, Mansoor Hasan), its founder and developer, from Alor Setar in Kedah, Malaysia."
+  >
+    <div class="person" id="mansoor">
+      <p class="person-name">Mansoor Hasan Shokla <span class="person-ar font-arabic-display" lang="ar">منصور حسن</span></p>
+      <p class="person-role">Founder and developer of Irab</p>
+      <dl class="person-facts">
+        <div><dt>Education</dt><dd>BSc in Computer Science, Data Science specialisation, Albukhary International University (AIU), Malaysia; expected graduation 2026.</dd></div>
+        <div><dt>Teaching</dt><dd>Arabic language instructor at Albukhary International University, 2023 to 2024: structured classes in conversation, grammar and writing for international non-native speakers.</dd></div>
+        <div><dt>Community</dt><dd>President and committee member of the Albukhary Quranic and Islamic Club (ALQISC) since 2023.</dd></div>
+        <div><dt>Awards</dt><dd>First place, AIU Quran Competition (2024); first place, Code Quest Competition, School of Computing (2024).</dd></div>
+        <div><dt>Other work</dt><dd><a href="https://qamoos.org" rel="noopener">Qamoos.org</a>, an Arabic linguistic platform with more than 189,000 dictionary entries and 36,000 verses of poetry.</dd></div>
+        <div><dt>Languages</dt><dd>Native Arabic, fluent English.</dd></div>
+      </dl>
+      <ul class="person-links" role="list">
+        {profiles.map((p) => (
+          <li><a href={p.href} rel="me noopener" target="_blank">{p.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="contact"
+    title="Get in touch"
+    lead="Corrections and suggestions are welcome. Write to hello@irab.app, support@irab.app for account and app issues, or press@irab.app for media."
+  >
+    <p>All addresses and what each one is for are on the <a href="/en/contact">contact page</a>. If you are a scholar or teacher and find something in the content that needs review, we would be grateful to hear from you.</p>
+  </ArticleSection>
+
+  <ArticleCta lang="en">
+    <span slot="title">Try the analyzer yourself.</span>
+    Paste any Arabic sentence into the live demo, or download the app and practise i'rab with instant grading.
+  </ArticleCta>
+
+  <Footer lang="en" />
+</BaseLayout>
+
+<style>
+  .person {
+    border: 1px solid var(--color-card-edge); border-radius: 16px; padding: 1.4rem 1.5rem 1.2rem;
+    background: var(--color-card); box-shadow: var(--shadow-card);
+  }
+  :global(.dark) .person { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .person-name { font-size: 1.45rem; font-weight: 700; color: var(--color-ink); margin: 0 0 0.15rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.9rem; }
+  :global(.dark) .person-name { color: var(--color-mist); }
+  .person-ar { font-size: 1.2rem; font-weight: 500; color: color-mix(in srgb, var(--color-ink) 60%, transparent); }
+  :global(.dark) .person-ar { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+  .person-role { margin: 0 0 1rem; color: var(--color-purple); font-weight: 700; }
+  .person-facts { display: grid; gap: 0.7rem; margin: 0 0 1.1rem; }
+  .person-facts div { display: grid; grid-template-columns: 7rem 1fr; gap: 0.6rem; align-items: baseline; }
+  .person-facts dt { font-weight: 700; color: var(--color-ink); }
+  :global(.dark) .person-facts dt { color: var(--color-mist); }
+  .person-facts dd { margin: 0; line-height: 1.7; }
+  .person-links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .person-links a {
+    display: inline-block; padding: 0.25rem 0.8rem; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 0.95rem;
+    color: var(--color-teal); border: 1px solid color-mix(in srgb, var(--color-teal) 40%, transparent);
+  }
+  .person-links a:hover { background: color-mix(in srgb, var(--color-teal) 10%, transparent); }
+  .person-links a:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
+  @media (max-width: 40rem) { .person-facts div { grid-template-columns: 1fr; gap: 0.15rem; } }
+</style>

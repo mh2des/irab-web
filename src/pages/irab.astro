@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/sections/Footer.astro';
 import ArticleHero from '../components/ArticleHero.astro';
+import Byline from '../components/Byline.astro';
+import ArticleSchema from '../components/ArticleSchema.astro';
 import ArticleSection from '../components/ArticleSection.astro';
 import ArticleCta from '../components/ArticleCta.astro';
 import ArticleFaq from '../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="ما هو الإعراب؟ دليل شامل لتحليل الجملة العربية · إعراب"
   description="الإعراب هو نظام عربي لبيان الحالة النحوية لكلّ كلمة في الجملة. دليل شامل لمعنى الإعراب، الحالات الأربع، وأهميّته للقرآن، وكيف تبدأ تعلّمه اليوم."
 >
+  <ArticleSchema slot="head" lang="ar" kind="article" headline="ما هو الإعراب؟" description="الإعراب هو نظام عربي لبيان الحالة النحوية لكلّ كلمة في الجملة. دليل شامل لمعنى الإعراب، الحالات الأربع، وأهميّته للقرآن، وكيف تبدأ تعلّمه اليوم." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -30,6 +33,7 @@ const faqs = [
     title="ما هو الإعراب؟"
     summary="الإعراب هو النظام النحوي الذي يحدّد حالة كلّ كلمة ووظيفتها في الجملة العربية. حيث تستعمل الإنجليزية ترتيب الكلمات للدلالة على المعنى، تستعمل العربية الحركات الإعرابية. هذا الدليل يغطّي ما هو الإعراب، الحالات الأربع، أهميّته في علم القرآن، وكيف تبدأ تعلّمه اليوم."
   />
+  <Byline lang="ar" kind="article" />
 
   <ArticleSection
     lang="ar"

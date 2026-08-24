@@ -1,0 +1,118 @@
+---
+/**
+ * /contact: every address and what it is for. Linked from the footer
+ * ("تواصل") and from /about. No phone number, by design.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Schema from '../components/Schema.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import ArticleHero from '../components/ArticleHero.astro';
+import ArticleSection from '../components/ArticleSection.astro';
+
+const inboxes = [
+  { addr: 'hello@irab.app', label: 'عام', what: 'الأسئلة العامة، والاقتراحات، والتصحيحات اللغوية، والشراكات مع المدارس والأكاديميات.' },
+  { addr: 'support@irab.app', label: 'الدعم', what: 'مشكلات الحساب والاشتراك والتطبيق، والإبلاغ عن إعراب غير دقيق أو خطأ في صفحة.' },
+  { addr: 'press@irab.app', label: 'الصحافة', what: 'المقابلات، وطلبات الشعار والصور، والتغطية الإعلامية. انظر أيضًا صفحة الصحافة.' },
+  { addr: 'legal@irab.app', label: 'قانوني', what: 'الشؤون القانونية، والحقوق، والخصوصية.' },
+];
+
+const profiles = [
+  { label: 'Instagram', handle: '@irab.app', href: 'https://www.instagram.com/irab.app' },
+  { label: 'X', handle: '@irab_app', href: 'https://x.com/irab_app' },
+  { label: 'LinkedIn', handle: 'Mansoor Hasan Shokla', href: 'https://www.linkedin.com/in/mansoor-shokla-1a9781353' },
+  { label: 'GitHub', handle: 'mh2des', href: 'https://github.com/mh2des' },
+];
+---
+<BaseLayout
+  lang="ar"
+  hasEn
+  title="تواصل مع إعراب: الدعم والصحافة والشؤون القانونية · إعراب"
+  description="عناوين التواصل مع إعراب: hello للأسئلة والاقتراحات، support لمشكلات الحساب والتطبيق والإبلاغ عن الأخطاء، press للصحافة، وlegal للشؤون القانونية، مع حساباتنا."
+>
+  <Schema slot="head" />
+  <Nav lang="ar" />
+
+  <ArticleHero
+    lang="ar"
+    eyebrow="تواصل"
+    title="تواصل مع إعراب"
+    summary="فريق صغير يقرأ كلّ رسالة ويردّ عليها بنفسه. اختر العنوان المناسب لطلبك حتى تصل رسالتك إلى الشخص الصحيح من أوّل مرة."
+  />
+
+  <ArticleSection
+    lang="ar"
+    id="email"
+    title="البريد الإلكتروني"
+    lead="أربعة عناوين، لكلّ واحد منها غرض. الرسالة التي تصل إلى العنوان الصحيح تُعالَج أسرع."
+  >
+    <ul class="inboxes" role="list">
+      {inboxes.map((i) => (
+        <li class="inbox">
+          <span class="inbox-label">{i.label}</span>
+          <a class="inbox-addr" href={`mailto:${i.addr}`} dir="ltr">{i.addr}</a>
+          <p class="inbox-what">{i.what}</p>
+        </li>
+      ))}
+    </ul>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="before"
+    title="قبل أن تراسلنا"
+    lead="ثلاثة أشياء تجعل الردّ أسرع وأدقّ."
+  >
+    <ul>
+      <li><strong>إعراب غير دقيق:</strong> أرسل الجملة نفسها كما كتبتها، وما أعطته الأداة، وما تراه صوابًا. نراجع البلاغ ونصحّح كما في <a href="/methodology#corrections">منهجيتنا</a>.</li>
+      <li><strong>مشكلة في الحساب أو الاشتراك:</strong> اذكر البريد الذي سجّلت به، والمنصّة (iOS أو Android أو الويب)، ووصفًا لما حدث.</li>
+      <li><strong>خطأ في صفحة:</strong> ضع رابط الصفحة والموضع فيها.</li>
+    </ul>
+    <p>نقرأ كلّ رسالة ونردّ عليها بأنفسنا، وقد يتأخّر الردّ أحيانًا لأنّ الفريق صغير. شكرًا لصبرك.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="social"
+    title="حساباتنا"
+    lead="نُعلن الجديد ونجيب عن الأسئلة القصيرة هنا أيضًا."
+  >
+    <ul class="profiles" role="list">
+      {profiles.map((p) => (
+        <li><a href={p.href} rel="me noopener" target="_blank"><span class="profile-net">{p.label}</span><span class="profile-handle" dir="ltr">{p.handle}</span></a></li>
+      ))}
+    </ul>
+    <p>وتعرف من يقف خلف إعراب في صفحة <a href="/about">عن إعراب</a>، وما نقدّمه للصحافة في صفحة <a href="/press">الصحافة</a>.</p>
+  </ArticleSection>
+
+  <Footer lang="ar" />
+</BaseLayout>
+
+<style>
+  .inboxes { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.85rem; }
+  .inbox {
+    border: 1px solid var(--color-card-edge); border-radius: 14px; padding: 1rem 1.2rem;
+    background: var(--color-card); box-shadow: var(--shadow-card);
+    display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 0.9rem; align-items: baseline;
+  }
+  :global(.dark) .inbox { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .inbox-label {
+    font-size: 0.85rem; font-weight: 700; color: var(--color-teal);
+    padding: 0.05rem 0.6rem; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--color-teal) 40%, transparent);
+  }
+  .inbox-addr { font-weight: 700; color: var(--color-purple); text-decoration: none; text-underline-offset: 3px; unicode-bidi: isolate; }
+  .inbox-addr:hover { text-decoration: underline; }
+  .inbox-what { grid-column: 1 / -1; margin: 0; line-height: 1.9; }
+  .profiles { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .profiles a {
+    display: inline-flex; align-items: baseline; gap: 0.5rem; padding: 0.45rem 0.9rem; border-radius: 12px; text-decoration: none;
+    border: 1px solid var(--color-card-edge); background: var(--color-card);
+  }
+  :global(.dark) .profiles a { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .profiles a:hover { border-color: var(--color-purple); }
+  .profiles a:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
+  .profile-net { font-weight: 700; color: var(--color-ink); }
+  :global(.dark) .profile-net { color: var(--color-mist); }
+  .profile-handle { color: color-mix(in srgb, var(--color-ink) 60%, transparent); font-size: 0.95rem; unicode-bidi: isolate; }
+  :global(.dark) .profile-handle { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
+</style>

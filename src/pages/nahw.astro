@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/sections/Footer.astro';
 import ArticleHero from '../components/ArticleHero.astro';
+import Byline from '../components/Byline.astro';
+import ArticleSchema from '../components/ArticleSchema.astro';
 import ArticleSection from '../components/ArticleSection.astro';
 import ArticleCta from '../components/ArticleCta.astro';
 import ArticleFaq from '../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="ما هو النحو؟ علم بناء الجملة العربية · إعراب"
   description="النحو علم بناء الجملة العربية وقواعدها. دليل شامل لأساسيات النحو، أنواع الجملة، والعلاقة بين النحو والإعراب."
 >
+  <ArticleSchema slot="head" lang="ar" kind="article" headline="ما هو النحو؟" description="النحو علم بناء الجملة العربية وقواعدها. دليل شامل لأساسيات النحو، أنواع الجملة، والعلاقة بين النحو والإعراب." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -30,6 +33,7 @@ const faqs = [
     title="ما هو النحو؟"
     summary="النحو هو علم بناء الجملة العربية, مجموعة القواعد التي تحكم كيفية تركيب الكلمات في جمل ذات معنى. يحدّد بنية الجملة، يقرّر الإعراب، ويفسّر العلاقة بين كلّ كلمة. مع الصرف، يشكّل النحو أساس دراسة العربية الكلاسيكية. هذا الدليل يغطّي أساسيّات النحو، أنواع الجملة، وعلاقته بالإعراب."
   />
+  <Byline lang="ar" kind="article" />
 
   <ArticleSection
     lang="ar"

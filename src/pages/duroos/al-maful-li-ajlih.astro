@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="المفعول لأجله: شروط نصبه وأحواله · إعراب"
   description="شرح المفعول لأجله (المفعول له): تعريفه، شروط نصبه الأربعة، أحواله مع أل والإضافة والتجرد، ومتى يجر بلام التعليل، مع أمثلة قرآنية معربة إعرابًا كاملًا."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="المفعول لأجله" description="شرح المفعول لأجله (المفعول له): تعريفه، شروط نصبه الأربعة، أحواله مع أل والإضافة والتجرد، ومتى يجر بلام التعليل، مع أمثلة قرآنية معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="المفعول لأجله"
     summary="المفعول لأجله مصدر قلبي منصوب يبين سبب وقوع الفعل وعلته، ويسمى المفعول له. هو جواب سؤال: لماذا فعلت؟ في كلمة واحدة منصوبة. هذا الدرس يعرض شروط نصبه الأربعة، وأحواله الثلاثة مع أل والإضافة، ومتى يهجر النصب إلى الجر باللام، بأمثلة معربة كاملة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="المفعول فيه: ظرف الزمان والمكان · إعراب"
   description="شرح المفعول فيه: ظرف الزمان وظرف المكان، شرط تضمن معنى في، المبهم والمختص، المتصرف وغير المتصرف، وتعلق الظرف، مع أمثلة قرآنية معربة إعرابًا كاملًا."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="المفعول فيه" description="شرح المفعول فيه: ظرف الزمان وظرف المكان، شرط تضمن معنى في، المبهم والمختص، المتصرف وغير المتصرف، وتعلق الظرف، مع أمثلة قرآنية معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="المفعول فيه"
     summary="المفعول فيه هو الظرف: اسم منصوب يبين زمان وقوع الفعل أو مكانه متضمنًا معنى في. ظروف الزمان تنصب كلها، وظروف المكان ينصب مبهمها ويجر مختصها. هذا الدرس يعرض القسمين وشرط الظرفية والمتصرف وغير المتصرف، بأمثلة قرآنية معربة كاملة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

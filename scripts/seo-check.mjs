@@ -53,7 +53,7 @@ if (!existsSync(idx)) {
   console.log('sitemap-index.xml: MISSING');
 } else {
   const children = [...readFileSync(idx, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  console.log(`sitemap-index.xml lists ${children.length} children${children.length === 4 ? ' (ok)' : ' (expected 4)'}`);
+  console.log(`sitemap-index.xml lists ${children.length} children${children.length >= 4 ? ' (ok)' : ' (expected at least 4: pages, duroos, quran-ar, quran-en)'}`);
   let total = 0;
   for (const c of children) {
     const f = join(DIST, c.replace('https://irab.app/', ''));

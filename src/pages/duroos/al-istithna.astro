@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="الاستثناء: أدواته وأحكام المستثنى الثلاثة · إعراب"
   description="شرح الاستثناء: أركانه وأدواته، وجوب النصب في التام المثبت، جواز البدلية في المنفي، الإعراب بحسب الموقع في المفرغ، وأحكام غير وسوى وعدا، مع أمثلة قرآنية معربة."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الاستثناء" description="شرح الاستثناء: أركانه وأدواته، وجوب النصب في التام المثبت، جواز البدلية في المنفي، الإعراب بحسب الموقع في المفرغ، وأحكام غير وسوى وعدا، مع أمثلة قرآنية معربة." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="الاستثناء"
     summary="الاستثناء إخراج ما بعد الأداة من حكم ما قبلها. ومداره على قاعدة واحدة بثلاث حالات: النصب في الكلام التام المثبت، وجواز النصب والبدلية في التام المنفي، والإعراب على حسب الموقع في المفرغ. هذا الدرس يضبط الحالات الثلاث وأحكام غير وسوى وعدا، بأمثلة قرآنية معربة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

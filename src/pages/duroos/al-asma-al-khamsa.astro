@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="الأسماء الخمسة: شروط إعرابها بالحروف · إعراب"
   description="شرح الأسماء الخمسة وشروط إعرابها بالحروف: الرفع بالواو والنصب بالألف والجر بالياء، مع بيان شروط الإفراد والتكبير والإضافة وأمثلة معربة إعرابًا كاملًا."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الأسماء الخمسة" description="شرح الأسماء الخمسة وشروط إعرابها بالحروف: الرفع بالواو والنصب بالألف والجر بالياء، مع بيان شروط الإفراد والتكبير والإضافة وأمثلة معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="الأسماء الخمسة"
     summary="الأسماء الخمسة هي: أب وأخ وحم وفو وذو، ترفع بالواو وتنصب بالألف وتجر بالياء، نيابة عن الضمة والفتحة والكسرة. لكن هذا الإعراب بالحروف مشروط بشروط متى فقد أحدها عادت إلى الإعراب بالحركات. هذا الدرس يفصل العلامات والشروط، مع أمثلة معربة إعرابًا كاملًا على طريقة كتب النحو."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

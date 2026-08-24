@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="لا النافية للجنس: عملها وشروطها وأحوال اسمها · إعراب"
   description="شرح لا النافية للجنس: عملها عمل إن، شروطها الخمسة، بناء اسمها المفرد ونصب المضاف والشبيه بالمضاف، وحذف خبرها، وإعراب لا إله إلا الله، مع أمثلة معربة."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="لا النافية للجنس" description="شرح لا النافية للجنس: عملها عمل إن، شروطها الخمسة، بناء اسمها المفرد ونصب المضاف والشبيه بالمضاف، وحذف خبرها، وإعراب لا إله إلا الله، مع أمثلة معربة." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="لا النافية للجنس"
     summary="لا النافية للجنس أخت إنّ في العمل: تنصب الاسم وترفع الخبر، وتنفي الحكم عن الجنس كله نفيًّا قاطعًا. عليها مدار أعظم جملة في العربية: لا إله إلا الله. هذا الدرس يعرض شروط عملها الخمسة وأحوال اسمها الثلاث وحذف خبرها، بأمثلة معربة كاملة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

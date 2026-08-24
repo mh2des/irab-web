@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="الأسماء الموصولة: أنواعها وصلتها والعائد · إعراب"
   description="شرح الأسماء الموصولة: الخاصة والمشتركة، إعراب اللذان واللتان إعراب المثنى، صلة الموصول التي لا محل لها، العائد وحذفه، ومحل الموصول من الإعراب، بأمثلة قرآنية معربة."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الأسماء الموصولة" description="شرح الأسماء الموصولة: الخاصة والمشتركة، إعراب اللذان واللتان إعراب المثنى، صلة الموصول التي لا محل لها، العائد وحذفه، ومحل الموصول من الإعراب، بأمثلة قرآنية معربة." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="الأسماء الموصولة"
     summary="الاسم الموصول اسم مبهم لا يتم معناه إلا بجملة بعده تسمى الصلة، فيها ضمير يعود عليه يسمى العائد. وهو مبني له محل من الإعراب، إلا مثناه فمعرب. هذا الدرس يعرض الخاصة والمشتركة وأحكام الصلة والعائد ومحل الموصول، بأمثلة قرآنية معربة كاملة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

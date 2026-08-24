@@ -1,0 +1,127 @@
+---
+/**
+ * /en/press: English twin of /press. Verified facts only.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Schema from '../../components/Schema.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleSection from '../../components/ArticleSection.astro';
+
+const facts = [
+  { k: 'Name', v: 'Irab (إعراب) · irab.app' },
+  { k: 'What it is', v: 'An AI i\'rab analyzer and an app for learning Arabic grammar through graded practice' },
+  { k: 'Platforms', v: 'iOS, Android and the web, with one account' },
+  { k: 'Languages', v: 'Arabic and English interface' },
+  { k: 'Analyzer', v: 'Any Arabic sentence parsed word by word: part of speech, role, case, the case marker and why, and full vowelisation' },
+  { k: 'Practice', v: 'Learners do the i\'rab themselves and get grading that points to the exact mistake, with a practice bank and seven challenge levels' },
+  { k: 'For teachers', v: 'Live i\'rab rooms (مجالس الإعراب): a teacher hosts a quiz and students join from any browser' },
+  { k: 'Quran i\'rab', v: '6,236 ayat quoted from Mahmoud Safi\'s «الجدول في إعراب القرآن», with the source credited on every page' },
+  { k: 'Lessons', v: '32 Arabic grammar lessons, written and reviewed before publishing' },
+  { k: 'Dictionaries', v: 'Three in the app: a smart dictionary, a classical one drawing on 13 works via Qamoos, and a dialect dictionary with more than 30,000 entries' },
+  { k: 'Business model', v: 'Free, with an optional Irab Plus subscription; prices on the pricing page' },
+  { k: 'Founder', v: 'Mansoor Hasan Shokla (منصور حسن)' },
+  { k: 'Based in', v: 'Alor Setar, Kedah, Malaysia' },
+];
+
+const assets = [
+  { name: 'Brand mark (PNG)', href: '/brand-mark.png' },
+  { name: 'App icon 512 (PNG)', href: '/icons/Icon-512.png' },
+  { name: 'Vector logo (SVG)', href: '/favicon.svg' },
+  { name: 'Share image (PNG)', href: '/og-default.png' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Irab press kit: boilerplate, facts, logos · Irab"
+  description="Everything needed to write about Irab: a quotable boilerplate in English and Arabic, a verifiable fact sheet, downloadable logos, and the press contact."
+>
+  <Schema slot="head" />
+  <Nav lang="en" />
+
+  <ArticleHero
+    lang="en"
+    eyebrow="Press"
+    title="Irab press kit"
+    summary="Everything you need to write about Irab on one page: a boilerplate ready to quote, facts you can verify in the product itself, high-resolution logos, and an address answered by the founder directly."
+  />
+
+  <ArticleSection
+    lang="en"
+    id="boilerplate"
+    title="Boilerplate"
+    lead="One paragraph, quotable as is, in English and then in Arabic."
+  >
+    <blockquote class="boiler">Irab is an app and website for learning Arabic grammar by doing it: it parses any Arabic sentence word by word with AI, lets learners do the i'rab themselves and get instant grading that points to the exact mistake, and adds a practice bank, challenges, live i'rab rooms for teachers, reviewed grammar lessons, and the complete i'rab of the Quran quoted from «الجدول في إعراب القرآن» with the source credited. Available on iOS, Android and the web with one account, Irab is built by Mansoor Hasan Shokla in Alor Setar, Malaysia.</blockquote>
+    <blockquote class="boiler boiler-ar font-arabic" dir="rtl" lang="ar">إعراب تطبيقٌ وموقعٌ لتعلّم قواعد اللغة العربية بالتطبيق: يُعرِب أيّ جملة عربية كلمةً كلمة بالذكاء الاصطناعي، ويتيح للمتعلّم أن يُعرِب بنفسه فيحصل على تقييم فوري يبيّن موضع الخطأ، مع بنك تمارين وتحدّيات ومجالس إعراب مباشرة للمعلّمين، ودروس نحو مراجَعة، وإعراب القرآن الكريم كاملًا منقولًا عن «الجدول في إعراب القرآن» مع ذكر المصدر. متاح على iOS وAndroid والويب بحساب واحد، ويبنيه منصور حسن من ألور ستار في ماليزيا.</blockquote>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="facts"
+    title="Fact sheet"
+    lead="Each of these can be checked in the site or the app. We do not list download or rating figures here; ask us for current numbers when you write."
+  >
+    <dl class="facts">
+      {facts.map((f) => (
+        <div><dt>{f.k}</dt><dd>{f.v}</dd></div>
+      ))}
+    </dl>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="founder"
+    title="Founder"
+    lead="Mansoor Hasan Shokla (منصور حسن): founder and developer of Irab, a computer science student specialising in data science at Albukhary International University in Malaysia, and a former Arabic language instructor for non-native speakers at the same university."
+  >
+    <p>A fuller biography and his profiles are on the <a href="/en/about#mansoor">about page</a>. Available for interviews in Arabic and English via press@irab.app.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="assets"
+    title="Logos and images"
+    lead="The logo may be used in editorial coverage without altering its colours or proportions. Screenshots of the app and the site are available on request."
+  >
+    <ul class="assets" role="list">
+      {assets.map((a) => (
+        <li><a href={a.href} download>{a.name}</a><span class="asset-path">irab.app{a.href}</span></li>
+      ))}
+    </ul>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="contact"
+    title="Press contact"
+    lead="press@irab.app reaches the founder directly. Mention the outlet and your deadline and we will reply as soon as we can."
+  >
+    <p><a href="mailto:press@irab.app">press@irab.app</a> · for anything else, the <a href="/en/contact">contact page</a>.</p>
+  </ArticleSection>
+
+  <Footer lang="en" />
+</BaseLayout>
+
+<style>
+  .boiler {
+    margin: 0 0 1rem; padding: 1.1rem 1.3rem; border-radius: 14px; line-height: 1.7;
+    background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
+    color: var(--color-ink);
+  }
+  :global(.dark) .boiler { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
+  .boiler-ar { line-height: 2; text-align: right; }
+  .facts { display: grid; gap: 0.6rem; margin: 0; }
+  .facts div { display: grid; grid-template-columns: 9rem 1fr; gap: 0.6rem; align-items: baseline; padding-bottom: 0.6rem; border-bottom: 1px solid var(--color-card-edge); }
+  :global(.dark) .facts div { border-bottom-color: var(--color-coal-edge); }
+  .facts dt { font-weight: 700; color: var(--color-ink); }
+  :global(.dark) .facts dt { color: var(--color-mist); }
+  .facts dd { margin: 0; line-height: 1.7; }
+  .assets { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem; }
+  .assets li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.9rem; }
+  .assets a { font-weight: 700; color: var(--color-purple); text-underline-offset: 3px; }
+  .asset-path { font-family: var(--font-mono, monospace); font-size: 0.85rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
+  :global(.dark) .asset-path { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  @media (max-width: 40rem) { .facts div { grid-template-columns: 1fr; gap: 0.1rem; } }
+</style>

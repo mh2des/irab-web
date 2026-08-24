@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="الضمائر وإعرابها: المنفصل والمتصل والمستتر · إعراب"
   description="شرح الضمائر: بناؤها ومحالها، ضمائر الرفع والنصب المنفصلة، الضمائر المتصلة بالفعل والاسم والحرف، نا الفاعلين، الضمير المستتر، وضمير الفصل، بأمثلة معربة كاملة."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الضمائر وإعرابها" description="شرح الضمائر: بناؤها ومحالها، ضمائر الرفع والنصب المنفصلة، الضمائر المتصلة بالفعل والاسم والحرف، نا الفاعلين، الضمير المستتر، وضمير الفصل، بأمثلة معربة كاملة." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="الضمائر وإعرابها"
     summary="نصف كلمات العربية الجارية ضمائر، وكلها مبنية ذات محل إعرابي. من ضبط ثلاث قوائم صغيرة، المنفصل والمتصل والمستتر، أمِن نصف زلات الإعراب. هذا الدرس يرتبها ويبين محل كل ضمير من الرفع والنصب والجر، مع نا الفاعلين وضمير الفصل، بأمثلة معربة كاملة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

@@ -13,7 +13,7 @@ const EN_STATIC = new Set([
   '/', '/irab', '/nahw', '/quran-parser', '/teachers', '/tool',
   '/practice', '/practice/play', '/challenges', '/dictionary',
   '/library', '/library/read', '/login', '/account', '/app', '/history',
-  '/quran', '/pricing',
+  '/quran', '/pricing', '/about', '/contact', '/press',
 ]);
 
 const slugToId = new Map(SURAHS.map((s) => [s.slug, s.id]));

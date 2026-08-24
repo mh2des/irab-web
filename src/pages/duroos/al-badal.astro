@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="البدل: أنواعه الثلاثة وإعرابه بالأمثلة · إعراب"
   description="شرح البدل: البدل المطابق وبدل البعض من الكل وبدل الاشتمال، شرط الضمير الرابط، إعراب البدل تبعًا للمبدل منه، والبدل بعد اسم الإشارة، مع أمثلة قرآنية معربة."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="البدل" description="شرح البدل: البدل المطابق وبدل البعض من الكل وبدل الاشتمال، شرط الضمير الرابط، إعراب البدل تبعًا للمبدل منه، والبدل بعد اسم الإشارة، مع أمثلة قرآنية معربة." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="البدل"
     summary="البدل تابع مقصود بالحكم بلا واسطة حرف، يمهد له بذكر متبوعه ثم يقع عليه الحكم نفسه. أنواعه ثلاثة مشهورة: المطابق، وبعض من كل، والاشتمال. هذا الدرس يعرضها بأمثلتها المعربة، ويبين شرط الضمير، وإعراب الاسم المعرف بعد اسم الإشارة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

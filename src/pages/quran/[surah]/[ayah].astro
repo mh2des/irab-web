@@ -240,7 +240,7 @@ const lessons = lessonsForAyah(ayah);
     margin-bottom: 1.5rem;
   }
   :global(.dark) .bc { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
-  .bc a { color: inherit; text-decoration: none; }
+  .bc a { color: inherit; text-decoration: none; display: inline-block; padding-block: 0.35rem; }
   .bc a:hover { color: var(--color-purple); }
   .bc-cur { color: var(--color-ink); font-weight: 600; }
   :global(.dark) .bc-cur { color: var(--color-mist); }
@@ -292,7 +292,7 @@ const lessons = lessonsForAyah(ayah);
   :global(.dark) .source { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
   .source-label {
     display: inline-block; margin-inline-end: 0.5rem; padding: 0.05rem 0.55rem; border-radius: 999px;
-    font-size: 0.85rem; font-weight: 700; color: var(--color-teal);
+    font-size: 0.95rem; font-weight: 700; color: var(--color-teal);
     border: 1px solid color-mix(in srgb, var(--color-teal) 40%, transparent);
   }
   .blk-lessons { margin-top: 1.25rem; }

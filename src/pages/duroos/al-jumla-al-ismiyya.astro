@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="الجملة الاسمية: تعريفها وركناها وأحكامها · إعراب"
   description="شرح الجملة الاسمية في النحو: تعريفها، ركناها المبتدأ والخبر، أنواع الخبر، تقديم الخبر والابتداء بالنكرة، ودخول كان وإن عليها، مع أمثلة معربة إعرابا كاملا."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الجملة الاسمية" description="شرح الجملة الاسمية في النحو: تعريفها، ركناها المبتدأ والخبر، أنواع الخبر، تقديم الخبر والابتداء بالنكرة، ودخول كان وإن عليها، مع أمثلة معربة إعرابا كاملا." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="الجملة الاسمية"
     summary="الجملة الاسمية هي الجملة التي تبدأ باسم، وركناها المبتدأ والخبر، وحكمهما الرفع. ويدور عليها باب واسع من أبواب النحو: أنواع الخبر، والابتداء بالنكرة، وتقديم الخبر، ودخول النواسخ. في هذا الدرس نعرض القاعدة بلغة واضحة، ثم نطبقها في أمثلة معربة إعرابًا كاملًا كما تُكتب في كتب النحو."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

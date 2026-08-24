@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="نصب الفعل المضارع: أدواته وعلاماته · إعراب"
   description="شرح نصب الفعل المضارع: أدوات النصب أن ولن وكي وحتى ولام التعليل، وعلامات النصب من الفتحة الظاهرة والمقدرة إلى حذف النون، مع أمثلة معربة إعرابًا كاملًا."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="نصب الفعل المضارع" description="شرح نصب الفعل المضارع: أدوات النصب أن ولن وكي وحتى ولام التعليل، وعلامات النصب من الفتحة الظاهرة والمقدرة إلى حذف النون، مع أمثلة معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="نصب الفعل المضارع"
     summary="الفعل المضارع معرب أصله الرفع، فإذا سبقه حرف ناصب انتصب. في هذا الدرس تتعرف على أدوات النصب: أن ولن وكي، وما ينصب بأن المضمرة بعد لام التعليل وحتى، ثم على علامات النصب: الفتحة الظاهرة والفتحة المقدرة وحذف النون. ونختم بأمثلة معربة إعرابًا كاملًا على طريقة كتب النحو."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

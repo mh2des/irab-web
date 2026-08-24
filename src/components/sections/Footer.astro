@@ -15,8 +15,8 @@ const t = lang === 'ar'
       legal:   'قانوني',
       links: {
         demo: 'التجربة المباشرة', features: 'المميزات', pricing: 'الأسعار', faq: 'الأسئلة',
-        irab: 'ما هو الإعراب؟', nahw: 'ما هو النحو؟', quran: 'إعراب القرآن', teachers: 'للمعلمين', methodology: 'منهجيتنا ومصادرنا',
-        privacy: 'الخصوصية', terms: 'الشروط', refund: 'الاسترداد', contact: 'تواصل',
+        irab: 'ما هو الإعراب؟', nahw: 'ما هو النحو؟', quran: 'إعراب القرآن', teachers: 'للمعلمين', methodology: 'منهجيتنا ومصادرنا', about: 'عن إعراب',
+        privacy: 'الخصوصية', terms: 'الشروط', refund: 'الاسترداد', press: 'للصحافة', contact: 'تواصل',
       },
       built: '© ٢٠٢٦ إعراب. كلّ الحقوق محفوظة.',
     }
@@ -27,8 +27,8 @@ const t = lang === 'ar'
       legal:   'Legal',
       links: {
         demo: 'Live demo', features: 'Features', pricing: 'Pricing', faq: 'FAQ',
-        irab: "What is i'rab?", nahw: 'What is nahw?', quran: 'Parse the Quran', teachers: 'For teachers', methodology: 'Methodology & sources',
-        privacy: 'Privacy', terms: 'Terms', refund: 'Refund', contact: 'Contact',
+        irab: "What is i'rab?", nahw: 'What is nahw?', quran: 'Parse the Quran', teachers: 'For teachers', methodology: 'Methodology & sources', about: 'About Irab',
+        privacy: 'Privacy', terms: 'Terms', refund: 'Refund', press: 'Press', contact: 'Contact',
       },
       built: '© 2026 Irab. All rights reserved.',
     };
@@ -53,32 +53,34 @@ const p = (path: string) => (lang === 'ar' ? path : `/en${path}`);
         <ul class="space-y-2 text-small">
           <li><a href={lang === 'ar' ? '/quran' : '/en/quran'} class="text-teal hover:text-teal-deep dark:text-teal font-bold transition-colors duration-200">{lang === 'ar' ? 'إعراب القرآن الكريم' : "Quran i'rab"}</a></li>
           {lang === 'ar' && <li><a href="/majalis" class="text-purple hover:text-purple-deep font-bold transition-colors duration-200">مجالس الإعراب</a></li>}
-          {lang === 'ar' && <li><a href="/duroos" class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">دروس النحو</a></li>}
-          <li><a href={`${home}#demo`}     class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.demo}</a></li>
-          <li><a href={`${home}#features`} class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.features}</a></li>
-          <li><a href="/pricing"          class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.pricing}</a></li>
-          <li><a href={`${home}#faq`}      class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.faq}</a></li>
+          {lang === 'ar' && <li><a href="/duroos" class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">دروس النحو</a></li>}
+          <li><a href={`${home}#demo`}     class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.demo}</a></li>
+          <li><a href={`${home}#features`} class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.features}</a></li>
+          <li><a href="/pricing"          class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.pricing}</a></li>
+          <li><a href={`${home}#faq`}      class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.faq}</a></li>
         </ul>
       </div>
 
       <div>
         <p class="eyebrow mb-4">{t.learn}</p>
         <ul class="space-y-2 text-small">
-          <li><a href={p('/irab')}          class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.irab}</a></li>
-          <li><a href={p('/nahw')}          class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.nahw}</a></li>
-          <li><a href={p('/quran-parser')}  class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.quran}</a></li>
-          <li><a href={p('/teachers')}      class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.teachers}</a></li>
-          <li><a href="/methodology"       class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.methodology}</a></li>
+          <li><a href={p('/irab')}          class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.irab}</a></li>
+          <li><a href={p('/nahw')}          class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.nahw}</a></li>
+          <li><a href={p('/quran-parser')}  class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.quran}</a></li>
+          <li><a href={p('/teachers')}      class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.teachers}</a></li>
+          <li><a href="/methodology"       class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.methodology}</a></li>
+          <li><a href={p('/about')}         class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.about}</a></li>
         </ul>
       </div>
 
       <div>
         <p class="eyebrow mb-4">{t.legal}</p>
         <ul class="space-y-2 text-small">
-          <li><a href="/privacy" class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.privacy}</a></li>
-          <li><a href="/terms"   class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.terms}</a></li>
-          <li><a href="/refund"  class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.refund}</a></li>
-          <li><a href="mailto:hello@irab.app" class="text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.contact}</a></li>
+          <li><a href="/privacy" class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.privacy}</a></li>
+          <li><a href="/terms"   class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.terms}</a></li>
+          <li><a href="/refund"  class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.refund}</a></li>
+          <li><a href={p('/press')}   class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.press}</a></li>
+          <li><a href={p('/contact')} class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.contact}</a></li>
         </ul>
       </div>
     </div>

@@ -15,8 +15,11 @@ interface Props {
 
 const { eyebrow, title, summary, lang = 'ar', nowrapTitle = false } = Astro.props;
 const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
+// nowrapTitle keeps the title on one line from md up. On phones a five-word
+// Arabic title forced onto one line shrank to ~21px (smaller than the summary
+// under it), so below md it wraps at a real headline size instead.
 const titleSize = nowrapTitle
-  ? 'text-[clamp(1.35rem,4.1vw,3.4rem)] whitespace-nowrap'
+  ? 'text-[clamp(1.9rem,7.5vw,3.4rem)] md:text-[clamp(1.35rem,4.1vw,3.4rem)] md:whitespace-nowrap'
   : 'text-[clamp(2.5rem,6vw,5rem)]';
 const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxed';
 ---
@@ -26,6 +29,8 @@ const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-rela
     src="/brand-watermark.webp"
     alt=""
     aria-hidden="true"
+    width="900"
+    height="751"
     class:list={[
       'pointer-events-none select-none absolute top-1/2 -translate-y-1/2 w-[40%] max-w-[480px] opacity-[0.05] dark:opacity-[0.10] dark:invert',
       // Place opposite to the text alignment: text reads from start side, so watermark sits on the end side
@@ -44,7 +49,9 @@ const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-rela
   ></div>
 
   <Container size="narrow">
-    <div class="relative py-20 md:py-28">
+    {/* Tighter on phones so the page's answer (the analyzer on /tool, the
+        first section on articles) starts within the first screen. */}
+    <div class="relative py-12 md:py-28">
       {eyebrow && (
         <p
           class="eyebrow mb-8 rounded-full border border-purple/25 bg-purple/[0.07] dark:border-purple/40 dark:bg-purple/15 px-4 py-1.5"
@@ -62,7 +69,7 @@ const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-rela
         data-reveal
         data-reveal-delay="80"
       >{title}</h1>
-      <p class:list={[summaryClass, 'mt-6 text-body-lg text-ink/80 dark:text-mist/80 max-w-2xl']} data-reveal data-reveal-delay="160">{summary}</p>
+      <p class:list={[summaryClass, 'mt-5 text-body md:text-body-lg text-ink/80 dark:text-mist/80 max-w-2xl']} data-reveal data-reveal-delay="160">{summary}</p>
       {/* Optional meta row (chips/stats) a page can inject under the summary. */}
       <slot />
     </div>

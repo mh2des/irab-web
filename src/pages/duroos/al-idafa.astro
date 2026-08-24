@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="الإضافة والمضاف إليه: أحكام الجر والمطابقة · إعراب"
   description="شرح الإضافة: تعريفها، جر المضاف إليه دائمًا، ما يحذف من المضاف، الإضافة المعنوية واللفظية وتقديرها بالحروف، مع أمثلة قرآنية معربة إعرابًا كاملًا."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الإضافة والمضاف إليه" description="شرح الإضافة: تعريفها، جر المضاف إليه دائمًا، ما يحذف من المضاف، الإضافة المعنوية واللفظية وتقديرها بالحروف، مع أمثلة قرآنية معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="الإضافة والمضاف إليه"
     summary="الإضافة نسبة بين اسمين يتنزل ثانيهما من الأول منزلة التنوين، فيجر أبدًا. لا تكاد تخلو جملة عربية من إضافة، وأخطاؤها من أكثر ما يقع في الكتابة. هذا الدرس يشرح أركانها وما يحذف لأجلها، والفرق بين المعنوية واللفظية، مع أمثلة معربة كاملة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

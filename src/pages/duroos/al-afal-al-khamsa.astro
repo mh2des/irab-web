@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="الأفعال الخمسة: ثبوت النون وحذفها بالأمثلة · إعراب"
   description="شرح الأفعال الخمسة: صيغها الخمس، رفعها بثبوت النون ونصبها وجزمها بحذفها، والفرق بينها وبين نون النسوة ونون التوكيد، مع أمثلة قرآنية معربة إعرابًا كاملًا."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الأفعال الخمسة" description="شرح الأفعال الخمسة: صيغها الخمس، رفعها بثبوت النون ونصبها وجزمها بحذفها، والفرق بينها وبين نون النسوة ونون التوكيد، مع أمثلة قرآنية معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="الأفعال الخمسة"
     summary="الأفعال الخمسة كل فعل مضارع اتصلت به ألف الاثنين أو واو الجماعة أو ياء المخاطبة. تخالف سائر الأفعال في علاماتها: ترفع بثبوت النون وتنصب وتجزم بحذفها. هذا الدرس يعرض صيغها الخمس وإعرابها، ويحسم الالتباس الشائع بينها وبين نون النسوة ونون التوكيد."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

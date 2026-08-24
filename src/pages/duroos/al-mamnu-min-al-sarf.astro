@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="الممنوع من الصرف: أسبابه وجره بالفتحة · إعراب"
   description="شرح الممنوع من الصرف: تعريفه، العلل التي تمنع الاسم من التنوين، جره بالفتحة نيابة عن الكسرة، ومتى يعود إلى الكسرة، مع أمثلة قرآنية معربة إعرابًا كاملًا."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الممنوع من الصرف" description="شرح الممنوع من الصرف: تعريفه، العلل التي تمنع الاسم من التنوين، جره بالفتحة نيابة عن الكسرة، ومتى يعود إلى الكسرة، مع أمثلة قرآنية معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="الممنوع من الصرف"
     summary="الممنوع من الصرف اسم معرب لا ينوّن، ويخالف الأسماء في علامة جره: يُجر بالفتحة نيابة عن الكسرة. هذا الدرس يشرح العلل التي تمنع الصرف، علمًا وصفة وصيغة، ومتى يعود الاسم إلى الجر بالكسرة، مع أمثلة معربة من القرآن والكلام الفصيح."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="النعت: الحقيقي والسببي وقواعد المطابقة · إعراب"
   description="شرح النعت (الصفة): تعريفه، النعت الحقيقي ومطابقته في أربعة من عشرة، النعت السببي وأحكامه، النعت الجملة وشبه الجملة، مع أمثلة معربة إعرابًا كاملًا."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="النعت" description="شرح النعت (الصفة): تعريفه، النعت الحقيقي ومطابقته في أربعة من عشرة، النعت السببي وأحكامه، النعت الجملة وشبه الجملة، مع أمثلة معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="النعت"
     summary="النعت تابع يكمل منعوته ببيان صفة من صفاته أو صفات ما تعلق به. وهو أول التوابع وأكثرها استعمالًا، وقواعد مطابقته للمنعوت من أدق ما يمتحن به المعربون. هذا الدرس يفصل النعت الحقيقي والسببي والنعت الجملة، مع أمثلة معربة كاملة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
+import Byline from '../../components/Byline.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
@@ -22,6 +24,7 @@ const faqs = [
   title="العدد وإعرابه: التذكير والتأنيث والتمييز · إعراب"
   description="شرح العدد: موافقة واحد واثنين، مخالفة ثلاثة إلى عشرة، بناء المركب على فتح الجزأين، إعراب اثني عشر وألفاظ العقود، وتمييز العدد جرًّا ونصبًا، بأمثلة قرآنية معربة."
 >
+  <ArticleSchema slot="head" lang="ar" kind="lesson" headline="العدد وإعرابه" description="شرح العدد: موافقة واحد واثنين، مخالفة ثلاثة إلى عشرة، بناء المركب على فتح الجزأين، إعراب اثني عشر وألفاظ العقود، وتمييز العدد جرًّا ونصبًا، بأمثلة قرآنية معربة." />
   <Nav lang="ar" />
 
   <ArticleHero
@@ -29,6 +32,7 @@ const faqs = [
     title="العدد وإعرابه"
     summary="باب العدد أكثر أبواب النحو استعمالًا في الحياة اليومية وأكثرها زللًا في الكتابة. مداره على سؤالين: متى يوافق العدد معدوده ومتى يخالفه؟ وكيف يعرب العدد وتمييزه؟ هذا الدرس يرتب الأقسام الأربعة ترتيبًا لا يُنسى، بأمثلة قرآنية معربة كاملة."
   />
+  <Byline lang="ar" kind="lesson" />
 
   <ArticleSection
     lang="ar"

@@ -1,0 +1,276 @@
+---
+/**
+ * /dictionary/<word>: a public, indexable dictionary entry.
+ *
+ * Definition first, then every vocalised reading (variant) with its senses,
+ * examples, translations, synonyms and morphology, then how the word behaves
+ * in i'rab (deterministic grammar by part of speech, with the lesson that
+ * teaches it), then the analyzer CTA. One page per undiacritised word; the
+ * readings كَتَبَ / كُتِبَ / كُتُب live on the same page as variants, which is
+ * also how the engine returns them.
+ *
+ * Data: src/data/dictionary/entries.json via src/lib/dictionary.ts. Builds
+ * nothing while the file is empty. Not linked from the login-gated tool page
+ * (/dictionary, noindex): the hub for these pages comes with the first batch.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import Container from '../../components/Container.astro';
+import ArticleCta from '../../components/ArticleCta.astro';
+import {
+  publishableEntries, entryTitle, entryDescription, entryUrl,
+  irabNotes, lessonsForPos, MORPHOLOGY_LABELS, type DictEntry,
+} from '../../lib/dictionary';
+
+export function getStaticPaths() {
+  return publishableEntries().map((e) => ({ params: { word: e.slug }, props: { entry: e } }));
+}
+
+const { entry } = Astro.props as { entry: DictEntry };
+const primary = entry.variants[0];
+const lead = primary.senses[0].definition;
+const title = entryTitle(entry);
+const description = entryDescription(entry);
+const canonical = entryUrl(entry);
+const notes = irabNotes(primary.pos);
+const lessons = lessonsForPos(primary.pos);
+const dateModified = entry.generatedAt.slice(0, 10);
+const morph = (v: typeof primary) =>
+  MORPHOLOGY_LABELS.filter(([k]) => v.morphology && v.morphology[k]).map(([k, label]) => [label, v.morphology![k] as string]);
+const en = primary.translations?.en ?? [];
+const fr = primary.translations?.fr ?? [];
+
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTerm',
+    '@id': `${canonical}#term`,
+    name: primary.lemma,
+    alternateName: entry.query,
+    description: lead,
+    inLanguage: 'ar',
+    url: canonical,
+    inDefinedTermSet: { '@type': 'DefinedTermSet', name: 'معجم إعراب الذكي', url: 'https://irab.app/dictionary' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `معنى ${entry.query} في المعجم`,
+    description,
+    inLanguage: 'ar',
+    mainEntityOfPage: canonical,
+    about: { '@id': `${canonical}#term` },
+    dateModified,
+    author: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
+    publisher: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'المعجم', item: 'https://irab.app/dictionary' },
+      { '@type': 'ListItem', position: 2, name: entry.query, item: canonical },
+    ],
+  },
+];
+---
+<BaseLayout lang="ar" title={title} description={description} canonicalOverride={canonical}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(ld)} is:inline />
+  <Nav lang="ar" />
+
+  <main>
+    <article class="py-10 md:py-14">
+      <Container size="narrow">
+        <nav class="bc" aria-label="مسار التنقّل">
+          <a href="/dictionary">المعجم</a><span aria-hidden="true">›</span>
+          <span class="bc-cur">{entry.query}</span>
+        </nav>
+
+        <p class="eyebrow eyebrow-ink">معنى كلمة</p>
+        <h1 class="d-h1 font-arabic-display" lang="ar">{primary.lemma}</h1>
+        <p class="d-sub">
+          {primary.pos && <span class="badge badge-good">{primary.pos}</span>}
+          {primary.root && <span>الجذر: <b class="d-root">{primary.root}</b></span>}
+          {primary.pattern && <span>الوزن: <b>{primary.pattern}</b></span>}
+          {entry.reviewed && <span class="d-reviewed">مراجَع</span>}
+        </p>
+
+        <div class="d-lead">
+          <p class="classical-naskh">{lead}</p>
+        </div>
+
+        {entry.variants.map((v, i) => (
+          <section class="blk" aria-labelledby={`v-${i}`}>
+            <h2 id={`v-${i}`}>
+              {entry.variants.length > 1 ? `القراءة ${i + 1}: ` : 'المعاني: '}<span class="classical-naskh">{v.lemma}</span>
+              {v.pos && <span class="d-pos">{v.pos}</span>}
+            </h2>
+            <ol class="senses">
+              {v.senses.map((s) => (
+                <li>
+                  <p class="def classical-naskh">{s.definition}</p>
+                  {(s.register || s.domain) && (
+                    <p class="meta">{[s.register, s.domain].filter(Boolean).join(' · ')}</p>
+                  )}
+                  {s.examples.length > 0 && (
+                    <ul class="exs">
+                      {s.examples.slice(0, 3).map((ex) => (
+                        <li class="classical-naskh">
+                          {ex.text}
+                          {ex.verified && ex.source && <span class="src">{ex.source}</span>}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ol>
+
+            {((v.synonyms?.length ?? 0) > 0 || (v.antonyms?.length ?? 0) > 0) && (
+              <div class="pairs">
+                {(v.synonyms?.length ?? 0) > 0 && <p><b>مرادفات:</b> {v.synonyms!.join('، ')}</p>}
+                {(v.antonyms?.length ?? 0) > 0 && <p><b>أضداد:</b> {v.antonyms!.join('، ')}</p>}
+              </div>
+            )}
+
+            {morph(v).length > 0 && (
+              <table class="morph">
+                <caption>الصرف</caption>
+                <tbody>
+                  {morph(v).map(([label, val]) => (
+                    <tr><th scope="row">{label}</th><td class="classical-naskh">{val}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {(v.derivations?.length ?? 0) > 0 && (
+              <p class="derivs"><b>مشتقات:</b> {v.derivations!.join('، ')}</p>
+            )}
+          </section>
+        ))}
+
+        {(en.length > 0 || fr.length > 0) && (
+          <section class="blk">
+            <h2>الترجمة</h2>
+            {en.length > 0 && <p class="tr"><span class="lang">EN</span> {en.join(', ')}</p>}
+            {fr.length > 0 && <p class="tr"><span class="lang">FR</span> {fr.join(', ')}</p>}
+          </section>
+        )}
+
+        {entry.etymology && (
+          <section class="blk">
+            <h2>أصل الكلمة</h2>
+            <p class="classical-naskh body">{entry.etymology}</p>
+          </section>
+        )}
+
+        {notes.length > 0 && (
+          <section class="blk">
+            <h2>كيف تُعرب هذه الكلمة</h2>
+            <ul class="notes">
+              {notes.map((n) => <li class="classical-naskh">{n}</li>)}
+            </ul>
+            {lessons.length > 0 && (
+              <div class="rel">
+                {lessons.map((l) => (
+                  <a class="rel-card" href={`/duroos/${l.slug}`}>
+                    <span>درس من أبواب الإعراب</span><b>{l.title}</b>
+                  </a>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
+        <section class="blk">
+          <h2>جرّبها في جملة</h2>
+          <p class="body">ضع الكلمة في جملة وألصقها في محلّل الإعراب لترى موقعها وعلامتها وسببها، أو ابحث عن كلمة أخرى في المعجم.</p>
+          <div class="rel">
+            <a class="rel-card" href="/tool"><span>أداة مجانية بالذكاء الاصطناعي</span><b>أعرِب جملة فيها هذه الكلمة</b></a>
+            <a class="rel-card" href="/dictionary"><span>بحث تفاعلي لأي كلمة</span><b>المعجم الذكي</b></a>
+          </div>
+        </section>
+
+        <p class="stamp">مصدر التعريفات: معجم إعراب الذكي. آخر تحديث: {dateModified}.</p>
+      </Container>
+
+      <ArticleCta lang="ar">
+        <span slot="title">المعجم كاملًا في التطبيق.</span>
+        ثلاثة معاجم: الذكي، والتقليدي بثلاثة عشر كتابًا تراثيًّا، ومعجم اللهجات دون إنترنت، في تطبيق إعراب على iOS وAndroid.
+      </ArticleCta>
+    </article>
+  </main>
+
+  <Footer lang="ar" />
+</BaseLayout>
+
+<style>
+  .bc { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 1.1rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); margin-bottom: 1.5rem; }
+  :global(.dark) .bc { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .bc a { color: inherit; text-decoration: none; }
+  .bc a:hover { color: var(--color-purple); }
+  .bc-cur { color: var(--color-ink); font-weight: 600; }
+  :global(.dark) .bc-cur { color: var(--color-mist); }
+
+  .d-h1 { font-size: clamp(2.6rem, 6vw, 4rem); line-height: 1.3; font-weight: 700; color: var(--color-ink); margin: 0.25rem 0 0.5rem; }
+  :global(.dark) .d-h1 { color: var(--color-mist); }
+  .d-sub { display: flex; flex-wrap: wrap; gap: 0.5rem 1.1rem; align-items: baseline; font-size: 1.15rem; color: color-mix(in srgb, var(--color-ink) 65%, transparent); margin-bottom: 1.75rem; }
+  :global(.dark) .d-sub { color: color-mix(in srgb, var(--color-mist) 65%, transparent); }
+  .d-root { color: var(--color-purple); letter-spacing: 0.08em; }
+  .d-reviewed { font-size: 0.85rem; font-weight: 700; color: var(--color-teal); border: 1px solid color-mix(in srgb, var(--color-teal) 40%, transparent); border-radius: 999px; padding: 0.05rem 0.55rem; }
+
+  .d-lead { background: color-mix(in srgb, var(--color-purple) 6%, var(--color-paper)); border: 1px solid color-mix(in srgb, var(--color-purple) 18%, transparent); border-radius: 16px; padding: 1.4rem 1.6rem; margin-bottom: 2.25rem; }
+  :global(.dark) .d-lead { background: color-mix(in srgb, var(--color-purple) 12%, var(--color-coal)); }
+  .d-lead p { font-size: 1.7rem; line-height: 2.05; color: var(--color-ink); margin: 0; }
+  :global(.dark) .d-lead p { color: var(--color-mist); }
+
+  .blk { margin-top: 2.5rem; }
+  .blk h2 { font-family: var(--font-arabic-display); font-weight: 700; font-size: clamp(1.6rem, 3.6vw, 2.2rem); color: var(--color-ink); margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: baseline; }
+  :global(.dark) .blk h2 { color: var(--color-mist); }
+  .d-pos { font-family: var(--font-arabic); font-size: 0.95rem; font-weight: 600; color: var(--color-teal); border: 1px solid color-mix(in srgb, var(--color-teal) 40%, transparent); border-radius: 999px; padding: 0.05rem 0.6rem; }
+
+  .senses { list-style: none; padding: 0; margin: 0; counter-reset: sense; display: grid; gap: 1rem; }
+  .senses > li { position: relative; padding-inline-start: 2.4rem; }
+  .senses > li::before { counter-increment: sense; content: counter(sense, arabic-indic); position: absolute; inset-inline-start: 0; top: 0.35rem; width: 1.7rem; height: 1.7rem; border-radius: 999px; display: grid; place-items: center; font-size: 0.95rem; font-weight: 700; color: var(--color-purple); background: color-mix(in srgb, var(--color-purple) 12%, transparent); }
+  .def { font-size: 1.55rem; line-height: 2; color: var(--color-ink); margin: 0; }
+  :global(.dark) .def { color: var(--color-mist); }
+  .meta { font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); margin: 0.15rem 0 0; }
+  :global(.dark) .meta { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .exs { list-style: none; padding: 0; margin: 0.6rem 0 0; display: grid; gap: 0.4rem; }
+  .exs li { font-size: 1.35rem; line-height: 1.9; padding-inline-start: 0.9rem; border-inline-start: 2px solid color-mix(in srgb, var(--color-teal) 45%, transparent); color: color-mix(in srgb, var(--color-ink) 82%, transparent); }
+  :global(.dark) .exs li { color: color-mix(in srgb, var(--color-mist) 82%, transparent); }
+  .src { display: inline-block; margin-inline-start: 0.6rem; font-size: 0.85rem; color: var(--color-teal); }
+
+  .pairs { margin-top: 1.1rem; font-size: 1.2rem; line-height: 1.9; }
+  .pairs p { margin: 0; }
+  .morph { margin-top: 1.2rem; border-collapse: collapse; width: 100%; max-width: 32rem; font-size: 1.15rem; }
+  .morph caption { text-align: start; font-weight: 700; color: var(--color-ink); padding-bottom: 0.4rem; }
+  :global(.dark) .morph caption { color: var(--color-mist); }
+  .morph th, .morph td { text-align: start; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--color-card-edge); }
+  :global(.dark) .morph th, :global(.dark) .morph td { border-bottom-color: var(--color-coal-edge); }
+  .morph th { font-weight: 600; color: color-mix(in srgb, var(--color-ink) 65%, transparent); width: 9rem; }
+  :global(.dark) .morph th { color: color-mix(in srgb, var(--color-mist) 65%, transparent); }
+  .morph td { font-size: 1.3rem; }
+  .derivs { margin-top: 1rem; font-size: 1.15rem; line-height: 1.9; }
+
+  .tr { font-size: 1.15rem; margin: 0 0 0.35rem; }
+  .lang { display: inline-block; min-width: 2.2rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-purple); }
+  .body { font-size: 1.25rem; line-height: 1.9; color: color-mix(in srgb, var(--color-ink) 80%, transparent); margin: 0 0 1rem; }
+  :global(.dark) .body { color: color-mix(in srgb, var(--color-mist) 80%, transparent); }
+  .notes { padding-inline-start: 1.2rem; margin: 0 0 1.1rem; display: grid; gap: 0.5rem; font-size: 1.35rem; line-height: 1.95; }
+
+  .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.75rem; }
+  .rel-card { display: flex; flex-direction: column; gap: 0.35rem; border: 1px solid var(--color-card-edge); border-radius: 12px; background: var(--color-card); box-shadow: var(--shadow-card); padding: 1rem 1.1rem; text-decoration: none; transition: border-color .2s, transform .2s, box-shadow .2s; }
+  :global(.dark) .rel-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .rel-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
+  .rel-card:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 3px; }
+  .rel-card span { font-size: 1.05rem; color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
+  :global(.dark) .rel-card span { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
+  .rel-card b { font-size: 1.4rem; color: var(--color-ink); font-weight: 700; }
+  :global(.dark) .rel-card b { color: var(--color-mist); }
+  .stamp { margin-top: 2.5rem; font-size: 0.95rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
+  :global(.dark) .stamp { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
