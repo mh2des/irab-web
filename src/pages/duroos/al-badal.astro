@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الفرق بين البدل وعطف البيان؟', a: 'كلاهما تابع يوضح متبوعه، والفرق دقيق: البدل مقصود بالحكم والمبدل منه توطئة له، وعطف البيان موضح لمتبوعه والمتبوع هو المقصود. كثير من النحاة يجيز الوجهين في نحو "جاء أخوك محمدٌ".' },
@@ -82,6 +83,8 @@ const faqs = [
     </ul>
     <p>وتمام النظرية في <a href="/nahw">ما هو النحو</a>، وتطبيقها على أي جملة في <a href="/irab">الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-badal" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

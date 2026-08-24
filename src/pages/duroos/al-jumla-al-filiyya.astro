@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما ركنا الجملة الفعلية؟', a: 'الفعل والفاعل، وهما العمدة التي لا تتم الجملة بدونها. أما المفعول به فهو فضلة لا يلزم إلا مع الأفعال المتعدية، فجملة "نام الطفلُ" جملة فعلية تامة بلا مفعول به.' },
@@ -103,6 +104,8 @@ const faqs = [
     <p><strong>مثال معرب على التقديم الواجب:</strong> <span class="ar">إِيَّاكَ نَعْبُدُ</span>: إياك ضمير منفصل مبني على الفتح في محل نصب مفعول به مقدم وجوبًا، نعبد فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والفاعل ضمير مستتر وجوبًا تقديره نحن.</p>
     <p>وإذا أشكل عليك ترتيب جملة حقيقية فراجع صيغة السطر الإعرابي في مرجع <a href="/irab">الإعراب</a>، ثم جرب الجملة نفسها في المحلل على الصفحة الرئيسية وانظر كيف يفصل بين الفاعل والمفعول به.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-jumla-al-filiyya" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

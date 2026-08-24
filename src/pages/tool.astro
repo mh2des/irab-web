@@ -23,6 +23,68 @@ const faqs = [
   { q: 'هل تُعرِب أيّ جملة أم النص القرآني فقط؟', a: 'تُعرِب أيّ نصّ عربي فصيح تلصقه: جملة عادية أو بيت شعر أو آية قرآنية. الأداة عامّة للعربية الكلاسيكية، وإعراب القرآن متوفّر أيضًا كمكتبة مرجعية على الموقع.' },
   { q: 'ما مدى دقّة الإعراب الآلي؟', a: 'المحرّك مصمّم خصّيصًا لقواعد النحو العربي ويعطي تحليلًا مفصّلًا دقيقًا في غالب المواضع، لكنّ الذكاء الاصطناعي قد يخطئ في المواضع المحتملة. اعتبره مساعد دراسة سريعًا للتحقّق من إعرابك، لا بديلًا عن معلّم مؤهّل في المواضع الدقيقة.' },
   { q: 'هل أحتاج إلى حساب أو تسجيل؟', a: 'لا. جرّب الأداة مباشرة على هذه الصفحة دون تسجيل. لمزيد من التحليلات والتدريب بتقييم فوري، حمّل تطبيق إعراب المجاني.' },
+  { q: 'كيف أعرب جملة بنفسي خطوة خطوة؟', a: 'حدّد أولًا نوع الجملة: إن بدأت بفعل فهي فعلية، فابحث عن الفعل ثم فاعله ثم مفعوله؛ وإن بدأت باسم فهي اسمية، فابحث عن المبتدأ ثم خبره. ثم أعرب ما بقي من المنصوبات والتوابع وشبه الجملة. ولا تنسَ في كل كلمة ثلاثة أشياء: موقعها، وحكمها، وعلامتها وسببها. وإذا شككت، ألصق الجملة في الأداة وقارن إعرابك بإعرابها.' },
+  { q: 'ما الفرق بين الإعراب والبناء؟', a: 'المعرب ما يتغيّر آخره بتغيّر موقعه في الجملة، كأكثر الأسماء والفعل المضارع: جاء محمدٌ، ورأيت محمدًا، ومررت بمحمدٍ. والمبني ما يلزم آخره حالة واحدة مهما تغيّر موقعه، كالحروف كلها والضمائر والفعل الماضي وفعل الأمر، فنقول فيه: مبني على الفتح أو السكون في محل رفع أو نصب أو جر.' },
+  { q: 'كيف أميّز الفاعل من المفعول به؟', a: 'الفاعل من قام بالفعل أو اتصف به وهو مرفوع، والمفعول به من وقع عليه الفعل وهو منصوب. اسأل: من فعل؟ فالجواب فاعل، وماذا فعل؟ فالجواب مفعول به. في "قرأ الطالبُ الكتابَ": الطالبُ فاعل مرفوع بالضمة، والكتابَ مفعول به منصوب بالفتحة. والعلامة هي الحكم عند اللبس لا الترتيب، لأن المفعول قد يتقدّم على الفاعل.' },
+  { q: 'أكتب "اعراب" بلا همزة، فهل تفهمني الأداة؟', a: 'نعم. الكلمة الصحيحة إعراب بهمزة تحت الألف، لكن كثيرين يكتبون اعراب الجمل أو اعرب لي الجملة أو أعرب هذه الجملة، وكلها تصل إلى الأداة نفسها. المهم الجملة التي تلصقها: اكتبها بالفصحى واضحة، وستحصل على إعرابها كاملًا كلمة بكلمة.' },
+];
+
+// Worked examples: what a complete i'rab looks like, in the classical wording
+// the analyzer itself produces, each pointing at the lesson behind its rule.
+// Every line here was checked by hand; keep it that way when adding examples.
+const examples = [
+  {
+    sentence: 'ذَهَبَ الطَّالِبُ إِلَى الْمَدْرَسَةِ',
+    words: [
+      { t: 'ذَهَبَ', a: 'فعل ماضٍ مبني على الفتح.' },
+      { t: 'الطَّالِبُ', a: 'فاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره.' },
+      { t: 'إِلَى', a: 'حرف جر مبني على السكون لا محل له من الإعراب.' },
+      { t: 'الْمَدْرَسَةِ', a: 'اسم مجرور بإلى وعلامة جره الكسرة الظاهرة على آخره، والجار والمجرور متعلقان بالفعل ذهب.' },
+    ],
+    note: 'جملة فعلية بأبسط صورها: فعل ثم فاعل، ثم شبه جملة تتعلق بالفعل.',
+    lessons: [
+      { slug: 'al-jumla-al-filiyya', title: 'الجملة الفعلية' },
+      { slug: 'al-fail', title: 'الفاعل' },
+      { slug: 'huruf-al-jarr', title: 'حروف الجر' },
+    ],
+  },
+  {
+    sentence: 'إِنَّ الْمُعَلِّمِينَ مُخْلِصُونَ',
+    words: [
+      { t: 'إِنَّ', a: 'حرف توكيد ونصب مبني على الفتح لا محل له من الإعراب.' },
+      { t: 'الْمُعَلِّمِينَ', a: 'اسم إن منصوب وعلامة نصبه الياء لأنه جمع مذكر سالم، والنون عوض عن التنوين في الاسم المفرد.' },
+      { t: 'مُخْلِصُونَ', a: 'خبر إن مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم، والنون عوض عن التنوين في الاسم المفرد.' },
+    ],
+    note: 'جملة اسمية دخل عليها ناسخ، والعلامتان هنا فرعيتان: الياء بدل الفتحة، والواو بدل الضمة.',
+    lessons: [
+      { slug: 'inna-wa-akhawatuha', title: 'إنّ وأخواتها' },
+      { slug: 'alamat-al-irab', title: 'علامات الإعراب' },
+    ],
+  },
+  {
+    sentence: 'لَنْ يُهْمِلَ الطُّلَّابُ وَاجِبَاتِهِمْ',
+    words: [
+      { t: 'لَنْ', a: 'حرف نفي ونصب واستقبال مبني على السكون لا محل له من الإعراب.' },
+      { t: 'يُهْمِلَ', a: 'فعل مضارع منصوب بلن وعلامة نصبه الفتحة الظاهرة على آخره.' },
+      { t: 'الطُّلَّابُ', a: 'فاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره.' },
+      { t: 'وَاجِبَاتِهِمْ', a: 'مفعول به منصوب وعلامة نصبه الكسرة نيابة عن الفتحة لأنه جمع مؤنث سالم، وهو مضاف، و(هم) ضمير متصل مبني على السكون في محل جر مضاف إليه.' },
+    ],
+    note: 'مضارع نصبته أداة، ومفعول به علامته الكسرة لا الفتحة: من أكثر المواضع التي يُخطئ فيها الطلاب.',
+    lessons: [
+      { slug: 'nasb-al-mudari', title: 'نصب المضارع' },
+      { slug: 'al-maful-bih', title: 'المفعول به' },
+      { slug: 'al-idafa', title: 'الإضافة' },
+    ],
+  },
+];
+
+// The five fields the analyzer returns for every word, in the reader's terms.
+const reading = [
+  { t: 'النوع', b: 'ما الكلمة في أصلها: اسم أم فعل أم حرف، وبأي صورة: فعل ماضٍ، اسم موصول، حرف جر، ضمير متصل.' },
+  { t: 'الوظيفة', b: 'موقعها في الجملة: فاعل، مفعول به، مبتدأ، خبر، حال، مضاف إليه. وهذا هو جواب سؤال الامتحان.' },
+  { t: 'الإعراب', b: 'حكمها: مرفوع أو منصوب أو مجرور أو مجزوم إن كانت معربة، أو مبنية على كذا في محل كذا إن كانت مبنية.' },
+  { t: 'العلامة وسببها', b: 'الضمة أو الفتحة أو الكسرة أو السكون، أو ما ينوب عنها من الحروف، ولماذا: مثنى، جمع مذكر سالم، من الأسماء الخمسة.' },
+  { t: 'التشكيل الكامل', b: 'الجملة مضبوطة بالشكل كما ينبغي أن تُقرأ، فتسمع الإعراب في النطق قبل أن تقرأه في التحليل.' },
 ];
 
 const webApp = {
@@ -50,8 +112,8 @@ const whys = [
 <BaseLayout
   lang="ar"
   hasEn
-  title="إعراب الجمل أون لاين مجانًا بالذكاء الاصطناعي · بدون تحميل أو تسجيل | إعراب"
-  description="أداة إعراب الجمل أون لاين مجانًا: ألصق أيّ جملة عربية واحصل على إعرابها كلمة بكلمة فورًا في المتصفح، بدون تحميل برنامج وبدون تسجيل: النوع، الوظيفة، الإعراب، العلامة وسببها، والتشكيل الكامل."
+  title="إعراب الجمل أون لاين مجانًا بالذكاء الاصطناعي | إعراب"
+  description="إعراب الجمل أون لاين مجانًا: ألصق أي جملة عربية واحصل على إعرابها كلمة بكلمة في المتصفح، بدون تحميل أو تسجيل: النوع والوظيفة وعلامة الإعراب وسببها والتشكيل."
 >
   <Schema slot="head" />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(webApp)} is:inline />
@@ -67,6 +129,63 @@ const whys = [
 
   {/* The live analyzer (its own header is suppressed: the hero above is the page header) */}
   <LiveDemo lang="ar" showHeader={false} />
+
+  {/* Worked examples: the substance under the tool. What full i'rab looks like, and where each rule is taught. */}
+  <Section>
+    <Container>
+      <div class="max-w-2xl mb-10">
+        <p class="eyebrow mb-4">نماذج معربة</p>
+        <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight">
+          هكذا يبدو الإعراب الكامل.
+        </h2>
+        <p class="font-arabic text-body-lg text-ink/70 dark:text-mist/70 leading-loose mt-4">
+          ثلاث جمل من النوع الذي يُطلب في الامتحانات، معربةً بالصياغة الكلاسيكية نفسها التي تعطيك إياها الأداة. تحت كل مثال الدرس الذي يشرح قاعدته.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {examples.map((ex) => (
+          <article class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-7">
+            <p class="ex-sentence font-arabic-display" lang="ar" dir="rtl">{ex.sentence}</p>
+            <dl class="ex-list font-arabic">
+              {ex.words.map((w) => (
+                <div class="ex-row"><dt lang="ar">{w.t}</dt><dd>{w.a}</dd></div>
+              ))}
+            </dl>
+            <p class="ex-note font-arabic">{ex.note}</p>
+            <p class="ex-links font-arabic">
+              {ex.lessons.map((l) => (<a href={`/duroos/${l.slug}`}>{l.title}</a>))}
+            </p>
+          </article>
+        ))}
+      </div>
+      <p class="font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose mt-8">
+        القواعد كلها، بابًا بابًا وبأمثلة معربة، في <a href="/duroos" class="text-purple font-bold underline-offset-4 hover:underline">دروس النحو</a>.
+      </p>
+    </Container>
+  </Section>
+
+  {/* How to read the result: the five fields, in the student's terms */}
+  <Section>
+    <Container>
+      <div class="max-w-2xl mb-10">
+        <p class="eyebrow mb-4">قراءة النتيجة</p>
+        <h2 class="font-arabic-display text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight">
+          ما الذي تعنيه كل خانة في الإعراب؟
+        </h2>
+        <p class="font-arabic text-body-lg text-ink/70 dark:text-mist/70 leading-loose mt-4">
+          تعطيك الأداة لكل كلمة خمس خانات، وهي الخانات نفسها التي يطلبها المعلم في الإعراب الكامل.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {reading.map((r) => (
+          <article class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-6">
+            <h3 class="font-arabic-display text-h3 leading-tight mb-2">{r.t}</h3>
+            <p class="font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose">{r.b}</p>
+          </article>
+        ))}
+      </div>
+    </Container>
+  </Section>
 
   {/* Why this analyzer (positions vs weaker tools without naming them) */}
   <Section>
@@ -92,3 +211,28 @@ const whys = [
 
   <Footer lang="ar" />
 </BaseLayout>
+
+<style>
+  .ex-sentence { font-size: 1.6rem; line-height: 1.9; color: var(--color-ink); margin-bottom: 1rem; }
+  :global(.dark) .ex-sentence { color: var(--color-mist); }
+  .ex-list { display: grid; gap: 0.55rem; margin: 0 0 1rem; }
+  .ex-row { display: grid; grid-template-columns: auto 1fr; gap: 0.6rem; align-items: baseline; }
+  .ex-row dt { font-weight: 700; color: var(--color-purple); white-space: nowrap; }
+  :global(.dark) .ex-row dt { color: color-mix(in srgb, var(--color-purple) 85%, white); }
+  .ex-row dd { margin: 0; line-height: 1.9; color: color-mix(in srgb, var(--color-ink) 78%, transparent); }
+  :global(.dark) .ex-row dd { color: color-mix(in srgb, var(--color-mist) 78%, transparent); }
+  .ex-note {
+    font-size: 0.98rem; line-height: 1.8; padding-top: 0.8rem;
+    color: color-mix(in srgb, var(--color-ink) 65%, transparent);
+    border-top: 1px solid var(--color-card-edge);
+  }
+  :global(.dark) .ex-note { color: color-mix(in srgb, var(--color-mist) 65%, transparent); border-top-color: var(--color-coal-edge); }
+  .ex-links { display: flex; flex-wrap: wrap; gap: 0.4rem 0.6rem; margin-top: 0.6rem; }
+  .ex-links a {
+    font-size: 0.95rem; font-weight: 700; color: var(--color-teal); text-decoration: none;
+    padding: 0.15rem 0.6rem; border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-teal) 40%, transparent);
+  }
+  .ex-links a:hover { background: color-mix(in srgb, var(--color-teal) 10%, transparent); }
+  .ex-links a:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
+</style>

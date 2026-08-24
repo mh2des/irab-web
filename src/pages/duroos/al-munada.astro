@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'لماذا يقال في المنادى "مبني في محل نصب"؟', a: 'لأن المنادى في الأصل مفعول به لفعل محذوف تقديره أدعو أو أنادي. فالعلم المفرد والنكرة المقصودة يبنيان على الضم ويبقى المحل نصبًا، أما المضاف والشبيه بالمضاف والنكرة غير المقصودة فتظهر فيها الأصل فتنصب لفظًا.' },
@@ -97,6 +98,8 @@ const faqs = [
     </ul>
     <p>وإذا وقع بعد المنادى نعت أو <a href="/duroos/al-tawkid">توكيد</a> أو <a href="/duroos/al-badal">بدل</a> فلكل حكمه في باب التوابع، والأصل الجامع في <a href="/irab">الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-munada" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

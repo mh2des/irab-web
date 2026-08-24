@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الفرق بين المفعول به ونائب الفاعل؟', a: 'المفعول به منصوب يقع عليه فعل الفاعل في الجملة المبنية للمعلوم. فإذا بُني الفعل للمجهول وحُذف الفاعل، ارتفع المفعول به وصار نائب فاعل. في "كَتَبَ الطالبُ الدرسَ" الدرسَ مفعول به منصوب، وفي "كُتِبَ الدرسُ" الدرسُ نائب فاعل مرفوع.' },
@@ -98,6 +99,8 @@ const faqs = [
     </ul>
     <p>ولمعرفة العلامات الفرعية كلها في بابها، انظر درس <a href="/duroos/alamat-al-irab">علامات الإعراب</a>، وللأصل النظري كله راجع <a href="/nahw">ما هو النحو</a> و<a href="/irab">ما هو الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-maful-bih" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

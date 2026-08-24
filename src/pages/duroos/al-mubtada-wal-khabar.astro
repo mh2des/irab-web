@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما إعراب المبتدأ والخبر؟', a: 'كلاهما مرفوع: المبتدأ مرفوع بالابتداء، والخبر مرفوع بالمبتدأ. وعلامة الرفع الضمة الظاهرة أو المقدرة، وينوب عنها الواو في جمع المذكر السالم والأسماء الخمسة، والألف في المثنى.' },
@@ -102,6 +103,8 @@ const faqs = [
     <p><strong>وجوب حذف الخبر:</strong> <span class="ar">لَوْلَا الْعِلْمُ لَهَلَكَ النَّاسُ</span>: لولا حرف امتناع لوجود مبني على السكون لا محل له من الإعراب، العلمُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، وخبره محذوف وجوبًا تقديره موجود.</p>
     <p><strong>النواسخ:</strong> إذا دخلت كان صار المبتدأ اسمها المرفوع والخبر خبرها المنصوب، وتفصيل عملها في درس <a href="/duroos/kana-wa-akhawatuha">كان وأخواتها</a>. وقبل أن تعرب من هذا الباب راجع صيغة السطر الإعرابي في مرجع <a href="/irab">الإعراب</a>، ثم درب نفسك على جمل حقيقية في المحلل على الصفحة الرئيسية.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-mubtada-wal-khabar" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

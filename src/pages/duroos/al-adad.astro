@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما القاعدة الجامعة لتذكير العدد وتأنيثه؟', a: 'واحد واثنان يوافقان المعدود دائمًا. ثلاثة إلى تسعة تخالف المعدود: ثلاثةُ رجالٍ وثلاثُ نساءٍ. عشرة تخالف مفردة وتوافق مركبة. أما ألفاظ العقود والمائة والألف فبلفظ واحد للمذكر والمؤنث.' },
@@ -91,6 +92,8 @@ const faqs = [
     </ul>
     <p>ويقوم هذا الباب كله على <a href="/duroos/al-tamyiz">التمييز</a>، ومرجع العلامات في <a href="/duroos/alamat-al-irab">علامات الإعراب</a>، والتطبيق في <a href="/irab">الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-adad" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

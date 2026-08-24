@@ -1,0 +1,75 @@
+---
+/**
+ * AyatExamples: "آيات تطبيقية من القرآن" block for a /duroos lesson.
+ *
+ * Lists ayat whose i'rab (in الجدول) names the construction this lesson
+ * teaches, linking each to its full word-by-word page. Data comes from
+ * src/lib/lesson-links.ts at build time; nothing is inferred and no i'rab
+ * is generated here. Renders nothing when the detector finds no ayah.
+ */
+import ArticleSection from '../ArticleSection.astro';
+import { ayatForLesson } from '../../lib/lesson-links';
+import { toArabicDigits } from '../../lib/quran';
+
+interface Props {
+  slug: string;
+  max?: number;
+}
+
+const { slug, max = 6 } = Astro.props;
+const ayat = ayatForLesson(slug, max);
+const clip = (s: string, n = 120) => (s.length > n ? `${s.slice(0, n).trimEnd()}…` : s);
+---
+{ayat.length > 0 && (
+  <ArticleSection
+    lang="ar"
+    id="quran-examples"
+    title="آيات تطبيقية من القرآن"
+    lead="القاعدة أوضح ما تكون في نصٍّ محفوظ. في هذه الآيات يرد الباب نفسه الذي شرحه الدرس، ولكل آية على الموقع إعرابٌ كامل كلمةً كلمة. اقرأ الآية أولًا وحاول تعيين موضع القاعدة، ثم افتح إعرابها لتتحقّق."
+  >
+    <ul class="ayat-ex" role="list">
+      {ayat.map((a) => (
+        <li>
+          <a class="ayat-ex-card" href={`/quran/${a.surahSlug}/${a.ayah}`}>
+            <span class="ayat-ex-verse quran-text" lang="ar" dir="rtl">{clip(a.verse)}</span>
+            <span class="ayat-ex-meta">
+              <span>سورة {a.surahName} · الآية {toArabicDigits(a.ayah)}</span>
+              <span class="ayat-ex-cta">اقرأ الإعراب الكامل</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </ArticleSection>
+)}
+
+<style>
+  .ayat-ex {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.85rem;
+  }
+  .ayat-ex-card {
+    display: flex; flex-direction: column; gap: 0.75rem; height: 100%;
+    padding: 1.1rem 1.2rem 1rem; text-decoration: none;
+    border: 1px solid var(--color-card-edge); border-radius: 14px;
+    background: var(--color-card); box-shadow: var(--shadow-card);
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+  }
+  :global(.dark) .ayat-ex-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .ayat-ex-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
+  .ayat-ex-card:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 3px; }
+  .ayat-ex-verse {
+    font-size: 1.45rem; line-height: 2; color: var(--color-ink);
+    /* Long verses are clipped in the data; keep short ones from stretching cards unevenly. */
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  :global(.dark) .ayat-ex-verse { color: var(--color-mist); }
+  .ayat-ex-meta {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;
+    margin-top: auto; font-size: 0.95rem;
+    color: color-mix(in srgb, var(--color-ink) 65%, transparent);
+  }
+  :global(.dark) .ayat-ex-meta { color: color-mix(in srgb, var(--color-mist) 65%, transparent); }
+  .ayat-ex-cta { color: var(--color-purple); font-weight: 700; }
+  @media (prefers-reduced-motion: reduce) { .ayat-ex-card { transition: none; } .ayat-ex-card:hover { transform: none; } }
+</style>

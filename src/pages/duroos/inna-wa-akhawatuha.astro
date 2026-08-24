@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'لماذا سميت إن وأخواتها حروفًا ناسخة؟', a: 'لأنها نسخت حكم الجملة الاسمية، أي غيرته: كان المبتدأ مرفوعًا فنصبته وسمته اسمها، وبقي الخبر مرفوعًا وسمته خبرها. وهي حروف لا أفعال، فتبنى ولا محل لها من الإعراب، بخلاف كان وأخواتها فهي أفعال ناسخة.' },
@@ -114,6 +115,8 @@ const faqs = [
     <p><strong>اللام المزحلقة</strong>: نحو <span class="ar">إِنَّ الْعِلْمَ لَنُورٌ</span>: اللام لام مزحلقة للتوكيد، حرف مبني على الفتح لا محل له من الإعراب، و<span class="ar">نُورٌ</span>: خبر إن مرفوع وعلامة رفعه الضمة الظاهرة.</p>
     <p>وبهذا يكتمل عندك باب النواسخ الحرفية. ومن أراد أن يرى كيف يلتقي هذا الباب بغيره من أبواب <a href="/nahw">النحو</a> في نص واحد، فليتدرب على <a href="/irab">الإعراب</a> الكامل للجمل الطويلة، فهو الميزان الحق للفهم.</p>
   </ArticleSection>
+
+  <AyatExamples slug="inna-wa-akhawatuha" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

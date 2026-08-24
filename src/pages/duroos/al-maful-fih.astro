@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الفرق بين الظرف المتصرف وغير المتصرف؟', a: 'المتصرف ما يستعمل ظرفًا وغير ظرف، فيقع مبتدأ وفاعلًا ومجرورًا، مثل يوم وساعة: "يومُ الجمعةِ مباركٌ" فيوم هنا مبتدأ لا ظرف. وغير المتصرف ما يلزم النصب على الظرفية أو الجر بمن، مثل: عند، قبل، بعد، فوق، تحت.' },
@@ -94,6 +95,8 @@ const faqs = [
     </ul>
     <p>وهذا ثالث المفاعيل بعد <a href="/duroos/al-maful-bih">المفعول به</a> و<a href="/duroos/al-maful-al-mutlaq">المفعول المطلق</a> و<a href="/duroos/al-maful-li-ajlih">المفعول لأجله</a>، والتطبيق الكامل في <a href="/irab">الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-maful-fih" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

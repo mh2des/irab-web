@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما معنى "ممنوع من الصرف" أصلًا؟', a: 'الصرف هو التنوين. فالممنوع من الصرف اسم معرب لا يقبل التنوين، ويُجر بالفتحة نيابة عن الكسرة ما لم يُضف أو تدخل عليه أل. سمي كذلك لأنه مُنع الصرفَ أي التنوين.' },
@@ -99,6 +100,8 @@ const faqs = [
     </ul>
     <p>وهذا من ألطف أبواب <a href="/duroos/alamat-al-irab">علامات الإعراب</a>: علامة واحدة تتبدل بحسب حال الاسم لا بحسب موقعه. وللسياق النظري الكامل راجع <a href="/nahw">ما هو النحو</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-mamnu-min-al-sarf" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'لماذا تعرب الأسماء الخمسة بالحروف لا بالحركات؟', a: 'لأنها إذا استوفت شروطها أعربت بعلامات فرعية تنوب عن الأصلية: الواو تنوب عن الضمة، والألف عن الفتحة، والياء عن الكسرة. وعلل النحاة ذلك بأن إضافتها إلى ما بعدها أطالت الاسم فناسبه الإعراب بالحروف الطويلة، وهو باب من أبواب النيابة في علامات الإعراب.' },
@@ -117,6 +118,8 @@ const faqs = [
     </ul>
     <p>فالقاعدة إذن ليست في الكلمة نفسها بل في حالها داخل الجملة. وهذا جوهر <a href="/irab">الإعراب</a> كله: النظر في الموقع والشروط قبل إطلاق الحكم، وهو المنهج الذي يقوم عليه <a href="/nahw">النحو</a> من أوله إلى آخره.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-asma-al-khamsa" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

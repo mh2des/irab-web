@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'كم عدد حروف الجر؟', a: 'المشهور في المتون عشرون حرفًا جمعها ابن مالك في الألفية، وأكثرها دورانًا تسعة: من، إلى، عن، على، في، الباء، الكاف، اللام، ورب، ويضاف إليها واو القسم وتاؤه ومذ ومنذ وحتى.' },
@@ -106,6 +107,8 @@ const faqs = [
       <li>"حتى" الجارة تدخل على الاسم: <span class="ar">أَكَلْتُ السَّمَكَةَ حَتَّى رَأْسِهَا</span>، فإذا دخلت على مضارع فهي ناصبة به بأن مضمرة، وبيانه في <a href="/duroos/nasb-al-mudari">نصب المضارع</a>.</li>
     </ul>
   </ArticleSection>
+
+  <AyatExamples slug="huruf-al-jarr" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

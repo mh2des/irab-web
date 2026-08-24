@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'لماذا سميت الأفعال الخمسة بهذا الاسم؟', a: 'لأنها تأتي على خمس صيغ من الفعل المضارع: يفعلانِ وتفعلانِ بألف الاثنين، ويفعلونَ وتفعلونَ بواو الجماعة، وتفعلينَ بياء المخاطبة. خمسة أوزان لا خمسة أفعال بعينها، فكل مضارع اتصل بأحد هذه الضمائر صار منها.' },
@@ -85,6 +86,8 @@ const faqs = [
     </ul>
     <p>ونظير هذا الباب في الأسماء درس <a href="/duroos/al-asma-al-khamsa">الأسماء الخمسة</a>، وكلاهما فرع عن <a href="/duroos/alamat-al-irab">علامات الإعراب</a> الفرعية، والإطار الكامل في <a href="/irab">ما هو الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-afal-al-khamsa" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

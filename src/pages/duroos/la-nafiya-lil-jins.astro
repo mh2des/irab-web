@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'لماذا سميت لا النافية للجنس؟', a: 'لأنها تنفي الحكم عن جنس اسمها كله نفيًّا نصًّا لا احتمال فيه. "لا طالبَ في الصفِّ" تنفي وجود أي طالب أصلًا، بينما "لا طالبٌ في الصف" بالرفع تحتمل نفي الواحد ووجود اثنين.' },
@@ -95,6 +96,8 @@ const faqs = [
     </ul>
     <p>والإطار النظري للنواسخ كلها يبدأ من <a href="/duroos/al-jumla-al-ismiyya">الجملة الاسمية</a>، والتطبيق في <a href="/irab">الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="la-nafiya-lil-jins" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

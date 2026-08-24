@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'لماذا يُحذف الفاعل أصلًا؟', a: 'لأغراض بلاغية أو عملية: الجهل به نحو "سُرِقَ الْمَتَاعُ"، أو العلم به فلا حاجة لذكره نحو ﴿خُلِقَ الْإِنسَانُ ضَعِيفًا﴾، أو الخوف منه أو عليه، أو الرغبة في الإيجاز، أو تعظيمه بصون اسمه عن الاقتران بالفعل.' },
@@ -103,6 +104,8 @@ const faqs = [
       <li>الفعل مع نائب الفاعل يؤنث كما يؤنث مع الفاعل: <span class="ar">كُتِبَتِ الرِّسَالَةُ</span> لا "كُتِبَ الرسالةُ". وترتيب الجملة كلها مشروح في درس <a href="/duroos/al-jumla-al-filiyya">الجملة الفعلية</a>، والأصل النظري في <a href="/irab">ما هو الإعراب</a>.</li>
     </ul>
   </ArticleSection>
+
+  <AyatExamples slug="naib-al-fail" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

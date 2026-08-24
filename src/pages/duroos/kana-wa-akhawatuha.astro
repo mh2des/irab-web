@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'لماذا تسمى كان وأخواتها أفعالًا ناقصة؟', a: 'لأنها لا تكتفي بمرفوعها كما يكتفي الفعل التام بفاعله. إذا قلت "كان الجوُّ" لم يتم المعنى حتى تأتي بالخبر المنصوب: "كان الجوُّ صحوًا". فهي ناقصة الدلالة تحتاج إلى الخبر ليتم بها الكلام، وسميت ناسخة لأنها نسخت حكم الخبر فحولته من الرفع إلى النصب.' },
@@ -115,6 +116,8 @@ const faqs = [
     </ul>
     <p>وتذكر أن <a href="/irab">الإعراب</a> صنعة تتقن بالمران، وأن هذا الدرس فرع واحد من شجرة <a href="/nahw">النحو</a> الكبيرة، فلا تكتف بالقراءة دون تطبيق.</p>
   </ArticleSection>
+
+  <AyatExamples slug="kana-wa-akhawatuha" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

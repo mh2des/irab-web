@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الأسماء الموصولة الخاصة والمشتركة؟', a: 'الخاصة تختص بنوع وعدد: الذي للمفرد المذكر، والتي للمفردة، واللذان واللتان للمثنى، والذين لجمع الذكور، واللاتي واللائي لجمع الإناث. والمشتركة تصلح للجميع بلفظ واحد: من للعاقل، وما لغير العاقل، وأي، وذا بعد ما أو من الاستفهاميتين.' },
@@ -96,6 +97,8 @@ const faqs = [
     </ul>
     <p>وأخو هذا الباب في المبنيات <a href="/duroos/al-damair">الضمائر</a>، والأصل الجامع في <a href="/nahw">ما هو النحو</a> وتطبيقه في <a href="/irab">الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-asma-al-mawsula" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

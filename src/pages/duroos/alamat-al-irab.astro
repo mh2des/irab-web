@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الفرق بين علامات الإعراب الأصلية والفرعية؟', a: 'الأصلية أربع حركات: الضمة للرفع والفتحة للنصب والكسرة للجر والسكون للجزم، وهي الأصل في كل معرب. والفرعية حروف وحركات تنوب عنها في أبواب معدودة، كالواو في جمع المذكر السالم، والألف في المثنى، وثبوت النون في الأفعال الخمسة. فإذا لم تكن الكلمة من تلك الأبواب أعربت بالحركات الأصلية.' },
@@ -113,6 +114,8 @@ const faqs = [
       <li><strong>اختم بالصياغة الكاملة:</strong> الموقع ثم الحكم ثم العلامة، كما جرى عليه أهل <a href="/irab">الإعراب</a> في كتبهم المعتمدة.</li>
     </ol>
   </ArticleSection>
+
+  <AyatExamples slug="alamat-al-irab" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

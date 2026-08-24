@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'هل يجوز أن يتقدم الفاعل على فعله؟', a: 'لا عند جمهور البصريين. إذا تقدم الاسم على الفعل صارت الجملة اسمية، وأعرب الاسم مبتدأ، والجملة الفعلية بعده خبرًا، وصار فاعل الفعل ضميرًا مستترًا. ففي "الطالبُ نجح" الطالب مبتدأ مرفوع، وفاعل نجح ضمير مستتر تقديره هو.' },
@@ -97,6 +98,8 @@ const faqs = [
       <li><strong>الاعتماد على الترتيب وحده:</strong> قد يتقدم المفعول به على الفاعل، نحو <span class="ar">كَتَبَ الدَّرْسَ الطَّالِبُ</span>، فالعبرة بالعلامة الإعرابية والمعنى لا بالموقع وحده.</li>
     </ul>
   </ArticleSection>
+
+  <AyatExamples slug="al-fail" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

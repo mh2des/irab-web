@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما ركنا الجملة الاسمية؟', a: 'ركناها المبتدأ والخبر، وكلاهما مرفوع. المبتدأ اسم تفتتح به الجملة في الأصل، والخبر هو الجزء الذي تتم به مع المبتدأ الفائدة. ففي "العلمُ نورٌ": العلم مبتدأ مرفوع، ونور خبر مرفوع.' },
@@ -103,6 +104,8 @@ const faqs = [
     </ul>
     <p>وقبل التدريب راجع مرجع <a href="/irab">الإعراب</a> لتضبط صيغة السطر الإعرابي الكامل، ثم خذ أي جملة من كتاب أو مقال وأعربها بنفسك، وقارن إعرابك بما يعرضه المحلل على الصفحة الرئيسية كلمة كلمة.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-jumla-al-ismiyya" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

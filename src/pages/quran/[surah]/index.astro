@@ -37,9 +37,10 @@ const full = surah.ayahCount <= FULL_MAX_AYAT && ayat.length >= surah.ayahCount;
 const title = full
   ? `إعراب سورة ${surah.name} كاملة، آية آية وكلمة كلمة | إعراب`
   : `إعراب سورة ${surah.name}، كل آية كلمةً كلمة | إعراب`;
-const description = full
-  ? `إعراب سورة ${surah.name} كاملة (${toArabicDigits(surah.ayahCount)} آية) في صفحة واحدة: التحليل النحوي المفصّل لكل آية وكل كلمة، مع علامات الإعراب، من «الجدول في إعراب القرآن» لمحمود صافي.`
-  : `إعراب سورة ${surah.name} آيةً آية: التحليل النحوي الكامل لكل كلمة، من «الجدول في إعراب القرآن». ${toArabicDigits(surah.ayahCount)} آية.`;
+// One description template for every surah, 150-158 chars across all 114 names
+// and ayah counts, query phrase «إعراب سورة X» first. True for both page modes:
+// every ayah has its own detailed page whether or not the surah is inlined here.
+const description = `إعراب سورة ${surah.name} (${toArabicDigits(surah.ayahCount)} آية) آيةً آية وكلمةً كلمة: تحليل نحوي مفصّل لكل كلمة، الموقع الإعرابي وعلامة الإعراب وسببها، من «الجدول في إعراب القرآن» لمحمود صافي.`;
 const canonical = `https://irab.app/quran/${surah.slug}`;
 const hasEnTwin = enSurahIds().includes(surah.id);
 const breadcrumb = {

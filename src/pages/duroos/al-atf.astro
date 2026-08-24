@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما إعراب المعطوف؟', a: 'المعطوف تابع: يأخذ إعراب المعطوف عليه رفعًا ونصبًا وجرًّا وجزمًا. تقول: جاء محمدٌ وعليٌّ بالرفع، ورأيتُ محمدًا وعليًّا بالنصب، ومررتُ بمحمدٍ وعليٍّ بالجر.' },
@@ -88,6 +89,8 @@ const faqs = [
     </ul>
     <p>والإطار النظري للتوابع كلها في <a href="/nahw">ما هو النحو</a>، وتطبيقها العملي في <a href="/irab">الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-atf" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

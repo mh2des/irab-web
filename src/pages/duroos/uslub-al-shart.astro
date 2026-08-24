@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما أركان أسلوب الشرط؟', a: 'ثلاثة: أداة الشرط، وجملة الشرط (فعل الشرط)، وجملة الجواب (الجزاء). المعنى: تعليق حصول الجواب على حصول الشرط: إن تذاكرْ تنجحْ.' },
@@ -97,6 +98,8 @@ const faqs = [
     </ul>
     <p>وتمام الباب في <a href="/duroos/jazm-al-mudari">جزم المضارع</a>، والإطار النظري في <a href="/nahw">ما هو النحو</a>، والتطبيق في <a href="/irab">الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="uslub-al-shart" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

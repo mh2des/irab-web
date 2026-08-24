@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'لماذا الضمائر كلها مبنية؟', a: 'لأنها أشبهت الحروف في الجمود وقلة الحروف والافتقار إلى غيرها في بيان المعنى، فبنيت مثلها. لكن لكل ضمير محل إعرابي: رفع أو نصب أو جر، يقال فيه: مبني في محل كذا.' },
@@ -96,6 +97,8 @@ const faqs = [
     </ul>
     <p>وأخو هذا الباب في المبنيات <a href="/duroos/al-asma-al-mawsula">الأسماء الموصولة</a>، والأصل الجامع في <a href="/irab">الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-damair" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

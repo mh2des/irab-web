@@ -200,7 +200,7 @@ const t = lang === 'ar'
 
         {/* Branded footer: part of the shared image/PDF */}
         <div class="flex items-center justify-center gap-2 pt-6 mt-2 border-t border-stone dark:border-coal-edge">
-          <img src="/brand-mark.png" alt="" width="20" height="20" class="w-5 h-5 rounded-md" />
+          <img src="/brand-mark.png" alt="" aria-hidden="true" width="20" height="20" class="w-5 h-5 rounded-md" />
           <span class="font-arabic text-small text-ink/45 dark:text-mist/45">{t.madeWith}</span>
         </div>
       </div>
@@ -209,7 +209,7 @@ const t = lang === 'ar'
     {/* ── Off-screen branded share card: captured for share-image / PDF ── */}
     <div data-export-card lang="ar" dir="rtl" aria-hidden="true" class="export-card">
       <div class="ec-top">
-        <img src="/brand-mark.png" alt="" width="40" height="40" class="ec-logo" />
+        <img src="/brand-mark.png" alt="" aria-hidden="true" width="40" height="40" class="ec-logo" />
         <span class="ec-brand">إعراب</span>
         <span class="ec-tag">تحليل نحوي بالذكاء الاصطناعي</span>
       </div>

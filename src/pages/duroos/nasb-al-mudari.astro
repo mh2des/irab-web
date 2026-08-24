@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الفرق بين لن ولا في نفي المضارع؟', a: 'لن حرف نفي ونصب واستقبال، تنصب المضارع وتخلّص زمنه للمستقبل: لن يهملَ. أما لا النافية فحرف نفي لا عمل له، يبقى الفعل بعدها مرفوعًا: لا يهملُ الطالبُ واجبَه. فالفرق بينهما في العمل وفي الزمن معًا.' },
@@ -113,6 +114,8 @@ const faqs = [
     </ul>
     <p>ويقابل هذا الباب باب <a href="/duroos/jazm-al-mudari">جزم الفعل المضارع</a> بأدواته وعلاماته المختلفة، فادرس البابين معًا حتى لا يختلط عليك عمل لم بعمل لن.</p>
   </ArticleSection>
+
+  <AyatExamples slug="nasb-al-mudari" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

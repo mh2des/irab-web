@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الفرق بين تمييز الذات وتمييز النسبة؟', a: 'تمييز الذات يفسر اسمًا مبهمًا ملفوظًا قبله كالأعداد والمقادير، مثل: اشتريت صاعًا قمحًا. وتمييز النسبة يفسر إبهام الجملة كلها، مثل: طاب المجتهد نفسًا. ولذلك سُمي الأول ملفوظًا والثاني ملحوظًا.' },
@@ -95,6 +96,8 @@ const faqs = [
     <p><strong>المثال السادس، غير محوّل:</strong> <span class="ar">لِلَّهِ دَرُّهُ فَارِسًا</span>: اللام حرف جر ولفظ الجلالة اسم مجرور وعلامة جره الكسرة الظاهرة والجار والمجرور متعلقان بمحذوف خبر مقدم، درُّ مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة وهو مضاف والهاء ضمير متصل مبني في محل جر مضاف إليه، فارسًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة.</p>
     <p>وإذا أشكل عليك اسم منصوب بعد تمام الكلام فقدّر «من» قبله، فإن استقامت فهو تمييز، وإلا فاعرض الجملة على منهج <a href="/irab">الإعراب</a> الكامل: العامل، ثم العمدة، ثم الفضلات.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-tamyiz" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

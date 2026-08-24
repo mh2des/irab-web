@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'هل المضاف إليه مجرور دائمًا؟', a: 'نعم، المضاف إليه مجرور أبدًا، هذه من القواعد المطردة بلا استثناء. أما المضاف نفسه فيعرب بحسب موقعه في الجملة: فاعلًا أو مفعولًا أو مبتدأ أو غير ذلك.' },
@@ -97,6 +98,8 @@ const faqs = [
     </ul>
     <p>ويلتبس المضاف إليه المجرور بالاسم المجرور بالحرف، والتمييز بينهما أساس في <a href="/irab">الإعراب</a> الصحيح. وإذا كان المضاف إليه ممنوعًا من الصرف جُر بالفتحة، وتفصيله في <a href="/duroos/al-mamnu-min-al-sarf">درسه</a>، والإطار كله في <a href="/nahw">ما هو النحو</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-idafa" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

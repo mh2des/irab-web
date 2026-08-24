@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما شروط نصب المفعول لأجله؟', a: 'أربعة شروط: أن يكون مصدرًا، قلبيًّا (من أفعال النفس الباطنة كالخوف والرغبة والطمع)، معللًا لما قبله بأن يصح وقوعه جوابًا عن "لماذا؟"، ومشاركًا للفعل في الزمن والفاعل. فإن فقد شرط جُر بلام التعليل.' },
@@ -85,6 +86,8 @@ const faqs = [
     </ul>
     <p>وثالث المفاعيل في هذه السلسلة <a href="/duroos/al-maful-fih">المفعول فيه</a>، وأولها <a href="/duroos/al-maful-bih">المفعول به</a>، والأصل النظري في <a href="/nahw">ما هو النحو</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-maful-li-ajlih" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

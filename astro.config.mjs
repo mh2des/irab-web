@@ -1,30 +1,12 @@
 // @ts-check
-import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-import sitemap from '@astrojs/sitemap';
 
-// Keep the sitemap to indexable, canonical URLs only: drop noindex (thin /
-// backfilled) ayat and non-head members of multi-ayah groups (they canonical
-// to the group head). Mirrors the gate in [surah]/[ayah].astro.
-const quran = JSON.parse(readFileSync(new URL('./src/data/quran-pilot.json', import.meta.url), 'utf8'));
-const surahs = JSON.parse(readFileSync(new URL('./src/data/surahs.json', import.meta.url), 'utf8'));
-const slugById = Object.fromEntries(
-  surahs.map((/** @type {{ id: number, slug: string }} */ s) => [s.id, s.slug]),
-);
-const sitemapExclude = new Set();
-for (const a of quran.ayat) {
-  const isHead = a.ayah === a.ayahStart;
-  const shared = a.ayahStart !== a.ayahEnd;
-  const thin = a.isBackfilled || (!a.irab && a.words.length === 0);
-  const nonCanonical = shared && a.isShared && !isHead;
-  if (thin || nonCanonical) sitemapExclude.add(`https://irab.app/quran/${slugById[a.surah]}/${a.ayah}`);
-}
-
-// Private/auth pages — noindex, keep out of the sitemap.
-for (const p of ['/login', '/account', '/en/login', '/en/account', '/dictionary', '/en/dictionary', '/practice/play', '/en/practice/play', '/challenges', '/en/challenges', '/app', '/en/app', '/history', '/en/history', '/library/read', '/en/library/read', '/majlis/host', '/majlis/live', '/majlis/create', '/majlis/report']) {
-  sitemapExclude.add(`https://irab.app${p}`);
-}
+// Sitemaps are NOT generated here. scripts/build-sitemaps.mjs runs after
+// `astro build` (see package.json "build"): it reads the built HTML, keeps only
+// self-canonical pages with no robots/googlebot noindex, splits them into
+// per-section child sitemaps and stamps each URL with a real content lastmod
+// taken from git history, never the build date.
 
 // https://astro.build/config
 export default defineConfig({
@@ -42,18 +24,6 @@ export default defineConfig({
       redirectToDefaultLocale: false,
     },
   },
-  integrations: [
-    sitemap({
-      i18n: {
-        defaultLocale: 'ar',
-        locales: { ar: 'ar-SA', en: 'en-US' },
-      },
-      // No lastmod/changefreq/priority: a build-time lastmod marks all 5k+
-      // URLs "changed" on every deploy, which Google learns to distrust and
-      // then ignores — worse than omitting it entirely.
-      filter: (page) => !sitemapExclude.has(page.replace(/\/$/, '')),
-    }),
-  ],
   vite: {
     plugins: [tailwindcss()],
   },

@@ -1,8 +1,10 @@
 ---
 /**
- * Ayah i'rab page: the spoke. Answer-first: verse → source → (TL;DR) →
- * word-by-word grid → detailed i'rab → sarf/balagha/fawaid → footnotes →
- * related → FAQ → app CTA. Pure static; JSON-LD via AyahSchema.
+ * Ayah i'rab page: the spoke. Our own material first, the quoted reference
+ * clearly labelled after it: verse → (TL;DR) → lessons that teach what the
+ * ayah contains → source label → word-by-word grid → detailed i'rab →
+ * sarf/balagha/fawaid → footnotes → FAQ → related → app CTA.
+ * Pure static; JSON-LD via AyahSchema.
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
@@ -16,6 +18,8 @@ import {
 } from '../../../lib/quran';
 import { INTROS } from '../../../data/ayah-intros';
 import { hasEnAyah } from '../../../lib/quran-en';
+import { QURAN_INDEX_MODE } from '../../../config/seo';
+import { lessonsForAyah } from '../../../lib/lesson-links';
 
 export function getStaticPaths() {
   return AYAT.map((a) => {
@@ -61,11 +65,24 @@ const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
 // analysis (e.g. a multi-ayah group head with few of its own words) is still a
 // valuable, indexable page: don't suppress it.
 const thin = ayah.isBackfilled || (!ayah.irab && ayah.words.length === 0);
+// Google-only index gate (see src/config/seo.ts): in 'original-only' mode a
+// self-canonical ayah page stays indexable for Google only when it carries an
+// authored INTROS entry (our own words). Book-only pages get
+// <meta name="googlebot" content="noindex">; Bing, Copilot and the AI crawlers
+// are unaffected, and scripts/build-sitemaps.mjs drops them from the sitemap
+// by reading the built HTML. Group members that canonicalise to their head are
+// left alone: noindex on a page that declares another canonical is contradictory.
+const hasOwnIntro = Boolean(INTROS[`${ayah.surah}:${ayah.ayah}`]);
+const googlebotNoindex =
+  QURAN_INDEX_MODE === 'original-only' && !thin && canonical === selfUrl && !hasOwnIntro;
 const fnId = (m: string) => `fn-${m.replace(/[^0-9]/g, '')}`;
 // hreflang: only advertise the English twin when one actually exists for this ayah.
 const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
+// Lessons that teach the constructions the book names in this ayah's i'rab:
+// our own structure around the quoted text (see src/lib/lesson-links.ts).
+const lessons = lessonsForAyah(ayah);
 ---
-<BaseLayout lang="ar" title={title} description={description} noindex={thin} canonicalOverride={canonical} hasEn={hasEnTwin}>
+<BaseLayout lang="ar" title={title} description={description} noindex={thin} googlebotNoindex={googlebotNoindex} canonicalOverride={canonical} hasEn={hasEnTwin}>
   <AyahSchema slot="head" ayah={ayah} surah={surah} canonical={canonical} title={h1} description={description} faqs={faqs} />
   <Nav lang="ar" />
 
@@ -86,16 +103,24 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
           <span class="verse-num" aria-hidden="true">{an}</span>
         </blockquote>
 
-        <p class="source">
-          المصدر: <span class="source-book">الجدول في إعراب القرآن</span>، تأليف محمود صافي{shared ? `، يشمل الآيات ${toArabicDigits(ayah.ayahStart)} إلى ${toArabicDigits(ayah.ayahEnd)}` : ''}
-          · <a href="/methodology" class="source-link">منهجيتنا في التحقّق</a>
-        </p>
-
         {intro.tldr && (
           <div class="tldr">
             <span class="eyebrow eyebrow-ink">الإعراب باختصار</span>
             <p class="classical-naskh">{intro.tldr}</p>
           </div>
+        )}
+
+        {lessons.length > 0 && (
+          <section class="blk blk-lessons" aria-labelledby="lessons-h">
+            <h2 id="lessons-h">دروس تشرح ما في هذه الآية</h2>
+            <div class="rel">
+              {lessons.map((l) => (
+                <a class="rel-card" href={`/duroos/${l.slug}`}>
+                  <span>من أبواب الإعراب</span><b>{l.title}</b>
+                </a>
+              ))}
+            </div>
+          </section>
         )}
 
         {shared && ayah.isShared && !isHead && (
@@ -104,6 +129,12 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
             <a href={`/quran/${surah.slug}/${ayah.ayahStart}`}>انظر الإعراب الكامل في الآية {toArabicDigits(ayah.ayahStart)}</a>.
           </p>
         )}
+
+        <p class="source" id="source">
+          <span class="source-label">نقلًا عن المرجع</span>
+          المصدر: <span class="source-book">الجدول في إعراب القرآن</span>، تأليف محمود صافي{shared ? `، يشمل الآيات ${toArabicDigits(ayah.ayahStart)} إلى ${toArabicDigits(ayah.ayahEnd)}` : ''}
+          · <a href="/methodology" class="source-link">منهجيتنا في التحقّق</a>
+        </p>
 
         {ayah.words.length > 0 && (
           <section class="blk">
@@ -143,6 +174,17 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
           </section>
         )}
 
+        {faqs.length > 0 && (
+          <section class="blk">
+            <h2>أسئلة شائعة</h2>
+            <div class="faq" data-acc-group>
+              {faqs.map((f) => (
+                <details class="exp acc-card" data-acc><summary>{f.q}</summary><p class="classical-naskh faq-a">{f.a}</p></details>
+              ))}
+            </div>
+          </section>
+        )}
+
         {(prev || next) && (
           <section class="blk">
             <h2>آياتٌ ذات صلة</h2>
@@ -179,16 +221,6 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
           </div>
         </section>
 
-        {faqs.length > 0 && (
-          <section class="blk">
-            <h2>أسئلة شائعة</h2>
-            <div class="faq" data-acc-group>
-              {faqs.map((f) => (
-                <details class="exp acc-card" data-acc><summary>{f.q}</summary><p class="classical-naskh faq-a">{f.a}</p></details>
-              ))}
-            </div>
-          </section>
-        )}
       </Container>
 
       <ArticleCta lang="ar">
@@ -248,11 +280,23 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
     border-radius: 999px; vertical-align: middle;
   }
 
+  /* Reference label: sits directly above the quoted material so a reader (and a
+     crawler) can tell where our own text ends and the cited book begins. */
   .source {
-    font-size: 1.1rem; color: color-mix(in srgb, var(--color-ink) 58%, transparent);
-    margin-bottom: 2rem; text-align: center;
+    font-size: 1.1rem; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 58%, transparent);
+    margin: 2.75rem 0 -1.5rem; padding: 0.6rem 0.9rem;
+    border-inline-start: 3px solid color-mix(in srgb, var(--color-teal) 55%, transparent);
+    background: color-mix(in srgb, var(--color-teal) 5%, transparent);
+    border-radius: 10px; border-start-start-radius: 0; border-end-start-radius: 0;
   }
   :global(.dark) .source { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
+  .source-label {
+    display: inline-block; margin-inline-end: 0.5rem; padding: 0.05rem 0.55rem; border-radius: 999px;
+    font-size: 0.85rem; font-weight: 700; color: var(--color-teal);
+    border: 1px solid color-mix(in srgb, var(--color-teal) 40%, transparent);
+  }
+  .blk-lessons { margin-top: 1.25rem; }
+  .tldr + .blk-lessons { margin-top: 0; }
   .source-book { color: var(--color-teal); font-weight: 600; }
   .source-link { color: var(--color-teal); text-underline-offset: 3px; }
 

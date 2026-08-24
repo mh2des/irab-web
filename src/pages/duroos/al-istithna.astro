@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما أركان جملة الاستثناء؟', a: 'ثلاثة: المستثنى منه وهو العام المذكور قبل الأداة، وأداة الاستثناء مثل إلا وغير وسوى وعدا وخلا وحاشا، والمستثنى وهو الخارج من الحكم. في "حضر الطلابُ إلا زيدًا": الطلاب مستثنى منه، وإلا أداة، وزيدًا مستثنى.' },
@@ -96,6 +97,8 @@ const faqs = [
     </ul>
     <p>ويجاور هذا البابَ في الأساليب <a href="/duroos/al-munada">المنادى</a>، والنفي بلا في <a href="/duroos/la-nafiya-lil-jins">لا النافية للجنس</a>، والأصل في <a href="/nahw">ما هو النحو</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-istithna" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

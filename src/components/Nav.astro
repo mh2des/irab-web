@@ -80,8 +80,8 @@ const isActive = (href: string) =>
     <div class="flex items-center justify-between py-3 gap-3">
       {/* Logo: pulled snug into the corner */}
       <a href={home} class="flex items-center gap-2.5 shrink-0 group -ms-1">
-        <img src="/brand-mark.png" alt="" width="48" height="48" loading="eager" decoding="sync" class="w-11 h-11 md:w-12 md:h-12 rounded-lg shrink-0 transition-transform duration-200 group-hover:scale-105"/>
-        <span class:list={[lang === 'ar' ? 'font-arabic-display font-bold text-4xl' : 'font-display text-3xl', 'tracking-tight']}>{lang === 'ar' ? 'إعراب' : 'Irab'}</span>
+        <img src="/brand-mark.png" alt={lang === 'ar' ? 'إعراب' : 'Irab'} width="48" height="48" loading="eager" decoding="sync" class="w-11 h-11 md:w-12 md:h-12 rounded-lg shrink-0 transition-transform duration-200 group-hover:scale-105"/>
+        <span aria-hidden="true" class:list={[lang === 'ar' ? 'font-arabic-display font-bold text-4xl' : 'font-display text-3xl', 'tracking-tight']}>{lang === 'ar' ? 'إعراب' : 'Irab'}</span>
       </a>
 
       {/* Desktop links: segmented pill bar, soft fill + shadow lift on hover */}

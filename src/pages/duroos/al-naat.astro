@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الفرق بين النعت والصفة؟', a: 'لا فرق في الاصطلاح الشائع، فالنعت والصفة اسمان لباب واحد. البصريون يغلب عليهم "الصفة" والكوفيون "النعت"، وكتب الإعراب المدرسية تستعملهما بمعنى واحد.' },
@@ -97,6 +98,8 @@ const faqs = [
     </ul>
     <p>وباقي التوابع في دروس <a href="/duroos/al-atf">العطف</a> و<a href="/duroos/al-badal">البدل</a> و<a href="/duroos/al-tawkid">التوكيد</a>، والأصل النظري في <a href="/nahw">ما هو النحو</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-naat" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

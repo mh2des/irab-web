@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الفرق بين لم ولما؟', a: 'كلاهما حرف نفي وجزم وقلب، لكن "لم" تنفي الفعل نفيًا مطلقًا في الماضي، و"لما" تنفيه إلى زمن التكلم مع توقع حدوثه: "لما يحضرْ" أي لم يحضر حتى الآن ويتوقع حضوره.' },
@@ -86,6 +87,8 @@ const faqs = [
     </ul>
     <p>ونظير هذا الباب في النصب درس <a href="/duroos/nasb-al-mudari">نصب المضارع</a>، وبناء الجملة الفعلية كلها في <a href="/duroos/al-jumla-al-filiyya">درسها</a>، والأصل في <a href="/irab">ما هو الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="jazm-al-mudari" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

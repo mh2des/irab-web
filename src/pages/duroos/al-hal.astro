@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الفرق بين الحال والتمييز؟', a: 'الحال تبيّن هيئة صاحبها وتجيب عن السؤال «كيف؟»، والتمييز يزيل إبهام ذاتٍ أو نسبةٍ ويجيب عن «من أيّ شيء؟». والحال تقع مفردة وجملة وشبه جملة، أما التمييز فلا يكون إلا اسمًا مفردًا. والغالب في الحال الاشتقاق، وفي التمييز الجمود.' },
@@ -101,6 +102,8 @@ const faqs = [
     <p><strong>المثال السابع، قرآني للتعدد:</strong> قال تعالى: <span class="ar">﴿فَخَرَجَ مِنْهَا خَائِفًا يَتَرَقَّبُ﴾</span> (القصص: ٢١): خائفًا حال منصوبة وعلامة نصبها الفتحة الظاهرة، وجملة يترقبُ الفعلية في محل نصب حال ثانية، وصاحب الحالين ضمير مستتر تقديره هو يعود على موسى عليه السلام.</p>
     <p>ولا تخلط بين الحال و<a href="/duroos/al-tamyiz">التمييز</a>: كلاهما نكرة منصوبة فضلة، لكن الحال جواب «كيف؟» والتمييز جواب «من أيّ شيء؟». وإذا أشكل عليك موضع فابدأ كما تبدأ في أي <a href="/irab">إعراب</a> منظم: حدّد العامل، ثم العمدة، ثم انظر في الفضلات.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-hal" />
 
   <ArticleFaq lang="ar" items={faqs} />
 

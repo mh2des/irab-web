@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import AyatExamples from '../../components/duroos/AyatExamples.astro';
 
 const faqs = [
   { q: 'ما الفرق بين التوكيد اللفظي والمعنوي؟', a: 'اللفظي إعادة اللفظ نفسه أو مرادفه: جاء جاء الحقُّ. والمعنوي يكون بألفاظ محفوظة: النفس والعين لرفع المجاز عن الذات، وكل وجميع وعامة للشمول، وكلا وكلتا للمثنى، بشرط اتصالها بضمير يعود على المؤكد.' },
@@ -83,6 +84,8 @@ const faqs = [
     </ul>
     <p>وبهذا تكتمل التوابع الأربعة: <a href="/duroos/al-naat">النعت</a> و<a href="/duroos/al-atf">العطف</a> و<a href="/duroos/al-badal">البدل</a> والتوكيد، وتطبيقها كله في <a href="/irab">الإعراب</a>.</p>
   </ArticleSection>
+
+  <AyatExamples slug="al-tawkid" />
 
   <ArticleFaq lang="ar" items={faqs} />
 
