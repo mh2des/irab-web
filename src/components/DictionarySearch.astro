@@ -390,7 +390,12 @@ const t = lang === 'ar'
       }
 
       // Classical dictionaries (qamoos.org)
-      const cl = objs(entry?.classical?.entries).filter((c) => typeof c.text === 'string' && c.text.trim());
+      // Skip excerpts that only repeat the headword (bilingual glossaries return
+      // "كتب" as the whole text): they add nothing a reader can use.
+      const cl = objs(entry?.classical?.entries).filter((c) => {
+        const text = typeof c.text === 'string' ? c.text.trim() : '';
+        return text.length >= 12 && text !== (c.headword || '').trim();
+      });
       if (cl.length) {
         const s = section(T.classical);
         cl.slice(0, 3).forEach((c) => {
