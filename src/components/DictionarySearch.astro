@@ -90,24 +90,25 @@ const t = lang === 'ar'
 
 <Paywall lang={lang} />
 
-<style>
-  /* Section rhythm inside the entry card. Everything else reuses the site's
-     utilities (card, badge, ex-chip, skeleton). */
+<style is:global>
+  /* Global on purpose: the entry is built by JavaScript, and Astro's scoped
+     styles only reach static markup. Everything is prefixed .dict-. The
+     card, badge, ex-chip and skeleton utilities come from global.css. */
   .dict-sec { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-card-edge); }
-  :global(.dark) .dict-sec { border-top-color: var(--color-coal-edge); }
+  .dark .dict-sec { border-top-color: var(--color-coal-edge); }
   .dict-sec-h {
-    display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.7rem;
-    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em;
+    display: flex; align-items: baseline; gap: 0.6rem; margin: 0 0 0.7rem;
+    font-family: var(--font-arabic, inherit); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; line-height: 1.5;
     color: color-mix(in srgb, var(--color-ink) 62%, transparent);
   }
-  :global(.dark) .dict-sec-h { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+  .dark .dict-sec-h { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
   .dict-sec-h .n { font-weight: 500; opacity: 0.8; }
   .dict-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
   .dict-tab {
     padding: 0.3rem 0.85rem; border-radius: 999px; font-weight: 700; cursor: pointer;
     border: 1px solid var(--color-card-edge); background: var(--color-card); color: var(--color-ink);
   }
-  :global(.dark) .dict-tab { border-color: var(--color-coal-edge); background: var(--color-coal-soft); color: var(--color-mist); }
+  .dark .dict-tab { border-color: var(--color-coal-edge); background: var(--color-coal-soft); color: var(--color-mist); }
   .dict-tab[aria-selected="true"] { border-color: var(--color-purple); color: var(--color-purple); background: color-mix(in srgb, var(--color-purple) 10%, transparent); }
   .dict-tab:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
   .dict-chip {
@@ -116,31 +117,31 @@ const t = lang === 'ar'
   }
   .dict-chip.purple { border-color: color-mix(in srgb, var(--color-purple) 40%, transparent); color: var(--color-purple); }
   .dict-chip.muted { border-color: var(--color-card-edge); color: color-mix(in srgb, var(--color-ink) 65%, transparent); }
-  :global(.dark) .dict-chip.muted { border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 65%, transparent); }
+  .dark .dict-chip.muted { border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 65%, transparent); }
   .dict-match {
     display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.7rem; border-radius: 999px;
     font-size: 0.8rem; font-weight: 700; color: var(--color-teal);
     background: color-mix(in srgb, var(--color-teal) 12%, transparent);
   }
   .dict-ex { position: relative; padding-inline-start: 0.85rem; border-inline-start: 2px solid color-mix(in srgb, var(--color-teal) 40%, transparent); }
-  .dict-ex a { font-size: 0.8rem; font-weight: 700; color: var(--color-purple); text-decoration: none; margin-inline-start: 0.5rem; white-space: nowrap; }
-  .dict-ex a:hover { text-decoration: underline; }
+  .dict-ex-link { display: inline-block; font-size: 0.8rem; font-weight: 700; color: var(--color-purple); text-decoration: none; margin-inline-start: 0.6rem; padding: 0.1rem 0.55rem; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--color-purple) 35%, transparent); white-space: nowrap; }
+  .dict-ex-link:hover { background: color-mix(in srgb, var(--color-purple) 10%, transparent); }
   .dict-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
   .dict-table th { text-align: start; font-weight: 600; padding: 0.35rem 0.6rem 0.35rem 0; color: color-mix(in srgb, var(--color-ink) 62%, transparent); width: 9rem; white-space: nowrap; }
-  :global(.dark) .dict-table th { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+  .dark .dict-table th { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
   .dict-table td { padding: 0.35rem 0; color: var(--color-ink); }
-  :global(.dark) .dict-table td { color: var(--color-mist); }
+  .dark .dict-table td { color: var(--color-mist); }
   .dict-table tr + tr th, .dict-table tr + tr td { border-top: 1px solid color-mix(in srgb, var(--color-card-edge) 70%, transparent); }
   .dict-ayah { display: block; padding: 0.6rem 0.75rem; border-radius: 10px; text-decoration: none; border: 1px solid var(--color-card-edge); background: var(--color-card); }
-  :global(.dark) .dict-ayah { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .dark .dict-ayah { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
   .dict-ayah:hover { border-color: var(--color-purple); }
   .dict-ayah .ref { font-size: 0.8rem; font-weight: 700; color: var(--color-purple); }
   .dict-ayah .an { font-size: 0.9rem; color: color-mix(in srgb, var(--color-ink) 75%, transparent); }
-  :global(.dark) .dict-ayah .an { color: color-mix(in srgb, var(--color-mist) 75%, transparent); }
+  .dark .dict-ayah .an { color: color-mix(in srgb, var(--color-mist) 75%, transparent); }
   .dict-classical { font-size: 0.95rem; line-height: 1.9; padding: 0.7rem 0.9rem; border-radius: 10px; background: color-mix(in srgb, var(--color-teal) 6%, transparent); }
   .dict-classical .src { display: block; font-size: 0.8rem; font-weight: 700; color: var(--color-teal); margin-bottom: 0.2rem; }
   .dict-meta { margin-top: 1.5rem; font-size: 0.8rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; }
-  :global(.dark) .dict-meta { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .dark .dict-meta { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
   .dict-meta a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 </style>
 
@@ -271,8 +272,8 @@ const t = lang === 'ar'
           const ul = el('ul', 'mt-2 space-y-1.5');
           exs.slice(0, 3).forEach((text: string) => {
             const line = ar(el('li', 'dict-ex text-small text-ink/80 dark:text-mist/80'));
-            line.appendChild(document.createTextNode(text));
-            const a = el('a', '', T.analyze) as HTMLAnchorElement;
+            line.appendChild(document.createTextNode(text + ' '));
+            const a = el('a', 'dict-ex-link', T.analyze) as HTMLAnchorElement;
             a.href = `${toolPath}?s=${encodeURIComponent(text)}`;
             line.appendChild(a);
             ul.appendChild(line);
