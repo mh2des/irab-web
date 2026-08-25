@@ -875,6 +875,13 @@ const t = lang === 'ar'
           resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }
+      // Prefill from ?s= (dictionary example links): the sentence is ready in
+      // the box, the visitor presses أعرب. Nothing runs without a click.
+      const prefill = new URLSearchParams(location.search).get('s');
+      if (prefill && !histId) {
+        inputEl.value = prefill.slice(0, 200);
+        inputEl.focus();
+      }
     } catch { /* ignore */ }
 
     // Signed in premium → uncap. Firebase is lazy-loaded ONLY when the

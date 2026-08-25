@@ -4,6 +4,13 @@
  * Login-gated (the worker /api/dictionary needs a Firebase token); free users
  * get their daily quota, premium unlimited: enforced server side, same engine
  * as the app. Firebase loads only on this tool page, never on content pages.
+ *
+ * Renders the full v3 entry (2026-08): every vocalised reading as a tab,
+ * meaning first, how the word behaves in i'rab, morphology, collocations and
+ * common mistakes, the root family, Quran occurrences linking to the ayah
+ * i'rab pages, the classical-dictionary excerpt (qamoos.org) with a
+ * "matches the dictionaries" badge, and translations. Old (v2) responses
+ * still render: every section is optional.
  */
 import Paywall from './Paywall.astro';
 interface Props { lang?: 'ar' | 'en'; }
@@ -13,25 +20,17 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
 const t = lang === 'ar'
   ? {
-      placeholder: 'اكتب كلمة عربية…', search: 'بحث', searching: 'جارٍ البحث…',
+      placeholder: 'اكتب كلمة عربية…', search: 'بحث',
       signedOutTitle: 'سجّل الدخول لاستعمال المعجم',
       signedOutBody: 'المعجم الذكي متاح لأصحاب الحساب. سجّل الدخول مجاناً للبدء.',
       signIn: 'تسجيل الدخول',
-      root: 'الجذر', pos: 'النوع', meanings: 'المعاني', examples: 'أمثلة',
-      translations: 'الترجمة', noResult: 'لم نجد نتيجة لهذه الكلمة. تأكّد من الإملاء.',
-      limit: 'بلغت حدّك اليومي المجاني. اشترك من التطبيق لبحثٍ غير محدود.',
-      error: 'حدث خطأ. حاول مرة أخرى.', unlimited: 'بحث غير محدود ⚡',
       tryRoots: 'جرّب هذه الجذور:',
     }
   : {
-      placeholder: 'Type an Arabic word…', search: 'Search', searching: 'Searching…',
+      placeholder: 'Type an Arabic word…', search: 'Search',
       signedOutTitle: 'Sign in to use the dictionary',
       signedOutBody: 'The smart dictionary is for account holders. Sign in free to start.',
       signIn: 'Sign in',
-      root: 'Root', pos: 'Type', meanings: 'Meanings', examples: 'Examples',
-      translations: 'Translation', noResult: 'No result for that word: check the spelling.',
-      limit: "You've reached your free daily limit. Subscribe in the app for unlimited search.",
-      error: 'Something went wrong. Please try again.', unlimited: 'Unlimited search ⚡',
       tryRoots: 'Try these roots:',
     };
 ---
@@ -65,6 +64,20 @@ const t = lang === 'ar'
     </div>
 
     <p data-dict-msg class="hidden text-small rounded-lg px-4 py-3 mb-4"></p>
+
+    {/* Skeleton shown while a fresh word is being generated (5 to 10 s). */}
+    <div data-dict-pending class="hidden" aria-busy="true">
+      <div class="card p-6 md:p-8">
+        <div class="skeleton h-9 w-40 rounded-lg mb-5"></div>
+        <div class="skeleton h-4 w-full rounded mb-2"></div>
+        <div class="skeleton h-4 w-5/6 rounded mb-2"></div>
+        <div class="skeleton h-4 w-2/3 rounded mb-6"></div>
+        <div class="skeleton h-4 w-1/2 rounded mb-2"></div>
+        <div class="skeleton h-4 w-3/4 rounded"></div>
+      </div>
+      <p data-dict-pending-note class="text-small text-ink/60 dark:text-mist/60 mt-3 text-center"></p>
+    </div>
+
     <div data-dict-result></div>
   </div>
 
@@ -76,6 +89,60 @@ const t = lang === 'ar'
 </div>
 
 <Paywall lang={lang} />
+
+<style>
+  /* Section rhythm inside the entry card. Everything else reuses the site's
+     utilities (card, badge, ex-chip, skeleton). */
+  .dict-sec { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-card-edge); }
+  :global(.dark) .dict-sec { border-top-color: var(--color-coal-edge); }
+  .dict-sec-h {
+    display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.7rem;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em;
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+  }
+  :global(.dark) .dict-sec-h { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+  .dict-sec-h .n { font-weight: 500; opacity: 0.8; }
+  .dict-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+  .dict-tab {
+    padding: 0.3rem 0.85rem; border-radius: 999px; font-weight: 700; cursor: pointer;
+    border: 1px solid var(--color-card-edge); background: var(--color-card); color: var(--color-ink);
+  }
+  :global(.dark) .dict-tab { border-color: var(--color-coal-edge); background: var(--color-coal-soft); color: var(--color-mist); }
+  .dict-tab[aria-selected="true"] { border-color: var(--color-purple); color: var(--color-purple); background: color-mix(in srgb, var(--color-purple) 10%, transparent); }
+  .dict-tab:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
+  .dict-chip {
+    display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+    border: 1px solid color-mix(in srgb, var(--color-teal) 40%, transparent); color: var(--color-teal);
+  }
+  .dict-chip.purple { border-color: color-mix(in srgb, var(--color-purple) 40%, transparent); color: var(--color-purple); }
+  .dict-chip.muted { border-color: var(--color-card-edge); color: color-mix(in srgb, var(--color-ink) 65%, transparent); }
+  :global(.dark) .dict-chip.muted { border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 65%, transparent); }
+  .dict-match {
+    display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.7rem; border-radius: 999px;
+    font-size: 0.8rem; font-weight: 700; color: var(--color-teal);
+    background: color-mix(in srgb, var(--color-teal) 12%, transparent);
+  }
+  .dict-ex { position: relative; padding-inline-start: 0.85rem; border-inline-start: 2px solid color-mix(in srgb, var(--color-teal) 40%, transparent); }
+  .dict-ex a { font-size: 0.8rem; font-weight: 700; color: var(--color-purple); text-decoration: none; margin-inline-start: 0.5rem; white-space: nowrap; }
+  .dict-ex a:hover { text-decoration: underline; }
+  .dict-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  .dict-table th { text-align: start; font-weight: 600; padding: 0.35rem 0.6rem 0.35rem 0; color: color-mix(in srgb, var(--color-ink) 62%, transparent); width: 9rem; white-space: nowrap; }
+  :global(.dark) .dict-table th { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+  .dict-table td { padding: 0.35rem 0; color: var(--color-ink); }
+  :global(.dark) .dict-table td { color: var(--color-mist); }
+  .dict-table tr + tr th, .dict-table tr + tr td { border-top: 1px solid color-mix(in srgb, var(--color-card-edge) 70%, transparent); }
+  .dict-ayah { display: block; padding: 0.6rem 0.75rem; border-radius: 10px; text-decoration: none; border: 1px solid var(--color-card-edge); background: var(--color-card); }
+  :global(.dark) .dict-ayah { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .dict-ayah:hover { border-color: var(--color-purple); }
+  .dict-ayah .ref { font-size: 0.8rem; font-weight: 700; color: var(--color-purple); }
+  .dict-ayah .an { font-size: 0.9rem; color: color-mix(in srgb, var(--color-ink) 75%, transparent); }
+  :global(.dark) .dict-ayah .an { color: color-mix(in srgb, var(--color-mist) 75%, transparent); }
+  .dict-classical { font-size: 0.95rem; line-height: 1.9; padding: 0.7rem 0.9rem; border-radius: 10px; background: color-mix(in srgb, var(--color-teal) 6%, transparent); }
+  .dict-classical .src { display: block; font-size: 0.8rem; font-weight: 700; color: var(--color-teal); margin-bottom: 0.2rem; }
+  .dict-meta { margin-top: 1.5rem; font-size: 0.8rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; }
+  :global(.dark) .dict-meta { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .dict-meta a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+</style>
 
 <script>
   import { maybeSignedIn } from '../lib/session';
@@ -96,14 +163,46 @@ const t = lang === 'ar'
     const msg = q<HTMLElement>('[data-dict-msg]');
     const result = q<HTMLElement>('[data-dict-result]');
     const quota = q<HTMLElement>('[data-dict-quota]');
+    const pending = q<HTMLElement>('[data-dict-pending]');
+    const pendingNote = q<HTMLElement>('[data-dict-pending-note]');
 
     const T = lang === 'ar'
-      ? { searching: 'جارٍ البحث…', search: 'بحث', root: 'الجذر', meanings: 'المعاني', examples: 'أمثلة', translations: 'الترجمة',
-          noResult: 'لم نجد نتيجة لهذه الكلمة. تأكّد من الإملاء.', limit: 'بلغت حدّك اليومي المجاني. اشترك من التطبيق لبحثٍ غير محدود.',
-          error: 'حدث خطأ. حاول مرة أخرى.', unlimited: 'بحث غير محدود ⚡' }
-      : { searching: 'Searching…', search: 'Search', root: 'Root', meanings: 'Meanings', examples: 'Examples', translations: 'Translation',
-          noResult: 'No result for that word: check the spelling.', limit: "You've reached your free daily limit. Subscribe in the app for unlimited search.",
-          error: 'Something went wrong. Please try again.', unlimited: 'Unlimited search ⚡' };
+      ? {
+          searching: 'جارٍ البحث…', search: 'بحث', root: 'الجذر', pattern: 'الوزن',
+          meanings: 'المعاني', analyze: 'أعرب هذه الجملة', irab: 'كيف تُعرب هذه الكلمة', morphology: 'الصرف',
+          collocations: 'تعابير شائعة', mistakes: 'أخطاء شائعة', nuance: 'الفرق عن مرادفاتها',
+          synonyms: 'مرادفات', antonyms: 'أضداد', derivations: 'مشتقات', family: 'من الجذر نفسه',
+          quran: 'في القرآن الكريم', quranN: (n: string) => `${n} موضعًا`, quranOne: 'موضع واحد', quranForms: 'الصيغ الواردة',
+          classical: 'في المعاجم الكلاسيكية', match: 'مطابق للمعاجم', translations: 'الترجمة', etymology: 'أصل الكلمة',
+          gender: 'الجنس', declension: 'الصرف', transitivity: 'التعدّي', preps: 'يتعدّى بـ',
+          m: { plural: 'الجمع', plural_type: 'نوع الجمع', dual: 'المثنى', feminine: 'المؤنث', verbal_noun: 'المصدر', active_participle: 'اسم الفاعل', passive_participle: 'اسم المفعول', past: 'الماضي', present: 'المضارع', imperative: 'الأمر' },
+          wrong: 'خطأ', right: 'صواب', readings: 'القراءات',
+          noResult: 'لم نجد نتيجة لهذه الكلمة. تأكّد من الإملاء.',
+          limit: 'بلغت حدّك اليومي المجاني. اشترك من التطبيق لبحثٍ غير محدود.',
+          error: 'حدث خطأ. حاول مرة أخرى.', unlimited: 'بحث غير محدود ⚡',
+          generating: 'كلمة جديدة على المعجم، يُؤلَّف مدخلها الآن، ثوانٍ قليلة…',
+          aiNote: 'المدخل مولَّد بالذكاء الاصطناعي وقد يخطئ.', report: 'أبلغ عن خطأ', fromCache: 'من المعجم', fresh: 'أُضيف الآن',
+        }
+      : {
+          searching: 'Searching…', search: 'Search', root: 'Root', pattern: 'Pattern',
+          meanings: 'Meanings', analyze: 'Parse this sentence', irab: "How the word behaves in i'rab", morphology: 'Morphology',
+          collocations: 'Collocations', mistakes: 'Common mistakes', nuance: 'Compared with its synonyms',
+          synonyms: 'Synonyms', antonyms: 'Antonyms', derivations: 'Derivations', family: 'Same root',
+          quran: 'In the Quran', quranN: (n: string) => `${n} occurrences`, quranOne: '1 occurrence', quranForms: 'Forms found',
+          classical: 'In the classical dictionaries', match: 'Matches the dictionaries', translations: 'Translation', etymology: 'Etymology',
+          gender: 'Gender', declension: 'Declension', transitivity: 'Transitivity', preps: 'Takes',
+          m: { plural: 'Plural', plural_type: 'Plural type', dual: 'Dual', feminine: 'Feminine', verbal_noun: 'Verbal noun', active_participle: 'Active participle', passive_participle: 'Passive participle', past: 'Past', present: 'Present', imperative: 'Imperative' },
+          wrong: 'Wrong', right: 'Right', readings: 'Readings',
+          noResult: 'No result for that word: check the spelling.',
+          limit: "You've reached your free daily limit. Subscribe in the app for unlimited search.",
+          error: 'Something went wrong. Please try again.', unlimited: 'Unlimited search ⚡',
+          generating: 'New word for the dictionary: writing its entry now, a few seconds…',
+          aiNote: 'AI-generated entry; it can be wrong.', report: 'Report an error', fromCache: 'From the dictionary', fresh: 'Just added',
+        };
+
+    const toolPath = lang === 'ar' ? '/tool' : '/en/tool';
+    const AR_DIGITS = '٠١٢٣٤٥٦٧٨٩';
+    const num = (n: number) => lang === 'ar' ? String(n).replace(/[0-9]/g, (d) => AR_DIGITS[+d]) : String(n);
 
     let idToken: string | null = null;
 
@@ -120,58 +219,243 @@ const t = lang === 'ar'
       if (text != null) n.textContent = text;
       return n;
     };
+    const ar = (n: HTMLElement) => { n.setAttribute('dir', 'rtl'); n.setAttribute('lang', 'ar'); return n; };
+    const list = (v: unknown): string[] => Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string' && x.trim().length > 0) : [];
+    const objs = (v: unknown): any[] => Array.isArray(v) ? v.filter((x) => x && typeof x === 'object') : [];
 
-    function render(data: any) {
-      result.replaceChildren();
-      const v = (data?.variants && data.variants[0]) || data;
-      if (!v || !Array.isArray(v.senses) || v.senses.length === 0) {
-        showMsg(T.noResult, 'info'); return;
-      }
-      clearMsg();
-      const card = el('div', 'card panel-in p-6 md:p-8');
+    function section(title: string, extra?: string) {
+      const s = el('section', 'dict-sec');
+      const h = el('h3', 'dict-sec-h'); h.appendChild(el('span', '', title));
+      if (extra) h.appendChild(el('span', 'n', extra));
+      s.appendChild(h);
+      return s;
+    }
+    function chips(items: string[], cls = 'dict-chip') {
+      const w = el('div', 'flex flex-wrap gap-2');
+      items.forEach((x) => w.appendChild(ar(el('span', cls, x))));
+      return w;
+    }
 
-      // Header: word + root + pos
-      const head = el('div', 'flex flex-wrap items-baseline gap-3 mb-5 pb-5 border-b border-card-edge dark:border-coal-edge');
-      const word = el('span', 'font-arabic-display text-[2rem] leading-none text-ink dark:text-mist');
-      word.setAttribute('dir', 'rtl'); word.textContent = v.lemma || input.value.trim();
+    // ── One vocalised reading ────────────────────────────────────────────────
+    function renderVariant(v: any, entry: any, container: HTMLElement) {
+      container.replaceChildren();
+
+      // Header: lemma, pos, root, pattern, classical-match badge
+      const head = el('div', 'flex flex-wrap items-center gap-x-3 gap-y-2 mb-4');
+      const word = ar(el('span', 'font-arabic-display text-[2rem] leading-none text-ink dark:text-mist', v.lemma || input.value.trim()));
       head.appendChild(word);
-      if (v.root) { const r = el('span', 'text-small font-semibold text-purple', `${T.root}: ${v.root}`); r.setAttribute('dir','rtl'); head.appendChild(r); }
-      if (v.pos)  head.appendChild(el('span', 'badge badge-good', v.pos));
-      card.appendChild(head);
+      if (v.pos) head.appendChild(el('span', 'badge badge-good', v.pos));
+      if (v.root) head.appendChild(ar(el('span', 'text-small font-semibold text-purple', `${T.root}: ${v.root}`)));
+      if (v.pattern) head.appendChild(ar(el('span', 'text-small font-semibold text-ink/60 dark:text-mist/60', `${T.pattern}: ${v.pattern}`)));
+      const classical = entry?.classical;
+      if (classical && (classical.count > 0 || objs(classical.entries).length > 0)) {
+        const b = el('span', 'dict-match'); b.textContent = '✓ ' + T.match; b.title = T.classical; head.appendChild(b);
+      }
+      container.appendChild(head);
 
-      // Senses
-      card.appendChild(el('p', 'text-small font-semibold text-ink/70 dark:text-mist/70 mb-2', T.meanings));
-      const ol = el('ol', 'space-y-4 mb-2');
-      v.senses.forEach((s: any) => {
-        const li = el('li', 'ps-1');
-        const def = el('p', 'text-body text-ink dark:text-mist leading-relaxed'); def.setAttribute('dir','rtl');
-        def.textContent = s.definition || '';
-        li.appendChild(def);
-        const exs = Array.isArray(s.examples) ? s.examples.filter((e:any)=>e && (e.ar||e.text||e.example)) : [];
+      // Meanings: definition first, examples with a link into the analyzer
+      const senses = objs(v.senses).filter((s) => typeof s.definition === 'string' && s.definition.trim());
+      const mean = el('div');
+      mean.appendChild(el('h3', 'dict-sec-h', T.meanings));
+      const ol = el('ol', 'space-y-4');
+      senses.forEach((s, i) => {
+        const li = el('li');
+        const row = el('div', 'flex flex-wrap items-baseline gap-2');
+        if (senses.length > 1) row.appendChild(el('span', 'text-small font-bold text-purple', num(i + 1) + '.'));
+        row.appendChild(ar(el('p', 'text-body text-ink dark:text-mist leading-relaxed', s.definition)));
+        li.appendChild(row);
+        const tags = [s.register, s.domain].filter((x) => typeof x === 'string' && x && x !== 'عام' && x !== 'فصحى');
+        if (tags.length) li.appendChild(chips(tags, 'dict-chip muted'));
+        const exs = objs(s.examples).map((e) => e.text || e.ar || e.example).filter((x) => typeof x === 'string' && x.trim());
         if (exs.length) {
-          const exWrap = el('ul', 'mt-2 space-y-1');
-          exs.slice(0, 3).forEach((e: any) => {
-            const line = el('li', 'text-small text-ink/70 dark:text-mist/70 ps-3 border-s-2 border-teal/40'); line.setAttribute('dir','rtl');
-            line.textContent = e.ar || e.text || e.example || '';
-            exWrap.appendChild(line);
+          const ul = el('ul', 'mt-2 space-y-1.5');
+          exs.slice(0, 3).forEach((text: string) => {
+            const line = ar(el('li', 'dict-ex text-small text-ink/80 dark:text-mist/80'));
+            line.appendChild(document.createTextNode(text));
+            const a = el('a', '', T.analyze) as HTMLAnchorElement;
+            a.href = `${toolPath}?s=${encodeURIComponent(text)}`;
+            line.appendChild(a);
+            ul.appendChild(line);
           });
-          li.appendChild(exWrap);
+          li.appendChild(ul);
         }
         ol.appendChild(li);
       });
-      card.appendChild(ol);
+      mean.appendChild(ol);
+      container.appendChild(mean);
 
-      // Translations
-      const tr = v.translations || {};
-      const en = Array.isArray(tr.en) ? tr.en : [];
-      const fr = Array.isArray(tr.fr) ? tr.fr : [];
-      if (en.length || fr.length) {
-        const trWrap = el('div', 'mt-5 pt-5 border-t border-card-edge dark:border-coal-edge');
-        trWrap.appendChild(el('p', 'text-small font-semibold text-ink/70 dark:text-mist/70 mb-2', T.translations));
-        if (en.length) trWrap.appendChild(el('p', 'text-body text-ink/80 dark:text-mist/80', 'EN: ' + en.join(', ')));
-        if (fr.length) trWrap.appendChild(el('p', 'text-body text-ink/80 dark:text-mist/80', 'FR: ' + fr.join(', ')));
-        card.appendChild(trWrap);
+      // How the word behaves in i'rab
+      const ir = v.irab && typeof v.irab === 'object' ? v.irab : null;
+      const preps = ir ? list(ir.prepositions) : [];
+      if (ir && (ir.gender || ir.declension || ir.transitivity || preps.length || ir.note)) {
+        const s = section(T.irab);
+        const facts: string[] = [];
+        if (ir.gender) facts.push(ir.gender);
+        if (ir.declension) facts.push(ir.declension);
+        if (ir.transitivity) facts.push(ir.transitivity);
+        if (facts.length) s.appendChild(chips(facts, 'dict-chip purple'));
+        if (preps.length) s.appendChild(ar(el('p', 'text-small text-ink/80 dark:text-mist/80 mt-2', `${T.preps} ${preps.join('، ')}`)));
+        if (ir.note) s.appendChild(ar(el('p', 'text-body text-ink dark:text-mist leading-relaxed mt-2', ir.note)));
+        container.appendChild(s);
       }
+
+      // Morphology table
+      const m = v.morphology && typeof v.morphology === 'object' ? v.morphology : {};
+      const rows = Object.entries(T.m).filter(([k]) => typeof m[k] === 'string' && m[k].trim());
+      if (rows.length) {
+        const s = section(T.morphology);
+        const table = el('table', 'dict-table');
+        rows.forEach(([k, label]) => {
+          const tr = el('tr'); tr.appendChild(el('th', '', label)); tr.appendChild(ar(el('td', '', m[k])));
+          table.appendChild(tr);
+        });
+        s.appendChild(table);
+        container.appendChild(s);
+      }
+
+      // Collocations, mistakes, nuance
+      const coll = objs(v.collocations).filter((c) => typeof c.text === 'string' && c.text.trim());
+      if (coll.length) {
+        const s = section(T.collocations);
+        const ul = el('ul', 'space-y-1.5');
+        coll.forEach((c) => {
+          const li = ar(el('li', 'text-body text-ink dark:text-mist'));
+          li.appendChild(el('span', 'font-semibold', c.text));
+          if (c.meaning) li.appendChild(el('span', 'text-ink/65 dark:text-mist/65', `: ${c.meaning}`));
+          ul.appendChild(li);
+        });
+        s.appendChild(ul); container.appendChild(s);
+      }
+      const mist = objs(v.common_mistakes).filter((c) => typeof c.right === 'string' && c.right.trim());
+      if (mist.length) {
+        const s = section(T.mistakes);
+        const ul = el('ul', 'space-y-2');
+        mist.forEach((c) => {
+          const li = ar(el('li', 'text-body'));
+          if (c.wrong) { const w = el('span', 'text-red-600 dark:text-red-400 line-through', c.wrong); li.appendChild(w); li.appendChild(document.createTextNode(' ')); }
+          li.appendChild(el('span', 'font-semibold text-teal', c.right));
+          if (c.why) li.appendChild(el('span', 'block text-small text-ink/65 dark:text-mist/65', c.why));
+          ul.appendChild(li);
+        });
+        s.appendChild(ul); container.appendChild(s);
+      }
+      if (typeof v.nuance === 'string' && v.nuance.trim()) {
+        const s = section(T.nuance);
+        s.appendChild(ar(el('p', 'text-body text-ink dark:text-mist leading-relaxed', v.nuance)));
+        container.appendChild(s);
+      }
+
+      // Synonyms, antonyms, derivations, root family
+      const syn = list(v.synonyms), ant = list(v.antonyms), der = list(v.derivations);
+      const fam = objs(entry?.root_family).filter((r) => typeof r.word === 'string' && r.word.trim());
+      if (syn.length || ant.length || der.length || fam.length) {
+        const s = section(T.synonyms + (ant.length ? ` / ${T.antonyms}` : ''));
+        if (syn.length) s.appendChild(chips(syn));
+        if (ant.length) { s.appendChild(el('p', 'dict-sec-h mt-3', T.antonyms)); s.appendChild(chips(ant, 'dict-chip muted')); }
+        if (der.length) { s.appendChild(el('p', 'dict-sec-h mt-3', T.derivations)); s.appendChild(chips(der, 'dict-chip purple')); }
+        if (fam.length) {
+          s.appendChild(el('p', 'dict-sec-h mt-3', T.family));
+          const ul = el('ul', 'flex flex-wrap gap-x-4 gap-y-1');
+          fam.slice(0, 8).forEach((r) => {
+            const li = ar(el('li', 'text-small text-ink/80 dark:text-mist/80'));
+            li.appendChild(el('span', 'font-semibold text-ink dark:text-mist', r.word));
+            if (r.gloss) li.appendChild(el('span', '', `: ${r.gloss}`));
+            ul.appendChild(li);
+          });
+          s.appendChild(ul);
+        }
+        container.appendChild(s);
+      }
+
+      // Quran occurrences (own index) linking to the ayah i'rab pages
+      const qn = entry?.quran && typeof entry.quran === 'object' ? entry.quran : null;
+      if (qn && typeof qn.n === 'number' && qn.n > 0) {
+        const s = section(T.quran, qn.n === 1 ? T.quranOne : T.quranN(num(qn.n)));
+        const forms = qn.forms && typeof qn.forms === 'object' ? Object.entries(qn.forms) as Array<[string, number]> : [];
+        if (forms.length > 1) s.appendChild(chips(forms.map(([f, c]) => `${f} (${num(c)})`), 'dict-chip muted'));
+        const refs = objs(qn.refs).filter((r) => r.slug && r.a);
+        if (refs.length) {
+          const ul = el('ul', 'grid gap-2 mt-3');
+          refs.slice(0, 3).forEach((r) => {
+            const a = ar(el('a', 'dict-ayah')) as HTMLAnchorElement;
+            a.href = `/quran/${r.slug}/${r.a}`;
+            a.appendChild(el('span', 'ref', `${lang === 'ar' ? 'سورة' : 'Surah'} ${r.name || r.slug} · ${lang === 'ar' ? 'الآية' : 'ayah'} ${num(r.a)}${r.token ? ` · ${r.token}` : ''}`));
+            if (r.analysis) a.appendChild(el('span', 'an block mt-0.5', r.analysis));
+            ul.appendChild(a);
+          });
+          s.appendChild(ul);
+        }
+        container.appendChild(s);
+      }
+
+      // Classical dictionaries (qamoos.org)
+      const cl = objs(entry?.classical?.entries).filter((c) => typeof c.text === 'string' && c.text.trim());
+      if (cl.length) {
+        const s = section(T.classical);
+        cl.slice(0, 3).forEach((c) => {
+          const p = ar(el('blockquote', 'dict-classical mb-2'));
+          if (c.dictionary) p.appendChild(el('span', 'src', c.dictionary));
+          p.appendChild(document.createTextNode(c.text));
+          s.appendChild(p);
+        });
+        container.appendChild(s);
+      }
+
+      // Translations + etymology
+      const tr = v.translations || {};
+      const en = list(tr.en), fr = list(tr.fr);
+      if (en.length || fr.length || (typeof entry?.etymology === 'string' && entry.etymology.trim())) {
+        const s = section(T.translations);
+        if (en.length) s.appendChild(el('p', 'text-body text-ink/80 dark:text-mist/80', 'EN: ' + en.join(', ')));
+        if (fr.length) s.appendChild(el('p', 'text-body text-ink/80 dark:text-mist/80', 'FR: ' + fr.join(', ')));
+        if (typeof entry?.etymology === 'string' && entry.etymology.trim()) {
+          s.appendChild(el('p', 'dict-sec-h mt-3', T.etymology));
+          s.appendChild(ar(el('p', 'text-small text-ink/80 dark:text-mist/80', entry.etymology)));
+        }
+        container.appendChild(s);
+      }
+    }
+
+    // ── Whole entry: readings as tabs + footer ───────────────────────────────
+    function render(data: any, source?: string) {
+      result.replaceChildren();
+      const variants: any[] = objs(data?.variants).filter((v) => objs(v.senses).length > 0);
+      const legacy = data && objs(data.senses).length > 0 ? [data] : [];
+      const readings = variants.length ? variants : legacy;
+      if (readings.length === 0) { showMsg(T.noResult, 'info'); return; }
+      clearMsg();
+
+      const card = el('div', 'card panel-in p-6 md:p-8');
+      let body = el('div');
+      if (readings.length > 1) {
+        const tabs = el('div', 'dict-tabs'); tabs.setAttribute('role', 'tablist');
+        tabs.appendChild(el('span', 'dict-sec-h self-center', T.readings));
+        readings.forEach((v, i) => {
+          const b = ar(el('button', 'dict-tab', v.lemma || `${i + 1}`)) as HTMLButtonElement;
+          b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+          b.addEventListener('click', () => {
+            tabs.querySelectorAll('.dict-tab').forEach((x) => x.setAttribute('aria-selected', 'false'));
+            b.setAttribute('aria-selected', 'true');
+            renderVariant(v, data, body);
+          });
+          tabs.appendChild(b);
+        });
+        card.appendChild(tabs);
+      }
+      card.appendChild(body);
+      renderVariant(readings[0], data, body);
+
+      // Footer: provenance + report link
+      const meta = el('p', 'dict-meta');
+      meta.appendChild(el('span', '', T.aiNote));
+      if (source === 'cache') meta.appendChild(el('span', '', T.fromCache));
+      else if (source === 'generated') meta.appendChild(el('span', '', T.fresh));
+      const rep = el('a', '', T.report) as HTMLAnchorElement;
+      const w = readings[0].lemma || input.value.trim();
+      rep.href = `mailto:support@irab.app?subject=${encodeURIComponent((lang === 'ar' ? 'خطأ في المعجم: ' : 'Dictionary error: ') + w)}`;
+      meta.appendChild(rep);
+      card.appendChild(meta);
+
       result.appendChild(card);
     }
 
@@ -179,6 +463,10 @@ const t = lang === 'ar'
       if (!word) return;
       clearMsg(); result.replaceChildren();
       submit.disabled = true; submitLabel.textContent = T.searching;
+      // A cached word answers in well under a second; a fresh one takes a few
+      // seconds to write. Show the skeleton, and explain after 1.5 s.
+      pending.classList.remove('hidden'); pendingNote.textContent = '';
+      const noteTimer = window.setTimeout(() => { pendingNote.textContent = T.generating; }, 1500);
       try {
         const res = await fetch(`${WORKER}/api/dictionary`, {
           method: 'POST',
@@ -192,10 +480,13 @@ const t = lang === 'ar'
         }
         if (!res.ok) { showMsg(T.error, 'err'); return; }
         const json = await res.json();
-        render(json?.data ?? json);
+        if (json && json.data === null) { showMsg(T.noResult, 'info'); return; }
+        render(json?.data ?? json, json?.source);
       } catch {
         showMsg(T.error, 'err');
       } finally {
+        window.clearTimeout(noteTimer);
+        pending.classList.add('hidden');
         submit.disabled = false; submitLabel.textContent = T.search;
       }
     }
@@ -224,7 +515,9 @@ const t = lang === 'ar'
           try { idToken = await u.getIdToken(); } catch {}
           tool.classList.remove('hidden');
           try { const me = await fetchMe(u); if (me?.premium) quota.textContent = T.unlimited; } catch {}
-          input.focus();
+          // Deep link: /dictionary?w=<word> runs the lookup on arrival.
+          const w = new URLSearchParams(location.search).get('w');
+          if (w) { input.value = w; search(w); } else input.focus();
         });
       } catch { loadingEl.classList.add('hidden'); gate.classList.remove('hidden'); }
     })();
