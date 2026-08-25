@@ -1,0 +1,132 @@
+---
+/**
+ * /teachers/guide: the one-page teacher guide, «عشر دقائق مع إعراب في الفصل».
+ * Public and printable (Print → Save as PDF gives the hand-out the outreach
+ * plan links to). Every claim here is verified against the product:
+ * /tool gives two free analyses without sign-up; a live majlis is free once
+ * a day up to 10 questions and 20 players and students join with a code or
+ * QR without accounts; practice grades the student's own i'rab; lessons end
+ * with applied ayat; qualifying institutions get free Plus teacher accounts
+ * in exchange for a link (hello@irab.app).
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleSection from '../../components/ArticleSection.astro';
+import ArticleCta from '../../components/ArticleCta.astro';
+---
+<BaseLayout
+  lang="ar"
+  title="دليل المعلم: عشر دقائق مع إعراب في الفصل · إعراب"
+  description="دليل المعلم لاستعمال إعراب في الحصة: إعراب جملة أمام الطلاب في دقائق، مجلس إعراب مباشر ينضم إليه الفصل برمز، تدريب يصحّح نفسه، ودروس نحو، مع حساب مؤسّسي مجاني."
+>
+  <Nav lang="ar" />
+
+  <ArticleHero
+    lang="ar"
+    eyebrow="للمعلّمين"
+    title="عشر دقائق مع إعراب"
+    summary="خطة حصة قصيرة يستعملها معلّم اللغة العربية من أول يوم: تُعرب جملة من الدرس أمام الطلاب، ثم تحوّل الإعراب إلى مسابقة مباشرة ينضم إليها الفصل من هواتفهم، ثم تترك للطلاب تدريبًا يصحّح نفسه. لا يحتاج الطلاب إلى حسابات، ويكفي جهاز واحد وشاشة."
+  />
+
+  <div class="print-actions">
+    <div class="mx-auto max-w-3xl px-6 flex flex-wrap items-center gap-3">
+      <button type="button" class="btn-primary" data-print>اطبع الدليل أو احفظه PDF</button>
+      <span class="text-small text-ink/60 dark:text-mist/60">صفحة واحدة، تصلح للطباعة أو للمشاركة في مجموعات المعلّمين.</span>
+    </div>
+  </div>
+
+  <ArticleSection
+    lang="ar"
+    id="minute-1"
+    title="الدقيقة ١ إلى ٣: أعرب أمام الطلاب"
+    lead="افتح irab.app/tool على الشاشة، ألصق جملة من درس اليوم، واضغط أعرب. يظهر إعراب كل كلمة: نوعها، وظيفتها، حكمها، علامتها وسببها. لا تسجيل مطلوب للتجربة."
+  >
+    <p>قبل أن تكشف النتيجة اسأل الفصل: ما موقع هذه الكلمة؟ وما علامتها؟ ثم اعرض الإعراب وقارن. الخلاف بين جواب الطلاب وجواب الأداة هو أفضل لحظة في الحصة، فاجعلها نقاشًا: من أصاب ولماذا.</p>
+    <p>مثال جاهز: <span class="ar">لَنْ يُهْمِلَ الطُّلَّابُ وَاجِبَاتِهِمْ</span>. الفخ فيها أن المفعول به علامته الكسرة لا الفتحة لأنه جمع مؤنث سالم.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="minute-4"
+    title="الدقيقة ٤ إلى ٧: مجلس إعراب مباشر"
+    lead="افتح irab.app/majlis وأنشئ مجلسًا: ثلاثة أسئلة تكتبها بنفسك أو يولّدها الذكاء الاصطناعي من جملة الدرس. يظهر رمز من ستة أرقام ورمز QR على شاشتك، وينضم الطلاب من متصفح الهاتف دون حساب."
+  >
+    <p>بعد كل سؤال يظهر الشرح النحوي للفصل كله، وفي الختام تقرير بمن أصاب وأين أخطأ الفصل، فتعرف ما يحتاج إعادة شرح قبل الامتحان. الاستضافة مجانية: مجلس واحد كل يوم حتى عشرة أسئلة وعشرين لاعبًا.</p>
+    <p>نصيحة: اجعل السؤال الأخير عن الفخ الذي ناقشتموه في الدقائق الأولى. نسبة الإصابة فيه تقول لك إن كان الدرس قد ثبت.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="minute-8"
+    title="الدقيقة ٨ إلى ١٠: أعرب أنت"
+    lead="في التدريب على irab.app/practice أو في التطبيق يختار الطالب جملة، يكتب إعرابه بنفسه، ويحصل على تقييم فوري يسمّي موضع الخطأ ويشرحه. واجب بيتي يصحّح نفسه، ووقت الحصة يبقى للمواضع الأصعب."
+  >
+    <p>كلّف الطلاب بثلاث جمل من مستوى الدرس، واطلب منهم إحضار جملة واحدة أخطؤوا فيها إلى الحصة التالية. تلك الجمل هي مادة الدقائق الأولى في الحصة القادمة.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="between"
+    title="بين الحصص: درس في خمس دقائق"
+    lead="في irab.app/duroos اثنان وثلاثون درسًا في أبواب الإعراب، مكتوبة ومراجَعة قبل النشر، وفي آخر كل درس آيات تطبيقية على القاعدة نفسها مع إعرابها الكامل كلمةً كلمة."
+  >
+    <p>أرسل رابط الدرس قبل الحصة بيوم. من قرأه يأتي بالسؤال جاهزًا، ومن لم يقرأه يجد القاعدة ملخّصة في أول الصفحة.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="school"
+    title="للمدرسة أو الأكاديمية"
+    lead="المدارس الشرعية والمدارس الإسلامية وأكاديميات القرآن الإلكترونية تحصل على حسابات معلّمين مجانية من خطة إعراب بلس، مقابل رابط لإعراب من صفحة المراجع أو المنهج لديكم."
+  >
+    <p>أرسل اسم المؤسسة وموقعها وعدد الطلاب التقريبي إلى <a href="mailto:hello@irab.app?subject=طلب%20حساب%20مؤسّسة%20مجاني">hello@irab.app</a>، والتفاصيل في صفحة <a href="/teachers">إعراب للمعلّمين</a>.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="ar"
+    id="honest"
+    title="تنبيه صادق"
+    lead="الأداة مساعد للمعلم لا بديل عنه. في المواضع التي تحتمل وجهين اعرض الوجهين واسأل الطلاب أيّهما أرجح ولماذا؛ الخلاف النحوي مادة تعليمية لا عيبًا في الأداة."
+  >
+    <p>وإذا وجدت خطأ في إعراب أو استشهاد فراسلنا على <a href="mailto:support@irab.app">support@irab.app</a>؛ نصحّح في الصفحة نفسها، كما في <a href="/methodology">منهجيتنا</a>.</p>
+    <p class="guide-foot">irab.app/teachers · إنستغرام @irab.app · إكس @irab_app</p>
+  </ArticleSection>
+
+  <ArticleCta lang="ar">
+    <span slot="title">جرّبها في الحصة القادمة.</span>
+    افتح المحلّل، أو أنشئ مجلسًا الآن، واطلب حساب المؤسسة المجاني من hello@irab.app.
+  </ArticleCta>
+
+  <Footer lang="ar" />
+</BaseLayout>
+
+<script>
+  document.querySelector<HTMLButtonElement>('[data-print]')?.addEventListener('click', () => window.print());
+</script>
+
+<style>
+  .print-actions { padding: 0 0 0.5rem; }
+  .guide-foot { font-weight: 700; color: var(--color-purple); }
+  @media print {
+    /* Two A4 sides at most: no site chrome, compact hero, tight sections, and
+       every scroll-reveal element forced visible (print never scrolls). */
+    @page { size: A4; margin: 10mm 12mm; }
+    :global(nav), :global(footer), .print-actions, :global([data-sticky-cta]), :global(.card.text-center) { display: none !important; }
+    :global([data-reveal]) { opacity: 1 !important; transform: none !important; transition: none !important; }
+    :global(body) { background: #fff !important; color: #111 !important; }
+    :global(header.relative) { border: 0 !important; }
+    :global(header.relative img) { display: none !important; }
+    :global(header.relative .py-12) { padding: 0.4rem 0 0.6rem !important; }
+    :global(header.relative .eyebrow) { display: none !important; }
+    :global(header.relative h1) { font-size: 22pt !important; line-height: 1.3 !important; margin-bottom: 0.3rem !important; }
+    :global(header.relative p) { font-size: 10.5pt !important; line-height: 1.6 !important; }
+    :global(.article-sec) { padding: 0.45rem 0 !important; break-inside: avoid; }
+    :global(.article-sec > div > div:first-child) { margin-bottom: 0.35rem !important; }
+    :global(.article-sec h2) { font-size: 13pt !important; line-height: 1.4 !important; }
+    :global(.article-sec .sec-lead) { margin-bottom: 0.35rem !important; padding: 0.4rem 0.6rem !important; font-size: 10.5pt !important; line-height: 1.6 !important; }
+    :global(.article-sec p) { font-size: 10pt !important; line-height: 1.6 !important; margin: 0 0 0.25rem !important; }
+    :global(.article-sec .space-y-4 > * + *) { margin-top: 0.25rem !important; }
+  }
+</style>
