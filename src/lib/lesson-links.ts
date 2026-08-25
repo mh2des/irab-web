@@ -47,6 +47,14 @@ const word = (s: string) => new RegExp(`(?<![${L}])(?:${s})(?![${L}])`);
 
 const RULES: Rule[] = [
   { slug: 'la-nafiya-lil-jins', title: 'لا النافية للجنس', weight: 10, re: /نافية للجنس/ },
+  // The book writes تعجّبيّة with a shadda between ج and ب, so allow it.
+  { slug: 'uslub-al-taajjub', title: 'أسلوب التعجب', weight: 9, re: /تعجّ?ب/ },
+  { slug: 'uslub-al-madh-wal-dhamm', title: 'أسلوب المدح والذم', weight: 9, re: /لإنشاء المدح|لإنشاء الذمّ?|المخصوص بالمدح|المخصوص بالذمّ?|فاعل نعم|فاعل بئس|حبّ?ذا/ },
+  { slug: 'kada-wa-akhawatuha', title: 'كاد وأخواتها', weight: 7, re: word('(?:اسم|خبر) (?:كاد|يكاد|كادوا|عسى|أوشك|طفق|شرع|أخذ|جعل)') },
+  { slug: 'zanna-wa-akhawatuha', title: 'ظنّ وأخواتها', weight: 6, re: /مفعول به ثان|مفعول به أول|مفعوليه|مفعولي ظن|مسدّ? (?:ال)?مفعولين/ },
+  { slug: 'uslub-al-istifham', title: 'أسلوب الاستفهام', weight: 5, re: /استفهام/ },
+  { slug: 'asma-al-ishara', title: 'أسماء الإشارة', weight: 4, re: /اسم إشارة/ },
+  { slug: 'al-maqsur-wal-manqus-wal-mamdud', title: 'المقصور والمنقوص والممدود', weight: 4, re: /مقصور|منقوص|ممدود|مقدّ?رة على الألف|مقدّ?رة على الياء/ },
   { slug: 'al-tamyiz', title: 'التمييز', weight: 9, re: word('تمييز') },
   { slug: 'al-maful-al-mutlaq', title: 'المفعول المطلق', weight: 9, re: /مفعول مطلق/ },
   { slug: 'al-maful-li-ajlih', title: 'المفعول لأجله', weight: 9, re: word('مفعول لأجله|مفعول له') },
