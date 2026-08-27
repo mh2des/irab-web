@@ -38,6 +38,13 @@ export interface ParseExample {
   vocalizedSentence: string;
   /** Source reference, e.g. "Surah al-Fatiha · 1:2" */
   source?: string;
+  /**
+   * True only for Quranic text. Gates the Mushaf face (KFGQPC Uthmanic Hafs),
+   * which the design system reserves for Quran verses: a user-typed sentence
+   * rendered in Mushaf typography reads as sacred text and is simply wrong.
+   * Worker results never set it, so user input falls back to the body face.
+   */
+  quran?: boolean;
   /** English meaning */
   meaning?: string;
   /** Sentence-level structural explanation (Arabic) */
@@ -53,6 +60,7 @@ export const SPECIMEN: ParseExample = {
   text: 'ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ',
   vocalizedSentence: 'ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَالَمِينَ',
   source: 'سورة الفاتحة · الآية ٢',
+  quran: true,
   meaning: 'All praise belongs to Allah, Lord of all worlds.',
   explanation:
     'الجملة اسمية. (ٱلْحَمْدُ) مبتدأ، وخبره الجار والمجرور (لِلَّهِ) متعلقان بمحذوف تقديره (مُسْتَحَقٌّ) أو (ثابتٌ). وما بعد لفظ الجلالة من توابع: (رَبِّ) نعت، و(ٱلْعَالَمِينَ) مضاف إليه.',
@@ -120,6 +128,7 @@ export const EXAMPLES: ParseExample[] = [
     text: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَنِ ٱلرَّحِيمِ',
     vocalizedSentence: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَنِ ٱلرَّحِيمِ',
     source: 'البسملة',
+    quran: true,
     meaning: 'In the name of Allah, the Most Gracious, the Most Merciful.',
     explanation:
       'الجار والمجرور (بِاسْمِ) متعلقان بفعل محذوف تقديره (أبدأ) أو (أقرأ). الجملة بأكملها استفتاح للتيمّن والتبرّك بذكر الله.',
@@ -183,6 +192,7 @@ export const EXAMPLES: ParseExample[] = [
     text: 'إِنَّ ٱللَّهَ مَعَ ٱلصَّابِرِينَ',
     vocalizedSentence: 'إِنَّ ٱللَّهَ مَعَ ٱلصَّابِرِينَ',
     source: 'سورة البقرة · الآية ١٥٣',
+    quran: true,
     meaning: 'Indeed Allah is with those who are patient.',
     explanation:
       'جملة اسمية مؤكَّدة بـ(إنّ). (ٱللَّهَ) اسم إنّ منصوب، وخبرها شبه جملة (مَعَ ٱلصَّابِرِينَ). الظرف (مَعَ) في محل رفع خبر إنّ.',

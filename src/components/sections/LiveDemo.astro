@@ -44,6 +44,11 @@ const t = lang === 'ar'
       hideDetails:'إخفاء التفاصيل',
       wordsCount: (n: number) => `${n} كلمات`,
       parsedIn:   (s: string) => `أُعرِب في ${s}`,
+      units:      'الوحدات الإعرابية',
+      legend:     'ألوان المواقع',
+      hint:       'أو اضغط ⌘ + Enter',
+      retry:      'أعد المحاولة',
+      tooLong:    (n: number) => `${n} حرفًا متبقية`,
     }
   : {
       eyebrow:    'Live demo',
@@ -79,6 +84,11 @@ const t = lang === 'ar'
       hideDetails:'Hide details',
       wordsCount: (n: number) => `${n} words`,
       parsedIn:   (s: string) => `Parsed in ${s}`,
+      units:      'Grammatical units',
+      legend:     'Case colours',
+      hint:       'or press ⌘ + Enter',
+      retry:      'Try again',
+      tooLong:    (n: number) => `${n} characters left`,
     };
 
 ---
@@ -106,7 +116,13 @@ const t = lang === 'ar'
             class="demo-textarea w-full rounded-lg px-5 md:px-6 py-5 font-arabic text-[clamp(1.45rem,3vw,2rem)] leading-relaxed text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
             style="font-family: var(--font-arabic-classical);"></textarea>
           <div class="mt-4 flex items-center justify-between gap-3">
-            <span data-demo-quota class="font-arabic text-small text-ink/45 dark:text-mist/45"></span>
+            <div class="flex items-center gap-3 min-w-0">
+              <span data-demo-quota class="font-arabic text-small text-ink-subtle dark:text-mist-subtle"></span>
+              {/* Appears only as the 200-char cap approaches: it used to
+                  truncate silently, which reads as the tool losing your text. */}
+              <span data-char-left class="hidden font-arabic text-caption text-ink-subtle dark:text-mist-subtle tabular-nums"></span>
+              <span class="hidden sm:inline font-arabic text-caption text-ink-subtle dark:text-mist-subtle">{t.hint}</span>
+            </div>
             <button type="submit" data-demo-submit class="btn-primary text-small disabled:opacity-50 disabled:cursor-not-allowed">
               <svg data-submit-spinner class="hidden w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
               <span data-submit-label>{t.parse}</span>
@@ -128,19 +144,24 @@ const t = lang === 'ar'
       </div>
 
       {/* ── Loading state ───────────────────────────────────────────────── */}
+      {/* The sentence stays on screen while it is parsed — it used to vanish
+          the moment you submitted, leaving two grey boxes shaped nothing like
+          the result. The skeleton now matches the real card count. */}
       <div data-demo-loading class="hidden mt-10">
+        <p lang="ar" dir="rtl" data-loading-echo
+           class="text-center mb-7 px-4 text-[clamp(1.5rem,4vw,2.4rem)] leading-[1.9] text-ink/70 dark:text-mist/70"></p>
         <div class="flex items-center justify-center gap-3 mb-8">
-          <svg class="w-7 h-7 text-purple animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-          <p data-loading-step class="font-arabic text-body text-ink/65 dark:text-mist/65">{t.analyzing}</p>
+          <svg class="w-6 h-6 text-purple animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          <p data-loading-step role="status" aria-live="polite" class="font-arabic text-body text-ink-muted dark:text-mist-muted">{t.analyzing}</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div class="skel h-36 rounded-lg"></div>
-          <div class="skel h-36 rounded-lg"></div>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5" data-loading-skeleton></div>
       </div>
 
       {/* ── Error ───────────────────────────────────────────────────────── */}
-      <p data-demo-error class="hidden mt-8 text-center font-arabic text-body text-red-600 dark:text-red-400"></p>
+      <div data-demo-error class="hidden mt-8 text-center" role="alert">
+        <p data-demo-error-text class="font-arabic text-body text-red-600 dark:text-red-400"></p>
+        <button type="button" data-demo-retry class="btn-ghost mt-4">{t.retry}</button>
+      </div>
 
       {/* ── Result (hidden until the user parses: no specimen on load) ──── */}
       <div data-demo-result class="hidden mt-10">
@@ -150,11 +171,32 @@ const t = lang === 'ar'
           <span data-source-sub class="hidden font-mono text-caption text-ink/55 dark:text-mist/55 tracking-widest"></span>
         </div>
 
-        <div lang="ar" dir="rtl" class="text-center mb-6 px-4" data-demo-verse>
-          <div class="text-[clamp(2rem,5.5vw,3.75rem)] leading-[1.9] text-ink dark:text-mist" style="font-family: var(--font-quran);" data-demo-verse-inner></div>
+        {/* The verse keeps its own typography and stays unsegmented: the words
+            are split grammatically (بِ + ٱسْمِ), so rebuilding the line from them
+            would render البسملة as "بِ ٱسْمِ". The Mushaf face is applied only to
+            Quranic text — see the `quran` flag on ParseExample. */}
+        <div lang="ar" dir="rtl" class="text-center mb-5 px-4" data-demo-verse>
+          <div class="text-[clamp(2rem,5.5vw,3.75rem)] leading-[1.9] text-ink dark:text-mist" data-demo-verse-inner></div>
         </div>
 
-        <p class="hidden text-center text-body text-ink/55 dark:text-mist/55 italic mb-10" data-demo-meaning></p>
+        <p class="hidden text-center text-body text-ink-subtle dark:text-mist-subtle italic mb-6" data-demo-meaning></p>
+
+        {/* Meta: word count + how long the parse took. Both were already being
+            computed and then discarded — the elements simply weren't here. */}
+        <div class="flex items-center justify-center flex-wrap gap-2 mb-7" data-demo-meta>
+          <span data-demo-wordcount class="meta-chip"></span>
+          <span data-demo-time class="meta-chip"></span>
+        </div>
+
+        {/* Grammatical units: the interactive index into the cards. Hovering or
+            focusing a unit raises its card and vice versa, and the case colour
+            makes the whole sentence readable at a glance — which is what the
+            `case` field was always documented to drive. */}
+        <div class="mb-7" data-demo-units-wrap>
+          <p class="units-label">{t.units}</p>
+          <div lang="ar" dir="rtl" class="units-strip" data-demo-units></div>
+          <div class="legend" data-demo-legend></div>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6" data-demo-cards></div>
 
@@ -320,6 +362,86 @@ const t = lang === 'ar'
     transition-duration: 120ms;
   }
 
+  /* ── The case rail ───────────────────────────────────────────────────────
+     Every word card already carried `--rail: <case colour>`, and the comment
+     above promised a case identity, but nothing on screen ever consumed it —
+     only the exported PNG/PDF did. So the share image was better designed than
+     the product. This is that rail, on the inline start edge so it reads first
+     in RTL. */
+  :global(.demo-card) { border-inline-start: 4px solid var(--rail, transparent); }
+  :global(.demo-card::after) {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to left, color-mix(in srgb, var(--rail) 7%, transparent), transparent 55%);
+    opacity: 0; transition: opacity .35s var(--ease-out-quart);
+  }
+  :global(.demo-card.is-linked::after) { opacity: 1; }
+  :global(.demo-card.is-linked) {
+    border-color: color-mix(in srgb, var(--rail) 55%, var(--color-card-edge));
+    transform: translate3d(0, -7px, 0);
+    box-shadow: 0 8px 18px -10px rgb(23 56 71 / 0.18), 0 28px 62px -32px rgb(23 56 71 / 0.34);
+  }
+
+  /* ── Grammatical-unit strip: the interactive index into the cards ──────── */
+  .units-label {
+    font-family: var(--font-arabic); font-size: var(--text-caption);
+    color: var(--color-ink-subtle); text-align: center; margin-bottom: 0.65rem;
+  }
+  :global(.dark) .units-label { color: var(--color-mist-subtle); }
+
+  .units-strip {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem;
+  }
+  :global(.unit) {
+    --unit: var(--color-ink-subtle);
+    display: inline-flex; align-items: center;
+    min-height: 2.75rem;                 /* 44px tap target */
+    padding: 0.3rem 0.85rem;
+    border-radius: 0.55rem;
+    font-family: var(--font-arabic-classical);
+    font-size: clamp(1.05rem, 2.2vw, 1.4rem); line-height: 1.6;
+    color: var(--color-ink);
+    background: color-mix(in srgb, var(--unit) 9%, transparent);
+    border: 1px solid color-mix(in srgb, var(--unit) 22%, transparent);
+    border-bottom-width: 3px;
+    border-bottom-color: color-mix(in srgb, var(--unit) 55%, transparent);
+    cursor: pointer;
+    transition: background-color .22s, border-color .22s,
+                transform .22s var(--ease-out-quart), box-shadow .22s var(--ease-out-quart);
+  }
+  :global(.dark .unit) { color: var(--color-mist); background: color-mix(in srgb, var(--unit) 16%, transparent); }
+  :global(.unit:hover), :global(.unit.is-linked) {
+    background: color-mix(in srgb, var(--unit) 18%, transparent);
+    border-color: color-mix(in srgb, var(--unit) 48%, transparent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--unit) 55%, transparent);
+  }
+  :global(.unit:focus-visible) { outline: 2px solid var(--color-purple); outline-offset: 2px; }
+
+  /* ── Case legend: the colours mean something; say what ─────────────────── */
+  .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem 1rem; margin-top: 0.9rem; }
+  :global(.legend-item) {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-arabic); font-size: var(--text-caption);
+    color: var(--color-ink-subtle);
+  }
+  :global(.dark .legend-item) { color: var(--color-mist-subtle); }
+  :global(.legend-dot) { width: 0.6rem; height: 0.6rem; border-radius: 999px; background: var(--dot); }
+
+  /* ── Meta chips: word count + parse time ──────────────────────────────── */
+  :global(.meta-chip) {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.3rem 0.75rem; border-radius: 999px;
+    font-family: var(--font-arabic); font-size: var(--text-caption);
+    color: var(--color-ink-subtle);
+    background: color-mix(in srgb, var(--color-ink) 5%, transparent);
+  }
+  :global(.dark .meta-chip) { color: var(--color-mist-subtle); background: color-mix(in srgb, var(--color-mist) 8%, transparent); }
+  :global(.meta-chip:empty) { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.demo-card.is-linked), :global(.unit:hover), :global(.unit.is-linked) { transform: none; }
+  }
+
   /* "Show details" — a clear pill button (was easy-to-miss muted text). */
   :global(.word-details-toggle) {
     display: inline-flex; align-items: center; gap: 0.45rem; width: fit-content;
@@ -391,7 +513,7 @@ const t = lang === 'ar'
   .act-btn-primary:hover { color: #fff; filter: brightness(1.07); border-color: var(--color-purple); }
 
   /* Skeleton shimmer: the loading placeholder while the AI parses. */
-  .skel {
+  :global(.skel) {
     background: linear-gradient(90deg,
       color-mix(in srgb, var(--color-ink) 6%, transparent) 25%,
       color-mix(in srgb, var(--color-ink) 12%, transparent) 37%,
@@ -399,11 +521,13 @@ const t = lang === 'ar'
     background-size: 400% 100%;
     animation: skel-shimmer 1.4s ease-in-out infinite;
   }
-  :global(.dark) .skel {
+  :global(.dark .skel) {
     background: linear-gradient(90deg, rgb(255 255 255 / 0.04) 25%, rgb(255 255 255 / 0.09) 37%, rgb(255 255 255 / 0.04) 63%);
     background-size: 400% 100%;
   }
   @keyframes skel-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+  /* One-per-word placeholders, so the layout does not jump when cards land. */
+  :global(.skel) { min-height: 9rem; border-radius: 0.75rem; }
 
   @media (prefers-reduced-motion: reduce) {
     :global(.word-card) { animation: none; }
@@ -411,7 +535,7 @@ const t = lang === 'ar'
     :global(.demo-card),
     :global(.demo-card:hover) { transform: none; transition: none; }
     :global(.demo-card details[open] > summary ~ *) { animation: none; }
-    .skel { animation: none; }
+    :global(.skel) { animation: none; }
   }
 </style>
 
@@ -493,17 +617,19 @@ const t = lang === 'ar'
       ? { remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
           parsing: 'جارٍ الإعراب…', error: 'تعذّر الإعراب الآن. حاول مرة أخرى.', customSrc: 'جملتك', fallback: 'العرض غير متاح · عرض النموذج',
           irabLabel: 'الإعراب', showDetails: 'عرض التفاصيل', hideDetails: 'إخفاء التفاصيل',
-          wordsCount: (n: number) => `${n} كلمات`, parsedIn: (s: string) => `أُعرِب في ${s}`, parse: 'أعرب', unlimited: 'إعراب غير محدود ⚡',
+          wordsCount: (n: number) => `${n} كلمات`, parsedIn: (s: string) => `أُعرِب في ${s} ثانية`, parse: 'أعرب', unlimited: 'إعراب غير محدود ⚡',
           signTitle: 'أنشئ حسابًا مجانيًا للمتابعة', signBody: 'سجّل الدخول لتحصل على ٣ محاولات يوميًّا.', signCta: 'تسجيل الدخول / إنشاء حساب',
           upTitle: 'بلغت حدّك اليومي المجاني', upBody: 'لديك ٣ محاولات مجانية يوميًّا. اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.', upCta: 'اشترك في إعراب بلس',
-          copied: 'تم النسخ ✓', loadSteps: ['نقرأ الجملة…', 'نحدّد أنواع الكلمات…', 'نحدّد المواقع الإعرابية…', 'نجهّز الشرح…'] }
+          copied: 'تم النسخ ✓', units: 'الوحدات الإعرابية', retry: 'أعد المحاولة',
+          charLeft: (n: number) => `${n} حرفًا متبقية`, loadSteps: ['نقرأ الجملة…', 'نحدّد أنواع الكلمات…', 'نحدّد المواقع الإعرابية…', 'نجهّز الشرح…'] }
       : { remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
           parsing: 'Parsing…', error: "Couldn't analyze right now. Please try again.", customSrc: 'Your sentence', fallback: 'Demo offline · showing specimen',
           irabLabel: "I'rab", showDetails: 'Show details', hideDetails: 'Hide details',
-          wordsCount: (n: number) => `${n} words`, parsedIn: (s: string) => `Parsed in ${s}`, parse: 'Parse', unlimited: 'Unlimited parsing ⚡',
+          wordsCount: (n: number) => `${n} words`, parsedIn: (s: string) => `Parsed in ${s}s`, parse: 'Parse', unlimited: 'Unlimited parsing ⚡',
           signTitle: 'Create a free account to continue', signBody: 'Sign in to get 3 free parses a day.', signCta: 'Sign in / Create account',
           upTitle: "You've reached your daily free limit", upBody: 'You get 3 free parses a day. Subscribe to Irab Plus for unlimited, or come back tomorrow.', upCta: 'Subscribe to Irab Plus',
-          copied: 'Copied ✓', loadSteps: ['Reading the sentence…', 'Identifying word types…', 'Determining grammatical roles…', 'Preparing the explanation…'] };
+          copied: 'Copied ✓', units: 'Grammatical units', retry: 'Try again',
+          charLeft: (n: number) => `${n} characters left`, loadSteps: ['Reading the sentence…', 'Identifying word types…', 'Determining grammatical roles…', 'Preparing the explanation…'] };
 
     const sourceMainEl = root.querySelector<HTMLElement>('[data-source-main]')!;
     const sourceSubEl  = root.querySelector<HTMLElement>('[data-source-sub]');
@@ -537,6 +663,15 @@ const t = lang === 'ar'
     const shareBtn      = root.querySelector<HTMLButtonElement>('[data-act-share]');
     const pdfBtn        = root.querySelector<HTMLButtonElement>('[data-act-pdf]');
     const loadingStepEl = root.querySelector<HTMLElement>('[data-loading-step]');
+    const loadingEchoEl = root.querySelector<HTMLElement>('[data-loading-echo]');
+    const skeletonEl    = root.querySelector<HTMLElement>('[data-loading-skeleton]');
+    const unitsEl       = root.querySelector<HTMLElement>('[data-demo-units]');
+    const unitsWrapEl   = root.querySelector<HTMLElement>('[data-demo-units-wrap]');
+    const legendEl      = root.querySelector<HTMLElement>('[data-demo-legend]');
+    const charLeftEl    = root.querySelector<HTMLElement>('[data-char-left]');
+    const errorTextEl   = root.querySelector<HTMLElement>('[data-demo-error-text]');
+    const retryBtn      = root.querySelector<HTMLButtonElement>('[data-demo-retry]');
+    const MAX_CHARS     = inputEl.maxLength > 0 ? inputEl.maxLength : 200;
     let lastEx: ParseExample | null = null;
     const exportCardEl  = document.querySelector<HTMLElement>('[data-export-card]'); // sibling of [data-demo], not a child
     const gateTitleEl  = gateEl.querySelector<HTMLElement>('[data-gate-title]')!;
@@ -628,8 +763,34 @@ const t = lang === 'ar'
         }
       }
 
-      // Verse: clean, no underlines
+      // Verse: the Mushaf face is for Quran only (design-system rule). Anything
+      // the user typed gets the body face at display size — rendering an
+      // ordinary sentence in Mushaf typography reads as scripture.
       verseInner.textContent = ex.vocalizedSentence || ex.words.map((w) => w.word).join(' ');
+      verseInner.style.fontFamily = ex.quran ? 'var(--font-quran)' : 'var(--font-arabic-classical)';
+
+      // Grammatical units: one token per word, coloured by case, linked to its
+      // card. Buttons, so they are keyboard reachable and announce themselves.
+      if (unitsEl && unitsWrapEl) {
+        unitsEl.innerHTML = ex.words.map((w, i) => {
+          const hex = CASE_COLORS[w.case].hex;
+          const label = `${w.word} — ${w.caseLabel}`;
+          return `<button type="button" class="unit" data-unit="${i}" style="--unit:${hex};" aria-label="${escape(label)}">${escape(w.word)}</button>`;
+        }).join('');
+        // Only worth showing when there is more than one unit to compare.
+        unitsWrapEl.classList.toggle('hidden', ex.words.length < 2);
+      }
+
+      // Legend: only the cases actually present, so it never teaches noise.
+      if (legendEl) {
+        const seen: string[] = [];
+        ex.words.forEach((w) => { if (!seen.includes(w.case)) seen.push(w.case); });
+        legendEl.innerHTML = seen.map((c) => {
+          const meta = CASE_COLORS[c as keyof typeof CASE_COLORS];
+          const arLabel = ex.words.find((w) => w.case === c)?.caseLabel ?? c;
+          return `<span class="legend-item"><span class="legend-dot" style="--dot:${meta.hex}"></span>${escape(arLabel)}</span>`;
+        }).join('');
+      }
 
       // Meaning
       if (meaningEl) {
@@ -637,9 +798,10 @@ const t = lang === 'ar'
         else { meaningEl.style.display = 'none'; }
       }
 
-      // Stats (bar removed; guard in case the elements aren't present)
+      // Word count + parse time. Both were computed and then dropped on the
+      // floor for want of these two elements.
       if (wordCountEl) wordCountEl.textContent = i18n.wordsCount(ex.words.length);
-      if (timeEl && parsedSeconds) timeEl.textContent = i18n.parsedIn(parsedSeconds);
+      if (timeEl) timeEl.textContent = parsedSeconds ? i18n.parsedIn(parsedSeconds) : '';
 
       // Cards
       cardsEl.innerHTML = ex.words.map((w) => {
@@ -702,6 +864,46 @@ const t = lang === 'ar'
       });
     });
 
+    /* ── Unit ↔ card linking ──────────────────────────────────────────────
+       The strip and the cards are the same words in the same order, so index
+       is the whole relationship. Delegated, because both sides are injected
+       via innerHTML on every render. Focus counts as well as hover, so the
+       link is reachable from the keyboard. */
+    function linkWord(i: number | null) {
+      const cards = cardsEl.querySelectorAll<HTMLElement>('.demo-card');
+      const units = unitsEl?.querySelectorAll<HTMLElement>('.unit') ?? [];
+      cards.forEach((c, idx) => c.classList.toggle('is-linked', idx === i));
+      units.forEach((u, idx) => u.classList.toggle('is-linked', idx === i));
+    }
+    function indexOfTarget(e: Event): number | null {
+      const el = e.target instanceof Element ? e.target : null;
+      const unit = el?.closest<HTMLElement>('.unit');
+      if (unit) return Number(unit.dataset.unit);
+      const card = el?.closest<HTMLElement>('.demo-card');
+      if (card) return [...cardsEl.querySelectorAll('.demo-card')].indexOf(card);
+      return null;
+    }
+    ['pointerover', 'focusin'].forEach((evt) => {
+      root.addEventListener(evt, (e) => {
+        const i = indexOfTarget(e);
+        if (i !== null && !Number.isNaN(i)) linkWord(i);
+      });
+    });
+    ['pointerleave', 'focusout'].forEach((evt) => {
+      root.addEventListener(evt, (e) => { if (indexOfTarget(e) !== null) linkWord(null); }, true);
+    });
+    // Tapping a unit is the touch equivalent of hovering it: bring its card up.
+    root.addEventListener('click', (e) => {
+      const el = e.target instanceof Element ? e.target : null;
+      const unit = el?.closest<HTMLElement>('.unit');
+      if (!unit) return;
+      const i = Number(unit.dataset.unit);
+      const card = cardsEl.querySelectorAll<HTMLElement>('.demo-card')[i];
+      if (!card) return;
+      linkWord(i);
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
     // Loading state on the submit button (spinner swaps in for the arrow).
     function setLoading(on: boolean) {
       submitEl.disabled = on;
@@ -720,6 +922,15 @@ const t = lang === 'ar'
       stepTimer = window.setInterval(() => { i = (i + 1) % steps.length; loadingStepEl.textContent = steps[i]; }, 1100);
     }
     function stopNarration() { if (stepTimer !== null) { clearInterval(stepTimer); stepTimer = null; } }
+
+    /* The skeleton now predicts the answer's shape: one placeholder per word in
+       the submitted sentence, so nothing jumps when the real cards land. */
+    function buildSkeleton(text: string) {
+      if (!skeletonEl) return;
+      const words = text.trim().split(/\s+/).filter(Boolean).length;
+      const n = Math.min(Math.max(words, 2), 8);
+      skeletonEl.innerHTML = Array.from({ length: n }, () => '<div class="skel h-36 rounded-lg"></div>').join('');
+    }
 
     function fillExportCard(ex: ParseExample) {
       if (!exportCardEl) return; // never let a missing share card break parsing
@@ -777,6 +988,8 @@ const t = lang === 'ar'
       gateEl.classList.add('hidden');
       actionsEl.classList.add('hidden');
       hideNudge();
+      if (loadingEchoEl) loadingEchoEl.textContent = text;
+      buildSkeleton(text);
       loadingEl.classList.remove('hidden');
       loadingEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setLoading(true);
@@ -803,7 +1016,7 @@ const t = lang === 'ar'
         }
         if (!res.ok) throw new Error(`API ${res.status}`);
         const parsed = await res.json() as ParseExample;
-        const elapsed = ((performance.now() - start) / 1000).toFixed(1) + 's';
+        const elapsed = ((performance.now() - start) / 1000).toFixed(1);
         const ex = { ...parsed, source: i18n.customSrc };
         renderExample(ex, elapsed);
         try {
@@ -821,11 +1034,12 @@ const t = lang === 'ar'
         if (!isSignedIn) bumpQuota();
         renderQuota();
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        inputEl.value = '';
+        // The input keeps the sentence. Clearing it meant a one-word tweak
+        // required retyping the whole thing.
       } catch (err) {
         console.warn('Demo API error', err);
         loadingEl.classList.add('hidden');
-        errorEl.textContent = i18n.error;
+        if (errorTextEl) errorTextEl.textContent = i18n.error;
         errorEl.classList.remove('hidden');
       } finally {
         setLoading(false);
@@ -836,6 +1050,29 @@ const t = lang === 'ar'
     // ⌘ / Ctrl + Enter to analyze
     inputEl.addEventListener('keydown', (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); formEl.requestSubmit(); }
+    });
+
+    /* The box grows with the sentence instead of scrolling inside three fixed
+       rows, and the remaining-character count appears once it starts to matter.
+       Before this the 200-char cap truncated in silence. */
+    function syncInput() {
+      inputEl.style.height = 'auto';
+      inputEl.style.height = `${Math.min(inputEl.scrollHeight, 320)}px`;
+      if (charLeftEl) {
+        const left = MAX_CHARS - inputEl.value.length;
+        const near = inputEl.value.length >= MAX_CHARS * 0.75;
+        charLeftEl.textContent = near ? i18n.charLeft(left) : '';
+        charLeftEl.classList.toggle('hidden', !near);
+      }
+    }
+    inputEl.addEventListener('input', syncInput);
+    syncInput();
+
+    // Retry: put the user back in the box with their sentence intact.
+    retryBtn?.addEventListener('click', () => {
+      errorEl.classList.add('hidden');
+      inputEl.focus();
+      if (inputEl.value.trim()) formEl.requestSubmit();
     });
 
     // Result actions: copy / share-as-image / PDF
