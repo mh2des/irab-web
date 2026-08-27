@@ -363,6 +363,13 @@
   .dark .btn-ghost:hover { color: color-mix(in srgb, var(--color-purple) 80%, white); }
   @media (prefers-reduced-motion: reduce) { .btn-primary:hover, .btn-ghost:hover { transform: none; } }
 
+  /* A ghost button sitting INSIDE a .card: the card is already the brightest
+     surface, so a plain .btn-ghost (background: --color-card) would vanish into
+     it. This drops the button to the recessed paper tone the majlis panels use,
+     keeping the shared hover / press / icon behaviour. */
+  .btn-ghost.on-card { background: var(--color-paper-soft); }
+  .dark .btn-ghost.on-card { background: var(--color-coal); }
+
   /* Icon micro-interaction + tactile press: any button/lift icon gently scales
      on hover and the whole control presses in on click — the same alive feel as
      the tool-page share buttons, applied site-wide. */
@@ -411,6 +418,147 @@
   .input::placeholder { color: color-mix(in srgb, var(--color-ink) 40%, transparent); }
   .dark .input::placeholder { color: color-mix(in srgb, var(--color-mist) 42%, transparent); }
   .input:focus { outline: none; border-color: var(--color-purple); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-purple) 16%, transparent); }
+
+  /* ── Segmented control ──────────────────────────────────────────────────
+     A pill track with ONE thumb that springs between the options, instead of
+     every option painting its own background (which reads as a hard cut). The
+     script sets --seg-x / --seg-w on the track from the active option's box, so
+     the primitive works for two options or five, and the physical-pixel offset
+     makes it direction-neutral: RTL needs no special case.
+
+       <div class="seg" role="tablist">          ← or role="radiogroup"
+         <span class="seg-thumb" aria-hidden="true"></span>
+         <button class="seg-option" role="tab" aria-selected="true">…</button>
+       </div>
+
+     A control made of LINKS needs no thumb and no script — drop the
+     .seg-thumb, mark the current one aria-current="page", and the static
+     fallback below paints it.
+
+     Script contract: set --seg-x/--seg-w, add .seg-on, then add .seg-anim on
+     the NEXT frame — otherwise the thumb slides in from zero on first paint.
+     Without JS neither class lands and the selected option paints its own pill
+     (the fallback at the end of this block). */
+  .seg {
+    position: relative;
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-stone) 55%, transparent);
+  }
+  .dark .seg { background: color-mix(in srgb, var(--color-coal-edge) 55%, transparent); }
+
+  .seg-thumb {
+    position: absolute;
+    inset-block: 0.25rem;
+    left: 0;
+    width: var(--seg-w, 0px);
+    translate: var(--seg-x, 0px) 0;
+    border-radius: 9999px;
+    background: var(--color-card);
+    box-shadow: 0 1px 2px rgb(23 56 71 / 0.10), 0 6px 14px -8px rgb(23 56 71 / 0.22);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s var(--ease-out-quart);
+  }
+  .dark .seg-thumb {
+    background: var(--color-coal-soft);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 16px -8px rgb(0 0 0 / 0.6);
+  }
+  .seg.seg-on .seg-thumb { opacity: 1; }
+  .seg.seg-anim .seg-thumb {
+    transition: translate .42s var(--ease-out-expo),
+                width .42s var(--ease-out-expo),
+                opacity .2s var(--ease-out-quart);
+  }
+
+  .seg-option {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 0;
+    min-height: 2.75rem;           /* 44px tap target */
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 9999px;
+    font-weight: 600;
+    color: var(--color-ink-subtle);
+    transition: color .3s var(--ease-out-quart);
+  }
+  .dark .seg-option { color: var(--color-mist-subtle); }
+  /* Which option is "on" depends on what the control is made of: tabs use
+     aria-selected, radios aria-checked, and a set of LINKS uses
+     aria-current="page" (aria-selected on a link is invalid ARIA). */
+  .seg-option[aria-selected="true"],
+  .seg-option[aria-checked="true"],
+  .seg-option[aria-current="page"] { color: var(--color-purple); }
+  .dark .seg-option[aria-selected="true"],
+  .dark .seg-option[aria-checked="true"],
+  .dark .seg-option[aria-current="page"] { color: color-mix(in srgb, var(--color-purple) 75%, white); }
+
+  /* No-JS fallback, and the resting state of a link-based control that never
+     runs the thumb script: the active option carries the pill itself. */
+  .seg:not(.seg-on) .seg-option[aria-selected="true"],
+  .seg:not(.seg-on) .seg-option[aria-checked="true"],
+  .seg:not(.seg-on) .seg-option[aria-current="page"] {
+    background: var(--color-card);
+    box-shadow: 0 1px 2px rgb(23 56 71 / 0.10);
+  }
+  .dark .seg:not(.seg-on) .seg-option[aria-selected="true"],
+  .dark .seg:not(.seg-on) .seg-option[aria-checked="true"],
+  .dark .seg:not(.seg-on) .seg-option[aria-current="page"] { background: var(--color-coal-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seg.seg-anim .seg-thumb { transition: opacity .2s; }
+  }
+
+  /* ── Collapsible block ──────────────────────────────────────────────────
+     Animates between zero and natural height with NO JS measurement
+     (grid 0fr → 1fr), so it stays correct when the content inside it changes.
+
+       <div class="collapsible" inert>   ← add .is-open to expand
+         <div>                           ← exactly ONE direct child: the clipper
+           <div class="pb-4">…</div>     ← content, and the gap below it
+         </div>
+       </div>
+
+     The clipper must carry NO vertical padding or margin of its own: under
+     border-box sizing a zero-height box can never shrink below its own
+     padding, so spacing put there survives the collapse as a stray gap. Put
+     every vertical space one level in, where the clip hides it.
+     Set `inert` on the wrapper while closed — the content is height-zero and
+     clipped, so anything focusable inside must leave the tab order. A
+     `required` control in here would also leave the browser unable to show its
+     validation bubble; keep those out.
+     The clipper's inline padding compensates for focus rings: overflow:hidden
+     clips both axes, and .input's 3px focus ring would otherwise be sheared. */
+  .collapsible {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows .38s var(--ease-out-quart),
+                opacity .26s var(--ease-out-quart);
+  }
+  .collapsible > * {
+    overflow: hidden;
+    min-height: 0;
+    padding-inline: 0.375rem;
+    margin-inline: -0.375rem;
+  }
+  .collapsible.is-open { grid-template-rows: 1fr; opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .collapsible { transition: none; } }
+
+  /* ── Text swap ──────────────────────────────────────────────────────────
+     For a label whose text has just been replaced, so it rises in instead of
+     snapping. Re-trigger with:
+       el.classList.remove('txt-swap'); void el.offsetWidth; el.classList.add('txt-swap');
+     Targets must be transformable — a block, or a flex item (which is
+     blockified); a bare inline <span> outside a flex row will not move. */
+  @keyframes txt-swap { from { opacity: 0; translate: 0 5px; } to { opacity: 1; translate: 0 0; } }
+  @keyframes txt-swap-fade { from { opacity: 0; } to { opacity: 1; } }
+  .txt-swap { animation: txt-swap .3s var(--ease-out-quart) both; }
+  @media (prefers-reduced-motion: reduce) {
+    .txt-swap { animation-name: txt-swap-fade; }
+  }
 
   /* ── Badge / chip: status pills (verified, plan, counts) ───────────────── */
   .badge {
