@@ -1,37 +1,59 @@
 ---
 /**
- * AuthForm: sign in / create account with Email, Google, Apple.
+ * AuthForm — sign in / create account with Email, Google, Apple.
+ *
+ * Owns the whole auth screen, heading included: the h1 and its subtitle answer
+ * the selected mode, so they live here rather than on the two locale pages
+ * (which stay identical thin wrappers). Switching modes is one continuous
+ * movement — the segmented thumb springs across, mode-only fields grow and
+ * collapse, and every changed label rises in — built from the shared `.seg`,
+ * `.collapsible` and `.txt-swap` primitives in global.css.
+ *
  * Client-only logic (Firebase) lives in the module <script> below; it reads
  * config from data-attributes so it can use SDK imports.
  */
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
-// After auth, land users on the app hub (their signed in home), not the bare account page.
+
+// After auth, land users on the app hub (their signed-in home), not the bare
+// account page.
 const account = lang === 'ar' ? '/app' : '/en/app';
+
+// The legal pages exist in Arabic only; Footer.astro sends English readers to
+// the same two URLs, so this stays consistent with the rest of the site.
+const termsHref = '/terms';
+const privacyHref = '/privacy';
 
 const t = lang === 'ar'
   ? {
-      signIn: 'تسجيل الدخول', signUp: 'إنشاء حساب',
+      modeLabel: 'نوع الحساب',
       tabIn: 'دخول', tabUp: 'حساب جديد',
+      headIn: 'أهلاً بعودتك', headUp: 'أنشئ حسابك',
+      subIn: 'سجّل الدخول لتتابع من حيث توقّفت.',
+      subUp: 'حسابٌ واحد للويب والتطبيق.',
+      signIn: 'تسجيل الدخول', signUp: 'إنشاء حساب',
       name: 'الاسم', email: 'البريد الإلكتروني', password: 'كلمة المرور',
+      passHint: 'ستة أحرف على الأقل.',
+      showPass: 'إظهار كلمة المرور', hidePass: 'إخفاء كلمة المرور',
       forgot: 'نسيت كلمة المرور؟', or: 'أو',
+      sendReset: 'إرسال رابط الاستعادة', backToSignIn: 'العودة إلى تسجيل الدخول',
       google: 'المتابعة بحساب Google', apple: 'المتابعة بحساب Apple',
-      reset: 'أرسلنا رابط إعادة التعيين إلى بريدك.',
-      needEmail: 'اكتب بريدك أولاً لإعادة التعيين.',
-      switchToUp: 'ليس لديك حساب؟ أنشئ واحداً', switchToIn: 'لديك حساب؟ سجّل الدخول',
-      working: 'جارٍ…',
     }
   : {
-      signIn: 'Sign in', signUp: 'Create account',
+      modeLabel: 'Account mode',
       tabIn: 'Sign in', tabUp: 'Create account',
+      headIn: 'Welcome back', headUp: 'Create your account',
+      subIn: 'Sign in to pick up where you left off.',
+      subUp: 'One account for web and the app.',
+      signIn: 'Sign in', signUp: 'Create account',
       name: 'Name', email: 'Email', password: 'Password',
+      passHint: 'At least six characters.',
+      showPass: 'Show password', hidePass: 'Hide password',
       forgot: 'Forgot password?', or: 'or',
+      sendReset: 'Send reset link', backToSignIn: 'Back to sign in',
       google: 'Continue with Google', apple: 'Continue with Apple',
-      reset: 'We sent a reset link to your email.',
-      needEmail: 'Enter your email first to reset.',
-      switchToUp: "No account? Create one", switchToIn: 'Have an account? Sign in',
-      working: 'Working…',
     };
+
 const dir = lang === 'ar' ? 'rtl' : 'ltr';
 ---
 <div
@@ -39,88 +61,281 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
   data-lang={lang}
   data-account={account}
   dir={dir}
-  class="w-full max-w-md mx-auto relative"
+  class="w-full max-w-md mx-auto"
 >
-  <div class="card p-7 md:p-9">
-    {/* Tabs */}
-    <div class="grid grid-cols-2 gap-1 p-1 mb-7 rounded-full bg-stone/40 dark:bg-coal-edge/40">
-      <button type="button" data-tab="in"
-        class="auth-tab py-2.5 rounded-full text-small font-medium transition-colors">{t.tabIn}</button>
-      <button type="button" data-tab="up"
-        class="auth-tab py-2.5 rounded-full text-small font-medium transition-colors">{t.tabUp}</button>
+  {/* Heading: part of the component so it can answer the mode. */}
+  <header class="text-center mb-8 panel-in">
+    <h1
+      data-auth-head
+      class:list={[
+        lang === 'ar' ? 'font-arabic-display font-bold' : 'font-display',
+        'text-[clamp(1.8rem,4vw,2.6rem)] leading-tight mb-2',
+      ]}
+    >{t.headIn}</h1>
+    <p data-auth-sub class="text-ink-muted dark:text-mist-muted">{t.subIn}</p>
+  </header>
+
+  <div class="card relative p-7 md:p-9 panel-in" style="animation-delay:.07s">
+    {/* Mode switch */}
+    <div class="seg mb-7" role="tablist" aria-label={t.modeLabel} data-seg>
+      <span class="seg-thumb" aria-hidden="true"></span>
+      <button
+        type="button" role="tab" id="auth-tab-in" data-tab="in"
+        class="seg-option text-small" aria-selected="true" aria-controls="auth-panel" tabindex="0"
+      >{t.tabIn}</button>
+      <button
+        type="button" role="tab" id="auth-tab-up" data-tab="up"
+        class="seg-option text-small" aria-selected="false" aria-controls="auth-panel" tabindex="-1"
+      >{t.tabUp}</button>
     </div>
 
-    {/* Social */}
-    <div class="space-y-3">
-      <button type="button" data-provider="google"
-        class="w-full flex items-center justify-center gap-3 px-5 py-3 rounded-full border border-card-edge dark:border-coal-edge bg-paper-soft dark:bg-coal hover:border-purple hover:-translate-y-0.5 transition text-ink dark:text-mist font-semibold">
-        <svg class="w-5 h-5" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        <span>{t.google}</span>
-      </button>
-      <button type="button" data-provider="apple"
-        class="w-full flex items-center justify-center gap-3 px-5 py-3 rounded-full border border-card-edge dark:border-coal-edge bg-paper-soft dark:bg-coal hover:border-purple hover:-translate-y-0.5 transition text-ink dark:text-mist font-semibold">
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/></svg>
-        <span>{t.apple}</span>
-      </button>
+    <div id="auth-panel" role="tabpanel" aria-labelledby="auth-tab-in" data-auth-panel>
+      {/* Providers */}
+      <div class="space-y-3">
+        <button type="button" data-provider="google" class="btn-ghost on-card btn-block">
+          <svg class="w-5 h-5" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          <span>{t.google}</span>
+        </button>
+        <button type="button" data-provider="apple" class="btn-ghost on-card btn-block">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/></svg>
+          <span>{t.apple}</span>
+        </button>
+      </div>
+
+      {/* Divider */}
+      <div class="flex items-center gap-4 my-6">
+        <span class="h-px flex-1 bg-card-edge dark:bg-coal-edge"></span>
+        <span class="text-small text-ink-subtle dark:text-mist-subtle">{t.or}</span>
+        <span class="h-px flex-1 bg-card-edge dark:bg-coal-edge"></span>
+      </div>
+
+      {/* Email form. Native validation is left on: the browser's own messages
+          are already localised and announced. Nothing `required` may live
+          inside a .collapsible — a zero-height control can't show its bubble. */}
+      <form data-auth-form>
+        {/* Name — sign-up only */}
+        <div class="collapsible" data-collapse="up" inert>
+          <div>
+            <div class="pb-4">
+              <label for="auth-name" class="auth-label">{t.name}</label>
+              <input id="auth-name" name="name" data-name type="text" autocomplete="name" class="input" />
+            </div>
+          </div>
+        </div>
+
+        <div class="pb-4">
+          <label for="auth-email" class="auth-label">{t.email}</label>
+          <input
+            id="auth-email" name="email" data-email type="email" required
+            autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false"
+            dir="ltr" class="input"
+          />
+        </div>
+
+        <div>
+          <label for="auth-password" class="auth-label">{t.password}</label>
+          {/* dir="ltr" on the wrapper as well as the field: the field's inline
+              end is then physically right in both locales, so the toggle and
+              the padding reserved for it agree. */}
+          <div class="relative" dir="ltr">
+            <input
+              id="auth-password" name="password" data-password type="password" required
+              autocomplete="current-password" dir="ltr" class="input auth-input-affix"
+            />
+            <button
+              type="button" data-toggle-pass class="pass-toggle"
+              aria-pressed="false" aria-label={t.showPass} aria-controls="auth-password"
+            >
+              <svg data-icon-eye class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg data-icon-eye-off class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.9 5.8A9.8 9.8 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-3.2 4M6.4 7.6A17 17 0 0 0 2.5 12S6 18.5 12 18.5c1.4 0 2.6-.3 3.7-.8M3 3l18 18"/><path d="M10 10a3 3 0 0 0 4 4"/></svg>
+            </button>
+          </div>
+          {/* Length rule — sign-up only, so Firebase never has to reject it */}
+          <div class="collapsible" data-collapse="up" inert>
+            <div>
+              <div class="pt-2">
+                <p class="text-caption text-ink-subtle dark:text-mist-subtle">{t.passHint}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p data-msg role="alert" class="auth-msg"></p>
+
+        <button type="submit" data-submit class="btn-primary btn-block mt-5">
+          <span data-submit-label>{t.signIn}</span>
+        </button>
+
+        {/* Forgot password — sign-in only */}
+        <div class="collapsible is-open" data-collapse="in">
+          <div>
+            <div class="pt-4 text-center">
+              <button type="button" data-forgot class="auth-quiet-link">{t.forgot}</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Terms + privacy — sign-up only */}
+        <div class="collapsible" data-collapse="up" inert>
+          <div>
+            <div class="pt-4">
+              <p class="text-caption leading-relaxed text-center text-ink-subtle dark:text-mist-subtle">
+                {lang === 'ar'
+                  ? <Fragment>بإنشائك حساباً فأنت توافق على <a href={termsHref} class="auth-inline-link">الشروط</a> و<a href={privacyHref} class="auth-inline-link">سياسة الخصوصية</a>.</Fragment>
+                  : <Fragment>By creating an account you agree to our <a href={termsHref} class="auth-inline-link">Terms</a> and <a href={privacyHref} class="auth-inline-link">Privacy Policy</a>.</Fragment>}
+              </p>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="pt-6 text-center">
+        <button type="button" data-switch class="auth-quiet-link"></button>
+      </div>
     </div>
 
-    {/* Divider */}
-    <div class="flex items-center gap-4 my-6">
-      <span class="h-px flex-1 bg-card-edge dark:bg-coal-edge"></span>
-      <span class="text-small text-ink/60 dark:text-mist/60">{t.or}</span>
-      <span class="h-px flex-1 bg-card-edge dark:bg-coal-edge"></span>
+    {/* Password reset: its own step, not a message bolted onto the sign-in
+        form. Asking for an email while a password field is still on screen
+        reads as "fill in both", which is exactly how it was misread. */}
+    <div data-auth-reset class="hidden">
+      <form data-reset-form>
+        <div class="pb-4">
+          <label for="auth-reset-email" class="auth-label">{t.email}</label>
+          <input
+            id="auth-reset-email" name="email" data-reset-email type="email" required
+            autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false"
+            dir="ltr" class="input"
+          />
+        </div>
+
+        <p data-reset-msg role="alert" class="auth-msg"></p>
+
+        <button type="submit" data-reset-submit class="btn-primary btn-block mt-5">
+          <span data-reset-label>{t.sendReset}</span>
+        </button>
+      </form>
+
+      <div class="pt-4 text-center">
+        <button type="button" data-reset-back class="auth-quiet-link">{t.backToSignIn}</button>
+      </div>
     </div>
 
-    {/* Email form */}
-    <form data-auth-form class="space-y-4">
-      <div data-name-field class="hidden">
-        <label class="block text-small text-ink/70 dark:text-mist/70 mb-1.5">{t.name}</label>
-        <input data-name type="text" autocomplete="name"
-          class="auth-input input" />
+    {/* Post-sign-up confirmation. Email sign-up fires a verification mail
+        (lib/auth.ts signUpEmail); this is where the user is told so, instead of
+        an unexplained message landing in their inbox after a silent redirect.
+        Social sign-in is already verified and skips this entirely. */}
+    <div data-auth-done class="hidden text-center">
+      <span class="auth-done-mark" aria-hidden="true">
+        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4.5 4.5L19 7"/></svg>
+      </span>
+      {/* No heading here: the page h1 above becomes the confirmation title, so
+          the moment is announced once and the heading order stays clean.
+          The address gets its own <bdi> line — an LTR email inlined in an
+          Arabic sentence drags the trailing punctuation to the wrong side. */}
+      <p class="mt-5 text-small leading-relaxed text-ink-muted dark:text-mist-muted" data-done-lead></p>
+      <bdi dir="ltr" class="mt-1 block break-all font-bold text-ink dark:text-mist" data-done-email></bdi>
+      <p class="mt-3 text-small leading-relaxed text-ink-muted dark:text-mist-muted" data-done-tail></p>
+      <a data-done-cta href={account} class="btn-primary btn-block mt-7"></a>
+      <div class="pt-4 text-center">
+        <button type="button" data-resend class="auth-quiet-link"></button>
       </div>
-      <div>
-        <label class="block text-small text-ink/70 dark:text-mist/70 mb-1.5">{t.email}</label>
-        <input data-email type="email" required autocomplete="email" dir="ltr"
-          class="auth-input input" />
+      <p data-done-msg role="status" class="auth-msg"></p>
+    </div>
+
+    {/* Loading overlay: covers the card while an auth call is in flight, so
+        it's clear something's happening. Radius is inherited from .card — it
+        used to be hard-coded and overhung the corners. */}
+    <div
+      data-auth-loading
+      class="hidden absolute inset-0 rounded-[inherit] bg-paper/85 dark:bg-coal/85 backdrop-blur-sm grid place-items-center z-10"
+    >
+      <div class="text-center">
+        <svg class="w-9 h-9 mx-auto text-purple animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        <p class="mt-4 text-small text-ink-muted dark:text-mist-muted" role="status" data-auth-loading-text></p>
       </div>
-      <div>
-        <label class="block text-small text-ink/70 dark:text-mist/70 mb-1.5">{t.password}</label>
-        <input data-password type="password" required minlength="6" autocomplete="current-password" dir="ltr"
-          class="auth-input input" />
-      </div>
-
-      <p data-msg aria-live="polite" class="hidden text-small leading-relaxed rounded-lg px-3 py-2"></p>
-
-      <button type="submit" data-submit class="btn-primary btn-block">
-        <span data-submit-label>{t.signIn}</span>
-      </button>
-
-      <button type="button" data-forgot
-        class="block mx-auto text-small text-purple hover:text-purple-deep transition-colors">{t.forgot}</button>
-    </form>
-
-    <button type="button" data-switch
-      class="block mx-auto mt-6 text-small text-ink/60 dark:text-mist/60 hover:text-ink dark:hover:text-mist transition-colors"></button>
-  </div>
-
-  {/* Loading overlay: covers the card during sign in / sign-up so it's clear something's happening */}
-  <div data-auth-loading class="hidden absolute inset-0 rounded-2xl bg-paper/85 dark:bg-coal/85 backdrop-blur-sm grid place-items-center z-10">
-    <div class="text-center">
-      <svg class="w-9 h-9 mx-auto text-purple animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-      <p class="mt-4 font-arabic text-small text-ink/70 dark:text-mist/70" data-auth-loading-text></p>
     </div>
   </div>
 </div>
 
 <style>
-  .auth-tab[aria-selected="true"] { background: var(--color-paper); color: var(--color-purple); box-shadow: 0 1px 3px rgb(23 56 71 / 0.08); }
-  :global(.dark) .auth-tab[aria-selected="true"] { background: var(--color-coal-soft); }
-  .auth-tab[aria-selected="false"] { color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
-  :global(.dark) .auth-tab[aria-selected="false"] { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
+  .auth-label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: var(--text-small);
+    color: var(--color-ink-muted);
+  }
+  :global(.dark) .auth-label { color: var(--color-mist-muted); }
+
+  /* Room for the password toggle at the field's (LTR) inline end. */
+  .auth-input-affix { padding-inline-end: 3.25rem; }
+
+  .pass-toggle {
+    position: absolute;
+    inset-block: 0;
+    right: 0.35rem;                /* the field is dir="ltr": its end is physically right */
+    display: grid; place-items: center;
+    width: 2.75rem;                /* 44px tap target */
+    border-radius: 0.4rem;
+    color: var(--color-ink-subtle);
+    transition: color .2s, background-color .2s;
+  }
+  :global(.dark) .pass-toggle { color: var(--color-mist-subtle); }
+  .pass-toggle:hover {
+    color: var(--color-purple);
+    background: color-mix(in srgb, var(--color-purple) 8%, transparent);
+  }
+
+  /* Quiet secondary action (forgot password, switch mode, resend). */
+  .auth-quiet-link {
+    /* Inline, centred by the parent's text-align: as a block it would stretch
+       edge to edge and hover the whole row. */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;           /* 44px tap target */
+    padding-inline: 0.5rem;
+    font-size: var(--text-small);
+    color: var(--color-ink-subtle);
+    transition: color .2s;
+  }
+  :global(.dark) .auth-quiet-link { color: var(--color-mist-subtle); }
+  .auth-quiet-link:hover { color: var(--color-purple); }
+
+  .auth-inline-link { color: var(--color-purple); text-decoration: underline; text-underline-offset: 3px; }
+  .auth-inline-link:hover { color: var(--color-purple-deep); }
+  :global(.dark) .auth-inline-link:hover { color: color-mix(in srgb, var(--color-purple) 80%, white); }
+
+  /* One live region for errors and confirmations. It stays in the DOM and
+     collapses while empty, so writing into it is a content change a screen
+     reader announces — a display:none element being revealed often isn't. */
+  .auth-msg {
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.85rem;
+    font-size: var(--text-small);
+    line-height: 1.6;
+  }
+  .auth-msg:empty { display: none; }
+  .auth-msg-err { background: color-mix(in srgb, #dc2626 10%, transparent); color: #b91c1c; }
+  :global(.dark) .auth-msg-err { background: color-mix(in srgb, #f87171 13%, transparent); color: #fca5a5; }
+  .auth-msg-ok { background: color-mix(in srgb, var(--color-teal) 12%, transparent); color: var(--color-teal-deep); }
+  :global(.dark) .auth-msg-ok { background: color-mix(in srgb, var(--color-teal) 18%, transparent); color: color-mix(in srgb, var(--color-teal) 85%, white); }
+
+  .auth-done-mark {
+    display: grid; place-items: center;
+    width: 3.5rem; height: 3.5rem;
+    margin-inline: auto;
+    border-radius: 9999px;
+    color: #fff;
+    background: var(--color-teal);
+  }
 </style>
 
 <script>
-  import { signInEmail, signUpEmail, resetPassword, signInGoogle, signInApple, authError, onAuth, type Lang } from '../lib/auth';
+  import {
+    signInEmail, signUpEmail, resetPassword, signInGoogle, signInApple,
+    resendVerification, currentUser, authError, onAuth, type Lang,
+  } from '../lib/auth';
   import { rememberSignedIn } from '../lib/session';
 
   const root = document.querySelector<HTMLElement>('[data-auth-root]');
@@ -131,23 +346,64 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
     // Same-origin relative paths only ('/x…', not '//host') — no open redirect.
     const nextRaw = new URLSearchParams(window.location.search).get('next');
     const dest = nextRaw && /^\/(?!\/)/.test(nextRaw) ? nextRaw : account;
-    const T = {
-      signIn: lang === 'ar' ? 'تسجيل الدخول' : 'Sign in',
-      signUp: lang === 'ar' ? 'إنشاء حساب' : 'Create account',
-      switchToUp: lang === 'ar' ? 'ليس لديك حساب؟ أنشئ واحداً' : "No account? Create one",
-      switchToIn: lang === 'ar' ? 'لديك حساب؟ سجّل الدخول' : 'Have an account? Sign in',
-      reset: lang === 'ar' ? 'أرسلنا رابط إعادة التعيين إلى بريدك.' : 'We sent a reset link to your email.',
-      needEmail: lang === 'ar' ? 'اكتب بريدك أولاً لإعادة التعيين.' : 'Enter your email first to reset.',
-      working: lang === 'ar' ? 'جارٍ…' : 'Working…',
-      signingIn: lang === 'ar' ? 'جارٍ تسجيل الدخول…' : 'Signing you in…',
-    };
+
+    const T = lang === 'ar'
+      ? {
+          signIn: 'تسجيل الدخول', signUp: 'إنشاء حساب',
+          headIn: 'أهلاً بعودتك', headUp: 'أنشئ حسابك',
+          subIn: 'سجّل الدخول لتتابع من حيث توقّفت.',
+          subUp: 'حسابٌ واحد للويب والتطبيق.',
+          switchToUp: 'ليس لديك حساب؟ أنشئ واحداً', switchToIn: 'لديك حساب؟ سجّل الدخول',
+          working: 'جارٍ…',
+          signingIn: 'جارٍ تسجيل الدخول…', creating: 'جارٍ إنشاء حسابك…',
+          showPass: 'إظهار كلمة المرور', hidePass: 'إخفاء كلمة المرور',
+          resetHead: 'استعادة كلمة المرور',
+          resetSub: 'اكتب بريدك، ونرسل إليك رابطاً لتعيين كلمة مرور جديدة.',
+          sendReset: 'إرسال رابط الاستعادة', sendAgain: 'إعادة إرسال الرابط',
+          resetSent: 'أرسلنا رابط الاستعادة إلى بريدك. تحقّق من صندوق الوارد.',
+          doneTitle: 'أنشأنا حسابك',
+          doneLead: 'أرسلنا رابط تأكيد إلى',
+          doneTail: 'أكّده متى شئت؛ يمكنك المتابعة الآن.',
+          doneCta: 'متابعة إلى حسابي',
+          resend: 'إعادة إرسال رابط التأكيد',
+          resent: 'أعدنا إرسال الرابط.',
+          resendFail: 'تعذّر إرسال الرابط الآن. حاول بعد قليل.',
+        }
+      : {
+          signIn: 'Sign in', signUp: 'Create account',
+          headIn: 'Welcome back', headUp: 'Create your account',
+          subIn: 'Sign in to pick up where you left off.',
+          subUp: 'One account for web and the app.',
+          switchToUp: 'No account? Create one', switchToIn: 'Have an account? Sign in',
+          working: 'Working…',
+          signingIn: 'Signing you in…', creating: 'Creating your account…',
+          showPass: 'Show password', hidePass: 'Hide password',
+          resetHead: 'Reset your password',
+          resetSub: "Enter your email and we'll send you a link to set a new one.",
+          sendReset: 'Send reset link', sendAgain: 'Send it again',
+          resetSent: 'We sent a reset link to your email. Check your inbox.',
+          doneTitle: 'Your account is ready',
+          doneLead: 'We sent a confirmation link to',
+          doneTail: 'Confirm it whenever you like. You can carry on now.',
+          doneCta: 'Continue to my account',
+          resend: 'Resend the confirmation link',
+          resent: 'Link sent again.',
+          resendFail: "We couldn't send it right now. Try again shortly.",
+        };
 
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
-    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-tab]');
-    const nameField = q<HTMLElement>('[data-name-field]');
-    const nameI = q<HTMLInputElement>('[data-name]');
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const collapses = [...root.querySelectorAll<HTMLElement>('[data-collapse]')];
+    const seg = q<HTMLElement>('[data-seg]');
+    const panel = q<HTMLElement>('[data-auth-panel]');
+    const headEl = q<HTMLElement>('[data-auth-head]');
+    const subEl = q<HTMLElement>('[data-auth-sub]');
     const emailI = q<HTMLInputElement>('[data-email]');
     const passI = q<HTMLInputElement>('[data-password]');
+    const nameI = q<HTMLInputElement>('[data-name]');
+    const passToggle = q<HTMLButtonElement>('[data-toggle-pass]');
+    const eyeOn = q<HTMLElement>('[data-icon-eye]');
+    const eyeOff = q<HTMLElement>('[data-icon-eye-off]');
     const submit = q<HTMLButtonElement>('[data-submit]');
     const submitLabel = q<HTMLElement>('[data-submit-label]');
     const switchBtn = q<HTMLButtonElement>('[data-switch]');
@@ -156,52 +412,238 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
     const form = q<HTMLFormElement>('[data-auth-form]');
     const loadingEl = q<HTMLElement>('[data-auth-loading]');
     const loadingTextEl = q<HTMLElement>('[data-auth-loading-text]');
+    const card = q<HTMLElement>('.card');
+    const resetPanel = q<HTMLElement>('[data-auth-reset]');
+    const resetForm = q<HTMLFormElement>('[data-reset-form]');
+    const resetEmailI = q<HTMLInputElement>('[data-reset-email]');
+    const resetSubmit = q<HTMLButtonElement>('[data-reset-submit]');
+    const resetLabel = q<HTMLElement>('[data-reset-label]');
+    const resetMsg = q<HTMLElement>('[data-reset-msg]');
+    const resetBack = q<HTMLButtonElement>('[data-reset-back]');
+    const doneEl = q<HTMLElement>('[data-auth-done]');
+    const doneLead = q<HTMLElement>('[data-done-lead]');
+    const doneEmail = q<HTMLElement>('[data-done-email]');
+    const doneTail = q<HTMLElement>('[data-done-tail]');
+    const doneCta = q<HTMLAnchorElement>('[data-done-cta]');
+    const doneMsg = q<HTMLElement>('[data-done-msg]');
+    const resendBtn = q<HTMLButtonElement>('[data-resend]');
 
     let mode: 'in' | 'up' = 'in';
+    // Sign-up signs the user in, which would fire onAuth and redirect straight
+    // past the confirmation panel. Hold the auto-redirect from the moment we
+    // start creating the account.
+    let holdRedirect = false;
 
-    // Already signed in? Go to account.
-    onAuth((u) => { if (u) { rememberSignedIn(); window.location.replace(dest); } });
+    onAuth((u) => {
+      if (u && !holdRedirect) { rememberSignedIn(); window.location.replace(dest); }
+    });
 
-    function showMsg(text: string, kind: 'err' | 'ok') {
-      msg.textContent = text;
-      msg.className = 'text-small leading-relaxed rounded-lg px-3 py-2 ' +
-        (kind === 'ok'
-          ? 'bg-teal/10 text-teal'
-          : 'bg-red-500/10 text-red-600 dark:text-red-400');
+    /* ── Segmented thumb ─────────────────────────────────────────────────── */
+
+    function placeThumb() {
+      const active = tabs.find((b) => b.getAttribute('aria-selected') === 'true');
+      if (!active) return;
+      const track = seg.getBoundingClientRect();
+      const box = active.getBoundingClientRect();
+      if (!track.width || !box.width) return;
+      seg.style.setProperty('--seg-x', `${box.left - track.left}px`);
+      seg.style.setProperty('--seg-w', `${box.width}px`);
     }
-    function clearMsg() { msg.className = 'hidden'; msg.textContent = ''; }
 
-    function setMode(m: 'in' | 'up') {
+    // Land the thumb before enabling its transition, else it slides in from 0.
+    function settleThumb() {
+      seg.classList.remove('seg-anim');
+      placeThumb();
+      requestAnimationFrame(() => seg.classList.add('seg-anim'));
+    }
+
+    placeThumb();
+    seg.classList.add('seg-on');
+    requestAnimationFrame(() => seg.classList.add('seg-anim'));
+    // Option widths move when the track resizes or the Arabic faces finish
+    // loading; re-place without animating, so nothing glides unbidden.
+    if ('ResizeObserver' in window) new ResizeObserver(settleThumb).observe(seg);
+    document.fonts?.ready.then(settleThumb).catch(() => {});
+
+    /* ── Panel swapping ──────────────────────────────────────────────────
+       The card holds three steps (tabbed form, password reset, post-sign-up
+       confirmation). Swapping them changes the card's height a lot, so the
+       height is tweened rather than jumped. Clipping is applied only WHILE the
+       tween runs, so focus rings are never permanently sheared. */
+
+    const SWAP_MS = 380;
+    const SWAP_EASE = 'cubic-bezier(0.25, 1, 0.5, 1)';
+    let swapAnim: Animation | null = null;
+
+    function swapPanel(show: HTMLElement[], hide: HTMLElement[]) {
+      // Always start from a clean slate: a swap interrupted mid-tween must not
+      // leave the card clipped, which would shear focus rings at its edges.
+      swapAnim?.cancel();
+      swapAnim = null;
+      card.style.removeProperty('overflow');
+
+      const from = card.getBoundingClientRect().height;
+      hide.forEach((el) => el.classList.add('hidden'));
+      show.forEach((el) => el.classList.remove('hidden'));
+      const to = card.getBoundingClientRect().height;
+
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches || Math.abs(to - from) < 1) return;
+
+      card.style.overflow = 'hidden';
+      const anim = card.animate(
+        [{ height: `${from}px` }, { height: `${to}px` }],
+        { duration: SWAP_MS, easing: SWAP_EASE },
+      );
+      swapAnim = anim;
+      // Events, not the finished promise: a cancel rejects that promise, and a
+      // swallowed rejection would strand the clip. `finish` and `cancel` both
+      // land here, and the guard keeps a superseded tween from clearing the
+      // clip out from under the one that replaced it.
+      const release = () => {
+        if (swapAnim !== anim) return;
+        swapAnim = null;
+        card.style.removeProperty('overflow');
+      };
+      anim.addEventListener('finish', release);
+      anim.addEventListener('cancel', release);
+
+      show.forEach((el) => {
+        el.classList.remove('panel-in');
+        void el.offsetWidth; // force a reflow so the animation restarts
+        el.classList.add('panel-in');
+      });
+    }
+
+    /* ── Messages ────────────────────────────────────────────────────────── */
+
+    function showMsg(el: HTMLElement, text: string, kind: 'err' | 'ok') {
+      el.className = `auth-msg auth-msg-${kind}`;
+      el.textContent = text;
+    }
+    function clearMsg(el: HTMLElement = msg) {
+      el.className = 'auth-msg';
+      el.textContent = '';
+    }
+
+    /* ── Mode ────────────────────────────────────────────────────────────── */
+
+    function swapText(el: HTMLElement, text: string, animate: boolean) {
+      if (el.textContent === text) return;
+      el.textContent = text;
+      if (!animate) return;
+      el.classList.remove('txt-swap');
+      void el.offsetWidth; // force a reflow so the animation restarts
+      el.classList.add('txt-swap');
+    }
+
+    function setMode(m: 'in' | 'up', animate = true) {
       mode = m;
-      tabs.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === m)));
-      nameField.classList.toggle('hidden', m !== 'up');
-      submitLabel.textContent = m === 'up' ? T.signUp : T.signIn;
-      switchBtn.textContent = m === 'up' ? T.switchToIn : T.switchToUp;
-      forgot.classList.toggle('hidden', m === 'up');
-      passI.setAttribute('autocomplete', m === 'up' ? 'new-password' : 'current-password');
+      const up = m === 'up';
+
+      tabs.forEach((b) => {
+        const on = b.dataset.tab === m;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+      });
+      panel.setAttribute('aria-labelledby', up ? 'auth-tab-up' : 'auth-tab-in');
+      placeThumb();
+
+      collapses.forEach((el) => {
+        const open = el.dataset.collapse === m;
+        el.classList.toggle('is-open', open);
+        el.inert = !open;
+      });
+
+      passI.setAttribute('autocomplete', up ? 'new-password' : 'current-password');
+      // Only new passwords must clear Firebase's six-character floor; enforcing
+      // it on sign-in would block nobody and confuse anybody.
+      if (up) passI.setAttribute('minlength', '6');
+      else passI.removeAttribute('minlength');
+
+      swapText(headEl, up ? T.headUp : T.headIn, animate);
+      swapText(subEl, up ? T.subUp : T.subIn, animate);
+      subEl.classList.remove('hidden');
+      swapText(submitLabel, up ? T.signUp : T.signIn, animate);
+      swapText(switchBtn, up ? T.switchToIn : T.switchToUp, animate);
       clearMsg();
     }
-    setMode('in');
+
+    setMode('in', false);
 
     tabs.forEach((b) => b.addEventListener('click', () => setMode(b.dataset.tab as 'in' | 'up')));
     switchBtn.addEventListener('click', () => setMode(mode === 'in' ? 'up' : 'in'));
 
-    async function run(fn: () => Promise<unknown>) {
+    // Tablist keyboard model: arrows move selection and focus, mirrored in RTL.
+    seg.addEventListener('keydown', (e: KeyboardEvent) => {
+      const nav = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+      if (!nav.includes(e.key)) return;
+      e.preventDefault();
+      const i = tabs.findIndex((b) => b.getAttribute('aria-selected') === 'true');
+      const rtl = getComputedStyle(root).direction === 'rtl';
+      let next: number;
+      if (e.key === 'Home') next = 0;
+      else if (e.key === 'End') next = tabs.length - 1;
+      else {
+        const forward = e.key === 'ArrowDown' || e.key === (rtl ? 'ArrowLeft' : 'ArrowRight');
+        next = (i + (forward ? 1 : -1) + tabs.length) % tabs.length;
+      }
+      setMode(tabs[next].dataset.tab as 'in' | 'up');
+      tabs[next].focus();
+    });
+
+    /* ── Password visibility ─────────────────────────────────────────────── */
+
+    passToggle.addEventListener('click', () => {
+      const reveal = passI.type === 'password';
+      passI.type = reveal ? 'text' : 'password';
+      passToggle.setAttribute('aria-pressed', String(reveal));
+      passToggle.setAttribute('aria-label', reveal ? T.hidePass : T.showPass);
+      eyeOn.classList.toggle('hidden', reveal);
+      eyeOff.classList.toggle('hidden', !reveal);
+      passI.focus({ preventScroll: true });
+    });
+
+    /* ── Submission ──────────────────────────────────────────────────────── */
+
+    function setBusy(busy: boolean, label: string) {
+      submit.disabled = busy;
+      panel.inert = busy;
+      loadingTextEl.textContent = busy ? label : '';
+      loadingEl.classList.toggle('hidden', !busy);
+    }
+
+    function showDone(email: string) {
+      setBusy(false, '');
+      // The page heading carries the confirmation title.
+      swapText(headEl, T.doneTitle, true);
+      subEl.classList.add('hidden');
+      doneLead.textContent = T.doneLead;
+      doneEmail.textContent = email;
+      doneTail.textContent = T.doneTail;
+      doneCta.textContent = T.doneCta;
+      doneCta.href = dest;
+      resendBtn.textContent = T.resend;
+      swapPanel([doneEl], [seg, panel, resetPanel]);
+      doneCta.focus({ preventScroll: true });
+    }
+
+    async function run(fn: () => Promise<unknown>, creating = false) {
       clearMsg();
-      submit.disabled = true;
-      const prev = submitLabel.textContent;
+      const prevLabel = submitLabel.textContent || '';
       submitLabel.textContent = T.working;
-      loadingTextEl.textContent = T.signingIn;
-      loadingEl.classList.remove('hidden');
+      if (creating) holdRedirect = true;
+      setBusy(true, creating ? T.creating : T.signingIn);
       try {
         await fn();
         rememberSignedIn();
+        if (creating) { showDone(emailI.value.trim()); return; }
         window.location.assign(dest); // keep the overlay up through the redirect
       } catch (e: any) {
-        loadingEl.classList.add('hidden');
-        showMsg(authError(e?.code || '', lang), 'err');
-        submit.disabled = false;
-        submitLabel.textContent = prev;
+        holdRedirect = false;
+        setBusy(false, '');
+        submitLabel.textContent = prevLabel;
+        showMsg(msg, authError(e?.code || '', lang), 'err');
+        submit.focus({ preventScroll: true }); // inert moved focus to <body>
       }
     }
 
@@ -209,18 +651,65 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       e.preventDefault();
       const email = emailI.value.trim();
       const pass = passI.value;
-      if (mode === 'up') run(() => signUpEmail(email, pass, nameI.value.trim() || undefined));
+      if (mode === 'up') run(() => signUpEmail(email, pass, nameI.value.trim() || undefined), true);
       else run(() => signInEmail(email, pass));
     });
 
-    root.querySelector('[data-provider="google"]')!.addEventListener('click', () => run(signInGoogle));
-    root.querySelector('[data-provider="apple"]')!.addEventListener('click', () => run(signInApple));
+    q<HTMLButtonElement>('[data-provider="google"]').addEventListener('click', () => run(signInGoogle));
+    q<HTMLButtonElement>('[data-provider="apple"]').addEventListener('click', () => run(signInApple));
 
-    forgot.addEventListener('click', async () => {
-      const email = emailI.value.trim();
-      if (!email) { showMsg(T.needEmail, 'err'); return; }
-      try { await resetPassword(email); showMsg(T.reset, 'ok'); }
-      catch (e: any) { showMsg(authError(e?.code || '', lang), 'err'); }
+    /* ── Password reset ──────────────────────────────────────────────────── */
+
+    function enterReset() {
+      clearMsg(resetMsg);
+      resetLabel.textContent = T.sendReset;
+      resetEmailI.value = emailI.value.trim(); // carry over whatever they typed
+      swapText(headEl, T.resetHead, true);
+      swapText(subEl, T.resetSub, true);
+      swapPanel([resetPanel], [seg, panel]);
+      resetEmailI.focus({ preventScroll: true });
+    }
+
+    function exitReset() {
+      swapPanel([seg, panel], [resetPanel]);
+      setMode(mode);       // restores the heading, subtitle and thumb position
+      emailI.value = resetEmailI.value.trim() || emailI.value;
+      emailI.focus({ preventScroll: true });
+    }
+
+    forgot.addEventListener('click', enterReset);
+    resetBack.addEventListener('click', exitReset);
+
+    resetForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMsg(resetMsg);
+      const prev = resetLabel.textContent || T.sendReset;
+      resetSubmit.disabled = true;
+      resetLabel.textContent = T.working;
+      try {
+        await resetPassword(resetEmailI.value.trim());
+        showMsg(resetMsg, T.resetSent, 'ok');
+        resetLabel.textContent = T.sendAgain;
+      } catch (err: any) {
+        showMsg(resetMsg, authError(err?.code || '', lang), 'err');
+        resetLabel.textContent = prev;
+      } finally {
+        resetSubmit.disabled = false;
+      }
     });
+
+    resendBtn.addEventListener('click', async () => {
+      const user = currentUser();
+      if (!user) { showMsg(doneMsg, T.resendFail, 'err'); return; }
+      resendBtn.disabled = true;
+      try { await resendVerification(user); showMsg(doneMsg, T.resent, 'ok'); }
+      catch { showMsg(doneMsg, T.resendFail, 'err'); resendBtn.disabled = false; }
+    });
+
+    // Desktop only: focusing on load pops the keyboard on touch and buries the
+    // card behind it.
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      emailI.focus({ preventScroll: true });
+    }
   }
 </script>

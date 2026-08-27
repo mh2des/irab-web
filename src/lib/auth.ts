@@ -52,6 +52,9 @@ export const resetPassword = (email: string) => sendPasswordResetEmail(auth, ema
 
 export const resendVerification = (user: User) => sendEmailVerification(user);
 
+/** Whoever is signed in right now, without subscribing to auth state. */
+export const currentUser = (): User | null => auth.currentUser;
+
 export const logout = () => signOut(auth);
 
 /** Map Firebase error codes to friendly AR/EN copy. */

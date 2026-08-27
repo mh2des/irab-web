@@ -1,0 +1,57 @@
+---
+/**
+ * Minimal chrome for the auth pages: the brand mark (linking home), the
+ * language switch and the theme toggle.
+ *
+ * The full site nav is deliberately absent here. An auth screen carrying eight
+ * other destinations invites people to wander off mid-sign-up, so /login keeps
+ * only what someone signing in actually needs: a way back to the site, a way to
+ * read it in the other language, and the theme control the nav would otherwise
+ * have carried.
+ *
+ * The language switch is a link-based `.seg` — no thumb, no script; the
+ * current option paints its own pill via the aria-current fallback.
+ */
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+
+const home = lang === 'ar' ? '/' : '/en';
+
+const t = lang === 'ar'
+  ? { brand: 'إعراب', home: 'الصفحة الرئيسية', language: 'اللغة' }
+  : { brand: 'Irab', home: 'Home', language: 'Language' };
+---
+<header class="px-6 pt-7 md:pt-9">
+  {/* Three columns so the mark stays optically centred on the page while the
+      controls sit at the inline end, with no chance of the two overlapping on
+      a narrow phone. */}
+  <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+    <span aria-hidden="true"></span>
+
+    <a href={home} aria-label={t.home} class="justify-self-center inline-flex rounded-xl lift">
+      <img
+        src="/brand-mark.png"
+        alt={t.brand}
+        width="56" height="56"
+        loading="eager" decoding="sync"
+        class="w-14 h-14 rounded-xl"
+      />
+    </a>
+
+    <div class="justify-self-end flex items-center gap-2">
+      <div class="seg text-caption" role="group" aria-label={t.language}>
+        <a
+          href="/login" hreflang="ar" class="seg-option px-3"
+          aria-current={lang === 'ar' ? 'page' : undefined}
+        >ع</a>
+        <a
+          href="/en/login" hreflang="en" class="seg-option px-3"
+          aria-current={lang === 'en' ? 'page' : undefined}
+        >EN</a>
+      </div>
+      <ThemeToggle />
+    </div>
+  </div>
+</header>
