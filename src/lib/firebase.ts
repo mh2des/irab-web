@@ -12,7 +12,15 @@ import { getAuth, type Auth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAMdgmQFdoiHmkMacLjsyaQvw0rufOmTYo',
-  authDomain: 'arabic-grammar-app-43de9.firebaseapp.com',
+  // Our own domain, not <project>.firebaseapp.com. signInWithPopup sends the
+  // user to https://<authDomain>/__/auth/handler, and Google's consent screen
+  // prints that host: on the default domain it read "to continue to
+  // arabic-grammar-app-43de9.firebaseapp.com". Firebase Hosting already serves
+  // the auth helper under /__ on irab.app, the domain is authorised in Firebase
+  // Auth, and https://irab.app/__/auth/handler is registered on the OAuth client
+  // (Cloud console -> Credentials). Running the popup on our own origin also
+  // avoids the third-party-cookie limits that break it on *.firebaseapp.com.
+  authDomain: 'irab.app',
   projectId: 'arabic-grammar-app-43de9',
   storageBucket: 'arabic-grammar-app-43de9.firebasestorage.app',
   messagingSenderId: '662899626810',
