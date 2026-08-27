@@ -627,7 +627,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       doneCta.focus({ preventScroll: true });
     }
 
-    async function run(fn: () => Promise<unknown>, creating = false) {
+    async function run(fn: () => Promise<unknown>, creating = false, provider?: string) {
       clearMsg();
       const prevLabel = submitLabel.textContent || '';
       submitLabel.textContent = T.working;
@@ -642,7 +642,10 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
         holdRedirect = false;
         setBusy(false, '');
         submitLabel.textContent = prevLabel;
-        showMsg(msg, authError(e?.code || '', lang), 'err');
+        // The raw code is the only thing that makes an auth failure diagnosable
+        // from a user's report; the on-screen copy is deliberately friendly.
+        console.error('[irab-auth]', e?.code || e?.message || e);
+        showMsg(msg, authError(e?.code || '', lang, provider), 'err');
         submit.focus({ preventScroll: true }); // inert moved focus to <body>
       }
     }
@@ -655,8 +658,8 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       else run(() => signInEmail(email, pass));
     });
 
-    q<HTMLButtonElement>('[data-provider="google"]').addEventListener('click', () => run(signInGoogle));
-    q<HTMLButtonElement>('[data-provider="apple"]').addEventListener('click', () => run(signInApple));
+    q<HTMLButtonElement>('[data-provider="google"]').addEventListener('click', () => run(signInGoogle, false, 'Google'));
+    q<HTMLButtonElement>('[data-provider="apple"]').addEventListener('click', () => run(signInApple, false, 'Apple'));
 
     /* ── Password reset ──────────────────────────────────────────────────── */
 

@@ -57,8 +57,24 @@ export const currentUser = (): User | null => auth.currentUser;
 
 export const logout = () => signOut(auth);
 
-/** Map Firebase error codes to friendly AR/EN copy. */
-export function authError(code: string, lang: Lang): string {
+/**
+ * Map Firebase error codes to friendly AR/EN copy.
+ *
+ * `provider` names the social provider when the failure came from one. Several
+ * codes (invalid-credential above all) are shared between email/password and
+ * OAuth sign-in, and their default wording assumes a password was typed. After
+ * a failed Apple sign-in "Email or password is incorrect" is worse than vague:
+ * it sends the user to check a password they never entered.
+ */
+/** Codes whose stock copy talks about a typed password. */
+const PASSWORD_SHAPED = new Set([
+  'auth/invalid-credential',
+  'auth/wrong-password',
+  'auth/user-not-found',
+  'auth/invalid-email',
+]);
+
+export function authError(code: string, lang: Lang, provider?: string): string {
   const ar: Record<string, string> = {
     'auth/invalid-email': 'البريد الإلكتروني غير صالح.',
     'auth/user-disabled': 'هذا الحساب موقوف.',
@@ -93,6 +109,11 @@ export function authError(code: string, lang: Lang): string {
     'auth/unauthorized-domain': 'Sign-in from this domain isn’t allowed yet.',
     'auth/network-request-failed': 'Network error: check your connection.',
   };
+  if (provider && PASSWORD_SHAPED.has(code)) {
+    return lang === 'ar'
+      ? `تعذّر إكمال الدخول عبر ${provider}. حاول مرة أخرى، أو استخدم بريدك الإلكتروني.`
+      : `We couldn't complete ${provider} sign-in. Try again, or use your email instead.`;
+  }
   const table = lang === 'ar' ? ar : en;
   return table[code] || (lang === 'ar' ? 'حدث خطأ. حاول مرة أخرى.' : 'Something went wrong. Please try again.');
 }
