@@ -196,7 +196,7 @@ const t = lang === 'ar'
           <div class="text-[clamp(2rem,5.5vw,3.75rem)] leading-[1.9] text-ink dark:text-mist" data-demo-verse-inner></div>
         </div>
 
-        <p class="hidden text-center text-body text-ink-subtle dark:text-mist-subtle italic mb-6" data-demo-meaning></p>
+        <p class="hidden text-center text-body text-ink-subtle dark:text-mist-subtle italic mb-6" dir="auto" data-demo-meaning></p>
 
         {/* Meta: word count + how long the parse took. Both were already being
             computed and then discarded — the elements simply weren't here. */}
@@ -217,23 +217,6 @@ const t = lang === 'ar'
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6" data-demo-cards></div>
 
-        {/* ── Result actions (copy / share / pdf): sit right under the result
-             cards so they're noticed, not under the input box ── */}
-        <div data-demo-actions class="hidden mb-10 flex items-center justify-center flex-wrap gap-3">
-          <button type="button" data-act-copy class="act-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-            <span data-act-copy-label>{t.copy}</span>
-          </button>
-          <button type="button" data-act-share class="act-btn act-btn-primary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            <span>{t.share}</span>
-          </button>
-          <button type="button" data-act-pdf class="act-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-            <span>{t.pdf}</span>
-          </button>
-        </div>
-
         <div class="hidden card p-7 md:p-8 mb-5" data-demo-explanation>
           <p class="flex items-center gap-2 mb-4 font-arabic-display font-bold text-3xl text-purple">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -248,6 +231,24 @@ const t = lang === 'ar'
             <span lang="ar" dir="rtl" class="font-arabic">{t.rhetorical}</span>
           </p>
           <p lang="ar" dir="rtl" class="font-arabic text-body text-ink/80 dark:text-mist/80 leading-loose" style="font-family: var(--font-arabic-classical);" data-clarification-text></p>
+        </div>
+
+        {/* Result actions sit below EVERYTHING the analysis produced — cards and
+             both notes — so the export offer comes after the reader has the
+             whole answer, not halfway through it. */}
+        <div data-demo-actions class="hidden mb-10 flex items-center justify-center flex-wrap gap-3">
+          <button type="button" data-act-copy class="act-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span data-act-copy-label>{t.copy}</span>
+          </button>
+          <button type="button" data-act-share class="act-btn act-btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <span>{t.share}</span>
+          </button>
+          <button type="button" data-act-pdf class="act-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+            <span>{t.pdf}</span>
+          </button>
         </div>
 
         {/* Contextual upgrade nudge — the peak-delight moment, revealed after a
@@ -265,25 +266,60 @@ const t = lang === 'ar'
       </div>
     </div>
 
-    {/* ── Off-screen branded share card: captured for share-image / PDF ── */}
+    {/* ── The shared artefact ────────────────────────────────────────────
+         Rendered off-screen and captured by snapdom for both the PNG and the
+         PDF. It is deliberately NOT a screenshot of the page: a share lands in
+         someone's chat with no context, so it carries its own masthead, a real
+         table of the analysis, both notes, and a QR back to the analyzer. */}
     <div data-export-card lang="ar" dir="rtl" aria-hidden="true" class="export-card">
-      <div class="ec-top">
-        <img src="/brand-mark.png" alt="" aria-hidden="true" width="40" height="40" class="ec-logo" />
-        <span class="ec-brand">إعراب</span>
-        <span class="ec-tag">تحليل نحوي بالذكاء الاصطناعي</span>
+      <header class="ec-head">
+        <img src="/brand-mark.png" alt="" aria-hidden="true" width="52" height="52" class="ec-logo" />
+        <div class="ec-id">
+          <div class="ec-brand">إعراب</div>
+          <div class="ec-sub">إعرابٌ كامل بالذكاء الاصطناعي</div>
+        </div>
+        <div class="ec-source" data-ec-source></div>
+      </header>
+
+      <section class="ec-hero">
+        <div class="ec-verse" data-ec-verse></div>
+        <div class="ec-meaning" dir="auto" data-ec-meaning></div>
+      </section>
+
+      <div class="ec-meta">
+        <span class="ec-count" data-ec-count></span>
+        <span class="ec-legend" data-ec-legend></span>
       </div>
-      <div class="ec-verse quran-text" data-ec-verse></div>
-      <div class="ec-meaning" data-ec-meaning></div>
-      <div class="ec-words" data-ec-words></div>
-      <div class="ec-block" data-ec-explanation>
-        <div class="ec-block-label">بنية الجملة</div>
-        <div class="ec-block-text" data-ec-explanation-text></div>
+
+      <table class="ec-table">
+        <thead>
+          <tr>
+            <th class="ec-c-word">الكلمة</th>
+            <th class="ec-c-type">النوع</th>
+            <th class="ec-c-case">الموقع</th>
+            <th class="ec-c-irab">الإعراب</th>
+          </tr>
+        </thead>
+        <tbody data-ec-rows></tbody>
+      </table>
+
+      <div class="ec-note" data-ec-explanation>
+        <div class="ec-note-label">بنية الجملة</div>
+        <div class="ec-note-text" data-ec-explanation-text></div>
       </div>
-      <div class="ec-block" data-ec-clarification>
-        <div class="ec-block-label">ملاحظة بلاغية</div>
-        <div class="ec-block-text" data-ec-clarification-text></div>
+      <div class="ec-note ec-note-teal" data-ec-clarification>
+        <div class="ec-note-label">ملاحظة بلاغية</div>
+        <div class="ec-note-text" data-ec-clarification-text></div>
       </div>
-      <div class="ec-foot">أُعرِب على irab.app · حلّل أيّ جملة عربية</div>
+
+      <footer class="ec-foot">
+        <img class="ec-qr" data-ec-qr alt="" aria-hidden="true" width="104" height="104" />
+        <div class="ec-foot-main">
+          <div class="ec-foot-url">irab.app</div>
+          <div class="ec-foot-cta">امسح الرمز وأعرِب أيّ جملة عربية فورًا</div>
+        </div>
+        <div class="ec-date" data-ec-date></div>
+      </footer>
     </div>
 
     {/* ── Sign-up gate (shown after the free parses are used) ──────────── */}
@@ -597,39 +633,133 @@ const t = lang === 'ar'
      Rendered off-screen (left:-10000px) and captured by snapdom for share/PDF. */
   .export-card {
     position: fixed; left: -10000px; top: 0; z-index: -1;
-    width: 640px; box-sizing: border-box; padding: 2.5rem 2.25rem;
-    background: var(--color-paper); border: 1px solid var(--color-stone);
-    border-radius: 24px; border-top: 6px solid var(--color-purple);
+    width: 760px; box-sizing: border-box;
+    background: var(--color-paper);
+    border: 1px solid var(--color-stone);
+    border-radius: 22px; overflow: hidden;
     font-family: var(--font-arabic);
+    color: var(--color-ink);
   }
-  .dark .export-card { background: var(--color-coal); border-color: var(--color-coal-edge); }
-  .export-card .ec-top { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 1.6rem; }
-  .export-card .ec-logo { width: 40px; height: 40px; border-radius: 9px; }
-  .export-card .ec-brand { font-family: var(--font-arabic-display); font-weight: 700; font-size: 2rem; color: var(--color-ink); }
-  .dark .export-card .ec-brand { color: var(--color-mist); }
-  .export-card .ec-tag { margin-inline-start: auto; font-size: 1rem; color: var(--color-purple); background: color-mix(in srgb, var(--color-purple) 12%, transparent); padding: 0.35rem 0.85rem; border-radius: 999px; }
-  .export-card .ec-verse { font-family: var(--font-quran); font-size: 2.7rem; line-height: 2; text-align: center; color: var(--color-ink); margin-bottom: 0.6rem; }
-  .dark .export-card .ec-verse { color: var(--color-mist); }
-  .export-card .ec-meaning { text-align: center; font-style: italic; font-size: 1.2rem; color: color-mix(in srgb, var(--color-ink) 55%, transparent); margin-bottom: 1.8rem; }
-  .dark .export-card .ec-meaning { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
-  .export-card .ec-words { display: flex; flex-direction: column; gap: 0.8rem; }
-  .export-card .ec-word { border: 1px solid var(--color-stone); border-inline-start: 5px solid var(--rail, var(--color-stone-soft)); border-radius: 16px; background: #fff; padding: 1rem 1.2rem; box-shadow: 0 2px 8px -3px rgb(23 56 71 / 0.08); }
-  .dark .export-card .ec-word { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
-  .export-card .ec-w-head { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 0.4rem; }
-  .export-card .ec-tok { font-family: var(--font-quran); font-size: 1.85rem; font-weight: 700; color: var(--color-ink); }
-  .dark .export-card .ec-tok { color: var(--color-mist); }
-  .export-card .ec-chip { font-size: 0.9rem; font-weight: 600; color: var(--rail, var(--color-purple)); background: color-mix(in srgb, var(--rail, var(--color-purple)) 13%, transparent); padding: 0.2rem 0.7rem; border-radius: 999px; }
-  .export-card .ec-irab { font-family: var(--font-arabic-classical); font-size: 1.25rem; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 88%, transparent); }
-  .dark .export-card .ec-irab { color: color-mix(in srgb, var(--color-mist) 88%, transparent); }
-  .export-card .ec-details { margin-top: 0.55rem; padding-top: 0.55rem; border-top: 1px dashed var(--color-stone); font-family: var(--font-arabic-classical); font-size: 1.1rem; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
-  .dark .export-card .ec-details { border-top-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
-  .export-card .ec-block { margin-top: 1.4rem; border: 1px solid var(--color-stone); border-radius: 16px; background: color-mix(in srgb, var(--color-purple) 4%, #fff); padding: 1.1rem 1.3rem; }
-  .dark .export-card .ec-block { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
-  .export-card .ec-block-label { font-family: var(--font-arabic-display); font-weight: 700; font-size: 1.2rem; color: var(--color-purple); margin-bottom: 0.45rem; }
-  .export-card .ec-block-text { font-family: var(--font-arabic-classical); font-size: 1.2rem; line-height: 1.9; color: color-mix(in srgb, var(--color-ink) 85%, transparent); }
-  .dark .export-card .ec-block-text { color: color-mix(in srgb, var(--color-mist) 85%, transparent); }
-  .export-card .ec-foot { margin-top: 1.9rem; padding-top: 1.3rem; border-top: 1px solid var(--color-stone); text-align: center; font-size: 1.1rem; font-weight: 600; color: var(--color-purple); }
-  .dark .export-card .ec-foot { border-color: var(--color-coal-edge); }
+  .dark .export-card { background: var(--color-coal); border-color: var(--color-coal-edge); color: var(--color-mist); }
+
+  /* ── Masthead ─────────────────────────────────────────────────────────── */
+  .export-card .ec-head {
+    display: flex; align-items: center; gap: 0.9rem;
+    padding: 1.5rem 2rem; border-bottom: 1px solid var(--color-stone);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--color-purple) 7%, transparent), transparent);
+  }
+  .dark .export-card .ec-head { border-bottom-color: var(--color-coal-edge); }
+  .export-card .ec-logo { width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0; }
+  .export-card .ec-id { display: flex; flex-direction: column; gap: 0.1rem; }
+  .export-card .ec-brand { font-family: var(--font-arabic-display); font-weight: 700; font-size: 2.1rem; line-height: 1.1; }
+  .export-card .ec-sub { font-size: 1rem; color: var(--color-ink-subtle); }
+  .dark .export-card .ec-sub { color: var(--color-mist-subtle); }
+  .export-card .ec-source {
+    margin-inline-start: auto; text-align: end; max-width: 15rem;
+    font-size: 1rem; font-weight: 600; color: var(--color-purple);
+    background: color-mix(in srgb, var(--color-purple) 11%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-purple) 22%, transparent);
+    padding: 0.4rem 0.9rem; border-radius: 999px;
+  }
+  .export-card .ec-source:empty { display: none; }
+
+  /* ── The sentence ─────────────────────────────────────────────────────── */
+  .export-card .ec-hero { padding: 1.8rem 2rem 1.2rem; text-align: center; }
+  .export-card .ec-verse { font-size: 2.6rem; line-height: 2; }
+  .export-card .ec-meaning { margin-top: 0.5rem; font-style: italic; font-size: 1.15rem; color: var(--color-ink-subtle); }
+  .dark .export-card .ec-meaning { color: var(--color-mist-subtle); }
+  .export-card .ec-meaning:empty { display: none; }
+
+  /* ── Count + case legend ──────────────────────────────────────────────── */
+  .export-card .ec-meta {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+    gap: 0.5rem 1.1rem; padding: 0 2rem 1.4rem; font-size: 1rem; color: var(--color-ink-subtle);
+  }
+  .dark .export-card .ec-meta { color: var(--color-mist-subtle); }
+  .export-card .ec-legend { display: inline-flex; flex-wrap: wrap; gap: 0.5rem 1rem; }
+  .export-card .ec-leg { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .export-card .ec-leg-dot { width: 0.6rem; height: 0.6rem; border-radius: 999px; background: var(--dot); }
+
+  /* ── The analysis, as a real table ────────────────────────────────────── */
+  .export-card .ec-table {
+    width: calc(100% - 4rem); margin: 0 2rem 1.6rem;
+    border-collapse: separate; border-spacing: 0;
+    border: 1px solid var(--color-stone); border-radius: 14px; overflow: hidden;
+  }
+  .dark .export-card .ec-table { border-color: var(--color-coal-edge); }
+  .export-card .ec-table th {
+    font-size: 0.95rem; font-weight: 700; color: var(--color-ink-subtle);
+    text-align: start; padding: 0.7rem 0.9rem;
+    background: color-mix(in srgb, var(--color-ink) 5%, transparent);
+    border-bottom: 1px solid var(--color-stone);
+  }
+  .dark .export-card .ec-table th { color: var(--color-mist-subtle); background: color-mix(in srgb, var(--color-mist) 7%, transparent); border-bottom-color: var(--color-coal-edge); }
+  .export-card .ec-table td { padding: 0.75rem 0.9rem; vertical-align: top; border-bottom: 1px solid color-mix(in srgb, var(--color-stone) 70%, transparent); }
+  .dark .export-card .ec-table td { border-bottom-color: color-mix(in srgb, var(--color-coal-edge) 80%, transparent); }
+  .export-card .ec-table tr:last-child td { border-bottom: none; }
+  /* Widths tuned so the transliterated function ("mudaf ilayh") sits on one
+     line instead of breaking across two. */
+  .export-card .ec-c-word { width: 18%; }
+  .export-card .ec-c-type { width: 17%; }
+  .export-card .ec-c-case { width: 15%; }
+
+  /* The case colour rides the row's start edge, so the table scans by case. */
+  .export-card .ec-row td:first-child { border-inline-start: 5px solid var(--rail, transparent); }
+  .export-card .ec-tok { font-size: 1.7rem; font-weight: 700; line-height: 1.7; }
+  .export-card .ec-type { display: block; font-size: 1rem; color: var(--color-ink-subtle); }
+  .dark .export-card .ec-type { color: var(--color-mist-subtle); }
+  /* The transliterated function (mubtada, harf jarr…) ships in every response
+     and was shown nowhere; it is what makes the table readable to someone who
+     does not read Arabic grammar terms. */
+  .export-card .ec-fn { display: block; margin-top: 0.15rem; font-family: var(--font-mono); font-size: 0.8rem; direction: ltr; text-align: start; color: color-mix(in srgb, var(--color-ink) 42%, transparent); }
+  .dark .export-card .ec-fn { color: color-mix(in srgb, var(--color-mist) 45%, transparent); }
+  .export-card .ec-chip {
+    display: inline-block; font-size: 0.95rem; font-weight: 600;
+    color: var(--rail, var(--color-purple));
+    background: color-mix(in srgb, var(--rail, var(--color-purple)) 13%, transparent);
+    border: 1px solid color-mix(in srgb, var(--rail, var(--color-purple)) 26%, transparent);
+    padding: 0.2rem 0.65rem; border-radius: 999px; white-space: nowrap;
+  }
+  .export-card .ec-irab { font-family: var(--font-arabic-classical); font-size: 1.15rem; line-height: 1.85; }
+  .export-card .ec-details {
+    margin-top: 0.5rem; padding-top: 0.5rem;
+    border-top: 1px dashed var(--color-stone);
+    font-family: var(--font-arabic-classical); font-size: 1.02rem; line-height: 1.8;
+    color: var(--color-ink-subtle);
+  }
+  .dark .export-card .ec-details { border-top-color: var(--color-coal-edge); color: var(--color-mist-subtle); }
+
+  /* ── Notes ────────────────────────────────────────────────────────────── */
+  .export-card .ec-note {
+    margin: 0 2rem 1rem; padding: 1.1rem 1.3rem;
+    border: 1px solid var(--color-stone); border-radius: 14px;
+    border-inline-start: 5px solid var(--color-purple);
+    background: color-mix(in srgb, var(--color-purple) 4%, transparent);
+  }
+  .dark .export-card .ec-note { border-color: var(--color-coal-edge); border-inline-start-color: var(--color-purple); background: color-mix(in srgb, var(--color-purple) 12%, transparent); }
+  .export-card .ec-note-teal { border-inline-start-color: var(--color-teal); background: color-mix(in srgb, var(--color-teal) 5%, transparent); }
+  .dark .export-card .ec-note-teal { background: color-mix(in srgb, var(--color-teal) 12%, transparent); }
+  .export-card .ec-note-label { font-family: var(--font-arabic-display); font-weight: 700; font-size: 1.25rem; color: var(--color-purple); margin-bottom: 0.4rem; }
+  .export-card .ec-note-teal .ec-note-label { color: var(--color-teal); }
+  .dark .export-card .ec-note-teal .ec-note-label { color: color-mix(in srgb, var(--color-teal) 85%, white); }
+  .export-card .ec-note-text { font-family: var(--font-arabic-classical); font-size: 1.15rem; line-height: 1.9; }
+
+  /* ── Footer: QR back to the analyzer ──────────────────────────────────── */
+  .export-card .ec-foot {
+    display: flex; align-items: center; gap: 1.1rem;
+    margin-top: 1.4rem; padding: 1.4rem 2rem 1.6rem;
+    border-top: 1px solid var(--color-stone);
+    background: color-mix(in srgb, var(--color-ink) 3%, transparent);
+  }
+  .dark .export-card .ec-foot { border-top-color: var(--color-coal-edge); background: color-mix(in srgb, var(--color-mist) 4%, transparent); }
+  .export-card .ec-qr { width: 104px; height: 104px; border-radius: 10px; background: #fff; padding: 5px; flex-shrink: 0; }
+  .export-card .ec-qr:not([src]) { display: none; }
+  .export-card .ec-foot-main { display: flex; flex-direction: column; gap: 0.2rem; }
+  .export-card .ec-foot-url { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; color: var(--color-purple); letter-spacing: 0.01em; }
+  .export-card .ec-foot-cta { font-size: 1.05rem; color: var(--color-ink-subtle); }
+  .dark .export-card .ec-foot-cta { color: var(--color-mist-subtle); }
+  .export-card .ec-date { margin-inline-start: auto; align-self: flex-end; font-size: 0.95rem; color: var(--color-ink-subtle); }
+  .dark .export-card .ec-date { color: var(--color-mist-subtle); }
 </style>
 
 <script>
@@ -1011,34 +1141,103 @@ const t = lang === 'ar'
       skeletonEl.innerHTML = Array.from({ length: n }, () => '<div class="skel h-36 rounded-lg"></div>').join('');
     }
 
+    /* ── The shared artefact ──────────────────────────────────────────────
+       Builds a self-contained document, not a copy of the page: masthead,
+       source, the sentence, a case legend, the full analysis as a table
+       (including each word's extra detail), both notes, and a QR back to the
+       analyzer. A share lands in a chat with no context, so it has to explain
+       itself. */
+    const QR_URL = 'https://irab.app/tool';
+    let qrPromise: Promise<void> | null = null;
+    function ensureQr(): Promise<void> {
+      if (qrPromise) return qrPromise;
+      const img = exportCardEl?.querySelector<HTMLImageElement>('[data-ec-qr]');
+      if (!img) return Promise.resolve();
+      qrPromise = import('qrcode')
+        .then((mod: any) => {
+          // The package ships both shapes depending on the bundler's interop.
+          const toDataURL = mod?.toDataURL ?? mod?.default?.toDataURL;
+          if (typeof toDataURL !== 'function') throw new Error('qrcode: no toDataURL export');
+          return toDataURL(QR_URL, { width: 208, margin: 1, color: { dark: '#173847', light: '#FFFFFF' } });
+        })
+        .then((url: string) => { img.src = url; })
+        .catch((e) => {
+          // A missing QR must never block a share, but swallowing it silently
+          // is how it went unnoticed in the first place.
+          console.warn('[irab-qr]', e);
+          qrPromise = null;   // let a later share retry
+        });
+      return qrPromise;
+    }
+
     function fillExportCard(ex: ParseExample) {
       if (!exportCardEl) return; // never let a missing share card break parsing
-      const v = exportCardEl.querySelector<HTMLElement>('[data-ec-verse]');
-      if (v) v.textContent = ex.vocalizedSentence || ex.words.map((w) => w.word).join(' ');
-      const m = exportCardEl.querySelector<HTMLElement>('[data-ec-meaning]');
-      if (m) { if (ex.meaning) { m.textContent = `"${ex.meaning}"`; m.style.display = ''; } else { m.style.display = 'none'; } }
-      const wrap = exportCardEl.querySelector<HTMLElement>('[data-ec-words]');
-      if (wrap) {
-        wrap.innerHTML = ex.words.map((wd) => {
-          const hex = CASE_COLORS[wd.case].hex;
-          const hasDetails = wd.details && wd.details !== 'لا توجد تفاصيل إضافية';
-          const detailsHtml = hasDetails ? `<div class="ec-details">${escape(wd.details)}</div>` : '';
-          return `<div class="ec-word" style="--rail:${hex}"><div class="ec-w-head"><span class="ec-tok">${escape(wd.word)}</span><span class="ec-chip" style="--rail:${hex}">${escape(wd.caseLabel)}</span></div><div class="ec-irab">${escape(wd.irab)}</div>${detailsHtml}</div>`;
+      const q1 = <T extends HTMLElement>(sel: string) => exportCardEl.querySelector<T>(sel);
+
+      const src = q1('[data-ec-source]');
+      if (src) src.textContent = ex.source && ex.source !== i18n.customSrc ? ex.source : '';
+
+      const v = q1('[data-ec-verse]');
+      if (v) {
+        v.textContent = ex.vocalizedSentence || ex.words.map((w) => w.word).join(' ');
+        // Same rule as on screen: the Mushaf face is for Quran only.
+        v.style.fontFamily = ex.quran ? 'var(--font-quran)' : 'var(--font-arabic-classical)';
+      }
+
+      const m = q1('[data-ec-meaning]');
+      if (m) m.textContent = ex.meaning ? `"${ex.meaning}"` : '';
+
+      const count = q1('[data-ec-count]');
+      if (count) count.textContent = i18n.wordsCount(ex.words.length);
+
+      const legend = q1('[data-ec-legend]');
+      if (legend) {
+        const seen: string[] = [];
+        ex.words.forEach((w) => { if (!seen.includes(w.case)) seen.push(w.case); });
+        legend.innerHTML = seen.map((c) => {
+          const hex = CASE_COLORS[c as keyof typeof CASE_COLORS].hex;
+          const label = ex.words.find((w) => w.case === c)?.caseLabel ?? c;
+          return `<span class="ec-leg"><span class="ec-leg-dot" style="--dot:${hex}"></span>${escape(label)}</span>`;
         }).join('');
       }
-      // Sentence structure + rhetorical note — so the export carries the FULL i'rab.
-      const expBlock = exportCardEl.querySelector<HTMLElement>('[data-ec-explanation]');
-      const expText = exportCardEl.querySelector<HTMLElement>('[data-ec-explanation-text]');
+
+      const rows = q1('[data-ec-rows]');
+      if (rows) {
+        rows.innerHTML = ex.words.map((w) => {
+          const hex = CASE_COLORS[w.case].hex;
+          const tokenFont = ex.quran ? 'var(--font-quran)' : 'var(--font-arabic-classical)';
+          const hasDetails = w.details && w.details !== 'لا توجد تفاصيل إضافية';
+          const details = hasDetails ? `<div class="ec-details">${escape(w.details)}</div>` : '';
+          return `<tr class="ec-row" style="--rail:${hex}">` +
+            `<td><span class="ec-tok" style="font-family:${tokenFont}">${escape(w.word)}</span></td>` +
+            `<td><span class="ec-type">${escape(TYPE_META[w.type].ar)}</span>` +
+              (w.functionLatin ? `<span class="ec-fn">${escape(w.functionLatin)}</span>` : '') + `</td>` +
+            `<td><span class="ec-chip" style="--rail:${hex}">${escape(w.caseLabel)}</span></td>` +
+            `<td><div class="ec-irab">${escape(w.irab)}</div>${details}</td>` +
+          `</tr>`;
+        }).join('');
+      }
+
+      const expBlock = q1('[data-ec-explanation]');
+      const expText = q1('[data-ec-explanation-text]');
       if (expBlock && expText) {
         if (ex.explanation) { expText.textContent = ex.explanation; expBlock.style.display = ''; }
         else expBlock.style.display = 'none';
       }
-      const clarBlock = exportCardEl.querySelector<HTMLElement>('[data-ec-clarification]');
-      const clarText = exportCardEl.querySelector<HTMLElement>('[data-ec-clarification-text]');
+      const clarBlock = q1('[data-ec-clarification]');
+      const clarText = q1('[data-ec-clarification-text]');
       if (clarBlock && clarText) {
         if (ex.additionalClarification) { clarText.textContent = ex.additionalClarification; clarBlock.style.display = ''; }
         else clarBlock.style.display = 'none';
       }
+
+      const date = q1('[data-ec-date]');
+      if (date) {
+        try { date.textContent = new Intl.DateTimeFormat(lang === 'ar' ? 'ar' : 'en', { dateStyle: 'long' }).format(new Date()); }
+        catch { date.textContent = ''; }
+      }
+
+      ensureQr();
     }
 
     function buildCopyText(ex: ParseExample): string {
@@ -1167,8 +1366,16 @@ const t = lang === 'ar'
         if (copyLabelEl) { copyLabelEl.textContent = i18n.copied; window.setTimeout(() => { copyLabelEl.textContent = copyDefault; }, 1600); }
       } catch { /* clipboard blocked: ignore */ }
     });
-    shareBtn?.addEventListener('click', () => { if (exportCardEl) shareImage(exportCardEl, { filename: 'irab.png', title: 'إعراب · irab.app', text: lastEx?.vocalizedSentence }).catch(() => {}); });
-    pdfBtn?.addEventListener('click', () => { if (exportCardEl) downloadPdf(exportCardEl, 'irab.pdf').catch(() => {}); });
+    shareBtn?.addEventListener('click', async () => {
+      if (!exportCardEl) return;
+      await ensureQr();   // capturing before the QR decodes would bake in a blank
+      shareImage(exportCardEl, { filename: 'irab.png', title: 'إعراب · irab.app', text: lastEx?.vocalizedSentence }).catch(() => {});
+    });
+    pdfBtn?.addEventListener('click', async () => {
+      if (!exportCardEl) return;
+      await ensureQr();
+      downloadPdf(exportCardEl, 'irab.pdf').catch(() => {});
+    });
 
     // Upgrade nudge CTA: signed-in → Paddle checkout; anonymous → sign-in (start the funnel).
     nudgeCtaEl?.addEventListener('click', () => {
