@@ -8,6 +8,7 @@ interface Props { lang?: 'en' | 'ar'; showHeader?: boolean; }
 const { lang = 'en', showHeader = true } = Astro.props;
 const login = lang === 'ar' ? '/login' : '/en/login';
 const appHref = lang === 'ar' ? '/app' : '/en/app';
+const historyHref = lang === 'ar' ? '/history' : '/en/history';
 
 const t = lang === 'ar'
   ? {
@@ -18,6 +19,7 @@ const t = lang === 'ar'
       tryYour:    'جرّب جملتك',
       free:       'مجاني · بلا تسجيل',
       tryExample: 'أمثلة جاهزة:',
+      history:    'سجلّي',
       nudgeTitle: 'أعجبك هذا؟ افتح إعرابًا غير محدود مع إعراب بلس.',
       nudgeCta:   'اشترك في إعراب بلس',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
@@ -58,6 +60,7 @@ const t = lang === 'ar'
       tryYour:    'Try your own',
       free:       'Free · no signup',
       tryExample: 'Examples:',
+      history:    'My history',
       nudgeTitle: "Liked that? Unlock unlimited i'rab with Irab Plus.",
       nudgeCta:   'Get Irab Plus',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
@@ -108,7 +111,7 @@ const t = lang === 'ar'
     )}
 
     {/* ── Result panel ───────────────────────────────────────────────── */}
-    <div class="max-w-4xl mx-auto" data-demo data-lang={lang} data-login={login} data-app={appHref}>
+    <div class="max-w-4xl mx-auto" data-demo data-lang={lang} data-login={login} data-app={appHref} data-history={historyHref}>
       {/* ── The tool: a clean, solid input card ─────────────────────────── */}
       <div class="demo-shell card p-4 md:p-5">
         <form data-demo-form>
@@ -122,6 +125,12 @@ const t = lang === 'ar'
                   truncate silently, which reads as the tool losing your text. */}
               <span data-char-left class="hidden font-arabic text-caption text-ink-subtle dark:text-mist-subtle tabular-nums"></span>
               <span class="hidden sm:inline font-arabic text-caption text-ink-subtle dark:text-mist-subtle">{t.hint}</span>
+              {/* Every parse is already saved (addHistory below) but nothing
+                  ever said so. Appears only once there is something to open. */}
+              <a data-history-link href={historyHref} class="hidden items-center gap-1.5 font-arabic text-caption text-purple hover:text-purple-deep transition-colors">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <span data-history-label>{t.history}</span>
+              </a>
             </div>
             <button type="submit" data-demo-submit class="btn-primary text-small disabled:opacity-50 disabled:cursor-not-allowed">
               <svg data-submit-spinner class="hidden w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
@@ -136,11 +145,19 @@ const t = lang === 'ar'
         </div>
       </div>
 
-      <div class="mt-4 flex flex-wrap items-center gap-2">
-        <span class="font-arabic text-caption text-ink-subtle dark:text-mist-subtle">{t.tryExample}</span>
-        {EXAMPLES.slice(0, 3).map((ex) => (
-          <button type="button" data-demo-chip data-example-id={ex.id} class="ex-chip" lang="ar" dir="rtl">{ex.source}</button>
-        ))}
+      {/* The chips used to be labelled with the SOURCE ("البسملة"), so you
+          could not tell what you were about to parse. They now lead with the
+          sentence itself and keep the source as a caption. */}
+      <div class="mt-5">
+        <p class="font-arabic text-caption text-ink-subtle dark:text-mist-subtle mb-2.5">{t.tryExample}</p>
+        <div class="grid gap-2.5 sm:grid-cols-3">
+          {EXAMPLES.slice(0, 3).map((ex) => (
+            <button type="button" data-demo-chip data-example-id={ex.id} class="ex-card" lang="ar" dir="rtl">
+              <span class="ex-card-text">{ex.vocalizedSentence}</span>
+              <span class="ex-card-src">{ex.source}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* ── Loading state ───────────────────────────────────────────────── */}
@@ -360,6 +377,42 @@ const t = lang === 'ar'
   :global(.demo-card:active) {
     transform: translate3d(0, -2px, 0) scale(0.992);
     transition-duration: 120ms;
+  }
+
+  /* ── Example cards ───────────────────────────────────────────────────────
+     Lead with the sentence so you can see what you are about to parse; the
+     source is the caption, not the label. */
+  .ex-card {
+    display: flex; flex-direction: column; gap: 0.3rem; text-align: start;
+    min-height: 4.5rem; padding: 0.85rem 1rem;
+    border-radius: 0.65rem;
+    background: var(--color-card); border: 1px solid var(--color-card-edge);
+    box-shadow: var(--shadow-soft);
+    transition: transform .22s var(--ease-out-quart), box-shadow .22s var(--ease-out-quart),
+                border-color .2s, background-color .2s;
+  }
+  :global(.dark) .ex-card { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .ex-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--color-purple) 40%, var(--color-card-edge));
+    box-shadow: var(--lift-shadow);
+  }
+  .ex-card:active { transform: translateY(-1px); }
+  .ex-card:focus-visible { outline: 2px solid var(--color-purple); outline-offset: 2px; }
+  .ex-card-text {
+    font-family: var(--font-arabic-classical);
+    font-size: clamp(1rem, 1.9vw, 1.2rem); line-height: 1.75;
+    color: var(--color-ink);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  :global(.dark) .ex-card-text { color: var(--color-mist); }
+  .ex-card-src {
+    font-family: var(--font-arabic); font-size: var(--text-caption);
+    color: var(--color-ink-subtle);
+  }
+  :global(.dark) .ex-card-src { color: var(--color-mist-subtle); }
+  @media (prefers-reduced-motion: reduce) {
+    .ex-card:hover, .ex-card:active { transform: none; }
   }
 
   /* ── The case rail ───────────────────────────────────────────────────────
@@ -582,7 +635,7 @@ const t = lang === 'ar'
 <script>
   import { EXAMPLES, CASE_COLORS, TYPE_META, type ParseExample } from '../../data/demo-examples';
   import { maybeSignedIn } from '../../lib/session';
-  import { addHistory, getHistoryItem } from '../../lib/history';
+  import { addHistory, getHistory, getHistoryItem } from '../../lib/history';
   import { revealStagger, springPress } from '../../lib/animate';
   import { shareImage, downloadPdf } from '../../lib/share';
 
@@ -671,7 +724,7 @@ const t = lang === 'ar'
     const charLeftEl    = root.querySelector<HTMLElement>('[data-char-left]');
     const errorTextEl   = root.querySelector<HTMLElement>('[data-demo-error-text]');
     const retryBtn      = root.querySelector<HTMLButtonElement>('[data-demo-retry]');
-    const MAX_CHARS     = inputEl.maxLength > 0 ? inputEl.maxLength : 200;
+
     let lastEx: ParseExample | null = null;
     const exportCardEl  = document.querySelector<HTMLElement>('[data-export-card]'); // sibling of [data-demo], not a child
     const gateTitleEl  = gateEl.querySelector<HTMLElement>('[data-gate-title]')!;
@@ -695,8 +748,18 @@ const t = lang === 'ar'
       gateEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    // Upgrade nudge: only ever shown to non-premium users after they interact.
-    function showNudge() { if (nudgeEl && !isPremium) nudgeEl.classList.remove('hidden'); }
+    /* Upgrade nudge. It used to fire after every parse AND every example tap,
+       which turns the moment of delight into a sales pitch and trains people to
+       ignore it. Now: never for an example (the visitor invested nothing), and
+       only from a visitor's SECOND parse of their own — the first one should be
+       pure result — and at most once per page. */
+    let ownParses = 0;
+    let nudgeShown = false;
+    function showNudge() {
+      if (!nudgeEl || isPremium || nudgeShown || ownParses < 2) return;
+      nudgeShown = true;
+      nudgeEl.classList.remove('hidden');
+    }
     function hideNudge() { nudgeEl?.classList.add('hidden'); }
 
     function getQuota(): number {
@@ -739,6 +802,22 @@ const t = lang === 'ar'
         submitEl.disabled = false;
         submitLabelEl.textContent = i18n.parse;
       }
+    }
+
+    /* Every parse is recorded via addHistory, and /history renders it — but the
+       tool never mentioned it, so the feature was invisible. The link appears
+       only when the log is non-empty, and is re-checked after auth resolves
+       (history is keyed by uid) and after each parse. */
+    const historyLinkEl = root.querySelector<HTMLElement>('[data-history-link]');
+    function refreshHistoryLink() {
+      if (!historyLinkEl) return;
+      let n = 0;
+      try {
+        n = getHistory('anon', 'analyze').length;
+        if (currentUid) n += getHistory(currentUid, 'analyze').length;
+      } catch { n = 0; }
+      historyLinkEl.classList.toggle('hidden', n === 0);
+      historyLinkEl.classList.toggle('inline-flex', n > 0);
     }
 
     function escape(s: string): string {
@@ -859,7 +938,7 @@ const t = lang === 'ar'
         resultEl.classList.remove('hidden');
         actionsEl.classList.remove('hidden');
         revealStagger(cardsEl.querySelectorAll('.demo-card'));
-        showNudge();
+        // Deliberately no nudge here: an example tap costs the visitor nothing.
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
@@ -1030,7 +1109,9 @@ const t = lang === 'ar'
         resultEl.classList.remove('hidden');
         actionsEl.classList.remove('hidden');
         revealStagger(cardsEl.querySelectorAll('.demo-card'));
+        ownParses += 1;
         showNudge();
+        refreshHistoryLink();
         if (!isSignedIn) bumpQuota();
         renderQuota();
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1059,8 +1140,10 @@ const t = lang === 'ar'
       inputEl.style.height = 'auto';
       inputEl.style.height = `${Math.min(inputEl.scrollHeight, 320)}px`;
       if (charLeftEl) {
-        const left = MAX_CHARS - inputEl.value.length;
-        const near = inputEl.value.length >= MAX_CHARS * 0.75;
+        // Read the cap live: it is raised to 600 for premium after auth resolves.
+        const cap = inputEl.maxLength > 0 ? inputEl.maxLength : 200;
+        const left = cap - inputEl.value.length;
+        const near = inputEl.value.length >= cap * 0.75;
         charLeftEl.textContent = near ? i18n.charLeft(left) : '';
         charLeftEl.classList.toggle('hidden', !near);
       }
@@ -1097,6 +1180,7 @@ const t = lang === 'ar'
     springPress([submitEl, ...Array.from(actionsEl.querySelectorAll('button'))]);
 
     renderQuota();
+    refreshHistoryLink();
 
     // Initial state: replay a saved analysis from ?h=. Otherwise keep the
     // results area empty until the user submits text or taps an example.
@@ -1145,6 +1229,8 @@ const t = lang === 'ar'
             });
           });
           renderQuota();
+          refreshHistoryLink();  // history is keyed by uid, which only exists now
+          syncInput();           // premium raises the cap to 600
         } catch { /* ignore: anonymous/free path already rendered */ }
       })();
     }
