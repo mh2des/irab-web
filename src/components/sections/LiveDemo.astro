@@ -20,6 +20,8 @@ const t = lang === 'ar'
       free:       'مجاني · بلا تسجيل',
       tryExample: 'أمثلة جاهزة:',
       history:    'سجلّي',
+      micStart:   'إدخال صوتي',
+      micStop:    'إيقاف الاستماع',
       nudgeTitle: 'أعجبك هذا؟ افتح إعرابًا غير محدود مع إعراب بلس.',
       nudgeCta:   'اشترك في إعراب بلس',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
@@ -61,6 +63,8 @@ const t = lang === 'ar'
       free:       'Free · no signup',
       tryExample: 'Examples:',
       history:    'My history',
+      micStart:   'Voice input',
+      micStop:    'Stop listening',
       nudgeTitle: "Liked that? Unlock unlimited i'rab with Irab Plus.",
       nudgeCta:   'Get Irab Plus',
       placeholder:'ألصق أو اكتب أيّ جملة عربية…',
@@ -118,7 +122,7 @@ const t = lang === 'ar'
           <textarea data-demo-input lang="ar" dir="rtl" rows="3" maxlength="200" placeholder={t.placeholder}
             class="demo-textarea w-full rounded-lg px-5 md:px-6 py-5 font-arabic text-[clamp(1.45rem,3vw,2rem)] leading-relaxed text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
             style="font-family: var(--font-arabic-classical);"></textarea>
-          <div class="mt-4 flex items-center justify-between gap-3">
+          <div class="mt-4 flex items-center justify-between gap-3" data-demo-actions-row>
             <div class="flex items-center gap-3 min-w-0">
               <span data-demo-quota class="font-arabic text-small text-ink-subtle dark:text-mist-subtle"></span>
               {/* Appears only as the 200-char cap approaches: it used to
@@ -132,13 +136,28 @@ const t = lang === 'ar'
                 <span data-history-label>{t.history}</span>
               </a>
             </div>
-            <button type="submit" data-demo-submit class="btn-primary text-small disabled:opacity-50 disabled:cursor-not-allowed">
-              <svg data-submit-spinner class="hidden w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-              <span data-submit-label>{t.parse}</span>
-              <svg data-submit-arrow class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={lang === 'ar' ? 'M19 12H5M11 19l-7-7 7-7' : 'M5 12h14M13 5l7 7-7 7'}/></svg>
-            </button>
+            <div class="flex items-center gap-2">
+              {/* Voice input. Rendered hidden and only revealed by the script when
+                  SpeechRecognition actually exists — Firefox has none, and a mic
+                  that cannot listen is worse than no mic. */}
+              <button type="button" data-demo-mic class="mic-btn hidden" aria-label={t.micStart} aria-pressed="false" title={t.micStart}>
+                <svg data-mic-idle class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v5"/>
+                </svg>
+                <svg data-mic-live class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <rect x="6" y="6" width="12" height="12" rx="2.5"/>
+                </svg>
+              </button>
+              <button type="submit" data-demo-submit class="btn-primary text-small disabled:opacity-50 disabled:cursor-not-allowed">
+                <svg data-submit-spinner class="hidden w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                <span data-submit-label>{t.parse}</span>
+                <svg data-submit-arrow class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={lang === 'ar' ? 'M19 12H5M11 19l-7-7 7-7' : 'M5 12h14M13 5l7 7-7 7'}/></svg>
+              </button>
+            </div>
           </div>
         </form>
+        {/* Spoken-state feedback; also the only channel a screen reader gets. */}
+        <p data-mic-status role="status" aria-live="polite" class="mic-status"></p>
         <div class="mt-3 flex items-center gap-1" data-quota-dots>
           <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
           <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
@@ -413,6 +432,52 @@ const t = lang === 'ar'
   :global(.demo-card:active) {
     transform: translate3d(0, -2px, 0) scale(0.992);
     transition-duration: 120ms;
+  }
+
+  /* ── Voice input ─────────────────────────────────────────────────────────
+     Only ever visible when SpeechRecognition exists (the script un-hides it).
+     Listening is signalled three ways — icon swap, colour, and a live text
+     status — so it does not depend on colour or animation alone. */
+  .mic-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.85rem; height: 2.85rem; flex-shrink: 0;   /* 44px+ tap target */
+    border-radius: 0.5rem;
+    color: var(--color-ink-muted);
+    background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    transition: color .2s, background-color .2s, border-color .2s,
+                transform .2s var(--ease-out-quart), box-shadow .2s var(--ease-out-quart);
+  }
+  :global(.dark) .mic-btn { color: var(--color-mist-muted); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
+  .mic-btn:hover { color: var(--color-purple); border-color: var(--color-purple); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+  .mic-btn:focus-visible { outline: 2px solid var(--color-purple); outline-offset: 2px; }
+
+  .mic-btn.is-live {
+    color: #fff;
+    background: var(--color-purple);
+    border-color: var(--color-purple);
+    animation: mic-pulse 1.6s ease-in-out infinite;
+  }
+  :global(.dark) .mic-btn.is-live { color: #fff; background: var(--color-purple); }
+  .mic-btn.is-live:hover { transform: none; }
+  @keyframes mic-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-purple) 55%, transparent); }
+    50%      { box-shadow: 0 0 0 9px color-mix(in srgb, var(--color-purple) 0%, transparent); }
+  }
+
+  .mic-status {
+    margin-top: 0.7rem;
+    font-family: var(--font-arabic); font-size: var(--text-caption);
+    color: var(--color-ink-subtle);
+  }
+  :global(.dark) .mic-status { color: var(--color-mist-subtle); }
+  .mic-status:empty { display: none; }
+  .mic-status.is-error { color: #b91c1c; }
+  :global(.dark) .mic-status.is-error { color: #fca5a5; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mic-btn, .mic-btn:hover { transform: none; }
+    .mic-btn.is-live { animation: none; }
   }
 
   /* ── Example cards ───────────────────────────────────────────────────────
@@ -804,7 +869,14 @@ const t = lang === 'ar'
           signTitle: 'أنشئ حسابًا مجانيًا للمتابعة', signBody: 'سجّل الدخول لتحصل على ٣ محاولات يوميًّا.', signCta: 'تسجيل الدخول / إنشاء حساب',
           upTitle: 'بلغت حدّك اليومي المجاني', upBody: 'لديك ٣ محاولات مجانية يوميًّا. اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.', upCta: 'اشترك في إعراب بلس',
           copied: 'تم النسخ ✓', units: 'الوحدات الإعرابية', retry: 'أعد المحاولة',
-          charLeft: (n: number) => `${n} حرفًا متبقية`, loadSteps: ['نقرأ الجملة…', 'نحدّد أنواع الكلمات…', 'نحدّد المواقع الإعرابية…', 'نجهّز الشرح…'] }
+          charLeft: (n: number) => `${n} حرفًا متبقية`,
+          micStart: 'إدخال صوتي', micStop: 'إيقاف الاستماع',
+          micListening: 'أنصت… تكلّم الآن بالعربية الفصحى.',
+          micDenied: 'الميكروفون محظور لهذا الموقع. فعّله من إعدادات المتصفح ثم أعد المحاولة.',
+          micNoSpeech: 'لم أسمع شيئًا. اقترب من الميكروفون وحاول مجددًا.',
+          micNoMic: 'لم يُعثر على ميكروفون في هذا الجهاز.',
+          micError: 'تعذّر الإدخال الصوتي الآن. اكتب الجملة أو حاول لاحقًا.',
+          loadSteps: ['نقرأ الجملة…', 'نحدّد أنواع الكلمات…', 'نحدّد المواقع الإعرابية…', 'نجهّز الشرح…'] }
       : { remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
           parsing: 'Parsing…', error: "Couldn't analyze right now. Please try again.", customSrc: 'Your sentence', fallback: 'Demo offline · showing specimen',
           irabLabel: "I'rab", showDetails: 'Show details', hideDetails: 'Hide details',
@@ -812,7 +884,14 @@ const t = lang === 'ar'
           signTitle: 'Create a free account to continue', signBody: 'Sign in to get 3 free parses a day.', signCta: 'Sign in / Create account',
           upTitle: "You've reached your daily free limit", upBody: 'You get 3 free parses a day. Subscribe to Irab Plus for unlimited, or come back tomorrow.', upCta: 'Subscribe to Irab Plus',
           copied: 'Copied ✓', units: 'Grammatical units', retry: 'Try again',
-          charLeft: (n: number) => `${n} characters left`, loadSteps: ['Reading the sentence…', 'Identifying word types…', 'Determining grammatical roles…', 'Preparing the explanation…'] };
+          charLeft: (n: number) => `${n} characters left`,
+          micStart: 'Voice input', micStop: 'Stop listening',
+          micListening: 'Listening… speak in Arabic now.',
+          micDenied: 'Microphone is blocked for this site. Allow it in your browser settings and try again.',
+          micNoSpeech: "I didn't hear anything. Move closer and try again.",
+          micNoMic: 'No microphone found on this device.',
+          micError: "Voice input isn't available right now. Type the sentence instead.",
+          loadSteps: ['Reading the sentence…', 'Identifying word types…', 'Determining grammatical roles…', 'Preparing the explanation…'] };
 
     const sourceMainEl = root.querySelector<HTMLElement>('[data-source-main]')!;
     const sourceSubEl  = root.querySelector<HTMLElement>('[data-source-sub]');
@@ -854,6 +933,10 @@ const t = lang === 'ar'
     const charLeftEl    = root.querySelector<HTMLElement>('[data-char-left]');
     const errorTextEl   = root.querySelector<HTMLElement>('[data-demo-error-text]');
     const retryBtn      = root.querySelector<HTMLButtonElement>('[data-demo-retry]');
+    const micBtn        = root.querySelector<HTMLButtonElement>('[data-demo-mic]');
+    const micIdleIcon   = root.querySelector<HTMLElement>('[data-mic-idle]');
+    const micLiveIcon   = root.querySelector<HTMLElement>('[data-mic-live]');
+    const micStatusEl   = root.querySelector<HTMLElement>('[data-mic-status]');
 
     let lastEx: ParseExample | null = null;
     const exportCardEl  = document.querySelector<HTMLElement>('[data-export-card]'); // sibling of [data-demo], not a child
@@ -1349,6 +1432,112 @@ const t = lang === 'ar'
     }
     inputEl.addEventListener('input', syncInput);
     syncInput();
+
+    /* ── Voice input ──────────────────────────────────────────────────────
+       Web Speech API: no backend, no per-request cost, and it recognises
+       Arabic. Chrome/Edge (desktop + Android) and Safari 14.5+ have it;
+       Firefox has none, which is exactly why the button starts hidden and is
+       only revealed after feature detection. Requires HTTPS (or localhost).
+
+       Text is composed as: whatever was already typed + the finalised
+       transcript + the live interim, so speaking never destroys typed input
+       and the interim can be replaced on every event without flicker. */
+    const SpeechRec: any =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (micBtn && SpeechRec) {
+      micBtn.classList.remove('hidden');
+
+      let rec: any = null;
+      let listening = false;
+      let baseText = '';
+      let finalText = '';
+
+      function micStatus(msg: string, isError = false) {
+        if (!micStatusEl) return;
+        micStatusEl.textContent = msg;
+        micStatusEl.classList.toggle('is-error', isError);
+      }
+
+      function setMicUi(on: boolean) {
+        listening = on;
+        micBtn!.classList.toggle('is-live', on);
+        micBtn!.setAttribute('aria-pressed', String(on));
+        micBtn!.setAttribute('aria-label', on ? i18n.micStop : i18n.micStart);
+        micBtn!.setAttribute('title', on ? i18n.micStop : i18n.micStart);
+        micIdleIcon?.classList.toggle('hidden', on);
+        micLiveIcon?.classList.toggle('hidden', !on);
+      }
+
+      function stopListening() {
+        try { rec?.stop(); } catch { /* already stopped */ }
+        setMicUi(false);
+      }
+
+      function startListening() {
+        rec = new SpeechRec();
+        // The analyzer only parses Arabic, so recognition stays Arabic even on
+        // the English page — the UI language and the content language differ.
+        rec.lang = 'ar-SA';
+        rec.continuous = true;
+        rec.interimResults = true;
+        rec.maxAlternatives = 1;
+
+        baseText = inputEl.value.trim();
+        finalText = '';
+
+        rec.onstart = () => { setMicUi(true); micStatus(i18n.micListening); };
+
+        rec.onresult = (e: any) => {
+          let interim = '';
+          for (let i = e.resultIndex; i < e.results.length; i++) {
+            const r = e.results[i];
+            if (r.isFinal) finalText += r[0].transcript;
+            else interim += r[0].transcript;
+          }
+          const spoken = (finalText + interim).trim();
+          const joined = [baseText, spoken].filter(Boolean).join(' ');
+          const cap = inputEl.maxLength > 0 ? inputEl.maxLength : 200;
+          inputEl.value = joined.slice(0, cap);
+          syncInput();
+          // Stop cleanly once the cap is reached rather than silently dropping
+          // the rest of what the user is still saying.
+          if (joined.length >= cap) stopListening();
+        };
+
+        rec.onerror = (e: any) => {
+          const code = e?.error;
+          if (code === 'aborted') return;   // we stopped it on purpose
+          if (code === 'not-allowed' || code === 'service-not-allowed') micStatus(i18n.micDenied, true);
+          else if (code === 'no-speech') micStatus(i18n.micNoSpeech, true);
+          else if (code === 'audio-capture') micStatus(i18n.micNoMic, true);
+          else micStatus(i18n.micError, true);
+          setMicUi(false);
+        };
+
+        // Fires on natural end (silence) as well as on stop(); never auto-restart,
+        // an unexpectedly hot mic is a genuine privacy problem.
+        rec.onend = () => {
+          setMicUi(false);
+          if (micStatusEl && !micStatusEl.classList.contains('is-error')) micStatus('');
+          inputEl.focus({ preventScroll: true });
+        };
+
+        try { rec.start(); }
+        catch { micStatus(i18n.micError, true); setMicUi(false); }
+      }
+
+      micBtn.addEventListener('click', () => {
+        micStatus('');
+        if (listening) stopListening();
+        else startListening();
+      });
+
+      // Submitting while the mic is hot would leave it listening behind a result.
+      formEl.addEventListener('submit', () => { if (listening) stopListening(); });
+      // And a page teardown must never leave the mic open.
+      window.addEventListener('pagehide', () => { if (listening) stopListening(); });
+    }
 
     // Retry: put the user back in the box with their sentence intact.
     retryBtn?.addEventListener('click', () => {
