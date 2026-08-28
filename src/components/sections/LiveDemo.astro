@@ -843,17 +843,73 @@ const t = lang === 'ar'
   //   https://api.irab.app/v1/parse-public
   const API_URL = 'https://irab-api-v2.mansourhassan783.workers.dev/v1/parse-public';
 
+  /**
+   * A device signature for the anonymous free-parse cap, which the worker
+   * enforces per fingerprint (2, lifetime, 90-day TTL).
+   *
+   * The rule this follows: include what separates one visitor from another,
+   * exclude what merely changes over time for everyone. The old signature got
+   * that backwards in two places and the cap silently reset as a result.
+   *
+   *  • userAgent carried the browser's MAJOR VERSION. Every Chrome user shares
+   *    that number at any given moment, so it separated nobody — it just handed
+   *    the entire anonymous audience a new identity, and two fresh parses,
+   *    every release (~4 weeks). Now only the browser and platform FAMILY.
+   *  • getTimezoneOffset() shifts with daylight saving, rotating identities
+   *    twice a year for whole regions. The IANA zone name does not move, and
+   *    carries MORE entropy than the offset (many zones share one offset).
+   *  • Screen dimensions are kept: unlike the version, they genuinely separate
+   *    visitors. They are sorted so rotating a phone does not mint a new
+   *    identity.
+   */
+  function deviceSignature(): string {
+    const ua = navigator.userAgent;
+    const browser =
+      /Edg\//.test(ua)     ? 'edge'    :
+      /OPR\//.test(ua)     ? 'opera'   :
+      /Firefox\//.test(ua) ? 'firefox' :
+      /Chrome\//.test(ua)  ? 'chrome'  :
+      /Safari\//.test(ua)  ? 'safari'  : 'other';
+    const platform =
+      /iPhone/.test(ua)     ? 'iphone'  :
+      /iPad/.test(ua)       ? 'ipad'    :
+      /Android/.test(ua)    ? 'android' :
+      /Macintosh/.test(ua)  ? 'mac'     :
+      /Windows/.test(ua)    ? 'windows' :
+      /Linux/.test(ua)      ? 'linux'   : 'other';
+
+    let tz = '';
+    try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch { /* older engine */ }
+    if (!tz) tz = String(new Date().getTimezoneOffset());
+
+    // Sorted, so portrait and landscape hash the same.
+    const dims = [screen.width, screen.height].sort((a, b) => a - b).join('x');
+
+    return [
+      browser, platform,
+      navigator.language,
+      `${dims}x${screen.colorDepth}`,
+      tz,
+      navigator.hardwareConcurrency || '',
+      (navigator as any).deviceMemory || '',
+    ].join('|');
+  }
+
   async function getFingerprint(): Promise<string> {
     try {
+      // Anyone who already has a cached id keeps it: re-deriving would reset
+      // every existing visitor's counter once, which is the very bug this fixes.
       const cached = localStorage.getItem(FP_KEY);
       if (cached && /^[a-f0-9]{16}$/.test(cached)) return cached;
-      const sig = [navigator.userAgent, navigator.language, `${screen.width}x${screen.height}x${screen.colorDepth}`, new Date().getTimezoneOffset(), navigator.hardwareConcurrency || ''].join('|');
-      const buf = new TextEncoder().encode(sig);
+      const buf = new TextEncoder().encode(deviceSignature());
       const hash = await crypto.subtle.digest('SHA-256', buf);
       const fp = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 16);
       localStorage.setItem(FP_KEY, fp);
       return fp;
     } catch {
+      // No crypto/storage (very old or locked-down browser). A random id means
+      // this visitor is uncapped by fingerprint — the per-IP daily cap is the
+      // backstop, which is the correct trade: never block a real user outright.
       return 'anon-' + Math.random().toString(36).slice(2, 10);
     }
   }
