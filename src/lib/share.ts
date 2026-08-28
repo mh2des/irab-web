@@ -44,6 +44,26 @@ function downloadBlob(blob: Blob, filename: string): void {
 
 export interface ShareOpts { filename?: string; title?: string; text?: string; }
 
+/**
+ * Preload what an export needs. snapdom and jsPDF are only imported when
+ * someone actually exports, so the FIRST share or PDF paid the whole
+ * download-and-parse cost up front — with the main thread blocked at the end
+ * of it, which is what made the button feel hung. Calling this once results
+ * are on screen moves that cost into the seconds the reader spends reading.
+ * Idempotent: repeated calls share one promise.
+ */
+let warming: Promise<unknown> | null = null;
+export function warmExport(): Promise<unknown> {
+  if (!warming) {
+    warming = Promise.all([
+      import('@zumer/snapdom').catch(() => {}),
+      import('jspdf').catch(() => {}),
+      ensureFonts(),
+    ]);
+  }
+  return warming;
+}
+
 /** Capture an element to a PNG Blob (Arabic + custom fonts embedded). */
 export async function captureBlob(el: HTMLElement): Promise<Blob> {
   await ensureFonts();

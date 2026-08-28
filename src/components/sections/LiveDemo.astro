@@ -664,6 +664,12 @@ const t = lang === 'ar'
   .act-btn:hover { color: var(--color-purple); border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
   .act-btn svg { width: 1.35rem; height: 1.35rem; }
   .act-btn:disabled { opacity: .72; cursor: progress; }
+  /* Export blocks the main thread for seconds (snapdom rasterises the card,
+     jsPDF wraps it). A transform animation only survives that if it has been
+     promoted to its own compositor layer first — otherwise it freezes with the
+     thread and the button reads as hung. will-change forces the promotion;
+     runExport paints a frame before starting so the promotion actually lands. */
+  .act-btn [data-act-spin] { will-change: transform; }
   .act-btn:disabled:hover { transform: none; box-shadow: none; }
   /* Share is the primary action: filled so it leads the row. */
   .act-btn-primary { color: #fff; background: var(--color-purple); border-color: var(--color-purple); }
@@ -836,7 +842,7 @@ const t = lang === 'ar'
   import { maybeSignedIn } from '../../lib/session';
   import { addHistory, getHistory, getHistoryItem } from '../../lib/history';
   import { revealStagger, springPress } from '../../lib/animate';
-  import { shareImage, downloadPdf, exportFilename } from '../../lib/share';
+  import { shareImage, downloadPdf, exportFilename, warmExport } from '../../lib/share';
 
   const STORAGE_KEY = 'irab-demo-quota';
   const FP_KEY = 'irab-fp';
@@ -1218,6 +1224,7 @@ const t = lang === 'ar'
         renderExample(ex);
         resultEl.classList.remove('hidden');
         actionsEl.classList.remove('hidden');
+        warmExportSoon();
         revealStagger(cardsEl.querySelectorAll('.demo-card'));
         // Deliberately no nudge here: an example tap costs the visitor nothing.
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1458,6 +1465,7 @@ const t = lang === 'ar'
         } catch { /* history is best-effort */ }
         resultEl.classList.remove('hidden');
         actionsEl.classList.remove('hidden');
+        warmExportSoon();
         revealStagger(cardsEl.querySelectorAll('.demo-card'));
         ownParses += 1;
         showNudge();
@@ -1645,6 +1653,19 @@ const t = lang === 'ar'
       } catch { /* clipboard blocked: ignore */ }
     });
     /**
+     * Pull the export chunks in while the reader is reading, not when they
+     * press the button. Only after a result exists — someone who never gets an
+     * analysis never pays for it — and only on idle, so it cannot compete with
+     * rendering the analysis itself.
+     */
+    function warmExportSoon() {
+      const go = () => { warmExport(); };
+      const ric = (window as any).requestIdleCallback;
+      if (typeof ric === 'function') ric(go, { timeout: 3000 });
+      else window.setTimeout(go, 1500);
+    }
+
+    /**
      * Export is real work — snapdom rasterises the card at 2.5x and jsPDF wraps
      * the result — which runs to seconds on a phone. With no feedback the tap
      * looked inert, so people tapped again and started a second capture. This
@@ -1666,6 +1687,20 @@ const t = lang === 'ar'
       icon?.classList.add('hidden');
       spin?.classList.remove('hidden');
       if (labelEl) labelEl.textContent = i18n.preparing;
+      // Hand the browser a frame to paint the busy state and get the spin onto
+      // the compositor before the heavy work starts, otherwise the animation
+      // never starts and the button reads as frozen.
+      //
+      // Never *block* on rAF: a hidden or backgrounded tab does not fire it at
+      // all, so awaiting one there left the button stuck on "preparing" with
+      // the export never starting. The timeout makes the frame an optimisation
+      // rather than a dependency.
+      await new Promise<void>((resolve) => {
+        let settled = false;
+        const done = () => { if (!settled) { settled = true; resolve(); } };
+        requestAnimationFrame(() => requestAnimationFrame(done));
+        window.setTimeout(done, 120);
+      });
       try {
         await task();
       } catch (e) {
@@ -1725,6 +1760,7 @@ const t = lang === 'ar'
           renderExample(item.data as ParseExample);
           resultEl.classList.remove('hidden');
           actionsEl.classList.remove('hidden');
+        warmExportSoon();
           revealStagger(cardsEl.querySelectorAll('.demo-card'));
           resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
