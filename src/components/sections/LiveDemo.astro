@@ -261,12 +261,14 @@ const t = lang === 'ar'
             <span data-act-copy-label>{t.copy}</span>
           </button>
           <button type="button" data-act-share class="act-btn act-btn-primary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            <span>{t.share}</span>
+            <svg data-act-icon viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <svg data-act-spin class="hidden animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            <span data-act-share-label>{t.share}</span>
           </button>
           <button type="button" data-act-pdf class="act-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-            <span>{t.pdf}</span>
+            <svg data-act-icon viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+            <svg data-act-spin class="hidden animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            <span data-act-pdf-label>{t.pdf}</span>
           </button>
         </div>
 
@@ -661,6 +663,8 @@ const t = lang === 'ar'
   :global(.dark) .act-btn { color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .act-btn:hover { color: var(--color-purple); border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
   .act-btn svg { width: 1.35rem; height: 1.35rem; }
+  .act-btn:disabled { opacity: .72; cursor: progress; }
+  .act-btn:disabled:hover { transform: none; box-shadow: none; }
   /* Share is the primary action: filled so it leads the row. */
   .act-btn-primary { color: #fff; background: var(--color-purple); border-color: var(--color-purple); }
   :global(.dark) .act-btn-primary { color: #fff; background: var(--color-purple); border-color: var(--color-purple); }
@@ -832,7 +836,7 @@ const t = lang === 'ar'
   import { maybeSignedIn } from '../../lib/session';
   import { addHistory, getHistory, getHistoryItem } from '../../lib/history';
   import { revealStagger, springPress } from '../../lib/animate';
-  import { shareImage, downloadPdf } from '../../lib/share';
+  import { shareImage, downloadPdf, exportFilename } from '../../lib/share';
 
   const STORAGE_KEY = 'irab-demo-quota';
   const FP_KEY = 'irab-fp';
@@ -925,6 +929,7 @@ const t = lang === 'ar'
           signTitle: 'أنشئ حسابًا مجانيًا للمتابعة', signBody: 'سجّل الدخول لتحصل على ٣ محاولات يوميًّا.', signCta: 'تسجيل الدخول / إنشاء حساب',
           upTitle: 'بلغت حدّك اليومي المجاني', upBody: 'لديك ٣ محاولات مجانية يوميًّا. اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.', upCta: 'اشترك في إعراب بلس',
           copied: 'تم النسخ ✓', units: 'الوحدات الإعرابية', retry: 'أعد المحاولة',
+          preparing: 'جارٍ التجهيز…', exportFail: 'تعذّر التصدير',
           charLeft: (n: number) => `${n} حرفًا متبقية`,
           micStart: 'إدخال صوتي', micStop: 'إيقاف الاستماع',
           micListening: 'أنصت… تكلّم الآن بالعربية الفصحى.',
@@ -942,6 +947,7 @@ const t = lang === 'ar'
           signTitle: 'Create a free account to continue', signBody: 'Sign in to get 3 free parses a day.', signCta: 'Sign in / Create account',
           upTitle: "You've reached your daily free limit", upBody: 'You get 3 free parses a day. Subscribe to Irab Plus for unlimited, or come back tomorrow.', upCta: 'Subscribe to Irab Plus',
           copied: 'Copied ✓', units: 'Grammatical units', retry: 'Try again',
+          preparing: 'Preparing…', exportFail: "Couldn't export",
           charLeft: (n: number) => `${n} characters left`,
           micStart: 'Voice input', micStop: 'Stop listening',
           micListening: 'Listening… speak in Arabic now.',
@@ -983,7 +989,9 @@ const t = lang === 'ar'
     const copyBtn       = root.querySelector<HTMLButtonElement>('[data-act-copy]');
     const copyLabelEl   = root.querySelector<HTMLElement>('[data-act-copy-label]');
     const shareBtn      = root.querySelector<HTMLButtonElement>('[data-act-share]');
+    const shareLabelEl  = root.querySelector<HTMLElement>('[data-act-share-label]');
     const pdfBtn        = root.querySelector<HTMLButtonElement>('[data-act-pdf]');
+    const pdfLabelEl    = root.querySelector<HTMLElement>('[data-act-pdf-label]');
     const loadingStepEl = root.querySelector<HTMLElement>('[data-loading-step]');
     const loadingEchoEl = root.querySelector<HTMLElement>('[data-loading-echo]');
     const skeletonEl    = root.querySelector<HTMLElement>('[data-loading-skeleton]');
@@ -1636,15 +1644,63 @@ const t = lang === 'ar'
         if (copyLabelEl) { copyLabelEl.textContent = i18n.copied; window.setTimeout(() => { copyLabelEl.textContent = copyDefault; }, 1600); }
       } catch { /* clipboard blocked: ignore */ }
     });
-    shareBtn?.addEventListener('click', async () => {
+    /**
+     * Export is real work — snapdom rasterises the card at 2.5x and jsPDF wraps
+     * the result — which runs to seconds on a phone. With no feedback the tap
+     * looked inert, so people tapped again and started a second capture. This
+     * spins, blocks re-entry, and surfaces failure: the old .catch(() => {})
+     * made a broken export look exactly like a working one.
+     */
+    async function runExport(
+      btn: HTMLButtonElement | null,
+      labelEl: HTMLElement | null,
+      task: () => Promise<void>,
+    ) {
+      if (!btn || btn.dataset.busy === '1') return;
+      const icon = btn.querySelector<HTMLElement>('[data-act-icon]');
+      const spin = btn.querySelector<HTMLElement>('[data-act-spin]');
+      const restore = labelEl?.textContent ?? '';
+      btn.dataset.busy = '1';
+      btn.disabled = true;
+      btn.setAttribute('aria-busy', 'true');
+      icon?.classList.add('hidden');
+      spin?.classList.remove('hidden');
+      if (labelEl) labelEl.textContent = i18n.preparing;
+      try {
+        await task();
+      } catch (e) {
+        console.warn('[irab-export]', e);
+        if (labelEl) {
+          labelEl.textContent = i18n.exportFail;
+          await new Promise((r) => window.setTimeout(r, 2200));
+        }
+      } finally {
+        btn.dataset.busy = '0';
+        btn.disabled = false;
+        btn.removeAttribute('aria-busy');
+        spin?.classList.add('hidden');
+        icon?.classList.remove('hidden');
+        if (labelEl) labelEl.textContent = restore;
+      }
+    }
+
+    shareBtn?.addEventListener('click', () => {
       if (!exportCardEl) return;
-      await ensureQr();   // capturing before the QR decodes would bake in a blank
-      shareImage(exportCardEl, { filename: 'irab.png', title: 'إعراب · irab.app', text: lastEx?.vocalizedSentence }).catch(() => {});
+      runExport(shareBtn, shareLabelEl, async () => {
+        await ensureQr();   // capturing before the QR decodes would bake in a blank
+        await shareImage(exportCardEl, {
+          filename: exportFilename(lastEx?.vocalizedSentence || '', 'png'),
+          title: 'إعراب · irab.app',
+          text: lastEx?.vocalizedSentence,
+        });
+      });
     });
-    pdfBtn?.addEventListener('click', async () => {
+    pdfBtn?.addEventListener('click', () => {
       if (!exportCardEl) return;
-      await ensureQr();
-      downloadPdf(exportCardEl, 'irab.pdf').catch(() => {});
+      runExport(pdfBtn, pdfLabelEl, async () => {
+        await ensureQr();
+        await downloadPdf(exportCardEl, exportFilename(lastEx?.vocalizedSentence || '', 'pdf'));
+      });
     });
 
     // Upgrade nudge CTA: signed-in → Paddle checkout; anonymous → sign-in (start the funnel).

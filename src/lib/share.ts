@@ -82,3 +82,34 @@ export async function downloadPdf(el: HTMLElement, filename = 'irab.pdf'): Promi
   pdf.addImage(dataUrl, 'PNG', 0, 0, w, h);
   pdf.save(filename);
 }
+
+// Arabic diacritics + tatweel: stripped from filenames so the name stays short
+// and does not vary with vocalization. Plus the characters no filesystem takes.
+const TASHKEEL = /[\u064B-\u0652\u0670\u0640]/g;
+const ILLEGAL = /[\\/:*?"<>|\u0000-\u001F]/g;
+
+/**
+ * A filename that identifies the analysis rather than colliding with every
+ * other one. Exports were a hardcoded `irab.png` / `irab.pdf`, so phones
+ * flagged each new save as a re-download of the same file and a folder of
+ * shared analyses was indistinguishable. The name carries the sentence and a
+ * timestamp: unique per analysis, and it sorts chronologically.
+ */
+export function exportFilename(sentence: string, ext: 'png' | 'pdf', now = new Date()): string {
+  const slug = (sentence || '')
+    .replace(TASHKEEL, '')
+    .replace(ILLEGAL, ' ')
+    .replace(/[.\-_]+/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 6)
+    .join('-')
+    .slice(0, 48)
+    .replace(/^-+|-+$/g, '');
+  const p = (n: number) => String(n).padStart(2, '0');
+  const stamp =
+    `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}` +
+    `-${p(now.getHours())}${p(now.getMinutes())}${p(now.getSeconds())}`;
+  return `${['\u0625\u0639\u0631\u0627\u0628', slug].filter(Boolean).join('-')}-${stamp}.${ext}`;
+}
