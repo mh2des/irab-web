@@ -931,6 +931,8 @@ const t = lang === 'ar'
           micDenied: 'الميكروفون محظور لهذا الموقع. فعّله من إعدادات المتصفح ثم أعد المحاولة.',
           micNoSpeech: 'لم أسمع شيئًا. اقترب من الميكروفون وحاول مجددًا.',
           micNoMic: 'لم يُعثر على ميكروفون في هذا الجهاز.',
+          micNetwork: 'تعذّر الوصول إلى خدمة التعرّف على الصوت. تحقّق من اتصالك وحاول مجددًا.',
+          micNoLang: 'التعرّف على العربية غير متاح في هذا المتصفح. اكتب الجملة بدلًا من ذلك.',
           micError: 'تعذّر الإدخال الصوتي الآن. اكتب الجملة أو حاول لاحقًا.',
           loadSteps: ['نقرأ الجملة…', 'نحدّد أنواع الكلمات…', 'نحدّد المواقع الإعرابية…', 'نجهّز الشرح…'] }
       : { remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
@@ -946,6 +948,8 @@ const t = lang === 'ar'
           micDenied: 'Microphone is blocked for this site. Allow it in your browser settings and try again.',
           micNoSpeech: "I didn't hear anything. Move closer and try again.",
           micNoMic: 'No microphone found on this device.',
+          micNetwork: "Couldn't reach the speech service. Check your connection and try again.",
+          micNoLang: "Arabic speech recognition isn't available in this browser. Type the sentence instead.",
           micError: "Voice input isn't available right now. Type the sentence instead.",
           loadSteps: ['Reading the sentence…', 'Identifying word types…', 'Determining grammatical roles…', 'Preparing the explanation…'] };
 
@@ -1500,6 +1504,7 @@ const t = lang === 'ar'
        and the interim can be replaced on every event without flicker. */
     const SpeechRec: any =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const isMobileSpeech = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
     if (micBtn && SpeechRec) {
       micBtn.classList.remove('hidden');
@@ -1507,7 +1512,6 @@ const t = lang === 'ar'
       let rec: any = null;
       let listening = false;
       let baseText = '';
-      let finalText = '';
 
       function micStatus(msg: string, isError = false) {
         if (!micStatusEl) return;
@@ -1535,23 +1539,36 @@ const t = lang === 'ar'
         // The analyzer only parses Arabic, so recognition stays Arabic even on
         // the English page — the UI language and the content language differ.
         rec.lang = 'ar-SA';
-        rec.continuous = true;
+        // Android Chrome's continuous mode is unreliable: it ends the session
+        // after each utterance and restarts oddly, which compounded the problem
+        // above. One utterance per press is both steadier there and the right
+        // shape for "say a sentence".
+        rec.continuous = !isMobileSpeech;
         rec.interimResults = true;
         rec.maxAlternatives = 1;
 
         baseText = inputEl.value.trim();
-        finalText = '';
 
         rec.onstart = () => { setMicUi(true); micStatus(i18n.micListening); };
 
         rec.onresult = (e: any) => {
+          // Rebuild the whole transcript from e.results on every event rather
+          // than appending to a running total. Android Chrome does not reliably
+          // advance resultIndex past finalised results — it re-emits them — so
+          // appending repeated every phrase the user had already said. Reading
+          // the full list and assigning is idempotent: however many times the
+          // engine re-emits, the text is right.
+          const finalParts: string[] = [];
           let interim = '';
-          for (let i = e.resultIndex; i < e.results.length; i++) {
+          for (let i = 0; i < e.results.length; i++) {
             const r = e.results[i];
-            if (r.isFinal) finalText += r[0].transcript;
+            if (r.isFinal) finalParts.push(r[0].transcript);
             else interim += r[0].transcript;
           }
-          const spoken = (finalText + interim).trim();
+          // Join rather than concatenate: some engines prefix each segment with
+          // a space and some don't, so gluing them ran words together. Joining
+          // and then collapsing runs is right either way.
+          const spoken = [...finalParts, interim].join(' ').replace(/\s+/g, ' ').trim();
           const joined = [baseText, spoken].filter(Boolean).join(' ');
           const cap = inputEl.maxLength > 0 ? inputEl.maxLength : 200;
           inputEl.value = joined.slice(0, cap);
@@ -1567,6 +1584,11 @@ const t = lang === 'ar'
           if (code === 'not-allowed' || code === 'service-not-allowed') micStatus(i18n.micDenied, true);
           else if (code === 'no-speech') micStatus(i18n.micNoSpeech, true);
           else if (code === 'audio-capture') micStatus(i18n.micNoMic, true);
+          // Recognition on Android runs through a cloud service, so 'network'
+          // is common there and used to fall through to the useless generic
+          // "something went wrong, try later".
+          else if (code === 'network') micStatus(i18n.micNetwork, true);
+          else if (code === 'language-not-supported') micStatus(i18n.micNoLang, true);
           else micStatus(i18n.micError, true);
           setMicUi(false);
         };
@@ -1576,7 +1598,10 @@ const t = lang === 'ar'
         rec.onend = () => {
           setMicUi(false);
           if (micStatusEl && !micStatusEl.classList.contains('is-error')) micStatus('');
-          inputEl.focus({ preventScroll: true });
+          // Not on mobile: recognition now ends on its own after each utterance
+          // there, and focusing would throw the soft keyboard up over the box
+          // the moment the user stops speaking.
+          if (!isMobileSpeech) inputEl.focus({ preventScroll: true });
         };
 
         try { rec.start(); }
