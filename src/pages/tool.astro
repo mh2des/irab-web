@@ -145,9 +145,9 @@ const whys = [
           ثلاث جمل من النوع الذي يُطلب في الامتحانات، معربةً بالصياغة الكلاسيكية نفسها التي تعطيك إياها الأداة. تحت كل مثال الدرس الذي يشرح قاعدته.
         </p>
       </div>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-7 lg:gap-8">
         {examples.map((ex) => (
-          <article class="worked-card p-7">
+          <article class="soft-card p-7">
             <p class="ex-sentence font-arabic-display" lang="ar" dir="rtl">{ex.sentence}</p>
             <dl class="ex-list font-arabic">
               {ex.words.map((w) => (
@@ -168,7 +168,7 @@ const whys = [
   </Section>
 
   {/* How to read the result: the five fields, in the student's terms */}
-  <Section>
+  <Section class="section-tint">
     <Container>
       <div class="max-w-2xl mb-10">
         <p class="eyebrow mb-4">قراءة النتيجة</p>
@@ -179,9 +179,9 @@ const whys = [
           تعطيك الأداة لكل كلمة خمس خانات، وهي الخانات نفسها التي يطلبها المعلم في الإعراب الكامل.
         </p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 lg:gap-8">
         {reading.map((r) => (
-          <article class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-6">
+          <article class="soft-card p-6">
             <h3 class="font-arabic-display text-h3 leading-tight mb-2">{r.t}</h3>
             <p class="font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose">{r.b}</p>
           </article>
@@ -191,7 +191,7 @@ const whys = [
   </Section>
 
   {/* Why this analyzer (positions vs weaker tools without naming them) */}
-  <Section>
+  <Section class="section-tint">
     <Container>
       <div class="max-w-2xl mb-12">
         <p class="eyebrow mb-4">لماذا إعراب</p>
@@ -199,9 +199,9 @@ const whys = [
           أداة إعراب واحدة تكفيك.
         </h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-7 lg:gap-8">
         {whys.map((w) => (
-          <article class="rounded-2xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal-soft p-7 md:p-8">
+          <article class="soft-card p-7 md:p-8">
             <h3 class="font-arabic-display text-h3 leading-tight mb-3">{w.t}</h3>
             <p class="font-arabic text-body text-ink/70 dark:text-mist/70 leading-loose">{w.b}</p>
           </article>
@@ -221,53 +221,62 @@ const whys = [
   @media (max-width: 47.99rem) {
     :global(#demo) { padding-top: 1.5rem; }
   }
-  /* ── Soft-UI (neumorphic) example card ──────────────────────────────────
-     These were bg-paper sitting on a bg-paper section: the same colour as the
-     page, so the border was doing all the work and the cards read as flat
-     boxes. Now they are a near-white surface lifted off a tinted canvas by a
-     paired highlight and shadow — light from above, depth below.
-     Solid fills only, no gradient, per the design system. */
-  .worked-card {
+  /* ── Soft-UI card — the one card language for this page ─────────────────
+     Shared by all three card sets: نماذج معربة, the five i'rab fields, and
+     لماذا إعراب. Every one of them was bg-paper sitting on a bg-paper section
+     — the same colour as the page — so a 1px border did all the work and they
+     read as flat outlines. They are now a near-white surface lifted off a
+     tinted canvas by a paired highlight and shadow: light above, depth below,
+     no edge until you hover. Solid fills only, no gradient, per the design
+     system. Worth promoting to global.css if it spreads past this page. */
+  .soft-card {
     border-radius: 1.25rem;
     background: #FDFCFA;
-    border: 1px solid rgb(255 255 255 / 0.85);
+    /* No edge at rest — the card is defined by its shadow alone. The 1px is
+       still reserved (transparent) so the hover border costs no layout shift. */
+    border: 1px solid transparent;
+    /* The white highlight is dialled way down: at 0.95 inset + 0.9 glow the
+       card read as polished plastic. It now only softens the top edge. */
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.95),
-      -6px -6px 16px rgb(255 255 255 / 0.9),
-      10px 12px 28px -6px rgb(23 56 71 / 0.13),
-      2px 3px 8px -2px rgb(23 56 71 / 0.06);
+      inset 0 1px 0 rgb(255 255 255 / 0.5),
+      -4px -4px 10px rgb(255 255 255 / 0.4),
+      10px 12px 26px -8px rgb(23 56 71 / 0.11),
+      2px 3px 8px -3px rgb(23 56 71 / 0.05);
     transition:
       transform .32s var(--ease-out-quart),
-      box-shadow .32s var(--ease-out-quart);
+      box-shadow .32s var(--ease-out-quart),
+      border-color .22s var(--ease-out-quart);
   }
-  .worked-card:hover {
+  .soft-card:hover {
     transform: translateY(-4px);
+    border-color: var(--color-purple);
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 1),
-      -8px -8px 20px rgb(255 255 255 / 0.95),
-      14px 18px 38px -8px rgb(23 56 71 / 0.16),
-      3px 4px 10px -2px rgb(23 56 71 / 0.07);
+      inset 0 1px 0 rgb(255 255 255 / 0.55),
+      -5px -5px 12px rgb(255 255 255 / 0.45),
+      14px 18px 34px -10px rgb(23 56 71 / 0.14),
+      3px 4px 10px -3px rgb(23 56 71 / 0.06);
   }
   /* Dark mode cannot borrow white for its highlight: the raised edge is a very
      low-alpha white and the depth is real black, or the card looks grey-on-grey. */
-  :global(.dark) .worked-card {
+  :global(.dark) .soft-card {
     background: #18212A;
-    border-color: rgb(255 255 255 / 0.05);
+    border-color: transparent;
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.06),
-      -6px -6px 16px rgb(255 255 255 / 0.022),
-      10px 12px 30px -6px rgb(0 0 0 / 0.55),
-      2px 3px 10px -2px rgb(0 0 0 / 0.35);
+      inset 0 1px 0 rgb(255 255 255 / 0.04),
+      -4px -4px 10px rgb(255 255 255 / 0.014),
+      10px 12px 28px -8px rgb(0 0 0 / 0.5),
+      2px 3px 10px -3px rgb(0 0 0 / 0.32);
   }
-  :global(.dark) .worked-card:hover {
+  :global(.dark) .soft-card:hover {
+    border-color: color-mix(in srgb, var(--color-purple) 92%, white);
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.08),
-      -8px -8px 20px rgb(255 255 255 / 0.03),
-      14px 18px 40px -8px rgb(0 0 0 / 0.65),
-      3px 4px 12px -2px rgb(0 0 0 / 0.4);
+      inset 0 1px 0 rgb(255 255 255 / 0.05),
+      -5px -5px 12px rgb(255 255 255 / 0.02),
+      14px 18px 36px -10px rgb(0 0 0 / 0.58),
+      3px 4px 12px -3px rgb(0 0 0 / 0.36);
   }
   @media (prefers-reduced-motion: reduce) {
-    .worked-card, .worked-card:hover { transform: none; transition: none; }
+    .soft-card, .soft-card:hover { transform: none; transition: none; }
   }
 
   .ex-sentence { font-size: 1.6rem; line-height: 1.9; color: var(--color-ink); margin-bottom: 1rem; }
