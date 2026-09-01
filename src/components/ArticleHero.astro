@@ -11,17 +11,53 @@ interface Props {
   lang?: 'en' | 'ar';
   /** Keep the title on ONE line at every width (fluid size scales down instead of wrapping). */
   nowrapTitle?: boolean;
+  /**
+   * Hero treatment.
+   *   'editorial' (default) — Ruqaa title + starred pill eyebrow. Articles, duroos, pillars.
+   *   'product'             — the majalis hero: body face at bold, plain eyebrow, tighter
+   *                           scale. Use on product surfaces, whose titles are full phrases
+   *                           rather than short labels: Ruqaa's swashes are explicitly NOT
+   *                           for those (see the font-arabic-display usage rule in
+   *                           global.css).
+   */
+  variant?: 'editorial' | 'product';
 }
 
-const { eyebrow, title, summary, lang = 'ar', nowrapTitle = false } = Astro.props;
-const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
+const { eyebrow, title, summary, lang = 'ar', nowrapTitle = false, variant = 'editorial' } = Astro.props;
+const isProduct = variant === 'product';
+
+const titleFace = isProduct
+  ? (lang === 'ar' ? 'font-arabic font-bold' : 'font-sans font-bold')
+  : (lang === 'ar' ? 'font-arabic-display' : 'font-display');
+
 // nowrapTitle keeps the title on one line from md up. On phones a five-word
 // Arabic title forced onto one line shrank to ~21px (smaller than the summary
 // under it), so below md it wraps at a real headline size instead.
-const titleSize = nowrapTitle
-  ? 'text-[clamp(1.9rem,7.5vw,3.4rem)] md:text-[clamp(1.35rem,4.1vw,3.4rem)] md:whitespace-nowrap'
-  : 'text-[clamp(2.5rem,6vw,5rem)]';
+// The product cap is 3rem, not the editorial 3.4rem: at the narrow container's
+// 704px text column a one-line Arabic title of this length runs ~14.3x its font
+// size, so 3.4rem would overflow the column. 3rem leaves real margin.
+const titleSize = isProduct
+  ? (nowrapTitle
+      ? 'text-[clamp(2rem,6.5vw,2.4rem)] md:text-[clamp(2.4rem,4.6vw,3rem)] md:whitespace-nowrap'
+      : 'text-[clamp(2rem,5vw,3.4rem)]')
+  : nowrapTitle
+    ? 'text-[clamp(1.9rem,7.5vw,3.4rem)] md:text-[clamp(1.35rem,4.1vw,3.4rem)] md:whitespace-nowrap'
+    : 'text-[clamp(2.5rem,6vw,5rem)]';
+
+// Aref Ruqaa's ascenders and swashes overflow the em box: at leading-[1.1] they
+// collided with the eyebrow above (visible on every article page). Arabic display
+// titles get the line-height the face actually needs; the body face needs no such
+// allowance, so the product variant sits on normal headline leading.
+const titleLeading = isProduct
+  ? 'leading-[1.25]'
+  : (lang === 'ar' ? 'leading-[1.45] pb-1' : 'leading-[1.1]');
+
 const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-relaxed';
+// Product heroes use the deterministic muted token (the ink/80 opacity route is
+// the one global.css records as having silently failed AA over the paper canvas).
+const summaryTone = isProduct
+  ? 'mt-6 text-ink-muted dark:text-mist-muted'
+  : 'mt-5 text-ink/80 dark:text-mist/80';
 ---
 <header class="relative overflow-hidden border-b border-stone dark:border-coal-edge">
   {/* Ambient brand watermark, sits in the corner away from the text column */}
@@ -54,22 +90,29 @@ const summaryClass = lang === 'ar' ? 'font-arabic leading-loose' : 'leading-rela
     <div class="relative py-12 md:py-28">
       {eyebrow && (
         <p
-          class="eyebrow mb-8 rounded-full border border-purple/25 bg-purple/[0.07] dark:border-purple/40 dark:bg-purple/15 px-4 py-1.5"
+          class:list={[
+            'eyebrow',
+            isProduct
+              ? 'mb-4'
+              : 'mb-8 rounded-full border border-purple/25 bg-purple/[0.07] dark:border-purple/40 dark:bg-purple/15 px-4 py-1.5',
+          ]}
           data-reveal
         >
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 6.8L21 9l-5.2 4 1.8 7L12 16.6 6.4 20l1.8-7L3 9l6.6-.2z"/></svg>
+          {!isProduct && (
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 6.8L21 9l-5.2 4 1.8 7L12 16.6 6.4 20l1.8-7L3 9l6.6-.2z"/></svg>
+          )}
           {eyebrow}
         </p>
       )}
-      {/* Aref Ruqaa's ascenders and swashes overflow the em box: at leading-[1.1]
-          they collided with the eyebrow above (visible on every article page).
-          Arabic display titles get the line-height the face actually needs. */}
+      {/* The `title` slot lets a page accent part of its headline (e.g. a purple
+          span) while `title` stays the plain-text source of truth. Keep the two
+          in sync: the slot is presentation, the prop is the heading's text. */}
       <h1
-        class:list={[titleClass, titleSize, 'tracking-tight', lang === 'ar' ? 'leading-[1.45] pb-1' : 'leading-[1.1]']}
+        class:list={[titleFace, titleSize, titleLeading, 'tracking-tight']}
         data-reveal
         data-reveal-delay="80"
-      >{title}</h1>
-      <p class:list={[summaryClass, 'mt-5 text-body md:text-body-lg text-ink/80 dark:text-mist/80 max-w-2xl']} data-reveal data-reveal-delay="160">{summary}</p>
+      ><slot name="title">{title}</slot></h1>
+      <p class:list={[summaryClass, summaryTone, 'text-body md:text-body-lg max-w-2xl']} data-reveal data-reveal-delay="160">{summary}</p>
       {/* Optional meta row (chips/stats) a page can inject under the summary. */}
       <slot />
     </div>

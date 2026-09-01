@@ -120,12 +120,23 @@ const whys = [
 
   <Nav lang="ar" />
 
+  {/* Product hero, matching مجالس الإعراب: the title is a full phrase, which the
+      font-arabic-display usage rule (global.css) keeps off Aref Ruqaa. The slot
+      only accents "بالذكاء الاصطناعي"; the h1's text is what `title` says.
+      "أون لاين" stays in the <title>/description above — the h1 reads cleaner on
+      one line without it, and that phrase still ranks from the head tags. */}
   <ArticleHero
     lang="ar"
+    variant="product"
     nowrapTitle
-    title="إعراب الجمل أون لاين بالذكاء الاصطناعي"
+    eyebrow="أداة الإعراب"
+    title="إعراب الجمل بالذكاء الاصطناعي"
     summary="أعرِب أيّ جملة عربية إعرابًا كاملًا كلمة بكلمة في المتصفح مباشرة، بدون تحميل برنامج وبدون تسجيل: النوع، الوظيفة، الإعراب، العلامة وسببها، والتشكيل الكامل، مع شرحٍ لبنية الجملة."
-  />
+  >
+    {/* nowrap on the accent: above md the whole title is one line anyway, and below
+        md it forces the break BEFORE the purple phrase instead of through it. */}
+    <Fragment slot="title">إعراب الجمل <span class="text-purple whitespace-nowrap">بالذكاء الاصطناعي</span></Fragment>
+  </ArticleHero>
 
   {/* The live analyzer (its own header is suppressed: the hero above is the page header) */}
   <LiveDemo lang="ar" showHeader={false} />
