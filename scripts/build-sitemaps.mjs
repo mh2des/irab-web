@@ -16,6 +16,13 @@
  * Output (in dist/): sitemap-index.xml, sitemap-pages.xml, sitemap-duroos.xml,
  * sitemap-quran-ar.xml, sitemap-quran-en.xml. robots.txt, GSC and Bing point at
  * https://irab.app/sitemap-index.xml, and firebase.json 301s /sitemap.xml to it.
+ *
+ * Also written, NOT listed in the index: sitemap-quran-retired.xml, the /quran
+ * pages that carry a Google-only noindex (src/config/seo.ts). Submit it in
+ * Search Console by hand so Google recrawls those URLs and drops them quickly
+ * (a noindex only takes effect once the page is fetched again; at the natural
+ * crawl rate 4,000+ pages take months). Its lastmod is the commit date of the
+ * noindex switch. Delete the submission once GSC shows them all excluded.
  */
 import { readdirSync, readFileSync, writeFileSync, existsSync, unlinkSync, statSync } from 'node:fs';
 import { join, relative, sep, dirname } from 'node:path';
@@ -102,6 +109,9 @@ const noindexRe = /<meta\b[^>]*\bname=["'](?:robots|googlebot)["'][^>]*\bcontent
 const canonicalRe = /<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']([^"']+)["']|<link\b[^>]*\bhref=["']([^"']+)["'][^>]*\brel=["']canonical["']/i;
 
 const groups = { pages: [], duroos: [], 'quran-ar': [], 'quran-en': [], dictionary: [] };
+const retired = [];
+const googlebotOnlyRe = /<meta\b[^>]*\bname=["']googlebot["'][^>]*\bcontent=["'][^"']*noindex/i;
+const robotsRe = /<meta\b[^>]*\bname=["']robots["'][^>]*\bcontent=["'][^"']*noindex/i;
 let skippedNoindex = 0, skippedCanonical = 0;
 const normalise = (u) => {
   if (!u) return null;
@@ -112,7 +122,17 @@ for (const file of walk(DIST)) {
   const rel = relative(DIST, dirname(file)).split(sep).join('/');
   const path = rel === '' ? '/' : `/${rel}`;
   const html = readFileSync(file, 'utf8');
-  if (noindexRe.test(html)) { skippedNoindex++; continue; }
+  if (noindexRe.test(html)) {
+    skippedNoindex++;
+    // Google-only noindex on a self-canonical /quran page: retired for Google,
+    // listed separately so it gets recrawled and dropped sooner.
+    if (path.startsWith('/quran/') && googlebotOnlyRe.test(html) && !robotsRe.test(html)) {
+      const cm = html.match(canonicalRe);
+      const self = `${SITE}${encodeURI(path)}`;
+      if (normalise(cm ? (cm[1] || cm[2]) : null) === self) retired.push({ loc: self });
+    }
+    continue;
+  }
   const cm = html.match(canonicalRe);
   const canonical = cm ? (cm[1] || cm[2]) : null;
   // Percent-encode non-ASCII path segments (future /dictionary/<Arabic word>
@@ -154,6 +174,24 @@ const index = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http
   .map((c) => `<sitemap><loc>${esc(c.loc)}</loc>${c.lastmod ? `<lastmod>${c.lastmod}</lastmod>` : ''}</sitemap>`)
   .join('\n')}\n</sitemapindex>\n`;
 writeFileSync(join(DIST, 'sitemap-index.xml'), index);
+
+// Retired pages (Google-only noindex): a standalone sitemap for manual
+// submission in Search Console. Never referenced from sitemap-index.xml.
+{
+  const fname = 'sitemap-quran-retired.xml';
+  if (retired.length === 0) {
+    if (existsSync(join(DIST, fname))) unlinkSync(join(DIST, fname));
+    console.log(`build-sitemaps: ${fname} skipped (0 retired URLs)`);
+  } else {
+    const lastmod = gitDate('src/config/seo.ts');
+    retired.sort(sortByLoc);
+    const body = retired
+      .map((u) => `<url><loc>${esc(u.loc)}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`)
+      .join('\n');
+    writeFileSync(join(DIST, fname), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`);
+    console.log(`build-sitemaps: ${fname}  ${retired.length} retired URLs (googlebot noindex, lastmod ${lastmod ?? 'n/a'}; not in index, submit by hand)`);
+  }
+}
 
 // A stale single-file sitemap from the old integration must not linger: two
 // competing sitemaps confuse both engines.

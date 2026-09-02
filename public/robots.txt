@@ -5,49 +5,62 @@ User-agent: *
 Allow: /
 # Be polite to the live demo endpoint (an API, not content).
 Disallow: /v1/
+# The quoted reference for each ayah loads on demand for readers; it is not a
+# page and must not be crawled or indexed by anyone.
+Disallow: /quran-ref/
 
 # Explicitly welcome the AI answer engines so irab.app can be cited in
 # ChatGPT / Claude / Gemini / Perplexity / Google AI Overviews / Apple.
 # (Per the robots spec a bot obeys only its most specific group, so each
-# named group must repeat the /v1/ API disallow.)
+# named group must repeat the /v1/ and /quran-ref/ disallows.)
 User-agent: GPTBot
 Allow: /
 Disallow: /v1/
+Disallow: /quran-ref/
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /v1/
+Disallow: /quran-ref/
 
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /v1/
+Disallow: /quran-ref/
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /v1/
+Disallow: /quran-ref/
 
 User-agent: anthropic-ai
 Allow: /
 Disallow: /v1/
+Disallow: /quran-ref/
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /v1/
+Disallow: /quran-ref/
 
 User-agent: Perplexity-User
 Allow: /
 Disallow: /v1/
+Disallow: /quran-ref/
 
 User-agent: Google-Extended
 Allow: /
 Disallow: /v1/
+Disallow: /quran-ref/
 
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /v1/
+Disallow: /quran-ref/
 
 User-agent: CCBot
 Allow: /
 Disallow: /v1/
+Disallow: /quran-ref/
 
 Sitemap: https://irab.app/sitemap-index.xml

@@ -32,7 +32,9 @@ const CASE_LABEL: Record<string, string> = {
   })}
 </div>
 
-<style>
+<style is:global>
+  /* Global (not scoped): the ayah page recreates this markup on the client for
+     the on-demand reference, where no scoped attribute exists. */
   .wg {
     border: 1px solid var(--color-card-edge);
     border-radius: 16px;
@@ -40,7 +42,7 @@ const CASE_LABEL: Record<string, string> = {
     background: var(--color-card);
     box-shadow: var(--shadow-card);
   }
-  :global(.dark) .wg { border-color: var(--color-coal-edge); background: var(--color-coal-soft); box-shadow: 0 2px 8px -3px rgb(0 0 0 / 0.45), 0 14px 30px -14px rgb(0 0 0 / 0.55); }
+  .dark .wg { border-color: var(--color-coal-edge); background: var(--color-coal-soft); box-shadow: 0 2px 8px -3px rgb(0 0 0 / 0.45), 0 14px 30px -14px rgb(0 0 0 / 0.55); }
 
   .wg-row {
     display: grid;
@@ -51,7 +53,7 @@ const CASE_LABEL: Record<string, string> = {
     border-bottom: 1px solid var(--color-card-edge);
     border-inline-start: 4px solid var(--case);
   }
-  :global(.dark) .wg-row { border-bottom-color: var(--color-coal-edge); }
+  .dark .wg-row { border-bottom-color: var(--color-coal-edge); }
   .wg-row:last-child { border-bottom: 0; }
 
   .wg-tok {
@@ -60,7 +62,7 @@ const CASE_LABEL: Record<string, string> = {
     font-weight: 700;
     color: var(--color-ink);
   }
-  :global(.dark) .wg-tok { color: var(--color-mist); }
+  .dark .wg-tok { color: var(--color-mist); }
 
   .wg-body { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
   .wg-an {
@@ -68,7 +70,7 @@ const CASE_LABEL: Record<string, string> = {
     line-height: 1.95;
     color: color-mix(in srgb, var(--color-ink) 95%, transparent);
   }
-  :global(.dark) .wg-an { color: color-mix(in srgb, var(--color-mist) 92%, transparent); }
+  .dark .wg-an { color: color-mix(in srgb, var(--color-mist) 92%, transparent); }
 
   .wg-chip {
     align-self: flex-start;

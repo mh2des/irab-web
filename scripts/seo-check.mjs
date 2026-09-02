@@ -3,7 +3,9 @@
  * seo-check.mjs: scan dist/ after a build and print the on-page facts Bing and
  * Google flag: over-long titles, meta descriptions outside 150-165 on the key
  * pages and every surah page, <img> without alt, sitemap counts and lastmod
- * coverage. Read-only; exits 1 only when dist/ is missing.
+ * coverage. Also the recovery guardrail (src/config/seo.ts): no Google-indexable
+ * page may carry the quoted reference inline. Exits 1 when dist/ is missing or
+ * when that guardrail is broken.
  */
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, relative, sep, dirname } from 'node:path';
@@ -25,8 +27,13 @@ function* walk(dir) {
 }
 const decode = (s) => s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 
-const longTitles = [], badDesc = [], noAlt = [];
-let pages = 0;
+const longTitles = [], badDesc = [], noAlt = [], refLeaks = [];
+// The quoted reference renders as WordGrid rows (.wg) and .irab-html blocks.
+// A page is Google-indexable when it has neither a robots nor a googlebot
+// noindex. The on-demand block on indexable pages contains neither marker.
+const noindexRe = /<meta\b[^>]*\bname=["'](?:robots|googlebot)["'][^>]*\bcontent=["'][^"']*noindex/i;
+const refRe = /class="(?:wg|irab-html)[\s"]/;
+let pages = 0, indexableQuran = 0;
 for (const file of walk(DIST)) {
   pages++;
   const rel = relative(DIST, dirname(file)).split(sep).join('/');
@@ -40,12 +47,17 @@ for (const file of walk(DIST)) {
   for (const img of html.matchAll(/<img\b[^>]*>/g)) {
     if (!/\balt=/.test(img[0])) noAlt.push(`${path}: ${img[0].slice(0, 80)}`);
   }
+  if (/^\/quran(\/|$)/.test(path) && !noindexRe.test(html)) {
+    indexableQuran++;
+    if (refRe.test(html)) refLeaks.push(path);
+  }
 }
 
 console.log(`seo-check: scanned ${pages} pages`);
 console.log(`titles > ${TITLE_MAX} chars: ${longTitles.length}${longTitles.length ? '\n  ' + longTitles.join('\n  ') : ''}`);
 console.log(`descriptions outside ${DESC_MIN}-${DESC_MAX} (key pages + surah pages): ${badDesc.length}${badDesc.length ? '\n  ' + badDesc.slice(0, 20).join('\n  ') : ''}`);
 console.log(`<img> without alt: ${noAlt.length}${noAlt.length ? '\n  ' + noAlt.slice(0, 10).join('\n  ') : ''}`);
+console.log(`Google-indexable /quran pages: ${indexableQuran}; with the quoted reference inline: ${refLeaks.length}${refLeaks.length ? ' (FAIL)\n  ' + refLeaks.slice(0, 10).join('\n  ') : ' (ok)'}`);
 
 // ---------- sitemaps ----------
 const idx = join(DIST, 'sitemap-index.xml');
@@ -66,4 +78,9 @@ if (!existsSync(idx)) {
   }
   console.log(`  total: ${total} URLs`);
   if (existsSync(join(DIST, 'sitemap-0.xml'))) console.log('  WARNING: stale sitemap-0.xml still present');
+}
+
+if (refLeaks.length) {
+  console.error(`seo-check: ${refLeaks.length} Google-indexable /quran page(s) still ship the quoted reference inline. See src/config/seo.ts.`);
+  process.exit(1);
 }

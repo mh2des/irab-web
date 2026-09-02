@@ -1,10 +1,14 @@
 ---
 /**
- * Ayah i'rab page: the spoke. Our own material first, the quoted reference
- * clearly labelled after it: verse → (TL;DR) → lessons that teach what the
- * ayah contains → source label → word-by-word grid → detailed i'rab →
- * sarf/balagha/fawaid → footnotes → FAQ → related → app CTA.
- * Pure static; JSON-LD via AyahSchema.
+ * Ayah i'rab page: the spoke. Our own material first: verse → (TL;DR) →
+ * lessons that teach what the ayah contains → the quoted reference → FAQ →
+ * related → app CTA. JSON-LD via AyahSchema.
+ *
+ * The quoted reference («الجدول في إعراب القرآن»: word grid, detailed i'rab,
+ * sarf/balagha/fawaid, footnotes) ships INLINE only on pages Google is told
+ * not to index. On every Google-indexable page it loads on demand from
+ * /quran-ref/<surah>/<ayah>.json (robots-blocked) when the reader asks, so the
+ * indexable HTML is our own words only. See src/lib/quran-index.ts.
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
@@ -18,7 +22,7 @@ import {
 } from '../../../lib/quran';
 import { INTROS } from '../../../data/ayah-intros';
 import { hasEnAyah } from '../../../lib/quran-en';
-import { QURAN_INDEX_MODE } from '../../../config/seo';
+import { ayahIndexPolicy } from '../../../lib/quran-index';
 import { lessonsForAyah } from '../../../lib/lesson-links';
 
 export function getStaticPaths() {
@@ -32,49 +36,41 @@ const { ayah } = Astro.props as { ayah: Ayah };
 const surah = surahById(ayah.surah)!;
 const intro = INTROS[`${ayah.surah}:${ayah.ayah}`] ?? {};
 const an = toArabicDigits(ayah.ayah);
+const { canonical, isHead, shared, thin, googlebotNoindex, referenceOnDemand } = ayahIndexPolicy(ayah);
 
 const h1 = intro.h1 ?? `إعراب سورة ${surah.name}، الآية ${an}`;
 const title = intro.h1
   ? `${intro.h1} (${surah.name} ${an}) · كلمة بكلمة | إعراب`
   : `إعراب سورة ${surah.name} الآية ${an} · كلمة بكلمة | إعراب`;
 const versePlain = plainVerse(ayah.uthmani);
-const description = `إعراب ${surah.name} الآية ${an} كلمةً كلمةً: ${versePlain.slice(0, 80)}… تحليلٌ نحويٌّ مفصّل من «الجدول في إعراب القرآن».`;
-const selfUrl = `https://irab.app/quran/${surah.slug}/${ayah.ayah}`;
-const headUrl = `https://irab.app/quran/${surah.slug}/${ayah.ayahStart}`;
-const isHead = ayah.ayah === ayah.ayahStart;
+// Description: our own summary when we have one (that is what the indexable
+// page is about); the reference wording only on book-only pages.
+const clamp = (t: string, max: number) => {
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max - 1);
+  const sp = cut.lastIndexOf(' ');
+  return `${sp > max * 0.6 ? cut.slice(0, sp) : cut}…`;
+};
+const description = intro.tldr
+  ? clamp(`إعراب ${surah.name} الآية ${an}: ${intro.tldr}`, 158)
+  : `إعراب ${surah.name} الآية ${an} كلمةً كلمةً: ${versePlain.slice(0, 80)}… تحليلٌ نحويٌّ مفصّل من «الجدول في إعراب القرآن».`;
 const placeAr = surah.place === 'makki' ? 'مكية' : 'مدنية';
-const shared = ayah.ayahStart !== ayah.ayahEnd;
-// A multi-ayah group shares ONE i'rab block. Consolidate non-head members to
-// the head's URL so we don't ship thousands of duplicate-content pages: the
-// member page still exists (own verse + own word grid) but ranking flows to
-// the head, whose H1 enumerates the covered ayat.
-const canonical = shared && ayah.isShared && !isHead ? headUrl : selfUrl;
 const faqs = intro.faqs ?? [];
+const refSrc = `/quran-ref/${surah.slug}/${ayah.ayah}.json`;
 
-const irabHtml = renderIrab(ayah.irab, ayah.footnotes);
-const sarfHtml = renderIrab(ayah.sarf, ayah.footnotes);
-const balaghaHtml = renderIrab(ayah.balagha, ayah.footnotes);
-const fawaidHtml = renderIrab(ayah.fawaid, ayah.footnotes);
+// Inline reference: only when the page is NOT Google-indexable (book-only,
+// googlebot-noindexed). Indexable pages get the on-demand block instead.
+const inlineRef = !referenceOnDemand;
+const irabHtml = inlineRef ? renderIrab(ayah.irab, ayah.footnotes) : '';
+const sarfHtml = inlineRef ? renderIrab(ayah.sarf, ayah.footnotes) : '';
+const balaghaHtml = inlineRef ? renderIrab(ayah.balagha, ayah.footnotes) : '';
+const fawaidHtml = inlineRef ? renderIrab(ayah.fawaid, ayah.footnotes) : '';
 
 const inSurah = ayatOfSurah(ayah.surah);
 const idx = inSurah.findIndex((a) => a.ayah === ayah.ayah);
 const prev = idx > 0 ? inSurah[idx - 1] : null;
 const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
 
-// Index gate: noindex only GENUINELY empty/backfilled ayat. A concise but real
-// analysis (e.g. a multi-ayah group head with few of its own words) is still a
-// valuable, indexable page: don't suppress it.
-const thin = ayah.isBackfilled || (!ayah.irab && ayah.words.length === 0);
-// Google-only index gate (see src/config/seo.ts): in 'original-only' mode a
-// self-canonical ayah page stays indexable for Google only when it carries an
-// authored INTROS entry (our own words). Book-only pages get
-// <meta name="googlebot" content="noindex">; Bing, Copilot and the AI crawlers
-// are unaffected, and scripts/build-sitemaps.mjs drops them from the sitemap
-// by reading the built HTML. Group members that canonicalise to their head are
-// left alone: noindex on a page that declares another canonical is contradictory.
-const hasOwnIntro = Boolean(INTROS[`${ayah.surah}:${ayah.ayah}`]);
-const googlebotNoindex =
-  QURAN_INDEX_MODE === 'original-only' && !thin && canonical === selfUrl && !hasOwnIntro;
 const fnId = (m: string) => `fn-${m.replace(/[^0-9]/g, '')}`;
 // hreflang: only advertise the English twin when one actually exists for this ayah.
 const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
@@ -130,48 +126,72 @@ const lessons = lessonsForAyah(ayah);
           </p>
         )}
 
-        <p class="source" id="source">
-          <span class="source-label">نقلًا عن المرجع</span>
-          المصدر: <span class="source-book">الجدول في إعراب القرآن</span>، تأليف محمود صافي{shared ? `، يشمل الآيات ${toArabicDigits(ayah.ayahStart)} إلى ${toArabicDigits(ayah.ayahEnd)}` : ''}
-          · <a href="/methodology" class="source-link">منهجيتنا في التحقّق</a>
-        </p>
-
-        {ayah.words.length > 0 && (
-          <section class="blk">
-            <h2>إعراب المفردات كلمةً كلمة</h2>
-            <WordGrid words={ayah.words} />
+        {referenceOnDemand ? (
+          <section class="blk ref" id="reference" aria-labelledby="ref-h" data-ref-src={refSrc}>
+            <h2 id="ref-h">الإعراب المفصّل من المرجع</h2>
+            <p class="ref-lead classical-naskh">
+              إعراب المفردات كلمةً كلمة، والإعراب التفصيلي، والصرف والبلاغة والفوائد، نقلًا عن
+              «الجدول في إعراب القرآن» لمحمود صافي{shared ? `، ويشمل الآيات ${toArabicDigits(ayah.ayahStart)} إلى ${toArabicDigits(ayah.ayahEnd)}` : ''}.
+              يُعرض عند الطلب.
+            </p>
+            <button type="button" class="ref-btn" data-ref-load>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              اعرض إعراب المفردات والإعراب التفصيلي
+            </button>
+            <p class="ref-status classical-naskh" data-ref-status role="status" hidden></p>
+            <div data-ref-out></div>
+            <p class="source source-after">
+              <span class="source-label">نقلًا عن المرجع</span>
+              المصدر: <span class="source-book">الجدول في إعراب القرآن</span>، تأليف محمود صافي
+              · <a href="/methodology" class="source-link">منهجيتنا في التحقّق</a>
+            </p>
           </section>
-        )}
+        ) : (
+          <>
+            <p class="source" id="source">
+              <span class="source-label">نقلًا عن المرجع</span>
+              المصدر: <span class="source-book">الجدول في إعراب القرآن</span>، تأليف محمود صافي{shared ? `، يشمل الآيات ${toArabicDigits(ayah.ayahStart)} إلى ${toArabicDigits(ayah.ayahEnd)}` : ''}
+              · <a href="/methodology" class="source-link">منهجيتنا في التحقّق</a>
+            </p>
 
-        {thin && (
-          <p class="pending-note classical-naskh">التحليل التفصيلي لهذه الآية قيد الإعداد، وسيُضاف قريباً بإذن الله.</p>
-        )}
+            {ayah.words.length > 0 && (
+              <section class="blk">
+                <h2>إعراب المفردات كلمةً كلمة</h2>
+                <WordGrid words={ayah.words} />
+              </section>
+            )}
 
-        {irabHtml && (
-          <section class="blk">
-            <h2>الإعراب التفصيلي</h2>
-            <div class="irab-html classical-naskh" set:html={irabHtml} />
-          </section>
-        )}
+            {thin && (
+              <p class="pending-note classical-naskh">التحليل التفصيلي لهذه الآية قيد الإعداد، وسيُضاف قريباً بإذن الله.</p>
+            )}
 
-        {(sarfHtml || balaghaHtml || fawaidHtml) && (
-          <section class="blk">
-            <h2>الصرف والبلاغة والفوائد</h2>
-            {sarfHtml && <details class="exp acc-card" data-acc><summary>الصرف</summary><div class="irab-html classical-naskh" set:html={sarfHtml} /></details>}
-            {balaghaHtml && <details class="exp acc-card" data-acc><summary>البلاغة</summary><div class="irab-html classical-naskh" set:html={balaghaHtml} /></details>}
-            {fawaidHtml && <details class="exp acc-card" data-acc><summary>الفوائد</summary><div class="irab-html classical-naskh" set:html={fawaidHtml} /></details>}
-          </section>
-        )}
+            {irabHtml && (
+              <section class="blk">
+                <h2>الإعراب التفصيلي</h2>
+                <div class="irab-html classical-naskh" set:html={irabHtml} />
+              </section>
+            )}
 
-        {ayah.footnotes.length > 0 && (
-          <section class="blk">
-            <h2>الهوامش</h2>
-            <ol class="fns classical-naskh">
-              {ayah.footnotes.map((f) => (
-                <li id={fnId(f.marker)}>{f.content}</li>
-              ))}
-            </ol>
-          </section>
+            {(sarfHtml || balaghaHtml || fawaidHtml) && (
+              <section class="blk">
+                <h2>الصرف والبلاغة والفوائد</h2>
+                {sarfHtml && <details class="exp acc-card" data-acc><summary>الصرف</summary><div class="irab-html classical-naskh" set:html={sarfHtml} /></details>}
+                {balaghaHtml && <details class="exp acc-card" data-acc><summary>البلاغة</summary><div class="irab-html classical-naskh" set:html={balaghaHtml} /></details>}
+                {fawaidHtml && <details class="exp acc-card" data-acc><summary>الفوائد</summary><div class="irab-html classical-naskh" set:html={fawaidHtml} /></details>}
+              </section>
+            )}
+
+            {ayah.footnotes.length > 0 && (
+              <section class="blk">
+                <h2>الهوامش</h2>
+                <ol class="fns classical-naskh">
+                  {ayah.footnotes.map((f) => (
+                    <li id={fnId(f.marker)}>{f.content}</li>
+                  ))}
+                </ol>
+              </section>
+            )}
+          </>
         )}
 
         {faqs.length > 0 && (
@@ -232,6 +252,97 @@ const lessons = lessonsForAyah(ayah);
 
   <Footer lang="ar" />
 </BaseLayout>
+
+<script>
+  /**
+   * On-demand reference loader. The page carries our own words; the quoted
+   * book text arrives only when the reader asks. Created nodes receive the
+   * page's Astro scoped attribute so .blk/.exp/.fns styles apply unchanged;
+   * .wg (WordGrid) and .irab-html are global.
+   */
+  const box = document.querySelector<HTMLElement>('[data-ref-src]');
+  if (box) {
+    const btn = box.querySelector<HTMLButtonElement>('[data-ref-load]')!;
+    const out = box.querySelector<HTMLElement>('[data-ref-out]')!;
+    const status = box.querySelector<HTMLElement>('[data-ref-status]')!;
+    const cid = Array.from(box.attributes).map((a) => a.name).find((n) => n.startsWith('data-astro-cid-'));
+    const el = (tag: string, cls = '', html?: string) => {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (cid) e.setAttribute(cid, '');
+      if (html !== undefined) e.innerHTML = html;
+      return e;
+    };
+    const txt = (tag: string, cls: string, t: string) => { const e = el(tag, cls); e.textContent = t; return e; };
+    const section = (heading: string) => { const s = el('section', 'blk'); s.append(txt('h2', '', heading)); return s; };
+
+    interface RefWord { token: string; analysis: string; hex: string | null; caseLabel: string | null }
+    interface RefPayload {
+      words: RefWord[]; irabHtml: string; sarfHtml: string; balaghaHtml: string; fawaidHtml: string;
+      footnotes: { id: string; content: string }[];
+    }
+
+    const render = (d: RefPayload) => {
+      if (d.words?.length) {
+        const s = section('إعراب المفردات كلمةً كلمة');
+        const g = el('div', 'wg');
+        for (const w of d.words) {
+          const row = el('div', 'wg-row');
+          row.style.setProperty('--case', w.hex ?? 'var(--color-stone-soft)');
+          row.append(txt('div', 'wg-tok quran-text', w.token));
+          const body = el('div', 'wg-body');
+          body.append(txt('p', 'wg-an classical-naskh', w.analysis));
+          if (w.caseLabel) body.append(txt('span', 'wg-chip', w.caseLabel));
+          row.append(body);
+          g.append(row);
+        }
+        s.append(g);
+        out.append(s);
+      }
+      if (d.irabHtml) {
+        const s = section('الإعراب التفصيلي');
+        s.append(el('div', 'irab-html classical-naskh', d.irabHtml));
+        out.append(s);
+      }
+      const extras: [string, string][] = [['الصرف', d.sarfHtml], ['البلاغة', d.balaghaHtml], ['الفوائد', d.fawaidHtml]];
+      const present = extras.filter(([, h]) => h);
+      if (present.length) {
+        const s = section('الصرف والبلاغة والفوائد');
+        for (const [label, h] of present) {
+          const det = el('details', 'exp acc-card');
+          det.append(txt('summary', '', label));
+          det.append(el('div', 'irab-html classical-naskh', h));
+          s.append(det);
+        }
+        out.append(s);
+      }
+      if (d.footnotes?.length) {
+        const s = section('الهوامش');
+        const ol = el('ol', 'fns classical-naskh');
+        for (const f of d.footnotes) { const li = txt('li', '', f.content); li.id = f.id; ol.append(li); }
+        s.append(ol);
+        out.append(s);
+      }
+    };
+
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      status.hidden = false;
+      status.textContent = 'جارٍ تحميل المرجع…';
+      try {
+        const r = await fetch(box.dataset.refSrc!, { credentials: 'omit' });
+        if (!r.ok) throw new Error(String(r.status));
+        render((await r.json()) as RefPayload);
+        status.hidden = true;
+        btn.hidden = true;
+        box.classList.add('ref-loaded');
+      } catch {
+        status.textContent = 'تعذّر تحميل المرجع الآن، حاول مرة أخرى.';
+        btn.disabled = false;
+      }
+    });
+  }
+</script>
 
 <style>
   .bc {
@@ -328,6 +439,29 @@ const lessons = lessonsForAyah(ayah);
   .tldr .eyebrow { margin-bottom: 0.75rem; }
   .tldr p { font-size: 1.8rem; line-height: 2.1; color: var(--color-ink); }
   :global(.dark) .tldr p { color: var(--color-mist); }
+
+  /* On-demand reference block */
+  .ref-lead {
+    font-size: 1.5rem; line-height: 2; margin-bottom: 1.25rem;
+    color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+  }
+  :global(.dark) .ref-lead { color: color-mix(in srgb, var(--color-mist) 78%, transparent); }
+  .ref-btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    min-height: 44px; padding: 0.7rem 1.3rem; border-radius: 12px;
+    font-family: var(--font-arabic-display); font-weight: 700; font-size: 1.35rem;
+    color: #fff; background: var(--color-purple); border: 1px solid transparent;
+    cursor: pointer; box-shadow: var(--shadow-card);
+    transition: transform .2s, box-shadow .2s, filter .2s;
+  }
+  .ref-btn svg { width: 1.2em; height: 1.2em; }
+  .ref-btn:hover { transform: translateY(-2px); box-shadow: var(--lift-shadow); filter: brightness(1.05); }
+  .ref-btn:disabled { opacity: .6; cursor: progress; transform: none; }
+  .ref-status { margin-top: 0.9rem; font-size: 1.3rem; color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
+  :global(.dark) .ref-status { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
+  .ref .blk { margin-top: 2rem; }
+  .source-after { margin: 2rem 0 0; }
+  .ref:not(.ref-loaded) .source-after { display: none; }
 
   .blk { margin-top: 2.75rem; }
   .blk h2 {

@@ -10,7 +10,7 @@ import Container from '../../components/Container.astro';
 import { SURAHS, toArabicDigits } from '../../lib/quran';
 
 const title = 'إعراب القرآن الكريم، كل آية كلمةً كلمة | إعراب';
-const description = 'إعراب القرآن الكريم آيةً آية وكلمةً كلمة: التحليل النحوي الكامل لكل سورة من «الجدول في إعراب القرآن» لمحمود صافي. تصفّح السور واقرأ الإعراب المفصّل.';
+const description = 'إعراب القرآن الكريم آيةً آية: ملخّص إعرابي بكلماتنا لكل آية موثّقة مع أسئلة شائعة، وإعراب المفردات كلمةً كلمة والإعراب التفصيلي من المرجع عند الطلب. تصفّح السور.';
 const canonical = 'https://irab.app/quran';
 const liveCount = SURAHS.filter((s) => s.publishedCount > 0).length;
 
@@ -37,9 +37,9 @@ const breadcrumb = {
     <section class="py-12 md:py-16">
       <Container>
         <div class="head">
-          <span class="eyebrow">الجدول في إعراب القرآن</span>
+          <span class="eyebrow">إعراب القرآن آيةً آية</span>
           <h1 class="h-h1 font-arabic-display">إعراب القرآن الكريم</h1>
-          <p class="h-lead">تحليلٌ نحويٌّ كاملٌ لكل آية في القرآن، كلمةً كلمة، مأخوذٌ من «الجدول في إعراب القرآن» لمحمود صافي. اختر سورة لتقرأ إعراب آياتها مفصّلاً.</p>
+          <p class="h-lead">ملخّصٌ إعرابيٌّ بكلماتنا لكل آية موثّقة مع أسئلة شائعة، ومعه الإعراب المفصّل كلمةً كلمة من «الجدول في إعراب القرآن» لمحمود صافي يُعرض عند الطلب. اختر سورة لتقرأ إعراب آياتها.</p>
         </div>
 
         <div class="grid">

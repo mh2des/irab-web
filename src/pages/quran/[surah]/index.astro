@@ -1,22 +1,28 @@
 ---
 /**
  * Surah index. Two modes:
- *  • FULL (≤50 ayat, fully published): the complete i'rab of every ayah on
- *    one page — verse, word-by-word grid, and detailed i'rab — matching the
- *    dominant search intent «إعراب سورة X كاملة». Each section links to the
- *    ayah's own page (which stays the richer canonical for that ayah: sarf,
- *    balagha, fawaid, FAQs live only there).
- *  • LIST (longer surahs): the original ayah list, each linking to its page.
+ *  • FULL (≤50 ayat, fully published): every ayah on one page — verse, then
+ *    OUR OWN summary where one is authored — matching the search intent
+ *    «إعراب سورة X كاملة». Each section links to the ayah's page, which is
+ *    the canonical for that ayah (FAQ, lessons, and the quoted reference on
+ *    demand live only there).
+ *  • LIST (longer surahs): the ayah list, each linking to its page.
+ *
+ * No quoted book text on this page: it is Google-indexable, and the domain
+ * was demoted for republishing the book at scale (src/config/seo.ts). A surah
+ * without a single authored summary is noindexed for Google (a bare verse
+ * list is nothing Google needs); readers, Bing and AI crawlers still get it.
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
 import Container from '../../../components/Container.astro';
-import WordGrid from '../../../components/quran/WordGrid.astro';
 import {
-  SURAHS, ayatOfSurah, toArabicDigits, renderIrab, plainVerse, type SurahMeta, type Ayah,
+  SURAHS, ayatOfSurah, toArabicDigits, plainVerse, type SurahMeta,
 } from '../../../lib/quran';
 import { enSurahIds } from '../../../lib/quran-en';
+import { INTROS } from '../../../data/ayah-intros';
+import { surahGooglebotNoindex } from '../../../lib/quran-index';
 
 export function getStaticPaths() {
   return SURAHS.filter((s) => s.publishedCount > 0).map((s) => ({
@@ -34,13 +40,17 @@ const placeAr = surah.place === 'makki' ? 'مكية' : 'مدنية';
 const FULL_MAX_AYAT = 50;
 const full = surah.ayahCount <= FULL_MAX_AYAT && ayat.length >= surah.ayahCount;
 
+const tldrOf = (ayahNo: number) => INTROS[`${surah.id}:${ayahNo}`]?.tldr ?? null;
+const authored = ayat.filter((a) => tldrOf(a.ayah)).length;
+const googlebotNoindex = surahGooglebotNoindex(surah.id, ayat);
+
 const title = full
   ? `إعراب سورة ${surah.name} كاملة، آية آية وكلمة كلمة | إعراب`
   : `إعراب سورة ${surah.name}، كل آية كلمةً كلمة | إعراب`;
-// One description template for every surah, 150-158 chars across all 114 names
-// and ayah counts, query phrase «إعراب سورة X» first. True for both page modes:
-// every ayah has its own detailed page whether or not the surah is inlined here.
-const description = `إعراب سورة ${surah.name} (${toArabicDigits(surah.ayahCount)} آية) آيةً آية وكلمةً كلمة: تحليل نحوي مفصّل لكل كلمة، الموقع الإعرابي وعلامة الإعراب وسببها، من «الجدول في إعراب القرآن» لمحمود صافي.`;
+// One description template for every surah, 150-165 chars across all 114 names
+// and ayah counts, query phrase «إعراب سورة X» first. Our own words, not a
+// claim about the book: the reference lives on each ayah page, on demand.
+const description = `إعراب سورة ${surah.name} (${toArabicDigits(surah.ayahCount)} آية) آيةً آية: ملخّص إعرابي بكلماتنا لكل آية موثّقة، ولكل آية صفحة مفصّلة فيها إعراب المفردات كلمةً كلمة والإعراب التفصيلي والصرف والبلاغة.`;
 const canonical = `https://irab.app/quran/${surah.slug}`;
 const hasEnTwin = enSurahIds().includes(surah.id);
 const breadcrumb = {
@@ -50,33 +60,8 @@ const breadcrumb = {
     { '@type': 'ListItem', position: 2, name: `سورة ${surah.name}`, item: canonical },
   ],
 };
-
-// Per-ayah render prep for FULL mode. Footnote anchors get an a{N}- prefix so
-// markers from different ayat can't collide on the one-page view.
-interface FullSection {
-  a: Ayah;
-  isHead: boolean;
-  sharedMember: boolean;
-  irabHtml: string;
-  fns: { id: string; content: string }[];
-}
-const fnDigits = (m: string) => m.replace(/[^0-9]/g, '');
-const sections: FullSection[] = full
-  ? ayat.map((a) => {
-      const isHead = a.ayah === a.ayahStart;
-      const shared = a.ayahStart !== a.ayahEnd;
-      const sharedMember = shared && a.isShared && !isHead;
-      let irabHtml = !sharedMember && a.irab ? renderIrab(a.irab, a.footnotes) : '';
-      let fns: { id: string; content: string }[] = [];
-      if (irabHtml) {
-        irabHtml = irabHtml.replaceAll('href="#fn-', `href="#a${a.ayah}-fn-`);
-        fns = a.footnotes.map((f) => ({ id: `a${a.ayah}-fn-${fnDigits(f.marker)}`, content: f.content }));
-      }
-      return { a, isHead, sharedMember, irabHtml, fns };
-    })
-  : [];
 ---
-<BaseLayout lang="ar" title={title} description={description} hasEn={hasEnTwin}>
+<BaseLayout lang="ar" title={title} description={description} hasEn={hasEnTwin} googlebotNoindex={googlebotNoindex}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumb)} is:inline />
   <Nav lang="ar" />
 
@@ -92,59 +77,46 @@ const sections: FullSection[] = full
         <h1 class="s-h1 font-arabic-display">إعراب سورة {surah.name}{full ? ' كاملة' : ''}</h1>
         {full ? (
           <p class="s-lead">
-            إعراب سورة {surah.name} كاملةً في صفحة واحدة: كل آية بنصّها، ثم إعراب مفرداتها كلمةً كلمة،
-            ثم الإعراب التفصيلي، من «الجدول في إعراب القرآن» لمحمود صافي.
-            ولكل آيةٍ صفحةٌ مفصّلة فيها الصرف والبلاغة والفوائد.
+            إعراب سورة {surah.name} كاملةً في صفحة واحدة: كل آية بنصّها{authored > 0 ? ' ثم ملخّص إعرابها بكلماتنا' : ''}،
+            ولكل آيةٍ صفحةٌ مفصّلة فيها إعراب المفردات كلمةً كلمة والإعراب التفصيلي والصرف والبلاغة والأسئلة الشائعة.
           </p>
         ) : (
-          <p class="s-lead">التحليل النحوي الكامل لكل آية من سورة {surah.name}، كلمةً كلمة، من «الجدول في إعراب القرآن» لمحمود صافي. اختر آيةً لقراءة إعرابها المفصّل.</p>
+          <p class="s-lead">إعراب كل آية من سورة {surah.name}{authored > 0 ? `: ملخّص بكلماتنا لـ${toArabicDigits(authored)} آية حتى الآن` : ''}، ولكل آية صفحة مفصّلة فيها إعراب المفردات كلمةً كلمة والإعراب التفصيلي. اختر آيةً لقراءة إعرابها.</p>
         )}
 
         {full ? (
           <>
             <nav class="toc" aria-label="الآيات">
-              {sections.map(({ a }) => (
+              {ayat.map((a) => (
                 <a href={`#ayah-${a.ayah}`} class="toc-n">{toArabicDigits(a.ayah)}</a>
               ))}
             </nav>
 
-            {sections.map(({ a, sharedMember, irabHtml, fns }) => (
-              <section id={`ayah-${a.ayah}`} class="af">
-                <h2 class="af-h2 font-arabic-display">إعراب الآية {toArabicDigits(a.ayah)}</h2>
-                <blockquote class="verse quran-text" lang="ar" dir="rtl">
-                  <span class="verse-text">{a.uthmani}</span>
-                  <span class="verse-num" aria-hidden="true">{toArabicDigits(a.ayah)}</span>
-                </blockquote>
+            {ayat.map((a) => {
+              const tldr = tldrOf(a.ayah);
+              return (
+                <section id={`ayah-${a.ayah}`} class="af">
+                  <h2 class="af-h2 font-arabic-display">إعراب الآية {toArabicDigits(a.ayah)}</h2>
+                  <blockquote class="verse quran-text" lang="ar" dir="rtl">
+                    <span class="verse-text">{a.uthmani}</span>
+                    <span class="verse-num" aria-hidden="true">{toArabicDigits(a.ayah)}</span>
+                  </blockquote>
 
-                {a.words.length > 0 && <WordGrid words={a.words} />}
+                  {tldr && (
+                    <div class="af-tldr">
+                      <span class="eyebrow eyebrow-ink">الإعراب باختصار</span>
+                      <p class="classical-naskh">{tldr}</p>
+                    </div>
+                  )}
 
-                {sharedMember && (
-                  <p class="af-note">
-                    الإعراب التفصيلي لهذه الآية مشترك مع ما قبلها:
-                    <a href={`#ayah-${a.ayahStart}`}> انظر الآية {toArabicDigits(a.ayahStart)}</a>.
+                  <p class="af-more">
+                    <a href={`/quran/${surah.slug}/${a.ayah}`}>
+                      {tldr ? 'صفحة الآية كاملة: إعراب المفردات والإعراب التفصيلي والأسئلة الشائعة ←' : `إعراب الآية ${toArabicDigits(a.ayah)} كلمةً كلمة ←`}
+                    </a>
                   </p>
-                )}
-
-                {irabHtml && <div class="irab-html classical-naskh" set:html={irabHtml} />}
-
-                {fns.length > 0 && (
-                  <ol class="af-fns classical-naskh">
-                    {fns.map((f) => <li id={f.id}>{f.content}</li>)}
-                  </ol>
-                )}
-
-                <p class="af-more">
-                  <a href={`/quran/${surah.slug}/${a.ayah}`}>
-                    صفحة الآية {toArabicDigits(a.ayah)} كاملة: الصرف والبلاغة والفوائد ←
-                  </a>
-                </p>
-              </section>
-            ))}
-
-            <p class="source">
-              المصدر: <span class="source-book">الجدول في إعراب القرآن</span>، تأليف محمود صافي ·
-              <a href="/methodology" class="lead-link">منهجيتنا في التحقّق</a>
-            </p>
+                </section>
+              );
+            })}
           </>
         ) : (
           <ol class="ayat">
@@ -221,30 +193,19 @@ const sections: FullSection[] = full
     border-radius: 999px; vertical-align: middle;
   }
 
-  .af-note {
-    font-size: 1.3rem; line-height: 1.7; margin: 1rem 0 0;
-    padding: 0.85rem 1.1rem; border-radius: 12px;
-    background: color-mix(in srgb, var(--color-teal) 8%, var(--color-paper));
-    border: 1px solid color-mix(in srgb, var(--color-teal) 20%, transparent);
-    color: color-mix(in srgb, var(--color-ink) 80%, transparent);
+  .af-tldr {
+    background: color-mix(in srgb, var(--color-purple) 6%, var(--color-paper));
+    border: 1px solid color-mix(in srgb, var(--color-purple) 18%, transparent);
+    border-radius: 16px; padding: 1.35rem 1.5rem; margin-top: 0.25rem;
   }
-  :global(.dark) .af-note { background: color-mix(in srgb, var(--color-teal) 14%, var(--color-coal)); color: color-mix(in srgb, var(--color-mist) 80%, transparent); }
-  .af-note a { color: var(--color-teal); font-weight: 600; text-underline-offset: 3px; }
-
-  .af-fns { list-style: decimal; padding-inline-start: 1.5rem; margin-top: 1rem; font-size: 1.35rem; line-height: 2.0; color: color-mix(in srgb, var(--color-ink) 78%, transparent); }
-  :global(.dark) .af-fns { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
-  .af-fns li:target { background: color-mix(in srgb, var(--color-purple) 12%, transparent); border-radius: 6px; }
+  :global(.dark) .af-tldr { background: color-mix(in srgb, var(--color-purple) 12%, var(--color-coal)); }
+  .af-tldr .eyebrow { margin-bottom: 0.6rem; }
+  .af-tldr p { font-size: 1.7rem; line-height: 2.1; color: var(--color-ink); }
+  :global(.dark) .af-tldr p { color: var(--color-mist); }
 
   .af-more { margin-top: 1.1rem; font-size: 1.3rem; }
   .af-more a { color: var(--color-purple); font-weight: 600; text-decoration: none; text-underline-offset: 3px; }
   .af-more a:hover { text-decoration: underline; }
-
-  .source {
-    font-size: 1.15rem; color: color-mix(in srgb, var(--color-ink) 58%, transparent);
-    margin-top: 1rem; text-align: center;
-  }
-  :global(.dark) .source { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
-  .source-book { color: var(--color-teal); font-weight: 600; }
 
   /* ── List mode (long surahs) ─────────────────────────────────────── */
   .ayat { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
@@ -270,17 +231,4 @@ const sections: FullSection[] = full
   }
   :global(.dark) .a-verse { color: var(--color-mist); }
   .a-go { width: 1.1rem; height: 1.1rem; flex: none; color: color-mix(in srgb, var(--color-ink) 60%, transparent); }
-</style>
-
-<style is:global>
-  /* Injected i'rab HTML (set:html): global because scoped attrs aren't added. */
-  .irab-html { font-size: 1.6rem; line-height: 2.2; color: color-mix(in srgb, var(--color-ink) 92%, transparent); }
-  .dark .irab-html { color: color-mix(in srgb, var(--color-mist) 90%, transparent); }
-  .irab-html p { margin: 0 0 1rem; }
-  .irab-html h3 { font-family: var(--font-arabic-display); font-weight: 700; font-size: 1.65rem; color: var(--color-ink); margin: 1.5rem 0 0.6rem; }
-  .dark .irab-html h3 { color: var(--color-mist); }
-  .irab-html b.tok { color: var(--color-purple); font-weight: 700; }
-  .dark .irab-html b.tok { color: color-mix(in srgb, var(--color-purple) 85%, white); }
-  .irab-html sup.fn a { color: var(--color-teal); text-decoration: none; font-size: 0.7em; padding: 0 0.15em; }
-  .irab-html sup.fn a:hover { text-decoration: underline; }
 </style>
