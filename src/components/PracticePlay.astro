@@ -305,7 +305,11 @@ const againLabel = mode === 'curated'
         <h1 class:list={[titleClass, 'pr-challenge-title']}>{t.chooseChapter}</h1>
         <p class="pr-challenge-body">{t.challengeBody}</p>
       </div>
-      <p data-bank-loading class="pr-hint text-center py-6">{t.loadingBank}</p>
+      {/* Chapter-shaped, in the grid the real cards land in: the wait reads as
+          "your chapters are arriving" rather than "something is happening". */}
+      <div data-bank-loading class="pr-chapters" role="status" aria-busy="true" aria-label={t.loadingBank}>
+        {Array.from({ length: 6 }).map(() => <div class="skeleton pr-chapter-skeleton"></div>)}
+      </div>
       <p data-bank-error class="hidden pr-hint text-center py-6">{t.noTopics}</p>
       <div data-topic-grid class="pr-chapters"></div>
     </section>
@@ -535,6 +539,11 @@ const againLabel = mode === 'curated'
 
   .pr-chapters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
   .pr-chapter { --chapter-accent: var(--color-teal); position: relative; overflow: hidden; min-height: 12rem; display: flex; flex-direction: column; align-items: stretch; text-align: start; padding: 1.25rem; border-radius: 1.15rem; color: var(--color-ink); background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card); transition: transform .22s var(--ease-out-quart), box-shadow .22s, border-color .22s; }
+  .pr-chapter-skeleton { min-height: 12rem; border-radius: 1.15rem; }
+  /* This block is unlayered, so .pr-chapters' display:grid beats Tailwind's
+     LAYERED .hidden utility — without this the skeleton would never disappear
+     and would sit on top of the chapters forever. Verified in the browser. */
+  [data-bank-loading].hidden { display: none; }
   .dark .pr-chapter { color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
   .pr-chapter::after { content: ""; position: absolute; inset-inline-end: -2rem; inset-block-end: -3.5rem; width: 8.5rem; height: 8.5rem; border-radius: 50%; background: color-mix(in srgb, var(--chapter-accent) 9%, transparent); transition: transform .3s var(--ease-out-quart); }
   .pr-chapter:nth-child(3n + 2) { --chapter-accent: var(--color-purple); }
@@ -908,8 +917,22 @@ const againLabel = mode === 'curated'
     const sentenceCountEl = q<HTMLElement>('[data-sentence-count]');
     const topicIsLocked = (topic: any) => !isPremium && Number(topic?.level ?? 1) > 2;
 
-    // Firestore loaded once, lazily; topics + per-topic sentences cached so the
-    // bank opens instantly (it is prefetched in the background right after boot).
+    /** Last SERVER-CONFIRMED entitlement, written by fetchMe. null = never
+     *  probed on this device. Read synchronously so chapters can paint with
+     *  the right locks instead of waiting on /v1/me. Access is enforced by
+     *  the worker, so a stale value can only mis-draw a padlock, never grant. */
+    function cachedPremium(): boolean | null {
+      try {
+        const v = localStorage.getItem('irab-premium');
+        return v === '1' ? true : v === '0' ? false : null;
+      } catch { return null; }
+    }
+
+    // Firestore loaded once, lazily; topics + per-topic sentences cached so
+    // re-entering the bank is instant. The first load is kicked off at boot in
+    // PARALLEL with auth (see the boot block) — until 2026-09-02 a comment here
+    // claimed that prefetch existed, but ensureBank() was only ever called from
+    // openCurated(), i.e. strictly AFTER /v1/me had resolved.
     let fsMod: any = null; let db: any = null;
     async function getFs() {
       if (!fsMod) {
@@ -1446,9 +1469,20 @@ const againLabel = mode === 'curated'
       // loads in the background. This is the same pattern the analyzer uses
       // (AGENTS.md): nothing on the write phase needs a token; only submitting
       // does, and that path awaits authReady behind the button's busy state.
-      // Curated keeps its blocking wait on purpose: entitlement must resolve
-      // before chapters are revealed, or a locked chapter flashes open.
-      if (fixedMode !== 'curated') revealTool();
+      if (fixedMode === 'curated') {
+        // Kick Firestore off NOW, concurrently with the auth chain. It used to
+        // start only after /v1/me had resolved, so two big chunks and two round
+        // trips ran strictly in series.
+        ensureBank().catch(() => {});
+        // Paint from the last server-confirmed entitlement when we have one:
+        // chapters draw with the right locks immediately and /v1/me only has to
+        // confirm. Blocking is kept ONLY for a device that has never probed,
+        // where we genuinely have no information and must fail closed.
+        const cached = cachedPremium();
+        if (cached !== null) { isPremium = cached; if (cached) quotaEl.textContent = T.unlimited; revealTool(); }
+      } else {
+        revealTool();
+      }
 
       let entitlementDone = false;
       try {
@@ -1477,10 +1511,20 @@ const againLabel = mode === 'curated'
           if (fixedMode === 'curated') {
             if (!entitlementDone) {
               entitlementDone = true;
+              let verdict = isPremium;
               try {
                 const me = await fetchMe(u);
-                isPremium = me?.premium === true;
-              } catch { isPremium = false; }
+                verdict = me?.premium === true;
+              } catch {
+                // Probe failed: keep the last server-confirmed value rather
+                // than downgrading a paying user on a flaky network. With no
+                // cache isPremium is still false, so a first visit fails closed.
+                verdict = cachedPremium() ?? false;
+              }
+              if (verdict !== isPremium) {
+                isPremium = verdict;
+                if (bankRendered) renderChapterCards();   // repaint the padlocks
+              }
               if (isPremium) quotaEl.textContent = T.unlimited;
             }
             revealTool();
