@@ -85,7 +85,7 @@ const faqSchema = {
     <Section size="sm" class="relative">
       <Container size="narrow">
         <div class="text-center">
-          <p class="eyebrow justify-center mb-4" data-reveal>الأسعار</p>
+          <p class="eyebrow pr-eyebrow justify-center" data-reveal>الأســـعـــار</p>
           <h1 class="font-arabic-display font-bold text-[clamp(2.2rem,5.5vw,3.6rem)] leading-[1.15] tracking-tight mb-5" data-reveal data-reveal-delay="80">
             اشتراكٌ واحد،<br class="sm:hidden" /> يفتح كلَّ شيء.
           </h1>
@@ -99,11 +99,12 @@ const faqSchema = {
     {/* ── Plans ────────────────────────────────────────────────────── */}
     <Section size="sm" class="relative !pt-0">
       <Container>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto items-stretch">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[44rem] mx-auto items-stretch">
 
           {/* Annual: featured */}
-          <div class="pr-card pr-card-featured p-8 md:p-9 flex flex-col" data-reveal>
+          <div class="pr-card pr-card-featured p-8 md:p-10 flex flex-col" data-reveal>
             <span class="pr-ribbon">الأفضل قيمة · وفّر ٤٠٪</span>
+            <div class="pr-card-inner flex flex-col flex-1">
 
             <p class="pr-plan-name">سنوي</p>
             <p class="pr-price">
@@ -123,10 +124,12 @@ const faqSchema = {
               <svg class="pr-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
             </a>
             <p class="text-caption text-ink/55 dark:text-mist/55 text-center mt-3">لن تُحاسَب اليوم · تذكّر الإلغاء قبل اليوم السابع إن غيّرت رأيك</p>
+            </div>
           </div>
 
           {/* Monthly: quiet */}
-          <div class="pr-card p-8 md:p-9 flex flex-col" data-reveal data-reveal-delay="120">
+          <div class="pr-card p-8 md:p-10 flex flex-col" data-reveal data-reveal-delay="120">
+            <div class="pr-card-inner flex flex-col flex-1">
             <p class="pr-plan-name">شهري</p>
             <p class="pr-price">
               <span class="pr-price-amount" dir="ltr">$٤<span class="pr-price-frac">٫٩٩</span></span>
@@ -142,6 +145,7 @@ const faqSchema = {
 
             <a href="/app?checkout=monthly" class="btn-ghost btn-block btn-lg mt-7">اشترك شهريًّا</a>
             <p class="text-caption text-ink/55 dark:text-mist/55 text-center mt-3">بلا التزامٍ طويل: توقّف متى أردت</p>
+            </div>
           </div>
         </div>
 
@@ -274,6 +278,32 @@ const faqSchema = {
      shadow — light above, depth below — with no edge at rest. Solid fills
      only, no gradient, per the design system. These sit deeper than the tool
      cards because they are the page's largest objects and carry the decision. */
+  /* The page label: elongated with kashida (ـ) rather than letter-spacing —
+     tracking is a Latin device that breaks Arabic ligatures, which is why
+     global.css strips it on Arabic pages. Thmanyah is not a variable font (no
+     fvar table), so font-stretch would do nothing; kashida is the real Arabic
+     elongation and the face draws it cleanly. Bigger than the global eyebrow,
+     with real air before the headline. */
+  .pr-eyebrow {
+    font-size: clamp(1.5rem, 3.4vw, 2.35rem);
+    line-height: 1.35;
+    margin-bottom: 1.75rem;
+  }
+
+  /* Content scales gently as the card lifts, so the whole card feels like it
+     is coming toward you rather than just casting a bigger shadow. The ribbon
+     is deliberately outside this wrapper: it is anchored to the card's edge
+     and must not drift when the content scales. */
+  .pr-card-inner {
+    transition: transform .34s var(--ease-out-quart);
+    transform-origin: center center;
+    will-change: transform;
+  }
+  .pr-card:hover .pr-card-inner { transform: scale(1.028); }
+  @media (prefers-reduced-motion: reduce) {
+    .pr-card-inner, .pr-card:hover .pr-card-inner { transform: none; transition: none; }
+  }
+
   .pr-card {
     position: relative; border-radius: 22px;
     background: #FDFCFA;
@@ -289,6 +319,9 @@ const faqSchema = {
       box-shadow .34s var(--ease-out-quart),
       border-color .24s var(--ease-out-quart);
   }
+  /* Portrait, not letterbox: the cards were 372x488 (ratio 1.31) and read as
+     wide slabs. A height floor from md up, where they sit side by side. */
+  @media (min-width: 768px) { .pr-card { min-height: 34rem; } }
   .pr-card:hover {
     transform: translateY(-6px);
     border-color: color-mix(in srgb, var(--color-purple) 55%, transparent);
@@ -363,7 +396,7 @@ const faqSchema = {
      with tabular figures reads unambiguously, and the rule in global.css keeps
      Ruqaa for the wordmark and short labels anyway. */
   .pr-price {
-    display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.25rem;
+    display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.4rem;
   }
   .pr-price-amount {
     font-family: var(--font-arabic); font-weight: 900;
@@ -402,7 +435,7 @@ const faqSchema = {
   }
   :global(.dark) .pr-plan-name { color: var(--color-mist-subtle); }
 
-  .pr-perks { display: flex; flex-direction: column; gap: 0.65rem; font-family: var(--font-arabic); }
+  .pr-perks { display: flex; flex-direction: column; gap: 0.85rem; font-family: var(--font-arabic); }
   .pr-perks li {
     position: relative; padding-inline-start: 1.6rem;
     font-size: 1rem; line-height: 1.7;
