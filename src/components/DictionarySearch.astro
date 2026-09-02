@@ -128,10 +128,54 @@ const t = lang === 'ar'
   }
   .dark .dict-sub-h { color: color-mix(in srgb, var(--color-mist) 55%, transparent); }
   .dict-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
-  .dict-tabs-sections { border-top: 1px solid var(--color-card-edge); padding-top: 1.25rem; margin-top: 0.25rem; }
-  .dark .dict-tabs-sections { border-top-color: var(--color-coal-edge); }
+  /* Section tabs as a real segmented control. They were white pills on a white
+     card behind a hairline border: no fill, no hover, and a 10%-tint selected
+     state — so they read as plain text and nobody could tell they switched the
+     content below. Now the group sits on a tinted track, the selected tab is a
+     solid purple chip, and hover/press give physical feedback. */
+  .dict-tabs-sections {
+    display: flex; flex-wrap: wrap; gap: 0.3rem;
+    margin: 1.6rem 0 1.25rem; padding: 0.35rem;
+    border-radius: 1rem;
+    border: 1px solid var(--color-card-edge);
+    background: color-mix(in srgb, var(--color-ink) 4%, transparent);
+  }
+  .dark .dict-tabs-sections {
+    border-color: var(--color-coal-edge);
+    background: color-mix(in srgb, var(--color-mist) 6%, transparent);
+  }
+  .dict-tabs-sections .dict-tab {
+    padding: 0.55rem 1.05rem; border-radius: 0.7rem;
+    border: 1px solid transparent; background: transparent;
+    color: var(--color-ink-muted); font-size: 0.95rem; font-weight: 700; line-height: 1.2;
+    transition: background .18s var(--ease-out-quart), color .18s, border-color .18s,
+                transform .18s var(--ease-out-quart), box-shadow .18s;
+  }
+  /* background must be restated: the base .dark .dict-tab rule below has equal
+     specificity and comes later, so it would win and fill every idle tab. */
+  .dark .dict-tabs-sections .dict-tab { color: var(--color-mist-muted); background: transparent; }
+  .dict-tabs-sections .dict-tab:hover {
+    background: var(--color-card); color: var(--color-ink);
+    border-color: var(--color-card-edge); transform: translateY(-1px);
+  }
+  .dark .dict-tabs-sections .dict-tab:hover {
+    background: var(--color-coal-soft); color: var(--color-mist); border-color: var(--color-coal-edge);
+  }
+  .dict-tabs-sections .dict-tab:active { transform: translateY(0); }
+  .dict-tabs-sections .dict-tab[aria-selected="true"] {
+    background: var(--color-purple); color: #fff; border-color: var(--color-purple);
+    box-shadow: 0 8px 18px -10px var(--color-purple);
+  }
+  .dict-tabs-sections .dict-tab[aria-selected="true"]:hover { transform: none; }
   .dict-tab-n { font-weight: 500; opacity: 0.75; margin-inline-start: 0.4rem; }
+  .dict-tabs-sections .dict-tab[aria-selected="true"] .dict-tab-n { color: #fff; opacity: 0.85; }
+
+  /* The panel animates in, so switching tabs is visibly a change of content
+     rather than a silent swap. */
   .dict-panel { min-height: 4rem; }
+  .dict-panel > * { animation: dict-panel-in .22s var(--ease-out-quart) both; }
+  @keyframes dict-panel-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .dict-panel > * { animation: none; } }
   .dict-tab {
     padding: 0.3rem 0.85rem; border-radius: 999px; font-weight: 700; cursor: pointer;
     border: 1px solid var(--color-card-edge); background: var(--color-card); color: var(--color-ink);
@@ -478,16 +522,37 @@ const t = lang === 'ar'
 
       const nav = el('div', 'dict-tabs dict-tabs-sections'); nav.setAttribute('role', 'tablist');
       const panelHost = el('div', 'dict-panel');
+      panelHost.setAttribute('role', 'tabpanel');
+      const buttons: HTMLButtonElement[] = [];
+      const selectTab = (i: number, focus = false) => {
+        buttons.forEach((x, j) => {
+          const on = i === j;
+          x.setAttribute('aria-selected', on ? 'true' : 'false');
+          // Roving tabindex: one stop for the whole group, arrows move within.
+          x.tabIndex = on ? 0 : -1;
+        });
+        panelHost.replaceChildren(groups[i].node!);
+        if (focus) buttons[i].focus();
+      };
       groups.forEach((g, i) => {
         const b = el('button', 'dict-tab', g.label) as HTMLButtonElement;
         b.type = 'button'; b.setAttribute('role', 'tab');
         b.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+        b.tabIndex = i === 0 ? 0 : -1;
         if (g.note) b.appendChild(el('span', 'dict-tab-n', g.note));
-        b.addEventListener('click', () => {
-          nav.querySelectorAll('.dict-tab').forEach((x) => x.setAttribute('aria-selected', 'false'));
-          b.setAttribute('aria-selected', 'true');
-          panelHost.replaceChildren(g.node!);
+        b.addEventListener('click', () => selectTab(i));
+        b.addEventListener('keydown', (e: KeyboardEvent) => {
+          // RTL: ArrowLeft advances, ArrowRight goes back (mirrored for en).
+          const fwd = lang === 'ar' ? 'ArrowLeft' : 'ArrowRight';
+          const back = lang === 'ar' ? 'ArrowRight' : 'ArrowLeft';
+          let next = -1;
+          if (e.key === fwd) next = (i + 1) % groups.length;
+          else if (e.key === back) next = (i - 1 + groups.length) % groups.length;
+          else if (e.key === 'Home') next = 0;
+          else if (e.key === 'End') next = groups.length - 1;
+          if (next >= 0) { e.preventDefault(); selectTab(next, true); }
         });
+        buttons.push(b);
         nav.appendChild(b);
       });
       container.appendChild(nav);
