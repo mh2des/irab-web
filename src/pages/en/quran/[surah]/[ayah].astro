@@ -26,7 +26,8 @@ const { ayah } = Astro.props as { ayah: AyahEn };
 const surah = surahById(ayah.surah) as SurahMeta;
 
 const h1 = ayah.h1_en;
-const title = `${h1} | Irab`;
+// Keep the brand handle only when the whole title fits a SERP (70 chars).
+const title = h1.length + 11 <= 70 ? `${h1} | Irab App` : h1;
 const description = `${ayah.translation_en}: word by word English i'rab (Arabic grammar) of Surah ${surah.en} ayah ${ayah.ayah}.`;
 const selfUrl = `https://irab.app/en/quran/${surah.slug}/${ayah.ayah}`;
 const place = surah.place === 'makki' ? 'Meccan' : 'Medinan';

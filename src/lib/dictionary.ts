@@ -116,8 +116,8 @@ export function publishableEntries(): DictEntry[] {
 // query phrase ("معنى كلمة X") first, so it survives mobile truncation.
 
 export function entryTitle(e: DictEntry): string {
-  const full = `معنى ${e.query} في المعجم: الجذر والإعراب والأمثلة | إعراب`;
-  return full.length <= 70 ? full : `معنى ${e.query} في المعجم | إعراب`;
+  const full = `معنى ${e.query} في المعجم: الجذر والإعراب والأمثلة | إعراب آب`;
+  return full.length <= 70 ? full : `معنى ${e.query} في المعجم | إعراب آب`;
 }
 
 function cutAtWord(s: string, max: number): string {

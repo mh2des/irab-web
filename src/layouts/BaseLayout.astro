@@ -55,11 +55,11 @@ const canonical = canonicalOverride ? new URL(canonicalOverride) : new URL(path,
 const webSite = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'إعراب',
-  alternateName: ['Irab', 'irab.app', 'موقع إعراب'],
+  name: 'إعراب آب',
+  alternateName: ['Irab App', 'إعراب', 'Irab', 'IrabApp', 'irab.app', 'موقع إعراب'],
   url: 'https://irab.app/',
   inLanguage: ['ar', 'en'],
-  publisher: { '@type': 'Organization', name: 'Irab', url: 'https://irab.app' },
+  publisher: { '@type': 'Organization', name: 'Irab App', url: 'https://irab.app' },
 };
 
 // Arabic is default (root). English lives under /en/*.
@@ -101,7 +101,9 @@ const hasAlternate = lang === 'en' || hasEn;
 
   {/* Open Graph */}
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Irab" />
+  <meta property="og:site_name" content={lang === 'ar' ? 'إعراب آب' : 'Irab App'} />
+  <meta name="application-name" content={lang === 'ar' ? 'إعراب آب' : 'Irab App'} />
+  <meta name="apple-mobile-web-app-title" content={lang === 'ar' ? 'إعراب آب' : 'Irab App'} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical.toString()} />

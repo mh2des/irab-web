@@ -1,6 +1,6 @@
 {
-  "name": "إعراب · Irab",
-  "short_name": "إعراب",
+  "name": "إعراب آب · Irab App",
+  "short_name": "إعراب آب",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -9,7 +9,11 @@
   "description": "إعراب القرآن والعربية: تحليل نحوي كلمة بكلمة لكل آية. AI powered Arabic & Quran i'rab: word by word grammatical analysis.",
   "lang": "ar",
   "dir": "rtl",
-  "categories": ["education", "books", "reference"],
+  "categories": [
+    "education",
+    "books",
+    "reference"
+  ],
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [

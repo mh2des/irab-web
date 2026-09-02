@@ -10,7 +10,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import { LIBRARY_BASE } from '../../lib/library';
 ---
-<BaseLayout lang="ar" noindex title="قارئ الكتب: المكتبة النحوية | إعراب" description="اقرأ كتب النحو والصرف والبلاغة على إعراب.">
+<BaseLayout lang="ar" noindex title="قارئ الكتب: المكتبة النحوية | إعراب آب" description="اقرأ كتب النحو والصرف والبلاغة على إعراب.">
   <Nav lang="ar" />
 
   <main data-reader data-lang="ar" data-base={LIBRARY_BASE} dir="rtl" class="reader">
@@ -280,7 +280,7 @@ import { LIBRARY_BASE } from '../../lib/library';
           bookTitle = (bundle.title || '').trim();
           titleEl.textContent = bundle.title || '';
           authorEl.textContent = bundle.author && bundle.author !== 'غير معروف' ? bundle.author : '';
-          document.title = `${bundle.title || 'كتاب'}: المكتبة النحوية | إعراب`;
+          document.title = `${bundle.title || 'كتاب'}: المكتبة النحوية | إعراب آب`;
           buildToc();
           loadingEl.classList.add('hidden');
           gridEl.classList.remove('hidden');

@@ -40,7 +40,7 @@ const author = {
 const publisher = {
   '@type': 'Organization',
   '@id': 'https://irab.app/#organization',
-  name: 'Irab',
+  name: 'Irab App',
   alternateName: 'إعراب',
   url: 'https://irab.app',
   logo: { '@type': 'ImageObject', url: 'https://irab.app/icons/Icon-512.png' },
@@ -56,7 +56,7 @@ const article: Record<string, unknown> = {
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
   author,
   publisher,
-  isPartOf: { '@type': 'WebSite', name: 'Irab', url: 'https://irab.app' },
+  isPartOf: { '@type': 'WebSite', name: 'Irab App', url: 'https://irab.app' },
 };
 if (kind === 'lesson') {
   article.additionalType = 'https://schema.org/LearningResource';

@@ -12,6 +12,9 @@ Firebase project and subscription backend with the Irab mobile app.
 - **Pushing to `main` auto-deploys the live site** via GitHub Actions
   (`.github/workflows/deploy.yml` → Firebase Hosting). Commit in small, reversible
   chunks. It's a static site, so reverts are cheap — but it IS live.
+- **Brand handle (decided 2026-09-02): `إعراب آب` in Arabic, `Irab App` in Latin.** Use it in
+  every page title suffix, og:site_name, schema names, store listings and bios; the nav
+  wordmark stays `إعراب` as the visual logo. The premium tier stays `Irab Plus`.
 - **Verify every feature/marketing claim against the code before writing copy.**
   Don't invent features. Grep first or ask.
 - Keep **content/SEO pages Firebase-free.** Only login-gated tool pages may load

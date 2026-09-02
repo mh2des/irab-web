@@ -9,28 +9,28 @@ const { lang = 'ar' } = Astro.props;
 
 const t = lang === 'ar'
   ? {
-      brand:   'إعراب: أداة قواعد اللغة العربية المدعومة بالذكاء الاصطناعي لطلاب القرآن والمعلّمين والمتعلّمين الجادّين.',
+      brand:   'إعراب آب: أداة قواعد اللغة العربية المدعومة بالذكاء الاصطناعي لطلاب القرآن والمعلّمين والمتعلّمين الجادّين.',
       product: 'المنتج',
       learn:   'مراجع',
       legal:   'قانوني',
       links: {
         demo: 'التجربة المباشرة', features: 'المميزات', pricing: 'الأسعار', faq: 'الأسئلة',
-        irab: 'ما هو الإعراب؟', nahw: 'ما هو النحو؟', quran: 'إعراب القرآن', teachers: 'للمعلمين', methodology: 'منهجيتنا ومصادرنا', about: 'عن إعراب',
+        irab: 'ما هو الإعراب؟', nahw: 'ما هو النحو؟', quran: 'إعراب القرآن', teachers: 'للمعلمين', methodology: 'منهجيتنا ومصادرنا', about: 'عن إعراب آب',
         privacy: 'الخصوصية', terms: 'الشروط', refund: 'الاسترداد', press: 'للصحافة', contact: 'تواصل',
       },
-      built: '© ٢٠٢٦ إعراب. كلّ الحقوق محفوظة.',
+      built: '© ٢٠٢٦ إعراب آب. كلّ الحقوق محفوظة.',
     }
   : {
-      brand:   "AI powered Arabic grammar (i'rab) for Quran students, teachers, and serious learners.",
+      brand:   "Irab App: AI powered Arabic grammar (i'rab) for Quran students, teachers, and serious learners.",
       product: 'Product',
       learn:   'Learn',
       legal:   'Legal',
       links: {
         demo: 'Live demo', features: 'Features', pricing: 'Pricing', faq: 'FAQ',
-        irab: "What is i'rab?", nahw: 'What is nahw?', quran: 'Parse the Quran', teachers: 'For teachers', methodology: 'Methodology & sources', about: 'About Irab',
+        irab: "What is i'rab?", nahw: 'What is nahw?', quran: 'Parse the Quran', teachers: 'For teachers', methodology: 'Methodology & sources', about: 'About Irab App',
         privacy: 'Privacy', terms: 'Terms', refund: 'Refund', press: 'Press', contact: 'Contact',
       },
-      built: '© 2026 Irab. All rights reserved.',
+      built: '© 2026 Irab App. All rights reserved.',
     };
 
 // Arabic at root, English under /en
@@ -42,8 +42,8 @@ const p = (path: string) => (lang === 'ar' ? path : `/en${path}`);
     <div class="py-16 grid grid-cols-2 md:grid-cols-5 gap-10">
       <div class="col-span-2 md:col-span-2">
         <a href={home} class="flex items-center gap-2.5 mb-4">
-          <img src="/brand-mark.png" alt={lang === 'ar' ? 'إعراب' : 'Irab'} width="32" height="32" loading="lazy" decoding="async" class="w-8 h-8 rounded-md shrink-0"/>
-          <span aria-hidden="true" class:list={[lang === 'ar' ? 'font-arabic-display font-bold text-xl' : 'font-display text-lg', 'tracking-tight']}>{lang === 'ar' ? 'إعراب' : 'Irab'}</span>
+          <img src="/brand-mark.png" alt={lang === 'ar' ? 'إعراب آب' : 'Irab App'} width="32" height="32" loading="lazy" decoding="async" class="w-8 h-8 rounded-md shrink-0"/>
+          <span aria-hidden="true" class:list={[lang === 'ar' ? 'font-arabic-display font-bold text-xl' : 'font-display text-lg', 'tracking-tight']}>{lang === 'ar' ? 'إعراب آب' : 'Irab App'}</span>
         </a>
         <p class="text-small text-ink/60 dark:text-mist/60 max-w-sm leading-relaxed">{t.brand}</p>
       </div>

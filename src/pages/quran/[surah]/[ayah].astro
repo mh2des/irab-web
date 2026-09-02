@@ -39,9 +39,14 @@ const an = toArabicDigits(ayah.ayah);
 const { canonical, isHead, shared, thin, googlebotNoindex, referenceOnDemand } = ayahIndexPolicy(ayah);
 
 const h1 = intro.h1 ?? `إعراب سورة ${surah.name}، الآية ${an}`;
-const title = intro.h1
-  ? `${intro.h1} (${surah.name} ${an}) · كلمة بكلمة | إعراب`
-  : `إعراب سورة ${surah.name} الآية ${an} · كلمة بكلمة | إعراب`;
+// Named ayat (آية الكرسي…) carry a long H1: keep the whole title within 70
+// chars by dropping the middle, then the handle, before the name itself.
+const titleFull = intro.h1
+  ? `${intro.h1} (${surah.name} ${an}) · كلمة بكلمة | إعراب آب`
+  : `إعراب سورة ${surah.name} الآية ${an} · كلمة بكلمة | إعراب آب`;
+const title = titleFull.length <= 70
+  ? titleFull
+  : (`${intro.h1} | إعراب آب`.length <= 70 ? `${intro.h1} | إعراب آب` : `${intro.h1}`);
 const versePlain = plainVerse(ayah.uthmani);
 // Description: our own summary when we have one (that is what the indexable
 // page is about); the reference wording only on book-only pages.
