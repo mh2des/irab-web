@@ -74,8 +74,39 @@ const isActive = (href: string) =>
   path === href ||
   path.startsWith(href + '/') ||
   (href === practiceHref && path === (lang === 'ar' ? '/practice' : '/en/practice'));
+
+// Mobile drawer rows. One list instead of eight near-identical <a> tags, so a
+// row can never drift from its neighbours. Icons are single stroke paths at
+// 24x24 to match the rest of the site's iconography.
+const ICON = {
+  tool:       'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z',
+  practice:   'M12 2v4m0 12v4M2 12h4m12 0h4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z',
+  challenges: 'M8 21h8m-4-4v4M6 4h12v5a6 6 0 0 1-12 0V4ZM6 6H4a2 2 0 0 0 0 4h2m12-4h2a2 2 0 0 1 0 4h-2',
+  majalis:    'M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9.5 7a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
+  features:   'M12 2 9.2 8.6 2 9.2l5.5 4.8L5.8 21 12 17.3 18.2 21l-1.7-7 5.5-4.8-7.2-.6Z',
+  dictionary: 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z',
+  quran:      'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2V3ZM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7V3Z',
+  library:    'M4 4h4v16H4zM10 4h4v16h-4zM17 4.5l3.5 15',
+  pricing:    'M20.6 13.4 12 4.8V2H9.2L2 9.2v2.8l8.6 8.6a2 2 0 0 0 2.8 0l7.2-7.2a2 2 0 0 0 0-2ZM7 7h.01',
+};
+
+const mobileLinks = [
+  { href: toolHref,       label: t.tryDemo,    icon: ICON.tool },
+  { href: practiceHref,   label: t.practice,   icon: ICON.practice },
+  { href: challengesHref, label: t.challenges, icon: ICON.challenges },
+  lang === 'ar'
+    ? { href: majalisHref,          label: t.majalis,  icon: ICON.majalis }
+    : { href: `${home}#features`,   label: t.features, icon: ICON.features },
+  { href: dictionaryHref, label: t.dictionary, icon: ICON.dictionary },
+  { href: quranHref,      label: t.quran,      icon: ICON.quran },
+  { href: libraryHref,    label: t.library,    icon: ICON.library },
+  { href: pricingHref,    label: t.pricing,    icon: ICON.pricing },
+];
+
+// "Forward" points left in RTL, so the chevron mirrors with the language.
+const chevPath = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
 ---
-<nav class="sticky top-0 z-50 bg-paper/90 dark:bg-coal/90 backdrop-blur-xl border-b border-stone/70 dark:border-coal-edge/70">
+<nav class="sticky top-0 z-50 bg-paper/90 dark:bg-coal/90 backdrop-blur-xl border-b border-stone/70 dark:border-coal-edge/70" style={`--nav-dir:${lang === 'ar' ? 1 : -1}`}>
   <Container size="wide">
     <div class="flex items-center justify-between py-3 gap-3">
       {/* Logo: pulled snug into the corner */}
@@ -165,18 +196,36 @@ const isActive = (href: string) =>
   >
     <Container>
       <div class="py-6 flex flex-col gap-1">
-        <a href={toolHref}           class:list={['nav-mlink', isActive(toolHref) && 'is-active']}       aria-current={isActive(toolHref) ? 'page' : undefined}>{t.tryDemo}</a>
-        <a href={practiceHref}       class:list={['nav-mlink', isActive(practiceHref) && 'is-active']}   aria-current={isActive(practiceHref) ? 'page' : undefined}>{t.practice}</a>
-        <a href={challengesHref}     class:list={['nav-mlink', isActive(challengesHref) && 'is-active']} aria-current={isActive(challengesHref) ? 'page' : undefined}>{t.challenges}</a>
-        {lang === 'ar'
-          ? <a href={majalisHref} class:list={['nav-mlink', isActive(majalisHref) && 'is-active']} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis}</a>
-          : <a href={`${home}#features`} class="nav-mlink">{t.features}</a>}
-        <a href={dictionaryHref}     class:list={['nav-mlink', isActive(dictionaryHref) && 'is-active']} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
-        <a href={quranHref}          class:list={['nav-mlink', isActive(quranHref) && 'is-active']}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
-        <a href={libraryHref}        class:list={['nav-mlink', isActive(libraryHref) && 'is-active']}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>
-        <a href={pricingHref}        class:list={['nav-mlink', isActive(pricingHref) && 'is-active']}     aria-current={isActive(pricingHref) ? 'page' : undefined}>{t.pricing}</a>
-        <a href={signinHref} data-signin-link class="block py-3 font-display text-h3 tracking-tight text-purple hover:text-purple-deep transition-colors">{t.signin}</a>
-        <a href={appHref} data-app-link class="hidden py-3 font-display text-h3 tracking-tight text-teal hover:text-teal-deep transition-colors">{t.myApp}</a>
+        {mobileLinks.map((l) => (
+          <a
+            href={l.href}
+            class:list={['nav-mlink', isActive(l.href) && 'is-active']}
+            aria-current={isActive(l.href) ? 'page' : undefined}
+          >
+            <span class="nav-mlink-ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d={l.icon}/></svg>
+            </span>
+            <span class="nav-mlink-t">{l.label}</span>
+            <svg class="nav-mlink-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={chevPath}/></svg>
+          </a>
+        ))}
+
+        <div class="hairline my-4"></div>
+
+        <a href={signinHref} data-signin-link class="nav-mlink nav-mlink-accent">
+          <span class="nav-mlink-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+          </span>
+          <span class="nav-mlink-t">{t.signin}</span>
+          <svg class="nav-mlink-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={chevPath}/></svg>
+        </a>
+        <a href={appHref} data-app-link class="nav-mlink nav-mlink-accent nav-mlink-teal hidden">
+          <span class="nav-mlink-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg>
+          </span>
+          <span class="nav-mlink-t">{t.myApp}</span>
+          <svg class="nav-mlink-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={chevPath}/></svg>
+        </a>
 
         <div class="hairline my-5"></div>
 
@@ -290,17 +339,83 @@ const isActive = (href: string) =>
   }
   :global(.dark) .nav-link-feature:hover { color: color-mix(in srgb, var(--color-teal) 88%, white); background: var(--color-coal-soft); }
 
-  /* Mobile menu links — large display rows; active page is highlighted. */
+  /* Mobile drawer rows.
+     Was var(--font-display) — Aref Ruqaa — at 28px: a decorative face doing
+     the work of a navigation label, where the swashes collide and nothing is
+     scannable. These are UI labels, so they belong on the body face, which is
+     what the font-arabic-display usage rule in global.css says too. Each row
+     is now an icon, a label and a direction chevron, on a real 56px tap
+     target, so the drawer reads as a list of destinations. */
   .nav-mlink {
-    display: block; padding: 0.75rem 0.85rem;
-    border-radius: 0.5rem;
-    font-family: var(--font-display); font-size: var(--text-h3); line-height: 1.3;
-    color: var(--color-ink); transition: color .2s, background-color .2s;
+    display: flex; align-items: center; gap: 0.8rem;
+    min-height: 3.5rem; padding: 0.5rem 0.7rem;
+    border-radius: 0.9rem;
+    border: 1px solid transparent;
+    font-family: var(--font-arabic); font-weight: 700;
+    font-size: 1.1rem; line-height: 1.35;
+    color: var(--color-ink);
+    transition: color .2s, background-color .2s, border-color .2s, transform .16s var(--ease-out-quart);
   }
   :global(.dark) .nav-mlink { color: var(--color-mist); }
-  .nav-mlink:hover { color: var(--color-purple); background: color-mix(in srgb, var(--color-stone) 45%, transparent); }
-  .nav-mlink.is-active { color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 10%, transparent); font-weight: 700; }
-  :global(.dark) .nav-mlink.is-active { color: color-mix(in srgb, var(--color-purple) 85%, white); }
+  .nav-mlink-t { flex: 1; min-width: 0; }
+  /* This block is unlayered, so .nav-mlink's display:flex beats Tailwind's
+     LAYERED .hidden utility. Without this the signed-in swap breaks and BOTH
+     the sign-in and profile rows render at once. Same trap as the dictionary
+     skeleton; caught in the browser. */
+  .nav-mlink.hidden { display: none; }
+
+  /* Icon tile: quiet at rest, brand-coloured on the current page. */
+  .nav-mlink-ic {
+    width: 2.4rem; height: 2.4rem; flex: none;
+    display: grid; place-items: center; border-radius: 0.75rem;
+    color: var(--color-ink-muted);
+    background: color-mix(in srgb, var(--color-ink) 6%, transparent);
+    transition: color .2s, background-color .2s;
+  }
+  :global(.dark) .nav-mlink-ic { color: var(--color-mist-muted); background: color-mix(in srgb, var(--color-mist) 8%, transparent); }
+  .nav-mlink-ic svg { width: 1.2rem; height: 1.2rem; }
+
+  .nav-mlink-chev { width: 1rem; height: 1rem; flex: none; opacity: 0.3; transition: opacity .2s, transform .2s var(--ease-out-quart); }
+
+  .nav-mlink:hover, .nav-mlink:focus-visible {
+    background: color-mix(in srgb, var(--color-stone) 45%, transparent);
+    border-color: color-mix(in srgb, var(--color-ink) 8%, transparent);
+  }
+  :global(.dark) .nav-mlink:hover, :global(.dark) .nav-mlink:focus-visible {
+    background: color-mix(in srgb, var(--color-mist) 7%, transparent);
+    border-color: color-mix(in srgb, var(--color-mist) 10%, transparent);
+  }
+  /* The chevron slides toward the reading direction — left in RTL. */
+  .nav-mlink:hover .nav-mlink-chev { opacity: 0.6; transform: translateX(calc(-3px * var(--nav-dir, 1))); }
+  .nav-mlink:active { transform: scale(0.985); }
+
+  .nav-mlink.is-active {
+    color: var(--color-purple-deep);
+    background: color-mix(in srgb, var(--color-purple) 10%, transparent);
+    border-color: color-mix(in srgb, var(--color-purple) 25%, transparent);
+  }
+  .nav-mlink.is-active .nav-mlink-ic {
+    color: var(--color-purple); background: color-mix(in srgb, var(--color-purple) 16%, transparent);
+  }
+  .nav-mlink.is-active .nav-mlink-chev { opacity: 0.55; }
+  :global(.dark) .nav-mlink.is-active {
+    color: color-mix(in srgb, var(--color-purple) 85%, white);
+    border-color: color-mix(in srgb, var(--color-purple) 40%, transparent);
+  }
+  :global(.dark) .nav-mlink.is-active .nav-mlink-ic { color: color-mix(in srgb, var(--color-purple) 85%, white); }
+
+  /* Account rows sit below the hairline and carry their own accent. */
+  .nav-mlink-accent { color: var(--color-purple); }
+  .nav-mlink-accent .nav-mlink-ic { color: var(--color-purple); background: color-mix(in srgb, var(--color-purple) 12%, transparent); }
+  :global(.dark) .nav-mlink-accent { color: color-mix(in srgb, var(--color-purple) 85%, white); }
+  .nav-mlink-teal { color: var(--color-teal); }
+  .nav-mlink-teal .nav-mlink-ic { color: var(--color-teal); background: color-mix(in srgb, var(--color-teal) 12%, transparent); }
+  :global(.dark) .nav-mlink-teal { color: color-mix(in srgb, var(--color-teal) 88%, white); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-mlink, .nav-mlink:active { transform: none; transition: none; }
+    .nav-mlink:hover .nav-mlink-chev { transform: none; }
+  }
 </style>
 
 <script>
