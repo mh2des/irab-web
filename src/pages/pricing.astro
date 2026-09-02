@@ -105,14 +105,14 @@ const faqSchema = {
           <div class="pr-card pr-card-featured p-8 md:p-9 flex flex-col" data-reveal>
             <span class="pr-ribbon">الأفضل قيمة · وفّر ٤٠٪</span>
 
-            <p class="font-arabic-display text-h3 mb-4 mt-1">سنوي</p>
-            <p class="flex items-baseline gap-2 mb-1">
-              <span class="font-arabic-display text-[3.2rem] leading-none tracking-tight">٣٥٫٩٩$</span>
-              <span class="text-ink/60 dark:text-mist/60 text-small">/ سنويًّا</span>
+            <p class="pr-plan-name">سنوي</p>
+            <p class="pr-price">
+              <span class="pr-price-amount" dir="ltr">$٣٥<span class="pr-price-frac">٫٩٩</span></span>
+              <span class="pr-price-per">/ سنويًّا</span>
             </p>
             <p class="font-arabic text-small text-purple-deep dark:text-purple font-bold mb-6">≈ ٣٫٠٠$ شهريًّا فقط</p>
 
-            <ul class="pr-perks flex-1">
+            <ul class="pr-perks pr-perks-plus flex-1">
               <li>تجربة مجانية ٧ أيام: تدفع ٠٫٠٠$ اليوم</li>
               <li>كل ميزات بلس، بلا استثناء</li>
               <li>شهادات الإتقان القابلة للمشاركة</li>
@@ -127,10 +127,10 @@ const faqSchema = {
 
           {/* Monthly: quiet */}
           <div class="pr-card p-8 md:p-9 flex flex-col" data-reveal data-reveal-delay="120">
-            <p class="font-arabic-display text-h3 mb-4 mt-1">شهري</p>
-            <p class="flex items-baseline gap-2 mb-1">
-              <span class="font-arabic-display text-[3.2rem] leading-none tracking-tight">٤٫٩٩$</span>
-              <span class="text-ink/60 dark:text-mist/60 text-small">/ شهريًّا</span>
+            <p class="pr-plan-name">شهري</p>
+            <p class="pr-price">
+              <span class="pr-price-amount" dir="ltr">$٤<span class="pr-price-frac">٫٩٩</span></span>
+              <span class="pr-price-per">/ شهريًّا</span>
             </p>
             <p class="font-arabic text-small text-ink/55 dark:text-mist/55 mb-6">مرونة كاملة، شهرًا بشهر</p>
 
@@ -269,17 +269,123 @@ const faqSchema = {
   }
 
   /* ── Plan cards ──────────────────────────────────────────────────── */
+  /* Soft-UI plan cards, on the same recipe as the tool page's .soft-card:
+     a near-white surface raised off the canvas by a paired highlight and
+     shadow — light above, depth below — with no edge at rest. Solid fills
+     only, no gradient, per the design system. These sit deeper than the tool
+     cards because they are the page's largest objects and carry the decision. */
   .pr-card {
-    position: relative; border-radius: 20px;
-    background: var(--color-card);
-    border: 1px solid var(--color-card-edge);
-    box-shadow: var(--shadow-card);
-    transition: transform 0.35s var(--ease-out-quart, ease), box-shadow 0.35s var(--ease-out-quart, ease), border-color 0.25s;
+    position: relative; border-radius: 22px;
+    background: #FDFCFA;
+    /* Reserved transparent 1px so the hover edge costs no layout shift. */
+    border: 1px solid transparent;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.55),
+      -5px -5px 12px rgb(255 255 255 / 0.42),
+      12px 16px 32px -10px rgb(23 56 71 / 0.13),
+      3px 4px 10px -3px rgb(23 56 71 / 0.06);
+    transition:
+      transform .34s var(--ease-out-quart),
+      box-shadow .34s var(--ease-out-quart),
+      border-color .24s var(--ease-out-quart);
   }
-  :global(.dark) .pr-card { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
-  .pr-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lift); }
+  .pr-card:hover {
+    transform: translateY(-6px);
+    border-color: color-mix(in srgb, var(--color-purple) 55%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.6),
+      -6px -6px 15px rgb(255 255 255 / 0.5),
+      18px 24px 46px -12px rgb(23 56 71 / 0.17),
+      4px 6px 14px -4px rgb(23 56 71 / 0.07);
+  }
+  /* Dark cannot borrow white for the highlight: the raised edge is a very
+     low-alpha white and the depth is real black, or it reads grey-on-grey. */
+  :global(.dark) .pr-card {
+    background: #18212A;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.045),
+      -5px -5px 12px rgb(255 255 255 / 0.015),
+      12px 16px 34px -10px rgb(0 0 0 / 0.52),
+      3px 4px 12px -3px rgb(0 0 0 / 0.34);
+  }
+  :global(.dark) .pr-card:hover {
+    border-color: color-mix(in srgb, var(--color-purple) 88%, white);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.055),
+      -6px -6px 15px rgb(255 255 255 / 0.02),
+      18px 24px 48px -12px rgb(0 0 0 / 0.6),
+      4px 6px 16px -4px rgb(0 0 0 / 0.38);
+  }
 
-  .pr-card-featured { border: 2px solid var(--color-purple); }
+  /* The featured plan sits physically higher than the other, so the eye picks
+     it before reading a word: a permanent purple rim and a deeper drop, with a
+     purple-tinted ambient bloom under it. */
+  .pr-card-featured {
+    border-color: color-mix(in srgb, var(--color-purple) 70%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.6),
+      -5px -5px 12px rgb(255 255 255 / 0.45),
+      0 0 0 4px color-mix(in srgb, var(--color-purple) 8%, transparent),
+      16px 22px 44px -12px color-mix(in srgb, var(--color-purple) 26%, rgb(23 56 71 / 0.16)),
+      3px 5px 12px -3px rgb(23 56 71 / 0.07);
+  }
+  .pr-card-featured:hover {
+    border-color: var(--color-purple);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.65),
+      -6px -6px 15px rgb(255 255 255 / 0.5),
+      0 0 0 5px color-mix(in srgb, var(--color-purple) 12%, transparent),
+      22px 30px 58px -14px color-mix(in srgb, var(--color-purple) 34%, rgb(23 56 71 / 0.18)),
+      4px 7px 16px -4px rgb(23 56 71 / 0.08);
+  }
+  :global(.dark) .pr-card-featured {
+    border-color: color-mix(in srgb, var(--color-purple) 75%, white);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.055),
+      0 0 0 4px color-mix(in srgb, var(--color-purple) 16%, transparent),
+      16px 22px 46px -12px rgb(0 0 0 / 0.56),
+      3px 5px 14px -3px rgb(0 0 0 / 0.36);
+  }
+  :global(.dark) .pr-card-featured:hover {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.065),
+      0 0 0 5px color-mix(in srgb, var(--color-purple) 22%, transparent),
+      22px 30px 60px -14px rgb(0 0 0 / 0.64),
+      4px 7px 18px -4px rgb(0 0 0 / 0.4);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pr-card, .pr-card:hover { transform: none; transition: none; }
+  }
+
+  /* Price. Was font-arabic-display (Aref Ruqaa) — its decorative numerals plus
+     the Arabic decimal separator made ٣٥٫٩٩ read as "٣٥ , ٩٩", i.e. two
+     numbers, on the one figure the whole page turns on. The body face at 900
+     with tabular figures reads unambiguously, and the rule in global.css keeps
+     Ruqaa for the wordmark and short labels anyway. */
+  .pr-price {
+    display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.25rem;
+  }
+  .pr-price-amount {
+    font-family: var(--font-arabic); font-weight: 900;
+    font-size: clamp(2.6rem, 6vw, 3.4rem); line-height: 1;
+    letter-spacing: -0.015em; font-variant-numeric: tabular-nums;
+    color: var(--color-ink);
+    /* Isolated so the currency and digits stay one stable LTR run inside the
+       RTL card, whatever the surrounding text does. */
+    unicode-bidi: isolate;
+  }
+  /* Cents as a small raised fraction — the standard pricing pattern, and the
+     fix for the real problem: at full size the Arabic decimal separator (٫)
+     sits on the baseline with wide gaps, so ٣٥٫٩٩ read as "٣٥ , ٩٩", i.e. two
+     numbers, on the one figure the page turns on. Compared against a bidi
+     isolate and a Latin period in the browser; this was the clearest. */
+  .pr-price-frac {
+    font-size: 0.46em; font-weight: 800; vertical-align: 0.82em;
+    margin-inline-start: 0.04em; letter-spacing: 0;
+  }
+  :global(.dark) .pr-price-amount { color: var(--color-mist); }
+  .pr-price-per { font-family: var(--font-arabic); font-size: var(--text-caption); font-weight: 600; color: var(--color-ink-subtle); }
+  :global(.dark) .pr-price-per { color: var(--color-mist-subtle); }
 
   .pr-ribbon {
     position: absolute; top: -0.85rem; inset-inline-start: 1.75rem;
@@ -288,6 +394,13 @@ const faqSchema = {
     color: #fff; background: var(--color-purple);
     box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--color-purple) 80%, transparent);
   }
+
+  .pr-plan-name {
+    font-family: var(--font-arabic); font-weight: 700;
+    font-size: var(--text-caption); letter-spacing: 0.02em;
+    color: var(--color-ink-subtle); margin: 0.25rem 0 0.9rem;
+  }
+  :global(.dark) .pr-plan-name { color: var(--color-mist-subtle); }
 
   .pr-perks { display: flex; flex-direction: column; gap: 0.65rem; font-family: var(--font-arabic); }
   .pr-perks li {
@@ -308,6 +421,14 @@ const faqSchema = {
     border-inline-start: 1.5px solid var(--color-teal); border-bottom: 1.5px solid var(--color-teal);
     transform: rotate(-45deg);
   }
+
+  /* The featured plan's ticks are purple, so the two cards differ at a glance
+     even before the ribbon is read. */
+  .pr-perks-plus li::before {
+    background: color-mix(in srgb, var(--color-purple) 15%, transparent);
+    border-color: var(--color-purple);
+  }
+  .pr-perks-plus li::after { border-inline-start-color: var(--color-purple); border-bottom-color: var(--color-purple); }
 
   /* Forward arrow: in RTL "onward" points left, so the left-pointing path
      stays unflipped and nudges further left on hover. */
