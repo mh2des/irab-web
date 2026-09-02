@@ -23,8 +23,15 @@ let urls;
 if (args.length > 0) {
   urls = args.map((p) => (p.startsWith('http') ? p : `https://${HOST}${p}`));
 } else {
-  const xml = readFileSync(new URL('../dist/sitemap-0.xml', import.meta.url), 'utf8');
-  urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  // The build writes a sitemap index with per-section children
+  // (scripts/build-sitemaps.mjs); walk the index so a new child is picked up
+  // automatically. The retired sitemap is deliberately not in the index.
+  const locs = (xml) => [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  const index = readFileSync(new URL('../dist/sitemap-index.xml', import.meta.url), 'utf8');
+  urls = locs(index).flatMap((child) => {
+    const file = child.replace(`https://${HOST}/`, '');
+    return locs(readFileSync(new URL(`../dist/${file}`, import.meta.url), 'utf8'));
+  });
 }
 
 if (urls.length === 0) {
