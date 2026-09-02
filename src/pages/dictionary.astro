@@ -8,9 +8,20 @@ import DictionarySearch from '../components/DictionarySearch.astro';
   <meta slot="head" name="robots" content="noindex, nofollow" />
   <Nav lang="ar" />
   <main class="px-6 py-14 md:py-20">
-    <h1 class="text-center font-arabic-display text-[clamp(1.8rem,4vw,2.6rem)] leading-tight mb-3">المعجم الذكي</h1>
-    <p class="text-center text-ink/60 dark:text-mist/60 mb-10">معانٍ، جذر، أمثلة، وترجمة لأي كلمة عربية.</p>
-    <DictionarySearch lang="ar" />
+    {/* Hero on the مجالس / tool / practice pattern: start-aligned, plain
+        eyebrow, purple accent, body on the AA-safe muted token. */}
+    <div class="max-w-6xl mx-auto">
+      <div class="max-w-3xl mb-10">
+        <p class="eyebrow mb-4">المعجم</p>
+        <h1 class="font-arabic font-bold text-[clamp(2rem,5vw,3.4rem)] leading-[1.25] tracking-tight text-ink dark:text-mist">
+          معجم عربي <span class="text-purple">ذكي</span>.
+        </h1>
+        <p class="mt-6 font-arabic text-body md:text-body-lg text-ink-muted dark:text-mist-muted leading-loose max-w-2xl">
+          ابحث عن أي كلمة عربية فتحصل على معانيها ومشتقاتها وجذرها وصرفها وإعرابها، مع شواهد من القرآن والمعاجم الكلاسيكية وترجمتها.
+        </p>
+      </div>
+      <DictionarySearch lang="ar" />
+    </div>
   </main>
   <Footer lang="ar" />
 </BaseLayout>
