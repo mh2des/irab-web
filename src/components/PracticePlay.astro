@@ -26,6 +26,7 @@ const back = lang === 'ar' ? 'M9 18l6-6-6-6' : 'M15 18l-6-6 6-6';
 
 const t = lang === 'ar'
   ? {
+      sessionEnded: 'انتهت جلستك.',
       gateTitle: 'سجّل الدخول لتبدأ التدريب',
       gateBody: 'اختر جملة جاهزة أو اكتب جملتك، ثم أعرِب واحصل على التصحيح.',
       signIn: 'تسجيل الدخول',
@@ -116,6 +117,7 @@ const t = lang === 'ar'
       sound: 'الصوت',
     }
   : {
+      sessionEnded: 'Your session has ended.',
       gateTitle: 'Sign in to start practicing',
       gateBody: 'Pick a ready-made sentence or write your own, then parse it and get corrected.',
       signIn: 'Sign in',
@@ -855,10 +857,10 @@ const againLabel = mode === 'curated'
 
     const T = lang === 'ar'
       ? {
-          select: 'اختر', type: 'النوع', role: 'الموقع', caseMarker: 'العلامة', grading: 'جارٍ التصحيح…', check: 'تحقّق من الإجابات', gradeCustom: 'صحّح إعرابي', completeAll: 'أكمل اختيارات كل كلمة أولاً.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', limit: 'بلغت حدّك اليومي المجاني للتدريب. عُد غدًا أو رقِّ حسابك.', error: 'حدث خطأ. حاول مرة أخرى.', yourAnswer: 'إجابتك', correct: 'الصواب', unlimited: 'تدريب غير محدود', level: 'المستوى', words: 'كلمة', wordLabel: 'الكلمة', incompleteWord: 'بانتظار الإجابة', completeWord: 'مكتملة', chapter: 'الفصل', appliedExercises: 'تمارين تطبيقية', openChapter: 'افتح الفصل', startChallenge: 'ابدأ التحدي', plusRequired: 'حصري لإعراب بلاس', noSentences: 'لا توجد جمل في هذا الموضوع.', score: 'نتيجتك', answered: (a: number, n: number) => `${a} من ${n}`, sentenceCount: (n: number) => `${toAr(n)} جملة`, yourIrabPlaceholder: 'إعرابك لهذه الكلمة…', fbExcellent: 'ممتاز! إتقان رائع 🎉', fbGreat: 'أحسنت! اقتربت من الإتقان', fbGood: 'جيد، واصل التدريب', fbKeep: 'لا بأس — التكرار يصنع الإتقان'
+          select: 'اختر', type: 'النوع', role: 'الموقع', caseMarker: 'العلامة', grading: 'جارٍ التصحيح…', sessionEnded: 'انتهت جلستك.', signIn: 'تسجيل الدخول', check: 'تحقّق من الإجابات', gradeCustom: 'صحّح إعرابي', completeAll: 'أكمل اختيارات كل كلمة أولاً.', needWords: 'اكتب إعرابك لكلمة واحدة على الأقل.', limit: 'بلغت حدّك اليومي المجاني للتدريب. عُد غدًا أو رقِّ حسابك.', error: 'حدث خطأ. حاول مرة أخرى.', yourAnswer: 'إجابتك', correct: 'الصواب', unlimited: 'تدريب غير محدود', level: 'المستوى', words: 'كلمة', wordLabel: 'الكلمة', incompleteWord: 'بانتظار الإجابة', completeWord: 'مكتملة', chapter: 'الفصل', appliedExercises: 'تمارين تطبيقية', openChapter: 'افتح الفصل', startChallenge: 'ابدأ التحدي', plusRequired: 'حصري لإعراب بلاس', noSentences: 'لا توجد جمل في هذا الموضوع.', score: 'نتيجتك', answered: (a: number, n: number) => `${a} من ${n}`, sentenceCount: (n: number) => `${toAr(n)} جملة`, yourIrabPlaceholder: 'إعرابك لهذه الكلمة…', fbExcellent: 'ممتاز! إتقان رائع 🎉', fbGreat: 'أحسنت! اقتربت من الإتقان', fbGood: 'جيد، واصل التدريب', fbKeep: 'لا بأس — التكرار يصنع الإتقان'
         }
       : {
-          select: 'Select', type: 'Type', role: 'Role', caseMarker: 'Marker', grading: 'Grading…', check: 'Check answers', gradeCustom: 'Grade my i\'rab', completeAll: 'Complete every word\'s choices first.', needWords: 'Write your i\'rab for at least one word.', limit: 'You\'ve hit today\'s free practice limit. Come back tomorrow or upgrade.', error: 'Something went wrong. Please try again.', yourAnswer: 'Your answer', correct: 'Correct', unlimited: 'Unlimited practice', level: 'Level', words: 'words', wordLabel: 'Word', incompleteWord: 'Waiting for answer', completeWord: 'Complete', chapter: 'Chapter', appliedExercises: 'Applied exercises', openChapter: 'Open chapter', startChallenge: 'Start challenge', plusRequired: 'Irab Plus exclusive', noSentences: 'No sentences in this topic.', score: 'Your score', answered: (a: number, n: number) => `${a} of ${n}`, sentenceCount: (n: number) => `${n} sentences`, yourIrabPlaceholder: 'Your i\'rab for this word…', fbExcellent: 'Excellent! Outstanding 🎉', fbGreat: 'Great work! Almost there', fbGood: 'Good — keep training', fbKeep: 'Keep going — practice makes perfect'
+          select: 'Select', type: 'Type', role: 'Role', caseMarker: 'Marker', grading: 'Grading…', sessionEnded: 'Your session has ended.', signIn: 'Sign in', check: 'Check answers', gradeCustom: 'Grade my i\'rab', completeAll: 'Complete every word\'s choices first.', needWords: 'Write your i\'rab for at least one word.', limit: 'You\'ve hit today\'s free practice limit. Come back tomorrow or upgrade.', error: 'Something went wrong. Please try again.', yourAnswer: 'Your answer', correct: 'Correct', unlimited: 'Unlimited practice', level: 'Level', words: 'words', wordLabel: 'Word', incompleteWord: 'Waiting for answer', completeWord: 'Complete', chapter: 'Chapter', appliedExercises: 'Applied exercises', openChapter: 'Open chapter', startChallenge: 'Start challenge', plusRequired: 'Irab Plus exclusive', noSentences: 'No sentences in this topic.', score: 'Your score', answered: (a: number, n: number) => `${a} of ${n}`, sentenceCount: (n: number) => `${n} sentences`, yourIrabPlaceholder: 'Your i\'rab for this word…', fbExcellent: 'Excellent! Outstanding 🎉', fbGreat: 'Great work! Almost there', fbGood: 'Good — keep training', fbKeep: 'Keep going — practice makes perfect'
         };
 
     const feedbackFor = (s: number) => s >= 0.9 ? T.fbExcellent : s >= 0.7 ? T.fbGreat : s >= 0.5 ? T.fbGood : T.fbKeep;
@@ -884,6 +886,12 @@ const againLabel = mode === 'curated'
     let currentUid = 'anon';
     let authUser: any = null;
     let isPremium = false;
+    // Auth is resolved in the BACKGROUND now (see the boot block at the end of
+    // this script). Anything that needs a token awaits authReady first; it has
+    // almost always settled long before the user finishes typing.
+    let signedOut = false;
+    let resolveAuth: () => void = () => {};
+    const authReady = new Promise<void>((r) => { resolveAuth = r; });
     let topics: any[] = [];
     let selectedTopic: any = null;
     let selectedSentence: any = null;
@@ -1120,6 +1128,7 @@ const againLabel = mode === 'curated'
       const label = q<HTMLElement>('[data-solve-check-label]');
       btn.disabled = true; label.textContent = T.grading;
       try {
+        if (!await ensureAuthed(msg)) return;
         // Worker call applies the daily free quota (and premium bypass); the
         // correctness comes from the sentence's stored answer.
         const res = await fetch(`${WORKER}/api/grade-practice`, {
@@ -1185,6 +1194,17 @@ const againLabel = mode === 'curated'
       q<HTMLElement>('[data-custom-msg]').className = 'hidden pr-msg';
     }
 
+    /** Await background auth, then report whether we can call the worker.
+     *  Renders the session-ended notice into `msg` when we cannot. */
+    async function ensureAuthed(msg: HTMLElement): Promise<boolean> {
+      await authReady;
+      if (idToken && !signedOut) return true;
+      const next = encodeURIComponent(location.pathname);
+      msg.innerHTML = `${T.sessionEnded} <a href="/login?next=${next}" class="underline font-semibold">${T.signIn}</a>`;
+      msg.className = 'pr-msg';
+      return false;
+    }
+
     async function gradeCustom() {
       const userAnalysis = customInputs.map((w) => ({ word: w.word, irab: w.input.value.trim() })).filter((w) => w.irab.length > 0);
       const msg = q<HTMLElement>('[data-custom-msg]');
@@ -1194,6 +1214,7 @@ const againLabel = mode === 'curated'
       const label = q<HTMLElement>('[data-custom-grade-label]');
       btn.disabled = true; label.textContent = T.grading;
       try {
+        if (!await ensureAuthed(msg)) return;
         const res = await fetch(`${WORKER}/api/grade-custom-irab`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
@@ -1397,45 +1418,85 @@ const againLabel = mode === 'curated'
       else showPhase('choose');
     }
 
+    function revealTool() {
+      if (booted) return;              // idempotent: auth refreshes must never
+      booted = true;                   // reset the user's place
+      loadingEl.classList.add('hidden');
+      toolEl.classList.remove('hidden');
+      openInitialPhase();
+    }
+    function showGate() {
+      loadingEl.classList.add('hidden');
+      toolEl.classList.add('hidden');
+      gateEl.classList.remove('hidden');
+    }
+    /** Has the user actually started? Used to decide whether a late "signed
+     *  out" verdict may replace the screen or must preserve their work. */
+    function hasUserWork(): boolean {
+      const ta = q<HTMLTextAreaElement>('[data-custom-input]');
+      if (ta && ta.value.trim()) return true;
+      return !customSolve.classList.contains('hidden');
+    }
+
     (async () => {
-      if (!maybeSignedIn()) { loadingEl.classList.add('hidden'); gateEl.classList.remove('hidden'); return; }
+      if (!maybeSignedIn()) { showGate(); resolveAuth(); return; }
+
+      // maybeSignedIn() is a synchronous localStorage read, so a returning
+      // user's first phase — a textarea — can paint NOW while Firebase (~110KB)
+      // loads in the background. This is the same pattern the analyzer uses
+      // (AGENTS.md): nothing on the write phase needs a token; only submitting
+      // does, and that path awaits authReady behind the button's busy state.
+      // Curated keeps its blocking wait on purpose: entitlement must resolve
+      // before chapters are revealed, or a locked chapter flashes open.
+      if (fixedMode !== 'curated') revealTool();
+
+      let entitlementDone = false;
       try {
         const [{ onAuth }, { fetchMe }] = await Promise.all([import('../lib/auth'), import('../lib/entitlement')]);
         onAuth(async (u) => {
-          if (!u) { if (!booted) { loadingEl.classList.add('hidden'); gateEl.classList.remove('hidden'); } return; }
+          if (!u) {
+            // The session really is gone (expired, or signed out in another
+            // tab). Don't yank work in progress: if they haven't started, show
+            // the gate; if they have, keep the screen and let the grading path
+            // surface the sign-in link when they submit.
+            signedOut = true;
+            resolveAuth();
+            if (!hasUserWork()) showGate();
+            return;
+          }
+          signedOut = false;
           authUser = u;
           currentUid = u.uid;
-          if (booted) return; // ignore auth refreshes — never reset the user's place
-          booted = true;
-
           try { idToken = await u.getIdToken(); } catch {}
+          resolveAuth();
 
           // Mode A parity with the app: resolve the shared RevenueCat-backed
           // entitlement BEFORE revealing chapters. This fails closed to the
           // free Levels 1–2 if the probe is unavailable and prevents a locked
           // chapter from flashing open while /v1/me is still pending.
           if (fixedMode === 'curated') {
-            try {
-              const me = await fetchMe(u);
-              isPremium = me?.premium === true;
-            } catch { isPremium = false; }
-            if (isPremium) quotaEl.textContent = T.unlimited;
-          }
-
-          loadingEl.classList.add('hidden');
-          toolEl.classList.remove('hidden');
-
-          // Custom feedback keeps its fast first paint; its entitlement only
-          // affects quota messaging and can resolve in the background.
-          if (fixedMode !== 'curated') {
+            if (!entitlementDone) {
+              entitlementDone = true;
+              try {
+                const me = await fetchMe(u);
+                isPremium = me?.premium === true;
+              } catch { isPremium = false; }
+              if (isPremium) quotaEl.textContent = T.unlimited;
+            }
+            revealTool();
+          } else if (!entitlementDone) {
+            // Custom already painted; its entitlement only affects quota
+            // messaging and can land whenever.
+            entitlementDone = true;
             fetchMe(u).then((me) => {
               if (me?.premium) { isPremium = true; quotaEl.textContent = T.unlimited; }
             }).catch(() => {});
           }
-
-          openInitialPhase();
         });
-      } catch { loadingEl.classList.add('hidden'); gateEl.classList.remove('hidden'); }
+      } catch {
+        resolveAuth();
+        if (!booted) showGate();
+      }
     })();
   }
 </script>
