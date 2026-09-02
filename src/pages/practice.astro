@@ -45,18 +45,24 @@ const learningResource = {
   <Nav lang="ar" />
 
   <main>
-    <section class="px-6 pt-16 pb-12 md:pt-24 md:pb-16 text-center">
-      <div class="max-w-3xl mx-auto">
-        <p class="eyebrow justify-center mb-5">تدرّب على الإعراب</p>
-        <h1 class="font-arabic font-bold text-[clamp(2.5rem,7vw,5rem)] leading-[1.05] tracking-tight text-ink dark:text-mist mb-6">
-          أعرِبْ بنفسك، لا أن تقرأ الإعراب فقط.
-        </h1>
-        <p class="font-arabic text-body-lg text-ink/72 dark:text-mist/72 leading-loose max-w-2xl mx-auto mb-9">
-          اكتب أي جملة عربية، أعرِب كلماتها بنفسك، ثم احصل على تقييم فوري وتصحيح ذكي يشرح مواضع الصواب والخطأ.
-        </p>
-        <div class="flex flex-wrap justify-center gap-3">
-          <a href="/practice/play" class="practice-start-cta btn-primary btn-lg">ابدأ التدريب الآن</a>
-          <a href="/challenges" class="btn-ghost btn-lg">اذهب إلى التحديات</a>
+    {/* Hero on the مجالس الإعراب / tool pattern: start-aligned rather than
+        centred, plain eyebrow, purple accent on the headline's key idea, and
+        the AA-safe muted token for the body (the old text-ink/72 opacity is
+        the route global.css records as having failed AA over the paper). */}
+    <section class="px-5 sm:px-6 lg:px-8 pt-16 pb-12 md:pt-24 md:pb-16">
+      <div class="max-w-6xl mx-auto">
+        <div class="max-w-3xl">
+          <p class="eyebrow mb-4">تدرّب على الإعراب</p>
+          <h1 class="font-arabic font-bold text-[clamp(2rem,5vw,3.4rem)] leading-[1.25] tracking-tight text-ink dark:text-mist">
+            أعرِبْ <span class="text-purple">بنفسك</span>، لا أن تقرأ الإعراب فقط.
+          </h1>
+          <p class="mt-6 font-arabic text-body md:text-body-lg text-ink-muted dark:text-mist-muted leading-loose max-w-2xl">
+            اكتب أي جملة عربية، أعرِب كلماتها بنفسك، ثم احصل على تقييم فوري وتصحيح ذكي يشرح مواضع الصواب والخطأ.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/practice/play" class="practice-start-cta btn-primary btn-lg">ابدأ التدريب الآن</a>
+            <a href="/challenges" class="btn-ghost btn-lg">اذهب إلى التحديات</a>
+          </div>
         </div>
       </div>
     </section>

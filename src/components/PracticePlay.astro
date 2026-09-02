@@ -55,7 +55,11 @@ const t = lang === 'ar'
       stepChapter: 'اختر الفصل',
       stepSentence: 'اختر الجملة',
       stepAnswer: 'أعرِب الكلمات',
-      customIntroTitle: 'كيف يعمل التدريب؟',
+      customIntroEyebrow: 'تدرّب على الإعراب',
+      // Split only so the accent half can be purple, exactly as the tool and
+      // majalis heroes do. Together they read as the original single line.
+      customIntroTitleLead: 'كيف يعمل ',
+      customIntroTitleAccent: 'التدريب؟',
       customIntroBody: 'اكتب جملة، أعرِب كل كلمة بأسلوبك، ثم احصل على تقييم وتصحيح ذكي يوضّح الصواب والخطأ.',
       loadingBank: 'جارٍ تحميل بنك الجمل…',
       noTopics: 'تعذّر تحميل الجمل الآن. حاول مجددًا.',
@@ -141,7 +145,9 @@ const t = lang === 'ar'
       stepChapter: 'Choose chapter',
       stepSentence: 'Choose sentence',
       stepAnswer: 'Parse the words',
-      customIntroTitle: 'How does Practice work?',
+      customIntroEyebrow: 'Practice',
+      customIntroTitleLead: 'How does ',
+      customIntroTitleAccent: 'Practice work?',
       customIntroBody: "Enter a sentence, write your i'rab for each word, then receive an instant score and intelligent correction.",
       loadingBank: 'Loading the sentence bank…',
       noTopics: 'Couldn\'t load sentences right now. Please retry.',
@@ -213,13 +219,14 @@ const againLabel = mode === 'curated'
 <div data-practice-root data-lang={lang} data-login={login} data-practice-mode={mode} dir={dir} class="pr-shell">
   {mode === 'custom' && (
     <section class="pr-feature-intro" aria-labelledby="practice-intro-title">
-      <span class="pr-feature-intro-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/><path d="m13 7 3 3"/></svg>
-      </span>
-      <span class="pr-feature-intro-copy">
-        <h1 id="practice-intro-title" class:list={[titleClass, 'pr-feature-intro-title']}>{t.customIntroTitle}</h1>
-        <p>{t.customIntroBody}</p>
-      </span>
+      <p class="eyebrow mb-4">{t.customIntroEyebrow}</p>
+      {/* Deliberately NOT titleClass (Aref Ruqaa): this is a full phrase with
+          punctuation, which the font-arabic-display usage rule in global.css
+          keeps off Ruqaa. Same treatment as the /tool and majalis heroes. */}
+      <h1 id="practice-intro-title" class="font-arabic font-bold text-[clamp(2rem,5vw,3.4rem)] leading-[1.25] tracking-tight">
+        {t.customIntroTitleLead}<span class="text-purple">{t.customIntroTitleAccent}</span>
+      </h1>
+      <p class="mt-6 font-arabic text-body md:text-body-lg text-ink-muted dark:text-mist-muted leading-loose max-w-2xl">{t.customIntroBody}</p>
     </section>
   )}
 
@@ -416,19 +423,11 @@ const againLabel = mode === 'curated'
      results are injected via JS, so scoped styles would never reach them. All
   selectors are pr-* prefixed to avoid leaking into other components. */
   .pr-shell { width: 100%; max-width: 60rem; margin-inline: auto; }
-  .pr-feature-intro {
-    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding: 1rem 1.15rem;
-    border-radius: 1rem; color: var(--color-ink); background:
-      linear-gradient(135deg, color-mix(in srgb, var(--color-purple) 9%, white), color-mix(in srgb, var(--color-teal) 7%, white));
-    border: 1px solid color-mix(in srgb, var(--color-purple) 22%, var(--color-card-edge));
-  }
-  .dark .pr-feature-intro { color: var(--color-mist); background: linear-gradient(135deg, color-mix(in srgb, var(--color-purple) 14%, var(--color-coal-soft)), color-mix(in srgb, var(--color-teal) 10%, var(--color-coal-soft))); border-color: color-mix(in srgb, var(--color-purple) 28%, var(--color-coal-edge)); }
-  .pr-feature-intro-icon { width: 3rem; height: 3rem; flex: none; display: grid; place-items: center; border-radius: 0.85rem; color: #fff; background: linear-gradient(135deg, var(--color-purple), var(--color-purple-deep)); box-shadow: 0 10px 22px -12px var(--color-purple); }
-  .pr-feature-intro-icon svg { width: 1.45rem; height: 1.45rem; }
-  .pr-feature-intro-copy { min-width: 0; }
-  .pr-feature-intro-title { font-size: 1.2rem; line-height: 1.25; margin-bottom: 0.18rem; }
-  .pr-feature-intro-copy p { font-size: var(--text-caption); line-height: 1.65; color: color-mix(in srgb, var(--color-ink) 68%, transparent); }
-  .dark .pr-feature-intro-copy p { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+  /* Was a gradient pill card with an icon; now the page's hero, styled by the
+     same utilities as the /tool and majalis heroes so all three read as one
+     system. Only the spacing below it lives here. */
+  .pr-feature-intro { margin-bottom: 2.5rem; color: var(--color-ink); }
+  .dark .pr-feature-intro { color: var(--color-mist); }
   .pr-gate-icon { width: 4rem; height: 4rem; border-radius: 1.1rem; margin: 0 auto 1.25rem; display: grid; place-items: center; color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 12%, white); border: 1px solid color-mix(in srgb, var(--color-purple) 26%, var(--color-card-edge)); }
   .dark .pr-gate-icon { background: color-mix(in srgb, var(--color-purple) 22%, var(--color-coal-soft)); }
   .pr-gate-icon svg { width: 1.9rem; height: 1.9rem; }
