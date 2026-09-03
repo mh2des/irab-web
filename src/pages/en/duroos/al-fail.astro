@@ -1,0 +1,179 @@
+---
+/** English edition of /duroos/al-fail. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-fail';
+const objectives = [
+  'State the four rulings of the fāʿil that every grammar book lists.',
+  'Find the doer when it is a pronoun fused to the verb, or no letter at all.',
+  'Apply the feminine agreement rule, and say when it is obligatory and when optional.',
+  'Distinguish a fāʿil from every other nominative in the sentence.',
+];
+const faqs = [
+  { q: 'Can the fāʿil come before its verb?', a: 'No. Ibn Ājurrūm defines it as "the raised noun whose verb is mentioned before it", so a preceding verb is part of the definition. If a noun is fronted the sentence becomes nominal and that noun is a mubtadaʾ, with the verb\'s doer then being an implied pronoun.' },
+  { q: 'What is the difference between a fāʿil and a mubtadaʾ?', a: 'Both are nominative, but a fāʿil is raised by a verb standing before it, while a mubtadaʾ is raised by al-ibtidāʾ and has no spoken governor above it. Practically: no verb, no fāʿil. In fī l-ṣaffi ṭālibun there is no verb at all, so ṭālibun is a postponed mubtadaʾ.' },
+  { q: 'When must the verb be made feminine?', a: 'Obligatorily when the doer is a connected explicit feminine noun (qāmat Hindun) or a connected feminine pronoun. It is optional when the doer is a broken plural, or a real-feminine noun separated from the verb, or an unreal feminine: ṭalaʿat al-shamsu and ṭalaʿa al-shamsu are both correct.' },
+  { q: 'Can the fāʿil be omitted?', a: 'Not while the verb remains active. A verb without a doer is impossible: if no noun appears, the doer is a pronoun, either attached or implied. What can happen is that the doer is removed entirely and the verb is rebuilt for the passive, at which point what remains is a nāʾib al-fāʿil, not a fāʿil.' },
+  { q: 'How are the tāʾ of the doer and the wāw of the group parsed?', a: 'Both are attached pronouns and both are built, so neither is described as marfūʿ. The wording is: ḍamīr muttaṣil mabnī fī maḥall rafʿ fāʿil, an attached pronoun, built, in the position of nominative as doer.' },
+  { q: 'How can an infinitival phrase be a fāʿil?', a: 'When an or anna plus a verb follows a verb, the phrase is read as the verbal noun it stands for and occupies the doer\'s slot. In yasurrunī an tanjaḥa, "that you succeed pleases me", the phrase an tanjaḥa is fī maḥall rafʿ fāʿil, standing in for najāḥuka, "your success".' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Fāʿil (doer) in Arabic Grammar · Irab App"
+  description="A full lesson on the fāʿil: the classical definition, its four rulings, the forms it takes including attached and implied pronouns, feminine agreement, and how to tell it from every other nominative, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Fāʿil (doer)" description="A full lesson on the fāʿil: the classical definition, its four rulings, its forms, feminine agreement, and how to tell it from every other nominative, with complete classical iʿrāb." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Doer (al-fāʿil)"
+      summary="The fāʿil is the nominative noun that follows a verb and names who performed the act. Four rulings govern it, and every one of them catches English speakers out at least once: it is always nominative, it always follows its verb, the verb stays singular no matter how many doers there are, and the verb takes a feminine form when the doer is feminine. This lesson works through all four with full iʿrāb."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the classical definition"
+      lead="Ibn Ājurrūm defined the fāʿil as the raised noun whose verb is mentioned before it. There is no doer without a verb preceding it, which is why we look for one only in a verbal sentence."
+    >
+      <LessonObjective items={objectives} />
+      <p>Read that definition again and notice what it does <em>not</em> say. It does not say "the one who does the action". It says: a noun, nominative, with its verb before it. The definition is structural, not semantic, and that is deliberate. A fāʿil need not be a person, need not be alive, and need not, in a passive sense, do anything at all.</p>
+      <p>In <span class="ar" lang="ar" dir="rtl">مَاتَ الرَّجُلُ</span>, <em>māta l-rajulu</em>, "the man died", the man performed no action whatever. He is still the fāʿil, because he is the nominative noun after the verb, described by it.</p>
+
+      <ExampleCard
+        label="The base case"
+        ar="ذَهَبَ الطَّالِبُ"
+        focus="الطَّالِبُ"
+        translit="dhahaba l-ṭālibu"
+        en="The student went."
+        irab="ذهب فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="rules"
+      title="Understand: the four rulings"
+      lead="Every grammar book lists the same four: the doer is nominative, it follows its verb, the verb stays singular however many doers there are, and the verb is made feminine when the doer is feminine. Master these and most verbal sentences hold no difficulty."
+    >
+      <p><strong>1. It is always nominative.</strong> No exceptions while the verb is active.</p>
+      <p><strong>2. It follows its verb.</strong> Not a preference but part of the definition. Front the noun and the sentence is no longer verbal.</p>
+      <p><strong>3. The verb stays singular.</strong> This is the ruling English speakers break most often, because English forces agreement.</p>
+
+      <ExampleCard
+        label="Ruling 3: no number agreement"
+        ar="نَجَحَ الطُّلَّابُ"
+        focus="الطُّلَّابُ"
+        translit="najaḥa l-ṭullābu"
+        en="The students succeeded."
+        irab="نجح فعل ماضٍ مبني على الفتح، الطلابُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Not najaḥū l-ṭullābu. English says 'the students succeed' and changes the verb; Arabic leaves it singular and lets the doer carry the number. Writing najaḥū here is the single most common beginner error in this chapter."
+      />
+
+      <p><strong>4. The verb is made feminine when the doer is feminine.</strong> Obligatory when the doer is a connected explicit feminine noun or a connected feminine pronoun. Optional when the doer is a broken plural, or separated from the verb by another word, or grammatically but not really feminine.</p>
+
+      <ExampleCard
+        label="Ruling 4: obligatory feminine"
+        ar="قَامَتْ هِنْدٌ"
+        focus="هِنْدٌ"
+        translit="qāmat Hindun"
+        en="Hind stood."
+        irab="قامتْ فعل ماضٍ مبني على الفتح، والتاء تاء التأنيث الساكنة لا محل لها من الإعراب، هندٌ فاعل مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Note how the tāʾ is parsed. It is not a doer and not a pronoun: it is the quiescent feminine tāʾ, a marker with no position in iʿrāb, lā maḥalla lahā min al-iʿrāb. Learners often mistake it for the tāʾ of the doer in katabtu, which is an entirely different letter doing an entirely different job."
+      />
+
+      <CheckQuestion
+        q="Correct this sentence and say which ruling it breaks."
+        ar="ذَهَبُوا الْأَوْلَادُ إِلَى الْمَدْرَسَةِ"
+        answer="dhahaba l-awlādu ilā l-madrasati. It breaks ruling 3."
+        why="The doer is an explicit noun following the verb, so the verb must stay singular. The plural wāw on dhahabū would itself be the doer, and a sentence cannot have two."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="forms"
+      title="See: the forms the doer takes"
+      lead="An explicit noun, an attached pronoun, an implied pronoun, or an infinitival phrase. Learners who look only for an explicit noun after the verb will conclude, wrongly, that many sentences have no doer at all."
+    >
+      <ExampleCard
+        label="1. An attached pronoun"
+        ar="نَجَحْتُ فِي الِامْتِحَانِ"
+        focus="تُ"
+        translit="najaḥtu fī l-imtiḥāni"
+        en="I succeeded in the exam."
+        irab="نجحَ فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل، في حرف جر، الامتحانِ اسم مجرور وعلامة جره الكسرة الظاهرة."
+      />
+
+      <ExampleCard
+        label="2. An implied pronoun"
+        ar="اِجْتَهِدْ فِي دَرْسِكَ"
+        focus="اِجْتَهِدْ"
+        translit="ijtahid fī darsika"
+        en="Strive in your lesson."
+        irab="اجتهدْ فعل أمر مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت، في حرف جر، درسِ اسم مجرور وعلامة جره الكسرة الظاهرة وهو مضاف، والكاف ضمير متصل في محل جر مضاف إليه."
+        note="No doer appears anywhere in the sentence, yet the analysis names one: a pronoun hidden obligatorily, estimated as anta. Obligatorily, wujūban, because an imperative can have no other doer. Compare the optional hiding, jawāzan, in yashraḥu, where an explicit noun could have appeared instead."
+      />
+
+      <ExampleCard
+        label="3. An infinitival phrase"
+        ar="يَسُرُّنِي أَنْ تَنْجَحَ"
+        focus="أَنْ تَنْجَحَ"
+        translit="yasurrunī an tanjaḥa"
+        en="That you succeed pleases me."
+        irab="يسرُّ فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والنون للوقاية، والياء ضمير متصل في محل نصب مفعول به، أنْ حرف مصدري ونصب، تنجحَ فعل مضارع منصوب بأن وعلامة نصبه الفتحة الظاهرة، والمصدر المؤول في محل رفع فاعل."
+        note="The doer here is a whole clause read as a noun: an tanjaḥa stands in for najāḥuka, 'your success'. Note also nūn al-wiqāya, the protective nūn, inserted between the verb and the object pronoun to keep the verb's own ending intact. It has no position in iʿrāb."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three habits cause most errors: confusing the doer with other nominatives, assuming a doer must be a person, and reading word order without reading meaning."
+    >
+      <ul>
+        <li><strong>Calling every nominative a fāʿil.</strong> Ask first whether there is a verb before it. In <span class="ar" lang="ar" dir="rtl">فِي الصَّفِّ طَالِبٌ</span> there is none, so <em>ṭālibun</em> is a postponed mubtadaʾ. In <span class="ar" lang="ar" dir="rtl">كَانَ الْجَوُّ صَحْوًا</span> there is a verb, but kāna is deficient and its nominative is called ism kāna, not fāʿil.</li>
+        <li><strong>Expecting a person.</strong> In <span class="ar" lang="ar" dir="rtl">طَلَعَتِ الشَّمْسُ</span> the sun is the doer. A doer is a grammatical position, not a description of agency.</li>
+        <li><strong>Making the verb agree in number.</strong> Ruling 3 above. English habit, wrong in Arabic.</li>
+        <li><strong>Missing an invisible doer.</strong> If no noun follows the verb, the doer is attached or implied. It is never absent.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The definition and the four rulings are given in these texts in the wording used above."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the definition quoted at the top of this lesson.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the forms of the doer and the conditions of feminine agreement.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on the doer not preceding its verb and on obligatory versus optional hiding of the pronoun.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

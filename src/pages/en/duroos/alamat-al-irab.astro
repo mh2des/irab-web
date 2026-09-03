@@ -1,0 +1,180 @@
+---
+/** English edition of /duroos/alamat-al-irab. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'alamat-al-irab';
+const objectives = [
+  'Name the four original markers and say which of them can appear on a noun and which on a verb.',
+  'List the seven chapters in which a substitute marker replaces an original one.',
+  'Give a marker together with the reason for it, in the wording the books use.',
+  'Explain why some declinable words show no vowel at all.',
+];
+const faqs = [
+  { q: 'What is the difference between original and substitute markers?', a: 'The original markers are the four vowels: ḍamma for nominative, fatḥa for accusative, kasra for genitive, sukūn for jussive. A substitute marker, ʿalāma farʿiyya, stands in for one of them in seven specific chapters, either a letter replacing a vowel, or one vowel replacing another, or the dropping of a letter.' },
+  { q: 'In which chapters do substitute markers appear?', a: 'Seven, no more: the dual, the sound masculine plural, the five nouns, the sound feminine plural, the diptote, the five verbs, and the imperfect ending in a weak letter. Learn the list and you can always say whether a marker is original or substitute.' },
+  { q: 'Is sukūn a marker of iʿrāb or of bināʾ?', a: 'It can be either, and the difference is decided by the word, not the vowel. On a declinable imperfect verb after a jussive particle, sukūn is a marker of iʿrāb: lam yaktub. On a built word such as the past tense with the doer\'s tāʾ, katabtu, the sukūn belongs to bināʾ and never changes.' },
+  { q: 'What is estimated iʿrāb, and when does it apply?', a: 'When a word cannot physically carry its vowel, the marker is muqaddar, estimated. All three vowels are estimated on a final alif, because pronouncing them is impossible, li-l-taʿadhdhur. Ḍamma and kasra are estimated on a final yāʾ or wāw because they are heavy, li-l-thiql, while fatḥa appears normally on them since it is light.' },
+  { q: 'Why is a diptote put into the genitive with fatḥa?', a: 'Because a diptote refuses tanwīn and refuses kasra together. It keeps ḍamma in the nominative and fatḥa in the accusative like any noun, but in the genitive fatḥa stands in place of kasra. If it takes al- or is annexed, the reason lapses and it returns to kasra.' },
+  { q: 'How do I practise recognising markers?', a: 'In fixed order: identify the kind of word, then its role in the sentence, then ask whether it belongs to one of the seven chapters. If not, the marker is original. If it does, name the substitute marker together with its reason, "because it is a dual", "because it is a sound masculine plural", and so on.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Markers of Iʿrāb (ʿalāmāt al-iʿrāb) · Irab App"
+  description="A full lesson on the markers of iʿrāb: the four original vowels, the seven chapters where substitute markers replace them, visible and estimated marking, and a reliable procedure for choosing the right marker, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Markers of Iʿrāb" description="The four original markers, the seven chapters of substitution, visible and estimated marking, and how to choose the right marker, with complete classical iʿrāb." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Markers of Iʿrāb"
+      summary="Case in Arabic is one thing and the sign that shows it is another. Four vowels are the original signs, but in seven chapters of the language a substitute takes over: a letter instead of a vowel, a different vowel, or a dropped letter. This lesson gives the four originals, the complete list of seven substitutions, the cases where a marker is estimated rather than seen, and a procedure for choosing correctly every time."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="original-signs"
+      title="Learn: the four original markers"
+      lead="Ḍamma for the nominative, fatḥa for the accusative, kasra for the genitive, sukūn for the jussive. Nominative and accusative reach both nouns and verbs; the genitive belongs to nouns alone and the jussive to verbs alone."
+    >
+      <LessonObjective items={objectives} />
+      <p>Hold two ideas apart from the beginning, because English has no vocabulary that keeps them separate. The <strong>case</strong> is the grammatical state: marfūʿ, manṣūb, majrūr, majzūm. The <strong>marker</strong> is the physical sign that displays it. A word can be marfūʿ and show it with a ḍamma, or with a wāw, or with nothing visible at all. The case has not changed in any of these; only its outward sign has.</p>
+      <p>Notice also the distribution, which is not symmetrical. Genitive can only ever appear on a noun. Jussive can only ever appear on a verb. If you have parsed a verb as majrūr, you have made an error somewhere upstream.</p>
+
+      <ExampleCard
+        label="All four originals in two sentences"
+        ar="لَمْ يَكْتُبِ الطَّالِبُ الدَّرْسَ فِي الْبَيْتِ"
+        focus={['الطَّالِبُ', 'الدَّرْسَ', 'الْبَيْتِ']}
+        translit="lam yaktubi l-ṭālibu l-darsa fī l-bayti"
+        en="The student did not write the lesson at home."
+        irab="لم حرف نفي وجزم وقلب، يكتبْ فعل مضارع مجزوم بلم وعلامة جزمه السكون، وحُرِّك بالكسر منعًا لالتقاء الساكنين، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، الدرسَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، في حرف جر، البيتِ اسم مجرور وعلامة جره الكسرة الظاهرة."
+        note="Four markers, four jobs, one sentence. Note the aside on yaktub: its jussive marker is sukūn, but a kasra is pronounced to avoid two unvowelled letters meeting. The marker is still sukūn; the kasra is phonetic, not grammatical."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="substitute-signs"
+      title="Understand: the seven chapters of substitution"
+      lead="Substitute markers replace the originals in seven chapters and no others. Learn the list and every marker becomes decidable."
+    >
+      <p>Three kinds of substitution occur.</p>
+      <p><strong>A letter replaces a vowel</strong> in three chapters:</p>
+      <ul>
+        <li><strong>The dual:</strong> alif for nominative, yāʾ for accusative and genitive.</li>
+        <li><strong>The sound masculine plural:</strong> wāw for nominative, yāʾ for accusative and genitive.</li>
+        <li><strong>The five nouns</strong> (ab, akh, ḥam, fū, dhū): wāw, alif, yāʾ for the three cases.</li>
+      </ul>
+      <p><strong>A vowel replaces a vowel</strong> in two chapters:</p>
+      <ul>
+        <li><strong>The sound feminine plural:</strong> kasra instead of fatḥa in the accusative.</li>
+        <li><strong>The diptote:</strong> fatḥa instead of kasra in the genitive.</li>
+      </ul>
+      <p><strong>Dropping replaces a vowel</strong> in two chapters:</p>
+      <ul>
+        <li><strong>The five verbs:</strong> the nūn is kept for nominative and dropped for accusative and jussive.</li>
+        <li><strong>The imperfect ending in a weak letter:</strong> the weak letter itself is dropped for the jussive.</li>
+      </ul>
+
+      <ExampleCard
+        label="Dual and sound masculine plural together"
+        ar="جَاءَ الْمُعَلِّمَانِ وَالطُّلَّابُ الْمُجْتَهِدُونَ"
+        focus={['الْمُعَلِّمَانِ', 'الْمُجْتَهِدُونَ']}
+        translit="jāʾa l-muʿallimāni wa-l-ṭullābu l-mujtahidūna"
+        en="The two teachers and the diligent students came."
+        irab="جاء فعل ماضٍ مبني على الفتح، المعلمانِ فاعل مرفوع وعلامة رفعه الألف لأنه مثنى، الواو حرف عطف، الطلابُ معطوف على المعلمين مرفوع وعلامة رفعه الضمة الظاهرة، المجتهدونَ نعت مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم."
+        note="Three nominatives in one sentence showing three different markers: alif, ḍamma and wāw. The case is identical in all three. Note the wording the books require: never just 'nominative by alif', always 'by alif because it is a dual'."
+      />
+
+      <ExampleCard
+        label="Accusative marked by kasra"
+        ar="إِنَّ الْمُسْلِمَاتِ صَابِرَاتٌ"
+        focus="الْمُسْلِمَاتِ"
+        translit="inna l-muslimāti ṣābirātun"
+        en="Indeed the Muslim women are patient."
+        irab="إنّ حرف توكيد ونصب، المسلماتِ اسم إنّ منصوب وعلامة نصبه الكسرة نيابة عن الفتحة لأنه جمع مؤنث سالم، صابراتٌ خبر إنّ مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="A kasra that means accusative. Reading endings mechanically will call this genitive every time. This is the clearest case in the language of why you must name the reason alongside the marker."
+      />
+
+      <CheckQuestion
+        q="Give the case and the full marker with its reason."
+        ar="سَلَّمْتُ عَلَى أَبِيكَ"
+        answer="abīka is majrūr, and the marker of its genitive is yāʾ, because it is one of the five nouns."
+        why="ʿalā is a preposition, so what follows is genitive. ab is one of the five nouns and is annexed here to the pronoun ka, so it takes letters as markers rather than vowels: wāw, alif, yāʾ for nominative, accusative, genitive respectively."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="visible-and-estimated"
+      title="See: visible and estimated markers"
+      lead="Sometimes the marker cannot be pronounced. All three vowels are estimated on a final alif because they are impossible; ḍamma and kasra are estimated on a final yāʾ or wāw because they are heavy, while fatḥa appears normally."
+    >
+      <p>This chapter explains an otherwise baffling observation: a word is declinable, yet carries no visible vowel. The tradition gives two reasons, and the wording of each is fixed.</p>
+      <ul>
+        <li><strong>Impossibility</strong>, <em>li-l-taʿadhdhur</em>: a final alif takes no vowel at all, so all three cases are estimated on it.</li>
+        <li><strong>Heaviness</strong>, <em>li-l-thiql</em>: ḍamma and kasra are awkward on a final yāʾ or wāw and are therefore estimated. Fatḥa is light and appears normally.</li>
+      </ul>
+
+      <ExampleCard
+        label="Estimated on alif, both pillars"
+        ar="إِنَّ الْهُدَىٰ هُدَى اللهِ"
+        focus={['الْهُدَىٰ', 'هُدَى']}
+        translit="inna l-hudā hudā Llāhi"
+        en="Say: indeed guidance is the guidance of Allah."
+        irab="إنّ حرف توكيد ونصب، الهدى اسم إنّ منصوب وعلامة نصبه الفتحة المقدرة على الألف منع من ظهورها التعذر، هدى خبر إنّ مرفوع وعلامة رفعه الضمة المقدرة على الألف منع من ظهورها التعذر وهو مضاف، اللهِ لفظ الجلالة مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="Two words spelled identically, in two different cases, with neither case visible. Only the analysis distinguishes them. This is the sentence to remember when you wonder whether estimated marking matters."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="choosing-the-sign"
+      title="A procedure that always works"
+      lead="Take the steps in order and the marker is never a guess: identify the kind of word, then its role, then ask whether it belongs to one of the seven chapters."
+    >
+      <ol>
+        <li><strong>What kind of word is it?</strong> Noun, verb or particle. A particle is built and has no marker at all.</li>
+        <li><strong>What is its role?</strong> That gives the case: doer means nominative, object means accusative, after a preposition means genitive.</li>
+        <li><strong>Is it in one of the seven chapters?</strong> If not, use the original marker. If it is, name the substitute together with its reason.</li>
+        <li><strong>Can the marker be pronounced?</strong> If the word ends in alif, yāʾ or wāw, the marker may be estimated. Say so, and give the reason.</li>
+      </ol>
+      <p>The habit worth building is never saying a marker without its reason. "Nominative by wāw" is incomplete. "Nominative, and the marker of its nominative is wāw because it is a sound masculine plural" is the wording the books use and the wording that keeps you correct.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The four originals, the seven chapters and the two reasons for estimation are given in these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the chapter on the markers of iʿrāb, which fixes the list of seven.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span>: substitute markers and the conditions on each chapter.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: estimated marking, and the distinction between impossibility and heaviness.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

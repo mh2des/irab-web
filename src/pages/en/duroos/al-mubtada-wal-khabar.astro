@@ -1,0 +1,221 @@
+---
+/** English edition of /duroos/al-mubtada-wal-khabar. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-mubtada-wal-khabar';
+const objectives = [
+  'Name the three forms a mubtadaʾ can take, including the one that is not a noun at all.',
+  'Identify which of the three kinds of khabar you are looking at, and find its link.',
+  'Recognise the descriptive word that takes a subject in place of a predicate.',
+  'Say when the predicate must be omitted, and reconstruct what was omitted.',
+];
+const faqs = [
+  { q: 'What case are the mubtadaʾ and khabar in?', a: 'Both are marfūʿ, nominative. The mubtadaʾ is raised by al-ibtidāʾ, the abstract fact of beginning the sentence with it, and the khabar is raised by the mubtadaʾ. This holds unless an abrogator such as kāna or inna enters and changes one of them.' },
+  { q: 'What forms can the mubtadaʾ take?', a: 'An explicit noun (al-ʿilmu nāfiʿun), a detached pronoun (huwa karīmun), or a maṣdar muʾawwal, an infinitival phrase built from an and a verb, which is treated as a noun: an taṣūmū khayrun lakum, "that you fast is better for you". A descriptive word after negation or a question also belongs here, treated in its own section below.' },
+  { q: 'When does a subject stand in place of the predicate?', a: 'When a descriptive word such as an active or passive participle follows a negation or an interrogative and raises an explicit noun after it, and the sentence is complete without anything further. In a-qāʾimun al-zaydāni, "are the two Zayds standing?", qāʾimun is mubtadaʾ and al-zaydāni is its fāʿil standing in place of the khabar (sadda masadda l-khabar). This is the Baṣran analysis followed in the syllabuses.' },
+  { q: 'When must the khabar be omitted?', a: 'In several set cases, the best known being after lawlā: lawlā l-Lāhu la-halaknā, "were it not for Allah we would have perished". The predicate mawjūdun, "existing", is obligatorily omitted and never stated. The predicate is also omitted in oaths and after the wāw of accompaniment.' },
+  { q: 'Can one mubtadaʾ take more than one khabar?', a: 'Yes, without a coordinating particle. In inna Llāha ghafūrun raḥīmun both ghafūrun and raḥīmun are predicates of the same subject, each independently marfūʿ. The tradition calls this taʿaddud al-khabar.' },
+  { q: 'What link does a sentence-predicate need?', a: 'A rābiṭ referring back to the mubtadaʾ. It is usually an attached pronoun (al-ḥadīqatu azhāruhā jamīlatun), but it may be a pronoun implied inside a verb (al-ṭālibu yadrusu, where the doer of yadrusu is an implied huwa referring to al-ṭālibu). Without a link the two halves are unconnected statements.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Mubtadaʾ and Khabar: subject and predicate in Arabic · Irab App"
+  description="A full lesson on the mubtadaʾ and khabar: what raises each of them, the forms the subject takes, the three kinds of predicate, the descriptive word whose subject replaces its predicate, multiple predicates, and obligatory omission after lawlā."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Mubtadaʾ and Khabar" description="A full lesson on the mubtadaʾ and khabar: what raises each of them, the forms the subject takes, the three kinds of predicate, obligatory omission, and multiple predicates, with complete classical iʿrāb." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Subject and Predicate"
+      summary="The two pillars of the nominal sentence deserve a chapter of their own. The mubtadaʾ is not always a noun, the khabar comes in three quite different shapes, one construction replaces the predicate with a subject, and in a few sentences the predicate is obligatorily left unsaid. This lesson works through each, with the classical iʿrāb for every case."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the definition, and what raises each pillar"
+      lead="The mubtadaʾ is the noun the nominal sentence is built on, free of any spoken governor. The khabar is the part that completes the meaning with it. Both are nominative, and that ruling holds until an abrogator arrives."
+    >
+      <LessonObjective items={objectives} />
+      <p>The phrase "free of any spoken governor", <em>mujarrad ʿan al-ʿawāmil al-lafẓiyya</em>, is doing real work in the definition. It is what separates a mubtadaʾ from every other nominative in the language: a fāʿil is raised by a verb you can point to, an ism kāna by kāna. The mubtadaʾ has no such word above it. It is raised by <em>al-ibtidāʾ</em>, the bare fact of being the thing the sentence starts from, and the tradition calls that a <em>ʿāmil maʿnawī</em>, an abstract governor.</p>
+
+      <ExampleCard
+        label="The base case"
+        ar="الْعِلْمُ نَافِعٌ"
+        focus={['الْعِلْمُ', 'نَافِعٌ']}
+        translit="al-ʿilmu nāfiʿun"
+        en="Knowledge is beneficial."
+        irab="العلمُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة على آخره، نافعٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة على آخره."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="types-of-mubtada"
+      title="See: the three forms of the mubtadaʾ"
+      lead="A mubtadaʾ is an explicit noun, a detached pronoun, or an infinitival phrase built from an and a verb. The third is the one learners miss, because it is not a noun on the page."
+    >
+      <ExampleCard
+        label="1. An explicit noun"
+        ar="الصَّبْرُ مِفْتَاحُ الْفَرَجِ"
+        focus="الصَّبْرُ"
+        translit="al-ṣabru miftāḥu l-faraji"
+        en="Patience is the key to relief."
+        irab="الصبرُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، مفتاحُ خبر مرفوع وعلامة رفعه الضمة الظاهرة وهو مضاف، الفرجِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+      />
+
+      <ExampleCard
+        label="2. A detached pronoun"
+        ar="هُوَ كَرِيمٌ"
+        focus="هُوَ"
+        translit="huwa karīmun"
+        en="He is generous."
+        irab="هو ضمير منفصل مبني على الفتح في محل رفع مبتدأ، كريمٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="A pronoun is mabnī, built: its ending never changes for case. So the tradition does not say it is marfūʿ but that it is fī maḥall rafʿ, in the position of nominative. The slot is nominative even though the word cannot show it."
+      />
+
+      <ExampleCard
+        label="3. An infinitival phrase (maṣdar muʾawwal)"
+        ar="وَأَنْ تَصُومُوا خَيْرٌ لَكُمْ"
+        focus="أَنْ تَصُومُوا"
+        translit="wa-an taṣūmū khayrun lakum"
+        en="And that you fast is better for you."
+        irab="أنْ حرف مصدري ونصب، تصوموا فعل مضارع منصوب بأن وعلامة نصبه حذف النون لأنه من الأفعال الخمسة، وواو الجماعة ضمير متصل في محل رفع فاعل، والمصدر المؤول من أنْ وما بعدها في محل رفع مبتدأ، خيرٌ خبر مرفوع."
+        note="There is no noun at the start of this sentence, yet it has a mubtadaʾ. an taṣūmū is read as equivalent to the verbal noun ṣiyāmukum, 'your fasting', and that reading is what occupies the subject slot. Whenever you meet an or anna followed by a verb, ask what noun the phrase is standing in for."
+      />
+
+      <CheckQuestion
+        q="What is the mubtadaʾ here, and what form does it take?"
+        ar="أَنْ تَعْفُوا أَقْرَبُ لِلتَّقْوَىٰ"
+        answer="The maṣdar muʾawwal an taʿfū, 'that you pardon', in the position of nominative."
+        why="No explicit noun opens the sentence. The infinitival phrase stands in for the verbal noun al-ʿafwu, and aqrabu is its predicate. Note also that aqrabu is a diptote, so it would take fatḥa rather than kasra in the genitive."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="types-of-khabar"
+      title="The three kinds of khabar, and multiple predicates"
+      lead="Single, a whole sentence carrying a link, or a quasi-sentence. And one subject may take more than one predicate without any coordinating particle between them."
+    >
+      <p>The three shapes are treated in full in <a href="/en/duroos/al-jumla-al-ismiyya">the nominal sentence</a>. What belongs here is the fourth possibility: that a single mubtadaʾ carries several predicates at once, <em>taʿaddud al-khabar</em>.</p>
+
+      <ExampleCard
+        label="Two predicates, one subject"
+        ar="إِنَّ اللهَ غَفُورٌ رَحِيمٌ"
+        focus={['غَفُورٌ', 'رَحِيمٌ']}
+        translit="inna Llāha ghafūrun raḥīmun"
+        en="Indeed Allah is Forgiving, Merciful."
+        irab="إنّ حرف توكيد ونصب، اللهَ لفظ الجلالة اسم إنّ منصوب، غفورٌ خبر إنّ مرفوع، رحيمٌ خبر ثانٍ مرفوع."
+        note="No wāw stands between the two predicates and none is needed. Each is independently nominative and each reports about the same subject."
+      />
+
+      <ExampleCard
+        label="A sentence-predicate with an implied link"
+        ar="الطَّالِبُ يَدْرُسُ"
+        focus="يَدْرُسُ"
+        translit="al-ṭālibu yadrusu"
+        en="The student studies."
+        irab="الطالبُ مبتدأ مرفوع، يدرسُ فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والفاعل ضمير مستتر وجوبًا تقديره هو، والجملة الفعلية في محل رفع خبر."
+        note="The link is not visible. The doer of yadrusu is an implied pronoun, ḍamīr mustatir, understood as huwa and referring back to al-ṭālibu. That implied pronoun is the rābiṭ. English speakers often look for a written pronoun and conclude there is no link."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sadd-masadd-al-khabar"
+      title="Understand: when a subject replaces the predicate"
+      lead="A descriptive word after a negation or a question can raise a noun after it and need no predicate at all. The raised noun is a fāʿil, and it stands in the predicate's place."
+    >
+      <p>This construction has no English parallel, so read it slowly. Take a participle such as <em>qāʾimun</em>, "standing". Put a question in front of it and an explicit noun after it, and the sentence is already complete. There is nothing left to say.</p>
+
+      <ExampleCard
+        label="Fāʿil in place of a khabar"
+        ar="أَقَائِمٌ الزَّيْدَانِ"
+        focus="الزَّيْدَانِ"
+        translit="a-qāʾimun al-zaydāni"
+        en="Are the two Zayds standing?"
+        irab="الهمزة حرف استفهام، قائمٌ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، الزيدانِ فاعل سد مسد الخبر مرفوع وعلامة رفعه الألف لأنه مثنى."
+        note="qāʾimun is the mubtadaʾ, and al-zaydāni is not a predicate but a fāʿil raised by the participle, which has 'blocked the place of the predicate', sadda masadda l-khabar. This is the Baṣran analysis and the one the syllabuses follow. The conditions are strict: a descriptive word, preceded by negation or a question, raising an explicit noun, with the sentence complete."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="taqdim-and-hadhf"
+      title="Fronting, omission, and the abrogators"
+      lead="The default order is subject then predicate. The predicate is fronted when it has a right to initial position or when it is a quasi-sentence and the subject is indefinite, and in a few constructions it is omitted altogether and never spoken."
+    >
+      <p>Fronting is covered in <a href="/en/duroos/al-jumla-al-ismiyya">the nominal sentence</a>. What is specific to this chapter is obligatory omission, and the clearest case is <em>lawlā</em>.</p>
+
+      <ExampleCard
+        label="The predicate that is never said"
+        ar="لَوْلَا اللهُ لَهَلَكْنَا"
+        focus="اللهُ"
+        translit="lawlā Llāhu la-halaknā"
+        en="Were it not for Allah, we would have perished."
+        irab="لولا حرف امتناع لوجود، اللهُ لفظ الجلالة مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، والخبر محذوف وجوبًا تقديره موجودٌ، اللام واقعة في جواب لولا، هلكنا فعل ماضٍ مبني على السكون لاتصاله بنا، ونا ضمير متصل في محل رفع فاعل."
+        note="The predicate mawjūdun, 'existing', is obligatorily omitted after lawlā and may not be stated. Notice that iʿrāb here describes a word that is not on the page: the analysis names the omitted element and gives its estimated wording, taqdīruhu. Reconstructing omitted elements is a normal part of the work."
+      />
+
+      <p>When an abrogator enters, both pillars are re-ruled at once and renamed. That is the subject of <a href="/en/duroos/kana-wa-akhawatuha">kāna and its sisters</a> and <a href="/en/duroos/inna-wa-akhawatuha">inna and its sisters</a>.</p>
+
+      <CheckQuestion
+        q="Name the mubtadaʾ, and say what has happened to the predicate."
+        ar="لَوْلَا دَفْعُ اللهِ النَّاسَ بَعْضَهُمْ بِبَعْضٍ لَفَسَدَتِ الْأَرْضُ"
+        answer="dafʿu is the mubtadaʾ, marfūʿ. Its khabar is obligatorily omitted, estimated as mawjūdun."
+        why="Everything after lawlā down to the lām is the subject and what is annexed to it. The predicate is never spoken in this construction, and the answer clause la-fasadati l-arḍu follows."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="signs"
+      title="The markers, and where learners go wrong"
+      lead="Both pillars are raised by ḍamma by default, with wāw for the sound masculine plural and the five nouns, and alif for the dual. The marker follows the kind of word, never its role in the sentence."
+    >
+      <ul>
+        <li><strong>Reading the marker off the role.</strong> "Subject, therefore ḍamma" fails the moment the subject is a dual or a sound masculine plural. Ask what kind of noun it is, then which marker that kind takes.</li>
+        <li><strong>Missing the infinitival subject.</strong> A sentence opening with <em>an</em> plus a verb still has a mubtadaʾ. Ask what noun the phrase stands in for.</li>
+        <li><strong>Declaring a pronoun marfūʿ.</strong> A pronoun is built. Say <em>fī maḥall rafʿ</em>, in the position of nominative, not marfūʿ.</li>
+        <li><strong>Looking for a written link.</strong> When the predicate is a verbal sentence the link is usually an implied pronoun inside the verb.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The analysis here is the Baṣran one carried by the standard teaching texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the chapter on the mubtadaʾ and khabar, obligatory omission, and the descriptive word whose fāʿil replaces its predicate.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on multiple predicates and on the conditions of sadd masadd al-khabar.</li>
+        <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: on the estimated wording of omitted predicates.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

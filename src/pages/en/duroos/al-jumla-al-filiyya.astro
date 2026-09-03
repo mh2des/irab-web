@@ -1,0 +1,222 @@
+---
+/** English edition of /duroos/al-jumla-al-filiyya. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-jumla-al-filiyya';
+const objectives = [
+  'Separate the two pillars of a verbal sentence from what is merely additional to it.',
+  'Say why the verb stays singular however many doers there are.',
+  'Explain why a fāʿil can never come before its verb, and what the sentence becomes if a noun is fronted.',
+  'Parse a verbal sentence whose doer is a pronoun you cannot see.',
+];
+const faqs = [
+  { q: 'What are the two pillars of a verbal sentence?', a: 'The verb and its fāʿil, the doer. They are ʿumda, the load-bearing parts, and the sentence is not complete without them. The direct object is faḍla, additional, and appears only with transitive verbs. A sentence can consist of a verb and its doer alone: qāma Zaydun, "Zayd stood".' },
+  { q: 'Can the fāʿil come before its verb?', a: 'No, not in the Baṣran analysis this site follows. A fāʿil is defined as the raised noun whose verb precedes it. If a noun is fronted, as in al-ṭālibu kataba, the sentence becomes nominal, the noun becomes a mubtadaʾ, and the verbal sentence after it occupies the position of khabar. The doer of the verb is then an implied pronoun.' },
+  { q: 'When must the object come before the doer?', a: 'When the object is a pronoun attached to the verb and the doer is an explicit noun, as in the Fātiḥa: iyyāka naʿbudu. Also when leaving the object last would obscure which is which, or when the doer is annexed to a pronoun referring to the object, as in zāra baytahu ṣāḥibuhu.' },
+  { q: 'What is the difference between a fāʿil and a nāʾib al-fāʿil?', a: 'A fāʿil follows a verb built for the active and names who performed the act. A nāʾib al-fāʿil follows a verb built for the passive, where the doer has been removed from the sentence entirely, and it takes over the doer\'s nominative case and all its rulings. Its form is usually what was the direct object.' },
+  { q: 'Does the verb become dual or plural with a dual or plural doer?', a: 'No. When the doer is an explicit noun following the verb, the verb stays singular however many the doers are: qāma l-ṭullābu, not qāmū l-ṭullābu. Number is carried by the doer alone. Plural marking on the verb appears only when the doer is a pronoun inside it.' },
+  { q: 'How do I tell doer from object when the vowels are not written?', a: 'Use meaning, then order, then any visible marker. In an unvowelled text the default order verb, doer, object holds unless the sense forbids it. Where a noun is a dual or a sound masculine plural the letters themselves settle it: alif and wāw mean nominative, yāʾ means accusative, and those letters are written even when short vowels are not.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Verbal Sentence (al-jumla al-filʿiyya) in Arabic Grammar · Irab App"
+  description="A full lesson on the verbal sentence: its two pillars, the kinds of verb and transitivity, the doer and its forms, the object, the passive, and why word order is what it is, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Verbal Sentence" description="A full lesson on the verbal sentence: its two pillars, transitivity, the doer and its forms, the object, the passive, and word order, with complete classical iʿrāb." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Verbal Sentence"
+      summary="A verbal sentence opens with a verb. Its two pillars are the verb and its doer, and everything else in it is additional. This lesson covers the kinds of verb and what transitivity means for iʿrāb, the forms the doer takes including the ones you cannot see, why the verb never agrees in number with a following doer, and the rules that fix the order of the three parts."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: pillars and additions"
+      lead="A sentence is verbal when its opening element is a verb. The verb and its doer are the pillars, ʿumda. The object is faḍla, additional, and comes only with transitive verbs."
+    >
+      <LessonObjective items={objectives} />
+      <p>The distinction between <em>ʿumda</em>, load-bearing, and <em>faḍla</em>, surplus, runs through the whole of naḥw. Remove a pillar and there is no sentence left. Remove an addition and the sentence still stands.</p>
+
+      <ExampleCard
+        label="Two pillars, nothing else"
+        ar="قَامَ زَيْدٌ"
+        focus="زَيْدٌ"
+        translit="qāma Zaydun"
+        en="Zayd stood."
+        irab="قام فعل ماضٍ مبني على الفتح، زيدٌ فاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره."
+        note="A complete sentence in two words. qāma is intransitive, lāzim, so it takes no object and none is missing."
+      />
+
+      <ExampleCard
+        label="Pillars plus an addition"
+        ar="كَتَبَ الطَّالِبُ الدَّرْسَ"
+        focus={['الطَّالِبُ', 'الدَّرْسَ']}
+        translit="kataba l-ṭālibu l-darsa"
+        en="The student wrote the lesson."
+        irab="كتب فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، الدرسَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Two different cases doing two different jobs: ḍamma marks who acted, fatḥa marks what was acted upon. This is the clearest demonstration in the language of why case exists."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="the-verb"
+      title="The verb: three kinds, and transitivity"
+      lead="The past tense is always built, the imperative is always built, and only the imperfect is declinable, taking nominative, accusative and jussive. Separately, a verb is either intransitive or transitive, and that decides whether an object exists at all."
+    >
+      <p>Two independent classifications are at work, and confusing them is a common source of error.</p>
+      <ul>
+        <li><strong>By form:</strong> <em>māḍī</em> (past) is <em>mabnī</em>, built, its ending fixed. <em>Amr</em> (imperative) is built. <em>Muḍāriʿ</em> (imperfect) is <em>muʿrab</em>, declinable, and takes rafʿ, naṣb or jazm, unless the feminine plural nūn or an emphatic nūn attaches to it, in which case it too is built.</li>
+        <li><strong>By meaning:</strong> <em>lāzim</em>, intransitive, is satisfied by its doer. <em>Mutaʿaddin</em>, transitive, puts one or more nouns in the accusative.</li>
+      </ul>
+      <p>The practical consequence: never look for a direct object after an intransitive verb. If you find an accusative noun there, it is something else, a circumstantial accusative or an adverbial, not an object.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="the-fail"
+      title="See: the doer and the shapes it takes"
+      lead="The fāʿil is a nominative noun after a verb built for the active, naming who performed the act or was described by it. It may be an explicit noun, an attached pronoun, an implied pronoun, or an infinitival phrase."
+    >
+      <ExampleCard
+        label="An attached pronoun as doer"
+        ar="كَتَبْتُ الدَّرْسَ"
+        focus="تُ"
+        translit="katabtu l-darsa"
+        en="I wrote the lesson."
+        irab="كتبَ فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل، الدرسَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="The doer is a single letter fused to the verb. Note also what the attachment does to the verb: kataba is normally built on fatḥa, but before the tāʾ of the doer it is built on sukūn."
+      />
+
+      <ExampleCard
+        label="An implied doer"
+        ar="اَلْمُعَلِّمُ يَشْرَحُ"
+        focus="يَشْرَحُ"
+        translit="al-muʿallimu yashraḥu"
+        en="The teacher explains."
+        irab="المعلمُ مبتدأ مرفوع، يشرحُ فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والفاعل ضمير مستتر جوازًا تقديره هو، والجملة الفعلية في محل رفع خبر."
+        note="There is no written doer at all. The tradition supplies one: a hidden pronoun, estimated as huwa. Note that this whole sentence is nominal, because a noun opened it. The verbal sentence sits inside it as the predicate."
+      />
+
+      <CheckQuestion
+        q="Find the fāʿil, and say what form it takes."
+        ar="ذَهَبُوا إِلَى الْمَسْجِدِ"
+        answer="The wāw of the group, wāw al-jamāʿa, an attached pronoun in the position of nominative."
+        why="dhahabū is a past verb built on ḍamma because the wāw attaches to it, and that wāw is the doer: mabnī ʿalā l-sukūn fī maḥall rafʿ fāʿil. There is no explicit noun in the sentence performing the act."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="the-maful-bih"
+      title="The object, and its markers"
+      lead="The direct object is an accusative noun on which the doer's action falls. It exists only with transitive verbs, and its marker follows the kind of noun it is."
+    >
+      <p>Accusative is marked by fatḥa by default, by yāʾ in the dual and the sound masculine plural, and, in a case worth memorising, by <strong>kasra</strong> in the sound feminine plural.</p>
+
+      <ExampleCard
+        label="An accusative marked by kasra"
+        ar="كَرَّمَ الْمُدِيرُ الطَّالِبَاتِ"
+        focus="الطَّالِبَاتِ"
+        translit="karrama l-mudīru l-ṭālibāti"
+        en="The principal honoured the female students."
+        irab="كرّم فعل ماضٍ مبني على الفتح، المديرُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، الطالباتِ مفعول به منصوب وعلامة نصبه الكسرة نيابة عن الفتحة لأنه جمع مؤنث سالم."
+        note="A kasra that means accusative, not genitive. Learners who read endings mechanically will call this majrūr every time. The wording that protects you is the one the books use: 'kasra standing in place of fatḥa, because it is a sound feminine plural'."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="naib-al-fail"
+      title="Understand: when the doer is removed"
+      lead="Build the verb for the passive and the doer leaves the sentence altogether. What was the object rises to the nominative and takes over every ruling the doer had."
+    >
+      <p>The verb changes shape by a fixed pattern: in the past, first letter takes ḍamma and the letter before the last takes kasra; in the imperfect, first letter takes ḍamma and the letter before the last takes fatḥa. The imperative has no passive.</p>
+
+      <ExampleCard
+        label="Active to passive"
+        ar="كُتِبَ الدَّرْسُ"
+        focus="الدَّرْسُ"
+        translit="kutiba l-darsu"
+        en="The lesson was written."
+        irab="كُتِبَ فعل ماضٍ مبني للمجهول مبني على الفتح، الدرسُ نائب فاعل مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Compare kataba l-ṭālibu l-darsa. The doer has gone, and al-darsa, which was accusative, is now al-darsu, nominative. Arabic does not say by whom in this construction: there is no equivalent of 'by the student'. The full treatment is in the deputy doer lesson."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="word-order"
+      title="Word order, and the rule that surprises everyone"
+      lead="The default order is verb, doer, object. The doer never precedes its verb. The object may precede the doer, and sometimes must."
+    >
+      <p>Two consequences follow from "the doer never precedes its verb", and both matter.</p>
+      <p><strong>First:</strong> a fronted noun is not a fronted doer. It is a mubtadaʾ, and the sentence has become nominal. <strong>Second:</strong> the verb therefore never agrees in number with a following doer. It stays singular however many doers there are.</p>
+
+      <ExampleCard
+        label="Singular verb, plural doer"
+        ar="قَامَ الطُّلَّابُ"
+        focus="الطُّلَّابُ"
+        translit="qāma l-ṭullābu"
+        en="The students stood."
+        irab="قام فعل ماضٍ مبني على الفتح، الطلابُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Not qāmū l-ṭullābu. When the doer is an explicit noun after the verb, number lives in the doer alone. Plural marking appears on the verb only when the doer is a pronoun inside it, as in qāmū, 'they stood'."
+      />
+
+      <ExampleCard
+        label="Object before doer, obligatorily"
+        ar="إِيَّاكَ نَعْبُدُ"
+        focus="إِيَّاكَ"
+        translit="iyyāka naʿbudu"
+        en="You alone we worship."
+        irab="إياك ضمير منفصل مبني على الفتح في محل نصب مفعول به مقدم، نعبدُ فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والفاعل ضمير مستتر وجوبًا تقديره نحن."
+        note="The object comes first, and in this construction it must. The fronting also carries meaning: it restricts worship to Allah alone, which is why the translation adds 'alone'. Word order in Arabic is rarely only grammatical."
+      />
+
+      <CheckQuestion
+        q="Is this nominal or verbal, and what is al-muʾminūna?"
+        ar="الْمُؤْمِنُونَ يَعْمَلُونَ الصَّالِحَاتِ"
+        answer="Nominal. al-muʾminūna is a mubtadaʾ, and the doer of yaʿmalūna is the attached wāw."
+        why="A noun opened the sentence, so it is nominal and the noun cannot be a fāʿil. The verbal sentence yaʿmalūna l-ṣāliḥāti occupies the position of khabar. Note al-ṣāliḥāti: a sound feminine plural object, accusative by kasra."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The order and the rulings follow the standard teaching texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the definitions of the doer and the object.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: transitivity, the forms of the doer, and the cases of obligatory fronting.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on the doer not preceding its verb, and on the passive.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

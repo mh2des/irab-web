@@ -7,7 +7,18 @@
  * one-line change here plus the page file itself.
  */
 export const EN_DUROOS = new Set<string>([
+  // Patch 1: the sentence and its pillars, the markers, the noun and its divisions.
   'al-jumla-al-ismiyya',
+  'al-mubtada-wal-khabar',
+  'al-jumla-al-filiyya',
+  'al-fail',
+  'naib-al-fail',
+  'alamat-al-irab',
+  'al-afal-al-khamsa',
+  'al-asma-al-khamsa',
+  'al-mamnu-min-al-sarf',
+  'al-nakira-wal-marifa',
+  'al-maqsur-wal-manqus-wal-mamdud',
 ]);
 
 export const hasEnLesson = (slug: string): boolean => EN_DUROOS.has(slug);

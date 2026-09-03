@@ -1,0 +1,174 @@
+---
+/** English edition of /duroos/al-mamnu-min-al-sarf. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-mamnu-min-al-sarf';
+const objectives = [
+  'Recognise a diptote by its two refusals: no tanwīn, and fatḥa in the genitive.',
+  'Name the two causes that each suffice alone.',
+  'Combine proper-noun status or adjectival status with a second cause.',
+  'Say the two circumstances in which a diptote returns to kasra.',
+];
+const faqs = [
+  { q: 'What does "prevented from ṣarf" actually mean?', a: 'Ṣarf here means tanwīn, the final -n of a fully declined noun. A noun prevented from ṣarf refuses tanwīn, and along with it refuses kasra in the genitive, taking fatḥa instead. The name describes what the noun will not accept.' },
+  { q: 'When is a diptote put into the genitive with kasra?', a: 'In two circumstances: when it carries the definite article al-, and when it is the first term of an annexation. In both the reason for prevention lapses, and it takes kasra like any other noun, though it still refuses tanwīn. So fī masājida but fī l-masājidi and fī masājidi l-madīnati.' },
+  { q: 'Are all foreign proper nouns diptotes?', a: 'No. Foreignness must combine with proper-noun status, and the word must be more than three letters, or three letters with a vowelled middle. Nūḥ and Lūṭ are foreign proper nouns yet fully declined, because they are three letters with a quiescent middle.' },
+  { q: 'Why is ʿUmar a diptote while ʿAmr is fully declined?', a: 'ʿUmar is a proper noun that has been deflected from its expected form ʿĀmir, and deflection, al-ʿadl, combined with proper-noun status prevents ṣarf. ʿAmr has undergone no such deflection, so it keeps its tanwīn.' },
+  { q: 'How do I recognise the pattern of ultimate plurals?', a: 'Look for a broken plural with three or more letters after its alif of plurality, where the letter after the alif carries a vowel and there are two or three letters after it: masājid, maṣābīḥ, dawābb. This cause alone is enough to prevent ṣarf.' },
+  { q: 'Does prevention affect the nominative and accusative?', a: 'Only by removing tanwīn. A diptote is nominative with ḍamma and accusative with fatḥa exactly like any noun. The whole peculiarity is confined to the genitive, where fatḥa stands in place of kasra.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Diptotes (al-mamnūʿ min al-ṣarf) in Arabic Grammar · Irab App"
+  description="A full lesson on the diptote: what prevention from ṣarf means, the two causes that suffice alone, the causes that combine with proper-noun or adjectival status, and when a diptote returns to kasra, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Diptotes (al-mamnūʿ min al-ṣarf)" description="What prevention from ṣarf means, the causes, and when a diptote returns to kasra, with complete classical iʿrāb." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Diptotes"
+      summary="Some nouns refuse two things at once: they take no tanwīn, and in the genitive they take fatḥa where every other noun takes kasra. Arabic calls them prevented from ṣarf. The chapter is a list of causes, some sufficient alone and some needing a partner, and it is worth learning properly because a fatḥa that means genitive will otherwise mislead you every time you meet one."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the definition and the marker"
+      lead="A diptote is a declinable noun that takes no tanwīn. It is nominative with ḍamma and accusative with fatḥa like any noun, and differs only in the genitive, where its marker is fatḥa standing in place of kasra."
+    >
+      <LessonObjective items={objectives} />
+      <p>Note precisely where the peculiarity lives. Nominative and accusative behave normally. Everything unusual is confined to the genitive, and to the absence of tanwīn throughout.</p>
+
+      <ExampleCard
+        label="Genitive by fatḥa"
+        ar="صَلَّيْتُ فِي مَسَاجِدَ كَثِيرَةٍ"
+        focus="مَسَاجِدَ"
+        translit="ṣallaytu fī masājida kathīratin"
+        en="I prayed in many mosques."
+        irab="صليتُ فعل وفاعل، في حرف جر، مساجدَ اسم مجرور وعلامة جره الفتحة نيابة عن الكسرة لأنه ممنوع من الصرف على صيغة منتهى الجموع، كثيرةٍ نعت مجرور وعلامة جره الكسرة الظاهرة."
+        note="The preposition fī requires the genitive, and masājida is genitive, but its marker is fatḥa. Notice the adjective kathīratin beside it takes an ordinary kasra with tanwīn, which shows the two words are in the same case and only the marker differs."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="one-reason"
+      title="See: the two causes that suffice alone"
+      lead="Two causes prevent ṣarf by themselves, needing no partner: the alif of femininity, shortened or extended, and the pattern of ultimate plurals."
+    >
+      <ul>
+        <li><strong>The alif of femininity</strong>, shortened as in <em>dhikrā</em>, <em>salmā</em>, or extended as in <em>ṣaḥrāʾ</em>, <em>ḥamrāʾ</em>.</li>
+        <li><strong>The pattern of ultimate plurals</strong>, <em>ṣīghat muntahā l-jumūʿ</em>: a broken plural with two or three letters after the alif of plurality, as in <em>masājid</em>, <em>maṣābīḥ</em>.</li>
+      </ul>
+
+      <ExampleCard
+        label="The extended alif of femininity"
+        ar="مَرَرْتُ بِصَحْرَاءَ وَاسِعَةٍ"
+        focus="صَحْرَاءَ"
+        translit="marartu bi-ṣaḥrāʾa wāsiʿatin"
+        en="I passed by a wide desert."
+        irab="مررتُ فعل وفاعل، الباء حرف جر، صحراءَ اسم مجرور وعلامة جره الفتحة نيابة عن الكسرة لأنه ممنوع من الصرف لألف التأنيث الممدودة، واسعةٍ نعت مجرور وعلامة جره الكسرة الظاهرة."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="proper-nouns"
+      title="Understand: proper nouns need a partner"
+      lead="Being a proper noun does not prevent ṣarf by itself. It must combine with a second cause: femininity, foreignness, compounding, the added alif and nūn, a verbal pattern, or deflection."
+    >
+      <p>This is the section that repays care, because the second cause is often invisible unless you know to look.</p>
+      <ul>
+        <li><strong>Femininity:</strong> <em>Fāṭima</em>, <em>Makka</em>.</li>
+        <li><strong>Foreignness:</strong> <em>Ibrāhīm</em>, <em>Yūsuf</em>. But the word must exceed three letters, or have a vowelled middle, which is why <em>Nūḥ</em> and <em>Lūṭ</em> are fully declined.</li>
+        <li><strong>Compounding:</strong> <em>Baʿlabakk</em>.</li>
+        <li><strong>Added alif and nūn:</strong> <em>ʿUthmān</em>, <em>Marwān</em>.</li>
+        <li><strong>A verbal pattern:</strong> <em>Aḥmad</em>, <em>Yazīd</em>.</li>
+        <li><strong>Deflection</strong>, <em>al-ʿadl</em>: <em>ʿUmar</em>, deflected from the expected <em>ʿĀmir</em>.</li>
+      </ul>
+
+      <ExampleCard
+        label="Proper noun plus foreignness"
+        ar="ذَهَبْتُ إِلَىٰ إِبْرَاهِيمَ"
+        focus="إِبْرَاهِيمَ"
+        translit="dhahabtu ilā Ibrāhīma"
+        en="I went to Ibrahim."
+        irab="ذهبتُ فعل وفاعل، إلى حرف جر، إبراهيمَ اسم مجرور وعلامة جره الفتحة نيابة عن الكسرة لأنه ممنوع من الصرف للعلمية والعجمة."
+        note="Two causes named together, العلمية والعجمة, proper-noun status and foreignness. The wording of the reason is part of the answer: naming only one cause is an incomplete iʿrāb."
+      />
+
+      <CheckQuestion
+        q="Is this word a diptote, and why or why not?"
+        ar="سَلَّمْتُ عَلَىٰ نُوحٍ"
+        answer="No. Nūḥ is fully declined, which is why it carries kasra and tanwīn."
+        why="It is a foreign proper noun, but it is only three letters with a quiescent middle, so the foreignness is not enough to prevent ṣarf. Compare Ibrāhīm, which exceeds three letters and is prevented."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="adjectives"
+      title="Adjectives need a partner too"
+      lead="Adjectival status combines with one of three causes: the pattern afʿal whose feminine is faʿlāʾ, the pattern faʿlān whose feminine is faʿlā, and deflection in numerals."
+    >
+      <ul>
+        <li><strong>afʿal with a feminine in faʿlāʾ:</strong> <em>aḥmar</em> and <em>ḥamrāʾ</em>, <em>akbar</em>.</li>
+        <li><strong>faʿlān with a feminine in faʿlā:</strong> <em>ʿaṭshān</em> and <em>ʿaṭshā</em>.</li>
+        <li><strong>Deflection in numerals:</strong> <em>mathnā</em>, <em>thulātha</em>, <em>rubāʿa</em>.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="back-to-kasra"
+      title="When a diptote returns to kasra"
+      lead="Two circumstances restore ordinary genitive marking: the definite article, and annexation. In both the noun still refuses tanwīn."
+    >
+      <ExampleCard
+        label="The article restores kasra"
+        ar="صَلَّيْتُ فِي الْمَسَاجِدِ"
+        focus="الْمَسَاجِدِ"
+        translit="ṣallaytu fī l-masājidi"
+        en="I prayed in the mosques."
+        irab="صليتُ فعل وفاعل، في حرف جر، المساجدِ اسم مجرور وعلامة جره الكسرة الظاهرة لاقترانه بأل."
+        note="The same word that took fatḥa in the first card of this lesson now takes kasra, because al- has been attached. Annexation does the same: fī masājidi l-madīnati. Note that even here there is no tanwīn."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The causes and the conditions on each are given in these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the full enumeration of the causes and their partners.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on deflection and on the conditions governing foreign proper nouns.</li>
+        <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: on the pattern of ultimate plurals.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

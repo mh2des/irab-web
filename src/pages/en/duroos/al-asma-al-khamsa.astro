@@ -1,0 +1,156 @@
+---
+/** English edition of /duroos/al-asma-al-khamsa. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-asma-al-khamsa';
+const objectives = [
+  'Name the five nouns and their three letter markers.',
+  'Apply the four conditions that must all hold before the letters are used.',
+  'Add the extra conditions specific to fū and dhū.',
+  'Say what happens when a condition fails, including the case of ab annexed to the speaker.',
+];
+const faqs = [
+  { q: 'Why are the five nouns marked by letters rather than vowels?', a: 'They are one of the seven chapters in which a substitute marker replaces an original one. Instead of ḍamma, fatḥa and kasra they take wāw, alif and yāʾ. The grammarians treat this as an inherited peculiarity of these particular words, and the practical point is to recognise it, not to derive it.' },
+  { q: 'Is it five nouns or six?', a: 'Both counts are current. The five are ab, akh, ḥam, fū and dhū. Some books add hanun as a sixth, but it is rare and most classical texts note that it is more commonly declined with vowels, so the standard teaching list is five.' },
+  { q: 'How is ab parsed when annexed to the speaker\'s yāʾ?', a: 'With estimated vowels, not letters. abī fails the condition that it must not be annexed to the speaker\'s yāʾ, so it returns to vowel marking, and those vowels are estimated on the final letter because the kasra required by the yāʾ occupies it. So jāʾa abī is nominative with an estimated ḍamma.' },
+  { q: 'How are abawāni and ābāʾ parsed?', a: 'Not as five nouns. abawāni is a dual and takes the dual markers, alif for nominative and yāʾ otherwise. ābāʾ is a broken plural and takes ordinary vowels. The five nouns take letters only in the singular, which is one of the four conditions.' },
+  { q: 'What is the difference between dhū the noun and alladhī the relative?', a: 'dhū means "possessor of" and must be annexed to an explicit noun, never to a pronoun, and it is one of the five nouns: dhū ʿilmin, "a possessor of knowledge". alladhī is a relative pronoun meaning "the one who", is built, and never declines. They are unrelated words that beginners often conflate.' },
+  { q: 'Why is fūka marked by letters while al-famu is not?', a: 'Because fū meets the conditions only when it is annexed and stripped of its mīm. Say fūka, "your mouth", and it is a five noun taking wāw, alif and yāʾ. Say al-famu with the mīm and it is an ordinary noun taking ordinary vowels. The word changes category with its form.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Five Nouns (al-asmāʾ al-khamsa) in Arabic · Irab App"
+  description="A full lesson on the five nouns: their letter markers, the four conditions that must all hold, the extra conditions on fū and dhū, and what happens when a condition fails, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Five Nouns" description="The five nouns, their letter markers, the four general conditions, the extra conditions on fū and dhū, and what happens when a condition fails." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Five Nouns"
+      summary="Five particular nouns take letters as case markers instead of vowels: wāw for the nominative, alif for the accusative, yāʾ for the genitive. But only when four conditions hold together, with two more attaching to fū and dhū. Miss a condition and the noun quietly returns to ordinary vowel marking, which is the source of nearly every error in this chapter."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: which nouns, and which markers"
+      lead="The five are ab (father), akh (brother), ḥam (in-law), fū (mouth) and dhū (possessor of). They are singled out because they take letters as case markers instead of vowels."
+    >
+      <LessonObjective items={objectives} />
+      <p>The correspondence is fixed and worth memorising as a unit: <strong>wāw</strong> for nominative in place of ḍamma, <strong>alif</strong> for accusative in place of fatḥa, <strong>yāʾ</strong> for genitive in place of kasra.</p>
+
+      <ExampleCard
+        label="All three cases in one sentence"
+        ar="جَاءَ أَبُوكَ فَرَأَيْتُ أَبَاكَ وَسَلَّمْتُ عَلَىٰ أَبِيكَ"
+        focus={['أَبُوكَ', 'أَبَاكَ', 'أَبِيكَ']}
+        translit="jāʾa abūka fa-raʾaytu abāka wa-sallamtu ʿalā abīka"
+        en="Your father came, so I saw your father and greeted your father."
+        irab="جاء فعل ماضٍ مبني على الفتح، أبوك فاعل مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة وهو مضاف، والكاف ضمير متصل في محل جر مضاف إليه، رأيتُ فعل وفاعل، أباك مفعول به منصوب وعلامة نصبه الألف لأنه من الأسماء الخمسة، سلّمتُ فعل وفاعل، على حرف جر، أبيك اسم مجرور وعلامة جره الياء لأنه من الأسماء الخمسة."
+        note="One word in three cases, and not a single vowel does the work. In an unvowelled text these letters are still written, which makes the five nouns among the most reliable case signals you will ever meet."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="general-conditions"
+      title="Understand: the four conditions"
+      lead="All four must hold together. If one fails, the noun returns to marking by vowels, visible or estimated."
+    >
+      <ol>
+        <li><strong>Singular.</strong> Not dual, not plural. <em>abawāni</em> is a dual and takes dual markers; <em>ābāʾ</em> is a broken plural and takes vowels.</li>
+        <li><strong>Not diminutive.</strong> <em>ubayy</em>, the diminutive of ab, takes ordinary vowels.</li>
+        <li><strong>Annexed.</strong> The noun must be the first term of an annexation. Standing alone it takes vowels: <em>hādhā abun</em>.</li>
+        <li><strong>Not annexed to the speaker's yāʾ.</strong> <em>abī</em>, "my father", fails this and returns to estimated vowels.</li>
+      </ol>
+
+      <ExampleCard
+        label="A condition fails: annexed to the speaker"
+        ar="جَاءَ أَبِي"
+        focus="أَبِي"
+        translit="jāʾa abī"
+        en="My father came."
+        irab="جاء فعل ماضٍ مبني على الفتح، أبي فاعل مرفوع وعلامة رفعه الضمة المقدرة على ما قبل ياء المتكلم منع من ظهورها اشتغال المحل بالحركة المناسبة، وهو مضاف، وياء المتكلم ضمير متصل في محل جر مضاف إليه."
+        note="Compare abūka in the previous card, marked by wāw. Here the fourth condition fails, so the noun leaves the chapter entirely and is marked by an estimated ḍamma. Writing abū here, by analogy with abūka, is the most common error in this chapter."
+      />
+
+      <CheckQuestion
+        q="What is the case and marker here, and does it belong to the five nouns?"
+        ar="هَٰذَانِ أَبَوَانِ كَرِيمَانِ"
+        answer="abawāni is nominative, marked by alif because it is a dual. It is not treated as a five noun here."
+        why="The first condition requires the singular. In the dual the word takes dual markers instead, alif for nominative and yāʾ for accusative and genitive, exactly like any other dual."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="dhu-and-fu-conditions"
+      title="The extra conditions on fū and dhū"
+      lead="Beyond the four, fū carries one more condition and dhū carries two. These are the details examinations reach for."
+    >
+      <ul>
+        <li><strong>fū</strong> must be stripped of its mīm. Say <em>fūka</em> and it is a five noun; say <em>al-famu</em> and it is an ordinary noun marked by vowels.</li>
+        <li><strong>dhū</strong> must mean "possessor of", and must be annexed to an explicit noun, never to a pronoun. So <em>dhū ʿilmin</em>, "a possessor of knowledge", qualifies; <em>dhūhu</em> does not exist.</li>
+      </ul>
+
+      <ExampleCard
+        label="dhū annexed to an explicit noun"
+        ar="جَاءَ ذُو عِلْمٍ"
+        focus="ذُو"
+        translit="jāʾa dhū ʿilmin"
+        en="A man of knowledge came."
+        irab="جاء فعل ماضٍ مبني على الفتح، ذو فاعل مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة وهو مضاف، علمٍ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="Do not confuse this dhū with the relative pronoun alladhī. dhū is declinable and means 'possessor of'; alladhī is built, never changes, and means 'the one who'."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="when-conditions-missing"
+      title="Where learners go wrong"
+      lead="Nearly every error in this chapter is the same error: applying the letters to every ab and akh without checking the conditions first."
+    >
+      <ul>
+        <li><strong>Ignoring the conditions.</strong> Check singular, non-diminutive, annexed, and not to the speaker's yāʾ, before reaching for wāw, alif or yāʾ.</li>
+        <li><strong>Writing abū with the speaker's yāʾ.</strong> It is <em>abī</em> in all three cases, with an estimated vowel.</li>
+        <li><strong>Treating the plural as a five noun.</strong> <em>ābāʾ</em> takes ordinary vowels.</li>
+        <li><strong>Confusing dhū with alladhī.</strong> Different words, different behaviour.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The list, the markers and the conditions are given in these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the five nouns among the chapters of substitute marking.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the four general conditions and the extra conditions on fū and dhū.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the disagreement over hanun as a sixth noun.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

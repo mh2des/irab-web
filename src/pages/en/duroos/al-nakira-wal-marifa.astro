@@ -1,0 +1,161 @@
+---
+/** English edition of /duroos/al-nakira-wal-marifa. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-nakira-wal-marifa';
+const objectives = [
+  'Apply a one-step test that separates definite from indefinite.',
+  'List the seven kinds of definite noun in order of definiteness.',
+  'Predict four grammatical consequences that follow from definiteness alone.',
+  'Tell an adjective from a circumstantial accusative by looking at what precedes it.',
+];
+const faqs = [
+  { q: 'How do I tell definite from indefinite quickly?', a: 'Test whether the word can accept al-. If it can, it is indefinite in its bare form: rajul accepts al- and is indefinite. If it cannot, because it is already definite by something else, it is definite: Muḥammad, huwa and hādhā all refuse al-. Tanwīn is a useful secondary clue, since a definite noun does not carry it.' },
+  { q: 'Which of the definite nouns is the most definite?', a: 'The usual ordering runs: the pronoun, then the proper noun, then the demonstrative, then the relative, then the noun with al-, then what is annexed to a definite, then the indefinite intended by a vocative. The pronoun leads because it points at something already present in the discourse.' },
+  { q: 'What licenses beginning a sentence with an indefinite?', a: 'A musawwigh, something that makes the indefinite informative: being described (rajulun karīmun zāranā), following negation or a question (mā aḥadun ʿindanā), expressing a prayer (salāmun ʿalaykum), or having a fronted quasi-sentence predicate (fī l-dāri rajulun).' },
+  { q: 'Why must the ḥāl and the tamyīz be indefinite?', a: 'Because both describe a manner or specify an amount rather than identify a particular thing. A ḥāl states the condition of its holder at the time of the act, and a tamyīz removes ambiguity from a quantity. Definiteness would pick out an individual, which is not what either construction does.' },
+  { q: 'Is a noun annexed to an indefinite definite?', a: 'No. Annexation transfers definiteness from the second term to the first, so kitābu l-ṭālibi is definite while kitābu ṭālibin remains indefinite. This is why the first term of an annexation never carries al- or tanwīn: its definiteness comes from what follows it.' },
+  { q: 'Is every noun with al- definite?', a: 'No. The al- of generic reference, al- al-jinsiyya, does not individuate: al-insānu khuliqa ḍaʿīfan speaks of humankind in general rather than one person. Extra al- in some proper nouns is likewise not definiteness, since the name is already definite in itself.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Definite and Indefinite (al-nakira wa-l-maʿrifa) in Arabic · Irab App"
+  description="A full lesson on definiteness: the test that separates the two, the seven kinds of definite noun, the four grammatical consequences of definiteness, and the errors it causes, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Definite and Indefinite" description="The test, the seven kinds of definite noun, the four grammatical consequences of definiteness, and the errors it causes." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Definite and Indefinite"
+      summary="Definiteness looks like a small topic and is not. Four separate rules elsewhere in the grammar are decided by it: whether a sentence may begin with a word, whether a following clause is an adjective or a circumstantial accusative, whether an adjective agrees, and why three whole chapters require indefinite nouns. This lesson gives the test, the seven kinds of definite noun, and the consequences."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the test"
+      lead="An indefinite noun denotes anything within its kind without singling one out, and its sign is that it accepts al-. A definite noun denotes something particular, and it does not accept al-, because it is already made definite by something else."
+    >
+      <LessonObjective items={objectives} />
+      <p>The test is genuinely mechanical, which makes it valuable. Ask: can this word take al-? <em>Rajul</em> can, so it is indefinite. <em>Muḥammad</em>, <em>huwa</em> and <em>hādhā</em> cannot, so each is already definite. Tanwīn is a reliable secondary clue: a definite noun does not carry it.</p>
+      <p>English speakers should resist mapping this onto "a" and "the". The overlap is real but partial: Arabic has seven routes to definiteness and only one of them is the article.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="kinds"
+      title="See: the seven definite nouns"
+      lead="The definite nouns are a closed list. Anything outside it is indefinite."
+    >
+      <ol>
+        <li><strong>The pronoun:</strong> <em>huwa</em>, <em>anta</em>, and the attached pronouns.</li>
+        <li><strong>The proper noun:</strong> <em>Muḥammad</em>, <em>Makka</em>.</li>
+        <li><strong>The demonstrative:</strong> <em>hādhā</em>, <em>tilka</em>.</li>
+        <li><strong>The relative noun:</strong> <em>alladhī</em>, <em>allatī</em>.</li>
+        <li><strong>The noun with al-:</strong> <em>al-kitāb</em>.</li>
+        <li><strong>What is annexed to a definite:</strong> <em>kitābu l-ṭālibi</em>.</li>
+        <li><strong>The indefinite intended by a vocative:</strong> <em>yā rajulu</em>, addressing one particular man.</li>
+      </ol>
+      <p>Number 6 is the one to think about. Annexation transfers definiteness from the second term to the first. That is why the first term of an annexation carries neither al- nor tanwīn: its definiteness arrives from what follows it.</p>
+
+      <ExampleCard
+        label="Definiteness by annexation"
+        ar="قَرَأْتُ كِتَابَ الطَّالِبِ"
+        focus="كِتَابَ"
+        translit="qaraʾtu kitāba l-ṭālibi"
+        en="I read the student's book."
+        irab="قرأتُ فعل وفاعل، كتابَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، الطالبِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="kitāba carries no al- and no tanwīn, yet it is definite, because al-ṭālibi is. Had it been kitāba ṭālibin, 'a student's book', the whole phrase would have remained indefinite."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="effect"
+      title="Understand: four rules that depend on this"
+      lead="Definiteness is not a label but a cause. Four separate rulings elsewhere in the grammar follow from it."
+    >
+      <p><strong>1. Beginning a sentence.</strong> A mubtadaʾ is definite by default, and an indefinite needs a licensor.</p>
+      <p><strong>2. Clauses after nouns.</strong> This is the most useful rule in the whole lesson: a sentence following an <strong>indefinite</strong> noun is an adjective describing it; a sentence following a <strong>definite</strong> noun is a circumstantial accusative. The tradition states it as a maxim: <em>al-jumal baʿda l-nakirāti ṣifāt, wa-baʿda l-maʿārifi aḥwāl</em>.</p>
+
+      <ExampleCard
+        label="After an indefinite: an adjective"
+        ar="رَأَيْتُ رَجُلًا يَبْتَسِمُ"
+        focus="يَبْتَسِمُ"
+        translit="raʾaytu rajulan yabtasimu"
+        en="I saw a man who was smiling."
+        irab="رأيتُ فعل وفاعل، رجلًا مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، يبتسمُ فعل مضارع مرفوع، والفاعل ضمير مستتر تقديره هو، والجملة الفعلية في محل نصب نعت لرجلًا."
+        note="rajulan is indefinite, so the clause after it describes which man: an adjective, naʿt."
+      />
+
+      <ExampleCard
+        label="After a definite: a circumstantial accusative"
+        ar="رَأَيْتُ الرَّجُلَ يَبْتَسِمُ"
+        focus="يَبْتَسِمُ"
+        translit="raʾaytu l-rajula yabtasimu"
+        en="I saw the man while he was smiling."
+        irab="رأيتُ فعل وفاعل، الرجلَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، يبتسمُ فعل مضارع مرفوع، والفاعل ضمير مستتر تقديره هو، والجملة الفعلية في محل نصب حال."
+        note="One word changed, and the whole analysis of the clause changed with it. The man is already identified, so the clause cannot be telling us which man; it tells us his state at the time. Note the English translations differ accordingly: 'who was smiling' against 'while he was smiling'."
+      />
+
+      <p><strong>3. Adjective agreement.</strong> An adjective matches its noun in definiteness as well as case, number and gender.</p>
+      <p><strong>4. Three chapters require indefinites.</strong> The circumstantial accusative, the specifier, and the noun of the lā of absolute negation are all indefinite by rule.</p>
+
+      <CheckQuestion
+        q="Is the clause here an adjective or a circumstantial accusative?"
+        ar="جَاءَ الطَّالِبُ يَحْمِلُ كِتَابَهُ"
+        answer="A circumstantial accusative, ḥāl, in the position of accusative."
+        why="al-ṭālibu is definite, so the clause cannot be identifying which student. It describes his state as he arrived: carrying his book. Had it been jāʾa ṭālibun yaḥmilu kitābahu, the clause would have been an adjective."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the second is the one that changes an analysis rather than merely a vowel."
+    >
+      <ul>
+        <li><strong>Beginning with an indefinite for no reason.</strong> Say <em>fī l-dāri rajulun</em>, not <em>rajulun fī l-dāri</em>, unless a licensor is present.</li>
+        <li><strong>Making an adjective disagree in definiteness.</strong> <em>al-kitābu l-jadīdu</em>, both definite; <em>kitābun jadīdun</em>, both indefinite. Mixing them produces a sentence, not a phrase: <em>al-kitābu jadīdun</em> means "the book is new".</li>
+        <li><strong>Confusing adjective with circumstantial accusative.</strong> Look at the noun before the clause and let its definiteness decide.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The list of definite nouns and the maxim about clauses are given in these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the kinds of definite noun and their ordering.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the maxim on clauses after definite and indefinite nouns, and the licensors of an indefinite subject.</li>
+        <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: on generic al- and its effect.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

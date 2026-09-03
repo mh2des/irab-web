@@ -1,0 +1,177 @@
+---
+/** English edition of /duroos/naib-al-fail. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'naib-al-fail';
+const objectives = [
+  'Rebuild any past or imperfect verb for the passive by the two standard patterns.',
+  'Say which element takes over when there is no direct object to promote.',
+  'Explain why Arabic does not name the doer in a passive sentence at all.',
+  'Avoid the two errors that account for most mistakes in this chapter.',
+];
+const faqs = [
+  { q: 'Why is the doer removed in the first place?', a: 'For meaning, not for grammar. The doer may be unknown, or obvious, or deliberately concealed, or too exalted or too base to name. Arabic calls the construction al-mabnī li-l-majhūl, "built for the unknown", which describes the purpose exactly.' },
+  { q: 'What is the difference between a nāʾib al-fāʿil and a fāʿil?', a: 'Only their origin. A fāʿil names who performed the act; a nāʾib al-fāʿil is what remains once the doer is removed, usually the former direct object. Grammatically the deputy inherits every ruling of the doer: nominative, follows the verb, keeps the verb singular, and makes it feminine when it is feminine.' },
+  { q: 'How is the past tense built for the passive?', a: 'The first letter takes ḍamma and the letter before the last takes kasra: kataba becomes kutiba, sharaḥa becomes shuriḥa. For a hollow verb such as qāla the vowel shifts and the medial letter changes: qīla.' },
+  { q: 'How is the imperfect built for the passive?', a: 'The first letter takes ḍamma and the letter before the last takes fatḥa: yaktubu becomes yuktabu, yashraḥu becomes yushraḥu. The imperative has no passive at all.' },
+  { q: 'Can an intransitive verb be built for the passive?', a: 'Yes, but it has no object to promote, so something else deputises: a prepositional phrase, a specific adverbial, or a specific verbal noun. In sīra fī l-ṭarīqi, "the road was travelled", the jārr wa-majrūr stands in place of the doer.' },
+  { q: 'Does the verb change with a feminine deputy?', a: 'Yes, exactly as with a doer. kutibat al-risālatu, "the letter was written", takes the feminine tāʾ because the deputy is feminine. Every ruling of the fāʿil transfers.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Nāʾib al-Fāʿil: the passive in Arabic grammar · Irab App"
+  description="A full lesson on the deputy doer: how the verb is rebuilt for the passive in the past and imperfect, what deputises when there is no object, the markers of its nominative, and the common errors, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Nāʾib al-Fāʿil (the deputy doer)" description="A full lesson on the deputy doer: rebuilding the verb for the passive, what deputises when there is no object, the markers of its nominative, and common errors, with complete classical iʿrāb." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Deputy Doer"
+      summary="Arabic forms the passive by removing the doer from the sentence entirely and rebuilding the verb around its absence. What was the object rises into the nominative and inherits every ruling the doer had. This lesson covers the two patterns for rebuilding the verb, what deputises when the verb has no object to promote, and why Arabic will not tell you who did it."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: what the deputy is"
+      lead="The nāʾib al-fāʿil is a nominative noun that takes the place of the removed doer after a verb is built for the passive, and it takes on all the doer's rulings. Its origin is usually the direct object."
+    >
+      <LessonObjective items={objectives} />
+      <p>The Arabic name for the construction says more than the English one. English calls it the passive voice. Arabic calls the verb <em>al-mabnī li-l-majhūl</em>, "built for the unknown", which states the purpose: the doer is not merely demoted, it is unknown or unnamed, and the sentence is reshaped around that.</p>
+      <p>This is the point English speakers most need to absorb. English can keep the doer with "by": "the lesson was written <em>by the student</em>". <strong>Classical Arabic does not do this.</strong> If you name the doer, you have no reason to build the verb for the passive at all. A passive sentence with a stated agent is a mark of translated, not native, Arabic.</p>
+
+      <ExampleCard
+        label="Active becomes passive"
+        ar="كُتِبَ الدَّرْسُ"
+        focus="الدَّرْسُ"
+        translit="kutiba l-darsu"
+        en="The lesson was written."
+        irab="كُتِبَ فعل ماضٍ مبني للمجهول مبني على الفتح، الدرسُ نائب فاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره."
+        note="Compare kataba l-ṭālibu l-darsa. The doer al-ṭālibu is gone, not moved, and al-darsa has become al-darsu. There is no way in this sentence to say who wrote it."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="building"
+      title="See: rebuilding the verb"
+      lead="Two standard patterns cover the regular cases. The past takes ḍamma on the first letter and kasra before the last; the imperfect takes ḍamma on the first and fatḥa before the last. The imperative has no passive."
+    >
+      <p>Say the patterns aloud until they are automatic, because the vowels are the whole signal. Nothing else in the sentence marks the passive.</p>
+      <ul>
+        <li><strong>Past:</strong> <em>kataba</em> becomes <em>kutiba</em>; <em>sharaḥa</em> becomes <em>shuriḥa</em>; <em>akrama</em> becomes <em>ukrima</em>.</li>
+        <li><strong>Imperfect:</strong> <em>yaktubu</em> becomes <em>yuktabu</em>; <em>yashraḥu</em> becomes <em>yushraḥu</em>.</li>
+        <li><strong>Hollow verbs shift:</strong> <em>qāla</em> becomes <em>qīla</em>, <em>bāʿa</em> becomes <em>bīʿa</em>.</li>
+      </ul>
+
+      <ExampleCard
+        label="Imperfect passive, feminine deputy"
+        ar="تُقْرَأُ الرِّسَالَةُ"
+        focus="الرِّسَالَةُ"
+        translit="tuqraʾu l-risālatu"
+        en="The letter is read."
+        irab="تُقرأُ فعل مضارع مبني للمجهول مرفوع وعلامة رفعه الضمة الظاهرة، الرسالةُ نائب فاعل مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Two things at once: the first letter carries ḍamma and the letter before the last carries fatḥa, marking the passive; and the verb opens with tāʾ because the deputy is feminine. Every agreement rule of the doer applies to the deputy."
+      />
+
+      <CheckQuestion
+        q="Build this sentence for the passive and give the new case of the object."
+        ar="شَرَحَ الْمُعَلِّمُ الدَّرْسَ"
+        answer="shuriḥa l-darsu. al-darsa was accusative as an object; as deputy it becomes nominative, al-darsu."
+        why="The past passive takes ḍamma on the first letter and kasra before the last, giving shuriḥa. The doer al-muʿallimu leaves the sentence entirely and cannot be reintroduced with a preposition."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="what-substitutes"
+      title="Understand: when there is no object to promote"
+      lead="The object deputises by default. If the verb has none, then a prepositional phrase, a specific adverbial, or a specific verbal noun takes the role instead."
+    >
+      <p>An intransitive verb has no object, yet it can still be built for the passive. Something must then occupy the vacated slot, and the tradition ranks the candidates in order.</p>
+
+      <ExampleCard
+        label="A prepositional phrase deputising"
+        ar="سِيرَ فِي الطَّرِيقِ"
+        focus="فِي الطَّرِيقِ"
+        translit="sīra fī l-ṭarīqi"
+        en="The road was travelled."
+        irab="سِيرَ فعل ماضٍ مبني للمجهول مبني على الفتح، في حرف جر، الطريقِ اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور في محل رفع نائب فاعل."
+        note="sāra is intransitive, so there is no object to raise. The prepositional phrase deputises, and note the wording: the phrase is fī maḥall rafʿ, in the position of nominative, because a phrase cannot itself carry a case ending. The noun inside it stays genitive, governed by fī."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="signs"
+      title="The markers of its nominative"
+      lead="The deputy is raised by whatever raises a doer: ḍamma by default, alif in the dual, wāw in the sound masculine plural and the five nouns."
+    >
+      <ExampleCard
+        label="Nominative by wāw"
+        ar="كُرِّمَ الْفَائِزُونَ"
+        focus="الْفَائِزُونَ"
+        translit="kurrima l-fāʾizūna"
+        en="The winners were honoured."
+        irab="كُرِّمَ فعل ماضٍ مبني للمجهول مبني على الفتح، الفائزونَ نائب فاعل مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم."
+        note="Had this been active, kurrima would be karrama and al-fāʾizīna would be the object, accusative by yāʾ. The letters wāw and yāʾ are visible even in unvowelled text, which makes them the most reliable clue you have."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors dominate, and two of them come from thinking in English."
+    >
+      <ul>
+        <li><strong>Leaving the deputy in the accusative.</strong> It was an object, so learners keep the fatḥa. Once the doer is removed the word is nominative.</li>
+        <li><strong>Forgetting to rebuild the verb.</strong> Changing only the case gives an ungrammatical sentence. The vowels on the verb are the only thing marking the passive.</li>
+        <li><strong>Adding the agent back.</strong> Translating "was written by the student" produces Arabic that no classical text would use. If you want to name the doer, use the active voice.</li>
+      </ul>
+
+      <CheckQuestion
+        q="What is wrong with this sentence?"
+        ar="كُتِبَ الدَّرْسَ مِنْ قِبَلِ الطَّالِبِ"
+        answer="Two faults: al-darsa should be al-darsu, and the agent phrase should not be there at all."
+        why="The deputy takes the nominative, so al-darsu. And min qibali, a calque of English 'by', defeats the purpose of a construction built for an unnamed doer. Say kataba l-ṭālibu l-darsa instead."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The patterns and the ranking of what deputises follow the standard texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the definition of the deputy and its rulings.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the order of what deputises when there is no object.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on the passive of hollow verbs and on the reasons the doer is left unnamed.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

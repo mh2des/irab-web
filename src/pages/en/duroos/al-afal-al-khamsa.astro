@@ -1,0 +1,154 @@
+---
+/** English edition of /duroos/al-afal-al-khamsa. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-afal-al-khamsa';
+const objectives = [
+  'Recognise a five verb by its pattern rather than by memorising a list.',
+  'Give its nominative, accusative and jussive markers.',
+  'Tell the nūn of the five verbs apart from the feminine nūn and the emphatic nūn.',
+  'Explain why a fixed ending means the verb is built, not declined.',
+];
+const faqs = [
+  { q: 'Why are they called the five verbs?', a: 'Because they are five patterns, not five particular verbs. Any imperfect verb attached to the alif of two, the wāw of a group, or the yāʾ of a female addressee becomes one: yafʿalāni, tafʿalāni, yafʿalūna, tafʿalūna, tafʿalīna. Every verb in the language can enter these five shapes.' },
+  { q: 'What marks their nominative?', a: 'The presence of the nūn, thubūt al-nūn, a substitute marker standing in place of ḍamma. If no accusative or jussive particle precedes, the verb is nominative and the nūn is there.' },
+  { q: 'What marks their accusative and jussive?', a: 'The same thing in both: dropping the nūn, ḥadhf al-nūn. The marker cannot tell you which of the two you are looking at, so identify the particle instead. an, lan and their sisters give accusative; lam, lammā and the jussive particles give jussive.' },
+  { q: 'Is the nūn of yafʿalna one of the five verbs?', a: 'No, and this is the classic trap. In yafʿalna the nūn is nūn al-niswa, the feminine plural nūn, which is a pronoun and the doer of the verb. A verb attached to it is mabnī, built on sukūn, and never declines at all. The five verbs take the alif of two, the wāw of a group or the yāʾ of a female addressee, never the feminine nūn.' },
+  { q: 'How do I tell the nūn of the five verbs from the emphatic nūn?', a: 'By vowel and by function. The nūn of the five verbs carries kasra after alif and yāʾ and fatḥa after wāw, and it is a marker of iʿrāb. The emphatic nūn is doubled and carries fatḥa, la-taktubanna, and it builds the verb, so the verb becomes mabnī and stops declining.' },
+  { q: 'What happens to the five verbs with conditional particles?', a: 'Conditional particles are jussive, so they drop the nūn twice over, once in the condition and once in its answer: in tadrusū tanjaḥū, "if you study you will succeed". Both verbs are jussive with the nūn dropped.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Five Verbs (al-afʿāl al-khamsa) in Arabic · Irab App"
+  description="A full lesson on the five verbs: the five patterns, the nūn as a marker of the nominative, dropping it for the accusative and jussive, and how to tell it from the feminine and emphatic nūn, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Five Verbs" description="The five patterns, the nūn as nominative marker, its dropping for accusative and jussive, and distinguishing it from the feminine and emphatic nūn." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Five Verbs"
+      summary="The five verbs are not five particular verbs but five patterns that any imperfect verb can enter. What makes them a chapter of their own is that they take a letter as their case marker instead of a vowel: the nūn is present for the nominative and dropped for the accusative and the jussive. The difficulty is that Arabic has three different nūns that look alike and behave completely differently."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: five patterns, not five verbs"
+      lead="Any imperfect verb attached to the alif of two, the wāw of a group, or the yāʾ of a female addressee becomes one of the five verbs. The name describes shapes, not a closed list of words."
+    >
+      <LessonObjective items={objectives} />
+      <p>The five shapes are: <em>yafʿalāni</em>, <em>tafʿalāni</em>, <em>yafʿalūna</em>, <em>tafʿalūna</em>, <em>tafʿalīna</em>. Notice what all five have in common: an imperfect verb, a pronoun suffix that is the doer, and a nūn at the end. That nūn is the whole subject of this lesson.</p>
+      <p>Note that the attached letter is itself the doer. In <em>yaktubūna</em> the wāw is the doer, an attached pronoun in the position of nominative. The verb is not "they write" as a single unanalysable word; it is a verb plus its doer, and iʿrāb treats them separately.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="raf"
+      title="See: the nūn as the nominative marker"
+      lead="If no accusative or jussive particle precedes, the five verbs are nominative, and the marker of that nominative is the presence of the nūn, standing in place of ḍamma."
+    >
+      <ExampleCard
+        label="Nominative by the presence of the nūn"
+        ar="الطُّلَّابُ يَكْتُبُونَ الدَّرْسَ"
+        focus="يَكْتُبُونَ"
+        translit="al-ṭullābu yaktubūna l-darsa"
+        en="The students are writing the lesson."
+        irab="الطلابُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، يكتبونَ فعل مضارع مرفوع وعلامة رفعه ثبوت النون لأنه من الأفعال الخمسة، وواو الجماعة ضمير متصل مبني في محل رفع فاعل، الدرسَ مفعول به منصوب، والجملة الفعلية في محل رفع خبر."
+        note="Two separate things are happening at the end of yaktubūna. The wāw is the doer, a pronoun in the position of nominative. The nūn is the case marker of the verb itself. Learners often treat the whole ending as one unit and can then account for neither."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="nasb-jazm"
+      title="Understand: dropping the nūn for accusative and jussive"
+      lead="The accusative and the jussive share one marker: the nūn is dropped. Because the marker cannot distinguish them, you must identify the particle."
+    >
+      <ExampleCard
+        label="Accusative: the nūn drops"
+        ar="لَنْ تَنَالُوا الْبِرَّ حَتَّىٰ تُنْفِقُوا"
+        focus={['تَنَالُوا', 'تُنْفِقُوا']}
+        translit="lan tanālū l-birra ḥattā tunfiqū"
+        en="You will never attain righteousness until you spend."
+        irab="لن حرف نفي ونصب واستقبال، تنالوا فعل مضارع منصوب بلن وعلامة نصبه حذف النون لأنه من الأفعال الخمسة، وواو الجماعة في محل رفع فاعل، البرَّ مفعول به منصوب، حتى حرف غاية وجر ونصب بأن مضمرة، تنفقوا فعل مضارع منصوب وعلامة نصبه حذف النون، وواو الجماعة في محل رفع فاعل."
+        note="Both verbs are accusative and both drop the nūn. Note that ḥattā does not itself govern the verb: the accusative comes from an implied an after it, an muḍmara. The tradition names the true governor even when it is not written."
+      />
+
+      <ExampleCard
+        label="Jussive: the same marker, a different particle"
+        ar="إِنْ تَدْرُسُوا تَنْجَحُوا"
+        focus={['تَدْرُسُوا', 'تَنْجَحُوا']}
+        translit="in tadrusū tanjaḥū"
+        en="If you study, you will succeed."
+        irab="إنْ حرف شرط جازم، تدرسوا فعل مضارع مجزوم وهو فعل الشرط وعلامة جزمه حذف النون لأنه من الأفعال الخمسة، وواو الجماعة في محل رفع فاعل، تنجحوا فعل مضارع مجزوم وهو جواب الشرط وعلامة جزمه حذف النون، وواو الجماعة في محل رفع فاعل."
+        note="Identical marker to the previous card, opposite case. Only the particle tells you which: lan is accusative, in is jussive. This is why reading the ending alone will never be enough."
+      />
+
+      <CheckQuestion
+        q="Is this verb accusative or jussive, and what is its marker?"
+        ar="لَمْ يَذْهَبُوا إِلَى السُّوقِ"
+        answer="Jussive, and the marker is the dropping of the nūn, because it is one of the five verbs."
+        why="lam is a particle of negation and jussive. Had the particle been lan the verb would have been accusative with exactly the same visible ending, which is why the particle and not the ending decides the case."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="The three nūns"
+      lead="The whole difficulty of this chapter is that three different nūns look similar and behave in completely different ways. Tell them apart and nothing here is hard."
+    >
+      <ul>
+        <li><strong>The nūn of the five verbs.</strong> A marker of iʿrāb. Present for nominative, dropped for accusative and jussive. Carries kasra after alif and yāʾ, fatḥa after wāw.</li>
+        <li><strong>The feminine nūn</strong>, <em>nūn al-niswa</em>. A pronoun, and the doer of the verb. A verb attached to it is <strong>built</strong> on sukūn and never declines: <em>al-ṭālibātu yaktubna</em>. This is not a five verb at all.</li>
+        <li><strong>The emphatic nūn</strong>, <em>nūn al-tawkīd</em>. Doubled, carrying fatḥa: <em>la-taktubanna</em>. It also builds the verb, which then stops declining.</li>
+      </ul>
+
+      <ExampleCard
+        label="The feminine nūn: a built verb, not a five verb"
+        ar="الطَّالِبَاتُ يَكْتُبْنَ الدَّرْسَ"
+        focus="يَكْتُبْنَ"
+        translit="al-ṭālibātu yaktubna l-darsa"
+        en="The female students are writing the lesson."
+        irab="الطالباتُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، يكتبنَ فعل مضارع مبني على السكون لاتصاله بنون النسوة، ونون النسوة ضمير متصل مبني في محل رفع فاعل، الدرسَ مفعول به منصوب، والجملة الفعلية في محل رفع خبر."
+        note="Compare this with yaktubūna in the first card. They look parallel and are not. Here the verb is mabnī, built, and has no case marker at all, because an imperfect verb stops declining when the feminine nūn or the emphatic nūn attaches to it. Saying 'nominative by the presence of the nūn' here would be an error."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The patterns and the two exceptions to the declinability of the imperfect are given in these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the five verbs among the chapters of substitute marking.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span>: the conditions under which the imperfect is built rather than declined.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the implied an after ḥattā and its sisters.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

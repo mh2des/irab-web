@@ -1,0 +1,163 @@
+---
+/** English edition of /duroos/al-maqsur-wal-manqus-wal-mamdud. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-maqsur-wal-manqus-wal-mamdud';
+const objectives = [
+  'Identify a shortened, defective or extended noun from its final letters.',
+  'Say which of its three cases are estimated and which are visible, and why.',
+  'Explain why the yāʾ of an indefinite defective noun disappears in two cases but not the third.',
+  'Form the dual and the sound plural of each type.',
+];
+const faqs = [
+  { q: 'Why are the vowels estimated on shortened and defective nouns?', a: 'For two different reasons. On a final alif all three vowels are impossible to pronounce, li-l-taʿadhdhur, so all three are estimated. On a final yāʾ, ḍamma and kasra are heavy, li-l-thiql, so those two are estimated while fatḥa, being light, appears normally.' },
+  { q: 'When is the yāʾ of a defective noun dropped?', a: 'When the noun is indefinite and in the nominative or the genitive. qāḍin, "a judge", is written and pronounced without its yāʾ in both, with tanwīn compensating. In the accusative the yāʾ returns: raʾaytu qāḍiyan. With al- the yāʾ is kept throughout: al-qāḍī.' },
+  { q: 'How is a shortened noun made dual?', a: 'Its alif returns to its origin if the word has three letters: fatan becomes fatayāni because its alif is from yāʾ, and ʿaṣā becomes ʿaṣawāni because its alif is from wāw. If the word has more than three letters the alif is turned into yāʾ: mustashfā becomes mustashfayāni.' },
+  { q: 'How is an extended noun made dual?', a: 'It depends on the hamza. If the hamza is original it stays: qurrāʾ becomes qurrāʾāni. If it stands for the feminine alif it turns into wāw: ṣaḥrāʾ becomes ṣaḥrāwāni. If it is converted from an original letter both are permitted: samāʾ gives samāʾāni or samāwāni.' },
+  { q: 'Is an extended noun a diptote?', a: 'Only when its hamza is the alif of femininity. ṣaḥrāʾ and ḥamrāʾ are diptotes for that reason. An extended noun whose hamza is original, such as qurrāʾ, is fully declined and takes tanwīn normally.' },
+  { q: 'What is the difference between the alif of al-fatā and the alif of ʿalā?', a: 'al-fatā is a noun, declinable, and its case is estimated on the alif. ʿalā is a particle, built, and has no case at all. A particle never has iʿrāb, so the question of an estimated marker does not arise for it.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Shortened, Defective and Extended Nouns in Arabic · Irab App"
+  description="A full lesson on al-maqṣūr, al-manqūṣ and al-mamdūd: how each is recognised, which of their cases are estimated and which visible, when the yāʾ is dropped, and how each forms the dual and plural, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Shortened, Defective and Extended Nouns" description="How each type is recognised, estimated and visible case marking, dropping the yāʾ, and forming the dual and plural." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Shortened, Defective and Extended Nouns"
+      summary="Three kinds of noun end in a way that interferes with case marking. A shortened noun ends in a fixed alif, a defective noun in a fixed yāʾ after a kasra, and an extended noun in a hamza after an added alif. The first cannot show any case, the second can show only one, and the third shows all three normally. This lesson explains why, and what happens to each in the dual and the plural."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the three types"
+      lead="A shortened noun ends in a fixed alif. A defective noun ends in a fixed yāʾ with kasra before it. An extended noun ends in a hamza preceded by an added alif."
+    >
+      <LessonObjective items={objectives} />
+      <ul>
+        <li><strong>al-maqṣūr</strong>, shortened: <em>al-fatā</em>, <em>al-hudā</em>, <em>ʿaṣā</em>, <em>mustashfā</em>.</li>
+        <li><strong>al-manqūṣ</strong>, defective: <em>al-qāḍī</em>, <em>al-dāʿī</em>, <em>al-muḥāmī</em>.</li>
+        <li><strong>al-mamdūd</strong>, extended: <em>ṣaḥrāʾ</em>, <em>samāʾ</em>, <em>qurrāʾ</em>.</li>
+      </ul>
+      <p>The word "fixed", <em>lāzima</em>, matters in each definition. The letter must belong to the word, not be an accident of inflection. The alif of the dual in <em>muʿallimāni</em> is not fixed, so that word is not shortened.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="irab"
+      title="Understand: which cases can be seen"
+      lead="All three vowels are estimated on the shortened noun. Ḍamma and kasra are estimated on the defective noun while fatḥa appears. All three appear normally on the extended noun."
+    >
+      <p>The reason differs between the first two, and the wording of each reason is fixed in the books. On the alif, the vowels are impossible, <em>li-l-taʿadhdhur</em>. On the yāʾ, ḍamma and kasra are heavy, <em>li-l-thiql</em>, while fatḥa is light enough to be pronounced.</p>
+
+      <ExampleCard
+        label="Shortened: nothing visible"
+        ar="جَاءَ الْفَتَىٰ وَرَأَيْتُ الْفَتَىٰ"
+        focus="الْفَتَىٰ"
+        translit="jāʾa l-fatā wa-raʾaytu l-fatā"
+        en="The young man came, and I saw the young man."
+        irab="جاء فعل ماضٍ مبني على الفتح، الفتى فاعل مرفوع وعلامة رفعه الضمة المقدرة على الألف منع من ظهورها التعذر، رأيتُ فعل وفاعل، الفتى مفعول به منصوب وعلامة نصبه الفتحة المقدرة على الألف منع من ظهورها التعذر."
+        note="The same written word in two different cases. Nothing on the page distinguishes them; only the analysis does. This is exactly why iʿrāb is a spoken discipline as much as a written one."
+      />
+
+      <ExampleCard
+        label="Defective: only the accusative shows"
+        ar="جَاءَ الْقَاضِي وَرَأَيْتُ الْقَاضِيَ"
+        focus={['الْقَاضِي', 'الْقَاضِيَ']}
+        translit="jāʾa l-qāḍī wa-raʾaytu l-qāḍiya"
+        en="The judge came, and I saw the judge."
+        irab="جاء فعل ماضٍ مبني على الفتح، القاضي فاعل مرفوع وعلامة رفعه الضمة المقدرة على الياء منع من ظهورها الثقل، رأيتُ فعل وفاعل، القاضيَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة على الياء."
+        note="Here the two cases do look different, because fatḥa is light enough to sit on a yāʾ. Note the wording changes accordingly: 'estimated, prevented by heaviness' for the nominative, 'visible' for the accusative."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="dropping-the-yaa"
+      title="See: the disappearing yāʾ"
+      lead="An indefinite defective noun loses its yāʾ in the nominative and the genitive, with tanwīn standing in its place. The yāʾ returns in the accusative and is kept throughout when al- is attached."
+    >
+      <ExampleCard
+        label="Indefinite: the yāʾ is gone"
+        ar="جَاءَ قَاضٍ عَادِلٌ"
+        focus="قَاضٍ"
+        translit="jāʾa qāḍin ʿādilun"
+        en="A just judge came."
+        irab="جاء فعل ماضٍ مبني على الفتح، قاضٍ فاعل مرفوع وعلامة رفعه الضمة المقدرة على الياء المحذوفة، عادلٌ نعت مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="The yāʾ is not written and not pronounced, and the marker is estimated on a letter that is not there. Compare raʾaytu qāḍiyan, where the accusative brings it back. Keeping the yāʾ here, writing qāḍī with tanwīn, is the commonest error in this chapter."
+      />
+
+      <CheckQuestion
+        q="Give the case and the full marker."
+        ar="سَلَّمْتُ عَلَىٰ قَاضٍ"
+        answer="Genitive, with an estimated kasra on the deleted yāʾ."
+        why="ʿalā requires the genitive. The noun is indefinite and defective, so the yāʾ is dropped in the genitive as it is in the nominative, and the marker is estimated on the letter that has been removed. Only the accusative would restore it."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="dual-plural"
+      title="The dual and the plural"
+      lead="Each type changes its ending by a regular rule when made dual or plural."
+    >
+      <ul>
+        <li><strong>Shortened:</strong> with three letters the alif returns to its origin, <em>fatan</em> giving <em>fatayāni</em> and <em>ʿaṣā</em> giving <em>ʿaṣawāni</em>. With more than three it becomes yāʾ: <em>mustashfayāni</em>.</li>
+        <li><strong>Defective:</strong> the yāʾ is kept in the dual, <em>qāḍiyāni</em>, and dropped in the sound masculine plural, <em>qāḍūna</em> and <em>qāḍīna</em>.</li>
+        <li><strong>Extended:</strong> an original hamza stays, <em>qurrāʾāni</em>; a feminine hamza becomes wāw, <em>ṣaḥrāwāni</em>; a converted hamza allows both, <em>samāʾāni</em> or <em>samāwāni</em>.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, all of them about writing what should not be written or estimating what should be visible."
+    >
+      <ul>
+        <li><strong>Keeping the yāʾ on an indefinite defective noun.</strong> It is <em>qāḍin</em>, not <em>qāḍī</em>, in the nominative and genitive.</li>
+        <li><strong>Estimating the fatḥa on a defective noun.</strong> Fatḥa is visible there. Only ḍamma and kasra are estimated.</li>
+        <li><strong>Estimating on an extended noun.</strong> The hamza is a full consonant and carries all three vowels normally.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The definitions, the reasons for estimation and the rules for dual formation are given in these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the three types and their case marking.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: impossibility and heaviness as the two reasons for estimation, and the dropping of the yāʾ.</li>
+        <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: the treatment of the hamza of an extended noun in the dual.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>
