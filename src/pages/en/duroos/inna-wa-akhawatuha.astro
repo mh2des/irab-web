@@ -1,0 +1,169 @@
+---
+/** English edition of /duroos/inna-wa-akhawatuha. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'inna-wa-akhawatuha';
+const objectives = [
+  'Name the six particles and the meaning each contributes.',
+  'Decide between kasra and fatḥa on the hamza by a single question.',
+  'Parse the phrase that results when the hamza is opened.',
+  'Handle the mā that cancels their governance and the lām that slides onto the predicate.',
+];
+const faqs = [
+  { q: 'Why are they called abrogating particles?', a: 'Because they overturn the case ruling of the nominal sentence, as kāna does, but in the opposite direction: the first pillar becomes accusative and is called ism inna, while the predicate stays nominative. They are particles, not verbs, so they are built and have no position in iʿrāb.' },
+  { q: 'What is the difference between inna with kasra and anna with fatḥa?', a: 'Whether the clause can be read as a noun. If inna and what follows it can be replaced by a single verbal noun occupying a grammatical slot, the hamza is opened: balaghanī annaka nājiḥun equals balaghanī najāḥuka. If it cannot, the hamza is broken, as at the start of a sentence or after qāla.' },
+  { q: 'What happens when mā attaches to them?', a: 'The mā of restraint cancels their governance entirely. innamā l-muʾminūna ikhwatun has al-muʾminūna as a mubtadaʾ in the nominative, not an ism inna. It also permits these particles to precede a verbal sentence, which they otherwise cannot.' },
+  { q: 'May the predicate of inna precede its noun?', a: 'Only when it is a quasi-sentence, and then obligatorily if the noun is indefinite: inna fī dhālika la-ʿibratan. Otherwise the noun must come first, because the particle needs a noun immediately after it to govern.' },
+  { q: 'What is the lām in inna l-ʿilma la-nūrun?', a: 'The sliding lām, al-lām al-muzaḥlaqa. It is originally the lām of oath which belonged at the start of the sentence, but inna occupied that position, so it slid onto the predicate. It adds emphasis and has no position in iʿrāb.' },
+  { q: 'What is the difference between layta and laʿalla?', a: 'layta expresses wishing for what is unlikely or impossible: layta l-shabāba yaʿūdu. laʿalla expresses hoping for what is possible, and sometimes apprehension: laʿalla l-sāʿata qarībun. The governance is identical; only the meaning separates them.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Inna and its Sisters in Arabic Grammar · Irab App"
+  description="A full lesson on inna and its sisters: the six particles and their meanings, when the hamza is broken and when opened, the mā of restraint, and the sliding lām, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Inna and its Sisters" description="The six particles, their governance, breaking and opening the hamza, the mā of restraint, and the sliding lām." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Inna and its Sisters"
+      summary="Six particles enter the nominal sentence and do the exact reverse of kāna: they put the first pillar into the accusative and leave the predicate nominative. Governance is the easy half of this chapter. The harder and more useful half is knowing when the hamza of inna is written with a kasra and when with a fatḥa, which is not a spelling convention but a grammatical decision with a test behind it."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the six, and what each adds"
+      lead="Inna, anna, kaʾanna, lākinna, layta and laʿalla. One governance, six meanings: two of emphasis, one of comparison, one of qualification, one of wishing, one of hoping."
+    >
+      <LessonObjective items={objectives} />
+      <ul>
+        <li><strong>inna</strong> and <strong>anna</strong>: emphasis.</li>
+        <li><strong>kaʾanna</strong>: comparison.</li>
+        <li><strong>lākinna</strong>: qualification, correcting the impression just given.</li>
+        <li><strong>layta</strong>: wishing, typically for the unattainable.</li>
+        <li><strong>laʿalla</strong>: hoping, and sometimes apprehension.</li>
+      </ul>
+
+      <ExampleCard
+        label="The base case"
+        ar="إِنَّ اللهَ غَفُورٌ رَحِيمٌ"
+        focus="اللهَ"
+        translit="inna Llāha ghafūrun raḥīmun"
+        en="Indeed Allah is Forgiving, Merciful."
+        irab="إنّ حرف توكيد ونصب مبني على الفتح لا محل له من الإعراب، اللهَ لفظ الجلالة اسم إنّ منصوب وعلامة نصبه الفتحة الظاهرة، غفورٌ خبر إنّ مرفوع وعلامة رفعه الضمة الظاهرة، رحيمٌ خبر ثانٍ مرفوع."
+        note="Note that inna itself is described as built and having no position in iʿrāb. Particles never carry case. Note also that one noun takes two predicates here without any coordinating particle."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="hamza"
+      title="Understand: kasra or fatḥa on the hamza"
+      lead="Ask one question: can inna and what follows it be replaced by a single noun filling a grammatical slot? If yes, open the hamza. If no, break it."
+    >
+      <p>This is the heart of the chapter, and once the test is internalised the traditional lists of positions become predictions rather than things to memorise.</p>
+      <p><strong>Broken (kasra)</strong> where no noun reading is possible: at the start of a sentence, after <em>qāla</em>, at the start of a relative clause, and where the predicate carries the sliding lām.</p>
+      <p><strong>Opened (fatḥa)</strong> where the clause functions as a noun: as a doer, an object, or after a preposition.</p>
+
+      <ExampleCard
+        label="Opened: the clause is a doer"
+        ar="بَلَغَنِي أَنَّكَ نَاجِحٌ"
+        focus="أَنَّكَ"
+        translit="balaghanī annaka nājiḥun"
+        en="It reached me that you had succeeded."
+        irab="بلغَ فعل ماضٍ مبني على الفتح، والنون للوقاية، والياء ضمير متصل في محل نصب مفعول به، أنَّ حرف توكيد ونصب، والكاف ضمير متصل في محل نصب اسم أنّ، ناجحٌ خبر أنّ مرفوع، والمصدر المؤول من أنّ ومعموليها في محل رفع فاعل."
+        note="The whole clause annaka nājiḥun stands in for the noun najāḥuka, 'your success', and that noun is the doer of balagha. Because a noun reading is available, the hamza is opened. Try the same test on inna Llāha ghafūrun: no noun reading, so the hamza stays broken."
+      />
+
+      <CheckQuestion
+        q="Should the hamza be broken or opened here, and why?"
+        ar="قَالَ ... إِنِّي عَبْدُ اللهِ"
+        answer="Broken: innī."
+        why="After qāla the clause is quoted speech, not a noun filling a slot. The quoted sentence occupies the position of the object, but it remains a sentence rather than being replaced by a verbal noun, so the hamza is broken."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="word-order"
+      title="See: fronting the predicate"
+      lead="The noun normally follows the particle immediately. The predicate may precede it only when it is a quasi-sentence, and must when the noun is indefinite."
+    >
+      <ExampleCard
+        label="Fronted predicate, with the sliding lām"
+        ar="إِنَّ فِي ذَٰلِكَ لَعِبْرَةً"
+        focus="لَعِبْرَةً"
+        translit="inna fī dhālika la-ʿibratan"
+        en="Indeed in that is a lesson."
+        irab="إنّ حرف توكيد ونصب، في حرف جر، ذلك اسم إشارة مبني في محل جر، والجار والمجرور متعلقان بمحذوف خبر إنّ مقدم، اللام هي المزحلقة، عبرةً اسم إنّ مؤخر منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Two things at once: the quasi-sentence predicate is fronted because the noun is indefinite, and the lām has slid onto the delayed noun. Note that the noun of inna is accusative even when it comes last."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="ma-kaffa"
+      title="The mā that cancels, and the lām that slides"
+      lead="Two details that appear constantly in the Quran. The mā of restraint suspends their governance entirely; the sliding lām attaches to the predicate for emphasis."
+    >
+      <ExampleCard
+        label="mā cancels the governance"
+        ar="إِنَّمَا الْمُؤْمِنُونَ إِخْوَةٌ"
+        focus="الْمُؤْمِنُونَ"
+        translit="innamā l-muʾminūna ikhwatun"
+        en="The believers are but brothers."
+        irab="إنّما كافة ومكفوفة، المؤمنونَ مبتدأ مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم، إخوةٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="al-muʾminūna is nominative, and it is a mubtadaʾ rather than an ism inna, because mā has cancelled the governance. Parsing it as an accusative ism inna would be wrong. The construction also carries restriction, which is why English adds 'but' or 'only'."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and two of them are about not noticing a single extra letter."
+    >
+      <ul>
+        <li><strong>Ignoring the mā of restraint.</strong> After <em>innamā</em> the sentence has an ordinary subject and predicate, both nominative.</li>
+        <li><strong>Choosing the hamza by habit.</strong> Run the noun-substitution test rather than guessing.</li>
+        <li><strong>Reading the sliding lām as a preposition.</strong> It carries emphasis and has no position in iʿrāb.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The positions of the hamza and the treatment of mā and the lām follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the positions where the hamza is broken and opened.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the mā of restraint and the sliding lām.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

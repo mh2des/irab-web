@@ -1,0 +1,173 @@
+---
+/** English edition of /duroos/al-adad. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-adad';
+const objectives = [
+  'Apply the agreement rule for each band of numbers without hesitating.',
+  'Give the case and number of the counted noun in every band.',
+  'Parse a compound number, including the one that is not built.',
+  'Avoid the errors that are near universal in contemporary writing.',
+];
+const faqs = [
+  { q: 'What is the governing rule for gender agreement?', a: 'Three bands. One and two agree with the counted noun. Three to ten disagree with it: a feminine number for a masculine noun and a masculine number for a feminine one. Eleven and twelve agree again, and the first part of thirteen to nineteen disagrees while the second part agrees.' },
+  { q: 'How is a compound number from eleven to nineteen parsed?', a: 'It is built on the fatḥa of both parts and occupies whatever position its role requires: aḥada ʿashara kawkaban is built, in the position of accusative as an object. The exception is ithnā ʿashara, whose first part is declined like a dual, with alif for the nominative and yāʾ otherwise.' },
+  { q: 'What case is the counted noun?', a: 'It varies by band. Three to ten: genitive plural by annexation. Eleven to ninety-nine: accusative singular. One hundred and one thousand: genitive singular by annexation. Getting the band right is most of the work.' },
+  { q: 'How are the decades parsed?', a: 'Twenty to ninety are attached to the sound masculine plural class and take wāw for the nominative and yāʾ for the accusative and genitive, with one form for both genders. Their counted noun is an accusative singular: ʿishrūna ṭāliban.' },
+  { q: 'Is it thamāni nisāʾin or thamānī nisāʾin?', a: 'When annexed, the yāʾ is kept and the word behaves like a defective noun: thamānī nisāʾin in the nominative and genitive with an estimated vowel, and thamāniya in the accusative with a visible fatḥa. Standing alone and indefinite, the yāʾ drops: thamānin.' },
+  { q: 'How do I read a number written in digits inside a vowelled text?', a: 'Read it as the words it stands for and parse those words. A digit has no iʿrāb of its own; it is a symbol for a word, and it is the word that carries the case and the agreement.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Numbers (al-ʿadad) in Arabic Grammar · Irab App"
+  description="A full lesson on numbers: gender agreement band by band, the case and number of the counted noun, parsing compound numbers and the decades, and the errors common in contemporary writing."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Numbers (al-ʿadad)" description="Gender agreement by band, the counted noun, compound numbers, the decades, and common errors." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Numbers"
+      summary="Arabic numbers are the chapter native speakers get wrong most often, which tells you something about its difficulty. Gender agreement reverses in the middle of the sequence and then reverses back, and the counted noun changes case and number three times as you count upward. Both behaviours are regular, and the whole chapter reduces to knowing which band you are in."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="one-two"
+      title="Learn: one and two agree"
+      lead="These two follow the counted noun in gender and come after it as descriptions rather than before it."
+    >
+      <LessonObjective items={objectives} />
+      <p><em>Ṭālibun wāḥidun</em>, one student. <em>Ṭālibatun wāḥidatun</em>, one female student. The number is an adjective here, agreeing in gender, case and definiteness like any other.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="three-ten"
+      title="Understand: three to ten disagree"
+      lead="The number takes the opposite gender to what it counts, and the counted noun is a genitive plural annexed to it."
+    >
+      <p>This is the rule that surprises everyone, and it is worth stating bluntly: a <strong>feminine</strong> number counts a <strong>masculine</strong> noun, and a <strong>masculine</strong> number counts a <strong>feminine</strong> one. Gender is decided by the singular of the counted noun, not by its plural form.</p>
+
+      <ExampleCard
+        label="Feminine number, masculine noun"
+        ar="قَرَأْتُ ثَلَاثَةَ كُتُبٍ"
+        focus={['ثَلَاثَةَ', 'كُتُبٍ']}
+        translit="qaraʾtu thalāthata kutubin"
+        en="I read three books."
+        irab="قرأتُ فعل وفاعل، ثلاثةَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، كتبٍ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="The singular is kitāb, masculine, so the number carries the tāʾ. Note also that the counted noun is genitive by annexation, not accusative: the number takes the case of the sentence and the counted noun is always genitive in this band."
+      />
+
+      <ExampleCard
+        label="Masculine number, feminine noun"
+        ar="قَرَأْتُ عَنْ ثَلَاثِ طَالِبَاتٍ"
+        focus={['ثَلَاثِ', 'طَالِبَاتٍ']}
+        translit="qaraʾtu ʿan thalāthi ṭālibātin"
+        en="I read about three female students."
+        irab="قرأتُ فعل وفاعل، عن حرف جر، ثلاثِ اسم مجرور وعلامة جره الكسرة الظاهرة وهو مضاف، طالباتٍ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="The singular is ṭāliba, feminine, so the number drops the tāʾ. Deciding gender from the plural rather than the singular is the commonest way to get this band wrong."
+      />
+
+      <CheckQuestion
+        q="Which form of the number is correct, and what case is the counted noun?"
+        ar="... (خمس / خمسة) رجالٍ"
+        answer="khamsatu rijālin. The counted noun is genitive plural."
+        why="The singular of rijāl is rajul, masculine, so the number takes the feminine form with tāʾ. In this band the counted noun is always a genitive plural annexed to the number."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="compound"
+      title="See: eleven to nineteen"
+      lead="Both parts are built on fatḥa and the whole occupies a position, with one exception. The counted noun is an accusative singular."
+    >
+      <ExampleCard
+        label="A built compound number"
+        ar="إِنِّي رَأَيْتُ أَحَدَ عَشَرَ كَوْكَبًا"
+        focus={['أَحَدَ عَشَرَ', 'كَوْكَبًا']}
+        translit="innī raʾaytu aḥada ʿashara kawkaban"
+        en="Indeed I saw eleven stars."
+        irab="رأيتُ فعل وفاعل، أحدَ عشرَ اسم عدد مركب مبني على فتح الجزأين في محل نصب مفعول به، كوكبًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Built on the fatḥa of both parts, and therefore given a position rather than a case. The counted noun becomes an accusative singular in this band, which is a complete change from the genitive plural of three to ten."
+      />
+
+      <ExampleCard
+        label="The exception that is declined"
+        ar="إِنَّ عِدَّةَ الشُّهُورِ عِنْدَ اللهِ اثْنَا عَشَرَ شَهْرًا"
+        focus={['اثْنَا عَشَرَ', 'شَهْرًا']}
+        translit="inna ʿiddata l-shuhūri ʿinda Llāhi ithnā ʿashara shahran"
+        en="Indeed the number of months with Allah is twelve months."
+        irab="إنّ حرف توكيد ونصب، عدةَ اسم إنّ منصوب وهو مضاف، الشهورِ مضاف إليه مجرور، عندَ ظرف مكان منصوب وهو مضاف، اللهِ مضاف إليه مجرور، اثنا خبر إنّ مرفوع وعلامة رفعه الألف لأنه ملحق بالمثنى، عشرَ جزء مبني على الفتح لا محل له، شهرًا تمييز منصوب."
+        note="ithnā ʿashara is the exception: its first part is declined like a dual, taking alif for the nominative and yāʾ otherwise, while the second part stays built. Note the alif here because the word is the predicate of inna and therefore nominative."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="decades"
+      title="Twenty to ninety, and the hundreds"
+      lead="The decades take one form for both genders and are declined like a sound masculine plural. Their counted noun is an accusative singular; that of a hundred and a thousand is a genitive singular."
+    >
+      <ExampleCard
+        label="A decade, with its counted noun"
+        ar="فِي الصَّفِّ عِشْرُونَ طَالِبًا"
+        focus={['عِشْرُونَ', 'طَالِبًا']}
+        translit="fī l-ṣaffi ʿishrūna ṭāliban"
+        en="In the class are twenty students."
+        irab="في حرف جر، الصفِّ اسم مجرور، والجار والمجرور متعلقان بمحذوف خبر مقدم، عشرونَ مبتدأ مؤخر مرفوع وعلامة رفعه الواو لأنه ملحق بجمع المذكر السالم، طالبًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="ʿishrūna is nominative by wāw as an annexed member of the sound masculine plural class, and the counted noun is accusative. Putting the counted noun into the genitive here, ʿishrūna ṭālibin, is one of the most frequent errors in contemporary writing."
+      />
+      <p>A hundred and a thousand return to annexation: <em>miʾatu rajulin</em>, <em>alfu kitābin</em>, with a genitive singular after them.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Every one of these errors is now common in published Arabic, which is all the more reason to get them right."
+    >
+      <ul>
+        <li><strong>Making three to nine agree.</strong> They disagree. Decide the gender from the singular of the counted noun.</li>
+        <li><strong>Putting the counted noun of a decade into the genitive.</strong> It is an accusative singular: <em>ʿishrūna ṭāliban</em>.</li>
+        <li><strong>Treating ithnā ʿashara as fully built.</strong> Its first part is declined.</li>
+        <li><strong>Reading gender from a broken plural.</strong> <em>Kutub</em> looks feminine and is not; the singular <em>kitāb</em> decides.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The bands, the agreement rules and the parsing of compounds follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the bands and the case of the counted noun.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: compound numbers, the decades, and ithnā ʿashara.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

@@ -1,0 +1,155 @@
+---
+/** English edition of /duroos/huruf-al-jarr. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'huruf-al-jarr';
+const objectives = [
+  'Say why a preposition can never precede a verb.',
+  'Give the genitive marker with its reason, including the diptote case.',
+  'Name what a prepositional phrase attaches to, and supply it when omitted.',
+  'Tell the genitive of a preposition from the genitive of annexation.',
+];
+const faqs = [
+  { q: 'How many prepositions are there?', a: 'Seventeen in the common enumeration: min, ilā, ʿan, ʿalā, fī, rubba, al-bāʾ, al-kāf, al-lām, wāw and tāʾ of oath, mudh, mundhu, ḥāshā, ʿadā, khalā, ḥattā. Nine of them carry most of the daily load.' },
+  { q: 'Why are they called particles of jarr?', a: 'Because they draw the noun after them into the genitive, jarr, meaning dragging. The Kūfans called the case khafḍ, lowering, which is why some texts say makhfūḍ where others say majrūr. The two terms are interchangeable.' },
+  { q: 'What does attachment mean?', a: 'A prepositional phrase does not complete a meaning by itself, so it must attach to something that does: a verb, or a descriptive word acting like one. When no such word is present, the analysis supplies an omitted one, usually estimated as kāʾinun or istaqarra.' },
+  { q: 'Can a preposition govern a verb?', a: 'No. This is the defining restriction, and it explains a rule elsewhere: since li- and ḥattā are prepositions, they cannot govern the verb after them, so the tradition says an implied an intervenes and does the governing.' },
+  { q: 'How is the noun after rubba parsed?', a: 'Genitive, formally, though rubba carries a meaning of fewness or plenty rather than a relation. Its noun must be indefinite, and it is usually followed by a past verb. Many grammarians treat it as a preposition only in form.' },
+  { q: 'How is a diptote put into the genitive after a preposition?', a: 'With fatḥa standing in place of kasra: marartu bi-Ibrāhīma. If the diptote carries al- or is annexed, the reason lapses and it takes kasra again: fī l-masājidi.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Prepositions (ḥurūf al-jarr) in Arabic Grammar · Irab App"
+  description="A full lesson on the prepositions: why they govern only nouns, the meanings of the commonest nine, the markers of the genitive, attachment of the prepositional phrase, and how it differs from the genitive of annexation."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Prepositions" description="Why they govern only nouns, their meanings, the genitive markers, and attachment of the prepositional phrase." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Prepositions"
+      summary="A preposition puts the noun after it into the genitive, and it may never precede a verb. That single restriction is worth more than it looks: it is the reason an implied particle has to be posited after li- and ḥattā when a verb follows them. This lesson covers the commonest nine, the markers of the genitive including the diptote, and the notion of attachment, which no English grammar prepares you for."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: nouns only"
+      lead="A preposition enters upon a noun and puts it into the genitive. It is built and has no position in iʿrāb of its own, and it never precedes a verb."
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="The base case"
+        ar="ذَهَبْتُ إِلَى الْمَدْرَسَةِ"
+        focus="الْمَدْرَسَةِ"
+        translit="dhahabtu ilā l-madrasati"
+        en="I went to the school."
+        irab="ذهبتُ فعل وفاعل، إلى حرف جر مبني على السكون لا محل له من الإعراب، المدرسةِ اسم مجرور بإلى وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بالفعل ذهبت."
+        note="Three parts to the answer: the particle is built with no position, the noun is genitive with its marker, and the phrase attaches to the verb. Leaving out the attachment leaves the iʿrāb incomplete."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="meanings"
+      title="See: the commonest nine"
+      lead="Each has a principal sense and secondary senses that context settles."
+    >
+      <ul>
+        <li><strong>min</strong>: beginning of a limit, part of a whole, explanation of a kind.</li>
+        <li><strong>ilā</strong>: end of a limit.</li>
+        <li><strong>ʿan</strong>: moving away from.</li>
+        <li><strong>ʿalā</strong>: being above, and obligation.</li>
+        <li><strong>fī</strong>: containment in place or time.</li>
+        <li><strong>al-bāʾ</strong>: adhesion, instrument, and an extra bāʾ that adds emphasis only.</li>
+        <li><strong>al-kāf</strong>: comparison.</li>
+        <li><strong>al-lām</strong>: ownership, entitlement, and cause.</li>
+        <li><strong>rubba</strong>: fewness or plenty, always with an indefinite noun.</li>
+      </ul>
+
+      <ExampleCard
+        label="A diptote after a preposition"
+        ar="مَرَرْتُ بِإِبْرَاهِيمَ"
+        focus="إِبْرَاهِيمَ"
+        translit="marartu bi-Ibrāhīma"
+        en="I passed by Ibrahim."
+        irab="مررتُ فعل وفاعل، الباء حرف جر، إبراهيمَ اسم مجرور وعلامة جره الفتحة نيابة عن الكسرة لأنه ممنوع من الصرف للعلمية والعجمة، والجار والمجرور متعلقان بالفعل مررت."
+        note="A fatḥa after a preposition, and the noun is still genitive. Without naming the reason, prevention from ṣarf for proper-noun status and foreignness, the answer looks like a mistake."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="taalluq"
+      title="Understand: attachment"
+      lead="A prepositional phrase is a quasi-sentence and does not stand alone. It attaches to a verb or a word acting like one, and when none is present the analysis supplies an omitted one."
+    >
+      <p>English has no equivalent notion, which is why learners omit it. In Arabic, naming what the phrase attaches to is part of parsing it, not an optional extra.</p>
+
+      <ExampleCard
+        label="Attachment to something omitted"
+        ar="الْحَمْدُ لِلَّهِ"
+        focus="لِلَّهِ"
+        translit="al-ḥamdu li-Llāhi"
+        en="Praise belongs to Allah."
+        irab="الحمدُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، اللام حرف جر، لفظ الجلالة اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بمحذوف خبر تقديره ثابتٌ أو مستقرٌّ."
+        note="There is no verb in the sentence for the phrase to attach to, so the analysis posits an omitted predicate and attaches it there. This is the same reasoning met with adverbials and with the ḥāl: a quasi-sentence never simply is the predicate."
+      />
+
+      <CheckQuestion
+        q="What does the prepositional phrase attach to here?"
+        ar="الْكِتَابُ عَلَى الطَّاوِلَةِ"
+        answer="An omitted predicate, estimated as kāʾinun or mustaqirrun."
+        why="No verb is present. The phrase cannot itself be the predicate, because a predicate must be a noun or a sentence, so an omitted one is supplied and the phrase attaches to it."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the third is the one that separates a complete parse from an incomplete one."
+    >
+      <ul>
+        <li><strong>Confusing the two genitives.</strong> After a preposition the noun is <em>majrūr bi-l-ḥarf</em>; after a first term of annexation it is <em>muḍāf ilayhi</em>. Both are genitive; the reason differs and must be named.</li>
+        <li><strong>Putting a preposition before a verb.</strong> Impossible. If a verb follows li- or ḥattā, an implied an is doing the governing.</li>
+        <li><strong>Omitting the attachment.</strong> Always say what the phrase attaches to, and supply the omitted word when there is none.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The enumeration, the meanings and the doctrine of attachment follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span>: the meanings of each particle in detail.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: attachment and the omitted governor.</li>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the list of particles governing the genitive.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

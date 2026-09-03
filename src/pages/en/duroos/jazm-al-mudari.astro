@@ -1,0 +1,141 @@
+---
+/** English edition of /duroos/jazm-al-mudari. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'jazm-al-mudari';
+const objectives = [
+  'Separate the particles that apocopate one verb from those that apocopate two.',
+  'Give the three markers of the jussive and say which words take which.',
+  'Read lam correctly, including what "conversion" means.',
+  'Tell the prohibitive lā from the negating lā by the ending alone.',
+];
+const faqs = [
+  { q: 'What is the difference between lam and lammā?', a: 'Both negate and apocopate and both convert the imperfect to past meaning. lam negates absolutely: lam yaktub, he did not write. lammā negates up to the present with the expectation of continuation: lammā yaktub, he has not written yet. The "yet" is carried by the particle.' },
+  { q: 'What does "negation, apocopation and conversion" mean?', a: 'Three things lam does at once. It negates; it puts the verb in the jussive; and it converts the meaning from present or future to past. That is why lam yaktub is translated as a past even though the verb form is imperfect.' },
+  { q: 'How do I tell the prohibitive lā from the negating lā?', a: 'By the ending. The prohibitive apocopates: lā takdhib, do not lie. The negating lā leaves the verb nominative: lā yakdhibu, he does not lie. In an unvowelled text the meaning usually settles it: prohibition addresses someone, negation reports.' },
+  { q: 'Which particles apocopate two verbs?', a: 'The conditional particles: in, man, mā, mahmā, matā, ayna, ḥaythumā, kayfamā, ayyu, annā and idh mā. They apocopate the condition and its answer, both.' },
+  { q: 'How is a verb ending in a weak letter apocopated?', a: 'By dropping the weak letter itself: yadʿū becomes lam yadʿu, yamshī becomes lam yamshi, yakhshā becomes lam yakhsha. The dropping is the marker, so nothing else changes.' },
+  { q: 'When must the answer take a fāʾ?', a: 'When the answer is not fit to be governed directly: a nominal sentence, a past-tense verb, an imperative, a verb preceded by mā or lan or qad or the future sīn, or a sentence beginning with a particle. In those cases the fāʾ links it and the clause after it takes the position of the jussive.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Jussive Imperfect (jazm al-muḍāriʿ) in Arabic · Irab App"
+  description="A full lesson on the jussive: the particles that apocopate one verb and those that apocopate two, the three markers, the meaning of conversion, and the fāʾ before the answer of a condition."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Jussive Imperfect" description="Particles apocopating one and two verbs, the three markers, conversion, and the linking fāʾ." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Imperfect in the Jussive"
+      summary="The jussive belongs to verbs alone, as the genitive belongs to nouns alone. Four particles apocopate a single verb, and a family of conditional particles apocopate two at once, the condition and its answer. Its three markers include one that English speakers consistently miss, because it consists of deleting a letter rather than adding a vowel."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="one-verb"
+      title="Learn: the four that apocopate one verb"
+      lead="lam and lammā negate, the lām of command requests, and the prohibitive lā forbids."
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="lam, and what conversion means"
+        ar="لَمْ يَلِدْ وَلَمْ يُولَدْ"
+        focus={['يَلِدْ', 'يُولَدْ']}
+        translit="lam yalid wa-lam yūlad"
+        en="He begets not, nor was He begotten."
+        irab="لم حرف نفي وجزم وقلب، يلدْ فعل مضارع مجزوم بلم وعلامة جزمه السكون، والفاعل ضمير مستتر تقديره هو، لم حرف نفي وجزم وقلب، يولدْ فعل مضارع مبني للمجهول مجزوم وعلامة جزمه السكون، ونائب الفاعل ضمير مستتر تقديره هو."
+        note="The description of lam has three parts, and all three are doing work: negation, apocopation, and conversion, meaning it turns the imperfect into a past sense. That is why the translation is past even though the verb form is not."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="signs"
+      title="See: the three markers"
+      lead="Sukūn on a sound verb, deletion of the weak letter on a verb ending in one, deletion of the nūn in the five verbs."
+    >
+      <ExampleCard
+        label="The marker is a deletion"
+        ar="لَمْ يَخْشَ إِلَّا اللهَ"
+        focus="يَخْشَ"
+        translit="lam yakhsha illā Llāha"
+        en="He feared none but Allah."
+        irab="لم حرف نفي وجزم وقلب، يخشَ فعل مضارع مجزوم بلم وعلامة جزمه حذف حرف العلة، والفاعل ضمير مستتر تقديره هو، إلا أداة حصر، لفظ الجلالة مفعول به منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="The base is yakhshā, ending in alif. The jussive removes it, and the removal is the marker. English speakers looking for an added vowel will not find one and may read the verb as nominative."
+      />
+
+      <CheckQuestion
+        q="Apocopate this verb and name the marker."
+        ar="لَمْ ... (يَدْعُو)"
+        answer="lam yadʿu, and the marker is the deletion of the weak letter."
+        why="yadʿū ends in wāw. The jussive deletes it, leaving yadʿu. The same rule gives lam yamshi from yamshī and lam yakhsha from yakhshā."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="two-verbs"
+      title="Understand: the particles that apocopate two"
+      lead="A conditional particle governs two verbs: the condition and its answer. Both are jussive, and the marker on each follows its own kind."
+    >
+      <ExampleCard
+        label="Two verbs, one particle"
+        ar="وَمَا تَفْعَلُوا مِنْ خَيْرٍ يَعْلَمْهُ اللهُ"
+        focus={['تَفْعَلُوا', 'يَعْلَمْهُ']}
+        translit="wa-mā tafʿalū min khayrin yaʿlamhu Llāhu"
+        en="And whatever good you do, Allah knows it."
+        irab="ما اسم شرط جازم مبني في محل نصب مفعول به مقدم، تفعلوا فعل مضارع مجزوم فعل الشرط وعلامة جزمه حذف النون لأنه من الأفعال الخمسة، وواو الجماعة في محل رفع فاعل، من حرف جر، خيرٍ اسم مجرور، يعلمْه فعل مضارع مجزوم جواب الشرط وعلامة جزمه السكون، والهاء في محل نصب مفعول به، اللهُ لفظ الجلالة فاعل مرفوع."
+        note="Two jussive verbs with two different markers: a dropped nūn on the first because it is one of the five verbs, and sukūn on the second because it is sound. Note also that mā here is a conditional noun occupying the position of a fronted object, not a particle."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the middle one changes the meaning rather than only the ending."
+    >
+      <ul>
+        <li><strong>Leaving the verb nominative after a particle of the jussive.</strong> Say <em>lam yaktub</em>, never <em>lam yaktubu</em>.</li>
+        <li><strong>Confusing the two lās.</strong> The prohibitive apocopates and addresses; the negating leaves the verb nominative and reports.</li>
+        <li><strong>Missing the deletion.</strong> On a verb ending in a weak letter, and on the five verbs, the jussive is marked by removing something rather than adding a vowel.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The particles and the markers follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the particles of the jussive.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: lam against lammā, and the conditional particles.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the markers of the jussive on weak-ending verbs.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

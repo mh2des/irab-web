@@ -1,0 +1,169 @@
+---
+/** English edition of /duroos/nasb-al-mudari. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'nasb-al-mudari';
+const objectives = [
+  'Name the particles that govern the accusative directly.',
+  'Explain why li- and ḥattā cannot govern, and what does instead.',
+  'Give the two accusative markers and when each applies.',
+  'Separate look-alike particles that behave completely differently.',
+];
+const faqs = [
+  { q: 'What is the difference between lan and lā in negating the imperfect?', a: 'lan negates the future and governs the accusative: lan yaktuba, he will never write. lā negates the present without governing: lā yaktubu, he does not write, where the verb stays nominative. Confusing them changes both the case and the time.' },
+  { q: 'Does ḥattā always put the verb in the accusative?', a: 'It does when the sense is future purpose or limit, and then the governor is an implied an rather than ḥattā itself. If the act is already complete, the verb after ḥattā is nominative because the meaning is result rather than purpose.' },
+  { q: 'What is the difference between an with sukūn and anna doubled?', a: 'an is an infinitival particle governing a verb in the accusative: urīdu an tanjaḥa. anna is one of the sisters of inna, governing a noun in the accusative and leaving its predicate nominative: ʿalimtu anna Zaydan nājiḥun. One takes a verb, the other a noun.' },
+  { q: 'Is idhan among the particles of the accusative?', a: 'Yes, on conditions: it must begin the sentence, the verb after it must refer to the future, and nothing may separate them except an oath. If a condition fails the verb is nominative.' },
+  { q: 'What is the lām of denial and how does it differ from the lām of purpose?', a: 'The lām of denial follows a negated form of kāna and stresses that the act will not occur: mā kāna Llāhu li-yuʿadhdhibahum. The lām of purpose gives a reason: jiʾtu li-adrusa. Both are followed by an implied an, and both take the accusative.' },
+  { q: 'Why is the nūn dropped when the five verbs take the accusative?', a: 'Because the five verbs mark their cases with the presence or absence of the nūn rather than with vowels. Present means nominative, dropped means accusative or jussive. The particle tells you which of the two you have.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Subjunctive Imperfect (naṣb al-muḍāriʿ) in Arabic · Irab App"
+  description="A full lesson on putting the imperfect into the accusative: the particles that govern directly, the implied an after li- and ḥattā, the two markers, and the look-alike particles that behave differently."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Subjunctive Imperfect" description="The particles of the accusative, the implied an, the two markers, and confusable particles." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Imperfect in the Accusative"
+      summary="The imperfect is the only declinable verb in Arabic, and its default state is nominative. A particle of the accusative changes that. Some govern the verb directly, and some cannot govern at all, because they are prepositions, so the tradition posits an implied particle between them and the verb. Understanding why that implied particle exists explains a rule that otherwise looks invented."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="when-nasb"
+      title="Learn: a departure from the default"
+      lead="The imperfect is nominative unless something changes it. A particle of the accusative preceding it produces naṣb, so the case is caused, never inherent."
+    >
+      <LessonObjective items={objectives} />
+      <p>Always identify the particle first. The ending alone cannot tell you the case, because the accusative and the jussive share a marker in the five verbs.</p>
+
+      <ExampleCard
+        label="Direct governance by lan"
+        ar="لَنْ تَنَالُوا الْبِرَّ حَتَّىٰ تُنْفِقُوا"
+        focus={['تَنَالُوا', 'تُنْفِقُوا']}
+        translit="lan tanālū l-birra ḥattā tunfiqū"
+        en="You will never attain righteousness until you spend."
+        irab="لن حرف نفي ونصب واستقبال، تنالوا فعل مضارع منصوب بلن وعلامة نصبه حذف النون لأنه من الأفعال الخمسة، وواو الجماعة في محل رفع فاعل، البرَّ مفعول به منصوب، حتى حرف غاية وجر، تنفقوا فعل مضارع منصوب بأن مضمرة بعد حتى وعلامة نصبه حذف النون."
+        note="Two accusatives, two different governors. lan governs directly. ḥattā cannot, because it is a preposition and prepositions never precede verbs, so an implied an governs instead. The wording records the difference precisely."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="direct-particles"
+      title="See: the particles that govern directly"
+      lead="an, lan and kay reach the verb themselves."
+    >
+      <ul>
+        <li><strong>an</strong>: infinitival and governing, making a clause equivalent to a verbal noun.</li>
+        <li><strong>lan</strong>: negating the future and governing.</li>
+        <li><strong>kay</strong>: infinitival and governing, giving a reason.</li>
+      </ul>
+
+      <ExampleCard
+        label="an, and the noun its clause becomes"
+        ar="أُرِيدُ أَنْ تَنْجَحَ"
+        focus="أَنْ تَنْجَحَ"
+        translit="urīdu an tanjaḥa"
+        en="I want you to succeed."
+        irab="أريدُ فعل مضارع مرفوع، والفاعل ضمير مستتر وجوبًا تقديره أنا، أنْ حرف مصدري ونصب، تنجحَ فعل مضارع منصوب بأن وعلامة نصبه الفتحة الظاهرة، والمصدر المؤول في محل نصب مفعول به."
+        note="The clause an tanjaḥa stands in for najāḥaka, 'your success', and that noun is the object of urīdu. Notice how English restructures completely: 'I want you to succeed' has no equivalent of an at all."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="hidden-an"
+      title="Understand: why an must be implied"
+      lead="li- and ḥattā are prepositions, and a preposition can never govern a verb. So the Baṣrans posit an implied an between the particle and the verb, and that implied particle does the governing."
+    >
+      <p>This is a good example of the tradition reasoning from a general principle rather than listing exceptions. The principle is that prepositions govern nouns only. Since <em>li-adrusa</em> plainly has a verb after a preposition, something must intervene, and what intervenes is an infinitival <em>an</em> that turns the clause into a noun.</p>
+      <p>After the lām of purpose the implication is optional. After the lām of denial, ḥattā, the fāʾ of causation, the wāw of accompaniment, and <em>aw</em> meaning "unless", it is obligatory.</p>
+
+      <ExampleCard
+        label="The lām of purpose"
+        ar="جِئْتُ لِأَدْرُسَ"
+        focus="لِأَدْرُسَ"
+        translit="jiʾtu li-adrusa"
+        en="I came in order to study."
+        irab="جئتُ فعل وفاعل، اللام لام التعليل حرف جر، أدرسَ فعل مضارع منصوب بأن مضمرة جوازًا بعد لام التعليل وعلامة نصبه الفتحة الظاهرة، والفاعل ضمير مستتر وجوبًا تقديره أنا، والمصدر المؤول في محل جر باللام."
+        note="Follow the chain: the lām needs a noun, the implied an supplies one by turning the clause into an infinitival phrase, and that phrase is genitive after the lām while the verb inside it is accusative. Two cases in one construction, each with its own governor."
+      />
+
+      <CheckQuestion
+        q="What governs the verb here, and what case is it in?"
+        ar="ذَاكِرْ حَتَّىٰ تَنْجَحَ"
+        answer="An implied an after ḥattā. The verb is accusative with a visible fatḥa."
+        why="ḥattā is a preposition and cannot govern a verb, so an is implied obligatorily after it. The sense here is purpose, which is what calls for the accusative; had the sense been completed result, the verb would have been nominative."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="nasb-signs"
+      title="The two markers"
+      lead="Fatḥa, visible on a sound verb and on one ending in wāw or yāʾ, estimated on one ending in alif; and dropping the nūn in the five verbs."
+    >
+      <ExampleCard
+        label="An estimated fatḥa"
+        ar="لَنْ يَسْعَىٰ إِلَّا مُجْتَهِدٌ"
+        focus="يَسْعَىٰ"
+        translit="lan yasʿā illā mujtahidun"
+        en="None will strive except a diligent one."
+        irab="لن حرف نفي ونصب، يسعى فعل مضارع منصوب بلن وعلامة نصبه الفتحة المقدرة على الألف منع من ظهورها التعذر، إلا أداة حصر، مجتهدٌ فاعل مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Nothing visible marks the accusative, because a final alif carries no vowel. Note also the emptied exception: no whole precedes illā, so mujtahidun takes the case of its own role, doer."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Look-alike particles"
+      lead="Most errors in this chapter come from particles that look similar and govern differently."
+    >
+      <ul>
+        <li><strong>lan against lā:</strong> lan governs and negates the future; lā does neither.</li>
+        <li><strong>an against anna:</strong> one takes a verb, the other a noun.</li>
+        <li><strong>The lām of purpose against the lām of denial:</strong> both take an implied an, but the second follows a negated kāna and denies rather than explains.</li>
+        <li><strong>Forgetting the substitute marker.</strong> In the five verbs the accusative shows as a dropped nūn, not a fatḥa.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The particles, the implied an and the conditions on idhan follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the particles and the positions of the implied an.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the lām of denial and the conditions on idhan.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

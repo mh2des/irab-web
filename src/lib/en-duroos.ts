@@ -29,6 +29,17 @@ export const EN_DUROOS = new Set<string>([
   'al-istithna',
   'al-munada',
   'al-idafa',
+  // Patch 3: the abrogators, and the genitive and the imperfect.
+  'kana-wa-akhawatuha',
+  'inna-wa-akhawatuha',
+  'la-nafiya-lil-jins',
+  'kada-wa-akhawatuha',
+  'zanna-wa-akhawatuha',
+  'huruf-al-jarr',
+  'nasb-al-mudari',
+  'jazm-al-mudari',
+  'uslub-al-shart',
+  'al-adad',
 ]);
 
 export const hasEnLesson = (slug: string): boolean => EN_DUROOS.has(slug);

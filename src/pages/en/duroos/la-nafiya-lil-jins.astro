@@ -1,0 +1,167 @@
+---
+/** English edition of /duroos/la-nafiya-lil-jins. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'la-nafiya-lil-jins';
+const objectives = [
+  'Say what "negating the genus" adds over ordinary negation.',
+  'Check the four conditions before treating lā as governing.',
+  'Decide whether its noun is built or declined.',
+  'Parse the testimony of faith completely, clause by clause.',
+];
+const faqs = [
+  { q: 'Why is it called the lā that negates the genus?', a: 'Because it denies the predicate of the entire class named by its noun, not of one member. lā rajula fī l-dāri means there is no man at all in the house. Compare mā rajulun fī l-dāri, ordinary negation, which denies it of a particular man and leaves room for others.' },
+  { q: 'What are the conditions for it to govern like inna?', a: 'Four: its noun must be indefinite, must follow it immediately with nothing in between, must not be preceded by a preposition governing it, and must not carry al-. If any fails, lā is neutralised and what follows is parsed as an ordinary subject and predicate.' },
+  { q: 'When is its noun built and when declined?', a: 'Built when it is a single word, meaning not annexed and not resembling an annexed noun: lā rajula, built on fatḥa in the position of accusative. Declined and genuinely accusative when it is annexed or resembles an annexed noun: lā ṭāliba ʿilmin mamlūlun.' },
+  { q: 'Where is the predicate in lā ilāha illā Llāh?', a: 'Omitted, and obligatorily so. It is estimated as mawjūdun, "existing", or ḥaqqun, "rightful", the second being preferred by many scholars because the point is not that no other gods exist in name but that none is rightfully worshipped.' },
+  { q: 'How do I tell it from the lā of prohibition and the lā of coordination?', a: 'By what follows. The lā of prohibition is followed by a verb and makes it jussive: lā takdhib. The lā of coordination joins two nouns: jāʾa Zaydun lā ʿAmrun. This lā is followed by an indefinite noun and governs it.' },
+  { q: 'How is lā siyyamā parsed?', a: 'lā is the lā that negates the genus, siyya is its noun built on fatḥa in the position of accusative, and mā is either extra or a relative. What follows may be genitive by annexation, or nominative as the predicate of an omitted subject. Both readings are current.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Lā of Absolute Negation in Arabic Grammar · Irab App"
+  description="A full lesson on lā al-nāfiya li-l-jins: what it adds over ordinary negation, the four conditions for its governance, when its noun is built and when declined, and a full parsing of lā ilāha illā Llāh."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Lā of Absolute Negation" description="Its meaning, the four conditions, built and declined nouns, and the parsing of lā ilāha illā Llāh." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Lā of Absolute Negation"
+      summary="This lā governs like inna and denies its predicate of a whole class rather than of an individual. It is a short chapter with strict conditions, and it matters more than its length suggests, because the sentence a Muslim says most often is built on it. The lesson ends by parsing the testimony of faith completely, which turns out to combine this chapter, an omitted predicate, and an emptied exception."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: denying a whole class"
+      lead="It governs as inna does, putting its noun in the accusative and leaving its predicate nominative, and it denies the predicate of the entire genus named by that noun."
+    >
+      <LessonObjective items={objectives} />
+      <p>The contrast with ordinary negation is the point of the chapter. <em>Mā rajulun fī l-dāri</em> denies that a man is in the house and leaves the question open for others. <em>Lā rajula fī l-dāri</em> denies it of the class: no man at all.</p>
+
+      <ExampleCard
+        label="The base case"
+        ar="لَا رَجُلَ فِي الدَّارِ"
+        focus="رَجُلَ"
+        translit="lā rajula fī l-dāri"
+        en="There is no man in the house."
+        irab="لا نافية للجنس تعمل عمل إنّ، رجلَ اسم لا مبني على الفتح في محل نصب، في حرف جر، الدارِ اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بمحذوف خبر لا."
+        note="Read the wording precisely: built on fatḥa, in the position of accusative. Not 'accusative by fatḥa'. The noun of this lā, when it is a single word, is built rather than declined, and the analysis must say both things."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="conditions"
+      title="Understand: the four conditions"
+      lead="Its noun must be indefinite, immediately following, not governed by a preceding preposition, and free of al-. Fail one and lā is neutralised."
+    >
+      <ol>
+        <li><strong>Indefinite noun.</strong> <em>lā rajula</em>, not <em>lā al-rajula</em>.</li>
+        <li><strong>Immediately following.</strong> Nothing may come between them.</li>
+        <li><strong>No preceding preposition.</strong> In <em>jiʾtu bi-lā zādin</em> the preposition governs, so lā does not.</li>
+        <li><strong>No al- on the noun.</strong> This is really the first condition restated, and it is listed separately because the error is common.</li>
+      </ol>
+
+      <ExampleCard
+        label="A condition fails, so lā is neutralised"
+        ar="لَا فِي الدَّارِ رَجُلٌ وَلَا امْرَأَةٌ"
+        focus="رَجُلٌ"
+        translit="lā fī l-dāri rajulun wa-lā imraʾatun"
+        en="There is neither a man nor a woman in the house."
+        irab="لا نافية مهملة، في حرف جر، الدارِ اسم مجرور، والجار والمجرور متعلقان بمحذوف خبر مقدم، رجلٌ مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="The noun does not immediately follow lā, so the second condition fails and lā governs nothing. rajulun is an ordinary postponed subject, nominative. Compare the first card, where the same idea produced an accusative position."
+      />
+
+      <CheckQuestion
+        q="Does lā govern here, and what case is the noun?"
+        ar="لَا الطَّالِبُ حَاضِرٌ"
+        answer="No. al-ṭālibu is a mubtadaʾ, nominative."
+        why="The noun carries al-, so it is definite and the first condition fails. lā is neutralised and the sentence is an ordinary nominal one being negated. Writing lā l-ṭāliba would be an error."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="ism-states"
+      title="See: built or declined"
+      lead="A single noun is built on whatever would have marked its accusative. An annexed noun or one resembling an annexed noun is declined and genuinely accusative."
+    >
+      <ExampleCard
+        label="An annexed noun: genuinely accusative"
+        ar="لَا طَالِبَ عِلْمٍ مَمْلُولٌ"
+        focus="طَالِبَ"
+        translit="lā ṭāliba ʿilmin mamlūlun"
+        en="No seeker of knowledge is wearisome."
+        irab="لا نافية للجنس، طالبَ اسم لا منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، علمٍ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة، مملولٌ خبر لا مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Here the wording is 'accusative by fatḥa', not 'built on fatḥa', because an annexed noun is declined. The visible letter is the same; the analysis is different, and examiners ask for exactly this distinction."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="la-ilaha"
+      title="The testimony, parsed completely"
+      lead="Three chapters meet in four words: this lā, an obligatorily omitted predicate, and an emptied exception."
+    >
+      <ExampleCard
+        label="Four words, three chapters"
+        ar="لَا إِلَٰهَ إِلَّا اللهُ"
+        focus={['إِلَٰهَ', 'اللهُ']}
+        translit="lā ilāha illā Llāhu"
+        en="There is no god except Allah."
+        irab="لا نافية للجنس تعمل عمل إنّ، إلهَ اسم لا مبني على الفتح في محل نصب، وخبر لا محذوف وجوبًا تقديره حقٌّ أو موجودٌ، إلا أداة استثناء، لفظ الجلالة بدل من محل اسم لا مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Three points worth dwelling on. ilāha is built, not accusative. The predicate is obligatorily omitted, and many scholars prefer estimating it as ḥaqqun, 'rightful', rather than mawjūdun, since the denial concerns rightful worship rather than mere existence. And lafẓ al-jalāla is nominative because it substitutes for the position of the noun of lā, which as a subject-like element would be nominative."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the third is about telling three different lās apart."
+    >
+      <ul>
+        <li><strong>Putting tanwīn on a single noun.</strong> It is built on fatḥa: <em>lā rajula</em>, never <em>lā rajulan</em>.</li>
+        <li><strong>Leaving it nominative while intending class negation.</strong> If you mean "no man at all", the noun must be built on fatḥa.</li>
+        <li><strong>Confusing the three lās.</strong> Prohibition is followed by a verb and makes it jussive; coordination joins two nouns; this one is followed by an indefinite noun and governs it.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The conditions and the parsing of the testimony follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the conditions and the states of the noun.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the omitted predicate and the substitution in the testimony.</li>
+        <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: lā siyyamā and its readings.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

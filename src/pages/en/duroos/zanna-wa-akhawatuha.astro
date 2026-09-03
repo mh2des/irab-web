@@ -1,0 +1,158 @@
+---
+/** English edition of /duroos/zanna-wa-akhawatuha. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'zanna-wa-akhawatuha';
+const objectives = [
+  'Trace both accusatives back to the nominal sentence they came from.',
+  'Separate verbs of the heart from verbs of transformation.',
+  'Apply cancellation and suspension, and say what triggers each.',
+  'Tell the heart-verb raʾā from the eye-verb raʾā.',
+];
+const faqs = [
+  { q: 'How do these differ from verbs like aʿṭā, which also take two objects?', a: 'By the origin of the two accusatives. With ẓanna the two were a subject and predicate, so the second describes the first: ẓanantu l-amra sahlan, the matter is easy. With aʿṭā they were never related that way: aʿṭaytu l-faqīra dirhaman, the poor man is not a dirham.' },
+  { q: 'Does ẓanna always mean doubt?', a: 'No. It ranges from probability to certainty, and in the Quran it frequently means firm conviction: alladhīna yaẓunnūna annahum mulāqū rabbihim means those who are certain they will meet their Lord. Context decides, not the verb alone.' },
+  { q: 'What are cancellation and suspension?', a: 'Cancellation, ilghāʾ, is optional: when the verb comes in the middle or at the end of the sentence its governance may be dropped and the two nouns left nominative. Suspension, taʿlīq, is obligatory: when something with a right to initial position intervenes, such as an interrogative or the lām of emphasis, the governance is blocked in wording though the clause still occupies the object position.' },
+  { q: 'How do I tell the heart-verb raʾā from the eye-verb?', a: 'Count the accusatives. The eye-verb takes one object: raʾaytu l-hilāla, I saw the crescent. The heart-verb takes two: raʾaytu l-ʿilma nāfiʿan, I considered knowledge beneficial. If a second accusative describes the first, the verb is a verb of the heart.' },
+  { q: 'What is the difference between jaʿala meaning to make and jaʿala meaning to create?', a: 'The transformative jaʿala takes two objects: jaʿaltu l-ṭīna khazafan, I turned the clay into pottery. The creative jaʿala takes one: wa-jaʿala l-ẓulumāti wa-l-nūr. If only one accusative follows, the verb is not from this chapter.' },
+  { q: 'What if an infinitival phrase follows ẓanna?', a: 'It stands in place of both objects together, sadda masadda l-mafʿūlayn. In ẓanantu annaka nājiḥun the clause annaka nājiḥun occupies the position of the two objects, and you do not look for them separately.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Ẓanna and its Sisters in Arabic Grammar · Irab App"
+  description="A full lesson on ẓanna and its sisters: verbs of the heart and of transformation, why their two objects were once a subject and predicate, cancellation and suspension, and the heart-verb raʾā."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Ẓanna and its Sisters" description="Verbs of the heart and transformation, the origin of their two objects, cancellation and suspension." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Ẓanna and its Sisters"
+      summary="A third family of abrogators, and the most aggressive: where kāna changes one pillar and inna changes the other, these verbs put both into the accusative at once. Knowing that the two objects were originally a subject and a predicate explains everything else about them, including why the second describes the first and why an infinitival clause can replace them both together."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: both pillars into the accusative"
+      lead="These verbs enter a subject and predicate and put both into the accusative as two objects. The first was the subject, the second the predicate."
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="The base case"
+        ar="ظَنَنْتُ الْأَمْرَ سَهْلًا"
+        focus={['الْأَمْرَ', 'سَهْلًا']}
+        translit="ẓanantu l-amra sahlan"
+        en="I thought the matter easy."
+        irab="ظننتُ فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل في محل رفع فاعل، الأمرَ مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة، سهلًا مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Before the verb arrived the sentence was al-amru sahlun. That origin is why the second object describes the first: it was its predicate. Contrast aʿṭaytu l-faqīra dirhaman, where no such relation exists between the two."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="members"
+      title="See: two families"
+      lead="Verbs of the heart, whose meanings are acts of the mind, and verbs of transformation, which turn one thing into another."
+    >
+      <ul>
+        <li><strong>Certainty:</strong> <em>ʿalima</em>, <em>raʾā</em> (of the heart), <em>wajada</em>, <em>alfā</em>, <em>daraya</em>.</li>
+        <li><strong>Probability:</strong> <em>ẓanna</em>, <em>khāla</em>, <em>ḥasiba</em>, <em>zaʿama</em>.</li>
+        <li><strong>Transformation:</strong> <em>ṣayyara</em>, <em>jaʿala</em>, <em>ittakhadha</em>, <em>radda</em>, <em>tarakha</em>.</li>
+      </ul>
+
+      <ExampleCard
+        label="Probability, from the Quran"
+        ar="وَلَا تَحْسَبَنَّ اللهَ غَافِلًا عَمَّا يَعْمَلُ الظَّالِمُونَ"
+        focus={['اللهَ', 'غَافِلًا']}
+        translit="wa-lā taḥsabanna Llāha ghāfilan ʿammā yaʿmalu l-ẓālimūn"
+        en="And never think Allah unaware of what the wrongdoers do."
+        irab="لا ناهية جازمة، تحسبنَّ فعل مضارع مبني على الفتح لاتصاله بنون التوكيد في محل جزم، والفاعل ضمير مستتر تقديره أنت، اللهَ لفظ الجلالة مفعول به أول منصوب، غافلًا مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Note what the emphatic nūn does: the verb is built on fatḥa because of it, and is then described as being in the position of jussive, since lā of prohibition governs it. Two rulings recorded in one line."
+      />
+
+      <ExampleCard
+        label="Transformation"
+        ar="صَيَّرْتُ الطِّينَ خَزَفًا"
+        focus={['الطِّينَ', 'خَزَفًا']}
+        translit="ṣayyartu l-ṭīna khazafan"
+        en="I turned the clay into pottery."
+        irab="صيّرتُ فعل وفاعل، الطينَ مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة، خزفًا مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="rules"
+      title="Understand: cancellation and suspension"
+      lead="Cancellation is optional and depends on position. Suspension is obligatory and is triggered by a word with a right to come first."
+    >
+      <p><strong>Cancellation</strong>, <em>ilghāʾ</em>: if the verb falls in the middle or at the end rather than at the start, its governance may be dropped and both nouns left nominative. <em>Zaydun ẓanantu qāʾimun</em> is as correct as <em>Zaydan ẓanantu qāʾiman</em>.</p>
+      <p><strong>Suspension</strong>, <em>taʿlīq</em>: if something with a right to initial position intervenes, such as an interrogative, a negation, or the lām of emphasis, governance is blocked in wording. The clause still occupies the position of the two objects.</p>
+
+      <ExampleCard
+        label="Suspension by an interrogative"
+        ar="عَلِمْتُ أَيُّهُمْ أَفْضَلُ"
+        focus="أَيُّهُمْ أَفْضَلُ"
+        translit="ʿalimtu ayyuhum afḍalu"
+        en="I knew which of them was better."
+        irab="علمتُ فعل وفاعل، أيُّ اسم استفهام مبتدأ مرفوع وهو مضاف، وهم ضمير متصل في محل جر مضاف إليه، أفضلُ خبر مرفوع، والجملة الاسمية في محل نصب سدت مسد مفعولي علم."
+        note="The interrogative ayyu has a right to initial position, so ʿalima cannot reach past it to govern. Both nouns stay nominative, and the whole clause occupies the position of the two objects together. This is suspension, and it is obligatory rather than optional."
+      />
+
+      <CheckQuestion
+        q="Is this raʾā of the heart or of the eye, and how many objects does it take?"
+        ar="رَأَيْتُ الْعِلْمَ نَافِعًا"
+        answer="Of the heart, taking two objects."
+        why="A second accusative, nāfiʿan, describes the first, al-ʿilma. That relation only exists with the heart-verb. Had it been raʾaytu l-hilāla, with one accusative and nothing describing it, the verb would have been the eye-verb taking a single object."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and each is a failure to ask what the second accusative is doing."
+    >
+      <ul>
+        <li><strong>Leaving the second object nominative.</strong> It was a predicate, so learners keep the ḍamma. Both are accusative unless cancellation or suspension applies.</li>
+        <li><strong>Calling the second object a ḥāl.</strong> A ḥāl is additional and removable; the second object completes the verb and cannot be dropped.</li>
+        <li><strong>Confusing the two raʾās, and the two jaʿalas.</strong> Count the accusatives and ask whether the second describes the first.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The families, cancellation and suspension follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the two families and the origin of the two objects.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: cancellation, suspension, and the infinitival phrase replacing both objects.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

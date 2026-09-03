@@ -1,0 +1,146 @@
+---
+/** English edition of /duroos/kada-wa-akhawatuha. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'kada-wa-akhawatuha';
+const objectives = [
+  'Say what these verbs share with kāna and where they differ.',
+  'Sort them into approach, hope and beginning.',
+  'Predict whether an takes its place before the predicate.',
+  'Read the negated kāda, which reverses in a way that surprises everyone.',
+];
+const faqs = [
+  { q: 'Why are they called deficient?', a: 'For the same reason as kāna: they raise a noun and require a predicate to complete them. They differ in one respect that defines the chapter: their predicate is never a single word. It is always a verbal sentence whose verb is imperfect, occupying the position of accusative.' },
+  { q: 'Can the predicate of kāda be a single word?', a: 'No. Writing kāda l-barqu khāṭifan is an error. The predicate must be a verbal sentence with an imperfect verb: kāda l-barqu yakhṭafu. This is the single most useful thing to remember about the chapter.' },
+  { q: 'When is the predicate preceded by an, and when not?', a: 'With ʿasā it is nearly always present. With kāda and karaba it is rare and its absence is the norm. With verbs of beginning, sharaʿa, akhadha, jaʿala, ṭafiqa, it is forbidden, because beginning an act and merely intending it are incompatible ideas.' },
+  { q: 'What does mā kādū yafʿalūn mean?', a: 'This is the famous difficulty. Ordinarily negating kāda negates the nearness, so mā kāda yafʿalu means he was far from doing it. In the verse wa-mā kādū yafʿalūn the meaning is that they did do it, but only after great reluctance. Many grammarians therefore say that negating kāda affirms, and affirming it negates.' },
+  { q: 'Is ʿasā a verb or a particle?', a: 'A verb, though frozen: it has only the past form and does not conjugate for tense. It expresses hope, and in the Quran, when used of Allah, the commentators say it denotes certainty rather than mere hope.' },
+  { q: 'Do these verbs conjugate?', a: 'Mostly not. kāda and awshaka have an imperfect; the rest are frozen in the past. That is why you meet yakādu but never a full paradigm for ʿasā or ṭafiqa.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Kāda and its Sisters in Arabic Grammar · Irab App"
+  description="A full lesson on kāda and its sisters: verbs of approach, hope and beginning, why their predicate must be a verbal sentence, when an precedes it, and the reversal of the negated kāda."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Kāda and its Sisters" description="Verbs of approach, hope and beginning, their verbal-sentence predicate, and the reversal of the negated kāda." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Kāda and its Sisters"
+      summary="These verbs govern exactly as kāna does, raising a noun and requiring a predicate, with one defining difference: their predicate is never a single word. It is always a verbal sentence with an imperfect verb. They express nearness, hope or beginning, and one of them, when negated, behaves in a way that has occupied commentators for centuries."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: like kāna, with one difference"
+      lead="They raise their noun and put their predicate in the accusative, but that predicate is always a verbal sentence whose verb is imperfect, occupying the position of accusative."
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="The base case"
+        ar="يَكَادُ الْبَرْقُ يَخْطَفُ أَبْصَارَهُمْ"
+        focus="يَخْطَفُ أَبْصَارَهُمْ"
+        translit="yakādu l-barqu yakhṭafu abṣārahum"
+        en="The lightning almost snatches away their sight."
+        irab="يكادُ فعل مضارع ناقص مرفوع وعلامة رفعه الضمة الظاهرة، البرقُ اسم يكاد مرفوع وعلامة رفعه الضمة الظاهرة، يخطفُ فعل مضارع مرفوع، والفاعل ضمير مستتر تقديره هو، أبصارَ مفعول به منصوب وهو مضاف، وهم ضمير متصل في محل جر مضاف إليه، وجملة يخطف في محل نصب خبر يكاد."
+        note="The predicate is the whole clause yakhṭafu abṣārahum, and it is given a position rather than an ending. Writing kāda l-barqu khāṭifan, with a single-word predicate, would be ungrammatical."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="members"
+      title="See: three families"
+      lead="Approach, hope, and beginning. The family a verb belongs to predicts whether an will precede the predicate."
+    >
+      <ul>
+        <li><strong>Approach:</strong> <em>kāda</em>, <em>karaba</em>, <em>awshaka</em>. The act is close to happening.</li>
+        <li><strong>Hope:</strong> <em>ʿasā</em>, <em>ḥarā</em>, <em>ikhlawlaqa</em>. The act is hoped for.</li>
+        <li><strong>Beginning:</strong> <em>sharaʿa</em>, <em>akhadha</em>, <em>jaʿala</em>, <em>ṭafiqa</em>, <em>anshaʾa</em>. The act has started.</li>
+      </ul>
+
+      <ExampleCard
+        label="Hope, with an before the predicate"
+        ar="عَسَى اللهُ أَنْ يَأْتِيَ بِالْفَتْحِ"
+        focus="أَنْ يَأْتِيَ"
+        translit="ʿasā Llāhu an yaʾtiya bi-l-fatḥi"
+        en="Perhaps Allah will bring the victory."
+        irab="عسى فعل ماضٍ ناقص مبني على الفتح المقدر، اللهُ لفظ الجلالة اسم عسى مرفوع، أنْ حرف مصدري ونصب، يأتيَ فعل مضارع منصوب بأن وعلامة نصبه الفتحة الظاهرة، والفاعل ضمير مستتر تقديره هو، والمصدر المؤول في محل نصب خبر عسى."
+        note="With ʿasā the an is nearly always present, and it changes the analysis: the predicate is now an infinitival phrase in the position of accusative. Commentators note that ʿasā used of Allah denotes certainty rather than mere hope."
+      />
+
+      <CheckQuestion
+        q="Would an be correct before the predicate here?"
+        ar="شَرَعَ الطَّالِبُ يَكْتُبُ"
+        answer="No. With verbs of beginning, an is forbidden."
+        why="Beginning an act and merely intending it are incompatible: an points to something not yet real, while sharaʿa says the act is already under way. So sharaʿa an yaktuba is wrong; sharaʿa yaktubu is correct."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="negated-kada"
+      title="Understand: the negated kāda"
+      lead="Negating kāda ordinarily denies the nearness. In one famous verse it does the opposite, and the reversal is worth understanding rather than memorising."
+    >
+      <ExampleCard
+        label="The verse that reverses"
+        ar="فَذَبَحُوهَا وَمَا كَادُوا يَفْعَلُونَ"
+        focus="مَا كَادُوا يَفْعَلُونَ"
+        translit="fa-dhabaḥūhā wa-mā kādū yafʿalūn"
+        en="So they slaughtered it, though they were near to not doing so."
+        irab="ذبحوا فعل ماضٍ مبني على الضم لاتصاله بواو الجماعة، وواو الجماعة في محل رفع فاعل، وها ضمير متصل في محل نصب مفعول به، ما نافية، كادوا فعل ماضٍ ناقص، وواو الجماعة في محل رفع اسم كاد، يفعلونَ فعل مضارع مرفوع وعلامة رفعه ثبوت النون، وواو الجماعة في محل رفع فاعل، والجملة في محل نصب خبر كاد."
+        note="The verse says they did slaughter it, and yet negates the nearness. The resolution offered by the grammarians is that mā kādū denies the ease and readiness rather than the act: they did it, but only barely and after great reluctance. Hence the maxim that negating kāda affirms and affirming it negates."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, the first of which is the defining feature of the chapter."
+    >
+      <ul>
+        <li><strong>Giving it a single-word predicate.</strong> The predicate must be a verbal sentence with an imperfect verb.</li>
+        <li><strong>Putting an after a verb of beginning.</strong> Forbidden, for a reason of meaning rather than form.</li>
+        <li><strong>Calling its noun a fāʿil.</strong> These are deficient verbs, so the nominative is an ism, and the analysis must say which verb it belongs to.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The families, the rulings on an, and the negated kāda follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the three families and the conditions on an.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the frozen forms and the discussion of the negated kāda.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

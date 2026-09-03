@@ -1,0 +1,151 @@
+---
+/** English edition of /duroos/uslub-al-shart. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'uslub-al-shart';
+const objectives = [
+  'Name the three parts and say which particles govern and which do not.',
+  'Decide when the answer must be linked by a fāʾ.',
+  'Give the position in iʿrāb of each of the two clauses.',
+  'Parse idhā, whose clause is genitive by annexation.',
+];
+const faqs = [
+  { q: 'What are the parts of a conditional sentence?', a: 'Three: the particle, the condition clause, and the answer. The particle ties them so that the first is the cause and the second the consequence. Governing particles apocopate both verbs; non-governing ones leave them alone.' },
+  { q: 'What is the difference between governing and non-governing particles?', a: 'Governing particles such as in, man and mā apocopate both verbs. Non-governing ones such as idhā, law and kullamā carry conditional meaning without changing any ending. So in tadrus tanjaḥ has two jussives, while idhā tadrusu tanjaḥu has none.' },
+  { q: 'When must the answer take a fāʾ?', a: 'Whenever the answer is not fit to be governed directly: a nominal sentence, a past verb, an imperative, or a verb preceded by mā, lan, qad or the future sīn. The mnemonic used in the schools is that the answer takes a fāʾ if it is nominal, imperative, frozen, preceded by a negation, or preceded by qad or sīn.' },
+  { q: 'How is the clause after idhā parsed?', a: 'idhā is an adverbial for future time carrying conditional sense, and the clause after it is in the position of genitive by annexation. The verb inside stays nominative if it is imperfect, because idhā does not govern.' },
+  { q: 'What does it mean that law is a particle of abstention because of abstention?', a: 'It expresses that something did not happen because something else did not: law jaʾtanī la-akramtuka, "had you come to me I would have honoured you", implies you did not come and I did not honour you. Its answer usually carries a lām when it is affirmative past.' },
+  { q: 'Can the condition verb or its answer be omitted?', a: 'Yes, when context supplies it. The answer is commonly omitted after a condition preceded by an oath, and the condition verb may be omitted after particles such as in when it is understood. The analysis names the omitted element and estimates its wording.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Conditional Sentences (uslūb al-sharṭ) in Arabic · Irab App"
+  description="A full lesson on conditional sentences: the three parts, governing and non-governing particles, when the answer takes a fāʾ, the positions of both clauses, and how idhā and law are parsed."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Conditional Sentences" description="The three parts, governing and non-governing particles, the linking fāʾ, and the positions of the two clauses." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Conditional Sentences"
+      summary="A conditional sentence is a particle and two clauses, tied so that the first is the cause and the second the consequence. Some particles apocopate both verbs and some carry the same meaning without touching a single ending, which is the first thing to establish when parsing one. The second is whether the answer needs a fāʾ to link it, and there is a memorable rule for that."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="structure"
+      title="Learn: the three parts"
+      lead="The particle, the condition, and the answer. A governing particle apocopates both verbs; a non-governing one leaves both alone."
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="A governing particle"
+        ar="إِنْ تَدْرُسْ تَنْجَحْ"
+        focus={['تَدْرُسْ', 'تَنْجَحْ']}
+        translit="in tadrus tanjaḥ"
+        en="If you study, you will succeed."
+        irab="إنْ حرف شرط جازم، تدرسْ فعل مضارع مجزوم فعل الشرط وعلامة جزمه السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت، تنجحْ فعل مضارع مجزوم جواب الشرط وعلامة جزمه السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت."
+        note="Both verbs jussive from one particle. Note the positions: the condition clause has no position in iʿrāb, and neither does the answer here, because it is directly governed rather than linked by a fāʾ."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="non-jazima"
+      title="See: the particles that do not govern"
+      lead="idhā, law and kullamā carry conditional meaning without changing any ending, and idhā brings an annexation with it."
+    >
+      <ExampleCard
+        label="idhā, and the genitive clause"
+        ar="إِذَا جَاءَ نَصْرُ اللهِ وَالْفَتْحُ"
+        focus="جَاءَ نَصْرُ اللهِ"
+        translit="idhā jāʾa naṣru Llāhi wa-l-fatḥu"
+        en="When the help of Allah comes, and the victory."
+        irab="إذا ظرف لما يستقبل من الزمان متضمن معنى الشرط مبني في محل نصب، جاء فعل ماضٍ مبني على الفتح، نصرُ فاعل مرفوع وهو مضاف، اللهِ لفظ الجلالة مضاف إليه مجرور، والجملة الفعلية في محل جر بالإضافة."
+        note="Two things English grammar would never predict. idhā is an adverbial, so it sits in the position of accusative; and the whole clause after it is genitive, because idhā is annexed to it. The verb inside is untouched."
+      />
+
+      <CheckQuestion
+        q="Is the verb after this particle jussive?"
+        ar="إِذَا اجْتَهَدْتَ نَجَحْتَ"
+        answer="No. idhā does not govern, so both verbs keep their own forms."
+        why="idhā carries conditional meaning without apocopating. Compare in ijtahadta najaḥta, where in also leaves past verbs unchanged in form but is still a governing particle, so the analysis says the verbs are in the position of jussive."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="fa-jawab"
+      title="Understand: when the answer needs a fāʾ"
+      lead="If the answer is not fit to be governed directly, a fāʾ links it, and the clause after the fāʾ takes the position of the jussive when the particle governs."
+    >
+      <p>The answer needs a fāʾ when it is a nominal sentence, an imperative, a past verb, a frozen verb, or a verb preceded by <em>mā</em>, <em>lan</em>, <em>qad</em> or the future <em>sīn</em>. The schools teach it as a short list to be memorised, and it is worth memorising.</p>
+
+      <ExampleCard
+        label="A nominal answer, so a fāʾ is required"
+        ar="مَنْ يَعْمَلْ صَالِحًا فَلِنَفْسِهِ"
+        focus="فَلِنَفْسِهِ"
+        translit="man yaʿmal ṣāliḥan fa-li-nafsihi"
+        en="Whoever does righteousness, it is for his own soul."
+        irab="من اسم شرط جازم مبني في محل رفع مبتدأ، يعملْ فعل مضارع مجزوم فعل الشرط وعلامة جزمه السكون، صالحًا مفعول به منصوب، الفاء واقعة في جواب الشرط، اللام حرف جر، نفسِ اسم مجرور وهو مضاف، والهاء في محل جر مضاف إليه، والجار والمجرور متعلقان بمحذوف خبر لمبتدأ محذوف، والجملة في محل جزم جواب الشرط."
+        note="The answer is a nominal sentence, which cannot be apocopated, so the fāʾ links it and the whole clause takes the position of the jussive. Without the fāʾ the sentence would be ungrammatical."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="mahall"
+      title="The positions of the two clauses"
+      lead="The condition clause has no position. The answer has none either, unless the particle governs and the answer is linked by a fāʾ or by the surprising idhā, in which case it takes the position of the jussive."
+    >
+      <p>This is the part most often left out of a student's answer, and it is exactly what an examiner is looking for. Say it explicitly: <em>lā maḥalla lahā min al-iʿrāb</em> for the condition, and either the same or <em>fī maḥall jazm jawāb al-sharṭ</em> for the answer.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the last is a matter of not noticing which particle you are dealing with."
+    >
+      <ul>
+        <li><strong>Leaving the verb nominative after a governing particle.</strong> Both verbs are jussive after <em>in</em>, <em>man</em>, <em>mā</em> and their family.</li>
+        <li><strong>Omitting the required fāʾ.</strong> Run the list: nominal, imperative, frozen, negated, or preceded by qad or sīn.</li>
+        <li><strong>Apocopating after idhā.</strong> It does not govern. The clause after it is genitive by annexation, and the verb keeps its form.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The particles, the fāʾ and the positions follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the particles and the cases requiring the fāʾ.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: idhā and law, and the positions of the two clauses.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

@@ -1,0 +1,173 @@
+---
+/** English edition of /duroos/kana-wa-akhawatuha. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'kana-wa-akhawatuha';
+const objectives = [
+  'Explain what "deficient" means, and why it is not a comment on meaning alone.',
+  'Recognise the thirteen sisters and group them by what they contribute.',
+  'Tell deficient kāna from complete kāna, which changes the parse entirely.',
+  'State the condition that four of the sisters require before they govern at all.',
+];
+const faqs = [
+  { q: 'Why are kāna and its sisters called deficient verbs?', a: 'Because they are not satisfied by a nominative alone. An ordinary verb plus its doer is a complete sentence: qāma Zaydun. kāna Zaydun says nothing yet and waits for a predicate. The verb contributes tense and modality rather than an event, so it is nāqiṣ, incomplete, until the predicate arrives.' },
+  { q: 'What is the difference between deficient and complete kāna?', a: 'Complete kāna means "to occur" or "to exist" and needs no predicate: mā shāʾa Llāhu kāna, "what Allah wills happens". There the nominative after it is a plain fāʿil. Deficient kāna takes a nominative called ism kāna and an accusative predicate. If you can supply "existed" or "happened" and the sentence is complete, the verb is complete.' },
+  { q: 'May the predicate of kāna precede its noun?', a: 'Yes, both optionally and in some cases obligatorily. Fronting is obligatory when the predicate is a quasi-sentence and the noun is indefinite: kāna fī l-dāri rajulun. It may also precede the verb itself, as in the Quranic wa-kāna ḥaqqan ʿalaynā naṣru l-muʾminīn.' },
+  { q: 'Is laysa a verb or a particle?', a: 'A verb, in the majority Baṣran view, though a frozen one: it has no imperfect, no imperative and no verbal noun. It governs like kāna, raising its noun and putting its predicate in the accusative, and its predicate is frequently preceded by an extra bāʾ: laysa Zaydun bi-qāʾimin.' },
+  { q: 'When does mā dāma govern like kāna?', a: 'Always, but it must itself be preceded by the infinitival mā, which is what its name records. It expresses duration: lā aṣḥabuka mā dumta kādhiban, "I will not accompany you as long as you remain a liar". It is frozen in the past tense.' },
+  { q: 'What condition do zāla, bariḥa, fatiʾa and infakka require?', a: 'They must be preceded by a negation or something in its sense, such as a prohibition or a supplication. Without it they do not govern and in fact reverse their meaning: mā zāla means "he continued", while zāla alone means "he ceased".' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Kāna and its Sisters in Arabic Grammar · Irab App"
+  description="A full lesson on kāna and its sisters: why they are called deficient, the thirteen sisters and their meanings, deficient against complete kāna, the conditions on the negation-requiring sisters, and word order, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Kāna and its Sisters" description="Deficient verbs: their governance, the thirteen sisters, complete against deficient kāna, and the conditions on some of them." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Kāna and its Sisters"
+      summary="These verbs enter a nominal sentence and change its second pillar to the accusative while leaving the first alone. They are called deficient because, unlike any ordinary verb, they are not satisfied by a doer: they contribute tense and modality and then wait for a predicate. This lesson covers the thirteen sisters, the ones that only govern after a negation, and the difference between deficient kāna and the complete kāna that means something else entirely."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: what they do, and what deficient means"
+      lead="They enter the subject and predicate, raise the first as their noun and put the second into the accusative as their predicate. Deficient means they are not satisfied by a nominative alone; abrogating means they overturn the sentence's original ruling."
+    >
+      <LessonObjective items={objectives} />
+      <p>Two technical words, both worth understanding rather than memorising.</p>
+      <p><strong>Nāqiṣ</strong>, deficient. An ordinary verb with its doer is a finished sentence: <em>qāma Zaydun</em>, "Zayd stood". Now try <em>kāna Zaydun</em>. Nothing has been said. The verb has supplied a tense and is waiting for the content, which is why it needs a predicate to complete it.</p>
+      <p><strong>Nāsikh</strong>, abrogating. The sentence was two nominatives before the verb arrived. It has cancelled that ruling on the second pillar. The sentence is still nominal; its case pattern has been overturned.</p>
+
+      <ExampleCard
+        label="The base case"
+        ar="كَانَ الْجَوُّ صَحْوًا"
+        focus={['الْجَوُّ', 'صَحْوًا']}
+        translit="kāna l-jawwu ṣaḥwan"
+        en="The weather was clear."
+        irab="كان فعل ماضٍ ناقص مبني على الفتح، الجوُّ اسم كان مرفوع وعلامة رفعه الضمة الظاهرة، صحوًا خبر كان منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Before kāna arrived the sentence was al-jawwu ṣaḥwun, two nominatives. Note the renaming: the pillars are now ism kāna and khabar kāna, not mubtadaʾ and khabar."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sisters-and-meanings"
+      title="See: the thirteen sisters"
+      lead="One governance, many meanings. Group them by what they contribute and the list stops being a list."
+    >
+      <ul>
+        <li><strong>Plain attribution in a tense:</strong> <em>kāna</em>, and the time-bounded <em>ẓalla</em> (by day), <em>bāta</em> (by night), <em>aḍḥā</em>, <em>aṣbaḥa</em>, <em>amsā</em>.</li>
+        <li><strong>Transformation:</strong> <em>ṣāra</em>, "became".</li>
+        <li><strong>Negation:</strong> <em>laysa</em>, "is not".</li>
+        <li><strong>Continuance, requiring a preceding negation:</strong> <em>mā zāla</em>, <em>mā bariḥa</em>, <em>mā fatiʾa</em>, <em>mā infakka</em>.</li>
+        <li><strong>Duration, requiring the infinitival mā:</strong> <em>mā dāma</em>.</li>
+      </ul>
+      <p>The four sisters of continuance deserve care, because without the negation they mean the opposite. <em>Zāla</em> alone is "he ceased"; <em>mā zāla</em> is "he did not cease", which is to say "he continued".</p>
+
+      <ExampleCard
+        label="A sister of transformation"
+        ar="فَأَصْبَحْتُمْ بِنِعْمَتِهِ إِخْوَانًا"
+        focus="إِخْوَانًا"
+        translit="fa-aṣbaḥtum bi-niʿmatihi ikhwānan"
+        en="And you became, by His favour, brothers."
+        irab="أصبحَ فعل ماضٍ ناقص مبني على السكون لاتصاله بضمير الرفع، وتم ضمير متصل مبني في محل رفع اسم أصبح، الباء حرف جر، نعمةِ اسم مجرور وهو مضاف، والهاء في محل جر مضاف إليه، إخوانًا خبر أصبح منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="The noun of aṣbaḥa is a pronoun fused to the verb, so it is described as being in the position of nominative rather than as marfūʿ. Note too that aṣbaḥa here does not mean 'in the morning': the time-bounded sisters often carry only the sense of becoming."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="complete-vs-deficient"
+      title="Understand: deficient kāna against complete kāna"
+      lead="The same verb can be complete, meaning to occur or to exist, in which case it takes no predicate and the nominative after it is an ordinary doer."
+    >
+      <p>This is the distinction that most changes an analysis, and the test is simple: supply "existed" or "happened". If the sentence is complete without a predicate, the verb is complete.</p>
+
+      <ExampleCard
+        label="Complete kāna: no predicate at all"
+        ar="مَا شَاءَ اللهُ كَانَ"
+        focus="كَانَ"
+        translit="mā shāʾa Llāhu kāna"
+        en="What Allah wills, happens."
+        irab="ما اسم موصول مبني في محل رفع مبتدأ، شاء فعل ماضٍ مبني على الفتح، اللهُ لفظ الجلالة فاعل مرفوع، وجملة شاء صلة الموصول لا محل لها، كان فعل ماضٍ تام مبني على الفتح، والفاعل ضمير مستتر تقديره هو، والجملة في محل رفع خبر المبتدأ."
+        note="kāna here means 'came to pass'. It has a fāʿil, not an ism, and no predicate is missing. Parsing it as deficient would leave you searching for an accusative that does not exist."
+      />
+
+      <CheckQuestion
+        q="Is kāna complete or deficient here, and what is al-ʿusru?"
+        ar="وَإِنْ كَانَ ذُو عُسْرَةٍ فَنَظِرَةٌ"
+        answer="Complete. dhū ʿusratin is its fāʿil, not an ism kāna."
+        why="The meaning is 'if there exists one in hardship', so no predicate is wanted and the sentence is finished. Note also dhū, one of the five nouns, nominative by wāw."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="types-of-khabar"
+      title="The predicate, and word order"
+      lead="The predicate of kāna takes the same three shapes as any predicate. When it is a sentence or a quasi-sentence it is given a position rather than an ending."
+    >
+      <ExampleCard
+        label="Predicate fronted, obligatorily"
+        ar="وَكَانَ فِي الْمَدِينَةِ تِسْعَةُ رَهْطٍ"
+        focus="تِسْعَةُ"
+        translit="wa-kāna fī l-madīnati tisʿatu rahṭin"
+        en="And there were in the city nine men."
+        irab="كان فعل ماضٍ ناقص مبني على الفتح، في حرف جر، المدينةِ اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بمحذوف خبر كان مقدم، تسعةُ اسم كان مؤخر مرفوع وعلامة رفعه الضمة الظاهرة وهو مضاف، رهطٍ مضاف إليه مجرور."
+        note="The predicate is a quasi-sentence and the noun is indefinite, so fronting is obligatory, exactly as it is in an ordinary nominal sentence. Note the analysis attaches the phrase to an omitted predicate rather than calling it one."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="notes-and-warnings"
+      title="Where learners go wrong"
+      lead="Three places, and the first is the one that changes a whole parse."
+    >
+      <ul>
+        <li><strong>Missing complete kāna.</strong> Test by supplying "existed". If the sentence stands, there is no predicate to look for.</li>
+        <li><strong>Forgetting the negation.</strong> <em>Zāla</em>, <em>bariḥa</em>, <em>fatiʾa</em> and <em>infakka</em> govern only after a negation or its equivalent, and reverse in meaning without one.</li>
+        <li><strong>Leaving a sentence-predicate unplaced.</strong> When the predicate is a clause, say <em>fī maḥall naṣb khabar kāna</em>. Naming the clause without its position is an incomplete answer.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The list, the conditions and the complete-deficient distinction follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: kāna and its sisters among the abrogators.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the conditions on the sisters of continuance, and obligatory fronting.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: complete against deficient kāna, and the status of laysa.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>
