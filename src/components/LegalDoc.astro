@@ -6,7 +6,14 @@
  * pages (src/data/legal/*.html) and injected here, then fully re-skinned
  * with the site design system: Aref Ruqaa / Thmanyah Text fonts, brand colors,
  * the lattice background, section cards, themed tables, scroll reveal, and
- * a bilingual (ع / EN) toggle. Arabic is shown by default.
+ * a bilingual (ع / EN) toggle.
+ *
+ * Both languages are already IN the body HTML, paired block for block
+ * (.ar / .en), so the English routes under /en are not a translation — they
+ * render the same document with `lang="en"`, which flips the default side and
+ * points the chrome and cross-links at their English counterparts. The in-page
+ * toggle still works on both, since a bilingual legal document is worth
+ * reading either way.
  */
 import Nav from './Nav.astro';
 import Footer from './sections/Footer.astro';
@@ -15,8 +22,12 @@ import Container from './Container.astro';
 interface Props {
   kind: 'privacy' | 'terms' | 'refund';
   body: string;
+  /** Which side of the bilingual document leads. Also picks the nav/footer
+   *  language and keeps the cross-link inside the same language tree. */
+  lang?: 'ar' | 'en';
 }
-const { kind, body } = Astro.props;
+const { kind, body, lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
 
 const meta = {
   privacy: {
@@ -33,12 +44,22 @@ const meta = {
   },
 }[kind];
 
+// Cross-link stays in the reader's language tree: /terms ↔ /en/terms.
+const otherHref = isEn ? `/en${meta.other.href}` : meta.other.href;
+
+// The body HTML is kept verbatim from the original standalone pages, and it
+// carries seven internal links written as /privacy, /terms, /privacy#s4 —
+// three of them inside .en blocks. Left alone, an English reader clicking
+// "Privacy Policy" would land on the Arabic-led page. Rewritten here at render
+// time rather than in the source, so the stored document stays untouched.
+const html = isEn ? body.replace(/href="\/(privacy|terms|refund)/g, 'href="/en/$1') : body;
+
 const updatedAr = '١ مايو ٢٠٢٦';
 const updatedEn = 'May 1, 2026';
 ---
-<Nav lang="ar" />
+<Nav lang={lang} />
 
-<main class="legal" data-legal>
+<main class:list={['legal', isEn && 'show-en']} data-legal>
   {/* Hero */}
   <header class="legal-hero">
     <img
@@ -66,8 +87,8 @@ const updatedEn = 'May 1, 2026';
 
           {/* Language toggle */}
           <div class="legal-lang" role="group" aria-label="Language">
-            <button type="button" data-lang="ar" class="is-active">ع</button>
-            <button type="button" data-lang="en">EN</button>
+            <button type="button" data-lang="ar" class:list={[!isEn && 'is-active']}>ع</button>
+            <button type="button" data-lang="en" class:list={[isEn && 'is-active']}>EN</button>
           </div>
         </div>
       </div>
@@ -76,22 +97,22 @@ const updatedEn = 'May 1, 2026';
 
   {/* Body */}
   <Container size="narrow">
-    <div class="legal-body" set:html={body} />
+    <div class="legal-body" set:html={html} />
 
     <div class="legal-foot">
       <p class="ar font-arabic">
         لأي سؤال حول هذه الوثيقة، راسلنا على <a href="mailto:support@irab.app">support@irab.app</a>.
-        اطّلع أيضًا على <a href={meta.other.href}>{meta.other.ar}</a>.
+        اطّلع أيضًا على <a href={otherHref}>{meta.other.ar}</a>.
       </p>
       <p class="en">
         Questions about this document? Email <a href="mailto:support@irab.app">support@irab.app</a>.
-        See also our <a href={meta.other.href}>{meta.other.en}</a>.
+        See also our <a href={otherHref}>{meta.other.en}</a>.
       </p>
     </div>
   </Container>
 </main>
 
-<Footer lang="ar" />
+<Footer lang={lang} />
 
 <style>
   /* ── Language visibility (Arabic default) ─────────────────────────── */

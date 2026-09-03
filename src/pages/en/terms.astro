@@ -1,0 +1,17 @@
+---
+/**
+ * /en/terms — the same bilingual document as /terms, led in English.
+ * The English text already lives in the shared body HTML alongside the
+ * Arabic, block for block; nothing here is a separate translation.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LegalDoc from '../../components/LegalDoc.astro';
+import body from '../../data/legal/terms.html?raw';
+---
+<BaseLayout
+  lang="en"
+  title="Terms of Service · Irab App"
+  description="The terms governing your use of Irab App: accounts, subscriptions and billing, free tier limits, and acceptable use."
+>
+  <LegalDoc kind="terms" body={body} lang="en" />
+</BaseLayout>
