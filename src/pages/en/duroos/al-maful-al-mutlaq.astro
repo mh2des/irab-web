@@ -1,0 +1,180 @@
+---
+/** English edition of /duroos/al-maful-al-mutlaq. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-maful-al-mutlaq';
+const objectives = [
+  'Recognise the absolute object by its root and its relation to the verb.',
+  'Name its three purposes and say which one never takes a dual or plural.',
+  'Identify the words that stand in for the verbal noun.',
+  'Parse the fixed expressions whose verb has been dropped entirely.',
+];
+const faqs = [
+  { q: 'What is the difference between the absolute object and the direct object?', a: 'A direct object names what the act fell upon and is a different thing from the act. An absolute object is the act itself, named again: a verbal noun from the verb\'s own root, used to emphasise it, describe its manner, or count it. In ḍarabtu l-walada ḍarban, al-walada is the direct object and ḍarban is the absolute object.' },
+  { q: 'Why is it called "absolute"?', a: 'Because it is the object unrestricted by any preposition. The other objects are qualified: the object "of purpose", the object "in which". This one is a mafʿūl without qualification, so the tradition calls it muṭlaq, released or unrestricted.' },
+  { q: 'What can stand in for the verbal noun?', a: 'Several things: its adjective (sirtu sarīʿan), a number of it (ḍarabtuhu ḍarbatayni), kull or baʿḍ annexed to it (fa-lā tamīlū kulla l-mayl), a demonstrative pointing at it, the instrument of the act, or a synonym from another root (qaʿadtu julūsan).' },
+  { q: 'Is the governing verb ever omitted?', a: 'Yes, and in some expressions it is obligatorily omitted, so much so that they have become fixed formulas. subḥāna Llāhi, "glory be to Allah", is an absolute object of a verb never uttered, estimated as usabbiḥu. Likewise shukran, ḥamdan, and ʿafwan.' },
+  { q: 'What are the three kinds?', a: 'Confirming the verb (ḍarban after ḍarabtu), showing its manner (sayra l-kirāmi), and counting its occurrences (ḍarbatayni). The first kind is always singular and never made dual or plural, because a bare confirmation has no number.' },
+  { q: 'How is subḥāna parsed in subḥāna Llāh?', a: 'As an absolute object, accusative, of an omitted verb estimated as usabbiḥu, and it is annexed to the name of Allah which is therefore genitive. The full wording is: mafʿūl muṭlaq li-fiʿl maḥdhūf taqdīruhu usabbiḥu, manṣūb, wa-huwa muḍāf.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Absolute Object (al-mafʿūl al-muṭlaq) in Arabic · Irab App"
+  description="A full lesson on the absolute object: its three purposes, what stands in for the verbal noun, the expressions whose verb is obligatorily omitted, and how to tell it from the direct object, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Absolute Object" description="The absolute object: its three purposes, its substitutes, omitted governing verbs, and how it differs from the direct object." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Absolute Object"
+      summary="English has no equivalent, which is why this chapter feels strange at first and then becomes one of the most satisfying in the grammar. The absolute object is the act itself named a second time, by a verbal noun from the verb's own root, in order to confirm it, describe how it happened, or say how many times. Several everyday expressions turn out to be absolute objects of verbs nobody ever says."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the act named twice"
+      lead="The absolute object is an additional accusative verbal noun, derived from the wording of its governing verb or from its meaning, mentioned to confirm the verb, show its kind, or count it."
+    >
+      <LessonObjective items={objectives} />
+      <p>English can do something distantly similar in "he smiled a broad smile" or "she slept a deep sleep", and that is the intuition to hold. The difference is that Arabic makes it a regular construction with a name and rules, not a stylistic flourish.</p>
+
+      <ExampleCard
+        label="Confirming the verb"
+        ar="وَكَلَّمَ اللهُ مُوسَىٰ تَكْلِيمًا"
+        focus="تَكْلِيمًا"
+        translit="wa-kallama Llāhu Mūsā taklīman"
+        en="And Allah spoke to Moses directly."
+        irab="كلّم فعل ماضٍ مبني على الفتح، اللهُ لفظ الجلالة فاعل مرفوع وعلامة رفعه الضمة الظاهرة، موسى مفعول به منصوب وعلامة نصبه الفتحة المقدرة على الألف منع من ظهورها التعذر، تكليمًا مفعول مطلق منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="taklīman adds no new information: it is kallama said again as a noun. Its work is to remove any possibility of the verb being read figuratively. English translators reach for 'directly' or 'in speech' to carry what the bare repetition carries in Arabic."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="types"
+      title="See: the three purposes"
+      lead="Confirming the act, showing its manner, or counting its occurrences. The confirming kind is always singular."
+    >
+      <ExampleCard
+        label="Showing manner"
+        ar="سَارَ الْجُنْدِيُّ سَيْرَ الْأَبْطَالِ"
+        focus="سَيْرَ"
+        translit="sāra l-jundiyyu sayra l-abṭāli"
+        en="The soldier marched the march of heroes."
+        irab="سار فعل ماضٍ مبني على الفتح، الجنديُّ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، سيرَ مفعول مطلق مبين للنوع منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، الأبطالِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="Here the verbal noun is annexed, and the annexation is what supplies the description. This is the usual way of showing manner: the noun alone would only confirm."
+      />
+
+      <ExampleCard
+        label="Counting occurrences"
+        ar="ضَرَبْتُهُ ضَرْبَتَيْنِ"
+        focus="ضَرْبَتَيْنِ"
+        translit="ḍarabtuhu ḍarbatayni"
+        en="I struck him twice."
+        irab="ضربتُ فعل وفاعل، والهاء ضمير متصل في محل نصب مفعول به، ضربتينِ مفعول مطلق مبين للعدد منصوب وعلامة نصبه الياء لأنه مثنى."
+        note="Note the marker: yāʾ, because the word is dual. The counting kind may be dual or plural, while the confirming kind never is, since a bare confirmation has no number to express."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="substitutes"
+      title="Understand: what stands in for the verbal noun"
+      lead="Words that are not verbal nouns can occupy the position: an adjective of it, a number of it, kull or baʿḍ annexed to it, a demonstrative, an instrument, or a synonym from another root."
+    >
+      <ExampleCard
+        label="kull standing in for the verbal noun"
+        ar="فَلَا تَمِيلُوا كُلَّ الْمَيْلِ"
+        focus="كُلَّ"
+        translit="fa-lā tamīlū kulla l-mayli"
+        en="So do not incline with complete inclination."
+        irab="لا ناهية جازمة، تميلوا فعل مضارع مجزوم وعلامة جزمه حذف النون لأنه من الأفعال الخمسة، وواو الجماعة في محل رفع فاعل، كلَّ نائب عن المفعول المطلق منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، الميلِ مضاف إليه مجرور."
+        note="kull is not a verbal noun, yet it occupies the slot because it is annexed to one. The wording in iʿrāb changes accordingly: nāʾib ʿan al-mafʿūl al-muṭlaq, standing in for the absolute object, rather than being one."
+      />
+
+      <ExampleCard
+        label="A synonym from another root"
+        ar="قَعَدْتُ جُلُوسًا"
+        focus="جُلُوسًا"
+        translit="qaʿadtu julūsan"
+        en="I sat down, a sitting."
+        irab="قعدتُ فعل وفاعل، جلوسًا مفعول مطلق منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="julūs comes from the root j-l-s while the verb is from q-ʿ-d. The definition allowed this from the start: derived from the wording of the verb or from its meaning. Meaning is enough."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="hidden-verb"
+      title="The expressions whose verb is never said"
+      lead="In several formulas the governing verb is obligatorily omitted and only its verbal noun survives. These are among the most common phrases in the language."
+    >
+      <ExampleCard
+        label="A verb nobody utters"
+        ar="سُبْحَانَ اللهِ"
+        focus="سُبْحَانَ"
+        translit="subḥāna Llāhi"
+        en="Glory be to Allah."
+        irab="سبحانَ مفعول مطلق لفعل محذوف وجوبًا تقديره أُسبِّحُ، منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، اللهِ لفظ الجلالة مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="There is no verb in this phrase and there never is one: it is obligatorily omitted, and the analysis supplies it as usabbiḥu. The same pattern explains shukran, ḥamdan and ʿafwan, each an absolute object of a verb that is never spoken."
+      />
+
+      <CheckQuestion
+        q="Parse the accusative, and say what governs it."
+        ar="شُكْرًا لَكَ"
+        answer="shukran is an absolute object of an obligatorily omitted verb, estimated as ashkuru."
+        why="No verb appears and none may be added. This is a fixed formula in which the verbal noun alone survives, exactly like subḥāna Llāh. Reading shukran as a direct object would require a verb for it to fall from, and there is none."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the first is simply confusing the act with what the act fell upon."
+    >
+      <ul>
+        <li><strong>Calling it a direct object.</strong> Ask whether the accusative is the act itself renamed, or a different thing the act fell upon.</li>
+        <li><strong>Putting the verbal noun in the nominative.</strong> Learners see a bare verbal noun at the start of a phrase, as in <em>subḥāna</em>, and read it as a subject. It is accusative, governed by an omitted verb.</li>
+        <li><strong>Missing the substitutes.</strong> <em>kulla</em>, <em>baʿḍa</em>, a number, or a demonstrative can all occupy the slot without being verbal nouns.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The three kinds, the substitutes and the cases of obligatory omission follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the absolute object among the accusatives.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the substitutes for the verbal noun.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the expressions whose governing verb is obligatorily omitted.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

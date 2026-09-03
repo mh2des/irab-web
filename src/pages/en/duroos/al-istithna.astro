@@ -1,0 +1,178 @@
+---
+/** English edition of /duroos/al-istithna. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-istithna';
+const objectives = [
+  'Name the three parts of an exception and the instruments that introduce it.',
+  'Decide the case after illā by looking at what comes before it.',
+  'Parse ghayr and siwā, which are nouns rather than particles.',
+  'Handle the three words that hover between verb and preposition.',
+];
+const faqs = [
+  { q: 'What are the parts of an exception?', a: 'Three: the mustathnā minhu, the whole from which something is excepted; the instrument, such as illā; and the mustathnā, the thing excepted. In qāma l-qawmu illā Zaydan, al-qawmu is the whole, illā the instrument, and Zaydan the excepted.' },
+  { q: 'What do "complete" and "emptied" mean?', a: 'Complete, tāmm, means the whole is mentioned before the instrument. Emptied, mufragh, means it is not, so the sentence is empty of it and whatever follows illā takes the case its own role requires. mā jāʾa illā Zaydun is emptied: Zaydun is simply the doer of jāʾa.' },
+  { q: 'How are ghayr and siwā parsed?', a: 'They are nouns, not particles. Each takes the case that the excepted noun would have taken after illā, and what follows them is genitive by annexation. So qāma l-qawmu ghayra Zaydin has ghayra accusative and Zaydin genitive.' },
+  { q: 'How is what follows ʿadā, khalā and ḥāshā parsed?', a: 'Two readings are permitted. Treated as past verbs, they put what follows in the accusative as an object; treated as prepositions, they put it in the genitive. Both are correct. But if mā precedes, they must be verbs and the accusative is required.' },
+  { q: 'Why is what follows illā nominative in mā jāʾa illā Zaydun?', a: 'Because the sentence is emptied: no whole was mentioned before illā, so illā governs nothing and the noun takes the case its own role in the sentence requires. Here it is the doer of jāʾa, so it is nominative.' },
+  { q: 'How is lā ilāha illā Llāh parsed?', a: 'lā is the lā of absolute negation, ilāha is its noun, built on fatḥa in the position of accusative, its predicate is omitted and estimated as mawjūdun or ḥaqqun, and lafẓ al-jalāla is a substitute (badal) for the position of ilāha, therefore nominative. This is the analysis most commonly taught.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Exception (al-istithnāʾ) in Arabic Grammar · Irab App"
+  description="A full lesson on exception: the three parts, the instruments, the three cases after illā, ghayr and siwā, the words hovering between verb and preposition, and the parsing of lā ilāha illā Llāh."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Exception (al-istithnāʾ)" description="The three parts, the instruments, the three cases after illā, ghayr and siwā, and the parsing of lā ilāha illā Llāh." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Exception"
+      summary="Exception looks simple and turns out to be one of the most decision-heavy chapters in the grammar. The case of the excepted noun does not depend on the word itself but on what came before the instrument: whether the whole was mentioned, and whether the sentence was affirmative or negative. Three configurations, three different answers, and one of them is the sentence a Muslim says most often."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the parts and the instruments"
+      lead="An exception has three parts: the whole, the instrument, and the excepted. The instruments are illā, the nouns ghayr and siwā, and ʿadā, khalā and ḥāshā, which hover between verb and preposition."
+    >
+      <LessonObjective items={objectives} />
+      <p>Sort the instruments by what they are, because that decides how they are parsed.</p>
+      <ul>
+        <li><strong>illā</strong> is a particle of exception and has no case of its own.</li>
+        <li><strong>ghayr</strong> and <strong>siwā</strong> are nouns, so they take cases and annex what follows.</li>
+        <li><strong>ʿadā</strong>, <strong>khalā</strong>, <strong>ḥāshā</strong> may be read as verbs or as prepositions.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="three-cases"
+      title="Understand: the three configurations after illā"
+      lead="Look at what precedes illā. Complete and affirmative means the accusative is obligatory. Complete and negative means substitution is preferred and the accusative is permitted. Emptied means you parse by role."
+    >
+      <ExampleCard
+        label="1. Complete and affirmative: accusative obligatory"
+        ar="قَامَ الْقَوْمُ إِلَّا زَيْدًا"
+        focus="زَيْدًا"
+        translit="qāma l-qawmu illā Zaydan"
+        en="The people stood, except Zayd."
+        irab="قام فعل ماضٍ مبني على الفتح، القومُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، إلا أداة استثناء، زيدًا مستثنى بإلا منصوب وعلامة نصبه الفتحة الظاهرة."
+      />
+
+      <ExampleCard
+        label="2. Complete and negative: substitution preferred"
+        ar="مَا قَامَ الْقَوْمُ إِلَّا زَيْدٌ"
+        focus="زَيْدٌ"
+        translit="mā qāma l-qawmu illā Zaydun"
+        en="The people did not stand, except Zayd."
+        irab="ما حرف نفي، قام فعل ماضٍ مبني على الفتح، القومُ فاعل مرفوع، إلا أداة استثناء، زيدٌ بدل من القوم مرفوع وعلامة رفعه الضمة الظاهرة، ويجوز نصبه على الاستثناء."
+        note="Two readings are permitted here and both are correct Arabic. Substitution, badal, is preferred: Zayd takes the case of the whole he is substituted for. The accusative on exception is also allowed."
+      />
+
+      <ExampleCard
+        label="3. Emptied: parse by role"
+        ar="مَا جَاءَ إِلَّا زَيْدٌ"
+        focus="زَيْدٌ"
+        translit="mā jāʾa illā Zaydun"
+        en="No one came except Zayd."
+        irab="ما حرف نفي، جاء فعل ماضٍ مبني على الفتح، إلا أداة حصر، زيدٌ فاعل مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="No whole was mentioned, so the sentence is emptied and illā governs nothing at all. Zaydun is simply the doer of jāʾa. Putting it in the accusative here is the commonest error in the chapter: there is nothing to except it from."
+      />
+
+      <CheckQuestion
+        q="What case does the noun after illā take, and why?"
+        ar="مَا رَأَيْتُ إِلَّا مُحَمَّدًا"
+        answer="Accusative, but as a direct object, not as an excepted noun."
+        why="The sentence is emptied: no whole precedes illā. So Muḥammadan takes the case its own role requires, and its role is the object of raʾaytu. The accusative here is a coincidence of role, not of exception."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="ghayr-siwa"
+      title="See: ghayr and siwā"
+      lead="These are nouns. Each takes the case the excepted noun would have taken after illā, and what follows is genitive by annexation."
+    >
+      <ExampleCard
+        label="ghayr in an affirmative sentence"
+        ar="قَامَ الْقَوْمُ غَيْرَ زَيْدٍ"
+        focus="غَيْرَ"
+        translit="qāma l-qawmu ghayra Zaydin"
+        en="The people stood, except Zayd."
+        irab="قام فعل ماضٍ مبني على الفتح، القومُ فاعل مرفوع، غيرَ مستثنى منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، زيدٍ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="Compare card 1 above. The case that sat on Zaydan there now sits on ghayra, and Zayd has become genitive by annexation. ghayr absorbs the ruling and passes the genitive on."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="ada-khala"
+      title="ʿadā, khalā and ḥāshā"
+      lead="Two readings are open: as past verbs putting what follows in the accusative, or as prepositions putting it in the genitive. If mā precedes, only the verbal reading remains."
+    >
+      <ExampleCard
+        label="mā forces the verbal reading"
+        ar="قَامَ الْقَوْمُ مَا خَلَا زَيْدًا"
+        focus="زَيْدًا"
+        translit="qāma l-qawmu mā khalā Zaydan"
+        en="The people stood, apart from Zayd."
+        irab="قام فعل ماضٍ مبني على الفتح، القومُ فاعل مرفوع، ما مصدرية، خلا فعل ماضٍ مبني على الفتح، والفاعل ضمير مستتر، زيدًا مفعول به منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Without mā, both khalā Zaydan and khalā Zaydin would be correct. With mā the word must be a verb, because mā here is the infinitival mā and only a verb can follow it, so the accusative is required."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="la-ilaha"
+      title="The sentence said most often"
+      lead="lā ilāha illā Llāh combines two chapters, exception and the lā of absolute negation, which is why it repays parsing carefully."
+    >
+      <ExampleCard
+        label="Two chapters in four words"
+        ar="لَا إِلَٰهَ إِلَّا اللهُ"
+        focus="اللهُ"
+        translit="lā ilāha illā Llāhu"
+        en="There is no god except Allah."
+        irab="لا نافية للجنس، إلهَ اسم لا مبني على الفتح في محل نصب، وخبر لا محذوف وجوبًا تقديره موجودٌ أو حقٌّ، إلا أداة استثناء، لفظ الجلالة بدل من محل اسم لا مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Note what is happening. ilāha is built on fatḥa, not accusative by fatḥa, because the noun of this lā is built. Its predicate is obligatorily omitted. And lafẓ al-jalāla is nominative because it substitutes for the position of ilāha, which as a subject-like element would be nominative. Reading Allāhu as an excepted noun would require the accusative, which is not what the phrase says."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The configurations and the treatment of each instrument follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span> and <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span>: the three configurations and the status of illā.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: ghayr and siwā, and the two readings of ʿadā and its companions.</li>
+        <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: the parsing of lā ilāha illā Llāh.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

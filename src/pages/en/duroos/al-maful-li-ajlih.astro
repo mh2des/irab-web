@@ -1,0 +1,144 @@
+---
+/** English edition of /duroos/al-maful-li-ajlih. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-maful-li-ajlih';
+const objectives = [
+  'Test a noun against the four conditions before parsing it as an object of purpose.',
+  'Say what to do when a condition fails.',
+  'Predict whether a given form will be accusative or genitive from its definiteness.',
+  'Separate it from the absolute object and the circumstantial accusative.',
+];
+const faqs = [
+  { q: 'What are the conditions for the accusative?', a: 'Four, and all must hold: it must be a verbal noun, it must denote an inward state (a heart action such as fear, desire, respect), it must give the reason for the act, and it must share the time and the doer of that act. Fail any one and the noun is put into the genitive with a preposition of cause instead.' },
+  { q: 'How does it differ from the absolute object?', a: 'By what it tells you. An absolute object is the act itself renamed, confirming or describing it. An object of purpose is a different act, an inward one, given as the reason for the outward act. qumtu qiyāman confirms the standing; qumtu iḥtirāman explains why I stood.' },
+  { q: 'When must the noun be put into the genitive instead?', a: 'Whenever a condition fails. jiʾtu li-l-ʿilmi uses li- because ʿilm here is not an inward state contemporaneous with the coming. Likewise if the doer of the reason differs from the doer of the act, the accusative is not available.' },
+  { q: 'Can it precede its verb?', a: 'Yes. Unlike the specifier, the object of purpose may be fronted: iḥtirāman li-l-muʿallimi qumtu is sound. Fronting places emphasis on the reason.' },
+  { q: 'How does definiteness affect it?', a: 'Three states. Bare of both al- and annexation, the accusative predominates: qumtu iḥtirāman. Annexed, accusative and genitive are equally good: qumtu iḥtirāma l-muʿallimi or li-iḥtirāmi l-muʿallimi. Carrying al-, the genitive predominates: qumtu li-l-iḥtirāmi.' },
+  { q: 'How do I spot it in a sentence?', a: 'Ask "why?" of the verb. If the accusative noun answers that question, and is a verbal noun of an inward state sharing the verb\'s time and doer, it is an object of purpose. If it answers "how?" it is a circumstantial accusative; if it renames the act, it is an absolute object.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Object of Purpose (al-mafʿūl li-ajlihi) in Arabic · Irab App"
+  description="A full lesson on the object of purpose: the four conditions for its accusative, what happens when one fails, its three states with al- and annexation, and how to tell it from the absolute object, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Object of Purpose" description="The four conditions, what happens when one fails, the three states, and distinguishing it from the absolute object." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Object of Purpose"
+      summary="This accusative answers a single question: why did the act happen? It is a verbal noun naming an inward state, and it takes the accusative only when four conditions hold together. When one fails, Arabic reaches for a preposition instead, which is why the same idea appears sometimes accusative and sometimes genitive. Knowing the four conditions is knowing the chapter."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the reason for the act"
+      lead="An additional accusative verbal noun mentioned as the cause of what precedes it, sharing its time and its doer. It answers: why did the act occur?"
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="The base case"
+        ar="قُمْتُ احْتِرَامًا لِلْمُعَلِّمِ"
+        focus="احْتِرَامًا"
+        translit="qumtu iḥtirāman li-l-muʿallimi"
+        en="I stood out of respect for the teacher."
+        irab="قمتُ فعل وفاعل، احترامًا مفعول لأجله منصوب وعلامة نصبه الفتحة الظاهرة، اللام حرف جر، المعلمِ اسم مجرور وعلامة جره الكسرة الظاهرة."
+        note="Check the four conditions on iḥtirāman: it is a verbal noun, it names an inward state, it gives the reason for standing, and the respecting and the standing share both time and doer. All four hold, so the accusative is available."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="conditions"
+      title="Understand: the four conditions"
+      lead="A verbal noun, denoting an inward state, giving the reason, and sharing the time and doer of the act. If one fails, the noun is put into the genitive with a preposition of cause."
+    >
+      <ol>
+        <li><strong>A verbal noun.</strong> Not a concrete noun. <em>jiʾtu l-madrasata</em> has no object of purpose in it.</li>
+        <li><strong>An inward state.</strong> Fear, desire, respect, longing. Outward acts do not qualify, which is why <em>jiʾtu li-l-qirāʾati</em> takes a preposition.</li>
+        <li><strong>It gives the reason.</strong> Not the manner, and not the act renamed.</li>
+        <li><strong>Same time and same doer.</strong> The respecting and the standing happen together and belong to the same person.</li>
+      </ol>
+
+      <ExampleCard
+        label="A condition fails, so the genitive is used"
+        ar="جِئْتُ لِلْعِلْمِ"
+        focus="لِلْعِلْمِ"
+        translit="jiʾtu li-l-ʿilmi"
+        en="I came for knowledge."
+        irab="جئتُ فعل وفاعل، اللام حرف جر للتعليل، العلمِ اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بالفعل جئت."
+        note="ʿilm is a verbal noun and it does give a reason, but it is not an inward state contemporaneous with the coming: the knowledge is sought after arriving, not felt during it. A condition fails, so the accusative is unavailable and li- carries the meaning instead."
+      />
+
+      <CheckQuestion
+        q="Should this noun be accusative or genitive, and why?"
+        ar="ذَاكَرْتُ ... رَغْبَةً فِي النَّجَاحِ"
+        answer="Accusative, raghbatan, as an object of purpose."
+        why="It is a verbal noun, it names an inward state (desire), it gives the reason for studying, and the desiring and the studying share their time and their doer. All four conditions hold."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="states"
+      title="See: the three states"
+      lead="Bare of al- and annexation, the accusative predominates. Annexed, the two are equal. Carrying al-, the genitive predominates."
+    >
+      <ul>
+        <li><strong>Bare:</strong> <em>qumtu iḥtirāman</em>. Accusative is the norm.</li>
+        <li><strong>Annexed:</strong> <em>qumtu iḥtirāma l-muʿallimi</em> or <em>li-iḥtirāmi l-muʿallimi</em>. Both are good.</li>
+        <li><strong>With al-:</strong> <em>qumtu li-l-iḥtirāmi</em>. Genitive is the norm.</li>
+      </ul>
+      <p>Notice that all three express the same idea. The grammar is offering a scale, not a set of different meanings, and the bare form is the one that most naturally takes the accusative.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Two confusions and one over-application."
+    >
+      <ul>
+        <li><strong>Confusing it with the absolute object.</strong> <em>qumtu qiyāman</em> renames the act; <em>qumtu iḥtirāman</em> explains it. Different roots, different jobs.</li>
+        <li><strong>Confusing it with the circumstantial accusative.</strong> The ḥāl answers "how?" and is usually a participle; this answers "why?" and is a verbal noun.</li>
+        <li><strong>Putting every reason in the accusative.</strong> Run the four conditions first. If any fails, use a preposition.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The conditions and the three states follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the four conditions and what follows from their failure.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the three states with al- and annexation.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

@@ -1,0 +1,184 @@
+---
+/** English edition of /duroos/al-maful-bih. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-maful-bih';
+const objectives = [
+  'Identify the direct object and give its accusative marker with the reason.',
+  'Say when it may precede the doer and when it must.',
+  'Recognise verbs that take two objects, and where those two came from.',
+  'Tell a direct object apart from the three other accusatives it is confused with.',
+];
+const faqs = [
+  { q: 'What is the difference between a direct object and a deputy doer?', a: 'Their case, and the shape of the verb. A direct object is accusative after a verb built for the active; a deputy doer is nominative after a verb built for the passive. The same noun can be either: kataba l-ṭālibu l-darsa has al-darsa accusative as object, while kutiba l-darsu has al-darsu nominative as deputy.' },
+  { q: 'Can the object come before the doer?', a: 'Yes, optionally for emphasis, and obligatorily in some cases: when the object is a pronoun attached to the verb while the doer is an explicit noun, or when the doer is annexed to a pronoun referring to the object. It may also precede the verb itself, as in iyyāka naʿbudu.' },
+  { q: 'Can there be more than one object?', a: 'Yes. Some verbs take one, some take two whose origin is a subject and predicate (ẓanna and its sisters), some take two of a different origin (aʿṭā, manaʿa), and a few take three (aʿlama, arā). The origin matters because it determines what the two accusatives mean in relation to each other.' },
+  { q: 'How is a dual or plural object put into the accusative?', a: 'By yāʾ in the dual and the sound masculine plural, and by kasra standing in place of fatḥa in the sound feminine plural. So raʾaytu l-muʿallimayni, raʾaytu l-muʿallimīna, and raʾaytu l-muʿallimāti, that last one accusative despite its kasra.' },
+  { q: 'Can the object be omitted?', a: 'Yes, when the meaning is clear without it or when attention is on the act rather than what it fell upon. In wa-Llāhu yadʿū ilā dāri l-salām the object of the invitation is left unstated. This is omission for a purpose, not an incomplete sentence.' },
+  { q: 'How is a clause parsed when it is the object?', a: 'It is given a position rather than an ending: fī maḥall naṣb mafʿūl bihi. After verbs of speech the quoted sentence occupies the object slot, as in qāla innī ʿabdu Llāh, where the whole clause after qāla is in the position of accusative.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Direct Object (al-mafʿūl bihi) in Arabic Grammar · Irab App"
+  description="A full lesson on the direct object: its accusative markers, word order and obligatory fronting, verbs taking two or three objects, and how to tell it from the other accusatives, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Direct Object" description="The direct object: accusative markers, word order, verbs with multiple objects, and distinguishing it from other accusatives." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Direct Object"
+      summary="The direct object is the accusative noun on which the doer's act falls. It is the first accusative a learner meets and the one every other accusative gets confused with, so this lesson spends as much time on telling it apart from its neighbours as on the rule itself. It also covers the verbs that take two objects, and why their two accusatives are not the same kind of thing."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the definition"
+      lead="The direct object is an accusative noun denoting what the doer's act fell upon, and the verb does not change shape for it. It comes after the verb and doer in the default order, as an explicit noun, a pronoun, or an infinitival phrase."
+    >
+      <LessonObjective items={objectives} />
+      <p>Two parts of that definition are doing quiet work. "The verb does not change shape for it" separates the object from the deputy doer, which does change the verb. And "accusative" is the constant: whatever else varies, the object is manṣūb.</p>
+
+      <ExampleCard
+        label="The base case"
+        ar="قَرَأَ الطَّالِبُ الْكِتَابَ"
+        focus="الْكِتَابَ"
+        translit="qaraʾa l-ṭālibu l-kitāba"
+        en="The student read the book."
+        irab="قرأ فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، الكتابَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة على آخره."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="signs"
+      title="See: the accusative markers"
+      lead="Fatḥa by default, yāʾ in the dual and the sound masculine plural, kasra in the sound feminine plural, alif in the five nouns."
+    >
+      <ExampleCard
+        label="Accusative by kasra"
+        ar="كَرَّمَ الْمُدِيرُ الْمُعَلِّمَاتِ"
+        focus="الْمُعَلِّمَاتِ"
+        translit="karrama l-mudīru l-muʿallimāti"
+        en="The principal honoured the female teachers."
+        irab="كرّم فعل ماضٍ مبني على الفتح، المديرُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، المعلماتِ مفعول به منصوب وعلامة نصبه الكسرة نيابة عن الفتحة لأنه جمع مؤنث سالم."
+        note="A kasra that means accusative. If you read endings mechanically you will call this genitive every time, and there is no preposition anywhere to justify that reading. Always pair the marker with its reason."
+      />
+
+      <ExampleCard
+        label="Accusative by alif, one of the five nouns"
+        ar="أَكْرَمْتُ أَخَاكَ"
+        focus="أَخَاكَ"
+        translit="akramtu akhāka"
+        en="I honoured your brother."
+        irab="أكرمتُ فعل وفاعل، أخاك مفعول به منصوب وعلامة نصبه الألف لأنه من الأسماء الخمسة وهو مضاف، والكاف ضمير متصل في محل جر مضاف إليه."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="order"
+      title="Understand: word order"
+      lead="The object follows the doer by default, may precede it for emphasis, and must precede it in certain cases. It may also precede the verb itself."
+    >
+      <p>Fronting in Arabic is rarely only grammatical. When an object moves forward it is usually because attention has moved with it.</p>
+
+      <ExampleCard
+        label="Obligatory fronting, and what it means"
+        ar="إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ"
+        focus={['إِيَّاكَ', 'إِيَّاكَ']}
+        translit="iyyāka naʿbudu wa-iyyāka nastaʿīn"
+        en="You alone we worship, and You alone we ask for help."
+        irab="إياك ضمير منفصل مبني على الفتح في محل نصب مفعول به مقدم، نعبدُ فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والفاعل ضمير مستتر وجوبًا تقديره نحن."
+        note="The object is fronted twice, and each time the fronting produces restriction: not merely 'we worship You' but 'You and no other'. English needs the word 'alone' to carry what Arabic carries by order alone."
+      />
+
+      <CheckQuestion
+        q="Which word is the object, and why can the order not be reversed?"
+        ar="زَارَ بَيْتَهُ صَاحِبُهُ"
+        answer="baytahu is the object, fronted before its doer ṣāḥibuhu, and here the fronting is obligatory."
+        why="The doer ṣāḥibuhu carries a pronoun referring to the object. Had the doer come first, that pronoun would point forward to something not yet mentioned, which Arabic does not allow."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="multiple"
+      title="Verbs with two objects, and where the two came from"
+      lead="Some verbs take two accusatives whose origin is a subject and predicate, and some take two of quite a different origin. The distinction decides what the pair means."
+    >
+      <p><strong>Original subject and predicate.</strong> Ẓanna and its sisters, verbs of thinking and knowing, enter a nominal sentence and put both its pillars in the accusative. The two objects therefore describe each other.</p>
+
+      <ExampleCard
+        label="Two objects from a nominal sentence"
+        ar="ظَنَنْتُ الْأَمْرَ سَهْلًا"
+        focus={['الْأَمْرَ', 'سَهْلًا']}
+        translit="ẓanantu l-amra sahlan"
+        en="I thought the matter easy."
+        irab="ظننتُ فعل وفاعل، الأمرَ مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة، سهلًا مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Before ẓanantu entered, the sentence was al-amru sahlun, a nominal sentence with two nominatives. The verb has put both into the accusative. That is why the second object describes the first: it was its predicate."
+      />
+
+      <ExampleCard
+        label="Two objects of a different origin"
+        ar="أَعْطَيْتُ الْفَقِيرَ دِرْهَمًا"
+        focus={['الْفَقِيرَ', 'دِرْهَمًا']}
+        translit="aʿṭaytu l-faqīra dirhaman"
+        en="I gave the poor man a dirham."
+        irab="أعطيتُ فعل وفاعل، الفقيرَ مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة، درهمًا مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Here the two do not describe each other: the poor man is not a dirham. These two accusatives were never a subject and predicate, which is exactly the difference from the previous card."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Telling it from its neighbours"
+      lead="Four accusatives crowd the same position in a sentence. Ask what question each answers and they separate cleanly."
+    >
+      <ul>
+        <li><strong>Direct object:</strong> answers "what did the act fall upon?" <em>qaraʾtu l-kitāba</em>.</li>
+        <li><strong>Absolute object:</strong> a verbal noun from the same root, emphasising or describing the act itself. <em>qaraʾtu qirāʾatan</em>.</li>
+        <li><strong>Object of purpose:</strong> answers "why?" <em>qumtu iḥtirāman</em>.</li>
+        <li><strong>Adverbial object:</strong> answers "when?" or "where?" <em>qaraʾtu ṣabāḥan</em>.</li>
+      </ul>
+      <p>Two further habits to break: reading a sound feminine plural object as genitive because of its kasra, and missing an infinitival phrase in the object slot, as in <em>araadtu an adrusa</em>, where <em>an adrusa</em> is in the position of accusative.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The definition, the markers and the classification of multiple objects follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the direct object among the accusatives.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: obligatory fronting and the verbs taking two and three objects.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on the origin of the two objects of ẓanna and its sisters.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

@@ -19,6 +19,16 @@ export const EN_DUROOS = new Set<string>([
   'al-mamnu-min-al-sarf',
   'al-nakira-wal-marifa',
   'al-maqsur-wal-manqus-wal-mamdud',
+  // Patch 2: the objects, and the accusatives and styles.
+  'al-maful-bih',
+  'al-maful-al-mutlaq',
+  'al-maful-li-ajlih',
+  'al-maful-fih',
+  'al-hal',
+  'al-tamyiz',
+  'al-istithna',
+  'al-munada',
+  'al-idafa',
 ]);
 
 export const hasEnLesson = (slug: string): boolean => EN_DUROOS.has(slug);

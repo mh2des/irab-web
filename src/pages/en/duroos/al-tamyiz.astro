@@ -1,0 +1,164 @@
+---
+/** English edition of /duroos/al-tamyiz. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-tamyiz';
+const objectives = [
+  'Separate a specifier of a single word from a specifier of a whole sentence.',
+  'Say when the accusative is obligatory and when the genitive is permitted.',
+  'Trace a transformed specifier back to the subject or object it came from.',
+  'Apply the two questions that separate specifier from circumstantial accusative.',
+];
+const faqs = [
+  { q: 'What is the difference between the two kinds of specifier?', a: 'A specifier of a single word resolves vagueness in one noun already spoken: measures, weights, areas and numbers. A specifier of relation resolves vagueness in the sentence as a whole, with no single vague word to point to, as in ṭāba Muḥammadun nafsan.' },
+  { q: 'May a specifier be genitive?', a: 'Only in the first kind. After measures it may be genitive with min or by annexation: ṣāʿun min qamḥin, ṣāʿu qamḥin. A transformed specifier of relation must be accusative, because the accusative is what marks it as transformed.' },
+  { q: 'Can a specifier be definite or a sentence?', a: 'No. It is indefinite and a solid noun, jāmid, by rule. Anything definite in that position, or any clause, is something else: an adjective, a circumstantial accusative, or an annexed noun.' },
+  { q: 'Can a specifier precede its governor?', a: 'Not in the Baṣran analysis followed here, and that is one reliable way to tell it from the circumstantial accusative, which may be fronted. The Kūfans permitted it where the governor is a fully inflected verb.' },
+  { q: 'How is the specifier of numbers three to ten parsed?', a: 'As a genitive plural annexed to the number: thalāthatu kutubin, "three books". From eleven to ninety-nine it is an accusative singular: aḥada ʿashara kawkaban. From one hundred upward it returns to the genitive singular: miʾatu rajulin.' },
+  { q: 'What is the quickest way to spot a specifier?', a: 'Try inserting min before it. If "of" or "in terms of" fits the sense, it is a specifier: ishtaraytu ṣāʿan qamḥan means a measure of wheat. If instead the word answers "how?", it is a circumstantial accusative.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Specifier (al-tamyīz) in Arabic Grammar · Irab App"
+  description="A full lesson on the tamyīz: specifiers of a single word and of relation, when the accusative is obligatory, transformed specifiers, the specifier of numbers, and how it differs from the ḥāl, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Specifier (al-tamyīz)" description="Specifiers of a single word and of relation, obligatory accusative, transformed specifiers, and the difference from the ḥāl." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Specifier"
+      summary="A specifier removes vagueness. Say that you bought a measure and the listener waits to hear a measure of what; say wheat and the sentence settles. Sometimes the vagueness sits in one word, and sometimes it sits in the sentence as a whole, and those two cases behave differently. The specifier is also the accusative most often confused with the circumstantial accusative, so this lesson ends with the two questions that separate them."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: removing vagueness"
+      lead="The specifier is an indefinite, solid, additional noun that explains something vague before it, carrying the sense of min, of."
+    >
+      <LessonObjective items={objectives} />
+      <p>Three words in that definition are load-bearing. <strong>Indefinite</strong>, so a definite noun there is something else. <strong>Solid</strong>, <em>jāmid</em>, meaning not derived from a verb, which contrasts with the ḥāl that usually is derived. And <strong>carrying the sense of min</strong>, which is the test.</p>
+
+      <ExampleCard
+        label="The base case"
+        ar="اشْتَرَيْتُ صَاعًا قَمْحًا"
+        focus="قَمْحًا"
+        translit="ishtaraytu ṣāʿan qamḥan"
+        en="I bought a measure of wheat."
+        irab="اشتريتُ فعل وفاعل، صاعًا مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، قمحًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Two accusatives with different jobs. ṣāʿan is what was bought; qamḥan says what the measure consisted of. Insert min between them, ṣāʿan min qamḥin, and the meaning is unchanged, which is the test passing."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="tamyiz-al-dhat"
+      title="See: the specifier of a single word"
+      lead="After measures of volume, weight and area, and after numbers. It is called explicit because the vague word it explains is actually spoken."
+    >
+      <ExampleCard
+        label="After a measure of area"
+        ar="اِشْتَرَيْتُ فَدَّانًا أَرْضًا"
+        focus="أَرْضًا"
+        translit="ishtaraytu faddānan arḍan"
+        en="I bought an acre of land."
+        irab="اشتريتُ فعل وفاعل، فدّانًا مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، أرضًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="This kind also permits the genitive: faddānan min arḍin, or faddāna arḍin by annexation. All three are correct, which is not true of the second kind."
+      />
+
+      <ExampleCard
+        label="The specifier of a number"
+        ar="إِنِّي رَأَيْتُ أَحَدَ عَشَرَ كَوْكَبًا"
+        focus="كَوْكَبًا"
+        translit="innī raʾaytu aḥada ʿashara kawkaban"
+        en="Indeed I saw eleven stars."
+        irab="إنّ حرف توكيد ونصب، والياء ضمير متصل في محل نصب اسم إنّ، رأيتُ فعل وفاعل، أحدَ عشرَ اسم عدد مركب مبني على فتح الجزأين في محل نصب مفعول به، كوكبًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Note the pattern of number specifiers: three to ten take a genitive plural, eleven to ninety-nine take an accusative singular as here, and one hundred upward takes a genitive singular. The number itself is built on the fatḥa of both parts in the compound teens."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="tamyiz-al-nisba"
+      title="Understand: the specifier of relation"
+      lead="Here the vagueness is in the sentence as a whole, not in any single word. Most examples are transformed from an original subject or object, and tracing that origin is what makes the construction clear."
+    >
+      <ExampleCard
+        label="Transformed from a subject"
+        ar="طَابَ مُحَمَّدٌ نَفْسًا"
+        focus="نَفْسًا"
+        translit="ṭāba Muḥammadun nafsan"
+        en="Muhammad was good in soul."
+        irab="طاب فعل ماضٍ مبني على الفتح، محمدٌ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، نفسًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="The original sentence was ṭābat nafsu Muḥammadin, 'Muhammad's soul was good', where nafs was the doer. Moving it into the accusative as a specifier shifts the focus onto Muhammad himself. Tracing the transformation is the most reliable way to recognise this kind."
+      />
+
+      <ExampleCard
+        label="Transformed from an object"
+        ar="وَفَجَّرْنَا الْأَرْضَ عُيُونًا"
+        focus="عُيُونًا"
+        translit="wa-fajjarnā l-arḍa ʿuyūnan"
+        en="And We caused the earth to burst forth with springs."
+        irab="فجّرنا فعل ماضٍ مبني على السكون لاتصاله بنا، ونا ضمير متصل في محل رفع فاعل، الأرضَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، عيونًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="The original was fajjarnā ʿuyūna l-arḍi. The specifier here must be accusative: a transformed specifier of relation does not permit the genitive, because the accusative is precisely what marks it as transformed."
+      />
+
+      <CheckQuestion
+        q="Which kind of specifier is this, and could it be genitive instead?"
+        ar="اِشْتَرَيْتُ رِطْلًا زَيْتًا"
+        answer="A specifier of a single word, after a measure of weight. Yes: riṭlan min zaytin or riṭla zaytin are both correct."
+        why="The vague word riṭlan is spoken, so this is the explicit kind, which permits the genitive with min or by annexation. Only the transformed specifier of relation is locked into the accusative."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="tamyiz-vs-hal"
+      title="Specifier or circumstantial accusative?"
+      lead="Both are indefinite accusatives that come after the sentence is otherwise complete, which is why they are confused. Two questions separate them cleanly."
+    >
+      <ul>
+        <li><strong>What does it answer?</strong> A ḥāl answers "how?"; a specifier answers "of what?" or "in what respect?"</li>
+        <li><strong>Is it derived or solid?</strong> A ḥāl is usually a participle (<em>rākiban</em>, <em>mubtasiman</em>); a specifier is usually a solid noun (<em>qamḥan</em>, <em>nafsan</em>).</li>
+        <li><strong>Can min be inserted?</strong> If yes, specifier. If not, ḥāl.</li>
+        <li><strong>Can it be fronted?</strong> A ḥāl may precede its governor; a specifier may not.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The two kinds, the rulings on case, and the number specifiers follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the two kinds and the conditions on each.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: transformed specifiers and the disagreement over fronting.</li>
+        <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: the specifier of numbers.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

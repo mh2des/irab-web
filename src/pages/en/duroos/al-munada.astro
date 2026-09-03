@@ -1,0 +1,172 @@
+---
+/** English edition of /duroos/al-munada. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-munada';
+const objectives = [
+  'Explain why a vocative is described as being in the position of accusative.',
+  'Sort the five kinds into those that are built and those that are declined.',
+  'Address a noun carrying al-, which yā may not touch directly.',
+  'Parse allāhumma and the vocative annexed to the speaker.',
+];
+const faqs = [
+  { q: 'Why is a vocative said to be "built, in the position of accusative"?', a: 'Because its underlying analysis is that of an object. yā Zaydu is understood as unādī Zaydan, "I call Zayd", so the vocative slot is accusative. Two kinds of vocative are built on their nominative marker rather than declined, so they cannot show that accusative, and the wording records both facts at once.' },
+  { q: 'What are the particles of calling?', a: 'yā for every distance and the most common by far; the bare hamza and ay for the near; ayā and hayā for the far; and wā for lamentation. yā is the only one that may be used for all of them.' },
+  { q: 'How do you call a noun carrying al-?', a: 'Not directly, because yā and al- do not combine. You interpose ayyuhā for the masculine or ayyatuhā for the feminine, with the noun following as an adjective in the nominative: yā ayyuhā l-nāsu. A demonstrative may also be used. The name of Allah is the exception: yā Allāhu is permitted.' },
+  { q: 'How is allāhumma parsed?', a: 'As a vocative built on ḍamma in the position of accusative, with the doubled mīm at the end standing in for the omitted particle yā. That is why you do not say yā allāhumma: the mīm is already carrying the call.' },
+  { q: 'What is the difference between an intended and an unintended indefinite?', a: 'An intended indefinite addresses a particular individual even though the word is indefinite, and it is built on ḍamma: yā rajulu, said to a specific man. An unintended indefinite addresses no one in particular and is declined in the accusative: yā rajulan khudh biyadī, said by a blind man to whoever may hear.' },
+  { q: 'How is a vocative annexed to the speaker\'s yāʾ handled?', a: 'Several ways are permitted. The yāʾ may be kept and vowelled, yā ʿabdiya; kept with sukūn, yā ʿabdī; dropped with a kasra remaining, yā ʿabdi; or the noun may take a fatḥa with an alif, yā ʿabdā. All are attested and the second is the most common.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Vocative (al-munādā) in Arabic Grammar · Irab App"
+  description="A full lesson on the vocative: the particles of calling, which kinds are built and which declined, addressing a noun with al-, allāhumma, and the vocative annexed to the speaker, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Vocative (al-munādā)" description="The particles of calling, built and declined vocatives, addressing a noun with al-, and allāhumma." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Vocative"
+      summary="Calling someone is grammatically an act of the speaker, and Arabic treats the person called as the object of a verb that is never said. That single insight explains everything else in the chapter: why the vocative sits in the accusative position, why two of its five kinds nevertheless appear with a ḍamma, and why the wording of its iʿrāb has to mention both facts at once."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the omitted verb behind every call"
+      lead="Calling is requesting attention by means of a particle. The one called is originally the object of an omitted verb estimated as unādī, I call, which is why the vocative occupies the accusative position."
+    >
+      <LessonObjective items={objectives} />
+      <p>The particles: <strong>yā</strong> for any distance and by far the most common; the bare <strong>hamza</strong> and <strong>ay</strong> for the near; <strong>ayā</strong> and <strong>hayā</strong> for the far; <strong>wā</strong> for lamentation.</p>
+      <p>Hold on to the omitted verb, because it makes the strange wording of the next section ordinary. <em>yā Zaydu</em> is <em>unādī Zaydan</em> with the verb suppressed and a particle in its place.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="mabni-types"
+      title="Understand: the two kinds that are built"
+      lead="A single proper noun and an intended indefinite are built on whatever would have marked their nominative, and they occupy the position of accusative."
+    >
+      <p>"Single" here means not annexed and not resembling an annexed noun. It has nothing to do with number: a dual or plural can still be single in this sense.</p>
+
+      <ExampleCard
+        label="A single proper noun"
+        ar="يَا زَيْدُ اجْتَهِدْ"
+        focus="زَيْدُ"
+        translit="yā Zaydu ijtahid"
+        en="Zayd, strive."
+        irab="يا حرف نداء، زيدُ منادى مفرد علم مبني على الضم في محل نصب، اجتهدْ فعل أمر مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت."
+        note="Read the wording carefully: built on ḍamma, in the position of accusative. Both halves are needed. The ḍamma is what you see; the accusative is what the slot is, because of the omitted verb. Saying it is 'nominative' would miss the analysis entirely."
+      />
+
+      <ExampleCard
+        label="An intended indefinite"
+        ar="يَا رَجُلُ أَقْبِلْ"
+        focus="رَجُلُ"
+        translit="yā rajulu aqbil"
+        en="Man, come here."
+        irab="يا حرف نداء، رجلُ منادى نكرة مقصودة مبني على الضم في محل نصب، أقبلْ فعل أمر مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت."
+        note="The word is indefinite, but a particular man is meant, and that intention is what builds it on ḍamma. Contrast yā rajulan khudh biyadī, spoken to nobody in particular, which is declined in the accusative."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="mansub-types"
+      title="See: the three kinds that are declined"
+      lead="An annexed noun, a noun resembling an annexed one, and an unintended indefinite all show the underlying accusative openly."
+    >
+      <ExampleCard
+        label="An annexed vocative"
+        ar="يَا عَبْدَ اللهِ أَقْبِلْ"
+        focus="عَبْدَ"
+        translit="yā ʿabda Llāhi aqbil"
+        en="Abdullah, come here."
+        irab="يا حرف نداء، عبدَ منادى مضاف منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، اللهِ لفظ الجلالة مضاف إليه مجرور وعلامة جره الكسرة الظاهرة، أقبلْ فعل أمر مبني على السكون."
+        note="Here the accusative is visible, because an annexed vocative is declined rather than built. Compare yā Zaydu in the previous section: same slot, different treatment, because that one was single."
+      />
+
+      <CheckQuestion
+        q="Is this vocative built or declined, and what is its case?"
+        ar="يَا طَالِعًا جَبَلًا اُنْظُرْ"
+        answer="Declined, and accusative: ṭāliʿan is a noun resembling an annexed noun."
+        why="ṭāliʿan is an active participle governing an object after it, jabalan, which makes it shabīh bi-l-muḍāf. That resemblance puts it among the declined kinds, so the accusative shows openly rather than being merely a position."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="al-and-allahumma"
+      title="Calling a noun that carries al-"
+      lead="yā does not attach directly to a word with al-. Interpose ayyuhā or ayyatuhā, or a demonstrative. The name of Allah is the exception, and has its own form."
+    >
+      <ExampleCard
+        label="Reaching a noun with al-"
+        ar="يَا أَيُّهَا النَّاسُ اعْبُدُوا رَبَّكُمْ"
+        focus="أَيُّهَا"
+        translit="yā ayyuhā l-nāsu iʿbudū rabbakum"
+        en="O mankind, worship your Lord."
+        irab="يا حرف نداء، أيُّ منادى نكرة مقصودة مبني على الضم في محل نصب، وها حرف تنبيه، الناسُ نعت لأيُّ مرفوع وعلامة رفعه الضمة الظاهرة، اعبدوا فعل أمر مبني على حذف النون، وواو الجماعة في محل رفع فاعل."
+        note="Notice which word is the vocative: ayyu, not al-nās. al-nāsu is an adjective describing it and takes the nominative to agree with the built ḍamma. This is why al-nāsu appears with a ḍamma in a construction whose slot is accusative."
+      />
+
+      <ExampleCard
+        label="The mīm that replaces the particle"
+        ar="اللَّهُمَّ اغْفِرْ لَنَا"
+        focus="اللَّهُمَّ"
+        translit="allāhumma ighfir lanā"
+        en="O Allah, forgive us."
+        irab="اللهمَّ منادى مبني على الضم في محل نصب، والميم المشددة عوض عن حرف النداء المحذوف، اغفرْ فعل دعاء مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت، لنا جار ومجرور."
+        note="The doubled mīm stands in for the omitted yā, which is why yā allāhumma is not said: the call is already carried twice over."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the first is really a failure to say the wording in full."
+    >
+      <ul>
+        <li><strong>Calling a built vocative nominative.</strong> It is built on ḍamma <em>in the position of accusative</em>. Both halves belong in the answer.</li>
+        <li><strong>Attaching yā to a word with al-.</strong> Say <em>yā ayyuhā l-nāsu</em>, not <em>yā l-nāsu</em>.</li>
+        <li><strong>Declining what should be built, or building what should be declined.</strong> Ask first whether the vocative is annexed or resembles an annexed noun. If it does, it is declined.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The five kinds and the treatment of al- follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the five kinds and the omitted verb behind the call.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: ayyuhā with al-, allāhumma, and the vocative annexed to the speaker.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

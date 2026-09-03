@@ -1,0 +1,173 @@
+---
+/** English edition of /duroos/al-hal. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-hal';
+const objectives = [
+  'Find the holder of the state before parsing the state itself.',
+  'Recognise all three shapes: single word, sentence, and quasi-sentence.',
+  'Supply the missing link in a sentence-ḥāl, whether it is the wāw, a pronoun, or both.',
+  'Separate the ḥāl from the adjective and from the specifier.',
+];
+const faqs = [
+  { q: 'What is the difference between a ḥāl and a tamyīz?', a: 'The ḥāl answers "how?" and is usually derived (a participle); the tamyīz answers "of what?" and is usually a solid noun. jāʾa rākiban tells you how he came; ishtaraytu ṣāʿan qamḥan tells you what the measure was of. Both are indefinite and accusative, which is why they are confused.' },
+  { q: 'What is the difference between a ḥāl and an adjective?', a: 'An adjective is a permanent attribute and agrees with its noun in definiteness; a ḥāl is a passing state and is always indefinite while its holder is normally definite. jāʾa l-rajulu l-ṭawīlu describes which man; jāʾa l-rajulu māshiyan describes his condition on arrival.' },
+  { q: 'Can a ḥāl be definite?', a: 'By rule it is indefinite. A small number of expressions look definite but are treated as indefinite in meaning, such as jāʾū al-jammāʾ al-ghafīr. The working rule for a learner is that a ḥāl is indefinite, and a definite word in that position is something else.' },
+  { q: 'What is the wāw of the ḥāl and how do I recognise it?', a: 'A wāw introducing a sentence that describes the state of what precedes it, translatable as "while". It is not a coordinating wāw, because it does not join two things of the same kind. jāʾa Zaydun wa-huwa yabtasimu means "Zayd came while smiling", not "Zayd and he smiled".' },
+  { q: 'Can one holder take more than one ḥāl?', a: 'Yes. Several states may be given for a single holder, joined or not: jāʾa l-ṭālibu māshiyan mubtasiman. Each is independently accusative and each describes the same holder.' },
+  { q: 'When does a ḥāl sentence need a link?', a: 'Always. A nominal-sentence ḥāl usually takes the wāw, a pronoun, or both. A verbal-sentence ḥāl in the imperfect usually links by the implied pronoun in the verb and takes no wāw. Without a link the clause is not tied to the holder and cannot be a ḥāl.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Circumstantial Accusative (al-ḥāl) in Arabic Grammar · Irab App"
+  description="A full lesson on the ḥāl: its holder, the three shapes it takes, the link a sentence-ḥāl requires, the wāw of the ḥāl, and how to tell it from the adjective and the specifier, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Circumstantial Accusative (al-ḥāl)" description="The ḥāl: its holder, its three shapes, the required link, and distinguishing it from the adjective and specifier." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Circumstantial Accusative"
+      summary="The ḥāl is an indefinite accusative describing the state of someone or something at the moment the act took place. It answers the question how. Its difficulty for English speakers is not the rule but the three shapes it can take, and the fact that a whole sentence can be a ḥāl provided it carries a link back to the person it describes. Find the holder first and everything else follows."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the state and its holder"
+      lead="The ḥāl is an indefinite additional accusative describing the condition of its holder when the act occurred. The grammarians make it the answer to the question how."
+    >
+      <LessonObjective items={objectives} />
+      <p>Two words must be separated from the start. The <strong>ḥāl</strong> is the description. The <strong>ṣāḥib al-ḥāl</strong> is the one described. Identify the holder before you parse anything, because the whole analysis depends on which word the state belongs to.</p>
+      <p>The holder is normally definite, and can be a doer, an object, a deputy doer, or a genitive noun. What matters is that the state can sensibly return to it.</p>
+
+      <ExampleCard
+        label="The base case"
+        ar="جَاءَ الطَّالِبُ مُبْتَسِمًا"
+        focus="مُبْتَسِمًا"
+        translit="jāʾa l-ṭālibu mubtasiman"
+        en="The student came smiling."
+        irab="جاء فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة وهو صاحب الحال، مبتسمًا حال منصوبة وعلامة نصبها الفتحة الظاهرة."
+        note="Note the shape of the pair: the holder is definite and nominative, the state is indefinite and accusative. That contrast is the most reliable signature of this chapter."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="hal-mufrada"
+      title="See: the single-word ḥāl"
+      lead="A ḥāl that is neither a sentence nor a quasi-sentence, even if it is dual or plural. Accusative by fatḥa or by whatever stands in for it."
+    >
+      <ExampleCard
+        label="Plural state, still single in the technical sense"
+        ar="رَجَعَ الْجُنُودُ مُنْتَصِرِينَ"
+        focus="مُنْتَصِرِينَ"
+        translit="rajaʿa l-junūdu muntaṣirīna"
+        en="The soldiers returned victorious."
+        irab="رجع فعل ماضٍ مبني على الفتح، الجنودُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، منتصرينَ حال منصوبة وعلامة نصبها الياء لأنه جمع مذكر سالم."
+        note="mufrad here means 'not a sentence', not 'singular'. The word is plural and still counts as a single-word ḥāl. Its accusative shows as yāʾ because it is a sound masculine plural."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="hal-jumla"
+      title="Understand: when a whole sentence is the state"
+      lead="A nominal or verbal sentence after a definite noun is a ḥāl, provided it carries a link: the wāw, a pronoun, or both. This is the rule that decides most ambiguous cases."
+    >
+      <p>The maxim is worth memorising in Arabic: <em>al-jumal baʿda l-nakirāti ṣifāt, wa-baʿda l-maʿārifi aḥwāl</em>. Sentences after indefinites are adjectives; after definites they are states.</p>
+
+      <ExampleCard
+        label="Nominal sentence as ḥāl, linked by wāw and pronoun"
+        ar="جَاءَ زَيْدٌ وَهُوَ يَبْتَسِمُ"
+        focus="وَهُوَ يَبْتَسِمُ"
+        translit="jāʾa Zaydun wa-huwa yabtasimu"
+        en="Zayd came while he was smiling."
+        irab="جاء فعل ماضٍ مبني على الفتح، زيدٌ فاعل مرفوع وهو صاحب الحال، الواو واو الحال، هو ضمير منفصل في محل رفع مبتدأ، يبتسمُ فعل مضارع مرفوع والفاعل ضمير مستتر تقديره هو، والجملة الاسمية في محل نصب حال."
+        note="Two links at once: the wāw of the ḥāl and the pronoun huwa. This wāw does not coordinate. Reading it as 'and' gives 'Zayd came and he smiled', which is a different sentence with a different structure."
+      />
+
+      <ExampleCard
+        label="Verbal sentence as ḥāl, linked by the implied pronoun"
+        ar="جَاءَ الطَّالِبُ يَحْمِلُ كِتَابَهُ"
+        focus="يَحْمِلُ كِتَابَهُ"
+        translit="jāʾa l-ṭālibu yaḥmilu kitābahu"
+        en="The student came carrying his book."
+        irab="جاء فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وهو صاحب الحال، يحملُ فعل مضارع مرفوع والفاعل ضمير مستتر تقديره هو، كتابَ مفعول به منصوب وهو مضاف، والهاء في محل جر مضاف إليه، والجملة الفعلية في محل نصب حال."
+        note="No wāw here, and none is wanted. An imperfect verbal sentence links by the pronoun implied inside the verb, and adding a wāw would be wrong. Contrast with the previous card, where the nominal sentence needed one."
+      />
+
+      <CheckQuestion
+        q="Is this clause an adjective or a ḥāl?"
+        ar="رَأَيْتُ طَالِبًا يَقْرَأُ"
+        answer="An adjective, naʿt, in the position of accusative."
+        why="ṭāliban is indefinite, and sentences after indefinites are adjectives. Had it been raʾaytu l-ṭāliba yaqraʾu, with a definite noun, the same clause would have been a ḥāl. One word decides the analysis."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="hal-shibh-jumla"
+      title="The quasi-sentence as ḥāl"
+      lead="An adverbial or a prepositional phrase can be a ḥāl when it describes the state of a definite noun before it. The Baṣran analysis attaches it to an omitted state."
+    >
+      <ExampleCard
+        label="A prepositional phrase describing a state"
+        ar="خَرَجَ الْأَمِيرُ عَلَىٰ فَرَسِهِ"
+        focus="عَلَىٰ فَرَسِهِ"
+        translit="kharaja l-amīru ʿalā farasihi"
+        en="The prince went out on his horse."
+        irab="خرج فعل ماضٍ مبني على الفتح، الأميرُ فاعل مرفوع وهو صاحب الحال، على حرف جر، فرسِ اسم مجرور وهو مضاف، والهاء في محل جر مضاف إليه، والجار والمجرور متعلقان بمحذوف حال تقديره راكبًا."
+        note="The phrase is not itself the ḥāl. It attaches to an omitted one, estimated as rākiban, 'riding'. The same reasoning applies here as with an omitted predicate: a ḥāl must be a noun or a sentence, and a prepositional phrase is neither."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Telling it apart"
+      lead="Two neighbours cause nearly all the confusion, and each is separated by a single question."
+    >
+      <ul>
+        <li><strong>Against the adjective:</strong> a ḥāl is indefinite with a definite holder; an adjective matches its noun in definiteness. <em>jāʾa l-rajulu l-ṭawīlu</em> is an adjective; <em>jāʾa l-rajulu māshiyan</em> is a ḥāl.</li>
+        <li><strong>Against the specifier:</strong> ask "how?" for a ḥāl and "of what?" for a tamyīz. A ḥāl is usually derived, a tamyīz usually solid.</li>
+        <li><strong>The wāw:</strong> if it introduces a state rather than joining two like things, it is the wāw of the ḥāl and should be translated "while".</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The conditions on the holder, the link and the three shapes follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span> and <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span>: the wāw of the ḥāl and the conditions on the holder.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the sentence-ḥāl and its link, and the omitted ḥāl behind a quasi-sentence.</li>
+        <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: on the rare definite ḥāl.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

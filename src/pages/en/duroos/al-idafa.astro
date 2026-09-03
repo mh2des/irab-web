@@ -1,0 +1,165 @@
+---
+/** English edition of /duroos/al-idafa. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-idafa';
+const objectives = [
+  'State the case of each term of an annexation without hesitating.',
+  'Name the three things annexation deletes from the first term.',
+  'Tell a meaningful annexation from a merely verbal one, and say why it matters.',
+  'Supply the preposition that an annexation implies.',
+];
+const faqs = [
+  { q: 'Is the second term always genitive?', a: 'Yes, without exception. The first term takes whatever case its role in the sentence requires, and the second is genitive always. That asymmetry is the whole of the rule: jāʾa kitābu l-ṭālibi, raʾaytu kitāba l-ṭālibi, naẓartu fī kitābi l-ṭālibi, and al-ṭālibi never moves.' },
+  { q: 'What does annexation delete from the first term?', a: 'Three things: tanwīn, the nūn of the dual, and the nūn of the sound masculine plural. So kitābun becomes kitābu, muʿallimāni becomes muʿallimā, and muʿallimūna becomes muʿallimū.' },
+  { q: 'What is the difference between meaningful and verbal annexation?', a: 'Meaningful annexation, maʿnawiyya, is the default and gives the first term definiteness or specification from the second. Verbal annexation, lafẓiyya, occurs when the first term is a descriptive word governing the second, and it gives no definiteness at all; its purpose is lightness of expression.' },
+  { q: 'Which preposition does a meaningful annexation imply?', a: 'One of three. lām for possession (kitābu Zaydin, a book belonging to Zayd), min for material (khātamu fiḍḍatin, a ring made of silver), and fī for time or place (makru l-layli, plotting during the night).' },
+  { q: 'Can the first term carry al-?', a: 'Not in a meaningful annexation, because its definiteness comes from the second term and two sources of definiteness cannot combine. It may carry al- in a verbal annexation, where the first term is a descriptive word: al-ḥasanu l-wajhi.' },
+  { q: 'How is a clause parsed when it is annexed?', a: 'It is given a position rather than an ending: fī maḥall jarr muḍāf ilayhi. Adverbials such as yawma, ḥīna and idh are commonly annexed to whole sentences, as in yawma yaqūmu l-nāsu, where the verbal sentence is in the position of genitive.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Annexation (al-iḍāfa) in Arabic Grammar · Irab App"
+  description="A full lesson on annexation: the case of each term, what annexation deletes, meaningful against verbal annexation, the implied prepositions, and clauses in the genitive position, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Annexation (al-iḍāfa)" description="The case of each term, what annexation deletes, meaningful and verbal annexation, and the implied prepositions." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Annexation"
+      summary="Two nouns placed together so that the second qualifies the first is one of the most frequent structures in Arabic, and one of the simplest to state: the second term is genitive, always. What repays study is everything around that rule, namely the three things annexation deletes from the first term, the preposition it quietly implies, and the one variety that gives no definiteness at all."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the two terms"
+      lead="Annexation attaches one noun to another on an implied preposition. The first term is parsed by its role in the sentence; the second is genitive, always."
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="The first term moves, the second never does"
+        ar="قَرَأْتُ كِتَابَ الطَّالِبِ"
+        focus={['كِتَابَ', 'الطَّالِبِ']}
+        translit="qaraʾtu kitāba l-ṭālibi"
+        en="I read the student's book."
+        irab="قرأتُ فعل وفاعل، كتابَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، الطالبِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="Change the sentence and only the first term moves: jāʾa kitābu l-ṭālibi has it nominative, naẓartu fī kitābi l-ṭālibi has it genitive. al-ṭālibi stays put in every version."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="what-drops"
+      title="Understand: what annexation deletes"
+      lead="Three things leave the first term: tanwīn, the nūn of the dual, and the nūn of the sound masculine plural. The last two are tested as often in spelling as in parsing."
+    >
+      <ExampleCard
+        label="The nūn of the dual disappears"
+        ar="جَاءَ مُعَلِّمَا الْمَدْرَسَةِ"
+        focus="مُعَلِّمَا"
+        translit="jāʾa muʿallimā l-madrasati"
+        en="The school's two teachers came."
+        irab="جاء فعل ماضٍ مبني على الفتح، معلّما فاعل مرفوع وعلامة رفعه الألف لأنه مثنى وحُذفت النون للإضافة وهو مضاف، المدرسةِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="Standing alone the word is muʿallimāni. Annexed, the nūn goes and only the alif remains to mark the nominative. Writing muʿallimāni l-madrasati is a spelling error and a grammatical one at once."
+      />
+
+      <CheckQuestion
+        q="Correct this phrase and say what was deleted."
+        ar="مُعَلِّمُونَ الْمَدْرَسَةِ"
+        answer="muʿallimū l-madrasati. The nūn of the sound masculine plural is deleted by annexation."
+        why="Annexation removes tanwīn, the dual nūn, and the sound masculine plural nūn from the first term. The wāw stays to mark the nominative."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="manawiyya"
+      title="See: meaningful annexation and its implied preposition"
+      lead="The default kind. It makes the first term definite if the second is definite, or merely specific if the second is indefinite, and it always implies one of three prepositions."
+    >
+      <ul>
+        <li><strong>lām, possession:</strong> <em>kitābu Zaydin</em>, a book belonging to Zayd.</li>
+        <li><strong>min, material:</strong> <em>khātamu fiḍḍatin</em>, a ring made of silver.</li>
+        <li><strong>fī, time or place:</strong> <em>makru l-layli</em>, plotting during the night.</li>
+      </ul>
+      <p>Because definiteness arrives from the second term, the first may not carry al-. Two sources of definiteness cannot combine on one word.</p>
+
+      <ExampleCard
+        label="A clause in the genitive position"
+        ar="يَوْمَ يَقُومُ النَّاسُ لِرَبِّ الْعَالَمِينَ"
+        focus="يَقُومُ النَّاسُ"
+        translit="yawma yaqūmu l-nāsu li-rabbi l-ʿālamīn"
+        en="The day mankind will stand before the Lord of the worlds."
+        irab="يومَ ظرف زمان منصوب وهو مضاف، يقومُ فعل مضارع مرفوع، الناسُ فاعل مرفوع، والجملة الفعلية في محل جر مضاف إليه، لربِّ جار ومجرور وهو مضاف، العالمينَ مضاف إليه مجرور وعلامة جره الياء لأنه جمع مذكر سالم."
+        note="A whole verbal sentence occupies the genitive slot. A sentence has no ending to inflect, so the analysis gives it a position instead: fī maḥall jarr. Note also the second annexation inside the verse, rabbi l-ʿālamīn, and that al-ʿālamīn is genitive by yāʾ."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="lafziyya"
+      title="Verbal annexation, which gives nothing"
+      lead="When the first term is a descriptive word governing the second, the annexation conveys neither definiteness nor specification. Its purpose is lightness of expression."
+    >
+      <ExampleCard
+        label="The first term keeps al-"
+        ar="جَاءَ الْحَسَنُ الْوَجْهِ"
+        focus="الْحَسَنُ"
+        translit="jāʾa l-ḥasanu l-wajhi"
+        en="The handsome-faced one came."
+        irab="جاء فعل ماضٍ مبني على الفتح، الحسنُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة وهو مضاف، الوجهِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+        note="The first term carries al-, which a meaningful annexation forbids. It is permitted here because this annexation is merely verbal: al-ḥasanu is a descriptive word governing al-wajhi, and the phrase is a lighter way of saying al-ḥasanu wajhuhu."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, all of them about the first term."
+    >
+      <ul>
+        <li><strong>Leaving tanwīn on the first term.</strong> Say <em>kitābu l-ṭālibi</em>, never <em>kitābun al-ṭālibi</em>.</li>
+        <li><strong>Keeping the dual or plural nūn.</strong> <em>muʿallimā l-madrasati</em>, <em>muʿallimū l-madrasati</em>.</li>
+        <li><strong>Moving the second term.</strong> It is genitive whatever happens to the first.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The two kinds and the implied prepositions follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the genitive by annexation.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: meaningful and verbal annexation and the implied prepositions.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: annexation to a clause, and what is deleted from the first term.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

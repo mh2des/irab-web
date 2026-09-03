@@ -1,0 +1,151 @@
+---
+/** English edition of /duroos/al-maful-fih. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-maful-fih';
+const objectives = [
+  'Apply the "in" test that decides whether a noun is adverbial at all.',
+  'Say why every time noun can be adverbial but only some place nouns can.',
+  'Attach an adverbial to its governor, including when that governor is omitted.',
+  'Avoid putting a specific place into the accusative.',
+];
+const faqs = [
+  { q: 'What is the difference between a fully and a partly inflected adverbial?', a: 'A fully inflected adverbial (mutaṣarrif) can leave the adverbial role and take other cases: yawm can be a subject, an object, or genitive. A partly inflected one (ghayr mutaṣarrif) is locked into adverbial use or into the genitive after a preposition: qaṭṭu, ʿawḍu, and in most uses ladun.' },
+  { q: 'What does it mean that the adverbial contains the meaning of fī?', a: 'That the sentence can be restated with fī without changing the meaning: sirtu yawman means sirtu fī yawmin. This is the test. If inserting fī produces a different meaning or nonsense, the noun is not adverbial and takes whatever case its actual role requires.' },
+  { q: 'Why can every time noun be adverbial while only some place nouns can?', a: 'Because acts occupy time necessarily and place only partly. Any act has a moment, so any time noun can host it. But an act does not fill a specific place the way it fills a time, so only vague place nouns take the accusative: the six directions, measures, and nouns derived from the verb\'s own root.' },
+  { q: 'How are ʿinda and ladun parsed?', a: 'Both are adverbials of place, always annexed, and both are ghayr mutaṣarrif: they do not leave adverbial use except that ladun may be preceded by min. ʿinda is accusative as an adverbial and is annexed to what follows, which is therefore genitive.' },
+  { q: 'Can an adverbial be a predicate?', a: 'Yes, and it commonly is. In al-kitābu ʿindaka the quasi-sentence occupies the predicate slot. The classical analysis says the phrase is attached to an omitted predicate, estimated as kāʾinun, rather than being the predicate itself.' },
+  { q: 'What is the difference between idh and idhā?', a: 'idh is an adverbial for past time and is usually annexed to a sentence: idh qāla. idhā is an adverbial for future time carrying a conditional sense, and what follows it is its condition: idhā jāʾa naṣru Llāhi. Both are built, so both are parsed as being in the position of accusative.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Adverbial Object (al-mafʿūl fīhi) in Arabic · Irab App"
+  description="A full lesson on adverbials of time and place: the fī test, why all time nouns qualify but only vague place nouns do, attachment to the governor, and the adverbial as predicate, with complete classical iʿrāb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Adverbial Object" description="Adverbials of time and place: the fī test, which nouns qualify, attachment, and the adverbial as predicate." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Adverbials of Time and Place"
+      summary="An adverbial is an accusative noun stating when or where an act happened, and the whole chapter turns on one test: can the sentence be restated with the preposition fī without changing its meaning? If it can, the noun is adverbial and accusative. If it cannot, the noun takes whatever case its real role demands. That single test also explains why every time noun qualifies while only some place nouns do."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the fī test"
+      lead="An adverbial is an additional accusative noun stating the time or place of the act, on an implied fī. If fī cannot be implied, the noun is not adverbial and is parsed by its actual role."
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="The test in action"
+        ar="سَافَرْتُ يَوْمَ الْجُمُعَةِ"
+        focus="يَوْمَ"
+        translit="sāfartu yawma l-jumuʿati"
+        en="I travelled on Friday."
+        irab="سافرتُ فعل وفاعل، يومَ ظرف زمان منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، الجمعةِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة، والظرف متعلق بالفعل سافرت."
+        note="Restate it as sāfartu fī yawmi l-jumuʿati and nothing changes. The test passes, so yawma is adverbial and accusative. Compare uḥibbu yawma l-jumuʿati, 'I love Friday', where inserting fī destroys the sense: there yawma is a direct object."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="time-and-place"
+      title="Understand: why time is easier than place"
+      lead="Every time noun can be adverbial. Only vague place nouns can. The reason is about how acts occupy time and space, not an arbitrary rule."
+    >
+      <p>An act necessarily happens at a time, so any time noun can host it, whether specific or vague: <em>yawm</em>, <em>layla</em>, <em>sāʿa</em>, <em>ṣabāḥan</em>, <em>ḥīnan</em>, <em>abadan</em>.</p>
+      <p>Place is different. An act does not fill a specific place the way it fills its time, so only <strong>vague</strong> place nouns take the accusative:</p>
+      <ul>
+        <li><strong>The six directions:</strong> <em>fawqa</em>, <em>taḥta</em>, <em>amāma</em>, <em>khalfa</em>, <em>yamīna</em>, <em>shimāla</em>.</li>
+        <li><strong>Measures:</strong> <em>mīlan</em>, <em>farsakhan</em>.</li>
+        <li><strong>Nouns from the verb's own root:</strong> <em>jalastu majlisa l-ʿulamāʾi</em>.</li>
+      </ul>
+      <p>A specific place takes <em>fī</em> and stays genitive: <em>ṣallaytu fī l-masjidi</em>, never <em>ṣallaytu l-masjida</em>. This is the single most common error in the chapter.</p>
+
+      <ExampleCard
+        label="A vague place, accusative"
+        ar="جَلَسَ الطَّالِبُ أَمَامَ الْمُعَلِّمِ"
+        focus="أَمَامَ"
+        translit="jalasa l-ṭālibu amāma l-muʿallimi"
+        en="The student sat in front of the teacher."
+        irab="جلس فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، أمامَ ظرف مكان منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، المعلمِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
+      />
+
+      <CheckQuestion
+        q="Is al-masjid adverbial here, and what case does it take?"
+        ar="صَلَّيْتُ فِي الْمَسْجِدِ"
+        answer="Not adverbial. It is genitive, governed by the preposition fī."
+        why="A mosque is a specific place, so it cannot take the accusative on adverbial grounds. The preposition is written rather than implied, and the noun is majrūr. Writing ṣallaytu l-masjida would be an error."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="taalluq"
+      title="See: attachment, and the adverbial as predicate"
+      lead="An adverbial is a quasi-sentence and does not stand alone in meaning. It attaches to a verb, to a descriptive word, or to something omitted. Most often it appears as a predicate, an adjective, or a circumstantial accusative."
+    >
+      <p>Every adverbial must attach to something, and naming that something is part of a complete iʿrāb. When there is no verb to attach to, the analysis supplies an omitted one.</p>
+
+      <ExampleCard
+        label="Adverbial as predicate"
+        ar="الْكِتَابُ عِنْدَكَ"
+        focus="عِنْدَكَ"
+        translit="al-kitābu ʿindaka"
+        en="The book is with you."
+        irab="الكتابُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، عندَ ظرف مكان منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، والكاف ضمير متصل في محل جر مضاف إليه، والظرف متعلق بمحذوف خبر."
+        note="The adverbial is not itself the predicate. It attaches to an omitted predicate, estimated as kāʾinun. This is the same analysis given to a prepositional phrase in that position, and it is why the accusative on ʿinda does not conflict with the sentence being nominal."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the first accounts for most of them."
+    >
+      <ul>
+        <li><strong>Putting a specific place into the accusative.</strong> Say <em>fī l-masjidi</em>, not <em>l-masjida</em>. Only vague place nouns take the accusative.</li>
+        <li><strong>Calling every time noun an adverbial.</strong> Run the fī test. In <em>uḥibbu yawma l-jumuʿati</em> the noun is a direct object.</li>
+        <li><strong>Forgetting the second term.</strong> Adverbials are usually annexed, and the noun after them is genitive. Leaving <em>al-muʿallimi</em> unparsed leaves the analysis incomplete.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The classification and the conditions follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: adverbials of time and place among the accusatives.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: vague and specific place, and fully against partly inflected adverbials.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: attachment of the quasi-sentence and the omitted predicate.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>
