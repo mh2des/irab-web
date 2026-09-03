@@ -1,0 +1,237 @@
+---
+/**
+ * /en/duroos — the English grammar-lesson index.
+ *
+ * The full curriculum is shown from the start, because the ten groups ARE the
+ * teaching structure and a learner should see the shape of the whole subject.
+ * Lessons are linked once their English edition is published and rendered as
+ * quiet, unlinked entries until then, so the index never carries a dead link
+ * and never pretends a lesson exists.
+ *
+ * To publish a lesson: create src/pages/en/duroos/<slug>.astro and add the slug
+ * to PUBLISHED below. Nothing else here needs touching.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleCta from '../../components/ArticleCta.astro';
+import Container from '../../components/Container.astro';
+import { EN_DUROOS as PUBLISHED } from '../../lib/en-duroos';
+
+const groups: { title: string; accent: string; lessons: { slug: string; title: string; blurb: string }[] }[] = [
+  {
+    title: 'The sentence and its pillars',
+    accent: 'var(--color-purple)',
+    lessons: [
+      { slug: 'al-jumla-al-ismiyya', title: 'The nominal sentence', blurb: 'Its two pillars, their cases, and the shapes of the predicate' },
+      { slug: 'al-mubtada-wal-khabar', title: 'Subject and predicate', blurb: 'Their kinds, and when each is nominative' },
+      { slug: 'al-jumla-al-filiyya', title: 'The verbal sentence', blurb: 'Verb, doer, object, and their order' },
+      { slug: 'al-fail', title: 'The doer (fāʿil)', blurb: 'Its four rulings and the forms it takes' },
+      { slug: 'naib-al-fail', title: 'The deputy doer', blurb: 'The passive and its rulings' },
+    ],
+  },
+  {
+    title: 'The objects',
+    accent: 'var(--color-teal)',
+    lessons: [
+      { slug: 'al-maful-bih', title: 'The direct object', blurb: 'Its accusative markers, fronting and postponing' },
+      { slug: 'al-maful-al-mutlaq', title: 'The absolute object', blurb: 'Its three kinds and what stands in for it' },
+      { slug: 'al-maful-li-ajlih', title: 'The object of purpose', blurb: 'The conditions for its accusative' },
+      { slug: 'al-maful-fih', title: 'The adverbial object', blurb: 'Adverbs of time and of place' },
+    ],
+  },
+  {
+    title: 'The markers of iʿrāb',
+    accent: 'var(--color-purple-deep)',
+    lessons: [
+      { slug: 'alamat-al-irab', title: 'The markers of iʿrāb', blurb: 'Original and substitute markers, and what replaces what' },
+      { slug: 'al-afal-al-khamsa', title: 'The five verbs', blurb: 'Keeping and dropping the nūn' },
+      { slug: 'al-asma-al-khamsa', title: 'The five nouns', blurb: 'The conditions for letter-marked case' },
+      { slug: 'al-mamnu-min-al-sarf', title: 'Diptotes', blurb: 'Why they occur and their fatḥa in the genitive' },
+    ],
+  },
+  {
+    title: 'The abrogators',
+    accent: 'var(--color-teal-deep)',
+    lessons: [
+      { slug: 'kana-wa-akhawatuha', title: 'Kāna and its sisters', blurb: 'How they govern, their noun and predicate' },
+      { slug: 'inna-wa-akhawatuha', title: 'Inna and its sisters', blurb: 'Their governance, and hamza kasra vs fatḥa' },
+      { slug: 'la-nafiya-lil-jins', title: 'The lā of absolute negation', blurb: 'Its governance, conditions, and lā ilāha illā Llāh' },
+      { slug: 'kada-wa-akhawatuha', title: 'Kāda and its sisters', blurb: 'Verbs of approach, hope and beginning' },
+      { slug: 'zanna-wa-akhawatuha', title: 'Ẓanna and its sisters', blurb: 'Verbs taking two objects' },
+    ],
+  },
+  {
+    title: 'Accusatives and styles',
+    accent: 'var(--color-purple)',
+    lessons: [
+      { slug: 'al-hal', title: 'The circumstantial accusative', blurb: 'Its conditions, its holder, and the sentence-ḥāl' },
+      { slug: 'al-tamyiz', title: 'The specifier', blurb: 'Specifying a single word or a whole sentence' },
+      { slug: 'al-istithna', title: 'Exception', blurb: 'Illā and its sisters, complete and incomplete' },
+      { slug: 'al-munada', title: 'The vocative', blurb: 'Its five kinds and when it is built' },
+      { slug: 'al-idafa', title: 'Annexation (iḍāfa)', blurb: 'Its rulings and the genitive of the second term' },
+    ],
+  },
+  {
+    title: 'The followers',
+    accent: 'var(--color-teal)',
+    lessons: [
+      { slug: 'al-naat', title: 'The adjective', blurb: 'Agreement in four respects, real and causal' },
+      { slug: 'al-atf', title: 'Coordination', blurb: 'The particles and what follows in case' },
+      { slug: 'al-badal', title: 'Substitution', blurb: 'Its kinds and the ruling of the substitute' },
+      { slug: 'al-tawkid', title: 'Emphasis', blurb: 'Verbal and semantic emphasis' },
+    ],
+  },
+  {
+    title: 'The genitive and the imperfect',
+    accent: 'var(--color-purple-deep)',
+    lessons: [
+      { slug: 'huruf-al-jarr', title: 'Prepositions', blurb: 'Their meanings and what they attach to' },
+      { slug: 'nasb-al-mudari', title: 'The subjunctive', blurb: 'The particles that put the imperfect in the accusative' },
+      { slug: 'jazm-al-mudari', title: 'The jussive', blurb: 'Apocopating one verb and two' },
+      { slug: 'uslub-al-shart', title: 'Conditional sentences', blurb: 'The protasis, the apodosis, and the linking fāʾ' },
+      { slug: 'al-adad', title: 'Numbers', blurb: 'Agreement, the counted noun, and its case' },
+    ],
+  },
+  {
+    title: 'The indeclinables',
+    accent: 'var(--color-teal-deep)',
+    lessons: [
+      { slug: 'al-damair', title: 'Pronouns', blurb: 'Detached, attached and implied' },
+      { slug: 'asma-al-ishara', title: 'Demonstratives', blurb: 'Their forms and their position in iʿrāb' },
+      { slug: 'al-asma-al-mawsula', title: 'Relative nouns', blurb: 'The relative clause and its returning pronoun' },
+    ],
+  },
+  {
+    title: 'The noun and its divisions',
+    accent: 'var(--color-purple)',
+    lessons: [
+      { slug: 'al-nakira-wal-marifa', title: 'Indefinite and definite', blurb: 'The kinds of definiteness' },
+      { slug: 'al-maqsur-wal-manqus-wal-mamdud', title: 'Shortened, defective, extended', blurb: 'Estimated case marking' },
+    ],
+  },
+  {
+    title: 'Performative styles',
+    accent: 'var(--color-teal)',
+    lessons: [
+      { slug: 'uslub-al-istifham', title: 'Questions', blurb: 'The particles and their positions in iʿrāb' },
+      { slug: 'uslub-al-taajjub', title: 'Wonder', blurb: 'Mā afʿalahu and afʿil bihi' },
+      { slug: 'uslub-al-madh-wal-dhamm', title: 'Praise and blame', blurb: 'Niʿma, biʾsa, ḥabbadhā and the specified' },
+    ],
+  },
+];
+
+const pad = (n: number) => String(n).padStart(2, '0');
+const totalLessons = groups.reduce((n, g) => n + g.lessons.length, 0);
+let running = 0;
+const numbered = groups.map((g, gi) => ({
+  ...g,
+  no: pad(gi + 1),
+  lessons: g.lessons.map((l) => ({ ...l, no: pad(++running), live: PUBLISHED.has(l.slug) })),
+}));
+const liveCount = groups.reduce((n, g) => n + g.lessons.filter((l) => PUBLISHED.has(l.slug)).length, 0);
+
+const stats = [
+  { value: String(totalLessons), label: 'lessons planned' },
+  { value: String(liveCount), label: 'published' },
+  { value: String(groups.length), label: 'chapters' },
+  { value: '100%', label: 'free' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Arabic Grammar Lessons: iʿrāb chapter by chapter · Irab App"
+  description="Free Arabic grammar lessons in English with full classical iʿrāb: the nominal and verbal sentence, the markers of iʿrāb, kāna and inna, ḥāl and tamyīz, prepositions, and the subjunctive and jussive."
+>
+  <Nav lang="en" />
+
+  <ArticleHero
+    lang="en"
+    eyebrow="Grammar lessons"
+    title="The chapters of iʿrāb"
+    summary="Each lesson takes one chapter of Arabic grammar and works it through properly: the terminology without false friends, the rule and what governs it, worked examples parsed in the full classical wording, evidence from the Quran, and the mistakes English speakers actually make. Read the lesson, then try it on any sentence in the analyzer."
+  >
+    <div class="mt-9 flex flex-wrap gap-3" data-reveal data-reveal-delay="240">
+      {stats.map((s) => (
+        <span class="inline-flex items-baseline gap-2 rounded-full border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft px-4 py-2 shadow-[0_1px_2px_rgb(23_56_71/0.05)]">
+          <strong class="font-bold text-ink dark:text-mist">{s.value}</strong>
+          <span class="text-small text-ink-subtle dark:text-mist-subtle">{s.label}</span>
+        </span>
+      ))}
+    </div>
+  </ArticleHero>
+
+  <section class="py-14 md:py-20">
+    <Container>
+      <div class="space-y-20">
+        {numbered.map((g) => (
+          <div style={`--acc: ${g.accent}`}>
+            <div class="flex items-center gap-4 md:gap-5 mb-8" data-reveal>
+              <span
+                class="font-display font-bold text-4xl md:text-5xl leading-none select-none"
+                style="color: color-mix(in srgb, var(--acc) 38%, transparent)"
+                aria-hidden="true"
+              >{g.no}</span>
+              <h2 class="font-sans font-bold text-2xl md:text-[1.75rem] text-ink dark:text-mist">{g.title}</h2>
+              <span
+                class="rounded-full px-3 py-1 text-small font-semibold"
+                style="color: var(--acc); background: color-mix(in srgb, var(--acc) 10%, transparent)"
+              >{g.lessons.length} lessons</span>
+              <span class="hidden sm:block flex-1 h-px bg-stone dark:bg-coal-edge"></span>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {g.lessons.map((l, i) => (
+                l.live ? (
+                  <a
+                    href={`/en/duroos/${l.slug}`}
+                    class="group relative flex flex-col rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6 md:p-7 shadow-[0_1px_3px_rgb(23_56_71/0.06)] transition-[transform,box-shadow,border-color] duration-300 [transition-timing-function:var(--ease-out-quart)] hover:-translate-y-1.5 hover:border-[color:color-mix(in_srgb,var(--acc)_55%,transparent)] hover:shadow-[0_24px_48px_-20px_color-mix(in_srgb,var(--acc)_38%,transparent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--acc)]"
+                    data-reveal
+                    data-reveal-delay={String((i % 3) * 80)}
+                  >
+                    <span
+                      class="absolute top-5 right-6 font-display text-2xl leading-none select-none transition-colors duration-300"
+                      style="color: color-mix(in srgb, var(--acc) 26%, transparent)"
+                      aria-hidden="true"
+                    >{l.no}</span>
+                    <h3 class="font-sans font-bold text-xl text-ink dark:text-mist pr-10 transition-colors duration-300 group-hover:text-[color:var(--acc)]">{l.title}</h3>
+                    <p class="mt-2.5 flex-1 text-small text-ink-subtle dark:text-mist-subtle leading-relaxed">{l.blurb}</p>
+                    <span class="mt-6 pt-4 border-t border-stone dark:border-coal-edge flex items-center justify-between">
+                      <span class="text-small font-semibold" style="color: var(--acc)">Read the lesson</span>
+                      <svg
+                        class="w-4 h-4 transition-transform duration-300 [transition-timing-function:var(--ease-out-quart)] group-hover:translate-x-1.5"
+                        style="color: var(--acc)"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                      ><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </span>
+                  </a>
+                ) : (
+                  <div
+                    class="relative flex flex-col rounded-2xl border border-dashed border-stone dark:border-coal-edge p-6 md:p-7 opacity-60"
+                    data-reveal
+                    data-reveal-delay={String((i % 3) * 80)}
+                  >
+                    <span class="absolute top-5 right-6 font-display text-2xl leading-none select-none text-ink/15 dark:text-mist/15" aria-hidden="true">{l.no}</span>
+                    <h3 class="font-sans font-bold text-xl text-ink-subtle dark:text-mist-subtle pr-10">{l.title}</h3>
+                    <p class="mt-2.5 flex-1 text-small text-ink-subtle dark:text-mist-subtle leading-relaxed">{l.blurb}</p>
+                    <span class="mt-6 pt-4 border-t border-stone dark:border-coal-edge text-small text-ink-subtle dark:text-mist-subtle">
+                      In preparation · <a href={`/duroos/${l.slug}`} class="underline underline-offset-2 hover:text-ink dark:hover:text-mist">read it in Arabic</a>
+                    </span>
+                  </div>
+                )
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <ArticleCta lang="en">
+    <span slot="title">Theory is half the road.</span>
+    Paste any sentence into the analyzer on the home page and watch the lesson's rule work word by word, or practise with instant correction in the practice section.
+  </ArticleCta>
+
+  <Footer lang="en" />
+</BaseLayout>

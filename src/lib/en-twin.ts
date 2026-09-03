@@ -6,6 +6,7 @@
  * routes: exact EN twin → EN surah index → /en/quran.
  */
 import { hasEnAyah, enSurahIds } from './quran-en';
+import { hasEnLesson } from './en-duroos';
 import { SURAHS } from './quran';
 
 // Static routes that exist under /en (mirrors src/pages/en/*).
@@ -14,7 +15,7 @@ const EN_STATIC = new Set([
   '/practice', '/practice/play', '/challenges', '/dictionary',
   '/library', '/library/read', '/login', '/account', '/app', '/history',
   '/quran', '/pricing', '/about', '/contact', '/press', '/majalis',
-  '/privacy', '/terms', '/refund', '/methodology',
+  '/privacy', '/terms', '/refund', '/methodology', '/duroos',
 ]);
 
 const slugToId = new Map(SURAHS.map((s) => [s.slug, s.id]));
@@ -32,6 +33,11 @@ export function enTwinFor(arPath: string): string {
     if (ayah && !hasEnAyah(surahId, Number(ayah))) return `/en/quran/${slug}`;
     return `/en${path}`;
   }
+
+  // A grammar lesson goes to its English edition when that exists, otherwise
+  // to the English index rather than the site root.
+  const dars = path.match(/^\/duroos\/([^/]+)$/);
+  if (dars) return hasEnLesson(dars[1]) ? `/en${path}` : '/en/duroos';
 
   if (EN_STATIC.has(path)) return path === '/' ? '/en' : `/en${path}`;
   return '/en';

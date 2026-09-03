@@ -6,35 +6,69 @@
  * teaches, linking each to its full word-by-word page. Data comes from
  * src/lib/lesson-links.ts at build time; nothing is inferred and no i'rab
  * is generated here. Renders nothing when the detector finds no ayah.
+ *
+ * English lessons share the same detector and the same ayat. Only the chrome
+ * changes: the surah's English name, Western digits, and a link to the English
+ * ayah page WHEN one exists — the English Quran layer is still a subset, so
+ * anything not yet mirrored falls back to the Arabic page, which carries the
+ * full word-by-word i'rab either way.
  */
 import ArticleSection from '../ArticleSection.astro';
 import { ayatForLesson } from '../../lib/lesson-links';
-import { toArabicDigits } from '../../lib/quran';
+import { toArabicDigits, SURAHS } from '../../lib/quran';
+import { hasEnAyah } from '../../lib/quran-en';
 
 interface Props {
   slug: string;
   max?: number;
+  lang?: 'ar' | 'en';
 }
 
-const { slug, max = 6 } = Astro.props;
+const { slug, max = 6, lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
 const ayat = ayatForLesson(slug, max);
 const clip = (s: string, n = 120) => (s.length > n ? `${s.slice(0, n).trimEnd()}…` : s);
+
+const bySlug = new Map(SURAHS.map((x) => [x.slug, x]));
+/** English ayah page when it exists, else the Arabic one (which has the i'rab). */
+const hrefFor = (surahSlug: string, ayah: number) => {
+  const meta = bySlug.get(surahSlug);
+  const en = isEn && meta && hasEnAyah(meta.id, ayah);
+  return `${en ? '/en' : ''}/quran/${surahSlug}/${ayah}`;
+};
+const surahLabel = (surahSlug: string, fallback: string) =>
+  (isEn ? bySlug.get(surahSlug)?.en : undefined) ?? fallback;
+const num = (n: number) => (isEn ? String(n) : toArabicDigits(n));
+
+const t = isEn
+  ? {
+      title: 'Quranic evidence',
+      lead: 'A rule is clearest in a text you already know by heart. Each ayah below contains the very construction this lesson teaches, and every one has a full word-by-word i\'rab on this site. Read the ayah first and try to find the construction yourself, then open its i\'rab to check.',
+      cta: 'Read the full i\'rab',
+      ref: (name: string, ayah: string) => `Surah ${name} · ayah ${ayah}`,
+    }
+  : {
+      title: 'آيات تطبيقية من القرآن',
+      lead: 'القاعدة أوضح ما تكون في نصٍّ محفوظ. في هذه الآيات يرد الباب نفسه الذي شرحه الدرس، ولكل آية على الموقع إعرابٌ كامل كلمةً كلمة. اقرأ الآية أولًا وحاول تعيين موضع القاعدة، ثم افتح إعرابها لتتحقّق.',
+      cta: 'اقرأ الإعراب الكامل',
+      ref: (name: string, ayah: string) => `سورة ${name} · الآية ${ayah}`,
+    };
 ---
 {ayat.length > 0 && (
   <ArticleSection
-    lang="ar"
+    lang={lang}
     id="quran-examples"
-    title="آيات تطبيقية من القرآن"
-    lead="القاعدة أوضح ما تكون في نصٍّ محفوظ. في هذه الآيات يرد الباب نفسه الذي شرحه الدرس، ولكل آية على الموقع إعرابٌ كامل كلمةً كلمة. اقرأ الآية أولًا وحاول تعيين موضع القاعدة، ثم افتح إعرابها لتتحقّق."
+    title={t.title}
+    lead={t.lead}
   >
     <ul class="ayat-ex" role="list">
       {ayat.map((a) => (
         <li>
-          <a class="ayat-ex-card" href={`/quran/${a.surahSlug}/${a.ayah}`}>
+          <a class="ayat-ex-card" href={hrefFor(a.surahSlug, a.ayah)}>
             <span class="ayat-ex-verse quran-text" lang="ar" dir="rtl">{clip(a.verse)}</span>
             <span class="ayat-ex-meta">
-              <span>سورة {a.surahName} · الآية {toArabicDigits(a.ayah)}</span>
-              <span class="ayat-ex-cta">اقرأ الإعراب الكامل</span>
+              <span>{t.ref(surahLabel(a.surahSlug, a.surahName), num(a.ayah))}</span>
+              <span class="ayat-ex-cta">{t.cta}</span>
             </span>
           </a>
         </li>
