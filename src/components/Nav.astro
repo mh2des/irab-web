@@ -18,7 +18,6 @@ const t = lang === 'ar'
       quran:    'إعراب القرآن',
       library:  'المكتبة',
       pricing:  'الأسعار',
-      features: 'المميزات',
       majalis:  'المجالس',
       signin:   'دخول',
       myApp:    'حسابي',
@@ -34,7 +33,6 @@ const t = lang === 'ar'
       quran:    "Quran i'rab",
       library:  'Library',
       pricing:  'Pricing',
-      features: 'Features',
       majalis:  'Majalis',
       signin:   'Sign in',
       myApp:    'Profile',
@@ -54,7 +52,7 @@ const libraryHref = lang === 'ar' ? '/library' : '/en/library'; // classical gra
 const signinHref = lang === 'ar' ? '/login' : '/en/login'; // web account
 const appHref = lang === 'ar' ? '/app' : '/en/app'; // signed in web app hub
 const pricingHref = lang === 'ar' ? '/pricing' : '/en/pricing';
-const majalisHref = '/majalis'; // live-quiz landing (AR only; EN nav keeps Features)
+const majalisHref = lang === 'ar' ? '/majalis' : '/en/majalis'; // live-quiz landing, both languages
 // «جرِّب بلس» goes to the plan chooser, NOT straight into a checkout: the
 // user picks annual (with trial) or monthly there, then /app?checkout=<plan>
 // opens the payment overlay. (Owner decision 2026-08-07.)
@@ -83,7 +81,6 @@ const ICON = {
   practice:   'M12 2v4m0 12v4M2 12h4m12 0h4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z',
   challenges: 'M8 21h8m-4-4v4M6 4h12v5a6 6 0 0 1-12 0V4ZM6 6H4a2 2 0 0 0 0 4h2m12-4h2a2 2 0 0 1 0 4h-2',
   majalis:    'M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9.5 7a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
-  features:   'M12 2 9.2 8.6 2 9.2l5.5 4.8L5.8 21 12 17.3 18.2 21l-1.7-7 5.5-4.8-7.2-.6Z',
   dictionary: 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z',
   quran:      'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2V3ZM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7V3Z',
   library:    'M4 4h4v16H4zM10 4h4v16h-4zM17 4.5l3.5 15',
@@ -94,9 +91,7 @@ const mobileLinks = [
   { href: toolHref,       label: t.tryDemo,    icon: ICON.tool },
   { href: practiceHref,   label: t.practice,   icon: ICON.practice },
   { href: challengesHref, label: t.challenges, icon: ICON.challenges },
-  lang === 'ar'
-    ? { href: majalisHref,          label: t.majalis,  icon: ICON.majalis }
-    : { href: `${home}#features`,   label: t.features, icon: ICON.features },
+  { href: majalisHref, label: t.majalis, icon: ICON.majalis },
   { href: dictionaryHref, label: t.dictionary, icon: ICON.dictionary },
   { href: quranHref,      label: t.quran,      icon: ICON.quran },
   { href: libraryHref,    label: t.library,    icon: ICON.library },
@@ -120,9 +115,7 @@ const chevPath = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
         <a href={toolHref}           class:list={['nav-link', { 'is-active': isActive(toolHref) }]}       aria-current={isActive(toolHref) ? 'page' : undefined}>{t.tryDemo}</a>
         <a href={practiceHref}       class:list={['nav-link', { 'is-active': isActive(practiceHref) }]}   aria-current={isActive(practiceHref) ? 'page' : undefined}>{t.practice}</a>
         <a href={challengesHref}     class:list={['nav-link', { 'is-active': isActive(challengesHref) }]} aria-current={isActive(challengesHref) ? 'page' : undefined}>{t.challenges}</a>
-        {lang === 'ar'
-          ? <a href={majalisHref} class:list={['nav-link', { 'is-active': isActive(majalisHref) }]} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis}</a>
-          : <a href={`${home}#features`} class="nav-link">{t.features}</a>}
+        <a href={majalisHref} class:list={['nav-link', { 'is-active': isActive(majalisHref) }]} aria-current={isActive(majalisHref) ? 'page' : undefined}>{t.majalis}</a>
         <a href={dictionaryHref}     class:list={['nav-link', { 'is-active': isActive(dictionaryHref) }]} aria-current={isActive(dictionaryHref) ? 'page' : undefined}>{t.dictionary}</a>
         <a href={quranHref}          class:list={['nav-link', { 'is-active': isActive(quranHref) }]}       aria-current={isActive(quranHref) ? 'page' : undefined}>{t.quran}</a>
         <a href={libraryHref}        class:list={['nav-link', { 'is-active': isActive(libraryHref) }]}     aria-current={isActive(libraryHref) ? 'page' : undefined}>{t.library}</a>

@@ -1,0 +1,200 @@
+---
+/**
+ * Majalis al-I'rab — English marketing landing for the live-quiz feature,
+ * mirroring src/pages/majalis.astro. The join page stays /majlis (zero
+ * friction for QR scans) and this is the only indexed EN majalis URL.
+ *
+ * Every claim here is a faithful translation of the Arabic page, whose numbers
+ * were verified against the shipped feature: free tier = 1 majlis/24h, 10
+ * questions, 20 players, 10 AI questions/day; Plus = 10 majalis, 50 questions,
+ * 100 players, 100 AI questions/day; players join free without accounts.
+ *
+ * NOTE: the hosting and joining flow (/majlis/*) is Arabic-only — those pages
+ * and their five components have no lang prop at all. The CTAs below therefore
+ * say so plainly rather than dropping an English reader into an Arabic UI.
+ * When the flow is translated, drop the `interfaceNote` line and the (in
+ * Arabic) qualifiers.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import Container from '../../components/Container.astro';
+import Section from '../../components/Section.astro';
+import ArticleFaq from '../../components/ArticleFaq.astro';
+
+const steps = [
+  { n: '1', title: 'Write your questions', body: 'Write them yourself in one of 4 formats, or generate them with AI from a grammar topic or a passage from your own textbook, then review every question before you start.' },
+  { n: '2', title: 'Share the join code', body: 'A 6-digit code or a QR code appears on your screen. Players join free from any browser at irab.app/majlis, or from the Irab app, with no account.' },
+  { n: '3', title: 'Play it live', body: 'Question by question: points for speed and accuracy, the answer revealed with its grammatical reasoning, a leaderboard between questions, then the podium and the full report.' },
+];
+
+const features = [
+  { title: '4 kinds of i\'rab question', body: 'Multiple choice, true or false, fix the mistake in the sentence, and put the parts of the i\'rab in order. Each one is built to train a feel for i\'rab rather than recall.' },
+  { title: 'AI question generation', body: 'Pick a grammar topic, paste a passage from your textbook, or photograph a page of it, and get ready-made questions you review and edit before the majlis.' },
+  { title: 'Smart review of weak points', body: 'It reads the i\'rab in your previous majlis reports and generates new questions aimed at whatever your students got wrong most.' },
+  { title: 'Live momentum', body: 'A countdown, points that reward speed and accuracy together, leaders shown between questions, and a podium at the end.' },
+  { title: 'An explanation after every question', body: 'When each question closes, everyone sees the correct answer with clear grammatical reasoning, so whoever got it wrong learns before the next one.' },
+  { title: 'A full report for every majlis', body: 'Accuracy per question, the hardest and easiest question, how answers were distributed, and the final standings. It stays saved in your majalis history on the web and in the app.' },
+];
+
+const faqs = [
+  { q: 'Do students need accounts to join?', a: 'No. Players join free with the join code or a QR code from any browser at irab.app/majlis, or from the Irab app, with no sign-up and no email. A player types their name and goes straight in.' },
+  { q: 'What does Majalis al-I\'rab cost?', a: 'Hosting is free: one majlis every 24 hours with up to 10 questions and 20 players, plus 10 AI-generated questions a day. Irab Plus subscribers get 10 majalis a day with up to 50 questions, 100 players, and 100 AI questions a day, with every question type. Joining is always free for everyone.' },
+  { q: 'How is this different from general quiz tools like Kahoot?', a: 'Majalis al-I\'rab is built specifically for Arabic grammar: i\'rab question types such as fix-the-mistake and order-the-i\'rab, AI question generation from your own textbook, grammatical reasoning after every question, and a fully Arabic interface for students. You do not have to prepare questions in a general tool and then bend them into grammar.' },
+  { q: 'Does it work on phones and computers?', a: 'Yes. The teacher hosts from a desktop browser or from the app, and players join from any device with a browser or from the app. Drafts, reports, and your question bank sync between web and app automatically.' },
+  { q: 'Are results saved after a majlis ends?', a: 'Yes. Every finished majlis produces a full report in your majalis history: accuracy per question, the hardest and easiest questions, how players answered, and their final ranking. You can open it any time from the web or the app.' },
+  { q: 'I teach at a school or academy — is there an institution offer?', a: 'Yes, we give free teacher accounts to qualifying institutions. See the Irab for teachers page or email us at hello@irab.app.' },
+];
+
+// The hosting flow is not translated yet; say so once, near the CTAs, instead
+// of silently handing an English reader an Arabic screen.
+const interfaceNote = 'The hosting and joining screens are currently in Arabic.';
+---
+<BaseLayout
+  lang="en"
+  title="Majalis al-I'rab: live Arabic grammar quizzes for your class · Irab"
+  description="Turn your grammar lesson into a live competition: create i'rab questions by hand or with AI, share a join code, and let students join free from any browser. Points, leaderboards, grammatical explanations, and a full report."
+>
+  <Nav lang="en" />
+
+  <main>
+    {/* ── Hero ─────────────────────────────────────────────────────── */}
+    <Section size="sm" class="relative overflow-hidden" id="hero">
+      <Container>
+        <div class="max-w-3xl">
+          <p class="eyebrow mb-4" data-reveal>Majalis al-I'rab</p>
+          <h1 class="font-sans font-bold text-[clamp(2rem,5vw,3.4rem)] leading-[1.25] tracking-tight" data-reveal data-reveal-delay="100">
+            Turn i'rab into a <span class="text-purple">live competition</span> in your class.
+          </h1>
+          <p class="mt-6 text-body-lg text-ink-muted dark:text-mist-muted leading-relaxed max-w-2xl" data-reveal data-reveal-delay="200">
+            Create i'rab questions by hand or with AI, share the join code, and let your students join free from any browser or from the app. Points for speed and accuracy, a grammatical explanation after every question, and a full report at the end.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3" data-reveal data-reveal-delay="300">
+            <a href="/majlis/create" class="btn-primary btn-lg btn-glow-breathe" data-magnetic>Create your majlis free</a>
+            <a href="/majlis" class="btn-ghost btn-lg">Got a code? Join now</a>
+          </div>
+          <p class="mt-4 text-small text-ink-subtle dark:text-mist-subtle" data-reveal data-reveal-delay="350">
+            Players join free without an account, and hosting starts free with one majlis a day. {interfaceNote}
+          </p>
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── How it works ─────────────────────────────────────────────── */}
+    <Section class="section-tint border-y border-stone dark:border-coal-edge">
+      <Container>
+        <div class="max-w-2xl mb-12">
+          <p class="eyebrow mb-4" data-reveal>How it works</p>
+          <h2 class="font-sans font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+            Three steps from an idea to the podium.
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {steps.map((s, i) => (
+            <div class="card p-7" data-reveal data-reveal-delay={String(i * 100)}>
+              <span class="inline-grid place-items-center w-10 h-10 rounded-full bg-purple/10 text-purple font-black text-lg tabular-nums mb-4">{s.n}</span>
+              <h3 class="font-sans font-bold text-h3 leading-snug mb-3">{s.title}</h3>
+              <p class="text-small text-ink-muted dark:text-mist-muted leading-relaxed">{s.body}</p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Features ─────────────────────────────────────────────────── */}
+    <Section>
+      <Container>
+        <div class="max-w-2xl mb-12">
+          <p class="eyebrow mb-4" data-reveal>What sets it apart</p>
+          <h2 class="font-sans font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+            Built for grammar, not a general quiz tool.
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {features.map((f, i) => (
+            <div class="card p-6 md:p-7" data-reveal data-reveal-delay={String((i % 3) * 80)} data-tilt="5">
+              <h3 class="font-sans font-bold text-[1.25rem] leading-snug mb-3">{f.title}</h3>
+              <p class="text-small text-ink-muted dark:text-mist-muted leading-relaxed">{f.body}</p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Free vs Plus ─────────────────────────────────────────────── */}
+    <Section class="section-tint border-y border-stone dark:border-coal-edge">
+      <Container size="narrow">
+        <div class="max-w-2xl mb-10">
+          <p class="eyebrow mb-4" data-reveal>Pricing</p>
+          <h2 class="font-sans font-bold text-[clamp(1.7rem,3.8vw,2.8rem)] leading-[1.3] tracking-tight" data-reveal data-reveal-delay="100">
+            Start free today.
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="card p-7" data-reveal>
+            <p class="font-sans font-bold text-h3 mb-4">Free</p>
+            <ul class="text-small text-ink-muted dark:text-mist-muted leading-relaxed space-y-2">
+              <li>One live majlis every 24 hours</li>
+              <li>Up to 10 questions and 20 players per majlis</li>
+              <li>Multiple choice and true or false</li>
+              <li>10 AI-generated questions a day</li>
+              <li>A full report after every majlis</li>
+            </ul>
+          </div>
+          <div class="card p-7 border-purple/40" data-reveal data-reveal-delay="100">
+            <p class="font-sans font-bold text-h3 mb-4 text-purple">With Irab Plus</p>
+            <ul class="text-small text-ink-muted dark:text-mist-muted leading-relaxed space-y-2">
+              <li>10 majalis a day</li>
+              <li>Up to 50 questions and 100 players per majlis</li>
+              <li>Every question type, including fix-the-mistake and order-the-i'rab</li>
+              <li>100 AI questions a day, with generation from text or a photo, and smart review</li>
+            </ul>
+            <a href="/en/pricing" class="inline-block mt-5 font-bold text-purple hover:text-purple-deep text-small transition-colors duration-200">See pricing</a>
+          </div>
+        </div>
+      </Container>
+    </Section>
+
+    {/* ── Teachers band ────────────────────────────────────────────── */}
+    <Container size="narrow">
+      <div class="my-16 bg-teal text-white rounded-2xl p-8 md:p-10" data-reveal>
+        <p class="font-mono text-caption opacity-70 uppercase tracking-widest mb-4">For teachers and institutions</p>
+        <h3 class="font-sans font-bold text-h2 leading-tight mb-4">The first live classroom tool in Irab.</h3>
+        <p class="text-body-lg opacity-90 max-w-2xl mb-6 leading-relaxed">
+          Majalis al-I'rab is designed for the lesson itself: the teacher hosts from a laptop or a phone, and the whole class joins in seconds. Qualifying madrasahs and academies get free teacher accounts.
+        </p>
+        <a href="/en/teachers" class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-paper text-teal font-medium tracking-tight rounded-full transition-colors duration-200">
+          Irab for teachers
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </Container>
+
+    <ArticleFaq lang="en" items={faqs} />
+
+    {/* ── Final CTA ────────────────────────────────────────────────── */}
+    <Section size="lg" class="relative overflow-hidden bg-ink dark:bg-mist text-paper dark:text-coal">
+      <Container>
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="font-sans font-bold text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.3] tracking-tight mb-6" data-reveal>
+            Your first majlis takes minutes.
+          </h2>
+          <p class="text-body-lg opacity-80 leading-relaxed mb-8" data-reveal data-reveal-delay="100">
+            Write the questions, share the code, and watch your class compete over i'rab.
+          </p>
+          <div class="flex flex-wrap gap-3 justify-center" data-reveal data-reveal-delay="200">
+            <a href="/majlis/create" class="btn-primary btn-lg btn-glow-breathe" data-magnetic>Create your majlis free</a>
+            <a href="/majlis" class="inline-flex items-center justify-center min-h-[3.25rem] px-7 rounded-lg font-bold border border-paper/30 dark:border-coal/30 hover:border-paper dark:hover:border-coal transition-colors duration-200">Join with a code</a>
+          </div>
+          <p class="text-caption opacity-70 mt-5" data-reveal data-reveal-delay="250">{interfaceNote}</p>
+        </div>
+      </Container>
+    </Section>
+  </main>
+
+  <Footer lang="en" />
+
+  <script>
+    import '../../scripts/scroll-reveal';
+  </script>
+</BaseLayout>
