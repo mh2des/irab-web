@@ -68,7 +68,7 @@ const p = (path: string) => (lang === 'ar' ? path : `/en${path}`);
           <li><a href={p('/nahw')}          class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.nahw}</a></li>
           <li><a href={p('/quran-parser')}  class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.quran}</a></li>
           <li><a href={p('/teachers')}      class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.teachers}</a></li>
-          {lang === 'ar' && <li><a href="/methodology"       class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.methodology}</a></li>}
+          <li><a href={p('/methodology')}       class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.methodology}</a></li>
           <li><a href={p('/about')}         class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.about}</a></li>
         </ul>
       </div>

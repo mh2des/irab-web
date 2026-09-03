@@ -1,0 +1,103 @@
+---
+/**
+ * /en/methodology — English twin of src/pages/methodology.astro.
+ *
+ * A transparency page, so it is a faithful translation: every figure, source
+ * and commitment is carried across rather than restated. Notable facts that
+ * must stay accurate if either page is edited: the single Quran i'rab source
+ * (Mahmoud Safi's al-Jadwal, Dar al-Rashid, 15 volumes), letter-by-letter
+ * verification against the Tanzil standard Uthmani text (Hafs 'an 'Asim,
+ * 6,236 ayat, over 99% word-level coverage, 100,000+ words), and the August
+ * 2026 de-indexing of ayah pages that carried no original commentary.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleSection from '../../components/ArticleSection.astro';
+import ArticleCta from '../../components/ArticleCta.astro';
+---
+<BaseLayout
+  lang="en"
+  title="Our methodology: how we build and verify the content · Irab App"
+  description="How Irab works: how the AI i'rab engine is built, where the Quran i'rab comes from, how we verify the Quranic text letter by letter, who writes and reviews the lessons, and how we correct mistakes."
+>
+  <Nav lang="en" />
+
+  <ArticleHero
+    lang="en"
+    eyebrow="Transparency"
+    title="Our methodology"
+    summary="We believe tools for learning Arabic should be transparent about their sources and exact in their texts. This page explains how the analysis engine in Irab works, where the Quran i'rab reference comes from, and how every ayah is verified before it reaches you."
+  />
+
+  <ArticleSection
+    lang="en"
+    id="engine"
+    title="The AI i'rab engine"
+    lead="At the heart of Irab is an AI-powered analysis engine: write any Arabic sentence and it parses it word by word in seconds, and gives you instant feedback when you practise i'rab yourself."
+  >
+    <p>The engine is built on modern language models directed specifically at the rules of Arabic grammar, and its output is reviewed continuously against benchmark sentences from the established grammar books. When you answer practice exercises in the app, the engine compares your answer with the correct analysis and shows you exactly where the mistake is, not merely "right / wrong".</p>
+    <p>Automated analysis is a technical effort and it can be wrong, which is why there is a report button inside the app for any analysis you find inaccurate. Reports are reviewed by hand.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="quran-source"
+    title="The source of the Quran i'rab"
+    lead="The Quran i'rab pages on this site and in the app rest on a single authoritative reference: al-Jadwal fi I'rab al-Qur'an wa Sarfihi wa Bayanihi by Shaykh Mahmoud Safi, may Allah have mercy on him (Dar al-Rashid, Damascus), one of the most extensive printed references for Quranic i'rab, in fifteen volumes."
+  >
+    <p>We chose one trusted source rather than stitching several together, so that the analysis follows a consistent method from the first page of the mushaf to the last, and so that credit goes where it is due. Every ayah page on the site names the source explicitly.</p>
+    <p>The introductory summaries (TL;DR) and FAQs you read on the ayah pages are written by us specifically for this site; they are not taken from al-Jadwal.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="verification"
+    title="Verifying the Quranic text"
+    lead="No Quranic text is published in Irab before it is matched automatically, letter by letter, against the standard text of the Tanzil project in the narration of Hafs 'an 'Asim."
+  >
+    <p>We built a complete processing pipeline that extracts the reference, normalises the orthography, then matches every one of the 6,236 ayat against the standard Uthmani text. Any difference, even in a single letter or vowel mark, halts publication until it is corrected. Word-level analysis coverage exceeds 99% of the ayat of the mushaf (more than 100,000 words analysed).</p>
+    <p>This verification is not negotiable for us: an app that serves the Quran may not display an ayah with an error in it.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="editorial"
+    title="Who writes and who reviews"
+    lead="Every lesson in the grammar lessons, and every introductory summary and FAQ on the ayah pages, is written by Mansoor Hassan, the founder of Irab and a former Arabic language teacher. No line of i'rab and no Quranic citation is published before it is checked against the grammar references."
+  >
+    <p>We separate three kinds of text and call each by its name. <strong>What we write</strong>: the lessons, the introductory summaries, the FAQs, and the worked examples on the analyzer page; written by hand and reviewed line by line before publishing, and every lesson carries its author's name and the date it was last updated beneath its title. <strong>What we quote</strong>: the i'rab of the ayat of the Quran, quoted from al-Jadwal fi I'rab al-Qur'an, with the source named on every page under "quoted from the reference". <strong>What AI generates</strong>: the analyzer's results, which are an automated effort that can be wrong, and are therefore presented as a study aid rather than a reference.</p>
+    <p>We do not use AI to write the lessons or to publish pages in bulk. A page that carries no real contribution of our own is not published, and in August 2026 we removed from the search index thousands of ayah pages that did not yet carry commentary of our own; each page returns to the index once its summary and questions are written. You can read about who writes the lessons on the <a href="/en/about#mansoor">About Irab App</a> page.</p>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="references"
+    title="Our references"
+    lead="We rely on the grammar books used in teaching and revision, we name the source when we quote, and we write in the classical wording used by school and university i'rab books."
+  >
+    <ul>
+      <li><strong>Quran i'rab:</strong> al-Jadwal fi I'rab al-Qur'an wa Sarfihi wa Bayanihi by Mahmoud Safi, the sole source for the ayah pages, as detailed above.</li>
+      <li><strong>The Quranic text:</strong> the standard Uthmani text from the Tanzil project in the narration of Hafs 'an 'Asim, matched letter by letter before publishing.</li>
+      <li><strong>Lessons and rules:</strong> the grammar books relied on in teaching, named inside the lesson whenever we quote a specific text or definition. The worked examples are written by us in that same classical wording.</li>
+    </ul>
+  </ArticleSection>
+
+  <ArticleSection
+    lang="en"
+    id="corrections"
+    title="Reporting a mistake, and correcting it"
+    lead="If you find a mistake in an i'rab, a citation, or a text, write to us at support@irab.app. We review the report and correct it on the page itself, and the correction shows in the 'last updated' date beneath the lesson's title."
+  >
+    <p>To make the correction quick, send the page link, the exact place in it, and what you believe is correct along with its reference if you can. For analyzer results, on the web or in the app, send the sentence and the result you believe is wrong to the same address; reports are reviewed by hand. We do not delete a page that has been corrected, nor hide its history; we correct it and let the date stand as a witness.</p>
+    <p>Irab is an independent project built by a single developer, and it began from a personal need: a tool that makes mastering i'rab possible for every student, not only for those who found a teacher and the time. The app is available on Google Play and the App Store. We welcome every correction or suggestion at <a href="mailto:hello@irab.app">hello@irab.app</a>, and if you are a person of knowledge and find something in the content that needs review, writing to us is a charity we thank you for.</p>
+  </ArticleSection>
+
+  <ArticleCta lang="en">
+    <span slot="title">Try the engine yourself.</span>
+    Paste any Arabic sentence into the live demo on the home page, or download the app and practise i'rab with instant feedback.
+  </ArticleCta>
+
+  <Footer lang="en" />
+</BaseLayout>
