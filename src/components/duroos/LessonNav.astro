@@ -1,0 +1,125 @@
+---
+/**
+ * LessonNav: where you are in the course, and how to move.
+ *
+ * Rendered twice in a lesson: `place="top"` gives a compact breadcrumb and
+ * progress bar under the byline, `place="bottom"` gives the previous / next
+ * cards and the practice call to action. Neighbours skip unpublished lessons,
+ * so a learner is never offered a page that does not exist yet, while the
+ * counter still reports the real position in the forty-lesson course.
+ */
+import Container from '../Container.astro';
+import { lessonPlace } from '../../lib/en-duroos';
+
+interface Props {
+  slug: string;
+  place?: 'top' | 'bottom';
+}
+const { slug, place = 'top' } = Astro.props;
+const p = lessonPlace(slug);
+const pct = p ? Math.round((p.no / p.total) * 100) : 0;
+---
+{p && place === 'top' && (
+  <Container size="narrow">
+    <nav class="lsn-top" aria-label="Lesson position">
+      <div class="lsn-crumbs">
+        <a href="/en/duroos">Grammar lessons</a>
+        <span aria-hidden="true">/</span>
+        <span class="lsn-group">{p.group}</span>
+      </div>
+      <div class="lsn-meter">
+        <span class="lsn-count">Lesson {p.no} of {p.total}</span>
+        <span class="lsn-bar" role="img" aria-label={`Lesson ${p.no} of ${p.total}`}>
+          <span class="lsn-fill" style={`width:${pct}%`}></span>
+        </span>
+      </div>
+    </nav>
+  </Container>
+)}
+
+{p && place === 'bottom' && (
+  <Container size="narrow">
+    <div class="lsn-end">
+      <a class="lsn-practice" href="/en/practice/play">
+        <span class="lsn-practice-t">Practice what you just read</span>
+        <span class="lsn-practice-b">Write your own i‘rāb for any sentence and get it corrected word by word.</span>
+      </a>
+
+      <div class="lsn-pair">
+        {p.prev ? (
+          <a class="lsn-step" href={`/en/duroos/${p.prev.slug}`} rel="prev">
+            <span class="lsn-step-k">Previous lesson</span>
+            <span class="lsn-step-t">{p.prev.title}</span>
+          </a>
+        ) : <span class="lsn-step is-empty"><span class="lsn-step-k">Previous lesson</span><span class="lsn-step-t">You are at the start</span></span>}
+
+        {p.next ? (
+          <a class="lsn-step lsn-step-next" href={`/en/duroos/${p.next.slug}`} rel="next">
+            <span class="lsn-step-k">Next lesson</span>
+            <span class="lsn-step-t">{p.next.title}</span>
+          </a>
+        ) : <span class="lsn-step lsn-step-next is-empty"><span class="lsn-step-k">Next lesson</span><span class="lsn-step-t">In preparation</span></span>}
+      </div>
+
+      <a class="lsn-index" href="/en/duroos">All {p.total} lessons</a>
+    </div>
+  </Container>
+)}
+
+<style is:global>
+  .lsn-top {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 0.75rem 1.5rem; padding: 0.9rem 0 0;
+  }
+  .lsn-crumbs { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: var(--color-ink-subtle); }
+  .dark .lsn-crumbs { color: var(--color-mist-subtle); }
+  .lsn-crumbs a { color: var(--color-purple); font-weight: 600; }
+  .lsn-crumbs a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .lsn-group { font-weight: 600; }
+
+  .lsn-meter { display: flex; align-items: center; gap: 0.7rem; }
+  .lsn-count { font-size: 0.85rem; font-weight: 700; color: var(--color-ink-subtle); white-space: nowrap; }
+  .dark .lsn-count { color: var(--color-mist-subtle); }
+  .lsn-bar {
+    display: block; width: 7rem; height: 0.4rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--color-ink) 9%, transparent); overflow: hidden;
+  }
+  .dark .lsn-bar { background: color-mix(in srgb, var(--color-mist) 12%, transparent); }
+  .lsn-fill { display: block; height: 100%; border-radius: 999px; background: var(--color-purple); }
+
+  /* ── End of lesson ─────────────────────────────────────────────────── */
+  .lsn-end { display: grid; gap: 1rem; padding: 3rem 0 1rem; }
+
+  .lsn-practice {
+    display: grid; gap: 0.35rem; padding: 1.5rem 1.7rem; border-radius: 1.1rem;
+    text-decoration: none; color: #fff; background: var(--color-purple);
+    box-shadow: 0 14px 30px -16px var(--color-purple);
+    transition: transform .22s var(--ease-out-quart), box-shadow .22s;
+  }
+  .lsn-practice:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -18px var(--color-purple); }
+  .lsn-practice-t { font-size: 1.2rem; font-weight: 800; }
+  .lsn-practice-b { font-size: 0.95rem; opacity: 0.9; line-height: 1.6; }
+
+  .lsn-pair { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .lsn-pair { grid-template-columns: 1fr 1fr; } }
+  .lsn-step {
+    display: grid; gap: 0.3rem; padding: 1.15rem 1.3rem; border-radius: 1rem;
+    text-decoration: none; border: 1px solid var(--color-card-edge); background: var(--color-card);
+    transition: border-color .2s, transform .2s var(--ease-out-quart);
+  }
+  .dark .lsn-step { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  a.lsn-step:hover { border-color: var(--color-purple); transform: translateY(-2px); }
+  .lsn-step.is-empty { opacity: 0.55; }
+  .lsn-step-next { text-align: end; }
+  .lsn-step-k { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.02em; color: var(--color-ink-subtle); }
+  .dark .lsn-step-k { color: var(--color-mist-subtle); }
+  .lsn-step-t { font-size: 1.05rem; font-weight: 700; color: var(--color-ink); }
+  .dark .lsn-step-t { color: var(--color-mist); }
+
+  .lsn-index { justify-self: center; margin-top: 0.4rem; font-size: 0.95rem; font-weight: 700; color: var(--color-purple); }
+  .lsn-index:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lsn-practice, .lsn-practice:hover, a.lsn-step:hover { transform: none; transition: none; }
+  }
+</style>

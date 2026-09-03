@@ -1,6 +1,6 @@
 ---
 /**
- * Majalis al-I'rab — English marketing landing for the live-quiz feature,
+ * Majalis al-I'rab: English marketing landing for the live-quiz feature,
  * mirroring src/pages/majalis.astro. The join page stays /majlis (zero
  * friction for QR scans) and this is the only indexed EN majalis URL.
  *
@@ -9,7 +9,7 @@
  * questions, 20 players, 10 AI questions/day; Plus = 10 majalis, 50 questions,
  * 100 players, 100 AI questions/day; players join free without accounts.
  *
- * NOTE: the hosting and joining flow (/majlis/*) is Arabic-only — those pages
+ * NOTE: the hosting and joining flow (/majlis/*) is Arabic-only. Those pages
  * and their five components have no lang prop at all. The CTAs below therefore
  * say so plainly rather than dropping an English reader into an Arabic UI.
  * When the flow is translated, drop the `interfaceNote` line and the (in
@@ -43,7 +43,7 @@ const faqs = [
   { q: 'How is this different from general quiz tools like Kahoot?', a: 'Majalis al-I\'rab is built specifically for Arabic grammar: i\'rab question types such as fix-the-mistake and order-the-i\'rab, AI question generation from your own textbook, grammatical reasoning after every question, and a fully Arabic interface for students. You do not have to prepare questions in a general tool and then bend them into grammar.' },
   { q: 'Does it work on phones and computers?', a: 'Yes. The teacher hosts from a desktop browser or from the app, and players join from any device with a browser or from the app. Drafts, reports, and your question bank sync between web and app automatically.' },
   { q: 'Are results saved after a majlis ends?', a: 'Yes. Every finished majlis produces a full report in your majalis history: accuracy per question, the hardest and easiest questions, how players answered, and their final ranking. You can open it any time from the web or the app.' },
-  { q: 'I teach at a school or academy — is there an institution offer?', a: 'Yes, we give free teacher accounts to qualifying institutions. See the Irab for teachers page or email us at hello@irab.app.' },
+  { q: 'I teach at a school or academy. Is there an institution offer?', a: 'Yes, we give free teacher accounts to qualifying institutions. See the Irab for teachers page or email us at hello@irab.app.' },
 ];
 
 // The hosting flow is not translated yet; say so once, near the CTAs, instead

@@ -1,0 +1,72 @@
+---
+/**
+ * CheckQuestion: a small self-check placed directly after an explanation, so
+ * the learner applies the rule while it is still fresh rather than only at the
+ * end of the page.
+ *
+ * No scoring and no JavaScript: the answer is a <details>, which keeps the
+ * page static, crawlable and reliable. The value is in the pause before
+ * opening it, not in a score.
+ */
+interface Props {
+  q: string;
+  ar?: string;        // optional Arabic the question is about
+  answer: string;
+  why?: string;
+}
+const { q, ar, answer, why } = Astro.props;
+---
+<div class="chk">
+  <p class="chk-k">Check yourself</p>
+  <p class="chk-q">{q}</p>
+  {ar && <p class="chk-ar" lang="ar" dir="rtl">{ar}</p>}
+  <details class="chk-a">
+    <summary><span>Show the answer</span></summary>
+    <div class="chk-a-body">
+      <p class="chk-ans">{answer}</p>
+      {why && <p class="chk-why">{why}</p>}
+    </div>
+  </details>
+</div>
+
+<style is:global>
+  .chk {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 1rem;
+    border: 1px dashed color-mix(in srgb, var(--color-teal) 40%, transparent);
+    background: color-mix(in srgb, var(--color-teal) 5%, transparent);
+  }
+  .dark .chk { background: color-mix(in srgb, var(--color-teal) 10%, transparent); }
+  .chk-k {
+    margin: 0 0 0.5rem; font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-teal-deep);
+  }
+  .dark .chk-k { color: color-mix(in srgb, var(--color-teal) 85%, white); }
+  .chk-q { margin: 0; font-size: 1.05rem; line-height: 1.8; font-weight: 600; color: var(--color-ink); }
+  .dark .chk-q { color: var(--color-mist); }
+  .chk-ar {
+    font-family: var(--font-arabic); direction: rtl; unicode-bidi: isolate; text-align: right;
+    font-size: 1.55rem; line-height: 2.1; margin: 0.9rem 0 0; color: var(--color-ink);
+  }
+  .dark .chk-ar { color: var(--color-mist); }
+  .chk-a { margin-top: 1rem; }
+  .chk-a > summary {
+    cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.9rem; font-weight: 700; color: var(--color-teal-deep);
+  }
+  .dark .chk-a > summary { color: color-mix(in srgb, var(--color-teal) 88%, white); }
+  .chk-a > summary::-webkit-details-marker { display: none; }
+  .chk-a > summary::before {
+    content: ''; width: 0.5rem; height: 0.5rem; flex: none;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg); transition: transform .2s var(--ease-out-quart);
+  }
+  .chk-a[open] > summary::before { transform: rotate(45deg); }
+  .chk-a-body { margin-top: 0.85rem; display: grid; gap: 0.5rem; }
+  .chk-ans { margin: 0; font-size: 1.02rem; line-height: 1.85; font-weight: 600; color: var(--color-ink); }
+  .dark .chk-ans { color: var(--color-mist); }
+  .chk-why { margin: 0; font-size: 0.97rem; line-height: 1.85; color: var(--color-ink-muted); }
+  .dark .chk-why { color: var(--color-mist-muted); }
+  @media (prefers-reduced-motion: reduce) { .chk-a > summary::before { transition: none; } }
+</style>

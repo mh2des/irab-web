@@ -1,0 +1,62 @@
+---
+/**
+ * LessonObjective: what the learner will be able to do by the end, stated
+ * before any explanation, so the page opens with a purpose rather than a
+ * definition.
+ *
+ * It also carries the lesson-wide typography and rhythm overrides, scoped
+ * under `.en-lesson`. They live here because every lesson renders this
+ * component exactly once, at the top. The overrides exist because the shared
+ * ArticleSection is tuned for Arabic readers of Arabic prose; an English
+ * lesson carrying Arabic examples needs more air between blocks and a longer
+ * measure of line height to stay comfortable.
+ */
+interface Props {
+  items: string[];
+}
+const { items } = Astro.props;
+---
+<div class="obj">
+  <p class="obj-k">By the end of this lesson</p>
+  <ul class="obj-list">
+    {items.map((i) => <li>{i}</li>)}
+  </ul>
+</div>
+
+<style is:global>
+  .obj {
+    margin: 0 0 0.5rem;
+    padding: 1.6rem 1.8rem;
+    border-radius: 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--color-purple) 22%, transparent);
+    background: color-mix(in srgb, var(--color-purple) 5%, transparent);
+  }
+  .dark .obj { background: color-mix(in srgb, var(--color-purple) 11%, transparent); }
+  .obj-k {
+    margin: 0 0 0.85rem; font-size: 0.74rem; font-weight: 800;
+    letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-purple);
+  }
+  .obj-list { margin: 0; padding-inline-start: 1.15rem; display: grid; gap: 0.6rem; list-style: disc; }
+  .obj-list li { font-size: 1.05rem; line-height: 1.8; color: var(--color-ink); }
+  .dark .obj-list li { color: var(--color-mist); }
+  .obj-list li::marker { color: color-mix(in srgb, var(--color-purple) 60%, transparent); }
+
+  /* ── Lesson rhythm ─────────────────────────────────────────────────────
+     The shared article styles are tuned for Arabic prose read by Arabic
+     readers. An English lesson threaded with Arabic examples was reported as
+     feeling packed, so inside .en-lesson the measure opens up: more space
+     between sections, between paragraphs, and inside each line. */
+  .en-lesson .article-sec { padding-block: 2.25rem; }
+  @media (min-width: 768px) { .en-lesson .article-sec { padding-block: 3rem; } }
+  .en-lesson .prose-irab { line-height: 1.95; }
+  .en-lesson .prose-irab > * + * { margin-top: 1.5rem; }
+  .en-lesson .prose-irab li { margin-bottom: 0.8rem; line-height: 1.9; }
+  .en-lesson .prose-irab ul,
+  .en-lesson .prose-irab ol { margin: 1rem 0; padding-inline-start: 1.4rem; }
+  .en-lesson .sec-lead { line-height: 1.85; padding: 1.35rem 1.6rem; margin-bottom: 2rem; }
+  .en-lesson .article-sec h2 { margin-bottom: 0.2rem; }
+
+  /* Inline Arabic inside English prose still reads as a pill, but at a size
+     that does not get lost between English words. */
+  .en-lesson .prose-irab .ar { font-size: 1.2em; line-height: 2.1; }
+</style>

@@ -3,24 +3,28 @@
  * GOLDEN MASTER for the English duroos. The template every other English
  * lesson follows; change it here first, then propagate.
  *
- * This is the English EDITION of the Arabic lesson at /duroos/al-jumla-al-ismiyya,
- * not a translation of it. An English reader lacks two things a native reader
- * has — script fluency and case intuition — so the edition adds what the Arabic
- * does not need: a terminology section that refuses false friends, ʿāmil
- * (governance) theory made explicit, a contrast with English, and named
- * classical sources. It runs roughly 2.5x the Arabic.
+ * This is the English EDITION of /duroos/al-jumla-al-ismiyya, not a
+ * translation. An English reader lacks two things a native reader has, script
+ * fluency and case intuition, so the edition adds what the Arabic does not
+ * need: terminology that refuses false friends, 'amil (governance) theory
+ * made explicit, a contrast with English, and named classical sources.
  *
- * CONVENTIONS, fixed here for all 40 lessons:
- *  · Transliteration is academic (ALA-LC-ish): macrons for long vowels, ʿ for
- *    ʿayn (U+02BF), ʾ for hamza (U+02BE). fāʿil, mubtadaʾ, marfūʿ.
- *  · First mention of a term: Arabic script, then transliteration, then gloss.
- *  · Where the usual English gloss is misleading, say so explicitly.
- *  · Iʿrāb lines are given in full classical Arabic wording first, then decoded.
- *  · Sources are named with the Arabic title and its author.
+ * SHAPE (fixed for all 40): Objective, then Learn, See, Understand, Practice.
+ * Every explanation is followed by a worked ExampleCard, and every stretch of
+ * explanation by a CheckQuestion, so the learner applies a rule while it is
+ * still fresh instead of only at the end.
  *
- * Byline: this publishes under Mansoor's name and the site's methodology page
- * states lessons are written and reviewed before publishing — so it must be
- * read and approved before it goes live, exactly like the Arabic lessons.
+ * CONVENTIONS (fixed for all 40):
+ *  - Academic transliteration: macrons, 'ayn as U+02BF, hamza as U+02BE.
+ *  - First mention of a term: Arabic script, transliteration, then gloss.
+ *  - Where the usual English gloss misleads, say so outright.
+ *  - I'rab is given in full classical wording first, then decoded.
+ *  - Sources named with Arabic title and author.
+ *  - NO em dashes anywhere in the prose. Use commas, colons or full stops.
+ *
+ * Byline: this publishes under Mansoor's name, and the methodology page states
+ * lessons are written and reviewed before publishing. It must be read and
+ * approved before going live, exactly like the Arabic lessons.
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
@@ -29,172 +33,303 @@ import ArticleHero from '../../../components/ArticleHero.astro';
 import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
 import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleCta from '../../../components/ArticleCta.astro';
 import ArticleFaq from '../../../components/ArticleFaq.astro';
 import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-jumla-al-ismiyya';
+
+const objectives = [
+  'Tell a nominal sentence from a verbal one by looking at a single feature.',
+  'Name the two pillars and say what puts each of them in the nominative when the sentence contains no verb.',
+  'Recognise the three shapes the predicate can take, and find the link when it is a whole sentence.',
+  'Parse a nominal sentence aloud in the wording the classical books use.',
+];
 
 const faqs = [
-  { q: 'What are the two pillars of the nominal sentence?', a: 'The mubtadaʾ (the subject of predication) and the khabar (the predicate). Both are marfūʿ — in the nominative. In al-ʿilmu nūrun ("knowledge is light"), al-ʿilmu is mubtadaʾ marfūʿ and nūrun is khabar marfūʿ. Neither is governed by a verb, because there is no verb in the sentence at all.' },
-  { q: 'Why is there no word for "is" in an Arabic nominal sentence?', a: 'Arabic does not need a copula in the present affirmative. The relationship between mubtadaʾ and khabar is expressed by juxtaposition plus the shared nominative case, not by a linking verb. English must supply "is" in translation, but nothing in the Arabic corresponds to it — which is why looking for a verb to explain the case ending will always fail here.' },
-  { q: 'Can a nominal sentence begin with an indefinite noun?', a: 'The default is that the mubtadaʾ is definite, because a statement about something wholly unidentified conveys nothing. It may be indefinite when something makes it informative (a musawwigh): if it is described (rajulun karīmun zāranā), preceded by negation or a question (mā aḥadun ʿindanā), expresses a prayer (salāmun ʿalaykum), or the predicate is a fronted prepositional phrase (fī l-dāri rajulun).' },
-  { q: 'What are the three kinds of khabar?', a: 'Singular/simple (al-ʿilmu nūrun), a full sentence — nominal or verbal — which must contain a rābiṭ (a link, usually a pronoun) referring back to the mubtadaʾ (al-ḥadīqatu azhāruhā jamīlatun), and a shibh jumla: a prepositional phrase or an adverbial (al-kitābu fawqa l-ṭāwilati).' },
-  { q: 'What happens when kāna or inna enters the sentence?', a: 'They are nawāsikh — "abrogators" that cancel the default marfūʿ/marfūʿ pattern. Kāna and its sisters keep the first pillar marfūʿ (now called ism kāna) and put the predicate in the accusative (khabar kāna manṣūb). Inna and its sisters do the opposite: the first pillar becomes manṣūb (ism inna) and the predicate stays marfūʿ.' },
-  { q: 'Is al-ṭālibu kataba a nominal or a verbal sentence?', a: 'Nominal, in the Baṣran analysis this site follows. The classification depends on what the sentence opens with, not on whether a verb appears in it. Because the noun comes first it is a mubtadaʾ, and the verbal sentence that follows occupies the position of khabar (fī maḥall rafʿ khabar).' },
+  { q: 'What are the two pillars of the nominal sentence?', a: 'The mubtadaʾ (the subject of predication) and the khabar (the predicate). Both are marfūʿ, in the nominative. In al-ʿilmu nūrun, "knowledge is light", al-ʿilmu is mubtadaʾ marfūʿ and nūrun is khabar marfūʿ. Neither is governed by a verb, because the sentence contains no verb at all.' },
+  { q: 'Why is there no word for "is" in an Arabic nominal sentence?', a: 'Arabic needs no copula in the present affirmative. The relationship between mubtadaʾ and khabar is carried by juxtaposition plus the shared nominative case, not by a linking verb. English has to supply "is" when translating, but nothing in the Arabic corresponds to it, which is why looking for a verb to explain the endings will always fail here.' },
+  { q: 'Can a nominal sentence begin with an indefinite noun?', a: 'The default is a definite mubtadaʾ, because a statement about something wholly unidentified conveys nothing. It may be indefinite when something makes it informative (a musawwigh): if it is described (rajulun karīmun zāranā), preceded by negation or a question (mā aḥadun ʿindanā), expresses a prayer (salāmun ʿalaykum), or the predicate is a fronted prepositional phrase (fī l-dāri rajulun).' },
+  { q: 'What are the three kinds of khabar?', a: 'Single (al-ʿilmu nūrun); a full sentence, nominal or verbal, which must contain a rābiṭ, a link, usually a pronoun, referring back to the mubtadaʾ (al-ḥadīqatu azhāruhā jamīlatun); and a shibh jumla, a prepositional phrase or an adverbial (al-kitābu fawqa l-ṭāwilati).' },
+  { q: 'What happens when kāna or inna enters the sentence?', a: 'They are nawāsikh, abrogators that cancel the default marfūʿ and marfūʿ pattern. Kāna and its sisters keep the first pillar nominative (now called ism kāna) and put the predicate in the accusative. Inna and its sisters do the opposite: the first pillar becomes accusative (ism inna) and the predicate stays nominative.' },
+  { q: 'Is al-ṭālibu kataba a nominal or a verbal sentence?', a: 'Nominal, in the Baṣran analysis this site follows. The classification depends on what the sentence opens with, not on whether a verb appears in it. Because the noun comes first it is a mubtadaʾ, and the verbal sentence following it occupies the position of khabar (fī maḥall rafʿ khabar).' },
 ];
 ---
 <BaseLayout
   lang="en"
   title="The Nominal Sentence (al-jumla al-ismiyya) in Arabic Grammar · Irab App"
-  description="A full lesson on al-jumla al-ismiyya: its two pillars mubtadaʾ and khabar, why both are marfūʿ without any verb, the three kinds of khabar, fronting the predicate, indefinite subjects, and the abrogators — with complete classical iʿrāb and Quranic evidence."
+  description="A full lesson on al-jumla al-ismiyya: its two pillars mubtadaʾ and khabar, why both are marfūʿ without any verb, the three kinds of khabar, fronting the predicate, indefinite subjects, and the abrogators, with complete classical iʿrāb and Quranic evidence."
 >
-  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Nominal Sentence (al-jumla al-ismiyya)" description="A full lesson on al-jumla al-ismiyya: its two pillars mubtadaʾ and khabar, why both are marfūʿ without any verb, the three kinds of khabar, fronting the predicate, indefinite subjects, and the abrogators — with complete classical iʿrāb and Quranic evidence." />
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Nominal Sentence (al-jumla al-ismiyya)" description="A full lesson on al-jumla al-ismiyya: its two pillars mubtadaʾ and khabar, why both are marfūʿ without any verb, the three kinds of khabar, fronting the predicate, indefinite subjects, and the abrogators, with complete classical iʿrāb and Quranic evidence." />
   <Nav lang="en" />
 
-  <ArticleHero
-    lang="en"
-    title="The Nominal Sentence"
-    summary="Arabic builds statements in two ways, and everything in naḥw follows from which one you are looking at. The nominal sentence — al-jumla al-ismiyya — opens with a noun and rests on two pillars, the mubtadaʾ and the khabar, both in the nominative. This lesson explains what puts them there when there is no verb in sight, the three shapes the predicate can take, when the order reverses, and what happens when an abrogator enters. Every rule is followed by a complete iʿrāb in the wording the classical books use."
-  />
-  <Byline lang="en" kind="lesson" />
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Nominal Sentence"
+      summary="Arabic builds statements in two ways, and everything in naḥw follows from which one you are looking at. The nominal sentence, al-jumla al-ismiyya, opens with a noun and rests on two pillars: the mubtadaʾ and the khabar, both in the nominative. This lesson explains what puts them there when there is no verb in sight, the three shapes the predicate can take, when the order reverses, and what happens when an abrogator enters."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
 
-  <ArticleSection
-    lang="en"
-    id="terms"
-    title="The terms, before anything else"
-    lead="Half the difficulty English speakers have with Arabic grammar comes from English labels that almost fit. Fix the vocabulary first and the rules become straightforward."
-  >
-    <ul>
-      <li><strong>الجملة الاسمية</strong> — <em>al-jumla al-ismiyya</em>, "the nominal sentence": a sentence whose opening element is a noun.</li>
-      <li><strong>المبتدأ</strong> — <em>al-mubtadaʾ</em>, literally "that which is begun with". Usually glossed <em>subject</em>. <strong>Handle with care:</strong> English also calls the doer of a verb the "subject", but Arabic gives that a different name entirely (<em>fāʿil</em>) in a different sentence type. A mubtadaʾ is not a fāʿil, and the two are never interchangeable.</li>
-      <li><strong>الخبر</strong> — <em>al-khabar</em>, "the report, the information". Glossed <em>predicate</em>. It is what you are saying <em>about</em> the mubtadaʾ.</li>
-      <li><strong>مرفوع</strong> — <em>marfūʿ</em>, "raised": the nominative state. Its default marker is <em>ḍamma</em> (‑u).</li>
-      <li><strong>عامل</strong> — <em>ʿāmil</em>, "governor, operator": whatever causes a word to take the case it takes. Governance is the engine of the whole system, and section three is about the one that operates here.</li>
-      <li><strong>رابط</strong> — <em>rābiṭ</em>, "link": the element that ties a sentence-predicate back to its subject.</li>
-      <li><strong>نواسخ</strong> — <em>nawāsikh</em>, "abrogators": words that enter the nominal sentence and overturn its default case pattern.</li>
-    </ul>
-    <p>Throughout these lessons Arabic terms are given in script, then transliterated, then glossed. The transliteration is academic — macrons mark long vowels, <em>ʿ</em> is ʿayn and <em>ʾ</em> is hamza — so that every form can be read back into Arabic without ambiguity.</p>
-  </ArticleSection>
+    <ArticleSection
+      lang="en"
+      id="terms"
+      title="The terms, before anything else"
+      lead="Half the difficulty English speakers have with Arabic grammar comes from English labels that almost fit. Fix the vocabulary first and the rules become straightforward."
+    >
+      <LessonObjective items={objectives} />
+      <ul>
+        <li><strong>الجملة الاسمية</strong>, <em>al-jumla al-ismiyya</em>, "the nominal sentence": a sentence whose opening element is a noun.</li>
+        <li><strong>المبتدأ</strong>, <em>al-mubtadaʾ</em>, literally "that which is begun with", usually glossed <em>subject</em>. <strong>Handle with care:</strong> English also calls the doer of a verb the "subject", but Arabic gives that a different name entirely, <em>fāʿil</em>, in a different sentence type. A mubtadaʾ is not a fāʿil, and the two are never interchangeable.</li>
+        <li><strong>الخبر</strong>, <em>al-khabar</em>, "the report, the information", glossed <em>predicate</em>. It is what you are saying <em>about</em> the mubtadaʾ.</li>
+        <li><strong>مرفوع</strong>, <em>marfūʿ</em>, "raised": the nominative state. Its default marker is <em>ḍamma</em>, the vowel ‑u.</li>
+        <li><strong>عامل</strong>, <em>ʿāmil</em>, "governor, operator": whatever causes a word to take the case it takes. Governance is the engine of the whole system.</li>
+        <li><strong>رابط</strong>, <em>rābiṭ</em>, "link": the element tying a sentence-predicate back to its subject.</li>
+        <li><strong>نواسخ</strong>, <em>nawāsikh</em>, "abrogators": words that enter the nominal sentence and overturn its default case pattern.</li>
+      </ul>
+      <p>Arabic terms are given in script, then transliterated, then glossed. The transliteration is academic: macrons mark long vowels, <em>ʿ</em> is ʿayn and <em>ʾ</em> is hamza, so every form can be read back into Arabic without ambiguity.</p>
+    </ArticleSection>
 
-  <ArticleSection
-    lang="en"
-    id="definition"
-    title="What makes a sentence nominal"
-    lead="A sentence is nominal when the first of its original elements is a noun. That is the entire test — and it is a test about form, not about meaning."
-  >
-    <p>The grammarians classify by the <em>ṣadr</em>, the opening, of the sentence. <span class="ar" lang="ar" dir="rtl">مُحَمَّدٌ مُسَافِرٌ</span> — <em>Muḥammadun musāfirun</em>, "Muhammad is travelling" — is nominal because it opens with a noun.</p>
-    <p>The case that surprises English speakers is <span class="ar" lang="ar" dir="rtl">الطَّالِبُ كَتَبَ الدَّرْسَ</span> — <em>al-ṭālibu kataba l-darsa</em>, "the student wrote the lesson". There is plainly a verb in it, yet the sentence is <strong>nominal</strong>, because a noun came first. The noun is therefore a mubtadaʾ, and the verbal sentence following it occupies the slot of the khabar. Compare <span class="ar" lang="ar" dir="rtl">كَتَبَ الطَّالِبُ الدَّرْسَ</span> — <em>kataba l-ṭālibu l-darsa</em> — which is <a href="/en/duroos/al-jumla-al-filiyya">verbal</a>, opens with the verb, and in which <em>al-ṭālibu</em> is a fāʿil rather than a mubtadaʾ. Same words, same meaning in translation, two different analyses.</p>
-    <p>This classification is Baṣran, and it is the one the mainstream tradition and this site follow. The Kūfans analysed fronted-noun sentences differently in places; where such disagreements affect the iʿrāb you will meet them in the relevant lesson.</p>
-    <p>Semantically the tradition observes that the nominal sentence tends to express <em>thubūt</em> — stability, a settled state — while the verbal sentence expresses <em>tajaddud</em>, renewal and occurrence. This is a tendency worth knowing, not a rule to parse by. Parse by the opening element.</p>
-  </ArticleSection>
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: what makes a sentence nominal"
+      lead="A sentence is nominal when the first of its original elements is a noun. That is the whole test, and it is a test about form, not about meaning."
+    >
+      <p>The grammarians classify by the <em>ṣadr</em>, the opening of the sentence.</p>
 
-  <ArticleSection
-    lang="en"
-    id="the-two-pillars"
-    title="The two pillars, and what raises them"
-    lead="Both mubtadaʾ and khabar are marfūʿ. The interesting question — the one most textbooks skip — is what puts them in the nominative when the sentence contains no verb to govern anything."
-  >
-    <p>Take <span class="ar" lang="ar" dir="rtl">الْعِلْمُ نُورٌ</span> — <em>al-ʿilmu nūrun</em>, "knowledge is light".</p>
-    <p><strong>The iʿrāb, in the classical wording:</strong> <span class="ar" lang="ar" dir="rtl">العلمُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة على آخره، نورٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة على آخره.</span></p>
-    <p><strong>Decoded:</strong> <em>al-ʿilmu</em> is mubtadaʾ, marfūʿ, and the marker of its nominative is the visible ḍamma on its final letter; <em>nūrun</em> is khabar, marfūʿ, and the marker of its nominative is the visible ḍamma on its final letter. Notice the shape of the statement: what the word <em>is</em>, what case it is <em>in</em>, and <em>which marker</em> shows that case, plus why that marker and not another. Every iʿrāb line you will ever read has these parts.</p>
-    <p>Now the governance question. In a verbal sentence the verb is the ʿāmil — it raises its fāʿil. Here there is no verb. The grammarians' answer is that the mubtadaʾ is raised by <em>al-ibtidāʾ</em> itself: by the bare fact of being the element the sentence is built on. This is a <em>ʿāmil maʿnawī</em>, an abstract governor rather than a word you can point to. The khabar in turn is raised by the mubtadaʾ. So the chain runs: initiality raises the subject, and the subject raises the predicate.</p>
-    <p>This matters practically. Students who have learned "the verb causes the endings" go looking for a verb in <em>al-ʿilmu nūrun</em>, fail to find one, and guess. There is nothing to find: the governor here is a relationship, not a word.</p>
-    <p>A second example, with a sound masculine plural: <span class="ar" lang="ar" dir="rtl">الْمُؤْمِنُونَ صَادِقُونَ</span> — <em>al-muʾminūna ṣādiqūna</em>, "the believers are truthful". <strong>Iʿrāb:</strong> <span class="ar" lang="ar" dir="rtl">المؤمنون مبتدأ مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم، صادقون خبر مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم.</span> Both are still marfūʿ, but the marker is <em>wāw</em> rather than ḍamma, because a sound masculine plural takes letters as case markers instead of vowels — see <a href="/en/duroos/alamat-al-irab">the markers of iʿrāb</a>. The case never changed; only its outward sign did.</p>
-  </ArticleSection>
+      <ExampleCard
+        label="Example 1"
+        ar="مُحَمَّدٌ مُسَافِرٌ"
+        focus="مُحَمَّدٌ"
+        translit="Muḥammadun musāfirun"
+        en="Muhammad is travelling."
+        irab="محمدٌ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة على آخره، مسافرٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة على آخره."
+        note="Nominal, because the opening element is a noun. Both pillars carry ḍamma, and no verb appears anywhere in the sentence."
+      />
 
-  <ArticleSection
-    lang="en"
-    id="english-contrast"
-    title="What English can and cannot lend you"
-    lead="English has almost no case system left, but the fragment it retains is exactly the right analogy — and there is one habit it will actively mislead you into."
-  >
-    <p>English marks case on pronouns only: <em>he</em> versus <em>him</em>, <em>who</em> versus <em>whom</em>. Nobody thinks "him" means something different from "he"; it is the same word wearing a different grammatical role. Arabic simply does openly, on nearly every noun, what English does on a handful of pronouns. When you read <em>al-ʿilmu</em> and later <em>al-ʿilma</em>, that final vowel is doing the work <em>he/him</em> does.</p>
-    <p>The habit to unlearn is supplying "is". "Knowledge <strong>is</strong> light" needs a verb in English; the Arabic has none, and no word in it corresponds to "is". If you look for the copula you will invent a governor that is not there. The equational relationship is carried by the two nouns standing together, both in the nominative.</p>
-    <p>Learners who know Latin, German, Greek or Russian have a real advantage here and should lean on it: marfūʿ ≈ nominative, manṣūb ≈ accusative, majrūr ≈ genitive. The correspondence is close enough to be useful and loose enough to be dangerous, so treat it as a bridge to intuition rather than a definition.</p>
-  </ArticleSection>
+      <p>The case that surprises English speakers is a sentence that plainly contains a verb and is still nominal.</p>
 
-  <ArticleCta lang="en">
-    <span slot="title">Parse a sentence of your own.</span>
-    Paste any Arabic nominal sentence into the analyzer and watch this lesson applied word by word: the mubtadaʾ and its marker, the kind of khabar, and the link if the predicate is a sentence.
-  </ArticleCta>
+      <ExampleCard
+        label="Example 2, the one that catches people out"
+        ar="الطَّالِبُ كَتَبَ الدَّرْسَ"
+        focus="الطَّالِبُ"
+        translit="al-ṭālibu kataba l-darsa"
+        en="The student wrote the lesson."
+        irab="الطالبُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، كتبَ فعل ماضٍ مبني على الفتح، والفاعل ضمير مستتر تقديره هو، الدرسَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، والجملة الفعلية في محل رفع خبر المبتدأ."
+        note="There is a verb here, yet the sentence is nominal, because a noun came first. The noun is therefore a mubtadaʾ, and the whole verbal sentence after it occupies the slot of the khabar. Compare kataba l-ṭālibu l-darsa, which opens with the verb and is verbal, and in which al-ṭālibu is a fāʿil, not a mubtadaʾ. Same words, same English translation, two different analyses."
+      />
 
-  <ArticleSection
-    lang="en"
-    id="types-of-khabar"
-    title="The three shapes of the khabar"
-    lead="The predicate can be a single word, a whole sentence, or a prepositional or adverbial phrase. Recognising which one you are looking at is most of the work of parsing a nominal sentence."
-  >
-    <p><strong>1. Mufrad (single).</strong> <span class="ar" lang="ar" dir="rtl">الصِّدْقُ فَضِيلَةٌ</span> — <em>al-ṣidqu faḍīlatun</em>, "truthfulness is a virtue". <strong>Iʿrāb:</strong> <span class="ar" lang="ar" dir="rtl">الصدقُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، فضيلةٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة.</span> Note that <em>mufrad</em> here is a technical term meaning "not a sentence and not a phrase" — a dual or a plural still counts as mufrad in this sense.</p>
-    <p><strong>2. Jumla (a sentence).</strong> <span class="ar" lang="ar" dir="rtl">الْحَدِيقَةُ أَزْهَارُهَا جَمِيلَةٌ</span> — <em>al-ḥadīqatu azhāruhā jamīlatun</em>, "the garden, its flowers are beautiful". <strong>Iʿrāb:</strong> <span class="ar" lang="ar" dir="rtl">الحديقةُ مبتدأ أول مرفوع، أزهارُ مبتدأ ثانٍ مرفوع وهو مضاف، والهاء ضمير متصل مبني في محل جر بالإضافة، جميلةٌ خبر المبتدأ الثاني مرفوع، والجملة الاسمية من المبتدأ الثاني وخبره في محل رفع خبر المبتدأ الأول، والرابط الضمير.</span></p>
-    <p><strong>Decoded:</strong> a complete nominal sentence (<em>azhāruhā jamīlatun</em>) is itself serving as the predicate of <em>al-ḥadīqatu</em>. The phrase <em>fī maḥall rafʿ</em> — "in the position of nominative" — is how the tradition assigns a case to something that cannot physically carry a vowel: a whole sentence has no final letter to mark, but it occupies a slot that is nominative. And the sentence-predicate must contain a <strong>rābiṭ</strong> tying it to the subject; here it is the pronoun <em>‑hā</em> in <em>azhāruhā</em>, "its flowers". Without that link the two halves would be unrelated statements sitting side by side.</p>
-    <p><strong>3. Shibh jumla (quasi-sentence).</strong> <span class="ar" lang="ar" dir="rtl">الْكِتَابُ فَوْقَ الطَّاوِلَةِ</span> — <em>al-kitābu fawqa l-ṭāwilati</em>, "the book is on the table". <strong>Iʿrāb:</strong> <span class="ar" lang="ar" dir="rtl">الكتابُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، فوقَ ظرف مكان منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، الطاولةِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة، وشبه الجملة متعلق بمحذوف خبر.</span></p>
-    <p><strong>Decoded, and this is the subtle one:</strong> the tradition does not say the phrase <em>is</em> the predicate. It says the phrase is <em>mutaʿalliq bi-maḥdhūf khabar</em> — "attached to an omitted predicate". The reasoning: a predicate must be a noun or a sentence, and a prepositional phrase is neither, so an implied predicate such as <em>kāʾinun</em> ("being, located") is posited and the phrase attaches to it. English translations quietly collapse this, but the omitted element is what the analysis actually rests on, and it will reappear in many later lessons.</p>
-  </ArticleSection>
+      <p>This classification is Baṣran, and it is the one the mainstream tradition and this site follow. The Kūfans analysed fronted-noun sentences differently in places; where such disagreements affect the iʿrāb you will meet them in the relevant lesson.</p>
+      <p>Semantically the tradition observes that the nominal sentence tends to express <em>thubūt</em>, a settled state, while the verbal sentence expresses <em>tajaddud</em>, renewal and occurrence. That is a tendency worth knowing, not a rule to parse by. Parse by the opening element.</p>
 
-  <ArticleSection
-    lang="en"
-    id="word-order"
-    title="Reversing the order, and starting with an indefinite"
-    lead="The default is mubtadaʾ then khabar. The order may reverse — sometimes optionally, sometimes obligatorily — and one of those obligatory cases is also what licenses an indefinite subject."
-  >
-    <p>Fronting the khabar is <strong>obligatory</strong> in three well-known situations:</p>
-    <ul>
-      <li>The khabar is a shibh jumla and the mubtadaʾ is indefinite: <span class="ar" lang="ar" dir="rtl">فِي الدَّارِ رَجُلٌ</span> — <em>fī l-dāri rajulun</em>, "in the house is a man".</li>
-      <li>The khabar has inherent right to initial position, such as an interrogative: <span class="ar" lang="ar" dir="rtl">أَيْنَ الْكِتَابُ؟</span> — <em>ayna l-kitābu</em>, "where is the book?"</li>
-      <li>The mubtadaʾ carries a pronoun referring to something inside the khabar: <span class="ar" lang="ar" dir="rtl">فِي الدَّارِ صَاحِبُهَا</span> — <em>fī l-dāri ṣāḥibuhā</em>, "in the house is its owner". Leaving the order unreversed would make the pronoun refer forward to something not yet mentioned.</li>
-    </ul>
-    <p><strong>Iʿrāb of the first:</strong> <span class="ar" lang="ar" dir="rtl">في حرف جر مبني على السكون لا محل له من الإعراب، الدارِ اسم مجرور بفي وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بمحذوف خبر مقدم، رجلٌ مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة.</span> — <em>fī</em> is a preposition, indeclinable, with no position in iʿrāb; <em>al-dāri</em> is genitive by it; the prepositional phrase attaches to an omitted <strong>fronted</strong> predicate; and <em>rajulun</em> is the <strong>postponed</strong> subject, nominative.</p>
-    <p>Which brings us to indefinite subjects. The default is a definite mubtadaʾ, for a plain reason: a statement about something entirely unidentified conveys nothing — "a man is tall" tells a listener nothing at all. An indefinite is permitted when something makes it informative, and the tradition catalogues these licensors (<em>musawwighāt</em>):</p>
-    <ul>
-      <li><strong>It is described:</strong> <span class="ar" lang="ar" dir="rtl">رَجُلٌ كَرِيمٌ زَارَنَا</span> — <em>rajulun karīmun zāranā</em>, "a generous man visited us".</li>
-      <li><strong>It follows negation or a question:</strong> <span class="ar" lang="ar" dir="rtl">مَا أَحَدٌ عِنْدَنَا</span> — <em>mā aḥadun ʿindanā</em>, "no one is with us".</li>
-      <li><strong>It expresses a prayer:</strong> <span class="ar" lang="ar" dir="rtl">سَلَامٌ عَلَيْكُمْ</span> — <em>salāmun ʿalaykum</em>, "peace be upon you".</li>
-      <li><strong>The predicate is fronted:</strong> the <em>fī l-dāri rajulun</em> case above.</li>
-    </ul>
-  </ArticleSection>
+      <CheckQuestion
+        q="Is this sentence nominal or verbal, and what is the grammatical role of the first word?"
+        ar="الْمُعَلِّمُونَ يَشْرَحُونَ الدَّرْسَ"
+        answer="Nominal. al-muʿallimūna is a mubtadaʾ, not a fāʿil."
+        why="A noun opens the sentence, so the sentence is nominal regardless of the verb that follows. The verbal sentence yashraḥūna l-darsa then sits in the position of khabar. Had the verb come first, yashraḥu l-muʿallimūna l-darsa, the noun would have been a fāʿil."
+      />
+    </ArticleSection>
 
-  <ArticleSection
-    lang="en"
-    id="nawasikh"
-    title="The abrogators: when the pattern is overturned"
-    lead="Certain verbs and particles enter the nominal sentence and cancel its default marfūʿ/marfūʿ pattern. They are called nawāsikh — abrogators — and the two families pull in opposite directions."
-  >
-    <p><strong>Kāna and its sisters</strong> leave the first pillar nominative and put the predicate in the accusative. <span class="ar" lang="ar" dir="rtl">كَانَ الْجَوُّ صَحْوًا</span> — <em>kāna l-jawwu ṣaḥwan</em>, "the weather was clear". <strong>Iʿrāb:</strong> <span class="ar" lang="ar" dir="rtl">كان فعل ماضٍ ناقص مبني على الفتح، الجوُّ اسم كان مرفوع وعلامة رفعه الضمة الظاهرة، صحوًا خبر كان منصوب وعلامة نصبه الفتحة الظاهرة.</span> Note the renaming: the pillars are no longer "mubtadaʾ and khabar" but <em>ism kāna</em> and <em>khabar kāna</em>. Kāna is called <em>nāqiṣ</em>, "incomplete", because unlike an ordinary verb it does not describe an event — it contributes tense and requires a predicate to complete it.</p>
-    <p><strong>Inna and its sisters</strong> do the reverse: accusative on the first pillar, nominative on the predicate. <span class="ar" lang="ar" dir="rtl">إِنَّ اللهَ غَفُورٌ رَحِيمٌ</span> — <em>inna Llāha ghafūrun raḥīmun</em>, "indeed Allah is Forgiving, Merciful". <strong>Iʿrāb:</strong> <span class="ar" lang="ar" dir="rtl">إنّ حرف توكيد ونصب مبني على الفتح لا محل له من الإعراب، اللهَ لفظ الجلالة اسم إنّ منصوب وعلامة نصبه الفتحة الظاهرة، غفورٌ خبر إنّ مرفوع وعلامة رفعه الضمة الظاهرة، رحيمٌ خبر ثانٍ مرفوع.</span></p>
-    <p>The word <em>nāsikh</em> is worth pausing on: its root means to cancel or supersede. The grammarians are saying the sentence still <em>is</em> a nominal sentence with two pillars — the abrogator has overturned the case ruling on them, not rebuilt the sentence. Each family has its own conditions and meanings, treated in <a href="/en/duroos/kana-wa-akhawatuha">kāna and its sisters</a> and <a href="/en/duroos/inna-wa-akhawatuha">inna and its sisters</a>.</p>
-  </ArticleSection>
+    <ArticleSection
+      lang="en"
+      id="the-two-pillars"
+      title="Understand: what raises the two pillars"
+      lead="Both mubtadaʾ and khabar are marfūʿ. The interesting question, and the one most textbooks skip, is what puts them in the nominative when the sentence contains no verb to govern anything."
+    >
+      <ExampleCard
+        label="The base case"
+        ar="الْعِلْمُ نُورٌ"
+        focus={['الْعِلْمُ', 'نُورٌ']}
+        translit="al-ʿilmu nūrun"
+        en="Knowledge is light."
+        irab="العلمُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة على آخره، نورٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة على آخره."
+        note="Notice the shape of the statement: what the word is, what case it is in, which marker shows that case, and why that marker and not another. Every iʿrāb line you will ever read has these parts."
+      />
 
-  <ArticleSection
-    lang="en"
-    id="common-mistakes"
-    title="Where English speakers go wrong"
-    lead="Four errors account for most mistakes on this chapter, and three of them come specifically from carrying English assumptions across."
-  >
-    <ul>
-      <li><strong>Putting the khabar in the accusative.</strong> Writing <em>al-ʿilmu nūran</em> by analogy with an object. The predicate is nominative always, unless an abrogator has changed it. There is no verb here to take an object.</li>
-      <li><strong>Hunting for the missing "is".</strong> Because English needs a copula, learners look for a governor that does not exist and then cannot explain the endings. The governor is <em>al-ibtidāʾ</em>, an abstract one.</li>
-      <li><strong>Forgetting the rābiṭ.</strong> When the predicate is a sentence it must contain a pronoun — visible or implied — pointing back at the subject. Without it you have two unrelated statements.</li>
-      <li><strong>Confusing a postponed mubtadaʾ with a fāʿil.</strong> In <span class="ar" lang="ar" dir="rtl">فِي الصَّفِّ طَالِبٌ</span> — <em>fī l-ṣaffi ṭālibun</em>, "in the class is a student" — there is no verb in the sentence at all, so <em>ṭālibun</em> cannot possibly be a fāʿil. It is a postponed mubtadaʾ. A fāʿil requires a verb; no verb, no fāʿil, ever.</li>
-    </ul>
-    <p>The cure for all four is the same: parse real sentences, out loud, in the full classical wording, until the shape of the iʿrāb line is automatic. Read the <a href="/en/irab">iʿrāb reference</a> for that wording, then take sentences from anything you are reading and parse them before checking yourself against the analyzer.</p>
-  </ArticleSection>
+      <p>Now the governance question. In a verbal sentence the verb is the ʿāmil: it raises its fāʿil. Here there is no verb. The grammarians' answer is that the mubtadaʾ is raised by <em>al-ibtidāʾ</em> itself, by the bare fact of being the element the sentence is built on. This is a <em>ʿāmil maʿnawī</em>, an abstract governor rather than a word you can point to. The khabar in turn is raised by the mubtadaʾ. So the chain runs: initiality raises the subject, and the subject raises the predicate.</p>
+      <p>This matters practically. Students who have learned that "the verb causes the endings" go looking for a verb in <em>al-ʿilmu nūrun</em>, fail to find one, and guess. There is nothing to find. The governor here is a relationship, not a word.</p>
 
-  <ArticleSection
-    lang="en"
-    id="sources"
-    title="Sources"
-    lead="This lesson follows the mainstream Baṣran analysis as presented in the standard teaching texts. Where they differ from one another, the difference is noted in the lesson itself."
-  >
-    <ul>
-      <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span> (<em>Qaṭr al-Nadā wa-Ball al-Ṣadā</em>) and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span> (<em>Awḍaḥ al-Masālik</em>) — the chapters on the mubtadaʾ and khabar, the licensors of an indefinite subject, and obligatory fronting.</li>
-      <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span> (his commentary on Ibn Mālik's <em>Alfiyya</em>) — on governance by al-ibtidāʾ and on the omitted predicate behind a quasi-sentence.</li>
-      <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span> — for the finer disagreements over what exactly raises the khabar.</li>
-      <li>Quranic iʿrāb on this site is quoted from <strong>Maḥmūd Ṣāfī</strong>, <span class="ar" lang="ar" dir="rtl">الجدول في إعراب القرآن وصرفه وبيانه</span>, as set out on our <a href="/en/methodology">methodology page</a>.</li>
-    </ul>
-  </ArticleSection>
+      <ExampleCard
+        label="The same case, a different marker"
+        ar="الْمُؤْمِنُونَ صَادِقُونَ"
+        focus={['الْمُؤْمِنُونَ', 'صَادِقُونَ']}
+        translit="al-muʾminūna ṣādiqūna"
+        en="The believers are truthful."
+        irab="المؤمنون مبتدأ مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم، صادقون خبر مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم."
+        note="Both are still marfūʿ, but the marker is wāw rather than ḍamma, because a sound masculine plural takes letters as case markers instead of vowels. The case never changed; only its outward sign did."
+      />
 
-  <AyatExamples slug="al-jumla-al-ismiyya" lang="en" />
+      <p>The markers themselves, original and substitute, are the subject of <a href="/en/duroos/alamat-al-irab">the markers of iʿrāb</a>.</p>
+    </ArticleSection>
 
-  <ArticleFaq lang="en" items={faqs} />
+    <ArticleSection
+      lang="en"
+      id="english-contrast"
+      title="What English can and cannot lend you"
+      lead="English has almost no case system left, but the fragment it retains is exactly the right analogy, and there is one habit it will actively mislead you into."
+    >
+      <p>English marks case on pronouns only: <em>he</em> against <em>him</em>, <em>who</em> against <em>whom</em>. Nobody thinks "him" means something different from "he"; it is the same word wearing a different grammatical role. Arabic simply does openly, on nearly every noun, what English does on a handful of pronouns. When you read <em>al-ʿilmu</em> and later <em>al-ʿilma</em>, that final vowel is doing the work that <em>he</em> and <em>him</em> do.</p>
+      <p>The habit to unlearn is supplying "is". "Knowledge <strong>is</strong> light" needs a verb in English; the Arabic has none, and no word in it corresponds to "is". If you go looking for the copula you will invent a governor that is not there. The equational relationship is carried by two nouns standing together, both in the nominative.</p>
+      <p>Learners who know Latin, German, Greek or Russian have a real advantage and should lean on it: marfūʿ is close to nominative, manṣūb to accusative, majrūr to genitive. The correspondence is close enough to be useful and loose enough to be dangerous, so treat it as a bridge to intuition rather than a definition.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="types-of-khabar"
+      title="See: the three shapes of the khabar"
+      lead="The predicate can be a single word, a whole sentence, or a prepositional or adverbial phrase. Recognising which one you are looking at is most of the work of parsing a nominal sentence."
+    >
+      <p><strong>1. Mufrad, a single word.</strong> Note that <em>mufrad</em> here is technical, meaning "not a sentence and not a phrase". A dual or a plural still counts as mufrad in this sense.</p>
+
+      <ExampleCard
+        label="Khabar mufrad"
+        ar="الصِّدْقُ فَضِيلَةٌ"
+        focus="فَضِيلَةٌ"
+        translit="al-ṣidqu faḍīlatun"
+        en="Truthfulness is a virtue."
+        irab="الصدقُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، فضيلةٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة."
+      />
+
+      <p><strong>2. Jumla, a whole sentence.</strong> A sentence-predicate must contain a <strong>rābiṭ</strong> tying it to the subject, or the two halves are unrelated statements sitting side by side.</p>
+
+      <ExampleCard
+        label="Khabar jumla"
+        ar="الْحَدِيقَةُ أَزْهَارُهَا جَمِيلَةٌ"
+        focus="أَزْهَارُهَا"
+        translit="al-ḥadīqatu azhāruhā jamīlatun"
+        en="The garden, its flowers are beautiful."
+        irab="الحديقةُ مبتدأ أول مرفوع، أزهارُ مبتدأ ثانٍ مرفوع وهو مضاف، والهاء ضمير متصل مبني في محل جر بالإضافة، جميلةٌ خبر المبتدأ الثاني مرفوع، والجملة الاسمية من المبتدأ الثاني وخبره في محل رفع خبر المبتدأ الأول، والرابط الضمير."
+        note="A complete nominal sentence is itself serving as the predicate of al-ḥadīqatu. The phrase fī maḥall rafʿ, 'in the position of nominative', is how the tradition assigns a case to something that cannot carry a vowel: a whole sentence has no final letter to mark, but it occupies a slot that is nominative. The link here is the pronoun -hā in azhāruhā, 'its flowers'."
+      />
+
+      <p><strong>3. Shibh jumla, a quasi-sentence.</strong> This is the subtle one, and the analysis is not what the English translation suggests.</p>
+
+      <ExampleCard
+        label="Khabar shibh jumla"
+        ar="الْكِتَابُ فَوْقَ الطَّاوِلَةِ"
+        focus="فَوْقَ الطَّاوِلَةِ"
+        translit="al-kitābu fawqa l-ṭāwilati"
+        en="The book is on the table."
+        irab="الكتابُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، فوقَ ظرف مكان منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، الطاولةِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة، وشبه الجملة متعلق بمحذوف خبر."
+        note="The tradition does not say the phrase is the predicate. It says the phrase is mutaʿalliq bi-maḥdhūf khabar, 'attached to an omitted predicate'. The reasoning: a predicate must be a noun or a sentence, and a prepositional phrase is neither, so an implied predicate such as kāʾinun, 'being, located', is posited and the phrase attaches to it. English translations quietly collapse this, but the omitted element is what the analysis rests on, and it reappears in many later lessons."
+      />
+
+      <CheckQuestion
+        q="Which of the three kinds of khabar is this, and what is the link?"
+        ar="الْمُسْلِمُ أَخْلَاقُهُ حَسَنَةٌ"
+        answer="A sentence-predicate (khabar jumla). The link is the attached pronoun -hu in akhlāquhu."
+        why="akhlāquhu ḥasanatun is itself a complete nominal sentence occupying the position of khabar for al-muslimu, fī maḥall rafʿ. Remove the pronoun and nothing would tie the two halves together."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="word-order"
+      title="Reversing the order, and starting with an indefinite"
+      lead="The default is mubtadaʾ then khabar. The order may reverse, sometimes optionally and sometimes obligatorily, and one of those obligatory cases is also what licenses an indefinite subject."
+    >
+      <p>Fronting the khabar is <strong>obligatory</strong> in three well known situations:</p>
+      <ul>
+        <li>The khabar is a shibh jumla and the mubtadaʾ is indefinite.</li>
+        <li>The khabar has an inherent right to initial position, such as an interrogative: <span class="ar" lang="ar" dir="rtl">أَيْنَ الْكِتَابُ؟</span>, <em>ayna l-kitābu</em>, "where is the book?"</li>
+        <li>The mubtadaʾ carries a pronoun referring to something inside the khabar: <span class="ar" lang="ar" dir="rtl">فِي الدَّارِ صَاحِبُهَا</span>, <em>fī l-dāri ṣāḥibuhā</em>, "in the house is its owner". Leaving the order unreversed would make the pronoun point forward to something not yet mentioned.</li>
+      </ul>
+
+      <ExampleCard
+        label="Fronted predicate, postponed subject"
+        ar="فِي الدَّارِ رَجُلٌ"
+        focus="رَجُلٌ"
+        translit="fī l-dāri rajulun"
+        en="In the house is a man."
+        irab="في حرف جر مبني على السكون لا محل له من الإعراب، الدارِ اسم مجرور بفي وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بمحذوف خبر مقدم، رجلٌ مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="The prepositional phrase attaches to an omitted fronted predicate, and rajulun is the postponed subject, still nominative. This is also the sentence that licenses an indefinite subject."
+      />
+
+      <p>Which brings us to indefinite subjects. The default is a definite mubtadaʾ, for a plain reason: a statement about something entirely unidentified conveys nothing. "A man is tall" tells a listener nothing at all. An indefinite is permitted when something makes it informative, and the tradition catalogues these licensors, <em>musawwighāt</em>:</p>
+      <ul>
+        <li><strong>It is described:</strong> <span class="ar" lang="ar" dir="rtl">رَجُلٌ كَرِيمٌ زَارَنَا</span>, <em>rajulun karīmun zāranā</em>, "a generous man visited us".</li>
+        <li><strong>It follows negation or a question:</strong> <span class="ar" lang="ar" dir="rtl">مَا أَحَدٌ عِنْدَنَا</span>, <em>mā aḥadun ʿindanā</em>, "no one is with us".</li>
+        <li><strong>It expresses a prayer:</strong> <span class="ar" lang="ar" dir="rtl">سَلَامٌ عَلَيْكُمْ</span>, <em>salāmun ʿalaykum</em>, "peace be upon you".</li>
+        <li><strong>The predicate is fronted:</strong> the case above.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="nawasikh"
+      title="The abrogators: when the pattern is overturned"
+      lead="Certain verbs and particles enter the nominal sentence and cancel its default pattern of two nominatives. They are called nawāsikh, abrogators, and the two families pull in opposite directions."
+    >
+      <ExampleCard
+        label="Kāna: predicate to the accusative"
+        ar="كَانَ الْجَوُّ صَحْوًا"
+        focus="صَحْوًا"
+        translit="kāna l-jawwu ṣaḥwan"
+        en="The weather was clear."
+        irab="كان فعل ماضٍ ناقص مبني على الفتح، الجوُّ اسم كان مرفوع وعلامة رفعه الضمة الظاهرة، صحوًا خبر كان منصوب وعلامة نصبه الفتحة الظاهرة."
+        note="Note the renaming: the pillars are no longer mubtadaʾ and khabar but ism kāna and khabar kāna. Kāna is called nāqiṣ, 'incomplete', because unlike an ordinary verb it does not describe an event. It contributes tense and requires a predicate to complete it."
+      />
+
+      <ExampleCard
+        label="Inna: subject to the accusative"
+        ar="إِنَّ اللهَ غَفُورٌ رَحِيمٌ"
+        focus="اللهَ"
+        translit="inna Llāha ghafūrun raḥīmun"
+        en="Indeed Allah is Forgiving, Merciful."
+        irab="إنّ حرف توكيد ونصب مبني على الفتح لا محل له من الإعراب، اللهَ لفظ الجلالة اسم إنّ منصوب وعلامة نصبه الفتحة الظاهرة، غفورٌ خبر إنّ مرفوع وعلامة رفعه الضمة الظاهرة، رحيمٌ خبر ثانٍ مرفوع."
+        note="Exactly the reverse of kāna: accusative on the first pillar, nominative on the predicate. Note also that a single mubtadaʾ can carry more than one khabar."
+      />
+
+      <p>The word <em>nāsikh</em> is worth pausing on: its root means to cancel or supersede. The grammarians are saying the sentence still <em>is</em> a nominal sentence with two pillars. The abrogator has overturned the case ruling on them, not rebuilt the sentence. Each family has its own conditions and meanings, treated in <a href="/en/duroos/kana-wa-akhawatuha">kāna and its sisters</a> and <a href="/en/duroos/inna-wa-akhawatuha">inna and its sisters</a>.</p>
+
+      <CheckQuestion
+        q="What case is each pillar in, and what are they called now?"
+        ar="إِنَّ الصَّبْرَ مِفْتَاحُ الْفَرَجِ"
+        answer="al-ṣabra is manṣūb and is called ism inna; miftāḥu is marfūʿ and is called khabar inna."
+        why="Inna puts the first pillar in the accusative and leaves the predicate nominative. Had this been kāna l-ṣabru miftāḥan, the cases would have been the other way round."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where English speakers go wrong"
+      lead="Four errors account for most mistakes on this chapter, and three of them come specifically from carrying English assumptions across."
+    >
+      <ul>
+        <li><strong>Putting the khabar in the accusative.</strong> Writing <em>al-ʿilmu nūran</em> by analogy with an object. The predicate is nominative always, unless an abrogator has changed it. There is no verb here to take an object.</li>
+        <li><strong>Hunting for the missing "is".</strong> Because English needs a copula, learners look for a governor that does not exist and then cannot explain the endings. The governor is <em>al-ibtidāʾ</em>, an abstract one.</li>
+        <li><strong>Forgetting the rābiṭ.</strong> When the predicate is a sentence it must contain a pronoun, visible or implied, pointing back at the subject.</li>
+        <li><strong>Confusing a postponed mubtadaʾ with a fāʿil.</strong> In <span class="ar" lang="ar" dir="rtl">فِي الصَّفِّ طَالِبٌ</span>, <em>fī l-ṣaffi ṭālibun</em>, there is no verb in the sentence at all, so <em>ṭālibun</em> cannot be a fāʿil. It is a postponed mubtadaʾ. A fāʿil requires a verb; no verb, no fāʿil, ever.</li>
+      </ul>
+      <p>The cure for all four is the same: parse real sentences, out loud, in the full classical wording, until the shape of the iʿrāb line is automatic. Read the <a href="/en/irab">iʿrāb reference</a> for that wording, then take sentences from anything you are reading and parse them before checking yourself.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="This lesson follows the mainstream Baṣran analysis as presented in the standard teaching texts. Where they differ from one another, the difference is noted in the lesson itself."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span> (<em>Qaṭr al-Nadā wa-Ball al-Ṣadā</em>) and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span> (<em>Awḍaḥ al-Masālik</em>): the chapters on the mubtadaʾ and khabar, the licensors of an indefinite subject, and obligatory fronting.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on governance by al-ibtidāʾ and on the omitted predicate behind a quasi-sentence.</li>
+        <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: for the finer disagreements over what exactly raises the khabar.</li>
+        <li>Quranic iʿrāb on this site is quoted from <strong>Maḥmūd Ṣāfī</strong>, <span class="ar" lang="ar" dir="rtl">الجدول في إعراب القرآن وصرفه وبيانه</span>, as set out on our <a href="/en/methodology">methodology page</a>.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+
+    <ArticleFaq lang="en" items={faqs} />
+
+    <LessonNav slug={slug} place="bottom" />
+  </div>
 
   <Footer lang="en" />
 </BaseLayout>

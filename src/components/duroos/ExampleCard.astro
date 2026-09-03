@@ -1,0 +1,145 @@
+---
+/**
+ * ExampleCard: one worked example, with the Arabic as the focal point.
+ *
+ * In the Arabic lessons a شاهد is an inline pill inside a paragraph, which is
+ * right for a reader who reads Arabic fluently. An English learner needs the
+ * opposite emphasis: the sentence large, vocalised and unhurried, with the
+ * English kept deliberately secondary.
+ *
+ * `focus` names the word the lesson is teaching. It is matched against the
+ * `ar` string and marked, so the learner can see at a glance which word the
+ * rule is about. Matching is literal, so pass the word exactly as it appears,
+ * vowels included.
+ *
+ * The i'rab sits in a <details>. That is a teaching decision, not a way to
+ * hide text: the learner should attempt the parse before reading it. It stays
+ * in the DOM, so it is still crawlable and still searchable on the page.
+ */
+interface Props {
+  ar: string;              // the vocalised Arabic sentence
+  translit?: string;
+  en: string;              // plain English rendering
+  focus?: string | string[];
+  irab?: string;           // full classical wording
+  note?: string;           // the decoded explanation, shown under the i'rab
+  label?: string;          // e.g. "Example 1", "Fronted predicate"
+}
+const { ar, translit, en, focus, irab, note, label } = Astro.props;
+
+// Split the sentence around the focus word(s) so they can be marked without
+// resorting to innerHTML on author-supplied text.
+const targets = (Array.isArray(focus) ? focus : focus ? [focus] : []).filter(Boolean);
+type Piece = { t: string; hit: boolean };
+const pieces: Piece[] = targets.length
+  ? targets.reduce<Piece[]>((acc, word) => acc.flatMap((p) => {
+      if (p.hit || !p.t.includes(word)) return [p];
+      const out: Piece[] = [];
+      p.t.split(word).forEach((chunk, i) => {
+        if (i > 0) out.push({ t: word, hit: true });
+        if (chunk) out.push({ t: chunk, hit: false });
+      });
+      return out;
+    }), [{ t: ar, hit: false }])
+  : [{ t: ar, hit: false }];
+---
+<figure class="exc">
+  {label && <figcaption class="exc-label">{label}</figcaption>}
+
+  <p class="exc-ar" lang="ar" dir="rtl">
+    {pieces.map((p) => (p.hit ? <mark class="exc-hit">{p.t}</mark> : <span>{p.t}</span>))}
+  </p>
+
+  {translit && <p class="exc-translit">{translit}</p>}
+  <p class="exc-en">{en}</p>
+
+  {irab && (
+    <details class="exc-irab">
+      <summary><span>Show the i‘rāb</span></summary>
+      <div class="exc-irab-body">
+        <p class="exc-irab-ar" lang="ar" dir="rtl">{irab}</p>
+        {note && <p class="exc-note">{note}</p>}
+      </div>
+    </details>
+  )}
+</figure>
+
+<style is:global>
+  .exc {
+    margin: 2rem 0;
+    padding: 1.75rem 1.75rem 1.5rem;
+    border-radius: 1.15rem;
+    border: 1px solid var(--color-card-edge);
+    background: var(--color-card);
+    box-shadow: 0 1px 2px rgb(23 56 71 / 0.05), 0 10px 26px -18px rgb(23 56 71 / 0.18);
+  }
+  .dark .exc { border-color: var(--color-coal-edge); background: var(--color-coal-soft); box-shadow: 0 10px 26px -18px rgb(0 0 0 / 0.5); }
+
+  .exc-label {
+    display: inline-block; margin-bottom: 1rem;
+    font-size: 0.75rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--color-purple);
+  }
+
+  /* The Arabic is the point of the card: large, generously led, RTL. */
+  .exc-ar {
+    font-family: var(--font-arabic);
+    direction: rtl; unicode-bidi: isolate; text-align: right;
+    font-size: clamp(1.75rem, 4.2vw, 2.35rem);
+    line-height: 2.15;
+    font-weight: 500;
+    color: var(--color-ink);
+    margin: 0;
+  }
+  .dark .exc-ar { color: var(--color-mist); }
+
+  /* The word the lesson is about. */
+  .exc-hit {
+    background: color-mix(in srgb, var(--color-purple) 16%, transparent);
+    color: inherit;
+    border-radius: 0.4em;
+    padding: 0.06em 0.18em;
+    box-shadow: inset 0 -0.16em 0 color-mix(in srgb, var(--color-purple) 45%, transparent);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .exc-translit {
+    margin: 0.9rem 0 0; font-style: italic;
+    font-size: 1rem; line-height: 1.7;
+    color: var(--color-ink-subtle);
+  }
+  .dark .exc-translit { color: var(--color-mist-subtle); }
+  .exc-en {
+    margin: 0.4rem 0 0; font-size: 1.02rem; line-height: 1.75;
+    color: var(--color-ink-muted);
+  }
+  .dark .exc-en { color: var(--color-mist-muted); }
+
+  .exc-irab { margin-top: 1.3rem; border-top: 1px solid var(--color-stone); padding-top: 1rem; }
+  .dark .exc-irab { border-top-color: var(--color-coal-edge); }
+  .exc-irab > summary {
+    cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.92rem; font-weight: 700; color: var(--color-purple);
+  }
+  .exc-irab > summary::-webkit-details-marker { display: none; }
+  .exc-irab > summary::before {
+    content: ''; width: 0.5rem; height: 0.5rem; flex: none;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg); transition: transform .2s var(--ease-out-quart);
+  }
+  .exc-irab[open] > summary::before { transform: rotate(45deg); }
+  .exc-irab > summary:hover { color: var(--color-purple-deep); }
+
+  .exc-irab-body { margin-top: 1rem; display: grid; gap: 0.85rem; }
+  .exc-irab-ar {
+    font-family: var(--font-arabic); direction: rtl; unicode-bidi: isolate; text-align: right;
+    font-size: 1.2rem; line-height: 2.2; margin: 0;
+    color: var(--color-ink);
+  }
+  .dark .exc-irab-ar { color: var(--color-mist); }
+  .exc-note { margin: 0; font-size: 1rem; line-height: 1.85; color: var(--color-ink-muted); }
+  .dark .exc-note { color: var(--color-mist-muted); }
+
+  @media (prefers-reduced-motion: reduce) { .exc-irab > summary::before { transition: none; } }
+</style>
