@@ -1,0 +1,169 @@
+---
+/** English edition of /duroos/uslub-al-madh-wal-dhamm. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'uslub-al-madh-wal-dhamm';
+const objectives = [
+  'Name the three parts every praise or blame sentence contains.',
+  'Recognise the four permitted shapes of the doer of niʿma and biʾsa.',
+  'Give both accepted analyses of the specified noun and defend either.',
+  'Parse ḥabbadhā, whose two halves are parsed separately.',
+];
+const faqs = [
+  { q: 'What are niʿma and biʾsa?', a: 'Frozen past-tense verbs, niʿma for praise and biʾsa for blame. The Baṣrans hold them to be verbs, which is the position adopted here and in most teaching texts, while the Kūfans treated them as nouns. They never inflect for tense.' },
+  { q: 'What are the three parts of the sentence?', a: 'The verb, its doer, and the specified noun. In niʿma l-rajulu khālidun, the verb is niʿma, the doer is al-rajulu, and khālidun is the one specified for praise. Every sentence in the chapter has these three.' },
+  { q: 'What shapes may the doer take?', a: 'Four. Definite with al-, as al-rajulu. Annexed to something carrying al-, as ṣāḥibu l-bayti. A hidden pronoun explained by a following indefinite accusative, as niʿma rajulan khālidun. Or the word mā, as in niʿimmā.' },
+  { q: 'How is the specified noun parsed?', a: 'Two analyses are accepted. Either it is a subject whose predicate is the whole preceding sentence, or it is the predicate of an omitted subject estimated as huwa. Both are current; the second is often preferred when the noun follows.' },
+  { q: 'How is ḥabbadhā parsed?', a: 'In two halves. ḥabba is a past-tense verb of praise and dhā is a demonstrative in the position of nominative as its doer. What follows is the specified noun. Treating ḥabbadhā as one indivisible word is a common error.' },
+  { q: 'Can the specified noun come first?', a: 'Yes. khālidun niʿma l-rajulu is sound, and then only one analysis remains available: khālidun is the subject and the sentence after it is the predicate. Fronting removes the omitted-subject reading entirely.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Praise and Blame (uslūb al-madḥ wa-l-dhamm) in Arabic Grammar · Irab App"
+  description="A full lesson on niʿma, biʾsa and ḥabbadhā: the three parts of the sentence, the four shapes of the doer, and the two accepted analyses of the specified noun."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Praise and Blame" description="niʿma and biʾsa, the shapes of their doer, the specified noun and its two analyses, and ḥabbadhā." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Praise and Blame"
+      summary="Two frozen verbs carry this chapter, niʿma for praise and biʾsa for blame, and each governs a sentence in three parts. The doer is restricted to four shapes, which makes it easy to check your work. The specified noun is the interesting part, because two analyses are genuinely accepted and knowing both is what separates a student who has memorised a pattern from one who understands it."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: three parts, always"
+      lead="A verb of praise or blame, a doer in one of four shapes, and a noun specified for that praise or blame."
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="The standard sentence"
+        ar="نِعْمَ الرَّجُلُ خَالِدٌ"
+        focus="نِعْمَ"
+        translit="niʿma l-rajulu khālidun"
+        en="What an excellent man Khālid is."
+        irab="نعمَ فعل ماضٍ جامد لإنشاء المدح مبني على الفتح، الرجلُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، خالدٌ المخصوص بالمدح مبتدأ مؤخر مرفوع والجملة قبله في محل رفع خبر، أو خبر لمبتدأ محذوف تقديره هو."
+        note="Both analyses of khālidun are written into the iʿrāb, which is how the classical commentaries present it. Neither is a concession; the grammarians simply did not settle on one, and examinations accept either when it is stated clearly."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="fail-forms"
+      title="Understand: the four shapes of the doer"
+      lead="Definite with al-, annexed to a word carrying al-, a hidden pronoun explained by an indefinite accusative, or the word mā."
+    >
+      <ExampleCard
+        label="A hidden doer with an explaining noun"
+        ar="بِئْسَ رَجُلًا الْكَاذِبُ"
+        focus="رَجُلًا"
+        translit="biʾsa rajulan al-kādhibu"
+        en="What a bad man the liar is."
+        irab="بئسَ فعل ماضٍ جامد لإنشاء الذم مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو، رجلًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة، الكاذبُ المخصوص بالذم مبتدأ مؤخر مرفوع."
+        note="The indefinite accusative here is a specifier, not an object. It exists to explain the hidden doer, which is why removing it leaves the sentence unintelligible rather than merely shorter."
+      />
+
+      <ExampleCard
+        label="An annexed doer, in the Qurʾān"
+        ar="نِعْمَ الْمَوْلَىٰ وَنِعْمَ النَّصِيرُ"
+        focus="الْمَوْلَىٰ"
+        translit="niʿma l-mawlā wa-niʿma l-naṣīr"
+        en="An excellent Protector and an excellent Helper."
+        irab="نعمَ فعل ماضٍ جامد لإنشاء المدح مبني على الفتح، المولى فاعل مرفوع وعلامة رفعه الضمة المقدرة على الألف للتعذر، والمخصوص بالمدح محذوف تقديره هو، والواو عاطفة، ونعم النصيرُ مثلها."
+        note="The specified noun is omitted here because the context has already named it, and grammarians restore it as huwa. An omitted specified noun is common in the Qurʾān and is not a defect in the sentence."
+      />
+
+      <CheckQuestion
+        q="Correct this and explain."
+        ar="نِعْمَ رَجُلٌ خَالِدٌ"
+        answer="niʿma rajulan khālidun, or niʿma l-rajulu khālidun."
+        why="An indefinite doer is not one of the four permitted shapes. Either make it definite with al- and let it be the doer, or put it in the accusative as a specifier for a hidden doer. The two repairs give the same meaning by different routes."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="habbadha"
+      title="See: ḥabbadhā, parsed in halves"
+      lead="A verb and a demonstrative that have grown together in usage but are still analysed separately."
+    >
+      <ExampleCard
+        label="Praise with ḥabbadhā"
+        ar="حَبَّذَا الْعِلْمُ"
+        focus="حَبَّذَا"
+        translit="ḥabbadhā l-ʿilmu"
+        en="How excellent knowledge is."
+        irab="حبَّ فعل ماضٍ لإنشاء المدح مبني على الفتح، ذا اسم إشارة مبني على السكون في محل رفع فاعل، العلمُ المخصوص بالمدح مبتدأ مؤخر مرفوع والجملة قبله في محل رفع خبر."
+        note="The two halves are parsed independently even though speakers treat the word as a unit. The blame counterpart lā ḥabbadhā works the same way, with the negative particle added before the verb."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="fronting"
+      title="When the specified noun comes first"
+      lead="Fronting is permitted, and it settles the disagreement about how the noun is parsed."
+    >
+      <p>Recall that the specified noun has two accepted analyses when it follows the verb. Move it to the front and only one survives, because there is no longer anything before it for an omitted subject to be estimated from.</p>
+
+      <ExampleCard
+        label="The specified noun fronted"
+        ar="خَالِدٌ نِعْمَ الرَّجُلُ"
+        focus="خَالِدٌ"
+        translit="khālidun niʿma l-rajulu"
+        en="Khālid, what an excellent man."
+        irab="خالدٌ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، نعمَ فعل ماضٍ جامد مبني على الفتح، الرجلُ فاعل مرفوع، وجملة نعم الرجلُ في محل رفع خبر."
+        note="One analysis, not two. This is a useful demonstration of a general habit in Arabic grammar: a disagreement about an omitted element often disappears the moment the word order removes the place where the omission could have sat."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the second is the one that reveals whether the four shapes were really learned."
+    >
+      <ul>
+        <li><strong>Parsing the specifier as an object.</strong> It is a tamyīz explaining a hidden doer.</li>
+        <li><strong>Using an indefinite doer without al-.</strong> Only four shapes are permitted.</li>
+        <li><strong>Treating ḥabbadhā as one word.</strong> It is a verb plus a demonstrative doer.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The shapes of the doer and the analyses of the specified noun come from these texts."
+    >
+      <ul>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: niʿma and biʾsa, their doer and the specified noun.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: ḥabbadhā and the Baṣran and Kūfan positions.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

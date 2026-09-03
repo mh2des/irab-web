@@ -40,6 +40,17 @@ export const EN_DUROOS = new Set<string>([
   'jazm-al-mudari',
   'uslub-al-shart',
   'al-adad',
+  // Patch 4: the followers, the indeclinables, and the performative styles.
+  'al-naat',
+  'al-atf',
+  'al-badal',
+  'al-tawkid',
+  'al-damair',
+  'asma-al-ishara',
+  'al-asma-al-mawsula',
+  'uslub-al-istifham',
+  'uslub-al-taajjub',
+  'uslub-al-madh-wal-dhamm',
 ]);
 
 export const hasEnLesson = (slug: string): boolean => EN_DUROOS.has(slug);

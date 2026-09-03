@@ -1,0 +1,169 @@
+---
+/** English edition of /duroos/al-damair. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-damair';
+const objectives = [
+  'Say why no pronoun is ever described as marfūʿ, and what wording replaces it.',
+  'Determine the position of an attached pronoun from where it sits.',
+  'Parse the same letters differently in three different sentences.',
+  'Recognise a hidden pronoun and say whether it hides obligatorily or optionally.',
+];
+const faqs = [
+  { q: 'Why are all pronouns built?', a: 'Because their endings never change with their role. huwa is huwa whether it is a subject or after a preposition. Since the word cannot show a case, the analysis gives it a position instead: mabnī fī maḥall rafʿ, naṣb or jarr. Saying a pronoun is marfūʿ is always an error.' },
+  { q: 'What are the detached pronouns?', a: 'Two sets only. Nominative: anā, naḥnu, anta and its family, huwa and its family. Accusative: those built on iyyā, such as iyyāya, iyyāka, iyyāhu. The accusative set appears almost only as a fronted object, as in iyyāka naʿbudu.' },
+  { q: 'How do I find the position of an attached pronoun?', a: 'By what it attaches to. Attached to a verb before its object, it is nominative as the doer. Attached to a verb after it, it is accusative as the object. Attached to a noun, it is genitive by annexation. Attached to a preposition, it is genitive.' },
+  { q: 'How is nā parsed in katabnā, akramanā and kitābunā?', a: 'Three different positions for identical letters. In katabnā it is the doer, in the position of nominative. In akramanā it is the object, in the position of accusative. In kitābunā it is annexed, in the position of genitive. Position comes from placement, never from form.' },
+  { q: 'When does a pronoun hide obligatorily and when optionally?', a: 'Obligatorily with the first person and the addressee, since no explicit noun could take their place: aktubu hides anā obligatorily. Optionally with the third person, since an explicit noun could have stood there: yaktubu hides huwa optionally, because al-ṭālibu yaktubu is possible.' },
+  { q: 'What is the pronoun of separation?', a: 'A pronoun placed between subject and predicate to emphasise and to restrict, showing that what follows is a predicate rather than an adjective: wa-ulāʾika humu l-mufliḥūn. The majority hold it has no position in iʿrāb at all.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Pronouns (al-ḍamāʾir) in Arabic Grammar · Irab App"
+  description="A full lesson on pronouns: why they are built and take positions rather than cases, detached and attached pronouns, hidden pronouns, the protective nūn, and the pronoun of separation."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Pronouns (al-ḍamāʾir)" description="Built pronouns and their positions, detached and attached sets, hidden pronouns, and the pronoun of separation." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Pronouns"
+      summary="Every pronoun in Arabic is built, meaning its ending never changes for grammatical role. That single fact governs the whole chapter: pronouns are never described as nominative or accusative but as occupying the position of one. The practical skill is reading position from placement, since the very same letters are a subject in one sentence, an object in another, and a possessor in a third."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="mabniyya"
+      title="Learn: built, with a position"
+      lead="A pronoun is built on its vowel and its ending never changes, so it takes a position in iʿrāb according to where it sits rather than a case of its own."
+    >
+      <LessonObjective items={objectives} />
+      <p>English speakers have an advantage here that they usually miss. English pronouns do change: <em>he</em> against <em>him</em>. Arabic pronouns do not, so the language records the role in the analysis instead of on the word. The wording is always <em>mabnī fī maḥall</em>, built in the position of.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="muttasil"
+      title="Understand: the same letters, three positions"
+      lead="An attached pronoun takes its position from what it attaches to and where. Nothing in its form tells you."
+    >
+      <ExampleCard
+        label="nā as a doer"
+        ar="كَتَبْنَا الدَّرْسَ"
+        focus="نَا"
+        translit="katabnā l-darsa"
+        en="We wrote the lesson."
+        irab="كتبَ فعل ماضٍ مبني على السكون لاتصاله بنا الفاعلين، ونا ضمير متصل مبني في محل رفع فاعل، الدرسَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة."
+      />
+
+      <ExampleCard
+        label="The same nā as an object"
+        ar="أَكْرَمَنَا الْمُعَلِّمُ"
+        focus="نَا"
+        translit="akramanā l-muʿallimu"
+        en="The teacher honoured us."
+        irab="أكرمَ فعل ماضٍ مبني على الفتح، ونا ضمير متصل مبني في محل نصب مفعول به، المعلمُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Identical letters, opposite position. In the first card nā came before the object and was the doer; here it comes before the doer and is the object. Placement decides, and nothing else does."
+      />
+
+      <ExampleCard
+        label="And the same nā as a possessor"
+        ar="هَٰذَا كِتَابُنَا"
+        focus="نَا"
+        translit="hādhā kitābunā"
+        en="This is our book."
+        irab="هذا اسم إشارة مبني على السكون في محل رفع مبتدأ، كتابُ خبر مرفوع وعلامة رفعه الضمة الظاهرة وهو مضاف، ونا ضمير متصل مبني في محل جر مضاف إليه."
+        note="Attached to a noun, so genitive by annexation. Three sentences, one set of letters, three positions. This is the skill the chapter is really teaching."
+      />
+
+      <CheckQuestion
+        q="What is the position of the yāʾ, and what is the nūn before it?"
+        ar="أَكْرَمَنِي الْمُعَلِّمُ"
+        answer="The yāʾ is in the position of accusative as the object. The nūn is the protective nūn and has no position at all."
+        why="nūn al-wiqāya is inserted between a verb and the speaker's yāʾ to protect the verb's ending from the kasra the yāʾ would impose. It is not a pronoun and never carries a position. Parsing it as part of the pronoun is one of the commonest errors in the chapter."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="mustatir"
+      title="See: the pronoun that is not written"
+      lead="A hidden pronoun has no form in the wording at all. It hides obligatorily with the first person and the addressee, and optionally with the third."
+    >
+      <ExampleCard
+        label="Obligatory hiding"
+        ar="اُكْتُبْ دَرْسَكَ"
+        focus="اُكْتُبْ"
+        translit="uktub darsaka"
+        en="Write your lesson."
+        irab="اكتبْ فعل أمر مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت، درسَ مفعول به منصوب وهو مضاف، والكاف ضمير متصل في محل جر مضاف إليه."
+        note="The distinction between obligatory and optional hiding has a reason behind it. An imperative addresses someone, so no explicit noun could ever replace the doer: hiding is obligatory. With yaktubu, an explicit noun could stand there, so the hiding is only optional."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="fasl"
+      title="The pronoun of separation"
+      lead="A pronoun placed between subject and predicate for emphasis and restriction, showing that what follows is a predicate and not an adjective."
+    >
+      <ExampleCard
+        label="Separating predicate from adjective"
+        ar="وَأُولَٰئِكَ هُمُ الْمُفْلِحُونَ"
+        focus="هُمُ"
+        translit="wa-ulāʾika humu l-mufliḥūn"
+        en="And it is they who are the successful."
+        irab="أولئك اسم إشارة مبني على الكسر في محل رفع مبتدأ، هم ضمير فصل لا محل له من الإعراب، المفلحونَ خبر مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم."
+        note="Without hum the phrase could be read as 'those successful ones', a subject with an adjective and no predicate. The pronoun of separation blocks that reading and adds restriction, which is why the translation says 'it is they who'."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, all of them about form rather than placement."
+    >
+      <ul>
+        <li><strong>Calling a pronoun marfūʿ.</strong> Say <em>fī maḥall rafʿ</em>. A built word has no case of its own.</li>
+        <li><strong>Parsing the protective nūn as a pronoun.</strong> It has no position at all.</li>
+        <li><strong>Reading position from form.</strong> The same letters take three different positions depending on where they sit.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The classification and the rulings on hiding follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the pronouns among the built nouns.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: detached and attached sets and their positions.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: obligatory and optional hiding, and the pronoun of separation.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

@@ -1,0 +1,156 @@
+---
+/** English edition of /duroos/asma-al-ishara. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'asma-al-ishara';
+const objectives = [
+  'Give the demonstrative for each number and gender, and the two of place.',
+  'Say why the dual forms are the only declinable ones.',
+  'Parse the noun after a demonstrative, which changes with its definiteness.',
+  'Account for the hāʾ, the kāf and the lām that attach to these words.',
+];
+const faqs = [
+  { q: 'Why are demonstratives built?', a: 'Because they carry a meaning that belongs to particles, namely pointing, and words carrying particle-like meanings are built. Their endings therefore never change, and they take positions in iʿrāb rather than cases.' },
+  { q: 'Why are hādhāni and hātāni declined?', a: 'Because they are duals, and the dual is declined by letters: alif for the nominative, yāʾ for the accusative and genitive. So hādhāni in the nominative but hādhayni otherwise. They are the only demonstratives that decline.' },
+  { q: 'How is the noun after a demonstrative parsed?', a: 'By its definiteness. Carrying al-, it is a substitute for the demonstrative or an explicative apposition: hādhā l-kitābu. Indefinite, it is the predicate: hādhā kitābun, "this is a book". That difference is the key to the whole chapter.' },
+  { q: 'What is the difference between dhāka and dhālika?', a: 'Distance. dhā is for what is near, dhāka for what is middling, and dhālika for what is far, the lām being the marker of that distance. The kāf in both is a particle of address, not a pronoun.' },
+  { q: 'Are hunā and hunāka demonstratives?', a: 'Yes, demonstratives of place. hunā points to a near place and hunāka to a far one. They are built adverbials, so they are parsed as being in the position of accusative as adverbials of place.' },
+  { q: 'How are the hāʾ of hādhā and the kāf of dhālika parsed?', a: 'Neither is a pronoun. The hāʾ is a particle of alerting, prefixed to draw attention, and the kāf is a particle of address. Both are built with no position in iʿrāb. Parsing the kāf as a genitive pronoun is a common error.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Demonstratives (asmāʾ al-ishāra) in Arabic Grammar · Irab App"
+  description="A full lesson on the demonstratives: their forms, why the duals alone are declined, how the noun after them is parsed, and the particles of alerting, address and distance."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Demonstratives" description="The forms, the declinable duals, parsing the noun after a demonstrative, and the attached particles." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Demonstratives"
+      summary="Demonstratives are built, like all the indeclinables, with one exception that proves instructive: the duals decline, because being dual outranks being built. The chapter's most useful rule concerns what follows them, since a single change in definiteness turns a phrase into a whole sentence. This is what separates this book from this is a book."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the forms"
+      lead="dhā for the masculine singular, dhī and tī for the feminine, dhāni and tāni for the dual, ulāʾi for the plural, and hunā and thamma for place."
+    >
+      <LessonObjective items={objectives} />
+      <p>Three particles commonly attach to them, and none is a pronoun:</p>
+      <ul>
+        <li><strong>hāʾ of alerting</strong>, prefixed: <em>hādhā</em>.</li>
+        <li><strong>kāf of address</strong>, suffixed, agreeing with the addressee: <em>dhāka</em>.</li>
+        <li><strong>lām of distance</strong>: <em>dhālika</em>, farther than <em>dhāka</em>.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="irab"
+      title="Understand: built, except the duals"
+      lead="All are built and take positions. The duals alone are declined, by alif and yāʾ, because being dual outranks being built."
+    >
+      <ExampleCard
+        label="A built demonstrative"
+        ar="ذَٰلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ"
+        focus="ذَٰلِكَ"
+        translit="dhālika l-kitābu lā rayba fīhi"
+        en="That is the Book, in which there is no doubt."
+        irab="ذا اسم إشارة مبني على السكون في محل رفع مبتدأ، واللام للبعد والكاف للخطاب حرفان لا محل لهما، الكتابُ بدل من اسم الإشارة مرفوع وعلامة رفعه الضمة الظاهرة، لا نافية للجنس، ريبَ اسم لا مبني على الفتح في محل نصب، وخبر لا محذوف، في حرف جر، والهاء في محل جر."
+        note="Three separate things are parsed at the start: the demonstrative itself, the lām of distance, and the kāf of address. Neither particle has a position, and neither is a pronoun."
+      />
+
+      <CheckQuestion
+        q="Correct this and explain."
+        ar="رَأَيْتُ هَٰذَانِ الطَّالِبَيْنِ"
+        answer="raʾaytu hādhayni l-ṭālibayni."
+        why="The dual demonstrative is declined, so the accusative takes yāʾ, not alif. This is the one place demonstratives behave like ordinary nouns, and using hādhāni in every position is the commonest error in the chapter."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="after"
+      title="See: the noun after a demonstrative"
+      lead="With al- it is a substitute; indefinite it is the predicate. One letter decides whether you have a phrase or a sentence."
+    >
+      <ExampleCard
+        label="Indefinite, so a complete sentence"
+        ar="هَٰذَا كِتَابٌ"
+        focus="كِتَابٌ"
+        translit="hādhā kitābun"
+        en="This is a book."
+        irab="هذا اسم إشارة مبني على السكون في محل رفع مبتدأ، كتابٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Compare hādhā l-kitābu, 'this book', which is a phrase and not yet a sentence, with al-kitābu a substitute for the demonstrative. The difference between a phrase and a statement is a single al-."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="place"
+      title="The demonstratives of place"
+      lead="hunā and hunāka point to places rather than things, and they are parsed as built adverbials."
+    >
+      <p>Learners often meet these two as vocabulary and never as grammar, which leaves them unable to parse a sentence that begins with one. They are demonstratives like any other, built, and occupying the position of accusative because they answer the question <em>where</em>.</p>
+
+      <ExampleCard
+        label="A demonstrative of place"
+        ar="هُنَاكَ مَسْجِدٌ قَدِيمٌ"
+        focus="هُنَاكَ"
+        translit="hunāka masjidun qadīmun"
+        en="There is an old mosque there."
+        irab="هناك اسم إشارة للمكان البعيد مبني على الفتح في محل نصب مفعول فيه ظرف مكان متعلق بمحذوف خبر مقدم، مسجدٌ مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، قديمٌ نعت مرفوع."
+        note="Two things happen at once. The adverbial is fronted, and the predicate it attaches to is omitted, which is why the analysis names a deleted predicate. The kāf here is again the particle of address, exactly as in dhālika."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the second is about a letter that looks like a pronoun and is not."
+    >
+      <ul>
+        <li><strong>Using hādhāni in the accusative and genitive.</strong> The duals decline.</li>
+        <li><strong>Parsing the kāf of dhālika as a pronoun.</strong> It is a particle of address with no position.</li>
+        <li><strong>Naming the position without the bināʾ.</strong> Say built, then in the position of, never simply nominative.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The forms and the analysis of what follows them come from these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the forms and the attached particles.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the declined duals and the noun following a demonstrative.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

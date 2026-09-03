@@ -1,0 +1,152 @@
+---
+/** English edition of /duroos/al-badal. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-badal';
+const objectives = [
+  'Recognise a substitute by the absence of any particle between it and its antecedent.',
+  'Sort the three kinds and say which two require a returning pronoun.',
+  'Parse the noun after a demonstrative, which is the commonest substitute of all.',
+  'Separate a substitute from an adjective by asking which word is intended.',
+];
+const faqs = [
+  { q: 'What is the difference between a substitute and an explicative apposition?', a: 'An explicative apposition, ʿaṭf bayān, clarifies its antecedent and both are intended together. A substitute is what is really intended, with the antecedent serving as a stepping stone to it. The traditional test is that a substitute can replace its antecedent and the sentence still stands.' },
+  { q: 'What is the difference between a substitute and an adjective?', a: 'An adjective is derived and describes; a substitute is usually a solid noun and is the word actually meant. In jāʾa akhūka Zaydun, Zaydun is a substitute naming who the brother is. In jāʾa akhūka l-karīmu, al-karīmu describes him.' },
+  { q: 'Do the partial and inclusive substitutes require a pronoun?', a: 'Yes, both. A pronoun must return to the antecedent: akaltu l-raghīfa thulthahu has the pronoun in thulthahu, and sarranī Muḥammadun khuluquhu has it in khuluquhu. Without that pronoun neither construction is complete.' },
+  { q: 'How do I tell a partial substitute from an inclusive one?', a: 'A partial substitute is a physical portion of the antecedent: a third of the loaf is part of the loaf. An inclusive substitute is a quality the antecedent contains rather than a piece of it: character is not a part of Muhammad but something he possesses.' },
+  { q: 'Can a verb substitute for a verb?', a: 'Yes. In the Quranic wa-man yafʿal dhālika yalqa athāman yuḍāʿaf lahu l-ʿadhābu, the second verb is read by many as a substitute for the first, and it takes the same jussive case.' },
+  { q: 'How is the noun after a demonstrative parsed?', a: 'As a substitute, on the preferred analysis, when it carries al-: hādhā l-kitābu has al-kitābu as a substitute for hādhā, taking its case. Some grammarians read it as an adjective, but substitution is the reading taught in the syllabuses.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Substitution (al-badal) in Arabic Grammar · Irab App"
+  description="A full lesson on the substitute: its case, the three kinds, the returning pronoun required by two of them, the noun after a demonstrative, and the difference from an adjective."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Substitution (al-badal)" description="The case of the substitute, the three kinds, the returning pronoun, and the noun after a demonstrative." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Substitution"
+      summary="A substitute follows its antecedent in case with no particle between them, and it is the word actually intended, the antecedent having served as a way of reaching it. Three kinds are distinguished, two of which require a pronoun pointing back. The construction is far more common than its short chapter suggests, because every noun following a demonstrative is one."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the follower with no particle"
+      lead="A substitute follows its antecedent in case with nothing between them, which is precisely what separates it from coordination."
+    >
+      <LessonObjective items={objectives} />
+      <p>Compare the two followers. Coordination puts a particle between: <em>jāʾa Zaydun wa-ʿAmrun</em>. Substitution puts nothing: <em>jāʾa akhūka Zaydun</em>. And the meanings differ entirely, since coordination adds a second person while substitution names the same one.</p>
+
+      <ExampleCard
+        label="A complete substitute"
+        ar="جَاءَ أَخُوكَ زَيْدٌ"
+        focus="زَيْدٌ"
+        translit="jāʾa akhūka Zaydun"
+        en="Your brother Zayd came."
+        irab="جاء فعل ماضٍ مبني على الفتح، أخوك فاعل مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة وهو مضاف، والكاف في محل جر مضاف إليه، زيدٌ بدل مطابق من أخيك مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="One person, named twice. Note the traditional test: remove akhūka and the sentence still stands as jāʾa Zaydun, which is what shows Zayd to be the word actually intended."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="types"
+      title="See: the three kinds"
+      lead="Complete, partial, and inclusive. The last two both require a pronoun returning to the antecedent."
+    >
+      <ExampleCard
+        label="Partial: a physical portion"
+        ar="أَكَلْتُ الرَّغِيفَ ثُلُثَهُ"
+        focus="ثُلُثَهُ"
+        translit="akaltu l-raghīfa thuluthahu"
+        en="I ate the loaf, a third of it."
+        irab="أكلتُ فعل وفاعل، الرغيفَ مفعول به منصوب، ثلثَ بدل بعض من كل منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، والهاء ضمير متصل في محل جر مضاف إليه."
+        note="The pronoun in thuluthahu is obligatory: it is what ties the third to the loaf. And note the effect on meaning, since the sentence now says a third was eaten, not the whole."
+      />
+
+      <ExampleCard
+        label="Inclusive: a quality, not a piece"
+        ar="سَرَّنِي مُحَمَّدٌ خُلُقُهُ"
+        focus="خُلُقُهُ"
+        translit="sarranī Muḥammadun khuluquhu"
+        en="Muhammad pleased me, his character."
+        irab="سرَّ فعل ماضٍ مبني على الفتح، والنون للوقاية، والياء في محل نصب مفعول به، محمدٌ فاعل مرفوع، خلقُ بدل اشتمال مرفوع وعلامة رفعه الضمة الظاهرة وهو مضاف، والهاء في محل جر مضاف إليه."
+        note="Character is not a part of Muhammad the way a third is part of a loaf; it is something he contains. That is the whole distinction between the partial and the inclusive substitute."
+      />
+
+      <CheckQuestion
+        q="Which kind of substitute is this?"
+        ar="أَعْجَبَنِي الْكِتَابُ أُسْلُوبُهُ"
+        answer="An inclusive substitute, badal ishtimāl."
+        why="Style is not a physical portion of the book but a quality it contains. Had it been al-kitāba niṣfahu, half of it, the substitute would have been partial. Both require the returning pronoun, present here in uslūbuhu."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="demonstratives"
+      title="Understand: the noun after a demonstrative"
+      lead="A noun carrying al- after a demonstrative is a substitute for it on the preferred analysis, which makes this the most frequent substitution in the language."
+    >
+      <ExampleCard
+        label="The commonest substitute of all"
+        ar="هَٰذَا الْكِتَابُ نَافِعٌ"
+        focus="الْكِتَابُ"
+        translit="hādhā l-kitābu nāfiʿun"
+        en="This book is beneficial."
+        irab="هذا اسم إشارة مبني على السكون في محل رفع مبتدأ، الكتابُ بدل من اسم الإشارة مرفوع وعلامة رفعه الضمة الظاهرة، نافعٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="The demonstrative is the subject and al-kitābu substitutes for it. Note the consequence for parsing: nāfiʿun is the predicate of hādhā, not of al-kitābu. Reading al-kitābu as the subject would leave hādhā unaccounted for."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, the last of which is about deciding which word the sentence is really about."
+    >
+      <ul>
+        <li><strong>Breaking the case.</strong> A substitute takes the case of its antecedent, always.</li>
+        <li><strong>Omitting the returning pronoun.</strong> The partial and inclusive kinds require it.</li>
+        <li><strong>Confusing substitute and adjective.</strong> Ask which word is intended. If the second names what the first pointed at, it is a substitute; if it describes, it is an adjective.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The three kinds and the analysis after a demonstrative follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the kinds of substitute and the conditions on each.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: substitution after a demonstrative, and substituting a verb for a verb.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

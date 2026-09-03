@@ -31,12 +31,22 @@ const numbered = groups.map((g, gi) => ({
 }));
 const liveCount = groups.reduce((n, g) => n + g.lessons.filter((l) => PUBLISHED.has(l.slug)).length, 0);
 
-const stats = [
-  { value: String(totalLessons), label: 'lessons planned' },
-  { value: String(liveCount), label: 'published' },
-  { value: String(groups.length), label: 'chapters' },
-  { value: '100%', label: 'free' },
-];
+/* Once the whole course is out, "planned / published" reads oddly. Show the
+   complete count instead, and fall back to the split while any lesson is pending. */
+const complete = liveCount === totalLessons;
+const stats = complete
+  ? [
+      { value: String(totalLessons), label: 'lessons' },
+      { value: String(groups.length), label: 'chapters' },
+      { value: 'full', label: 'iʿrāb on every example' },
+      { value: '100%', label: 'free' },
+    ]
+  : [
+      { value: String(totalLessons), label: 'lessons planned' },
+      { value: String(liveCount), label: 'published' },
+      { value: String(groups.length), label: 'chapters' },
+      { value: '100%', label: 'free' },
+    ];
 ---
 <BaseLayout
   lang="en"

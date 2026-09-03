@@ -1,0 +1,164 @@
+---
+/** English edition of /duroos/al-naat. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-naat';
+const objectives = [
+  'Make a real adjective agree in all four respects without checking a table.',
+  'Recognise a causal adjective, which agrees with one word and describes another.',
+  'Use a whole sentence as an adjective, and give it its position.',
+  'Separate an adjective from a circumstantial accusative by one question.',
+];
+const faqs = [
+  { q: 'Is naʿt the same as ṣifa?', a: 'Yes. Both name the same chapter. The Baṣrans preferred naʿt and the Kūfans ṣifa, and modern syllabuses use them interchangeably. Nothing in the analysis changes with the name.' },
+  { q: 'In how many respects does a real adjective follow its noun?', a: 'Four out of ten possible. It follows in case, in definiteness, in gender, and in number. The ten are the four cases, the two states of definiteness, the two genders and the three numbers; an adjective matches on four of those axes.' },
+  { q: 'What is a causal adjective?', a: 'One that describes not the noun before it but something after it linked to that noun by a pronoun: jāʾa l-rajulu l-karīmu abūhu. It follows its noun only in case and definiteness, stays singular, and matches the following noun in gender.' },
+  { q: 'Can a sentence be an adjective?', a: 'Yes, when the described noun is indefinite. The maxim is that sentences after indefinites are adjectives and after definites are circumstantial accusatives. Such a clause is given a position: fī maḥall rafʿ, naṣb or jarr according to the noun it describes.' },
+  { q: 'Can one noun take several adjectives?', a: 'Yes, and they may be joined by a coordinating particle or simply follow one another. Each independently agrees with the noun in all four respects.' },
+  { q: 'How do I tell an adjective from a ḥāl?', a: 'By definiteness. An adjective matches its noun, so a definite noun takes a definite adjective. A ḥāl is always indefinite while its holder is normally definite. jāʾa l-rajulu l-māshī is an adjective; jāʾa l-rajulu māshiyan is a ḥāl.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Adjective (al-naʿt) in Arabic Grammar · Irab App"
+  description="A full lesson on the adjective: agreement in four respects, the causal adjective, sentences and quasi-sentences as adjectives, and how to tell an adjective from a circumstantial accusative."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Adjective (al-naʿt)" description="Agreement in four respects, the causal adjective, sentence adjectives, and the difference from the ḥāl." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Adjective"
+      summary="The first of the four followers, words that take their case from the word before them rather than from any governor of their own. A real adjective agrees with its noun in four respects at once, which is more than English asks of an adjective in any construction. And one variety agrees with one word while describing another, which has no English parallel at all."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: a follower, not a governed word"
+      lead="An adjective is a derived word, or one read as derived, mentioned to state an attribute either of the noun before it or of something connected to it. Its case comes from that noun, not from any governor of its own."
+    >
+      <LessonObjective items={objectives} />
+      <p>The word <em>tābiʿ</em>, follower, is the key. Every other case you have met was caused by a governor: a verb, a preposition, an abrogator. A follower has none. It simply takes whatever case the word before it has, which is why the four chapters of followers are grouped together.</p>
+
+      <ExampleCard
+        label="Agreement in all four respects"
+        ar="جَاءَ الطَّالِبُ الْمُجْتَهِدُ"
+        focus="الْمُجْتَهِدُ"
+        translit="jāʾa l-ṭālibu l-mujtahidu"
+        en="The diligent student came."
+        irab="جاء فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، المجتهدُ نعت مرفوع وعلامة رفعه الضمة الظاهرة."
+        note="Four agreements at once: nominative like its noun, definite like it, masculine like it, singular like it. Break any one and the phrase stops being a phrase. Notably, al-ṭālibu mujtahidun, with the adjective indefinite, is no longer a phrase at all but a sentence: 'the student is diligent'."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sababi"
+      title="Understand: the causal adjective"
+      lead="It follows its noun in case and definiteness only, stays singular, and takes its gender from the word after it, which is what it actually describes."
+    >
+      <p>English has nothing like this, so read the split carefully: the word agrees with one noun and describes another.</p>
+
+      <ExampleCard
+        label="Agreeing with one, describing another"
+        ar="جَاءَ الرَّجُلُ الْكَرِيمُ أَبُوهُ"
+        focus="الْكَرِيمُ"
+        translit="jāʾa l-rajulu l-karīmu abūhu"
+        en="The man whose father is generous came."
+        irab="جاء فعل ماضٍ مبني على الفتح، الرجلُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، الكريمُ نعت سببي مرفوع وعلامة رفعه الضمة الظاهرة، أبو فاعل للكريم مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة وهو مضاف، والهاء ضمير متصل في محل جر مضاف إليه."
+        note="al-karīmu is nominative and definite because al-rajulu is. But it is not the man who is generous: it is his father. Note also that abūhu is parsed as the doer of the adjective, since a derived word governs like the verb it comes from, and it takes wāw as one of the five nouns."
+      />
+
+      <CheckQuestion
+        q="Why is the adjective masculine here when al-fatātu is feminine?"
+        ar="جَاءَتِ الْفَتَاةُ الْحَسَنُ خُلُقُهَا"
+        answer="Because it is causal, and takes its gender from khuluquhā, which is what it describes."
+        why="al-ḥasanu follows al-fatātu in case and definiteness only. Its gender comes from the word after it, khuluq, which is masculine. A real adjective would have had to be al-ḥasanatu."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="jumla"
+      title="See: sentences and phrases as adjectives"
+      lead="After an indefinite noun a whole sentence, an adverbial or a prepositional phrase may serve as an adjective, and is then given a position rather than an ending."
+    >
+      <ExampleCard
+        label="A sentence describing an indefinite noun"
+        ar="رَأَيْتُ رَجُلًا يَقْرَأُ الْقُرْآنَ"
+        focus="يَقْرَأُ الْقُرْآنَ"
+        translit="raʾaytu rajulan yaqraʾu l-Qurʾāna"
+        en="I saw a man who was reciting the Quran."
+        irab="رأيتُ فعل وفاعل، رجلًا مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، يقرأُ فعل مضارع مرفوع، والفاعل ضمير مستتر تقديره هو، القرآنَ مفعول به منصوب، والجملة الفعلية في محل نصب نعت لرجلًا."
+        note="The clause takes the position of the accusative because the noun it describes is accusative. Had the noun been definite, al-rajula, the same clause would have been a ḥāl and the translation would shift from 'who was reciting' to 'while he was reciting'."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="qat"
+      title="Cutting the adjective loose"
+      lead="An adjective may be cut off from its agreement and put in the accusative or nominative, when the intent is praise, blame or pity rather than description."
+    >
+      <p>This is where the chapter stops being mechanical. An adjective normally follows its noun in case, but a speaker who wants to praise rather than merely identify may cut the agreement, and the grammarians read the change of case as a change of purpose. The construction is called <em>qaṭʿ al-naʿt</em>, and it is estimated as an omitted verb or subject.</p>
+
+      <ExampleCard
+        label="An adjective cut to the accusative"
+        ar="الْحَمْدُ لِلَّهِ الْحَمِيدَ"
+        focus="الْحَمِيدَ"
+        translit="al-ḥamdu li-llāhi l-ḥamīda"
+        en="Praise be to God, the Praiseworthy."
+        irab="الحمدُ مبتدأ مرفوع، لله جار ومجرور متعلقان بمحذوف خبر، الحميدَ مفعول به لفعل محذوف تقديره أمدح، والجملة استئنافية لا محل لها."
+        note="Agreement would have required a genitive after li-llāhi. The accusative announces that the word is no longer identifying anyone, since God needs no identifying, but praising. Reading it as a grammatical error is the mistake; it is a deliberate departure."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the first quietly turns a phrase into a sentence."
+    >
+      <ul>
+        <li><strong>Breaking agreement in definiteness.</strong> <em>al-kitābu jadīdun</em> is not "the new book" but "the book is new".</li>
+        <li><strong>Making a causal adjective follow the word after it in case.</strong> It takes its case from the noun before it and only its gender from the noun after.</li>
+        <li><strong>Confusing adjective and ḥāl.</strong> Check the definiteness of the noun being described.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="Agreement, the causal adjective and sentence adjectives follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the adjective among the followers.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the four respects and the causal adjective.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: sentences and quasi-sentences serving as adjectives.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

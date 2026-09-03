@@ -1,0 +1,150 @@
+---
+/** English edition of /duroos/uslub-al-taajjub. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'uslub-al-taajjub';
+const objectives = [
+  'Parse mā afʿalahu completely, naming what mā is and what the verb is.',
+  'Explain why the noun after the verb is accusative and not a subject.',
+  'Parse afʿil bihi, including the bāʾ that grammarians call redundant.',
+  'List the conditions a verb must meet before either pattern can be built from it.',
+];
+const faqs = [
+  { q: 'What are the two patterns of wonder?', a: 'mā afʿalahu, as in mā ajmala l-samāʾa, and afʿil bihi, as in ajmil bi-l-samāʾi. Both express the same wonder and both are analysed in fixed ways that never vary, which is what makes the chapter learnable in a single sitting.' },
+  { q: 'What is mā in mā ajmala l-samāʾa?', a: 'An indefinite noun conveying wonder, built in the position of nominative as the subject. The majority describe it as mā al-taʿajjubiyya, meaning something like "what a thing". Parsing it as an interrogative or a negative here is an error.' },
+  { q: 'Why is al-samāʾa accusative?', a: 'Because ajmala is a past-tense verb here, not an elative adjective, and al-samāʾa is its object. The doer is a hidden pronoun referring back to mā. This is the single most useful fact in the chapter, since the form looks like the comparative ajmal.' },
+  { q: 'How is afʿil bihi parsed?', a: 'ajmil is formally an imperative but carries a past-tense meaning. The bāʾ is a redundant preposition, and what follows is nominative in position as the doer, though genitive in form. So in ajmil bi-l-samāʾi, al-samāʾi is the doer in position.' },
+  { q: 'What conditions must the verb meet?', a: 'Six, as the grammarians count them: three-lettered, fully inflecting, affirmable, complete rather than defective, not colour or defect on the pattern afʿal, and not passive. A verb failing any of them is expressed through a helper, as in mā ashadda ḥumrata l-wardi.' },
+  { q: 'Can anything separate the verb from its object?', a: 'Very little. The two patterns are treated almost as fixed formulas, and grammarians permit separation only in narrow cases such as an adverbial or a prepositional phrase attached to the verb. Otherwise the pattern must stay intact.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Style of Wonder (uslūb al-taʿajjub) in Arabic Grammar · Irab App"
+  description="A full lesson on expressing wonder: the two patterns mā afʿalahu and afʿil bihi, their fixed analyses, the redundant bāʾ, and the six conditions on the verb."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Style of Wonder" description="The two patterns of wonder, their fixed iʿrāb, and the conditions on the verb they are built from." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Style of Wonder"
+      summary="Arabic expresses wonder through two frozen patterns whose analysis never changes, which makes this one of the few chapters you can finish and be finished with. The difficulty is elsewhere: both patterns look like something they are not. In mā ajmala l-samāʾa the middle word looks like an adjective and is a verb, and in ajmil bi-l-samāʾi the last word looks genitive and is a doer."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the first pattern"
+      lead="mā afʿalahu, where mā is a subject, afʿala is a past-tense verb, and the noun after it is its object."
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="The pattern in full"
+        ar="مَا أَجْمَلَ السَّمَاءَ"
+        focus="أَجْمَلَ"
+        translit="mā ajmala l-samāʾa"
+        en="How beautiful the sky is."
+        irab="ما نكرة تامة بمعنى شيء مبنية على السكون في محل رفع مبتدأ، أجملَ فعل ماضٍ مبني على الفتح والفاعل ضمير مستتر وجوبًا تقديره هو يعود على ما، السماءَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، وجملة أجمل السماءَ في محل رفع خبر."
+        note="Read the vowels rather than the shape. ajmala with a fatḥa is a verb; ajmalu with a ḍamma would be the elative. Everything downstream follows from that one distinction, including why al-samāʾa is accusative."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="second-form"
+      title="Understand: the second pattern"
+      lead="afʿil bihi, an imperative in form with a past meaning, where the bāʾ is redundant and what follows is the doer."
+    >
+      <ExampleCard
+        label="A doer in genitive form"
+        ar="أَجْمِلْ بِالسَّمَاءِ"
+        focus="بِالسَّمَاءِ"
+        translit="ajmil bi-l-samāʾi"
+        en="How beautiful the sky is."
+        irab="أجملْ فعل ماضٍ جاء على صورة الأمر مبني على السكون، الباء حرف جر زائد، السماءِ فاعل مرفوع محلًّا مجرور لفظًا وعلامة جره الكسرة الظاهرة."
+        note="A redundant preposition adds emphasis without changing the role, so the word carries a genitive ending while functioning as the doer. Grammarians write this as marfūʿ maḥallan majrūr lafẓan, nominative in position and genitive in form."
+      />
+
+      <ExampleCard
+        label="The first pattern in the Qurʾān"
+        ar="فَمَا أَصْبَرَهُمْ عَلَى النَّارِ"
+        focus="أَصْبَرَهُمْ"
+        translit="fa-mā aṣbarahum ʿalā l-nār"
+        en="How bold they are in facing the Fire."
+        irab="الفاء استئنافية، ما نكرة تامة للتعجب في محل رفع مبتدأ، أصبرَ فعل ماضٍ مبني على الفتح والفاعل ضمير مستتر تقديره هو، والهاء ضمير متصل في محل نصب مفعول به، على النارِ جار ومجرور متعلقان بأصبر، وجملة أصبرهم في محل رفع خبر."
+        note="Here the object is a pronoun rather than an explicit noun, which changes nothing in the analysis: the pronoun is built in the position of accusative. Notice also that a prepositional phrase attaches to the verb without breaking the pattern, one of the few separations the grammarians permit."
+      />
+
+      <CheckQuestion
+        q="Is akrama here a verb or an elative, and what follows from your answer?"
+        ar="مَا أَكْرَمَ خَالِدًا"
+        answer="A past-tense verb, so khālidan is its object in the accusative."
+        why="The fatḥa on akrama settles it. Were it an elative, the following noun could not be accusative. Every part of the analysis, including the hidden doer referring to mā, depends on reading that one vowel correctly."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="conditions"
+      title="See: when the patterns cannot be used"
+      lead="A verb must satisfy six conditions. When it fails, wonder is expressed through a helper verb and the original becomes a verbal noun."
+    >
+      <ExampleCard
+        label="Wonder through a helper"
+        ar="مَا أَشَدَّ حُمْرَةَ الْوَرْدِ"
+        focus="حُمْرَةَ"
+        translit="mā ashadda ḥumrata l-wardi"
+        en="How intensely red the rose is."
+        irab="ما نكرة تامة في محل رفع مبتدأ، أشدَّ فعل ماضٍ مبني على الفتح والفاعل ضمير مستتر تقديره هو، حمرةَ مفعول به منصوب وهو مضاف، الوردِ مضاف إليه مجرور."
+        note="The verb iḥmarra is a colour on the pattern afʿal, so wonder cannot be built from it directly. The helper ashadda carries the pattern and the original meaning moves into the verbal noun ḥumra, which becomes the object."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the first is by far the most frequent."
+    >
+      <ul>
+        <li><strong>Reading afʿala as an elative.</strong> It is a past-tense verb, and the noun after it is its object.</li>
+        <li><strong>Parsing the noun after the redundant bāʾ as genitive.</strong> It is the doer, genitive only in form.</li>
+        <li><strong>Building wonder from a colour verb.</strong> Use a helper and a verbal noun.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The two patterns and the six conditions are given in these texts."
+    >
+      <ul>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the patterns, their iʿrāb and the conditions.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the redundant bāʾ and what may separate the parts.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

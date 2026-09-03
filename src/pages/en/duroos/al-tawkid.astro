@@ -1,0 +1,162 @@
+---
+/** English edition of /duroos/al-tawkid. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-tawkid';
+const objectives = [
+  'Separate verbal from semantic emphasis, and say what each removes.',
+  'Use the fixed vocabulary of semantic emphasis correctly.',
+  'Supply the returning pronoun that every semantic emphasiser requires.',
+  'Explain why a Quranic verse pairs two emphasisers rather than one.',
+];
+const faqs = [
+  { q: 'What is the difference between verbal and semantic emphasis?', a: 'Verbal emphasis repeats the word itself or a synonym of it, and works on nouns, verbs, particles and whole sentences. Semantic emphasis uses a fixed set of words, nafs, ʿayn, kull, jamīʿ, ʿāmma, kilā and kiltā, each of which must carry a pronoun returning to the emphasised word.' },
+  { q: 'What is the condition for emphasis with nafs and ʿayn?', a: 'They must carry a pronoun agreeing with the emphasised word: jāʾa l-amīru nafsuhu. They also remove the possibility of a figurative reading, which is their purpose: not a messenger of the prince but the prince himself.' },
+  { q: 'How are kilā and kiltā parsed in emphasis?', a: 'When they emphasise, they are annexed to a pronoun and are declined like a dual: alif for the nominative, yāʾ otherwise. jāʾa l-ṭālibāni kilāhumā. Annexed to an explicit noun instead, they are declined with estimated vowels.' },
+  { q: 'Does repeating a pronoun give emphasis?', a: 'Yes, and it is a common form of verbal emphasis, though a detached nominative pronoun is required to emphasise an attached or hidden one: qumtu anā. Repeating an attached pronoun alone does not serve.' },
+  { q: 'Why does the Quran say kulluhum ajmaʿūn, pairing two emphasisers?', a: 'The pairing strengthens the inclusion beyond what either word does alone, closing off any reading in which some were excluded. The grammarians treat the second as emphasis of the first, and both follow the emphasised word in case.' },
+  { q: 'When is a repeated word not verbal emphasis?', a: 'When the repetition carries new information rather than reinforcing the first mention, for example when the second instance is coordinated or governs something of its own. Emphasis adds no new content by definition; it removes doubt about content already given.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Emphasis (al-tawkīd) in Arabic Grammar · Irab App"
+  description="A full lesson on emphasis: verbal and semantic emphasis, the fixed vocabulary, the returning pronoun, kilā and kiltā, and why the Quran pairs two emphasisers."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Emphasis (al-tawkīd)" description="Verbal and semantic emphasis, the fixed vocabulary, the returning pronoun, and kilā and kiltā." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Emphasis"
+      summary="The last of the four followers, and the one with the clearest purpose: it exists to close off a doubt. Either the listener might think the speaker misspoke, or might read the statement figuratively, and emphasis removes both possibilities. It comes in two forms, one of which draws on a small fixed vocabulary that every one of its members requires a returning pronoun."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: closing off a doubt"
+      lead="Emphasis follows the emphasised word in case, and is mentioned to remove the suspicion that the speaker was inattentive or that the words were meant figuratively."
+    >
+      <LessonObjective items={objectives} />
+      <p>Both halves of that purpose matter, and they map onto the two kinds. Verbal emphasis guards against the listener thinking the speaker slipped. Semantic emphasis guards against a figurative reading, which is why <em>nafs</em> and <em>ʿayn</em> exist.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="lafzi"
+      title="See: verbal emphasis"
+      lead="Repeating the word itself or a synonym. It works on every kind of word and on whole sentences."
+    >
+      <ExampleCard
+        label="A repeated particle and verb"
+        ar="كَلَّا سَوْفَ تَعْلَمُونَ ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ"
+        focus="كَلَّا سَوْفَ تَعْلَمُونَ"
+        translit="kallā sawfa taʿlamūn thumma kallā sawfa taʿlamūn"
+        en="No! You are going to know. Then no! You are going to know."
+        irab="كلا حرف ردع وزجر، سوف حرف تنفيس، تعلمونَ فعل مضارع مرفوع وعلامة رفعه ثبوت النون، وواو الجماعة في محل رفع فاعل، ثم حرف عطف، والجملة الثانية توكيد لفظي للأولى."
+        note="A whole sentence repeated for emphasis. Note that the second instance adds no new content: that is the defining feature of emphasis, and it is how you tell a repetition that emphasises from one that informs."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="manawi"
+      title="Understand: semantic emphasis and its fixed words"
+      lead="A small closed list: nafs and ʿayn against figurative reading, kull, jamīʿ and ʿāmma for inclusion, kilā and kiltā for the dual. Each requires a pronoun returning to the emphasised word."
+    >
+      <ExampleCard
+        label="Removing a figurative reading"
+        ar="جَاءَ الْأَمِيرُ نَفْسُهُ"
+        focus="نَفْسُهُ"
+        translit="jāʾa l-amīru nafsuhu"
+        en="The prince came himself."
+        irab="جاء فعل ماضٍ مبني على الفتح، الأميرُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، نفسُ توكيد معنوي مرفوع وعلامة رفعه الضمة الظاهرة وهو مضاف، والهاء ضمير متصل في محل جر مضاف إليه."
+        note="Without nafsuhu the sentence could mean the prince's messenger came, since Arabic readily says 'the prince came' of his representative. The emphasiser closes that reading off. The pronoun in nafsuhu is obligatory."
+      />
+
+      <ExampleCard
+        label="Two emphasisers together"
+        ar="فَسَجَدَ الْمَلَائِكَةُ كُلُّهُمْ أَجْمَعُونَ"
+        focus={['كُلُّهُمْ', 'أَجْمَعُونَ']}
+        translit="fa-sajada l-malāʾikatu kulluhum ajmaʿūn"
+        en="So the angels prostrated, all of them together."
+        irab="سجد فعل ماضٍ مبني على الفتح، الملائكةُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، كلُّ توكيد معنوي مرفوع وهو مضاف، وهم ضمير متصل في محل جر مضاف إليه، أجمعونَ توكيد ثانٍ مرفوع وعلامة رفعه الواو لأنه ملحق بجمع المذكر السالم."
+        note="The pairing is not redundant. Together the two words close off any reading in which some angels were excluded, more firmly than either alone. Note that ajmaʿūn takes wāw as an annexed member of the sound masculine plural class."
+      />
+
+      <CheckQuestion
+        q="What is missing from this sentence, and what case would it take?"
+        ar="جَاءَ الطَّالِبَانِ كِلَا"
+        answer="The returning pronoun: kilāhumā, nominative by alif."
+        why="Every semantic emphasiser requires a pronoun agreeing with the emphasised word. kilā annexed to a pronoun is declined like a dual, so it takes alif here to match the nominative al-ṭālibāni."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="pronoun"
+      title="Emphasising an attached pronoun"
+      lead="Before nafs or ʿayn can emphasise an attached nominative pronoun, a detached pronoun must come between them."
+    >
+      <p>The rule looks fussy and has a clear reason behind it. An attached pronoun is fused to its verb and cannot bear the weight of an emphasiser directly, so the language inserts a free-standing pronoun to carry it. Omitting that pronoun is one of the few outright errors in a chapter that is otherwise forgiving.</p>
+
+      <ExampleCard
+        label="The separating pronoun in place"
+        ar="قُمْتَ أَنْتَ نَفْسُكَ"
+        focus="أَنْتَ"
+        translit="qumta anta nafsuka"
+        en="You yourself stood."
+        irab="قمتَ فعل ماضٍ مبني على السكون والتاء ضمير متصل في محل رفع فاعل، أنتَ ضمير منفصل توكيد لفظي للتاء في محل رفع، نفسُ توكيد معنوي للتاء مرفوع وهو مضاف والكاف في محل جر."
+        note="Two emphasisers of different kinds are working here. The detached pronoun is verbal emphasis, repeating the doer, and nafs is semantic emphasis. Without anta the sentence is rejected, which is why the two are usually taught together."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the second is simply forgetting a required letter."
+    >
+      <ul>
+        <li><strong>Breaking the case.</strong> Emphasis follows the emphasised word.</li>
+        <li><strong>Dropping the returning pronoun.</strong> Every semantic emphasiser needs it.</li>
+        <li><strong>Confusing emphasis with an adjective.</strong> An adjective describes and adds content; emphasis adds none and only removes doubt.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The two kinds and the fixed vocabulary follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: emphasis among the followers and its vocabulary.</li>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the conditions on each emphasiser.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: kilā and kiltā, and pairing two emphasisers.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

@@ -1,0 +1,142 @@
+---
+/** English edition of /duroos/uslub-al-istifham. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'uslub-al-istifham';
+const objectives = [
+  'Separate the two interrogative particles from the interrogative nouns.',
+  'Determine the position of an interrogative noun from the answer it expects.',
+  'Explain why an interrogative noun must come first in its sentence.',
+  'Recognise when a question is asked for a purpose other than seeking information.',
+];
+const faqs = [
+  { q: 'What is the difference between hamza and hal?', a: 'The hamza asks either for confirmation, answered by yes or no, or for specification, followed by am: a-katabta am qaraʾta. hal only asks for confirmation. The hamza also enters negative sentences while hal does not, which is why a-lam yaʾtika is sound and hal lam yaʾtika is not.' },
+  { q: 'Do the interrogative particles have a position in iʿrāb?', a: 'No. hamza and hal are particles, so they have no position at all. Only the interrogative nouns take positions, and this is the first division to get right in the chapter.' },
+  { q: 'How do I find the position of an interrogative noun?', a: 'By the answer it expects. If the answer would be the doer, the question word is in the position of nominative. If the answer would be an object, it is accusative. man najaḥa expects a doer, so man is nominative in position.' },
+  { q: 'Why must the interrogative noun come first?', a: 'Because asking is one of the meanings that must lead the sentence, so the interrogative noun is fronted obligatorily. This fronting is what forces mādhā to be accusative in mādhā faʿalta even though it precedes the verb.' },
+  { q: 'Are all interrogative nouns built?', a: 'All except ayy, which is declined and takes ordinary case endings, and is also the only one that is annexed: ayyu kitābin qaraʾta. The rest are built and take positions, and kam is built on sukūn.' },
+  { q: 'What are the rhetorical uses of the question?', a: 'A question may be asked without seeking information: for denial, as in a-taʿbudūna mā tanḥitūn; for rebuke; for wonder; or for affirmation, as in a-lam nashraḥ laka ṣadrak, where the meaning is a statement that We did. The grammar is unchanged; only the intent shifts.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="The Interrogative Style (uslūb al-istifhām) in Arabic Grammar · Irab App"
+  description="A full lesson on questions in Arabic: the two particles, the interrogative nouns and their positions, obligatory fronting, and the rhetorical purposes of asking."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Interrogative Style" description="Interrogative particles and nouns, how positions are determined by the expected answer, and rhetorical questioning." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="The Interrogative Style"
+      summary="Asking a question in Arabic uses two kinds of tool that behave completely differently. The particles hamza and hal have no position in iʿrāb at all, while the interrogative nouns take positions like any other noun. The technique for finding those positions is unusually satisfying: imagine the answer, and the question word occupies exactly the slot the answer would fill."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: two particles, and the rest are nouns"
+      lead="hamza and hal are particles with no position. man, mā, matā, ayna, kayfa, kam and ayy are nouns, and every one of them takes a position."
+    >
+      <LessonObjective items={objectives} />
+      <p>Two differences separate the particles. The hamza can ask for specification and can enter a negative sentence; <em>hal</em> can do neither. That is why <em>a-lam yaʾtika l-khabaru</em> is sound Arabic and the same sentence with <em>hal</em> is not.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="mahall"
+      title="Understand: imagine the answer"
+      lead="The interrogative noun sits in the slot its answer would occupy, and that slot is its position in iʿrāb."
+    >
+      <ExampleCard
+        label="A question word as doer"
+        ar="مَنْ نَجَحَ فِي الِامْتِحَانِ؟"
+        focus="مَنْ"
+        translit="man najaḥa fī l-imtiḥāni"
+        en="Who succeeded in the exam?"
+        irab="من اسم استفهام مبني على السكون في محل رفع مبتدأ، وجملة نجحَ في الامتحان في محل رفع خبر."
+        note="The answer would be a name, and a name here would be the doer. Both analyses are current among grammarians: subject with a following clause as predicate, as given, or man as the doer of najaḥa directly. Either way the position is nominative."
+      />
+
+      <ExampleCard
+        label="A question word as object, before its verb"
+        ar="مَاذَا فَعَلْتَ؟"
+        focus="مَاذَا"
+        translit="mādhā faʿalta"
+        en="What did you do?"
+        irab="ماذا اسم استفهام مبني على السكون في محل نصب مفعول به مقدم، فعلتَ فعل ماضٍ مبني على السكون والتاء ضمير في محل رفع فاعل."
+        note="This is the payoff of the technique. The answer would be an object, so the position is accusative even though the word precedes the verb. Fronting is obligatory because asking must lead the sentence, and grammarians mark it with the word muqaddam."
+      />
+
+      <CheckQuestion
+        q="What is the position of kayfa, and why?"
+        ar="كَيْفَ حَالُكَ؟"
+        answer="In the position of nominative as a fronted predicate, with ḥāluka the subject."
+        why="Test it by the answer: ḥālī ḥasanun. The word ḥasanun is the predicate, so kayfa occupies the predicate slot. Grammarians describe it as khabar muqaddam because the interrogative must come first."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="meanings"
+      title="See: questions that are not questions"
+      lead="A question may be asked to deny, rebuke, wonder or affirm. The grammar does not change, only the purpose."
+    >
+      <ExampleCard
+        label="A question meaning an affirmation"
+        ar="أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ"
+        focus="أَلَمْ"
+        translit="a-lam nashraḥ laka ṣadrak"
+        en="Have We not expanded for you your breast?"
+        irab="الهمزة حرف استفهام لا محل له، لم حرف نفي وجزم وقلب، نشرحْ فعل مضارع مجزوم وعلامة جزمه السكون والفاعل ضمير مستتر تقديره نحن، لك جار ومجرور، صدرَ مفعول به منصوب وهو مضاف والكاف في محل جر."
+        note="The meaning is an emphatic statement, not an enquiry. This is why the hamza matters: it enters the negative, and a question over a negation reads as strong affirmation. hal could not do this work."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the first two both come from ignoring the particle and noun division."
+    >
+      <ul>
+        <li><strong>Giving hal or the hamza a position.</strong> Particles never have one.</li>
+        <li><strong>Calling a fronted interrogative nominative because it comes first.</strong> Position follows the expected answer.</li>
+        <li><strong>Using hal in a negative sentence.</strong> The hamza does that work.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The division of tools and the rulings on fronting come from these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span>: the particles, their meanings and their differences.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the interrogative nouns and obligatory fronting.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

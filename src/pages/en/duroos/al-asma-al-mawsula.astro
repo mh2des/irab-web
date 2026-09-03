@@ -1,0 +1,143 @@
+---
+/** English edition of /duroos/al-asma-al-mawsula. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-asma-al-mawsula';
+const objectives = [
+  'Separate the specific relatives from the two shared ones.',
+  'Identify a relative clause and confirm it contains a returning pronoun.',
+  'Say why the relative clause itself is never given a position in iʿrāb.',
+  'Parse the relative noun by its own role in the outer sentence, not by the clause.',
+];
+const faqs = [
+  { q: 'What is a relative noun?', a: 'A definite noun that is incomplete on its own and is only completed by the clause that follows it, called the ṣila. alladhī by itself means nothing; alladhī najaḥa, "the one who succeeded", is complete. The clause is part of the meaning of the word, not an addition to it.' },
+  { q: 'What is the difference between the specific and the shared relatives?', a: 'The specific ones change for number and gender: alladhī, allatī, alladhāni, alladhīna, allātī. The shared ones do not: man for rational beings and mā for others, each serving every number and gender unchanged.' },
+  { q: 'What is the ṣila and what is the ʿāʾid?', a: 'The ṣila is the clause completing the relative, and the ʿāʾid is a pronoun inside it referring back to the relative. In alladhī qaraʾtuhu, the ʿāʾid is the hāʾ. Without a returning pronoun the clause is not a ṣila at all.' },
+  { q: 'Does the relative clause have a position in iʿrāb?', a: 'No. The ṣila has no position, always, without exception. It is part of completing the word rather than a constituent of the sentence, so it is never described as being in the position of anything.' },
+  { q: 'When may the returning pronoun be omitted?', a: 'When it is an object and dropping it causes no confusion, as in the reading of hādhā alladhī akaltu for akaltuhu. It is estimated in the analysis. When it is the doer it cannot be omitted, since the clause would then have no doer.' },
+  { q: 'How is the relative noun itself parsed?', a: 'By its role in the outer sentence, exactly like any other noun, and always as built in a position, since all relatives except the duals are built. In jāʾa alladhī najaḥa it is in the position of nominative as the doer, while the clause najaḥa has no position at all.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Relative Nouns (al-asmāʾ al-mawṣūla) in Arabic Grammar · Irab App"
+  description="A full lesson on the relative nouns: the specific and the shared sets, the relative clause and its returning pronoun, why the clause has no position, and how the relative itself is parsed."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Relative Nouns" description="Specific and shared relatives, the ṣila and the ʿāʾid, and parsing the relative by its outer role." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Relative Nouns"
+      summary="A relative noun is a word deliberately left incomplete. It means nothing until a clause finishes it, which is why the clause is treated as part of the word rather than as a piece of the sentence, and why it is never given a position in iʿrāb. Two skills carry the chapter: finding the pronoun that returns to the relative, and parsing the relative by what it does in the outer sentence."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: incomplete by design"
+      lead="A relative noun is definite but unfinished, and the clause after it supplies the meaning that completes it."
+    >
+      <LessonObjective items={objectives} />
+      <p>The set divides in two. The <strong>specific</strong> relatives agree in number and gender: <em>alladhī</em>, <em>allatī</em>, <em>alladhāni</em> and <em>allatāni</em>, <em>alladhīna</em> and <em>allātī</em>. The <strong>shared</strong> relatives do not change at all: <em>man</em> for rational beings, <em>mā</em> for everything else.</p>
+      <p>All of them are built, with the usual exception: the duals decline by alif and yāʾ, because being dual outranks being built.</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="silah"
+      title="Understand: the clause and the pronoun that returns"
+      lead="The clause must contain a pronoun referring back to the relative. Without it the clause is not a ṣila, and the sentence does not hold together."
+    >
+      <ExampleCard
+        label="A relative with its clause"
+        ar="جَاءَ الَّذِي نَجَحَ"
+        focus="الَّذِي"
+        translit="jāʾa lladhī najaḥa"
+        en="The one who succeeded came."
+        irab="جاءَ فعل ماضٍ مبني على الفتح، الذي اسم موصول مبني على السكون في محل رفع فاعل، وجملة نجحَ صلة الموصول لا محل لها من الإعراب، والعائد ضمير مستتر تقديره هو."
+        note="Two separate rulings sit side by side here. The relative gets a position, since it is a constituent of the sentence. The clause gets none, since it is completing a word. The returning pronoun is hidden inside najaḥa."
+      />
+
+      <ExampleCard
+        label="A visible returning pronoun"
+        ar="قَرَأْتُ الْكِتَابَ الَّذِي اشْتَرَيْتَهُ"
+        focus="الَّذِي"
+        translit="qaraʾtu l-kitāba lladhī shtaraytahu"
+        en="I read the book that you bought."
+        irab="قرأتُ فعل وفاعل، الكتابَ مفعول به منصوب، الذي اسم موصول مبني في محل نصب نعت للكتاب، وجملة اشتريتَه صلة الموصول لا محل لها، والهاء عائد على الموصول في محل نصب مفعول به."
+        note="Here the relative is an adjective and takes the accusative position from the noun it describes, while the hāʾ inside the clause does the returning. Notice that the pronoun has its own position inside the clause even though the clause has none."
+      />
+
+      <CheckQuestion
+        q="Where is the returning pronoun, and what is the position of the clause?"
+        ar="أَعْجَبَنِي مَا قُلْتَ"
+        answer="The returning pronoun is omitted and estimated as qultahu. The clause qulta has no position in iʿrāb."
+        why="An object pronoun may be dropped when no confusion follows, and it is restored in the analysis. mā itself is in the position of nominative as the doer of aʿjaba. The clause completing it never takes a position, no matter what role the relative plays."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="mahall"
+      title="See: the relative takes its position from outside"
+      lead="Look past the clause. The relative is parsed by what it does in the sentence that contains it."
+    >
+      <ExampleCard
+        label="A relative in the genitive"
+        ar="سَلَّمْتُ عَلَى الَّذِينَ حَضَرُوا"
+        focus="الَّذِينَ"
+        translit="sallamtu ʿalā lladhīna ḥaḍarū"
+        en="I greeted those who attended."
+        irab="سلمتُ فعل وفاعل، على حرف جر، الذين اسم موصول مبني على الفتح في محل جر بحرف الجر، وجملة حضروا صلة الموصول لا محل لها، والواو عائد في محل رفع فاعل."
+        note="The preposition governs the relative, so the position is genitive. The clause after it is invisible to the preposition entirely, which is exactly what having no position means in practice."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Three errors, and the first is the one that shows up in almost every beginner analysis."
+    >
+      <ul>
+        <li><strong>Giving the ṣila a position.</strong> It never has one, whatever the relative is doing.</li>
+        <li><strong>Forgetting the returning pronoun.</strong> If nothing refers back, the clause is not a ṣila.</li>
+        <li><strong>Using alladhīna for the dual.</strong> The duals are alladhāni and alladhayni, and they decline.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The classification and the rulings on the clause come from these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the specific and shared relatives.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the clause, the returning pronoun, and when it may be omitted.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>

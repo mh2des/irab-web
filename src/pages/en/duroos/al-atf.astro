@@ -1,0 +1,159 @@
+---
+/** English edition of /duroos/al-atf. Template: al-jumla-al-ismiyya. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import ArticleHero from '../../../components/ArticleHero.astro';
+import Byline from '../../../components/Byline.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import ArticleSection from '../../../components/ArticleSection.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import AyatExamples from '../../../components/duroos/AyatExamples.astro';
+import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonObjective from '../../../components/duroos/LessonObjective.astro';
+import ExampleCard from '../../../components/duroos/ExampleCard.astro';
+import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+
+const slug = 'al-atf';
+const objectives = [
+  'Give the case of a coordinated word without looking at it.',
+  'Distinguish the three particles of sequence by what each says about order and delay.',
+  'Coordinate verbs and whole sentences, not only nouns.',
+  'Apply the condition for coordinating onto an attached nominative pronoun.',
+];
+const faqs = [
+  { q: 'What case does a coordinated word take?', a: 'The same as the word it is coordinated onto, in every case: nominative onto nominative, accusative onto accusative, genitive onto genitive, and jussive onto jussive when verbs are coordinated. The particle itself is built and has no position in iʿrāb.' },
+  { q: 'What is the difference between wāw, fāʾ and thumma?', a: 'wāw joins without implying order at all: jāʾa Zaydun wa-ʿAmrun says nothing about who came first. fāʾ implies order with immediacy. thumma implies order with delay. English "and" covers all three, which is why translations lose the distinction.' },
+  { q: 'When is aw for choice and when for permission?', a: 'After a command, if the two options may not be combined it is choice: tazawwaj Hindan aw Zaynaba. If they may, it is permission: jālis al-ʿulamāʾa aw al-zuhhāda, where sitting with both is allowed. After a statement it usually indicates doubt or vagueness.' },
+  { q: 'Can a verb be coordinated onto a verb?', a: 'Yes, and it takes the same case: man yattaqi wa-yaṣbir has both verbs jussive, the second by coordination onto the first. Whole sentences may also be coordinated, taking the position of the sentence they follow if it has one.' },
+  { q: 'What is the condition for coordinating onto an attached nominative pronoun?', a: 'The pronoun must be emphasised by a detached one, or something must separate the two. So uskun anta wa-zawjuka l-jannata has anta emphasising the implied doer before wa-zawjuka is coordinated onto it. Without that emphasis the coordination is disliked.' },
+  { q: 'What is the difference between lā, bal and lākin as coordinators?', a: 'lā negates of the second what was affirmed of the first: jāʾa Zaydun lā ʿAmrun. bal transfers the ruling from the first to the second, retracting it. lākin restores a ruling after a negation: mā jāʾa Zaydun lākin ʿAmrun. All three keep the case of what precedes.' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="Coordination (al-ʿaṭf) in Arabic Grammar · Irab App"
+  description="A full lesson on coordination: the case of the coordinated word, the nine particles and their meanings, coordinating verbs and sentences, and the condition on coordinating onto a pronoun."
+>
+  <ArticleSchema slot="head" lang="en" kind="lesson" headline="Coordination (al-ʿaṭf)" description="The case of the coordinated word, the nine particles, coordinating verbs and sentences." />
+  <Nav lang="en" />
+
+  <div class="en-lesson">
+    <ArticleHero
+      lang="en"
+      title="Coordination"
+      summary="Coordination is the easiest rule in the grammar and one of the richest chapters in meaning. The rule is that the coordinated word takes the case of what it is coordinated onto, without exception. The richness is in the particles: Arabic distinguishes joining without order, joining in immediate sequence, and joining after a delay, where English has only the word and."
+    />
+    <Byline lang="en" kind="lesson" />
+    <LessonNav slug={slug} place="top" />
+
+    <ArticleSection
+      lang="en"
+      id="definition"
+      title="Learn: the case follows"
+      lead="The coordinated word takes the case of the word before it, and the particle is built with no position of its own."
+    >
+      <LessonObjective items={objectives} />
+      <ExampleCard
+        label="Two coordinations, two cases"
+        ar="أَكْرَمْتُ الطَّالِبَ وَالْمُعَلِّمَ فِي الْمَدْرَسَةِ وَالْبَيْتِ"
+        focus={['الْمُعَلِّمَ', 'الْبَيْتِ']}
+        translit="akramtu l-ṭāliba wa-l-muʿallima fī l-madrasati wa-l-bayti"
+        en="I honoured the student and the teacher, in the school and the house."
+        irab="أكرمتُ فعل وفاعل، الطالبَ مفعول به منصوب، الواو حرف عطف، المعلمَ معطوف على الطالب منصوب وعلامة نصبه الفتحة الظاهرة، في حرف جر، المدرسةِ اسم مجرور، الواو حرف عطف، البيتِ معطوف على المدرسة مجرور وعلامة جره الكسرة الظاهرة."
+        note="The same particle produces an accusative in one place and a genitive in the other, because it simply passes on whatever case it finds. Say what the word is coordinated onto, not merely that it is coordinated."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="letters"
+      title="See: the nine particles"
+      lead="Four join in both ruling and case; five carry finer rulings."
+    >
+      <ul>
+        <li><strong>wāw</strong>: joining with no implication of order.</li>
+        <li><strong>fāʾ</strong>: order with immediacy.</li>
+        <li><strong>thumma</strong>: order with delay.</li>
+        <li><strong>aw</strong>: choice, permission, or doubt.</li>
+        <li><strong>am</strong>: paired with an interrogative hamza, asking which of two.</li>
+        <li><strong>bal</strong>: retraction, transferring the ruling to the second.</li>
+        <li><strong>lā</strong>: negating of the second what was affirmed of the first.</li>
+        <li><strong>lākin</strong>: restoring a ruling after a negation.</li>
+        <li><strong>ḥattā</strong>: inclusion of an extreme member.</li>
+      </ul>
+      <p>The three of sequence deserve attention because English flattens them. <em>Wa</em> asserts nothing about order at all, so a Quranic <em>wa</em> should not be read as "and then".</p>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="verbs"
+      title="Understand: coordinating verbs and sentences"
+      lead="A verb coordinated onto a verb takes its case, including the jussive. A sentence coordinated onto a sentence takes its position when it has one."
+    >
+      <ExampleCard
+        label="A jussive by coordination"
+        ar="إِنَّهُ مَنْ يَتَّقِ وَيَصْبِرْ فَإِنَّ اللهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ"
+        focus={['يَتَّقِ', 'يَصْبِرْ']}
+        translit="innahu man yattaqi wa-yaṣbir fa-inna Llāha lā yuḍīʿu ajra l-muḥsinīn"
+        en="Indeed whoever fears Allah and is patient, Allah does not waste the reward of the doers of good."
+        irab="من اسم شرط جازم مبني في محل رفع مبتدأ، يتقِ فعل مضارع مجزوم فعل الشرط وعلامة جزمه حذف حرف العلة، الواو حرف عطف، يصبرْ فعل مضارع مجزوم معطوف على يتق وعلامة جزمه السكون، الفاء واقعة في جواب الشرط."
+        note="Two jussive verbs with two different markers: a deleted weak letter on the first, sukūn on the second. The second is jussive purely by coordination, not because any particle reached it. Note also the fāʾ before the answer, required because it is a nominal sentence."
+      />
+
+      <CheckQuestion
+        q="What case is the second verb, and why?"
+        ar="لَمْ يَكْتُبْ وَلَمْ يَقْرَأْ"
+        answer="Jussive, and here by its own particle rather than by coordination."
+        why="lam is repeated before the second verb, so it governs directly. Had it been lam yaktub wa-yaqraʾ, the second would have been jussive by coordination onto the first. Both readings are grammatical; the wording of the iʿrāb differs."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="pronoun-condition"
+      title="Coordinating onto a pronoun"
+      lead="Coordinating onto an attached nominative pronoun requires that the pronoun first be emphasised by a detached one, or that something separate the two."
+    >
+      <ExampleCard
+        label="The emphasising pronoun that makes it permissible"
+        ar="اسْكُنْ أَنْتَ وَزَوْجُكَ الْجَنَّةَ"
+        focus="أَنْتَ"
+        translit="uskun anta wa-zawjuka l-jannata"
+        en="Dwell, you and your wife, in the Garden."
+        irab="اسكنْ فعل أمر مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت، أنتَ ضمير منفصل مبني في محل رفع توكيد للضمير المستتر، الواو حرف عطف، زوجُك معطوف على الضمير المستتر مرفوع وعلامة رفعه الضمة الظاهرة وهو مضاف، الجنةَ مفعول به منصوب."
+        note="The doer of uskun is a hidden pronoun. Coordinating a noun onto it directly would be disliked, so anta is brought in to emphasise it first, and the coordination then attaches to the emphasised pronoun. This is the rule in action rather than in the abstract."
+      />
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="common-mistakes"
+      title="Where learners go wrong"
+      lead="Two errors, and the second is about meaning rather than case."
+    >
+      <ul>
+        <li><strong>Breaking the case.</strong> The coordinated word takes the case of what precedes it, whatever that is.</li>
+        <li><strong>Flattening the particles.</strong> Reading <em>fa</em> and <em>thumma</em> as plain "and" loses the sequence and the delay that the Arabic states.</li>
+      </ul>
+    </ArticleSection>
+
+    <ArticleSection
+      lang="en"
+      id="sources"
+      title="Sources"
+      lead="The particles and their meanings follow these texts."
+    >
+      <ul>
+        <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span>: the meanings of each particle.</li>
+        <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: coordinating onto pronouns and the condition on it.</li>
+      </ul>
+    </ArticleSection>
+
+    <AyatExamples slug={slug} lang="en" />
+    <ArticleFaq lang="en" items={faqs} />
+    <LessonNav slug={slug} place="bottom" />
+  </div>
+
+  <Footer lang="en" />
+</BaseLayout>
