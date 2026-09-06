@@ -7,6 +7,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import Container from '../../components/Container.astro';
+import LessonLinks from '../../components/LessonLinks.astro';
 import { SURAHS, toArabicDigits } from '../../lib/quran';
 
 const title = 'إعراب القرآن الكريم، كل آية كلمةً كلمة | إعراب آب';
@@ -69,6 +70,13 @@ const breadcrumb = {
       </Container>
     </section>
   </main>
+
+  <LessonLinks
+    slugs={['al-jumla-al-filiyya', 'al-asma-al-mawsula', 'al-damair', 'huruf-al-jarr', 'inna-wa-akhawatuha', 'al-idafa']}
+    title="الأبواب التي تتكرّر في القرآن"
+    lead="هذه الأبواب تلقاها في كل صفحة تقريبًا من المصحف. إتقانها يجعل إعراب الآية أيسر."
+    width="default"
+  />
 
   <Footer lang="ar" />
 </BaseLayout>

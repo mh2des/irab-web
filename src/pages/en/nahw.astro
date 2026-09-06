@@ -8,6 +8,7 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import LessonLinks from '../../components/LessonLinks.astro';
 
 const faqs = [
   {
@@ -114,6 +115,14 @@ lang="en"   title="What is nahw? Arabic syntax explained · Irab App"
       <li><strong>Find a teacher.</strong> A weekly check in with someone who knows nahw will save you months of confusion.</li>
     </ol>
   </ArticleSection>
+
+  <LessonLinks
+    lang="en"
+    slugs={['al-jumla-al-ismiyya', 'al-jumla-al-filiyya', 'alamat-al-irab', 'kana-wa-akhawatuha', 'inna-wa-akhawatuha', 'al-hal', 'al-naat', 'al-idafa']}
+    title="The chapters of nahw, lesson by lesson"
+    lead="These chapters are the spine of the syllabus: the two sentence types, then the case markers, then the abrogators, the accusatives and the followers. Each lesson gives the rule and fully parsed examples."
+    allLabel="All 40 lessons"
+  />
 
   <ArticleFaq items={faqs} />
 

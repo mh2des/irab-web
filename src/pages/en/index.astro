@@ -18,6 +18,7 @@ import Pricing from '../../components/sections/Pricing.astro';
 import Faq, { FAQS } from '../../components/sections/Faq.astro';
 import FinalCta from '../../components/sections/FinalCta.astro';
 import AppShowcase from '../../components/sections/AppShowcase.astro';
+import LessonLinks from '../../components/LessonLinks.astro';
 import StickyCta from '../../components/StickyCta.astro';
 import Footer from '../../components/sections/Footer.astro';
 ---
@@ -34,6 +35,19 @@ lang="en"   title="Irab App: AI Arabic Grammar Analyzer · Word-by-Word I'rab"
     <Thesis />
     <Features />
     <Audience />
+    {/* Lessons: the site's own teaching, and the page a reader wants next.
+        They also need the link — the English course was reachable only from
+        its own hub, which Google had not crawled. */}
+    <LessonLinks
+      lang="en"
+      slugs={['alamat-al-irab', 'al-jumla-al-ismiyya', 'al-mubtada-wal-khabar', 'al-jumla-al-filiyya', 'al-fail', 'al-maful-bih', 'kana-wa-akhawatuha', 'inna-wa-akhawatuha']}
+      title="Learn nahw chapter by chapter"
+      lead="Forty written and reviewed lessons. Each gives the rule, fully parsed examples, and Quran verses that use the construction. Start at the beginning, or jump to the chapter that stops you."
+      allLabel="Browse all 40 lessons"
+      width="default"
+      tone="tinted"
+    />
+
     <AppShowcase lang="en" />
     <SocialProof />
     <div class="section-tint border-t border-stone dark:border-coal-edge pt-12 pb-2 flex justify-center">

@@ -6,6 +6,7 @@ import ArticleHero from '../components/ArticleHero.astro';
 import Byline from '../components/Byline.astro';
 import ArticleSchema from '../components/ArticleSchema.astro';
 import ArticleSection from '../components/ArticleSection.astro';
+import LessonLinks from '../components/LessonLinks.astro';
 import ArticleCta from '../components/ArticleCta.astro';
 import ArticleFaq from '../components/ArticleFaq.astro';
 
@@ -100,6 +101,12 @@ const faqs = [
     </ol>
     <p>وإن أردت البدء الآن، فقد أعددنا <a href="/duroos">دروسًا في أبواب النحو</a> درسًا درسًا: الجملة الاسمية والفعلية، علامات الإعراب، النواسخ، المنصوبات والتوابع، كلٌّ منها بقاعدة واضحة وأمثلة معربة إعرابًا كاملًا.</p>
   </ArticleSection>
+
+  <LessonLinks
+    slugs={['al-jumla-al-ismiyya', 'al-jumla-al-filiyya', 'alamat-al-irab', 'kana-wa-akhawatuha', 'inna-wa-akhawatuha', 'al-hal', 'al-naat', 'al-idafa']}
+    title="أبواب النحو، درسًا درسًا"
+    lead="هذه الأبواب هي عمود المنهج: نوعا الجملة، ثم علامات الإعراب، ثم النواسخ والمنصوبات والتوابع. لكل درس قاعدة واضحة وأمثلة معربة إعرابًا كاملًا."
+  />
 
   <ArticleFaq lang="ar" items={faqs} />
 

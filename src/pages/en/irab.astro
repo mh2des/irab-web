@@ -6,6 +6,7 @@ import ArticleHero from '../../components/ArticleHero.astro';
 import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
+import LessonLinks from '../../components/LessonLinks.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 
@@ -104,6 +105,14 @@ lang="en"   title="What is i'rab? A complete guide to Arabic grammar analysis ·
       <li><strong>Find a teacher or community.</strong> Online options: Bayyinah TV, Studio Arabiya, Qalamquest. Or a local mosque study circle.</li>
     </ol>
   </ArticleSection>
+
+  <LessonLinks
+    lang="en"
+    slugs={['alamat-al-irab', 'al-jumla-al-ismiyya', 'al-mubtada-wal-khabar', 'al-jumla-al-filiyya', 'al-fail', 'al-maful-bih']}
+    title="Start here: the first six lessons"
+    lead="If you want an ordered path, these six in sequence cover what you need to parse a whole sentence: the case markers first, then the two sentence types and their pillars."
+    allLabel="All 40 lessons"
+  />
 
   <ArticleSection
     id="common-mistakes"

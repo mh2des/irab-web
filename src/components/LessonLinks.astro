@@ -1,0 +1,188 @@
+---
+/**
+ * LessonLinks: a compact block of links into the /duroos lessons, for use
+ * inside a prose page that teaches the same ground.
+ *
+ * Why it exists: on 2026-09-06 Search Console listed the lessons hub and all
+ * 40 lessons as "Discovered - currently not indexed" — Google knew the URLs
+ * from the sitemap but had never fetched them, because the only page linking
+ * to them in volume was the hub itself, which was also never fetched. The
+ * guide pages (/irab, /nahw) and the home page ARE crawled and indexed, so
+ * linking the lessons from the prose that teaches the same topic gives both
+ * a reader and a crawler a real path in.
+ *
+ * Reader value first: each card names the lesson and what it covers, so the
+ * block reads as "where to go next", not as a list of links.
+ *
+ * Type note: the heading uses the body face in bold, not Aref Ruqaa. Per the
+ * usage rule in global.css the display face is reserved for large labels of
+ * two words or fewer, and these headings are sentences.
+ */
+import Container from './Container.astro';
+import { lessonsBySlug, accentFor } from '../data/duroos';
+import { enLessonsBySlug, enAccentFor } from '../lib/en-duroos';
+
+interface Props {
+  /** Lesson slugs, in the order they should be read. */
+  slugs: string[];
+  title?: string;
+  lead?: string;
+  /** Label on the link to the full lessons hub; omit to hide that link. */
+  allLabel?: string;
+  lang?: 'ar' | 'en';
+  /** 'narrow' matches ArticleSection on the guide pages; 'default' for wider pages. */
+  width?: 'narrow' | 'default';
+  /** 'plain' rules the block off inside a page; 'tinted' makes it a full band. */
+  tone?: 'plain' | 'tinted';
+}
+const {
+  slugs,
+  title = Astro.props.lang === 'en' ? 'Lessons on this topic' : 'دروس تشرح هذا الباب',
+  lead,
+  allLabel = Astro.props.lang === 'en' ? 'All grammar lessons' : 'كل دروس النحو',
+  lang = 'ar',
+  width = 'narrow',
+  tone = 'plain',
+} = Astro.props;
+
+// The English course is a separate set of pages with its own titles and its
+// own published subset, so each language reads its own list.
+const en = lang === 'en';
+const lessons = en ? enLessonsBySlug(...slugs) : lessonsBySlug(...slugs);
+const accent = en ? enAccentFor : accentFor;
+const hubHref = en ? '/en/duroos' : '/duroos';
+const base = en ? '/en/duroos' : '/duroos';
+const arrow = en ? '→' : '←';
+---
+{lessons.length > 0 && (
+  <section class:list={['ll-sec', tone === 'tinted' && 'll-tinted']} aria-labelledby="ll-h" lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+    <Container size={width}>
+      <div class="ll">
+        <h2 id="ll-h" class:list={['ll-h', en ? 'font-display' : 'font-arabic']}>{title}</h2>
+        {lead && <p class:list={['ll-lead', !en && 'classical-naskh']}>{lead}</p>}
+        <ul class="ll-grid" role="list">
+          {lessons.map((l) => (
+            <li>
+              <a class="ll-card" href={`${base}/${l.slug}`} style={`--acc:${accent(l.slug)}`}>
+                <b class="ll-title">{l.title}</b>
+                <span class="ll-blurb">{l.blurb}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        {allLabel && (
+          <p class="ll-all">
+            <a href={hubHref}>{allLabel} {arrow}</a>
+          </p>
+        )}
+      </div>
+    </Container>
+  </section>
+)}
+
+<style>
+  .ll-sec { padding-block: 1rem; }
+  .ll {
+    border-block: 1px solid var(--color-card-edge);
+    padding-block: 2.25rem;
+  }
+  :global(.dark) .ll { border-color: var(--color-coal-edge); }
+
+  /* Tinted: the block becomes a full-width band in the page's section rhythm,
+     so the inner rules come off and the tint plus one border does the work. */
+  .ll-tinted {
+    padding-block: 0;
+    background: var(--color-paper-soft);
+    border-block: 1px solid var(--color-stone);
+  }
+  :global(.dark) .ll-tinted {
+    background: var(--color-coal-soft);
+    border-block-color: var(--color-coal-edge);
+  }
+  .ll-tinted .ll { border-block: 0; padding-block: 4rem; }
+  @media (min-width: 768px) { .ll-tinted .ll { padding-block: 5.5rem; } }
+  .ll-h {
+    font-weight: 700;
+    font-family: var(--font-arabic);
+    font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+    line-height: 1.35;
+    color: var(--color-ink);
+    margin: 0 0 0.6rem;
+  }
+  :global(.dark) .ll-h { color: var(--color-mist); }
+
+  .ll-lead {
+    font-size: 1.4rem;
+    line-height: 1.95;
+    color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+    margin: 0 0 1.4rem;
+    max-width: 44rem;
+  }
+  :global(.dark) .ll-lead { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+
+  .ll-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.75rem;
+  }
+
+  .ll-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    height: 100%;
+    min-height: 44px;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--color-card-edge);
+    border-radius: 14px;
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+  }
+  :global(.dark) .ll-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .ll-card:hover {
+    border-color: var(--acc);
+    transform: translateY(-3px);
+    box-shadow: var(--lift-shadow);
+  }
+  .ll-card:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+
+  .ll-sec[lang='en'] .ll-h,
+  .ll-sec[lang='en'] .ll-title,
+  .ll-sec[lang='en'] .ll-blurb,
+  .ll-sec[lang='en'] .ll-lead { font-family: inherit; }
+
+  .ll-title {
+    font-family: var(--font-arabic);
+    font-weight: 700;
+    font-size: 1.45rem;
+    line-height: 1.4;
+    color: var(--color-ink);
+    transition: color .2s;
+  }
+  :global(.dark) .ll-title { color: var(--color-mist); }
+  .ll-card:hover .ll-title { color: var(--acc); }
+
+  .ll-blurb {
+    font-family: var(--font-arabic);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+  }
+  :global(.dark) .ll-blurb { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+
+  .ll-all { margin: 1.1rem 0 0; font-size: 1.25rem; }
+  .ll-all a {
+    color: var(--color-purple);
+    font-weight: 700;
+    text-decoration: none;
+    text-underline-offset: 3px;
+    display: inline-block;
+    padding-block: 0.35rem;
+  }
+  .ll-all a:hover { text-decoration: underline; }
+</style>

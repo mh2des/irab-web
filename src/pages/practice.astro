@@ -9,6 +9,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Schema from '../components/Schema.astro';
 import Nav from '../components/Nav.astro';
 import ArticleFaq from '../components/ArticleFaq.astro';
+import LessonLinks from '../components/LessonLinks.astro';
 import Footer from '../components/sections/Footer.astro';
 
 const faqs = [
@@ -112,6 +113,13 @@ const learningResource = {
 
     <ArticleFaq items={faqs} lang="ar" />
   </main>
+
+  <LessonLinks
+    slugs={['al-fail', 'naib-al-fail', 'al-maful-bih', 'al-hal', 'al-tamyiz', 'huruf-al-jarr']}
+    title="راجع القاعدة قبل التدريب"
+    lead="أكثر ما يخطئ فيه المتدرّبون هذه الأبواب. اقرأ الدرس ثم عد إلى التدريب."
+    width="default"
+  />
 
   <Footer lang="ar" />
 </BaseLayout>

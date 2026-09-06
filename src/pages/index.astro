@@ -13,6 +13,7 @@ import Container from '../components/Container.astro';
 import Section from '../components/Section.astro';
 import LiveDemo from '../components/sections/LiveDemo.astro';
 import AppShowcase from '../components/sections/AppShowcase.astro';
+import LessonLinks from '../components/LessonLinks.astro';
 import StickyCta from '../components/StickyCta.astro';
 import Footer from '../components/sections/Footer.astro';
 
@@ -220,6 +221,20 @@ const faqs = [
     </Section>
 
     {/* ── App showcase + download ──────────────────────────────────── */}
+    {/* ── Lessons ──────────────────────────────────────────────────
+        The lessons are the site's own original teaching, and the page a
+        reader wants after "who it's for". They also need the link: Search
+        Console showed the hub and all 40 lessons as discovered but never
+        crawled, reachable only from a hub Google had not fetched. */}
+    <LessonLinks
+      slugs={['alamat-al-irab', 'al-jumla-al-ismiyya', 'al-mubtada-wal-khabar', 'al-jumla-al-filiyya', 'al-fail', 'al-maful-bih', 'kana-wa-akhawatuha', 'inna-wa-akhawatuha']}
+      title="تعلّم النحو بابًا بابًا"
+      lead="أربعون درسًا مكتوبة ومراجَعة، كل درس بقاعدته وأمثلته المعربة إعرابًا كاملًا، وآيات من القرآن تطبّق الباب. ابدأ من أوّلها أو اقفز إلى الباب الذي يشكل عليك."
+      allLabel="تصفّح الدروس الأربعين"
+      width="default"
+      tone="tinted"
+    />
+
     <AppShowcase lang="ar" />
 
     {/* ── Social Proof ─────────────────────────────────────────────── */}

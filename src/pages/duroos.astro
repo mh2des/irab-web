@@ -5,120 +5,15 @@ import Footer from '../components/sections/Footer.astro';
 import Container from '../components/Container.astro';
 import ArticleHero from '../components/ArticleHero.astro';
 import ArticleCta from '../components/ArticleCta.astro';
+import { LESSON_GROUPS as groups } from '../data/duroos';
 
-// Hub for the grammar lessons. Every lesson below exists as
-// src/pages/duroos/<slug>.astro; keep the two in step when adding lessons.
+// Hub for the grammar lessons. The lesson list lives in src/data/duroos.ts so
+// that other pages can link into it; every entry has a page at
+// src/pages/duroos/<slug>.astro.
 //
-// Design notes:
-// - Group accents reuse the site's i'rab case colors (--color-marfu purple,
-//   --color-majrur teal, --color-jazm warm gold): meaningful color on a
-//   lessons page, not decoration. Each card carries its group accent in a
-//   CSS custom property consumed by hover states.
-// - Aref Ruqaa (font-arabic-display) appears ONLY at large sizes and on
-//   labels of two words or fewer, per the usage rule in global.css. Card
-//   titles are the body face in bold: readable first.
-const groups: { title: string; accent: string; lessons: { slug: string; title: string; blurb: string }[] }[] = [
-  {
-    title: 'الجملة وأركانها',
-    accent: 'var(--color-purple)',
-    lessons: [
-      { slug: 'al-jumla-al-ismiyya', title: 'الجملة الاسمية', blurb: 'ركناها وأحكامها وصور الخبر' },
-      { slug: 'al-mubtada-wal-khabar', title: 'المبتدأ والخبر', blurb: 'أنواعهما وحالات الرفع' },
-      { slug: 'al-jumla-al-filiyya', title: 'الجملة الفعلية', blurb: 'الفعل والفاعل والمفعول وترتيبها' },
-      { slug: 'al-fail', title: 'الفاعل', blurb: 'أحكامه الأربعة وصوره' },
-      { slug: 'naib-al-fail', title: 'نائب الفاعل', blurb: 'البناء للمجهول وأحكامه' },
-    ],
-  },
-  {
-    title: 'المفاعيل',
-    accent: 'var(--color-teal)',
-    lessons: [
-      { slug: 'al-maful-bih', title: 'المفعول به', blurb: 'علامات نصبه وتقديمه وتأخيره' },
-      { slug: 'al-maful-al-mutlaq', title: 'المفعول المطلق', blurb: 'أنواعه الثلاثة وما ينوب عنه' },
-      { slug: 'al-maful-li-ajlih', title: 'المفعول لأجله', blurb: 'شروط نصبه وأحواله' },
-      { slug: 'al-maful-fih', title: 'المفعول فيه', blurb: 'ظرف الزمان وظرف المكان' },
-    ],
-  },
-  {
-    title: 'علامات الإعراب',
-    accent: 'var(--color-jazm)',
-    lessons: [
-      { slug: 'alamat-al-irab', title: 'علامات الإعراب', blurb: 'الأصلية والفرعية وما ينوب عن ماذا' },
-      { slug: 'al-afal-al-khamsa', title: 'الأفعال الخمسة', blurb: 'ثبوت النون وحذفها' },
-      { slug: 'al-asma-al-khamsa', title: 'الأسماء الخمسة', blurb: 'شروط إعرابها بالحروف' },
-      { slug: 'al-mamnu-min-al-sarf', title: 'الممنوع من الصرف', blurb: 'أسبابه وجرّه بالفتحة' },
-    ],
-  },
-  {
-    title: 'النواسخ',
-    accent: 'var(--color-purple)',
-    lessons: [
-      { slug: 'kana-wa-akhawatuha', title: 'كان وأخواتها', blurb: 'عملها واسمها وخبرها' },
-      { slug: 'inna-wa-akhawatuha', title: 'إنّ وأخواتها', blurb: 'عملها وكسر الهمزة وفتحها' },
-      { slug: 'la-nafiya-lil-jins', title: 'لا النافية للجنس', blurb: 'عملها وشروطها ولا إله إلا الله' },
-      { slug: 'zanna-wa-akhawatuha', title: 'ظنّ وأخواتها', blurb: 'أفعال القلوب والتحويل والمفعولان' },
-      { slug: 'kada-wa-akhawatuha', title: 'كاد وأخواتها', blurb: 'المقاربة والرجاء والشروع' },
-    ],
-  },
-  {
-    title: 'المنصوبات والأساليب',
-    accent: 'var(--color-teal)',
-    lessons: [
-      { slug: 'al-hal', title: 'الحال', blurb: 'أنواعها وصاحب الحال' },
-      { slug: 'al-tamyiz', title: 'التمييز', blurb: 'تمييز الذات وتمييز النسبة' },
-      { slug: 'al-munada', title: 'المنادى', blurb: 'أنواعه الخمسة وبناؤه ونصبه' },
-      { slug: 'al-istithna', title: 'الاستثناء', blurb: 'إلا وغير وأحكام المستثنى' },
-      { slug: 'al-adad', title: 'العدد', blurb: 'التذكير والتأنيث وتمييز العدد' },
-    ],
-  },
-  {
-    title: 'التوابع',
-    accent: 'var(--color-jazm)',
-    lessons: [
-      { slug: 'al-naat', title: 'النعت', blurb: 'الحقيقي والسببي والمطابقة' },
-      { slug: 'al-atf', title: 'العطف', blurb: 'حروفه ومعانيها وإعراب المعطوف' },
-      { slug: 'al-badal', title: 'البدل', blurb: 'أنواعه الثلاثة وإعرابه' },
-      { slug: 'al-tawkid', title: 'التوكيد', blurb: 'اللفظي والمعنوي وألفاظه' },
-    ],
-  },
-  {
-    title: 'الجر والمضارع',
-    accent: 'var(--color-purple)',
-    lessons: [
-      { slug: 'al-idafa', title: 'الإضافة', blurb: 'المعنوية واللفظية والمضاف إليه' },
-      { slug: 'huruf-al-jarr', title: 'حروف الجر', blurb: 'معانيها وعملها والتعلق' },
-      { slug: 'nasb-al-mudari', title: 'نصب المضارع', blurb: 'أدوات النصب وعلاماته' },
-      { slug: 'jazm-al-mudari', title: 'جزم المضارع', blurb: 'أدوات الجزم وأثرها' },
-      { slug: 'uslub-al-shart', title: 'أسلوب الشرط', blurb: 'أدواته وجوابه واقترانه بالفاء' },
-    ],
-  },
-  {
-    title: 'المبنيات',
-    accent: 'var(--color-teal)',
-    lessons: [
-      { slug: 'al-damair', title: 'الضمائر', blurb: 'المنفصل والمتصل والمستتر ومحالها' },
-      { slug: 'al-asma-al-mawsula', title: 'الأسماء الموصولة', blurb: 'الصلة والعائد ومحل الموصول' },
-      { slug: 'asma-al-ishara', title: 'أسماء الإشارة', blurb: 'بناؤها ومحلها والمثنى منها' },
-    ],
-  },
-  {
-    title: 'الاسم وأقسامه',
-    accent: 'var(--color-purple)',
-    lessons: [
-      { slug: 'al-nakira-wal-marifa', title: 'النكرة والمعرفة', blurb: 'أقسام المعارف وأثرها في الإعراب' },
-      { slug: 'al-maqsur-wal-manqus-wal-mamdud', title: 'المقصور والمنقوص والممدود', blurb: 'الحركات المقدّرة وتثنيتها' },
-    ],
-  },
-  {
-    title: 'الأساليب الإنشائية',
-    accent: 'var(--color-jazm)',
-    lessons: [
-      { slug: 'uslub-al-istifham', title: 'أسلوب الاستفهام', blurb: 'أدواته ومحلها من الإعراب' },
-      { slug: 'uslub-al-taajjub', title: 'أسلوب التعجب', blurb: 'ما أفعله وأفعِل به' },
-      { slug: 'uslub-al-madh-wal-dhamm', title: 'أسلوب المدح والذم', blurb: 'نعم وبئس وحبذا والمخصوص' },
-    ],
-  },
-];
+// Design note: Aref Ruqaa (font-arabic-display) appears ONLY at large sizes
+// and on labels of two words or fewer, per the usage rule in global.css. Card
+// titles are the body face in bold: readable first.
 
 // Arabic-Indic numerals for ordinals and the running lesson counter.
 const hindi = (n: number, pad = false): string =>

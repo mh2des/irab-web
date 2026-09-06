@@ -184,3 +184,15 @@ export function lessonPlace(slug: string): LessonPlace | undefined {
   const after = EN_ORDER.slice(i + 1).find((l) => EN_DUROOS.has(l.slug));
   return { no: i + 1, total: EN_ORDER.length, group, prev: before, next: after };
 }
+
+const enBySlug = new Map(EN_ORDER.map((l) => [l.slug, l]));
+
+/** Look up English lessons by slug, keeping only ones that are published. */
+export const enLessonsBySlug = (...slugs: string[]): EnLesson[] =>
+  slugs
+    .map((sl) => enBySlug.get(sl))
+    .filter((l): l is EnLesson => Boolean(l) && EN_DUROOS.has(l!.slug));
+
+/** The accent colour of the group an English lesson belongs to. */
+export const enAccentFor = (slug: string): string =>
+  EN_GROUPS.find((g) => g.lessons.some((l) => l.slug === slug))?.accent ?? 'var(--color-purple)';
