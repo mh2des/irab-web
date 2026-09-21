@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-badal';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-badal'].en}
       title="Substitution"
       summary="A substitute follows its antecedent in case with no particle between them, and it is the word actually intended, the antecedent having served as a way of reaching it. Three kinds are distinguished, two of which require a pronoun pointing back. The construction is far more common than its short chapter suggests, because every noun following a demonstrative is one."
     />

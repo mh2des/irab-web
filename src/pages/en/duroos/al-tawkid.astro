@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-tawkid';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-tawkid'].en}
       title="Emphasis"
       summary="The last of the four followers, and the one with the clearest purpose: it exists to close off a doubt. Either the listener might think the speaker misspoke, or might read the statement figuratively, and emphasis removes both possibilities. It comes in two forms, one of which draws on a small fixed vocabulary that every one of its members requires a returning pronoun."
     />

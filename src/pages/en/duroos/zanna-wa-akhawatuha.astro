@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'zanna-wa-akhawatuha';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['zanna-wa-akhawatuha'].en}
       title="Ẓanna and its Sisters"
       summary="A third family of abrogators, and the most aggressive: where kāna changes one pillar and inna changes the other, these verbs put both into the accusative at once. Knowing that the two objects were originally a subject and a predicate explains everything else about them, including why the second describes the first and why an infinitival clause can replace them both together."
     />

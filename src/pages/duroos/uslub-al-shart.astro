@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما أركان أسلوب الشرط؟', a: 'ثلاثة: أداة الشرط، وجملة الشرط (فعل الشرط)، وجملة الجواب (الجزاء). المعنى: تعليق حصول الجواب على حصول الشرط: إن تذاكرْ تنجحْ.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['uslub-al-shart'].ar}
     title="أسلوب الشرط"
     summary="الشرط تعليق أمر على أمر: لا يقع الجواب حتى يقع الشرط. أدواته قسمان: جازمة تعمل في المضارع، وغير جازمة كإذا ولو ولولا. وأدق مسائله اقتران الجواب بالفاء ومحل جملة الجواب. هذا الدرس يجمع الباب كله بأمثلة قرآنية معربة كاملة."
   />

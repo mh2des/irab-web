@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-asma-al-mawsula';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-asma-al-mawsula'].en}
       title="Relative Nouns"
       summary="A relative noun is a word deliberately left incomplete. It means nothing until a clause finishes it, which is why the clause is treated as part of the word rather than as a piece of the sentence, and why it is never given a position in iʿrāb. Two skills carry the chapter: finding the pronoun that returns to the relative, and parsing the relative by what it does in the outer sentence."
     />

@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-maful-fih';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-maful-fih'].en}
       title="Adverbials of Time and Place"
       summary="An adverbial is an accusative noun stating when or where an act happened, and the whole chapter turns on one test: can the sentence be restated with the preposition fī without changing its meaning? If it can, the noun is adverbial and accusative. If it cannot, the noun takes whatever case its real role demands. That single test also explains why every time noun qualifies while only some place nouns do."
     />

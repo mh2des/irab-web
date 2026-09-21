@@ -8,6 +8,13 @@ interface Props {
   eyebrow?: string;
   title: string;
   summary: string;
+  /**
+   * Direct answer: the definition and governing rule in two or three
+   * sentences, rendered BEFORE the summary in the page's strongest body
+   * style. It exists so the first thing a reader (or an answer engine
+   * quoting the page) meets is the answer, not the essay around it.
+   */
+  answer?: string;
   lang?: 'en' | 'ar';
   /** Keep the title on ONE line at every width (fluid size scales down instead of wrapping). */
   nowrapTitle?: boolean;
@@ -23,7 +30,7 @@ interface Props {
   variant?: 'editorial' | 'product';
 }
 
-const { eyebrow, title, summary, lang = 'ar', nowrapTitle = false, variant = 'editorial' } = Astro.props;
+const { eyebrow, title, summary, answer, lang = 'ar', nowrapTitle = false, variant = 'editorial' } = Astro.props;
 const isProduct = variant === 'product';
 
 const titleFace = isProduct
@@ -112,7 +119,18 @@ const summaryTone = isProduct
         data-reveal
         data-reveal-delay="80"
       ><slot name="title">{title}</slot></h1>
-      <p class:list={[summaryClass, summaryTone, 'text-body md:text-body-lg max-w-2xl']} data-reveal data-reveal-delay="160">{summary}</p>
+      {answer && (
+        <p
+          class:list={[
+            summaryClass,
+            'mt-7 max-w-2xl text-body md:text-body-lg font-semibold text-ink dark:text-mist',
+            'border-s-4 border-purple/60 dark:border-purple/70 ps-5',
+          ]}
+          data-reveal
+          data-reveal-delay="140"
+        >{answer}</p>
+      )}
+      <p class:list={[summaryClass, summaryTone, answer ? 'mt-5 text-body max-w-2xl' : 'text-body md:text-body-lg max-w-2xl']} data-reveal data-reveal-delay={answer ? '200' : '160'}>{summary}</p>
       {/* Optional meta row (chips/stats) a page can inject under the summary. */}
       <slot />
     </div>

@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'huruf-al-jarr';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['huruf-al-jarr'].en}
       title="Prepositions"
       summary="A preposition puts the noun after it into the genitive, and it may never precede a verb. That single restriction is worth more than it looks: it is the reason an implied particle has to be posited after li- and ḥattā when a verb follows them. This lesson covers the commonest nine, the markers of the genitive including the diptote, and the notion of attachment, which no English grammar prepares you for."
     />

@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'لماذا تعرب الأسماء الخمسة بالحروف لا بالحركات؟', a: 'لأنها إذا استوفت شروطها أعربت بعلامات فرعية تنوب عن الأصلية: الواو تنوب عن الضمة، والألف عن الفتحة، والياء عن الكسرة. وعلل النحاة ذلك بأن إضافتها إلى ما بعدها أطالت الاسم فناسبه الإعراب بالحروف الطويلة، وهو باب من أبواب النيابة في علامات الإعراب.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-asma-al-khamsa'].ar}
     title="الأسماء الخمسة"
     summary="الأسماء الخمسة هي: أب وأخ وحم وفو وذو، ترفع بالواو وتنصب بالألف وتجر بالياء، نيابة عن الضمة والفتحة والكسرة. لكن هذا الإعراب بالحروف مشروط بشروط متى فقد أحدها عادت إلى الإعراب بالحركات. هذا الدرس يفصل العلامات والشروط، مع أمثلة معربة إعرابًا كاملًا على طريقة كتب النحو."
   />

@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'لماذا أسماء الإشارة مبنية؟', a: 'لشبهها بالحروف في الافتقار إلى ما يوضح معناها: فكما لا يفهم الحرف إلا بما بعده، لا يفهم اسم الإشارة إلا بإشارة حسية أو معنوية تصاحبه. ولذلك بنيت ولزمت صورة واحدة، إلا المثنى منها فأعرب لأنه جاء على صورة المثنى.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['asma-al-ishara'].ar}
     title="أسماء الإشارة"
     summary="أسماء الإشارة معارف مبنية تدل على معين بإشارة إليه، ولها ألفاظ للمفرد والمثنى والجمع مذكرًا ومؤنثًا، وألفاظ للمكان. تلتبس على الطلاب في ثلاثة مواضع: محلها من الإعراب، وإعراب المثنى منها بالحروف، وإعراب الاسم الواقع بعدها بدلًا أو خبرًا. هذا الدرس يفصل الثلاثة بأمثلة معربة كاملة وشاهد من فاتحة سورة البقرة."
   />

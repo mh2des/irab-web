@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الفرق بين النعت والصفة؟', a: 'لا فرق في الاصطلاح الشائع، فالنعت والصفة اسمان لباب واحد. البصريون يغلب عليهم "الصفة" والكوفيون "النعت"، وكتب الإعراب المدرسية تستعملهما بمعنى واحد.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-naat'].ar}
     title="النعت"
     summary="النعت تابع يكمل منعوته ببيان صفة من صفاته أو صفات ما تعلق به. وهو أول التوابع وأكثرها استعمالًا، وقواعد مطابقته للمنعوت من أدق ما يمتحن به المعربون. هذا الدرس يفصل النعت الحقيقي والسببي والنعت الجملة، مع أمثلة معربة كاملة."
   />

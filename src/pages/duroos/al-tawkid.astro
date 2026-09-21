@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الفرق بين التوكيد اللفظي والمعنوي؟', a: 'اللفظي إعادة اللفظ نفسه أو مرادفه: جاء جاء الحقُّ. والمعنوي يكون بألفاظ محفوظة: النفس والعين لرفع المجاز عن الذات، وكل وجميع وعامة للشمول، وكلا وكلتا للمثنى، بشرط اتصالها بضمير يعود على المؤكد.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-tawkid'].ar}
     title="التوكيد"
     summary="التوكيد تابع يذكر لتقرير المتبوع ورفع احتمال السهو أو المجاز عنه، وهو رابع التوابع مع النعت والعطف والبدل. قسمان: لفظي بإعادة اللفظ، ومعنوي بألفاظ محفوظة أشهرها النفس والعين وكل وجميع وكلا وكلتا. هذا الدرس يعرض القسمين وشروطهما بأمثلة قرآنية معربة كاملة."
   />

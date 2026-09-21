@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما إعراب "ما" في ما أجمل السماء؟', a: 'ما نكرة تامة تعجبية بمعنى شيء، مبنية على السكون في محل رفع مبتدأ. وأجمل فعل ماضٍ جامد لإنشاء التعجب، فاعله ضمير مستتر وجوبًا تقديره هو يعود على ما، والسماءَ مفعول به. والجملة الفعلية في محل رفع خبر المبتدأ. والمعنى: شيءٌ جعل السماءَ جميلة.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['uslub-al-taajjub'].ar}
     title="أسلوب التعجب"
     summary="التعجب استعظام أمر يخفى سببه، وله في العربية صيغتان قياسيتان: ما أفعلَه وأفعِلْ به. إعرابهما من أكثر ما يُسأل عنه في الامتحانات، لأن الفعل فيهما جامد والفاعل مستتر وجوبًا، والباء في الصيغة الثانية زائدة. هذا الدرس يعرض الصيغتين وشروط الفعل الذي يصاغان منه، وكيف نتعجب مما لا يستوفي الشروط، بأمثلة معربة كاملة."
   />

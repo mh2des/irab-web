@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-naat';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-naat'].en}
       title="The Adjective"
       summary="The first of the four followers, words that take their case from the word before them rather than from any governor of their own. A real adjective agrees with its noun in four respects at once, which is more than English asks of an adjective in any construction. And one variety agrees with one word while describing another, which has no English parallel at all."
     />

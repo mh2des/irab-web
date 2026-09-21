@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما معنى "ممنوع من الصرف" أصلًا؟', a: 'الصرف هو التنوين. فالممنوع من الصرف اسم معرب لا يقبل التنوين، ويُجر بالفتحة نيابة عن الكسرة ما لم يُضف أو تدخل عليه أل. سمي كذلك لأنه مُنع الصرفَ أي التنوين.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-mamnu-min-al-sarf'].ar}
     title="الممنوع من الصرف"
     summary="الممنوع من الصرف اسم معرب لا ينوّن، ويخالف الأسماء في علامة جره: يُجر بالفتحة نيابة عن الكسرة. هذا الدرس يشرح العلل التي تمنع الصرف، علمًا وصفة وصيغة، ومتى يعود الاسم إلى الجر بالكسرة، مع أمثلة معربة من القرآن والكلام الفصيح."
   />

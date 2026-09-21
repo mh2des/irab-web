@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الفرق بين البدل وعطف البيان؟', a: 'كلاهما تابع يوضح متبوعه، والفرق دقيق: البدل مقصود بالحكم والمبدل منه توطئة له، وعطف البيان موضح لمتبوعه والمتبوع هو المقصود. كثير من النحاة يجيز الوجهين في نحو "جاء أخوك محمدٌ".' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-badal'].ar}
     title="البدل"
     summary="البدل تابع مقصود بالحكم بلا واسطة حرف، يمهد له بذكر متبوعه ثم يقع عليه الحكم نفسه. أنواعه ثلاثة مشهورة: المطابق، وبعض من كل، والاشتمال. هذا الدرس يعرضها بأمثلتها المعربة، ويبين شرط الضمير، وإعراب الاسم المعرف بعد اسم الإشارة."
   />

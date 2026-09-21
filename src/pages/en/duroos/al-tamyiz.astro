@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-tamyiz';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-tamyiz'].en}
       title="The Specifier"
       summary="A specifier removes vagueness. Say that you bought a measure and the listener waits to hear a measure of what; say wheat and the sentence settles. Sometimes the vagueness sits in one word, and sometimes it sits in the sentence as a whole, and those two cases behave differently. The specifier is also the accusative most often confused with the circumstantial accusative, so this lesson ends with the two questions that separate them."
     />

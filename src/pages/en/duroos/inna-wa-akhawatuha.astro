@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'inna-wa-akhawatuha';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['inna-wa-akhawatuha'].en}
       title="Inna and its Sisters"
       summary="Six particles enter the nominal sentence and do the exact reverse of kāna: they put the first pillar into the accusative and leave the predicate nominative. Governance is the easy half of this chapter. The harder and more useful half is knowing when the hamza of inna is written with a kasra and when with a fatḥa, which is not a spelling convention but a grammatical decision with a test behind it."
     />

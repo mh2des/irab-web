@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-istithna';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-istithna'].en}
       title="Exception"
       summary="Exception looks simple and turns out to be one of the most decision-heavy chapters in the grammar. The case of the excepted noun does not depend on the word itself but on what came before the instrument: whether the whole was mentioned, and whether the sentence was affirmative or negative. Three configurations, three different answers, and one of them is the sentence a Muslim says most often."
     />

@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'uslub-al-istifham';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['uslub-al-istifham'].en}
       title="The Interrogative Style"
       summary="Asking a question in Arabic uses two kinds of tool that behave completely differently. The particles hamza and hal have no position in iʿrāb at all, while the interrogative nouns take positions like any other noun. The technique for finding those positions is unusually satisfying: imagine the answer, and the question word occupies exactly the slot the answer would fill."
     />

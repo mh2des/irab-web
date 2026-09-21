@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'لماذا تقدر الحركات على المقصور والمنقوص؟', a: 'لأن الألف لا تقبل الحركة أصلًا، فتقدر عليها الحركات الثلاث ويقال منع من ظهورها التعذر. أما الياء فتقبل الفتحة بخفتها ولا تقبل الضمة والكسرة لثقلهما، فتقدر الضمة والكسرة على المنقوص ويقال منع من ظهورهما الثقل، وتظهر الفتحة.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-maqsur-wal-manqus-wal-mamdud'].ar}
     title="المقصور والمنقوص والممدود"
     summary="ثلاثة أنواع من الأسماء المعربة يفرقها آخرها: ألف لازمة في المقصور، وياء لازمة قبلها كسرة في المنقوص، وهمزة بعد ألف زائدة في الممدود. وعلى هذا الآخر يتوقف إعرابها: أتظهر الحركة أم تقدر؟ هذا الدرس يعرف الأنواع الثلاثة، ويبين إعراب كل منها، ومتى تحذف ياء المنقوص، وكيف تثنى وتجمع، بأمثلة معربة كاملة."
   />

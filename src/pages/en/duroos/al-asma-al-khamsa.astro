@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-asma-al-khamsa';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-asma-al-khamsa'].en}
       title="The Five Nouns"
       summary="Five particular nouns take letters as case markers instead of vowels: wāw for the nominative, alif for the accusative, yāʾ for the genitive. But only when four conditions hold together, with two more attaching to fū and dhū. Miss a condition and the noun quietly returns to ordinary vowel marking, which is the source of nearly every error in this chapter."
     />

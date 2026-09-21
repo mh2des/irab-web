@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'لماذا يُحذف الفاعل أصلًا؟', a: 'لأغراض بلاغية أو عملية: الجهل به نحو "سُرِقَ الْمَتَاعُ"، أو العلم به فلا حاجة لذكره نحو ﴿خُلِقَ الْإِنسَانُ ضَعِيفًا﴾، أو الخوف منه أو عليه، أو الرغبة في الإيجاز، أو تعظيمه بصون اسمه عن الاقتران بالفعل.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['naib-al-fail'].ar}
     title="نائب الفاعل"
     summary="إذا حُذف الفاعل من الجملة وبُني الفعل للمجهول، ناب عن الفاعل غيرُه وأخذ أحكامه كلها: الرفع، والعمدة، وتأنيث الفعل. هذا الدرس يشرح كيف يُبنى الفعل للمجهول، وما الذي ينوب عن الفاعل، وكيف يُعرب النائب، مع التنبيه على الفرق الجوهري بينه وبين المفعول به."
   />

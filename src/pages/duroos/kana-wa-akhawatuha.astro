@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'لماذا تسمى كان وأخواتها أفعالًا ناقصة؟', a: 'لأنها لا تكتفي بمرفوعها كما يكتفي الفعل التام بفاعله. إذا قلت "كان الجوُّ" لم يتم المعنى حتى تأتي بالخبر المنصوب: "كان الجوُّ صحوًا". فهي ناقصة الدلالة تحتاج إلى الخبر ليتم بها الكلام، وسميت ناسخة لأنها نسخت حكم الخبر فحولته من الرفع إلى النصب.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['kana-wa-akhawatuha'].ar}
     title="كان وأخواتها"
     summary="كان وأخواتها أفعال ناسخة تدخل على الجملة الاسمية فترفع المبتدأ ويسمى اسمها، وتنصب الخبر ويسمى خبرها. هذا الدرس يشرح عملها، ويعدد أخواتها ومعانيها، ويبين أقسامها من حيث التصرف والجمود، وأنواع خبرها، مع أمثلة معربة إعرابًا كاملًا على طريقة كتب النحو المعتمدة."
   />

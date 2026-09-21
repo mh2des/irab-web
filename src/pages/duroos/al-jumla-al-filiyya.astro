@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما ركنا الجملة الفعلية؟', a: 'الفعل والفاعل، وهما العمدة التي لا تتم الجملة بدونها. أما المفعول به فهو فضلة لا يلزم إلا مع الأفعال المتعدية، فجملة "نام الطفلُ" جملة فعلية تامة بلا مفعول به.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-jumla-al-filiyya'].ar}
     title="الجملة الفعلية"
     summary="الجملة الفعلية هي التي تبدأ بفعل، وعمودها الفعل والفاعل، ويلحق بهما المفعول به إذا كان الفعل متعديًا. في هذا الدرس نعرض أقسام الفعل، وأحكام الفاعل والمفعول به ونائب الفاعل، ثم قواعد الترتيب بين هذه الأركان: ما يجري فيه على الأصل، وما يجوز فيه التقديم، وما يجب."
   />

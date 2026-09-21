@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-adad';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-adad'].en}
       title="Numbers"
       summary="Arabic numbers are the chapter native speakers get wrong most often, which tells you something about its difficulty. Gender agreement reverses in the middle of the sequence and then reverses back, and the counted noun changes case and number three times as you count upward. Both behaviours are regular, and the whole chapter reduces to knowing which band you are in."
     />

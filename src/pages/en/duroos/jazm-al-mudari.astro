@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'jazm-al-mudari';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['jazm-al-mudari'].en}
       title="The Imperfect in the Jussive"
       summary="The jussive belongs to verbs alone, as the genitive belongs to nouns alone. Four particles apocopate a single verb, and a family of conditional particles apocopate two at once, the condition and its answer. Its three markers include one that English speakers consistently miss, because it consists of deleting a letter rather than adding a vowel."
     />

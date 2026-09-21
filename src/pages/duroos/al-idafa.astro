@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'هل المضاف إليه مجرور دائمًا؟', a: 'نعم، المضاف إليه مجرور أبدًا، هذه من القواعد المطردة بلا استثناء. أما المضاف نفسه فيعرب بحسب موقعه في الجملة: فاعلًا أو مفعولًا أو مبتدأ أو غير ذلك.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-idafa'].ar}
     title="الإضافة والمضاف إليه"
     summary="الإضافة نسبة بين اسمين يتنزل ثانيهما من الأول منزلة التنوين، فيجر أبدًا. لا تكاد تخلو جملة عربية من إضافة، وأخطاؤها من أكثر ما يقع في الكتابة. هذا الدرس يشرح أركانها وما يحذف لأجلها، والفرق بين المعنوية واللفظية، مع أمثلة معربة كاملة."
   />

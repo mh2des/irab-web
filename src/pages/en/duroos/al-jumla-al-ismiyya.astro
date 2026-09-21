@@ -39,6 +39,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-jumla-al-ismiyya';
 
@@ -69,6 +70,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-jumla-al-ismiyya'].en}
       title="The Nominal Sentence"
       summary="Arabic builds statements in two ways, and everything in naḥw follows from which one you are looking at. The nominal sentence, al-jumla al-ismiyya, opens with a noun and rests on two pillars: the mubtadaʾ and the khabar, both in the nominative. This lesson explains what puts them there when there is no verb in sight, the three shapes the predicate can take, when the order reverses, and what happens when an abrogator enters."
     />

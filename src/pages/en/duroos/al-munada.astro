@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-munada';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-munada'].en}
       title="The Vocative"
       summary="Calling someone is grammatically an act of the speaker, and Arabic treats the person called as the object of a verb that is never said. That single insight explains everything else in the chapter: why the vocative sits in the accusative position, why two of its five kinds nevertheless appear with a ḍamma, and why the wording of its iʿrāb has to mention both facts at once."
     />

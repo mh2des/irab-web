@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما إعراب المبتدأ والخبر؟', a: 'كلاهما مرفوع: المبتدأ مرفوع بالابتداء، والخبر مرفوع بالمبتدأ. وعلامة الرفع الضمة الظاهرة أو المقدرة، وينوب عنها الواو في جمع المذكر السالم والأسماء الخمسة، والألف في المثنى.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-mubtada-wal-khabar'].ar}
     title="المبتدأ والخبر"
     summary="المبتدأ والخبر ركنا الجملة الاسمية، وحكمهما الرفع. وتحت هذا الباب مسائل يكثر السؤال عنها: أنواع المبتدأ والخبر، وعلامات رفعهما الأصلية والفرعية، والوصف الذي يرفع اسمًا يسد مسد الخبر، وأحكام التقديم والحذف. هذا الدرس يجمعها كلها بأمثلة معربة إعرابًا كاملًا على طريقة كتب النحو."
   />

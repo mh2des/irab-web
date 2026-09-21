@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'uslub-al-shart';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['uslub-al-shart'].en}
       title="Conditional Sentences"
       summary="A conditional sentence is a particle and two clauses, tied so that the first is the cause and the second the consequence. Some particles apocopate both verbs and some carry the same meaning without touching a single ending, which is the first thing to establish when parsing one. The second is whether the answer needs a fāʾ to link it, and there is a memorable rule for that."
     />

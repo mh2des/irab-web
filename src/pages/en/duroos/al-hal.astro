@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-hal';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-hal'].en}
       title="The Circumstantial Accusative"
       summary="The ḥāl is an indefinite accusative describing the state of someone or something at the moment the act took place. It answers the question how. Its difficulty for English speakers is not the rule but the three shapes it can take, and the fact that a whole sentence can be a ḥāl provided it carries a link back to the person it describes. Find the holder first and everything else follows."
     />

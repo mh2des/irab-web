@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'alamat-al-irab';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['alamat-al-irab'].en}
       title="The Markers of Iʿrāb"
       summary="Case in Arabic is one thing and the sign that shows it is another. Four vowels are the original signs, but in seven chapters of the language a substitute takes over: a letter instead of a vowel, a different vowel, or a dropped letter. This lesson gives the four originals, the complete list of seven substitutions, the cases where a marker is estimated rather than seen, and a procedure for choosing correctly every time."
     />

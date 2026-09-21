@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'لماذا يقال في المنادى "مبني في محل نصب"؟', a: 'لأن المنادى في الأصل مفعول به لفعل محذوف تقديره أدعو أو أنادي. فالعلم المفرد والنكرة المقصودة يبنيان على الضم ويبقى المحل نصبًا، أما المضاف والشبيه بالمضاف والنكرة غير المقصودة فتظهر فيها الأصل فتنصب لفظًا.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-munada'].ar}
     title="المنادى"
     summary="المنادى اسم يذكر بعد حرف نداء طلبًا لإقبال صاحبه، وهو في أصله مفعول به لفعل محذوف. أنواعه خمسة: اثنان يبنيان على الضم وثلاثة تنصب. هذا الدرس يعرض الأحرف والأنواع الخمسة ونداء ما فيه أل، بأمثلة قرآنية معربة كاملة."
   />

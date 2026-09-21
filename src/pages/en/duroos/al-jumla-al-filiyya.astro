@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-jumla-al-filiyya';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-jumla-al-filiyya'].en}
       title="The Verbal Sentence"
       summary="A verbal sentence opens with a verb. Its two pillars are the verb and its doer, and everything else in it is additional. This lesson covers the kinds of verb and what transitivity means for iʿrāb, the forms the doer takes including the ones you cannot see, why the verb never agrees in number with a following doer, and the rules that fix the order of the three parts."
     />

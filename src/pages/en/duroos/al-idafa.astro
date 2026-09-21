@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-idafa';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-idafa'].en}
       title="Annexation"
       summary="Two nouns placed together so that the second qualifies the first is one of the most frequent structures in Arabic, and one of the simplest to state: the second term is genitive, always. What repays study is everything around that rule, namely the three things annexation deletes from the first term, the preposition it quietly implies, and the one variety that gives no definiteness at all."
     />

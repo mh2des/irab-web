@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الفرق بين المفعول به ونائب الفاعل؟', a: 'المفعول به منصوب يقع عليه فعل الفاعل في الجملة المبنية للمعلوم. فإذا بُني الفعل للمجهول وحُذف الفاعل، ارتفع المفعول به وصار نائب فاعل. في "كَتَبَ الطالبُ الدرسَ" الدرسَ مفعول به منصوب، وفي "كُتِبَ الدرسُ" الدرسُ نائب فاعل مرفوع.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-maful-bih'].ar}
     title="المفعول به"
     summary="المفعول به اسم منصوب يقع عليه فعل الفاعل، وهو أشهر المنصوبات وأكثرها دورانًا في الكلام. هذا الدرس يشرح تعريفه وعلامات نصبه الأصلية والفرعية، ومتى يتقدم على الفاعل أو يتعدد أو يحذف، مع أمثلة معربة إعرابًا كاملًا كما تكتب في كتب النحو."
   />

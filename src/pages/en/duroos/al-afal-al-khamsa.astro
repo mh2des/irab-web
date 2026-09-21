@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-afal-al-khamsa';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-afal-al-khamsa'].en}
       title="The Five Verbs"
       summary="The five verbs are not five particular verbs but five patterns that any imperfect verb can enter. What makes them a chapter of their own is that they take a letter as their case marker instead of a vowel: the nūn is present for the nominative and dropped for the accusative and the jussive. The difficulty is that Arabic has three different nūns that look alike and behave completely differently."
     />

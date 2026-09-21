@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-maful-li-ajlih';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-maful-li-ajlih'].en}
       title="The Object of Purpose"
       summary="This accusative answers a single question: why did the act happen? It is a verbal noun naming an inward state, and it takes the accusative only when four conditions hold together. When one fails, Arabic reaches for a preposition instead, which is why the same idea appears sometimes accusative and sometimes genitive. Knowing the four conditions is knowing the chapter."
     />

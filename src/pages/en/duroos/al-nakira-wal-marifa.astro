@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-nakira-wal-marifa';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-nakira-wal-marifa'].en}
       title="Definite and Indefinite"
       summary="Definiteness looks like a small topic and is not. Four separate rules elsewhere in the grammar are decided by it: whether a sentence may begin with a word, whether a following clause is an adjective or a circumstantial accusative, whether an adjective agrees, and why three whole chapters require indefinite nouns. This lesson gives the test, the seven kinds of definite noun, and the consequences."
     />

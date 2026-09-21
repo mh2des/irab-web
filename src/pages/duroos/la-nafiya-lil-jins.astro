@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'لماذا سميت لا النافية للجنس؟', a: 'لأنها تنفي الحكم عن جنس اسمها كله نفيًّا نصًّا لا احتمال فيه. "لا طالبَ في الصفِّ" تنفي وجود أي طالب أصلًا، بينما "لا طالبٌ في الصف" بالرفع تحتمل نفي الواحد ووجود اثنين.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['la-nafiya-lil-jins'].ar}
     title="لا النافية للجنس"
     summary="لا النافية للجنس أخت إنّ في العمل: تنصب الاسم وترفع الخبر، وتنفي الحكم عن الجنس كله نفيًّا قاطعًا. عليها مدار أعظم جملة في العربية: لا إله إلا الله. هذا الدرس يعرض شروط عملها الخمسة وأحوال اسمها الثلاث وحذف خبرها، بأمثلة معربة كاملة."
   />

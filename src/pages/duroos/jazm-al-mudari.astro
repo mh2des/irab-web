@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الفرق بين لم ولما؟', a: 'كلاهما حرف نفي وجزم وقلب، لكن "لم" تنفي الفعل نفيًا مطلقًا في الماضي، و"لما" تنفيه إلى زمن التكلم مع توقع حدوثه: "لما يحضرْ" أي لم يحضر حتى الآن ويتوقع حضوره.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['jazm-al-mudari'].ar}
     title="جزم الفعل المضارع"
     summary="الجزم أثر يختص بالفعل المضارع، تحدثه أدوات قسمها النحاة قسمين: ما يجزم فعلًا واحدًا، وما يجزم فعلين في أسلوب الشرط. وعلاماته ثلاث: السكون، وحذف حرف العلة، وحذف النون. هذا الدرس يجمع الأدوات والعلامات بأمثلة قرآنية معربة."
   />

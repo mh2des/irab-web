@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'uslub-al-madh-wal-dhamm';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['uslub-al-madh-wal-dhamm'].en}
       title="Praise and Blame"
       summary="Two frozen verbs carry this chapter, niʿma for praise and biʾsa for blame, and each governs a sentence in three parts. The doer is restricted to four shapes, which makes it easy to check your work. The specified noun is the interesting part, because two analyses are genuinely accepted and knowing both is what separates a student who has memorised a pattern from one who understands it."
     />

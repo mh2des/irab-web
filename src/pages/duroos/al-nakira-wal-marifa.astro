@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'كيف أميز النكرة من المعرفة بسرعة؟', a: 'النكرة ما قبل أل فأثرت فيه التعريف: "رجل" تقبل أل فتصير "الرجل". أو ما وقع موقع ما يقبل أل، كذي بمعنى صاحب. فإن لم يقبل الاسم أل ولم يقع موقع ما يقبلها فهو معرفة، كالضمائر والأعلام وأسماء الإشارة.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-nakira-wal-marifa'].ar}
     title="النكرة والمعرفة"
     summary="الاسم في العربية إما نكرة تدل على شائع في جنسها، وإما معرفة تدل على معين. وهذا التقسيم ليس مسألة معنى فحسب، بل يغير الإعراب: فالمبتدأ لا يكون نكرة إلا بمسوغ، والجملة بعد النكرة صفة وبعد المعرفة حال، والنعت يتبع منعوته في التعريف والتنكير. هذا الدرس يعرض أقسام المعارف السبعة وأثر كل ذلك في الإعراب بأمثلة معربة كاملة."
   />

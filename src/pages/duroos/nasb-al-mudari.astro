@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الفرق بين لن ولا في نفي المضارع؟', a: 'لن حرف نفي ونصب واستقبال، تنصب المضارع وتخلّص زمنه للمستقبل: لن يهملَ. أما لا النافية فحرف نفي لا عمل له، يبقى الفعل بعدها مرفوعًا: لا يهملُ الطالبُ واجبَه. فالفرق بينهما في العمل وفي الزمن معًا.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['nasb-al-mudari'].ar}
     title="نصب الفعل المضارع"
     summary="الفعل المضارع معرب أصله الرفع، فإذا سبقه حرف ناصب انتصب. في هذا الدرس تتعرف على أدوات النصب: أن ولن وكي، وما ينصب بأن المضمرة بعد لام التعليل وحتى، ثم على علامات النصب: الفتحة الظاهرة والفتحة المقدرة وحذف النون. ونختم بأمثلة معربة إعرابًا كاملًا على طريقة كتب النحو."
   />

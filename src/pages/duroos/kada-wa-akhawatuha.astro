@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'لماذا سميت كاد وأخواتها أفعالًا ناقصة؟', a: 'لأنها لا تكتفي بمرفوعها كما يكتفي الفعل التام بفاعله، بل تحتاج إلى خبر يتم به المعنى. "كاد المطر" كلام ناقص حتى تقول "ينقطع". وهي بهذا شبيهة بكان وأخواتها في العمل، لكن خبرها لا يكون إلا جملة فعلية فعلها مضارع.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['kada-wa-akhawatuha'].ar}
     title="كاد وأخواتها"
     summary="كاد وأخواتها أفعال ناقصة تعمل عمل كان: ترفع المبتدأ اسمًا لها، ويكون خبرها جملة فعلية فعلها مضارع. تفيد المقاربة أو الرجاء أو الشروع، وتختلف في اقتران خبرها بأن وجوبًا أو جوازًا أو امتناعًا. هذا الدرس يرتب أقسامها الثلاثة وقواعد خبرها، بأمثلة معربة كاملة وشواهد قرآنية."
   />

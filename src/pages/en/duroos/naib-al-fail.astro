@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'naib-al-fail';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['naib-al-fail'].en}
       title="The Deputy Doer"
       summary="Arabic forms the passive by removing the doer from the sentence entirely and rebuilding the verb around its absence. What was the object rises into the nominative and inherits every ruling the doer had. This lesson covers the two patterns for rebuilding the verb, what deputises when the verb has no object to promote, and why Arabic will not tell you who did it."
     />

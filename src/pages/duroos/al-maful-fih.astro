@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الفرق بين الظرف المتصرف وغير المتصرف؟', a: 'المتصرف ما يستعمل ظرفًا وغير ظرف، فيقع مبتدأ وفاعلًا ومجرورًا، مثل يوم وساعة: "يومُ الجمعةِ مباركٌ" فيوم هنا مبتدأ لا ظرف. وغير المتصرف ما يلزم النصب على الظرفية أو الجر بمن، مثل: عند، قبل، بعد، فوق، تحت.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-maful-fih'].ar}
     title="المفعول فيه"
     summary="المفعول فيه هو الظرف: اسم منصوب يبين زمان وقوع الفعل أو مكانه متضمنًا معنى في. ظروف الزمان تنصب كلها، وظروف المكان ينصب مبهمها ويجر مختصها. هذا الدرس يعرض القسمين وشرط الظرفية والمتصرف وغير المتصرف، بأمثلة قرآنية معربة كاملة."
   />

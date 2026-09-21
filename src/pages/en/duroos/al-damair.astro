@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-damair';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-damair'].en}
       title="Pronouns"
       summary="Every pronoun in Arabic is built, meaning its ending never changes for grammatical role. That single fact governs the whole chapter: pronouns are never described as nominative or accusative but as occupying the position of one. The practical skill is reading position from placement, since the very same letters are a subject in one sentence, an object in another, and a possessor in a third."
     />

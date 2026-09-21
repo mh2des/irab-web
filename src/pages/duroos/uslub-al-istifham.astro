@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الفرق بين الهمزة وهل؟', a: 'الهمزة تكون للتصور، أي طلب تعيين أحد أمرين "أزيدٌ عندك أم عمرٌو؟"، وللتصديق، أي طلب معرفة النسبة "أسافر زيدٌ؟". أما هل فللتصديق فقط ويجاب عنها بنعم أو لا. والهمزة تتقدم على حرف العطف "أفلا تعقلون"، وهل تتأخر عنه "فهل أنتم منتهون".' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['uslub-al-istifham'].ar}
     title="أسلوب الاستفهام"
     summary="الاستفهام طلب العلم بشيء لم يكن معلومًا، وأدواته حرفان لا محل لهما من الإعراب هما الهمزة وهل، وأسماء لها محل يتغير بتغير موقعها في الجملة. وهنا يخطئ الطلاب: يعربون كيف مبتدأ دائمًا، ويظنون أيّ مبنية، ويخلطون بين كم الاستفهامية والخبرية. هذا الدرس يرتب الأدوات ومحالها ومعانيها البلاغية بأمثلة معربة كاملة."
   />

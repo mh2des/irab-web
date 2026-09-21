@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-fail';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-fail'].en}
       title="The Doer (al-fāʿil)"
       summary="The fāʿil is the nominative noun that follows a verb and names who performed the act. Four rulings govern it, and every one of them catches English speakers out at least once: it is always nominative, it always follows its verb, the verb stays singular no matter how many doers there are, and the verb takes a feminine form when the doer is feminine. This lesson works through all four with full iʿrāb."
     />

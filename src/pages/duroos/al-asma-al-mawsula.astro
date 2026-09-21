@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الأسماء الموصولة الخاصة والمشتركة؟', a: 'الخاصة تختص بنوع وعدد: الذي للمفرد المذكر، والتي للمفردة، واللذان واللتان للمثنى، والذين لجمع الذكور، واللاتي واللائي لجمع الإناث. والمشتركة تصلح للجميع بلفظ واحد: من للعاقل، وما لغير العاقل، وأي، وذا بعد ما أو من الاستفهاميتين.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-asma-al-mawsula'].ar}
     title="الأسماء الموصولة"
     summary="الاسم الموصول اسم مبهم لا يتم معناه إلا بجملة بعده تسمى الصلة، فيها ضمير يعود عليه يسمى العائد. وهو مبني له محل من الإعراب، إلا مثناه فمعرب. هذا الدرس يعرض الخاصة والمشتركة وأحكام الصلة والعائد ومحل الموصول، بأمثلة قرآنية معربة كاملة."
   />

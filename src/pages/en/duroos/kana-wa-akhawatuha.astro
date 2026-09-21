@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'kana-wa-akhawatuha';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['kana-wa-akhawatuha'].en}
       title="Kāna and its Sisters"
       summary="These verbs enter a nominal sentence and change its second pillar to the accusative while leaving the first alone. They are called deficient because, unlike any ordinary verb, they are not satisfied by a doer: they contribute tense and modality and then wait for a predicate. This lesson covers the thirteen sisters, the ones that only govern after a negation, and the difference between deficient kāna and the complete kāna that means something else entirely."
     />

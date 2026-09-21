@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-maqsur-wal-manqus-wal-mamdud';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-maqsur-wal-manqus-wal-mamdud'].en}
       title="Shortened, Defective and Extended Nouns"
       summary="Three kinds of noun end in a way that interferes with case marking. A shortened noun ends in a fixed alif, a defective noun in a fixed yāʾ after a kasra, and an extended noun in a hamza after an added alif. The first cannot show any case, the second can show only one, and the third shows all three normally. This lesson explains why, and what happens to each in the dual and the plural."
     />

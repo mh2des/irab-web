@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما شروط نصب المفعول لأجله؟', a: 'أربعة شروط: أن يكون مصدرًا، قلبيًّا (من أفعال النفس الباطنة كالخوف والرغبة والطمع)، معللًا لما قبله بأن يصح وقوعه جوابًا عن "لماذا؟"، ومشاركًا للفعل في الزمن والفاعل. فإن فقد شرط جُر بلام التعليل.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-maful-li-ajlih'].ar}
     title="المفعول لأجله"
     summary="المفعول لأجله مصدر قلبي منصوب يبين سبب وقوع الفعل وعلته، ويسمى المفعول له. هو جواب سؤال: لماذا فعلت؟ في كلمة واحدة منصوبة. هذا الدرس يعرض شروط نصبه الأربعة، وأحواله الثلاثة مع أل والإضافة، ومتى يهجر النصب إلى الجر باللام، بأمثلة معربة كاملة."
   />

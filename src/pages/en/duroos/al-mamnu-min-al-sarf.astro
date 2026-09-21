@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-mamnu-min-al-sarf';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-mamnu-min-al-sarf'].en}
       title="Diptotes"
       summary="Some nouns refuse two things at once: they take no tanwīn, and in the genitive they take fatḥa where every other noun takes kasra. Arabic calls them prevented from ṣarf. The chapter is a list of causes, some sufficient alone and some needing a partner, and it is worth learning properly because a fatḥa that means genitive will otherwise mislead you every time you meet one."
     />

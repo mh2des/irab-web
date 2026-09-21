@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-mubtada-wal-khabar';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-mubtada-wal-khabar'].en}
       title="Subject and Predicate"
       summary="The two pillars of the nominal sentence deserve a chapter of their own. The mubtadaʾ is not always a noun, the khabar comes in three quite different shapes, one construction replaces the predicate with a subject, and in a few sentences the predicate is obligatorily left unsaid. This lesson works through each, with the classical iʿrāb for every case."
     />

@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الفرق بين تمييز الذات وتمييز النسبة؟', a: 'تمييز الذات يفسر اسمًا مبهمًا ملفوظًا قبله كالأعداد والمقادير، مثل: اشتريت صاعًا قمحًا. وتمييز النسبة يفسر إبهام الجملة كلها، مثل: طاب المجتهد نفسًا. ولذلك سُمي الأول ملفوظًا والثاني ملحوظًا.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-tamyiz'].ar}
     title="التمييز"
     summary="التمييز اسم نكرة جامد منصوب يفسّر ما انبهم قبله من ذاتٍ أو نسبة، ويجيب عن السؤال: من أيّ شيء؟ قسّمه النحاة قسمين: تمييز الذات بعد الأعداد والمقادير، وتمييز النسبة المحوّل وغير المحوّل. في هذا الدرس ضبط القسمين، وأحكام النصب والجر، وتمييز العدد، مع أمثلة إعراب كاملة على المذهب المعتمد في المناهج."
   />

@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما الفرق بين ظن وأخواتها وأعطى وأخواتها؟', a: 'كلاهما ينصب مفعولين، لكن مفعولي ظن أصلهما مبتدأ وخبر: "ظننت الطالبَ ناجحًا" أصلها "الطالبُ ناجحٌ". أما مفعولا أعطى فليس أصلهما كذلك: "أعطيت الفقيرَ درهمًا" لا يصح فيها "الفقيرُ درهمٌ". ولهذا يجوز حذف أحد مفعولي أعطى، ولا يجوز في باب ظن الاقتصار على مفعول واحد.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['zanna-wa-akhawatuha'].ar}
     title="ظنّ وأخواتها"
     summary="ظنّ وأخواتها أفعال تدخل على الجملة الاسمية فتنصب المبتدأ والخبر مفعولين لها. منها أفعال القلوب التي تفيد اليقين أو الرجحان، ومنها أفعال التحويل التي تفيد التصيير. هذا الدرس يعرض أقسامها ومعانيها، وقاعدتي الإلغاء والتعليق اللتين يسأل عنهما الطلاب كثيرًا، مع أمثلة معربة إعرابًا كاملًا وشاهد من القرآن الكريم."
   />

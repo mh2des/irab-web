@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'la-nafiya-lil-jins';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['la-nafiya-lil-jins'].en}
       title="The Lā of Absolute Negation"
       summary="This lā governs like inna and denies its predicate of a whole class rather than of an individual. It is a short chapter with strict conditions, and it matters more than its length suggests, because the sentence a Muslim says most often is built on it. The lesson ends by parsing the testimony of faith completely, which turns out to combine this chapter, an omitted predicate, and an emptied exception."
     />

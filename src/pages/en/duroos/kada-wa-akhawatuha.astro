@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'kada-wa-akhawatuha';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['kada-wa-akhawatuha'].en}
       title="Kāda and its Sisters"
       summary="These verbs govern exactly as kāna does, raising a noun and requiring a predicate, with one defining difference: their predicate is never a single word. It is always a verbal sentence with an imperfect verb. They express nearness, hope or beginning, and one of them, when negated, behaves in a way that has occupied commentators for centuries."
     />

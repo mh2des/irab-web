@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'uslub-al-taajjub';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['uslub-al-taajjub'].en}
       title="The Style of Wonder"
       summary="Arabic expresses wonder through two frozen patterns whose analysis never changes, which makes this one of the few chapters you can finish and be finished with. The difficulty is elsewhere: both patterns look like something they are not. In mā ajmala l-samāʾa the middle word looks like an adjective and is a verb, and in ajmil bi-l-samāʾi the last word looks genitive and is a doer."
     />

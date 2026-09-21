@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'asma-al-ishara';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['asma-al-ishara'].en}
       title="Demonstratives"
       summary="Demonstratives are built, like all the indeclinables, with one exception that proves instructive: the duals decline, because being dual outranks being built. The chapter's most useful rule concerns what follows them, since a single change in definiteness turns a phrase into a whole sentence. This is what separates this book from this is a book."
     />

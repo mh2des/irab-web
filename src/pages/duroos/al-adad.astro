@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'ما القاعدة الجامعة لتذكير العدد وتأنيثه؟', a: 'واحد واثنان يوافقان المعدود دائمًا. ثلاثة إلى تسعة تخالف المعدود: ثلاثةُ رجالٍ وثلاثُ نساءٍ. عشرة تخالف مفردة وتوافق مركبة. أما ألفاظ العقود والمائة والألف فبلفظ واحد للمذكر والمؤنث.' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['al-adad'].ar}
     title="العدد وإعرابه"
     summary="باب العدد أكثر أبواب النحو استعمالًا في الحياة اليومية وأكثرها زللًا في الكتابة. مداره على سؤالين: متى يوافق العدد معدوده ومتى يخالفه؟ وكيف يعرب العدد وتمييزه؟ هذا الدرس يرتب الأقسام الأربعة ترتيبًا لا يُنسى، بأمثلة قرآنية معربة كاملة."
   />

@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-atf';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-atf'].en}
       title="Coordination"
       summary="Coordination is the easiest rule in the grammar and one of the richest chapters in meaning. The rule is that the coordinated word takes the case of what it is coordinated onto, without exception. The richness is in the particles: Arabic distinguishes joining without order, joining in immediate sequence, and joining after a delay, where English has only the word and."
     />

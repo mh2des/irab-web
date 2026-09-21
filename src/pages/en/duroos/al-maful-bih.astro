@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-maful-bih';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-maful-bih'].en}
       title="The Direct Object"
       summary="The direct object is the accusative noun on which the doer's act falls. It is the first accusative a learner meets and the one every other accusative gets confused with, so this lesson spends as much time on telling it apart from its neighbours as on the rule itself. It also covers the verbs that take two objects, and why their two accusatives are not the same kind of thing."
     />

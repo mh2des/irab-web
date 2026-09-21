@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'nasb-al-mudari';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['nasb-al-mudari'].en}
       title="The Imperfect in the Accusative"
       summary="The imperfect is the only declinable verb in Arabic, and its default state is nominative. A particle of the accusative changes that. Some govern the verb directly, and some cannot govern at all, because they are prepositions, so the tradition posits an implied particle between them and the verb. Understanding why that implied particle exists explains a rule that otherwise looks invented."
     />

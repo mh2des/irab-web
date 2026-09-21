@@ -13,6 +13,7 @@ import LessonNav from '../../../components/duroos/LessonNav.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
+import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-maful-al-mutlaq';
 const objectives = [
@@ -41,6 +42,7 @@ const faqs = [
   <div class="en-lesson">
     <ArticleHero
       lang="en"
+      answer={lessonAnswers['al-maful-al-mutlaq'].en}
       title="The Absolute Object"
       summary="English has no equivalent, which is why this chapter feels strange at first and then becomes one of the most satisfying in the grammar. The absolute object is the act itself named a second time, by a verbal noun from the verb's own root, in order to confirm it, describe how it happened, or say how many times. Several everyday expressions turn out to be absolute objects of verbs nobody ever says."
     />

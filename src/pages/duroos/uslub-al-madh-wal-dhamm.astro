@@ -9,6 +9,7 @@ import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import AyatExamples from '../../components/duroos/AyatExamples.astro';
+import { lessonAnswers } from '../../data/lesson-answers';
 
 const faqs = [
   { q: 'لماذا نعم وبئس فعلان جامدان؟', a: 'لأنهما لا يتصرفان: لا مضارع لهما ولا أمر ولا مصدر، ولزما صيغة الماضي لإنشاء المدح والذم لا للإخبار عن حدث مضى. وفعليتهما ثابتة باتصال تاء التأنيث بهما: "نعمت المرأةُ" و"بئست الخصلةُ".' },
@@ -30,6 +31,7 @@ const faqs = [
 
   <ArticleHero
     lang="ar"
+    answer={lessonAnswers['uslub-al-madh-wal-dhamm'].ar}
     title="أسلوب المدح والذم"
     summary="نعم وبئس فعلان ماضيان جامدان وضعا لإنشاء المدح والذم، ولهما فاعل لا يكون إلا على صور محدودة، ثم اسم مرفوع بعدهما هو المخصوص بالمدح أو الذم. ومثلهما حبذا في المدح ولا حبذا في الذم. هذا الدرس يعرض صور الفاعل وإعراب المخصوص ومواضع حذفه، بأمثلة معربة كاملة وشواهد من القرآن الكريم."
   />
