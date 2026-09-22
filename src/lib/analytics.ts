@@ -22,6 +22,12 @@ type Props = Record<string, string | number | boolean | null | undefined>;
 let client: PostHog | null = null;
 let loading: Promise<PostHog | null> | null = null;
 
+/** Events captured before init (e.g. a paywall shown right after paint). */
+const pending: Array<[string, Record<string, string | number | boolean>]> = [];
+const PENDING_MAX = 20;
+/** Auth state seen before init; `undefined` = nothing seen yet. */
+let pendingIdentity: User | null | undefined;
+
 /** True when a token is configured; false disables every call cheaply. */
 export const analyticsEnabled = POSTHOG_TOKEN.length > 0;
 
@@ -72,32 +78,50 @@ export function initAnalytics(): Promise<PostHog | null> {
       },
     });
     client = posthog;
+    if (pendingIdentity !== undefined) {
+      const u = pendingIdentity;
+      pendingIdentity = undefined;
+      syncIdentity(u);
+    }
+    for (const [event, props] of pending.splice(0)) {
+      try { posthog.capture(event, props); } catch { /* ignore */ }
+    }
     return posthog;
   }).catch(() => null);
   return loading;
 }
 
 export function track(event: string, props?: Props): void {
-  if (!client) return;
+  if (!analyticsEnabled) return;
   const clean: Record<string, string | number | boolean> = {};
   for (const [k, v] of Object.entries(props ?? {})) {
     if (v === null || v === undefined) continue;
     clean[k] = typeof v === 'string' && v.length > 256 ? v.slice(0, 256) : v;
+  }
+  if (!client) {
+    if (pending.length < PENDING_MAX) pending.push([event, clean]);
+    return;
   }
   try { client.capture(event, clean); } catch { /* analytics never breaks the page */ }
 }
 
 /** Mirror Firebase auth state onto the PostHog person. */
 export function syncIdentity(user: User | null): void {
-  if (!client) return;
+  // Firebase auth usually resolves before PostHog has loaded (analytics waits
+  // for window.load); remember the last state and apply it at init.
+  if (!client) { pendingIdentity = user; return; }
   try {
     if (user && !user.isAnonymous) {
       client.identify(user.uid, {
         is_guest: 'false',
         signin_provider: user.providerData[0]?.providerId ?? 'password',
       });
-    } else if (!user && client.get_distinct_id() !== undefined && client._isIdentified()) {
-      client.reset();
+    } else if (!user) {
+      // Firebase uids are 28 url-safe chars with no dashes; PostHog's own
+      // anonymous ids are UUID-shaped. Reset only when a uid is bound so an
+      // anonymous visitor's first-touch history is never thrown away.
+      const id = client.get_distinct_id();
+      if (typeof id === 'string' && id.length >= 20 && !id.includes('-')) client.reset();
     }
   } catch { /* ignore */ }
 }
