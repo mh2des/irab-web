@@ -11,8 +11,9 @@
  * do not drop events. Until that Worker is live, point it at
  * https://eu.i.posthog.com.
  */
-export const POSTHOG_TOKEN = '';
-export const POSTHOG_HOST = 'https://e.irab.app';
+export const POSTHOG_TOKEN = 'phc_zXg4pvCVMjgcFW8VkDcZoKsNEK6U5B3mHumYD3qwocRZ'; // EU project 280831
+// TODO(owner): switch to 'https://e.irab.app' once `npm run deploy:posthog-proxy` is live.
+export const POSTHOG_HOST = 'https://eu.i.posthog.com';
 export const POSTHOG_UI_HOST = 'https://eu.posthog.com';
 
 /** Bump when the notice copy changes materially, so it shows once more. */
