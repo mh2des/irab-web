@@ -15,7 +15,7 @@
  */
 import type { PostHog } from 'posthog-js';
 import type { User } from 'firebase/auth';
-import { POSTHOG_HOST, POSTHOG_TOKEN, POSTHOG_UI_HOST } from '../config/analytics';
+import { INTERNAL_UIDS, POSTHOG_HOST, POSTHOG_TOKEN, POSTHOG_UI_HOST } from '../config/analytics';
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 
@@ -115,6 +115,7 @@ export function syncIdentity(user: User | null): void {
       client.identify(user.uid, {
         is_guest: 'false',
         signin_provider: user.providerData[0]?.providerId ?? 'password',
+        ...(INTERNAL_UIDS.has(user.uid) ? { $internal_or_test_user: true } : {}),
       });
     } else if (!user) {
       // Firebase uids are 28 url-safe chars with no dashes; PostHog's own

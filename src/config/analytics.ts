@@ -18,3 +18,9 @@ export const POSTHOG_UI_HOST = 'https://eu.posthog.com';
 
 /** Bump when the notice copy changes materially, so it shows once more. */
 export const ANALYTICS_NOTICE_VERSION = 1;
+
+/** Team accounts (Firebase uids): flagged $internal_or_test_user on identify. */
+export const INTERNAL_UIDS = new Set<string>([
+  'wr9ccBth6sR62c9UXQ6QMT6nnjn2', // owner, primary
+  'mqNmPfMSGYSBEG0ppvu3i3EkiVq1', // owner, second test account
+]);
