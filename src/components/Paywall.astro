@@ -414,6 +414,8 @@ const t = lang === 'ar'
 
   // Self-guard: only the first instance on a page wires up the global API.
   if (!(window as any).IrabPaywall) {
+    const track = (e: string, p?: Record<string, string | number | boolean | null | undefined>) => import('../lib/analytics').then((m) => m.track(e, p)).catch(() => {});
+    let openedAt = performance.now();
     const root = document.querySelector<HTMLElement>('[data-pw-root]');
     if (root) {
       const lang = root.dataset.lang === 'en' ? 'en' : 'ar';
@@ -451,6 +453,8 @@ const t = lang === 'ar'
         document.documentElement.style.removeProperty('overflow');
       }
       function show(opts?: { uid?: string; email?: string; reason?: 'limit' | 'challenges'; onActivated?: () => void }) {
+        track('paywall_shown', { trigger: opts?.reason ?? 'web_upgrade', platform: 'web' });
+        openedAt = performance.now();
         onActivated = opts?.onActivated ?? null;
         passedUid = opts?.uid ?? null;
         passedEmail = opts?.email ?? null;
@@ -499,6 +503,7 @@ const t = lang === 'ar'
       // user a refresh button instead of reloading into a "Free" page.
       async function awaitActivation() {
         let unlocked = false;
+        const waitStart = performance.now();
         try {
           const [{ auth }, { waitForPremium }] = await Promise.all([
             import('../lib/firebase'), import('../lib/entitlement'),
@@ -511,10 +516,12 @@ const t = lang === 'ar'
           }
         } catch { /* treated as not-yet-unlocked below */ }
         if (unlocked) {
+          track('entitlement_confirmed', { store: 'paddle', wait_ms: Math.round(performance.now() - waitStart) });
           if (onActivated) { try { onActivated(); return; } catch { /* fall through */ } }
           window.location.reload();
           return;
         }
+        track('entitlement_timeout', { store: 'paddle', wait_ms: Math.round(performance.now() - waitStart) });
         actTitle.textContent = root!.dataset.sTimeoutTitle || actTitle.textContent;
         actBody.textContent = root!.dataset.sTimeoutBody || actBody.textContent;
         spinner.classList.add('pw-hidden');
@@ -528,6 +535,7 @@ const t = lang === 'ar'
             const user = await currentUser();
             if (!user) { window.location.href = loginHref; return; }
             const plan = btn.dataset.pwPlan === 'monthly' ? 'monthly' : 'annual';
+            track('purchase_initiated', { plan: plan === 'annual' ? 'yearly' : 'monthly', store: 'paddle', seconds_open: Math.round((performance.now() - openedAt) / 1000) });
             btn.disabled = true;
             errorEl?.classList.add('pw-hidden');
             try {
@@ -538,6 +546,7 @@ const t = lang === 'ar'
                 email: user.email || undefined,
                 lang,
                 onComplete: () => {
+                  track('checkout_completed', { plan: plan === 'annual' ? 'yearly' : 'monthly', store: 'paddle' });
                   mainView.classList.add('pw-hidden');
                   activating.classList.remove('pw-hidden');
                   awaitActivation();
@@ -545,6 +554,7 @@ const t = lang === 'ar'
               });
             } catch (e) {
               console.error('paddle checkout failed', e);
+              track('purchase_failed', { plan: plan === 'annual' ? 'yearly' : 'monthly', store: 'paddle', error_code: 'checkout_open_failed' });
               errorEl?.classList.remove('pw-hidden');
             } finally {
               btn.disabled = false;

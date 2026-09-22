@@ -80,6 +80,7 @@ const t = lang === 'ar'
       completeAll: 'أكمل اختيارات كل كلمة أولاً.',
       writeTitle: 'اكتب جملتك',
       sentencePlaceholder: 'اكتب جملة عربية من كلمتين إلى ١٥ كلمة…',
+      arabicOnly: 'إعراب يفهم العربية فقط. اكتب جملتك بالحروف العربية.',
       trySentence: 'جرّب جملة:',
       splitHint: 'سنقسّمها كلماتٍ لتكتب إعراب كلٍّ منها.',
       split: 'التالي',
@@ -169,6 +170,7 @@ const t = lang === 'ar'
       completeAll: 'Complete every word\'s choices first.',
       writeTitle: 'Write your sentence',
       sentencePlaceholder: 'Type an Arabic sentence, 2 to 15 words…',
+      arabicOnly: 'Irab understands Arabic only. Type your sentence in Arabic letters.',
       trySentence: 'Try a sentence:',
       splitHint: 'We\'ll split it into words for you to parse.',
       split: 'Next',
@@ -382,7 +384,12 @@ const againLabel = mode === 'curated'
       </div>
       {/* write step */}
       <div data-custom-write>
-        <textarea data-custom-input rows="3" dir="rtl" maxlength="500" placeholder={t.sentencePlaceholder} class="input pr-textarea"></textarea>
+        <textarea data-custom-input lang="ar" dir="rtl" rows="3" maxlength="500" placeholder={t.sentencePlaceholder} class="input pr-textarea"></textarea>
+        {/* Refused-character notice: filled and shown by the Arabic-only guard. */}
+        <p data-arabic-only-note data-text={t.arabicOnly} class="ar-only-note" role="status" aria-live="polite">
+          <span class="ar-only-note-glyph" aria-hidden="true">ع</span>
+          <span data-arabic-only-text></span>
+        </p>
         {/* Empty-state suggestions: tap a curated sentence to fill the textarea. */}
         <div class="mt-3">
           <p class="text-small font-semibold text-ink-subtle dark:text-mist-subtle mb-2">{t.trySentence}</p>
@@ -845,6 +852,7 @@ const againLabel = mode === 'curated'
   import { revealStagger, springPress } from '../lib/animate';
   import { sfx, confetti, countUp, isMuted, setMuted } from '../lib/celebrate';
   import { EXAMPLES } from '../data/demo-examples';
+  import { guardArabicOnly } from '../scripts/arabic-only';
 
   const root = document.querySelector<HTMLElement>('[data-practice-root]');
   if (root) {
@@ -1171,6 +1179,12 @@ const againLabel = mode === 'curated'
         });
         const score = results.length ? results.filter((r) => r.isCorrect).length / results.length : 0;
         renderCuratedResults(selectedSentence.sentence, score, results);
+        import('../lib/analytics').then((m) => m.track('practice_guided_completed', {
+          platform: 'web',
+          correct_words: results.filter((r) => r.isCorrect).length,
+          total_words: results.length,
+          is_perfect: results.length > 0 && results.every((r) => r.isCorrect),
+        })).catch(() => {});
         celebrate(score);
       } finally {
         btn.disabled = curatedInputs.some((word) => !word.type.value || !word.role.value || !word.cm.value);
@@ -1182,6 +1196,8 @@ const againLabel = mode === 'curated'
     let customInputs: { word: string; input: HTMLInputElement }[] = [];
     const customWrite = q<HTMLElement>('[data-custom-write]');
     const customSolve = q<HTMLElement>('[data-custom-solve]');
+    // The sentence box refuses anything outside the Arabic script as it arrives.
+    const customGuard = guardArabicOnly(q<HTMLTextAreaElement>('[data-custom-input]'), { note: root.querySelector<HTMLElement>('[data-arabic-only-note]') });
 
     function openCustom() {
       lastMode = 'custom';
@@ -1193,6 +1209,7 @@ const againLabel = mode === 'curated'
     }
 
     function splitCustom() {
+      customGuard.sanitize();
       const s = q<HTMLTextAreaElement>('[data-custom-input]').value.trim();
       const words = s.split(/\s+/).filter(Boolean);
       if (words.length < 2) return;

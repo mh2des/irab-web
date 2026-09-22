@@ -2017,10 +2017,12 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
             planNoteEl.textContent = T.freeNote;
             upgradeEl.classList.remove('hidden');
 
+    const track = (e: string, p?: Record<string, string | number | boolean | null | undefined>) => import('../lib/analytics').then((m) => m.track(e, p)).catch(() => {});
             const payError = root!.querySelector<HTMLElement>('[data-hub-pay-error]');
             root!.querySelectorAll<HTMLButtonElement>('[data-paddle-plan]').forEach((btn) => {
               btn.addEventListener('click', async () => {
                 const plan = btn.dataset.paddlePlan === 'monthly' ? 'monthly' : 'annual';
+                track('purchase_initiated', { plan: plan === 'annual' ? 'yearly' : 'monthly', store: 'paddle', trigger: 'hub' });
                 btn.disabled = true;
                 payError?.classList.add('hidden');
                 try {
@@ -2031,6 +2033,7 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
                     email: u.email || undefined,
                     lang,
                     onComplete: async () => {
+                      track('checkout_completed', { plan: plan === 'annual' ? 'yearly' : 'monthly', store: 'paddle', trigger: 'hub' });
                       // Webhook-driven entitlement: quick poll → "still
                       // activating" notice → patient poll. Reload only on a
                       // confirmed unlock; on timeout tell the truth and give

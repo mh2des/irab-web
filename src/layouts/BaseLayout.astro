@@ -11,6 +11,7 @@ const CF_BEACON_TOKEN = "ca448779bf664e088c61c0f1fe75e19a"; // Cloudflare Web An
  *   • Direction (RTL for Arabic)
  *   • Reduced-motion respect
  */
+import AnalyticsNotice from '../components/AnalyticsNotice.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -177,9 +178,16 @@ const hasAlternate = lang === 'en' || hasEn;
       hero image's decode+paint hostage. Nothing here is needed for first
       paint — scroll-reveal now leaves in-viewport content untouched anyway. */}
   <script>
-    const boot = () => { import('../scripts/scroll-reveal'); import('../scripts/ui-fx'); };
+    const boot = () => {
+      import('../scripts/scroll-reveal');
+      import('../scripts/ui-fx');
+      // PostHog: same after-load rule. No-op until src/config/analytics.ts
+      // has a project token.
+      import('../scripts/analytics-boot');
+    };
     if (document.readyState === 'complete') boot();
     else window.addEventListener('load', boot, { once: true });
   </script>
+  <AnalyticsNotice lang={lang} />
 </body>
 </html>

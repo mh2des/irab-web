@@ -53,6 +53,7 @@ const t = lang === 'ar'
       hint:       'أو اضغط ⌘ + Enter',
       retry:      'أعد المحاولة',
       tooLong:    (n: number) => `${n} حرفًا متبقية`,
+      arabicOnly: 'إعراب يفهم العربية فقط. اكتب جملتك بالحروف العربية.',
     }
   : {
       eyebrow:    'Live demo',
@@ -96,6 +97,7 @@ const t = lang === 'ar'
       hint:       'or press ⌘ + Enter',
       retry:      'Try again',
       tooLong:    (n: number) => `${n} characters left`,
+      arabicOnly: 'Irab understands Arabic only. Type your sentence in Arabic letters.',
     };
 
 ---
@@ -122,6 +124,11 @@ const t = lang === 'ar'
           <textarea data-demo-input lang="ar" dir="rtl" rows="3" maxlength="200" placeholder={t.placeholder}
             class="demo-textarea w-full rounded-lg px-5 md:px-6 py-5 font-arabic text-[clamp(1.45rem,3vw,2rem)] leading-relaxed text-ink dark:text-mist placeholder:text-ink/30 dark:placeholder:text-mist/30 resize-none"
             style="font-family: var(--font-arabic-classical);"></textarea>
+          {/* Refused-character notice: filled and shown by the Arabic-only guard. */}
+          <p data-arabic-only-note data-text={t.arabicOnly} class="ar-only-note" role="status" aria-live="polite">
+            <span class="ar-only-note-glyph" aria-hidden="true">ع</span>
+            <span data-arabic-only-text></span>
+          </p>
           {/* flex-wrap: when JS swaps the submit label to the long sign-in
               CTA, the button can outgrow a phone-width row; without wrap it
               overflowed the card's left edge in RTL (owner-reported). */}
@@ -846,6 +853,7 @@ const t = lang === 'ar'
   import { addHistory, getHistory, getHistoryItem } from '../../lib/history';
   import { revealStagger, springPress } from '../../lib/animate';
   import { shareImage, downloadPdf, exportFilename, warmExport } from '../../lib/share';
+  import { guardArabicOnly } from '../../scripts/arabic-only';
 
   const STORAGE_KEY = 'irab-demo-quota';
   const FP_KEY = 'irab-fp';
@@ -1025,11 +1033,13 @@ const t = lang === 'ar'
 
     let isSignedIn = false;
     let isPremium = false;
+    const track = (e: string, p?: Record<string, string | number | boolean | null | undefined>) => import('../../lib/analytics').then((m) => m.track(e, p)).catch(() => {});
     let currentUid: string | null = null;
 
     // The gate has two modes: 'signin' (anonymous, used 2 free) and 'upgrade'
     // (signed in, hit the daily limit). NEVER show 'signin' to a signed in user.
     function showGate(kind: 'signin' | 'upgrade') {
+      track('signin_gate_shown', { kind });
       gateTitleEl.textContent = kind === 'upgrade' ? i18n.upTitle : i18n.signTitle;
       gateBodyEl.textContent  = kind === 'upgrade' ? i18n.upBody  : i18n.signBody;
       gateCtaEl.textContent   = kind === 'upgrade' ? i18n.upCta   : i18n.signCta;
@@ -1418,6 +1428,7 @@ const t = lang === 'ar'
       // Anonymous client-side pre-check (saves a call). Signed in users rely on
       // the server's 3/day, so they're never pre-blocked here (kills the loop).
       if (!isSignedIn && getQuota() >= MAX_FREE) { showGate('signin'); return; }
+      arabicGuard.sanitize();
       const text = inputEl.value.trim();
       if (!text) return;
 
@@ -1434,6 +1445,8 @@ const t = lang === 'ar'
       setLoading(true);
       startNarration();
 
+      const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+      track('irab_requested', { source: 'web_tool', word_count: wordCount, signed_in: isSignedIn });
       try {
         const fingerprint = await getFingerprint();
         const res = await fetch(API_URL, {
@@ -1449,6 +1462,7 @@ const t = lang === 'ar'
         if (res.status === 429) {
           // Limit reached: signed in → the upgrade paywall (Paddle checkout);
           // anonymous → the sign-in gate (no account yet, nothing to bill).
+          track('irab_failed', { source: 'web_tool', reason: isSignedIn ? 'daily_limit' : 'guest_limit' });
           if (isSignedIn && (window as any).IrabPaywall) (window as any).IrabPaywall.show();
           else showGate(isSignedIn ? 'upgrade' : 'signin');
           return;
@@ -1456,6 +1470,12 @@ const t = lang === 'ar'
         if (!res.ok) throw new Error(`API ${res.status}`);
         const parsed = await res.json() as ParseExample;
         const elapsed = ((performance.now() - start) / 1000).toFixed(1);
+        track('irab_completed', {
+          source: 'web_tool',
+          word_count: Array.isArray(parsed.words) ? parsed.words.length : wordCount,
+          latency_ms: Math.round(performance.now() - start),
+          signed_in: isSignedIn,
+        });
         const ex = { ...parsed, source: i18n.customSrc };
         renderExample(ex, elapsed);
         try {
@@ -1509,6 +1529,10 @@ const t = lang === 'ar'
         charLeftEl.classList.toggle('hidden', !near);
       }
     }
+    // Refuse anything outside the Arabic script as it arrives (typed, pasted,
+    // dropped, dictated) and say why. Registered before syncInput so the box
+    // height and the character count are computed from the cleaned value.
+    const arabicGuard = guardArabicOnly(inputEl, { note: root.querySelector<HTMLElement>('[data-arabic-only-note]') });
     inputEl.addEventListener('input', syncInput);
     syncInput();
 
@@ -1591,6 +1615,7 @@ const t = lang === 'ar'
           const joined = [baseText, spoken].filter(Boolean).join(' ');
           const cap = inputEl.maxLength > 0 ? inputEl.maxLength : 200;
           inputEl.value = joined.slice(0, cap);
+          arabicGuard.sanitize(); // engines sometimes transcribe a name in Latin
           syncInput();
           // Stop cleanly once the cap is reached rather than silently dropping
           // the rest of what the user is still saying.
@@ -1773,6 +1798,7 @@ const t = lang === 'ar'
       const prefill = new URLSearchParams(location.search).get('s');
       if (prefill && !histId) {
         inputEl.value = prefill.slice(0, 200);
+        arabicGuard.sanitize();
         inputEl.focus();
       }
     } catch { /* ignore */ }

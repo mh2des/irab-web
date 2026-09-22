@@ -1,0 +1,19 @@
+/**
+ * PostHog project configuration for irab.app.
+ *
+ * The project token is a PUBLIC write-only key (same class as the Firebase
+ * web config and the Cloudflare beacon token above it in BaseLayout): it can
+ * only ingest events. Leave it empty and every analytics call is a no-op.
+ *
+ * Region: EU (Frankfurt), owner decision 2026-09-22. `POSTHOG_HOST` is the
+ * first-party reverse proxy (Cloudflare Worker, irabapp repo
+ * cloudflare-workers/posthog-proxy) so ad blockers and carrier DNS filters
+ * do not drop events. Until that Worker is live, point it at
+ * https://eu.i.posthog.com.
+ */
+export const POSTHOG_TOKEN = '';
+export const POSTHOG_HOST = 'https://e.irab.app';
+export const POSTHOG_UI_HOST = 'https://eu.posthog.com';
+
+/** Bump when the notice copy changes materially, so it shows once more. */
+export const ANALYTICS_NOTICE_VERSION = 1;

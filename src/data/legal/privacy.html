@@ -20,7 +20,7 @@
         <h3>Learning Progress</h3>
         <ul><li>XP points, ranks, badges, streak records</li><li>Practice session results (accuracy, correct/incorrect counts)</li><li>Challenge history, power up counts, stage stars</li><li>Daily challenge attempts and scores</li><li>Saved favorites, Irab Library entries, Grammar Certificates</li></ul>
         <h3>Usage & Analytics</h3>
-        <ul><li>Feature usage events (practice started, challenge completed, premium gate hit)</li><li>Daily usage counts per feature (for free tier limits)</li><li>Session metadata collected by Firebase Analytics (app version, OS, device type)</li><li>Crash reports and performance diagnostics</li></ul>
+        <ul><li>Feature usage events (practice started, challenge completed, premium gate hit)</li><li>Daily usage counts per feature (for free tier limits)</li><li>Session metadata collected by Firebase Analytics (app version, OS, device type)</li><li>Product analytics and blurred session recordings collected by PostHog (EU, Frankfurt): screens visited, features used, subscription events, campaign source of the install (UTM parameters and ad click identifiers). Text you analyse, search or dictate is never sent to analytics; recordings mask all text and images. You can switch this off in the app Settings or via the notice on the website.</li><li>Crash reports and performance diagnostics</li></ul>
         <h3>Search History</h3>
         <ul><li>Arabic words and sentences submitted for irab/dictionary analysis</li><li>Timestamps of each query</li></ul>
         <h3>Device & Technical</h3>
@@ -36,7 +36,7 @@
             <tr><td>Daily Usage Counters</td><td>Yes</td><td>30 days, auto deleted</td></tr>
             <tr><td>XP Award Logs</td><td>Yes</td><td>60 days, auto deleted</td></tr>
             <tr><td>FCM Token</td><td>Yes</td><td>Deleted on logout</td></tr>
-            <tr><td>Analytics Events</td><td>Pseudonymised</td><td>26 months (Firebase)</td></tr>
+            <tr><td>Analytics Events</td><td>Pseudonymised</td><td>26 months (Firebase)</td></tr><tr><td>Product analytics (PostHog)</td><td>Pseudonymised, EU-hosted</td><td>Events 7 years, session recordings 30 days</td></tr>
             <tr><td>Guest Usage Counters</td><td>Device only</td><td>Until app uninstall</td></tr>
           </tbody></table>
         </div>
@@ -47,7 +47,7 @@
         <h3>بيانات التعلّم والتقدّم</h3>
         <ul><li>نقاط XP والرتب والشارات وسجلات التسلسل اليومي</li><li>نتائج جلسات التدرّب، سجل التحديات، النجوم، مساعدات اللعب</li><li>محاولات التحدّي اليومي ودرجاته</li><li>المحفوظات، مكتبة الإعراب، الشهادات</li></ul>
         <h3>بيانات الاستخدام والتحليلات</h3>
-        <ul><li>أحداث استخدام الميزات وعدّادات الاستخدام اليومية</li><li>بيانات الجلسة من Firebase Analytics (إصدار التطبيق، النظام، الجهاز)</li><li>تقارير الأعطال ومعلومات الأداء</li></ul>
+        <ul><li>أحداث استخدام الميزات وعدّادات الاستخدام اليومية</li><li>بيانات الجلسة من Firebase Analytics (إصدار التطبيق، النظام، الجهاز)</li><li>تحليلات الاستخدام وتسجيلات شاشة مطموسة عبر PostHog (خوادم الاتحاد الأوروبي، فرانكفورت): الشاشات التي تُزار، الميزات المستخدمة، أحداث الاشتراك، ومصدر الحملة الإعلانية للتثبيت (معاملات UTM ومعرّفات نقر الإعلانات). النصوص التي تُعربها أو تبحث عنها أو تنطقها لا تُرسل أبدًا إلى التحليلات، والتسجيلات تطمس كل النصوص والصور. يمكنك إيقاف ذلك من إعدادات التطبيق أو من التنبيه في الموقع.</li><li>تقارير الأعطال ومعلومات الأداء</li></ul>
         <h3>سجل البحث والاستعلام</h3>
         <ul><li>الكلمات والجمل العربية التي ترسلها للتحليل</li><li>الطوابع الزمنية لكل استعلام</li></ul>
         <div class="callout green"><svg class="lucide lucide-sm callout-ico" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span><strong>المستخدمون كضيوف:</strong> يُخزَّن محليًا على جهازك فقط عدّاد الاستخدام (٤ تحليلات / ٥ بحث كحدّ أقصى). لا يُنشأ ملف Firestore للضيوف.</span></div>

@@ -1,0 +1,68 @@
+---
+/**
+ * One-line analytics notice (owner decision 2026-09-22: no blocking banner).
+ *
+ * Shown once per browser, dismissible, with a privacy link and a one-tap
+ * opt-out that calls PostHog's opt_out_capturing. Rendered only when a
+ * PostHog token is configured; anonymous visitors are tracked without
+ * cookies (localStorage), signed-in users under their account.
+ */
+import { POSTHOG_TOKEN, ANALYTICS_NOTICE_VERSION } from '../config/analytics';
+
+interface Props { lang?: 'ar' | 'en' }
+const { lang = 'ar' } = Astro.props;
+const enabled = POSTHOG_TOKEN.length > 0;
+const t = lang === 'en'
+  ? {
+      body: 'We use privacy-friendly analytics (no cookies) to improve Irab. Your sentences are never sent.',
+      privacy: 'Privacy',
+      optOut: 'Opt out',
+      ok: 'OK',
+      href: '/en/privacy',
+    }
+  : {
+      body: 'نستخدم تحليلات تحترم الخصوصية (بدون كوكيز) لتحسين إعراب. جملك لا تُرسل أبدًا.',
+      privacy: 'الخصوصية',
+      optOut: 'إيقاف التحليلات',
+      ok: 'حسنًا',
+      href: '/privacy',
+    };
+---
+{enabled && (
+  <div
+    data-analytics-notice
+    data-version={ANALYTICS_NOTICE_VERSION}
+    hidden
+    role="status"
+    class="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:start-4 sm:max-w-md z-[60] rounded-2xl border border-card-edge dark:border-coal-edge bg-card dark:bg-coal-soft shadow-lg px-4 py-3 text-sm text-ink dark:text-mist flex flex-wrap items-center gap-x-4 gap-y-2"
+  >
+    <span class="flex-1 min-w-[12rem]">{t.body}</span>
+    <a href={t.href} class="font-bold underline underline-offset-4">{t.privacy}</a>
+    <button type="button" data-notice-optout class="font-bold underline underline-offset-4">{t.optOut}</button>
+    <button type="button" data-notice-ok class="font-bold rounded-lg px-3 py-1 bg-ink text-paper dark:bg-mist dark:text-coal">{t.ok}</button>
+  </div>
+  <script>
+    (() => {
+      const el = document.querySelector<HTMLElement>('[data-analytics-notice]');
+      if (!el) return;
+      const key = 'irab-analytics-notice';
+      const version = el.dataset.version || '1';
+      let seen = false;
+      try { seen = localStorage.getItem(key) === version; } catch {}
+      if (seen) return;
+      const dismiss = () => {
+        el.hidden = true;
+        try { localStorage.setItem(key, version); } catch {}
+      };
+      el.querySelector('[data-notice-ok]')?.addEventListener('click', dismiss);
+      el.querySelector('[data-notice-optout]')?.addEventListener('click', async () => {
+        try { const m = await import('../lib/analytics'); m.optOut(); } catch {}
+        dismiss();
+      });
+      // Show after load so it never competes with the first paint.
+      const show = () => { el.hidden = false; };
+      if (document.readyState === 'complete') setTimeout(show, 1200);
+      else window.addEventListener('load', () => setTimeout(show, 1200), { once: true });
+    })();
+  </script>
+)}

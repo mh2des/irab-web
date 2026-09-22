@@ -621,19 +621,24 @@ const t = lang === 'ar'
           showMsg(T.sessionEnded, 'err');
           return;
         }
+        const dictStart = performance.now();
+        const track = (e: string, p?: Record<string, string | number | boolean | null | undefined>) => import('../lib/analytics').then((m) => m.track(e, p)).catch(() => {});
         const res = await fetch(`${WORKER}/api/dictionary`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
           body: JSON.stringify({ word }),
         });
+        const latency = Math.round(performance.now() - dictStart);
         if (res.status === 429) {
+          track('dictionary_searched', { mode: 'smart', outcome: 'limit', cached: false, latency_ms: latency, platform: 'web' });
           if ((window as any).IrabPaywall) (window as any).IrabPaywall.show();
           else showMsg(T.limit, 'info');
           return;
         }
-        if (!res.ok) { showMsg(T.error, 'err'); return; }
+        if (!res.ok) { track('dictionary_searched', { mode: 'smart', outcome: 'error', cached: false, latency_ms: latency }); showMsg(T.error, 'err'); return; }
         const json = await res.json();
-        if (json && json.data === null) { showMsg(T.noResult, 'info'); return; }
+        if (json && json.data === null) { track('dictionary_searched', { mode: 'smart', outcome: 'not_found', cached: false, latency_ms: latency }); showMsg(T.noResult, 'info'); return; }
+        track('dictionary_searched', { mode: 'smart', outcome: 'found', cached: json?.source === 'cache', latency_ms: latency });
         render(json?.data ?? json, json?.source);
       } catch {
         showMsg(T.error, 'err');

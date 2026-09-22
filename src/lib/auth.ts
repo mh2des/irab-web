@@ -20,7 +20,13 @@ import { auth } from './firebase';
 export type Lang = 'ar' | 'en';
 
 export function onAuth(cb: (u: User | null) => void) {
-  return onAuthStateChanged(auth, cb);
+  return onAuthStateChanged(auth, (u) => {
+    // Keep the PostHog person in step with the account: identify(uid) on
+    // sign-in (same uid as the app, RevenueCat and Paddle), reset on sign-out.
+    // Lazy import: analytics is a no-op until BaseLayout has booted it.
+    import('./analytics').then((m) => m.syncIdentity(u)).catch(() => {});
+    cb(u);
+  });
 }
 
 export function signInGoogle() {
@@ -55,7 +61,10 @@ export const resendVerification = (user: User) => sendEmailVerification(user);
 /** Whoever is signed in right now, without subscribing to auth state. */
 export const currentUser = (): User | null => auth.currentUser;
 
-export const logout = () => signOut(auth);
+export const logout = async () => {
+  await signOut(auth);
+  import('./analytics').then((m) => m.syncIdentity(null)).catch(() => {});
+};
 
 /**
  * Map Firebase error codes to friendly AR/EN copy.
