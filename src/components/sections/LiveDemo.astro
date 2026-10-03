@@ -14,8 +14,8 @@ const t = lang === 'ar'
   ? {
       eyebrow:    'تجربة مباشرة',
       headline:   'جرّبه الآن. على هذه الصفحة.',
-      sub:        'إعرابٌ كامل بعمق العالِم لأيّ جملة عربية تكتبها. لك تحليلان مجانيّان الآن، و٣ يوميًّا بتسجيل الدخول.',
-      remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
+      sub:        'إعرابٌ كامل بعمق العالِم لأيّ جملة عربية تكتبها. لك ٣ تحليلات مجانية الآن، و٥ يوميًّا بتسجيل الدخول.',
+      remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : n === 2 ? 'محاولتان مجانيتان' : '٣ محاولات مجانية',
       tryYour:    'جرّب جملتك',
       free:       'مجاني · بلا تسجيل',
       tryExample: 'أمثلة جاهزة:',
@@ -30,10 +30,10 @@ const t = lang === 'ar'
       analyzing:  'جارٍ الإعراب…',
       errorMsg:   'تعذّر الإعراب الآن. حاول مرة أخرى.',
       signTitle:  'أنشئ حسابًا مجانيًا للمتابعة',
-      signBody:   'لقد استخدمت محاولتيك المجانيتين. سجّل الدخول لتحصل على ٣ محاولات يوميًّا: وإن كان لديك اشتراك فيُفتح لك الإعراب غير المحدود فورًا.',
+      signBody:   'لقد استخدمت محاولاتك المجانية الثلاث. سجّل الدخول لتحصل على ٥ محاولات يوميًّا (٧ في أسبوعك الأول): وإن كان لديك اشتراك فيُفتح لك الإعراب غير المحدود فورًا.',
       signCta:    'تسجيل الدخول / إنشاء حساب',
       upTitle:    'بلغت حدّك اليومي المجاني',
-      upBody:     'لديك ٣ محاولات مجانية يوميًّا. اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.',
+      upBody:     'لديك ٥ محاولات مجانية يوميًّا (٧ في أسبوعك الأول). اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.',
       upCta:      'اشترك في إعراب بلس',
       poweredBy:  'مدعوم بالمحرّك المحمي نفسه في التطبيق',
       gateLabel:  'لقد ذُقتَ القوّة',
@@ -58,8 +58,8 @@ const t = lang === 'ar'
   : {
       eyebrow:    'Live demo',
       headline:   'Try it. Now. On this page.',
-      sub:        "Full, scholar-grade i'rab for any Arabic sentence you type. Two free parses now, 3 a day when you sign in.",
-      remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
+      sub:        "Full, scholar-grade i'rab for any Arabic sentence you type. Three free parses now, 5 a day when you sign in.",
+      remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : `${n} free parses left`,
       tryYour:    'Try your own',
       free:       'Free · no signup',
       tryExample: 'Examples:',
@@ -74,10 +74,10 @@ const t = lang === 'ar'
       analyzing:  'Analyzing…',
       errorMsg:   "Couldn't analyze right now. Please try again.",
       signTitle:  'Create a free account to continue',
-      signBody:   "You've used your two free parses. Sign in to get 3 a day: and if you have a subscription, unlimited parsing unlocks instantly.",
+      signBody:   "You've used your three free parses. Sign in to get 5 a day (7 in your first week): and if you have a subscription, unlimited parsing unlocks instantly.",
       signCta:    'Sign in / Create account',
       upTitle:    "You've reached your daily free limit",
-      upBody:     'You get 3 free parses a day. Subscribe to Irab Plus for unlimited, or come back tomorrow.',
+      upBody:     'You get 5 free parses a day (7 in your first week). Subscribe to Irab Plus for unlimited, or come back tomorrow.',
       upCta:      'Subscribe to Irab Plus',
       poweredBy:  'Powered by the same protected AI engine as the app',
       gateLabel:  "YOU'VE TASTED THE POWER",
@@ -169,6 +169,7 @@ const t = lang === 'ar'
         {/* Spoken-state feedback; also the only channel a screen reader gets. */}
         <p data-mic-status role="status" aria-live="polite" class="mic-status"></p>
         <div class="mt-3 flex items-center gap-1" data-quota-dots>
+          <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
           <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
           <span class="w-2 h-2 rounded-full bg-purple transition-all duration-300" data-dot></span>
         </div>
@@ -857,7 +858,7 @@ const t = lang === 'ar'
 
   const STORAGE_KEY = 'irab-demo-quota';
   const FP_KEY = 'irab-fp';
-  let MAX_FREE = 2;          // becomes Infinity for signed in premium users
+  let MAX_FREE = 3;          // guest lifetime tries (worker PUBLIC_PARSE_QUOTA_FP); Infinity once signed in
   let idToken: string | null = null;  // sent to the worker so premium uncaps
   // TEMP: workers.dev URL until 2026-05-16 when irab.app domain unlocks transfer.
   // Then map api.irab.app to the worker and swap to:
@@ -866,7 +867,7 @@ const t = lang === 'ar'
 
   /**
    * A device signature for the anonymous free-parse cap, which the worker
-   * enforces per fingerprint (2, lifetime, 90-day TTL).
+   * enforces per fingerprint (3, lifetime, 90-day TTL).
    *
    * The rule this follows: include what separates one visitor from another,
    * exclude what merely changes over time for everyone. The old signature got
@@ -939,12 +940,12 @@ const t = lang === 'ar'
   if (root) {
     const lang = (root.dataset.lang === 'ar' ? 'ar' : 'en') as 'en' | 'ar';
     const i18n = lang === 'ar'
-      ? { remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : 'محاولتان مجانيتان',
+      ? { remainingN: (n: number) => n === 0 ? 'نَفِدت المحاولات' : n === 1 ? 'محاولة واحدة مجانية' : n === 2 ? 'محاولتان مجانيتان' : '٣ محاولات مجانية',
           parsing: 'جارٍ الإعراب…', error: 'تعذّر الإعراب الآن. حاول مرة أخرى.', customSrc: 'جملتك', fallback: 'العرض غير متاح · عرض النموذج',
           irabLabel: 'الإعراب', showDetails: 'عرض التفاصيل', hideDetails: 'إخفاء التفاصيل',
           wordsCount: (n: number) => `${n} كلمات`, parsedIn: (s: string) => `أُعرِب في ${s} ثانية`, parse: 'أعرب', unlimited: 'إعراب غير محدود ⚡',
-          signTitle: 'أنشئ حسابًا مجانيًا للمتابعة', signBody: 'سجّل الدخول لتحصل على ٣ محاولات يوميًّا.', signCta: 'تسجيل الدخول / إنشاء حساب',
-          upTitle: 'بلغت حدّك اليومي المجاني', upBody: 'لديك ٣ محاولات مجانية يوميًّا. اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.', upCta: 'اشترك في إعراب بلس',
+          signTitle: 'أنشئ حسابًا مجانيًا للمتابعة', signBody: 'سجّل الدخول لتحصل على ٥ محاولات يوميًّا (٧ في أسبوعك الأول).', signCta: 'تسجيل الدخول / إنشاء حساب',
+          upTitle: 'بلغت حدّك اليومي المجاني', upBody: 'لديك ٥ محاولات مجانية يوميًّا (٧ في أسبوعك الأول). اشترك في إعراب بلس لإعرابٍ غير محدود، أو عُد غدًا.', upCta: 'اشترك في إعراب بلس',
           copied: 'تم النسخ ✓', units: 'الوحدات الإعرابية', retry: 'أعد المحاولة',
           preparing: 'جارٍ التجهيز…', exportFail: 'تعذّر التصدير',
           charLeft: (n: number) => `${n} حرفًا متبقية`,
@@ -957,12 +958,12 @@ const t = lang === 'ar'
           micNoLang: 'التعرّف على العربية غير متاح في هذا المتصفح. اكتب الجملة بدلًا من ذلك.',
           micError: 'تعذّر الإدخال الصوتي الآن. اكتب الجملة أو حاول لاحقًا.',
           loadSteps: ['نقرأ الجملة…', 'نحدّد أنواع الكلمات…', 'نحدّد المواقع الإعرابية…', 'نجهّز الشرح…'] }
-      : { remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : '2 free parses left',
+      : { remainingN: (n: number) => n === 0 ? 'No free parses left' : n === 1 ? '1 free parse left' : `${n} free parses left`,
           parsing: 'Parsing…', error: "Couldn't analyze right now. Please try again.", customSrc: 'Your sentence', fallback: 'Demo offline · showing specimen',
           irabLabel: "I'rab", showDetails: 'Show details', hideDetails: 'Hide details',
           wordsCount: (n: number) => `${n} words`, parsedIn: (s: string) => `Parsed in ${s}s`, parse: 'Parse', unlimited: 'Unlimited parsing ⚡',
-          signTitle: 'Create a free account to continue', signBody: 'Sign in to get 3 free parses a day.', signCta: 'Sign in / Create account',
-          upTitle: "You've reached your daily free limit", upBody: 'You get 3 free parses a day. Subscribe to Irab Plus for unlimited, or come back tomorrow.', upCta: 'Subscribe to Irab Plus',
+          signTitle: 'Create a free account to continue', signBody: 'Sign in to get 5 free parses a day (7 in your first week).', signCta: 'Sign in / Create account',
+          upTitle: "You've reached your daily free limit", upBody: 'You get 5 free parses a day (7 in your first week). Subscribe to Irab Plus for unlimited, or come back tomorrow.', upCta: 'Subscribe to Irab Plus',
           copied: 'Copied ✓', units: 'Grammatical units', retry: 'Try again',
           preparing: 'Preparing…', exportFail: "Couldn't export",
           charLeft: (n: number) => `${n} characters left`,
@@ -1036,7 +1037,7 @@ const t = lang === 'ar'
     const track = (e: string, p?: Record<string, string | number | boolean | null | undefined>) => import('../../lib/analytics').then((m) => m.track(e, p)).catch(() => {});
     let currentUid: string | null = null;
 
-    // The gate has two modes: 'signin' (anonymous, used 2 free) and 'upgrade'
+    // The gate has two modes: 'signin' (anonymous, used 3 free) and 'upgrade'
     // (signed in, hit the daily limit). NEVER show 'signin' to a signed in user.
     function showGate(kind: 'signin' | 'upgrade') {
       track('signin_gate_shown', { kind });
@@ -1077,7 +1078,7 @@ const t = lang === 'ar'
         submitLabelEl.textContent = i18n.parse;
         return;
       }
-      // Signed in (free): the SERVER enforces 3/day. No anonymous dots/gate here :
+      // Signed in (free): the SERVER enforces 5/day (7 in week one), shared with the app. No anonymous dots/gate here :
       // the daily-limit ("upgrade") gate appears only on a 429 from the server.
       if (isSignedIn) {
         quotaEl.textContent = '';
@@ -1088,7 +1089,7 @@ const t = lang === 'ar'
         return;
       }
       // Anonymous: keep the free quota invisible until it is spent, then ask
-      // for sign-in. Do not reveal "2 free parses" on first visit.
+      // for sign-in. Do not reveal "3 free parses" on first visit.
       const remaining = Math.max(0, MAX_FREE - getQuota());
       quotaEl.textContent = '';
       quotaDots.forEach((dot) => dot.classList.add('hidden'));
@@ -1426,7 +1427,7 @@ const t = lang === 'ar'
     formEl.addEventListener('submit', async (e) => {
       e.preventDefault();
       // Anonymous client-side pre-check (saves a call). Signed in users rely on
-      // the server's 3/day, so they're never pre-blocked here (kills the loop).
+      // the server's daily allowance, so they're never pre-blocked here (kills the loop).
       if (!isSignedIn && getQuota() >= MAX_FREE) { showGate('signin'); return; }
       arabicGuard.sanitize();
       const text = inputEl.value.trim();
@@ -1468,7 +1469,11 @@ const t = lang === 'ar'
           return;
         }
         if (!res.ok) throw new Error(`API ${res.status}`);
-        const parsed = await res.json() as ParseExample;
+        const parsed = await res.json() as ParseExample & { fromCache?: boolean };
+        // A sentence already in the shared cache costs no AI call, and the
+        // worker does not count it; neither does this page.
+        const fromCache = parsed.fromCache === true;
+        delete parsed.fromCache;
         const elapsed = ((performance.now() - start) / 1000).toFixed(1);
         track('irab_completed', {
           source: 'web_tool',
@@ -1493,7 +1498,7 @@ const t = lang === 'ar'
         ownParses += 1;
         showNudge();
         refreshHistoryLink();
-        if (!isSignedIn) bumpQuota();
+        if (!isSignedIn && !fromCache) bumpQuota();
         renderQuota();
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         // The input keeps the sentence. Clearing it meant a one-word tweak
@@ -1820,7 +1825,7 @@ const t = lang === 'ar'
                 currentUid = u.uid;
                 try { idToken = await u.getIdToken(); } catch { /* ignore */ }
                 try { const me = await fetchMe(u); if (me?.premium) isPremium = true; } catch { /* ignore */ }
-                MAX_FREE = Infinity; // no anonymous lifetime cap once signed in; server enforces 3/day
+                MAX_FREE = Infinity; // no anonymous lifetime cap once signed in; the server enforces the daily allowance
                 if (isPremium) inputEl.maxLength = 600;
               }
               resolve();
