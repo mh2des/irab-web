@@ -93,7 +93,7 @@
     <section class="section reveal" id="s4">
       <div class="section-header">
         <div class="s-icon"><svg class="lucide lucide-lg" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
-        <div><div class="s-eyebrow en">Section 04</div><div class="s-eyebrow ar">القسم ٠٤</div><div class="section-title en">AI Processing: Google Gemini</div><div class="section-title ar">معالجة الذكاء الاصطناعي: Google Gemini</div></div>
+        <div><div class="s-eyebrow en">Section 04</div><div class="s-eyebrow ar">القسم ٠٤</div><div class="section-title en">AI Processing: Google Gemini and Anthropic Claude</div><div class="section-title ar">معالجة الذكاء الاصطناعي: Google Gemini وAnthropic Claude</div></div>
       </div>
       <div class="en">
         <div class="callout gold"><svg class="lucide lucide-sm callout-ico" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>Important Disclosure:</strong> The Irab app uses <strong>Google Gemini AI</strong>: a third party AI service: for grammar analysis, dictionary, OCR, practice grading, and explanations. By using these features, you consent to your submitted content being processed by Google's Gemini API.</span></div>
@@ -104,6 +104,9 @@
         <h3>What Gemini Does NOT Do</h3>
         <ul><li>Does <strong>not</strong> use your text to train or improve AI models (per Google's API Terms)</li><li>Images sent for OCR are <strong>not stored</strong> after processing</li><li>We do not store raw images on our servers</li></ul>
         <p>See Google's privacy policy at <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></p>
+        <h3>Ask the Teacher: Anthropic Claude</h3>
+        <p>The Ask the Teacher feature sends your question to <strong>Anthropic's Claude API</strong>, together with the sentence, its i'rab as shown in the app, the last few messages of the conversation and, when you ask from practice, your answer and the correct one. If Claude is unavailable, the same request is sent to Google Gemini instead. Anthropic does not use content sent through its API to train its models (per Anthropic's Commercial Terms). See Anthropic's privacy policy at <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">anthropic.com/legal/privacy</a></p>
+        <p>If you rate a teacher's answer, your rating, the reasons you pick, any note you write, your question and the answer are stored on our Cloudflare servers with your account ID, so we can review and improve the teacher. When you ask the teacher to review a word's i'rab, the sentence, your objection and the teacher's ruling are stored the same way.</p>
       </div>
       <div class="ar">
         <div class="callout gold"><svg class="lucide lucide-sm callout-ico" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>إفصاح مهم:</strong> يستخدم تطبيق إعراب <strong>Google Gemini AI</strong> لتحليل الإعراب والقاموس والـOCR وتقييم التدرّب والشروح. باستخدامك هذه الميزات توافق على معالجة محتواك بواسطة Gemini API من Google.</span></div>
@@ -113,6 +116,9 @@
         <ul><li>جميع الطلبات تمرّ عبر <strong>وكيل Cloudflare Workers</strong>: لا تُكشف مفاتيح Gemini لجهازك</li><li>يُتحقَّق من رمز Firebase ID على الخادم في كل طلب</li><li>جميع الاتصالات مشفّرة بـHTTPS/TLS</li></ul>
         <h3>ما لا يفعله Gemini ببياناتك</h3>
         <ul><li>لا يستخدم نصوصك لتدريب نماذجه (وفق شروط Gemini API)</li><li>الصور المُرسَلة للـOCR لا تُخزَّن بعد المعالجة</li><li>لا نخزّن الصور الخام على خوادمنا</li></ul>
+        <h3>اسأل الأستاذ: Anthropic Claude</h3>
+        <p>ترسل ميزة «اسأل الأستاذ» سؤالك إلى <strong>Claude API من Anthropic</strong>، ومعه الجملة وإعرابها كما يظهر في التطبيق، وآخر رسائل المحادثة، وإجابتك والإجابة الصحيحة إذا سألت من التدريب. وإذا تعذّر Claude أُرسل الطلب نفسه إلى Google Gemini. لا تستخدم Anthropic المحتوى المُرسَل عبر واجهتها البرمجية لتدريب نماذجها (وفق الشروط التجارية لـAnthropic). انظر سياسة خصوصية Anthropic: <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">anthropic.com/legal/privacy</a></p>
+        <p>إذا قيّمت إجابة الأستاذ، تُخزَّن على خوادمنا في Cloudflare مع معرّف حسابك: تقييمك والأسباب التي تختارها وملاحظتك إن كتبتها وسؤالك والإجابة، لنراجعها ونحسّن الأستاذ. وحين تطلب من الأستاذ مراجعة إعراب كلمة، تُخزَّن الجملة واعتراضك وحكم الأستاذ بالطريقة نفسها.</p>
       </div>
     </section>
 
@@ -128,6 +134,7 @@
           <tbody>
             <tr><td><strong>Firebase (Google)</strong></td><td>Auth, database, analytics, push notifications, cloud functions</td><td>Email, UID, usage data, analytics</td><td><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">firebase.google.com/support/privacy</a></td></tr>
             <tr><td><strong>Google Gemini AI</strong></td><td>Grammar analysis, OCR, dictionary, practice grading</td><td>Text, images (ephemeral)</td><td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></td></tr>
+            <tr><td><strong>Anthropic Claude</strong></td><td>Ask the Teacher answers</td><td>Your question, the sentence and its i'rab, recent messages</td><td><a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">anthropic.com/legal/privacy</a></td></tr>
             <tr><td><strong>RevenueCat</strong></td><td>Subscription management</td><td>Purchase tokens, User ID, subscription status</td><td><a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener">revenuecat.com/privacy</a></td></tr>
             <tr><td><strong>Cloudflare</strong></td><td>API gateway, rate limiting, R2 certificate storage</td><td>Request metadata (IP transient)</td><td><a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">cloudflare.com/privacypolicy</a></td></tr>
             <tr><td><strong>Apple / Google Play</strong></td><td>App distribution, in app purchases</td><td>Payment (handled by platform)</td><td>Apple / Google policies</td></tr>
@@ -141,6 +148,7 @@
           <tbody>
             <tr><td><strong>Firebase (Google)</strong></td><td>المصادقة، قاعدة البيانات، التحليلات، الإشعارات</td><td>البريد، المعرّف، بيانات الاستخدام</td></tr>
             <tr><td><strong>Google Gemini AI</strong></td><td>تحليل النحو، OCR، القاموس، التقييم</td><td>النصوص، الصور (مؤقتة)</td></tr>
+            <tr><td><strong>Anthropic Claude</strong></td><td>إجابات «اسأل الأستاذ»</td><td>سؤالك، والجملة وإعرابها، وآخر الرسائل</td></tr>
             <tr><td><strong>RevenueCat</strong></td><td>إدارة الاشتراك</td><td>رموز الشراء، المعرّف، حالة الاشتراك</td></tr>
             <tr><td><strong>Cloudflare</strong></td><td>بوابة API، تحديد المعدّل، تخزين الشهادات</td><td>بيانات الطلبات (IP مؤقتة)</td></tr>
             <tr><td><strong>Apple / Google Play</strong></td><td>توزيع التطبيق، المشتريات</td><td>معلومات الدفع (من المنصة)</td></tr>
@@ -264,8 +272,8 @@
         <div class="s-icon"><svg class="lucide lucide-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
         <div><div class="s-eyebrow en">Section 12</div><div class="s-eyebrow ar">القسم ١٢</div><div class="section-title en">International Data Transfers</div><div class="section-title ar">النقل الدولي للبيانات</div></div>
       </div>
-      <div class="en"><p>Our primary Firestore database is in <strong>the Singapore region</strong>. Services including Firebase, Gemini, RevenueCat, and Cloudflare are operated primarily in the United States.</p><p>If you are in the EEA, your data may be transferred outside the EEA. These transfers are made under appropriate safeguards: <strong>Standard Contractual Clauses (SCCs)</strong> with Google, RevenueCat, and Cloudflare.</p></div>
-      <div class="ar"><p>قاعدة بيانات Firestore الأساسية في منطقة <strong>جنوب شرق آسيا (سنغافورة)</strong>. خدمات Firebase وGemini وRevenueCat وCloudflare تعمل أساسًا في الولايات المتحدة.</p><p>إن كنت في المنطقة الاقتصادية الأوروبية، قد تُنقل بياناتك خارجها بموجب <strong>بنود العقد القياسية (SCCs)</strong> مع Google وRevenueCat وCloudflare.</p></div>
+      <div class="en"><p>Our primary Firestore database is in <strong>the Singapore region</strong>. Services including Firebase, Gemini, Anthropic, RevenueCat, and Cloudflare are operated primarily in the United States.</p><p>If you are in the EEA, your data may be transferred outside the EEA. These transfers are made under appropriate safeguards: <strong>Standard Contractual Clauses (SCCs)</strong> with Google, RevenueCat, and Cloudflare.</p></div>
+      <div class="ar"><p>قاعدة بيانات Firestore الأساسية في منطقة <strong>جنوب شرق آسيا (سنغافورة)</strong>. خدمات Firebase وGemini وAnthropic وRevenueCat وCloudflare تعمل أساسًا في الولايات المتحدة.</p><p>إن كنت في المنطقة الاقتصادية الأوروبية، قد تُنقل بياناتك خارجها بموجب <strong>بنود العقد القياسية (SCCs)</strong> مع Google وRevenueCat وCloudflare.</p></div>
     </section>
 
     <!-- S13 -->
