@@ -6,6 +6,8 @@
 import { grade, checksLeft, GradeFailure, type GradeResult } from './api';
 import { PRACTICE } from './strings';
 import * as R from './render';
+import { teacherEnabled } from '../teacher/flag';
+import { TEACHER } from '../teacher/strings';
 import { esc } from '../irab/render';
 import { digits, type Lang } from '../irab/strings';
 import * as I from '../irab/icons';
@@ -115,7 +117,58 @@ export function mountPractice(root: HTMLElement): void {
     q('[data-word]').textContent = words[index];
     answer.value = answers[index];
     terms.innerHTML = R.quickTerms(sentence).map((t) => `<button type="button" class="fp-term" data-term="${esc(t)}">${esc(t)}</button>`).join('');
+    renderHint();
   }
+
+  // ── P2b: the teacher's hint for this word (counts as a question) ────────────
+  const teacherOn = teacherEnabled();
+  const T = TEACHER[lang];
+  const hintBtn = q<HTMLButtonElement>('[data-hint]');
+  const hintBox = q('[data-hint-box]');
+  const hints = new Map<number, string>();
+  let hintLoading: number | null = null;
+  let hintNote: { i: number; text: string } | null = null;
+  q('[data-hint-label]').textContent = T.hint;
+  function renderHint() {
+    hintBtn.hidden = !teacherOn;
+    hintBtn.disabled = hintLoading !== null || hints.has(index);
+    hintBtn.classList.toggle('is-loading', hintLoading === index);
+    const h = hints.get(index);
+    const note = hintNote?.i === index ? hintNote.text : '';
+    hintBox.hidden = !h && !note;
+    hintBox.innerHTML = h
+      ? `<p class="fp-hint-title">${I.lightbulb}<span>${esc(T.hintTitle)}</span></p><p class="t-body-s c-1" dir="rtl" lang="ar">${esc(h)}</p><p class="t-caption c-3">${esc(T.hintNote)}</p>`
+      : note ? `<p class="t-caption c-error">${esc(note)}</p>` : '';
+  }
+  hintBtn.addEventListener('click', async () => {
+    const i = index;
+    if (hintLoading !== null || hints.has(i)) return;
+    hintLoading = i;
+    hintNote = null;
+    renderHint();
+    const partial = answers[i].trim();
+    try {
+      const token = user.getToken ? await user.getToken().catch(() => null) : null;
+      if (!token) throw new Error('account');
+      const { askTeacher, TeacherFailure } = await import('../teacher/api');
+      try {
+        const { answer } = await askTeacher({
+          mode: 'hint', sentence, analysis: words.map((w) => ({ word: w, irab: '' })), wordIndex: i,
+          question: partial, messages: [], practice: { word: words[i], userIrab: partial, correctIrab: '' }, lang,
+        }, token, () => {}, new AbortController().signal);
+        if (answer.mode === 'hint' && answer.hint) hints.set(i, answer.hint);
+        track('practice_hint_shown', {});
+      } catch (e) {
+        const kind = e instanceof TeacherFailure ? e.kind : 'failed';
+        hintNote = { i, text: kind === 'limit' ? T.limitTitle : kind === 'account' ? T.accountTitle : T.failedTitle };
+      }
+    } catch {
+      hintNote = { i, text: T.accountTitle };
+    } finally {
+      hintLoading = null;
+      renderHint();
+    }
+  });
   function openWord(i: number) {
     index = i;
     renderStepper();
@@ -239,13 +292,36 @@ export function mountPractice(root: HTMLElement): void {
 
   function renderResults(r: GradeResult) {
     last = r;
-    q('[data-results]').innerHTML = R.resultsHtml(r, s, lang);
+    q('[data-results]').innerHTML = R.resultsHtml(r, s, lang, teacherOn ? { wrong: T.whyWrongAsk, incomplete: T.whyIncompleteAsk } : null);
     show('results');
     // Next frame, so the ring animates; the timer covers a tab that renders no frames.
     const draw = () => q('[data-results]').querySelector('.fp-ring')?.classList.add('is-drawn');
     requestAnimationFrame(draw);
     window.setTimeout(draw, 120);
   }
+
+  // T7: the teacher explains a graded answer that is not right.
+  q('[data-results]').addEventListener('click', async (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-why]');
+    if (!btn || !last || !teacherOn) return;
+    const r = last;
+    const i = Number(btn.dataset.why);
+    const f = r.wordFeedback[i];
+    if (!f) return;
+    const { openTeacher } = await import('../teacher/teacher');
+    openTeacher({
+      lang,
+      sentence: r.sentence,
+      words: r.wordFeedback.map((w) => ({ word: w.word, irab: w.correctIrab.trim() || w.userIrab })),
+      focusWord: i,
+      practice: { sentence: r.sentence, word: f.word, userIrab: f.userIrab, correctIrab: f.correctIrab, explanation: f.explanation },
+      autoAsk: R.answerStatus(f) === 'close' ? T.whyIncomplete : T.whyWrong,
+      getToken: async () => (user.getToken ? await user.getToken().catch(() => null) : null),
+      loginHref: `/login?next=${encodeURIComponent(location.pathname)}`,
+      track,
+    });
+    track('teacher_opened', { source: 'practice' });
+  });
 
   q('[data-retry]').addEventListener('click', () => { if (words.length) openWord(0); });
   q('[data-new]').addEventListener('click', () => {

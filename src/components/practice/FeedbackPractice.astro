@@ -10,6 +10,7 @@
 import '../../styles/irab-ui.css';
 import '../../styles/irab-export.css';
 import '../../styles/irab-result.css';
+import '../../styles/irab-teacher-entry.css';
 import Paywall from '../Paywall.astro';
 import { PRACTICE } from '../../lib/practice/strings';
 import * as I from '../../lib/irab/icons';
@@ -75,10 +76,15 @@ const chev = I.chevronLeft.replace('<svg', '<svg class="flip-ltr"');
     <div class="fp-progress" data-progress aria-hidden="true"></div>
     <div class="fp-strip" data-strip dir="rtl" lang="ar"></div>
     <div class="iu-card fp-word-card">
-      <p class="t-caption c-3" data-word-n></p>
+      <div class="fp-word-top">
+        <p class="t-caption c-3" data-word-n></p>
+        <!-- P2b: the teacher's hint, when «اسأل الأستاذ» is on -->
+        <button type="button" class="fp-hint-btn" data-hint hidden><Fragment set:html={I.graduationCap} /><span data-hint-label></span></button>
+      </div>
       <p class="fp-word" data-word dir="rtl" lang="ar"></p>
       <label class="sr-only" for={`fp-answer-${lang}`}>{s.answerHint}</label>
       <textarea id={`fp-answer-${lang}`} class="fp-answer-input" data-answer rows="2" dir="rtl" lang="ar" placeholder={s.answerHint} autocomplete="off" spellcheck="false"></textarea>
+      <div class="fp-hint" data-hint-box hidden></div>
       <p class="t-micro c-3 fp-terms-label">{s.quickTerms}</p>
       <div class="fp-terms" data-terms dir="rtl"></div>
     </div>

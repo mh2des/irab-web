@@ -75,7 +75,7 @@ export function asTypedHtml(s: Strings): string {
     </div>`;
 }
 
-export function wordCardHtml(w: IrabWord, i: number, s: Strings): string {
+export function wordCardHtml(w: IrabWord, i: number, s: Strings, ask: string | null = null): string {
   const details = hasDetails(w.details);
   const type = s.types[w.type] ?? s.types.noun;
   return `
@@ -89,11 +89,13 @@ export function wordCardHtml(w: IrabWord, i: number, s: Strings): string {
             <p class="t-body-s c-2" dir="rtl" lang="ar">${esc(w.details.trim())}</p>
             <p class="t-caption c-3">${esc(s.kind(type))}</p>
           </div>
-        </div>
+        </div>` : ''}
+      ${details || ask ? `
         <div class="az-word-foot">
-          <button type="button" class="iu-pill az-details-toggle" data-details="${i}" aria-expanded="false" aria-controls="az-details-${i}">
+          ${details ? `<button type="button" class="iu-pill az-details-toggle" data-details="${i}" aria-expanded="false" aria-controls="az-details-${i}">
             ${I.fileText}<span data-label>${esc(s.details)}</span><span class="az-chev">${I.chevronDown}</span>
-          </button>
+          </button>` : ''}
+          ${ask ? `<button type="button" class="tc-word-ask" data-ask="${i}">${I.graduationCap}<span>${esc(ask)}</span></button>` : ''}
         </div>` : ''}
     </article>`;
 }

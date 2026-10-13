@@ -6,6 +6,9 @@
 import { analyze, usageStatus, AnalyzeFailure, type IrabResult, type UsageStatus } from './api';
 import { STRINGS, digits, ago, type Lang } from './strings';
 import * as R from './render';
+import * as I from './icons';
+import { teacherEnabled } from '../teacher/flag';
+import { TEACHER } from '../teacher/strings';
 import { getFingerprint, guestUsed, bumpGuestUsed, GUEST_TRIES } from './fingerprint';
 import { maybeSignedIn } from '../session';
 import { addHistory, getHistory, getHistoryItem } from '../history';
@@ -271,7 +274,8 @@ export function mountAnalyzer(root: HTMLElement): void {
     heroEl.innerHTML = R.heroHtml(result, s, caption);
     jumpEl.innerHTML = result.deep ? R.deepJumpHtml(s) : '';
     jumpEl.hidden = !result.deep;
-    cardsEl.innerHTML = result.words.map((w, i) => R.wordCardHtml(w, i, s)).join('');
+    cardsEl.innerHTML = result.words.map((w, i) => R.wordCardHtml(w, i, s, teacherOn ? T.ask : null)).join('');
+    renderTeacherSlot();
     const clar = result.additionalClarification?.trim();
     noteEl.innerHTML = clar ? R.clarificationHtml(clar, s) : '';
     noteEl.hidden = !clar;
@@ -295,8 +299,74 @@ export function mountAnalyzer(root: HTMLElement): void {
     heroObserver.observe(target);
   }
 
+  // ── «اسأل الأستاذ» (T1, T3, T10) ──────────────────────────────────────────
+  const teacherOn = teacherEnabled();
+  const T = TEACHER[lang];
+  const teacherSlot = q<HTMLElement>('[data-teacher-slot]');
+  const INTRO_SEEN = 'irab-teacher-intro-seen';
+  function introSeen(): boolean {
+    try { return localStorage.getItem(INTRO_SEEN) === '1'; } catch { return true; }
+  }
+  function renderTeacherSlot() {
+    teacherSlot.hidden = !teacherOn;
+    if (!teacherOn) return;
+    teacherSlot.innerHTML = `
+      <div class="az-report-row"><button type="button" class="tc-report" data-teacher-report>${I.messageQuestion}<span>${R.esc(T.reportError)}</span></button></div>
+      <div class="tc-dock">
+      ${introSeen() ? '' : `
+        <div class="tc-intro" data-teacher-intro>
+          <div class="tc-intro-head"><span class="tc-avatar">${I.graduationCap}</span><span class="t-body-strong c-1">${R.esc(T.ask)}</span></div>
+          <p class="t-body-s c-2">${R.esc(T.introBody)}</p>
+          <div class="tc-intro-acts">
+            <button type="button" class="iu-btn teal" data-teacher-intro-try>${R.esc(T.introTry)}</button>
+            <button type="button" class="iu-btn ghost" data-teacher-intro-later>${R.esc(T.introLater)}</button>
+          </div>
+        </div>`}
+      <button type="button" class="tc-askbar" data-teacher-ask>
+        <span class="tc-avatar">${I.graduationCap}</span><span>${R.esc(T.askPlaceholder)}</span><span class="tc-askbar-go">${I.arrowUp}</span>
+      </button>
+      </div>`;
+  }
+  function dismissIntro() {
+    try { localStorage.setItem(INTRO_SEEN, '1'); } catch { /* shown again next time */ }
+    teacherSlot.querySelector('[data-teacher-intro]')?.remove();
+  }
+  async function openTeacherFor(o: { focusWord?: number | null; pickReview?: boolean }) {
+    if (!last) return;
+    const result = last.result;
+    const { openTeacher } = await import('../teacher/teacher');
+    openTeacher({
+      lang,
+      sentence: result.vocalizedSentence?.trim() || result.originalSentence,
+      words: result.words.map((w) => ({ word: w.word, irab: w.irab, ...(w.case ? { case: w.case } : {}) })),
+      corrected: isCorrected(result),
+      focusWord: o.focusWord ?? null,
+      pickReview: o.pickReview,
+      getToken: async () => (user.getToken ? await user.getToken().catch(() => user.idToken) : user.idToken),
+      loginHref: `${loginHref}${loginHref.includes('?') ? '&' : '?'}next=${encodeURIComponent(location.pathname)}`,
+      onFix: (i, irab, kase) => {
+        const w = result.words[i];
+        if (!w) return;
+        w.irab = irab;
+        if (kase) w.case = kase;
+        const card = cardsEl.querySelector<HTMLElement>(`#az-word-${i}`);
+        if (card) card.outerHTML = R.wordCardHtml(w, i, s, T.ask);
+      },
+      track,
+    });
+    track('teacher_opened', { source: o.pickReview ? 'report' : o.focusWord != null ? 'word' : 'bar' });
+  }
+
   root.addEventListener('click', (e) => {
     const t = e.target as HTMLElement;
+    if (teacherOn) {
+      const ask = t.closest<HTMLElement>('[data-ask]');
+      if (ask) { void openTeacherFor({ focusWord: Number(ask.dataset.ask) }); return; }
+      if (t.closest('[data-teacher-ask]')) { void openTeacherFor({}); return; }
+      if (t.closest('[data-teacher-report]')) { void openTeacherFor({ pickReview: true }); return; }
+      if (t.closest('[data-teacher-intro-try]')) { dismissIntro(); void openTeacherFor({}); return; }
+      if (t.closest('[data-teacher-intro-later]')) { dismissIntro(); return; }
+    }
     const toggle = t.closest<HTMLButtonElement>('[data-details]');
     if (toggle) {
       const i = toggle.dataset.details!;

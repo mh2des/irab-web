@@ -10,6 +10,7 @@
 import '../../styles/irab-ui.css';
 import '../../styles/irab-export.css';
 import '../../styles/irab-result.css';
+import '../../styles/irab-teacher-entry.css';
 import Paywall from '../Paywall.astro';
 import { STRINGS } from '../../lib/irab/strings';
 import * as I from '../../lib/irab/icons';
@@ -99,6 +100,8 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
       </button>
       <button type="button" class="iu-btn ghost" data-copy><Fragment set:html={I.copy} /><span data-label>{s.copy}</span></button>
     </div>
+    <!-- «اسأل الأستاذ»: filled by the script when the teacher is on (lib/teacher/flag.ts) -->
+    <div data-teacher-slot hidden></div>
   </section>
 
   <!-- A9: the analysis failed -->

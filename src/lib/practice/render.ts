@@ -65,7 +65,10 @@ function partChip(p: GradePart, s: PracticeStrings): string {
   return `<span class="iu-tag ${PART_TONE[p.verdict]}" title="${esc(p.expected)}" aria-label="${esc(`${p.label}: ${s.part[p.verdict]}`)}">${PART_ICON[p.verdict]}${esc(p.label)}</span>`;
 }
 
-export function feedbackCardHtml(f: WordFeedback, s: PracticeStrings): string {
+/** The labels of «لماذا إجابتي خطأ؟» (T7) when the teacher is on. */
+export interface WhyLabels { wrong: string; incomplete: string }
+
+export function feedbackCardHtml(f: WordFeedback, s: PracticeStrings, why: WhyLabels | null = null, i = 0): string {
   const st = answerStatus(f);
   const tone = STATUS_TONE[st];
   const answered = f.userIrab.trim().length > 0;
@@ -82,10 +85,11 @@ export function feedbackCardHtml(f: WordFeedback, s: PracticeStrings): string {
       ${short && f.parts.length ? `<div class="fp-parts" dir="rtl">${f.parts.map((p) => partChip(p, s)).join('')}</div>` : ''}
       ${short && f.correctIrab.trim() ? `<p class="t-micro c-3 fp-gap">${esc(s.fullIrab)}</p><p class="t-body-s c-1" dir="rtl" lang="ar">${esc(f.correctIrab)}</p>` : ''}
       ${explanation ? `<p class="t-body-s c-2 fp-explain" dir="rtl" lang="ar">${esc(explanation)}</p>` : ''}
+      ${why && short ? `<button type="button" class="tc-why" data-why="${i}">${I.graduationCap}<span>${esc(st === 'close' ? why.incomplete : why.wrong)}</span></button>` : ''}
     </article>`;
 }
 
-export function resultsHtml(r: GradeResult, s: PracticeStrings, lang: Lang): string {
+export function resultsHtml(r: GradeResult, s: PracticeStrings, lang: Lang, why: WhyLabels | null = null): string {
   const statuses = r.wordFeedback.map(answerStatus);
   const count = (st: AnswerStatus) => statuses.filter((x) => x === st).length;
   const pills = (['correct', 'close', 'review'] as AnswerStatus[]).filter((st) => count(st) > 0)
@@ -99,7 +103,7 @@ export function resultsHtml(r: GradeResult, s: PracticeStrings, lang: Lang): str
     <div class="fp-stats">${pills}</div>
     ${note ? `<div class="fp-note"><p class="t-label c-teal">${I.graduationCap}${esc(s.teacherNote)}</p><p class="t-body c-1" dir="rtl" lang="ar">${esc(note)}</p></div>` : ''}
     <div class="fp-section"><h2 class="t-title c-1">${esc(s.breakdown)}</h2><span class="t-caption c-3">${esc(digits(s.words(r.wordFeedback.length), lang))}</span></div>
-    <div class="fp-cards">${r.wordFeedback.map((f) => feedbackCardHtml(f, s)).join('')}</div>`;
+    <div class="fp-cards">${r.wordFeedback.map((f, i) => feedbackCardHtml(f, s, why, i)).join('')}</div>`;
 }
 
 export function gradingHtml(sentence: string, s: PracticeStrings): string {
