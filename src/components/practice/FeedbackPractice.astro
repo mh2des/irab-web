@@ -9,6 +9,7 @@
  */
 import '../../styles/irab-ui.css';
 import '../../styles/irab-export.css';
+import '../../styles/irab-result.css';
 import Paywall from '../Paywall.astro';
 import { PRACTICE } from '../../lib/practice/strings';
 import * as I from '../../lib/irab/icons';
@@ -187,13 +188,6 @@ const chev = I.chevronLeft.replace('<svg', '<svg class="flip-ltr"');
   .iu-practice .fp-strip-word.is-on { background: var(--iu-teal-soft); color: var(--iu-teal-text); }
   .iu-practice .fp-word-card { padding: 16px 18px 18px; border-color: var(--iu-teal); }
   .iu-practice .fp-word { font-family: var(--iu-studied); font-size: 32px; font-weight: 700; line-height: 1.7; text-align: center; color: var(--iu-word); margin: 2px 0 10px; }
-  .iu-practice .fp-answer-input {
-    display: block; width: 100%; min-height: 56px; resize: none; border: 1.5px solid transparent; outline: 0; border-radius: 14px;
-    background: var(--iu-sunken); padding: 12px 14px; color: var(--iu-text); font-family: var(--iu-ui); font-size: 16px; line-height: 1.7;
-    transition: border-color .15s ease;
-  }
-  .iu-practice .fp-answer-input:focus { border-color: var(--iu-teal); background: var(--iu-card); }
-  .iu-practice .fp-answer-input::placeholder { color: var(--iu-text-3); }
   .iu-practice .fp-terms-label { margin: 14px 0 8px; }
   .iu-practice .fp-terms { display: flex; flex-wrap: wrap; gap: 8px; }
   .iu-practice .fp-term {
@@ -228,28 +222,5 @@ const chev = I.chevronLeft.replace('<svg', '<svg class="flip-ltr"');
   }
   .iu-practice .fp-menu button:hover { background: var(--iu-sunken); }
   .iu-practice .fp-menu svg { width: 18px; height: 18px; color: var(--iu-text-2); }
-  .iu-practice .fp-summary { display: flex; align-items: center; gap: 12px; padding: 18px; }
-  .iu-practice .fp-summary > div:first-child { flex: 1; }
-  .iu-practice .fp-ring { position: relative; width: 96px; height: 96px; flex: none; display: grid; place-items: center; }
-  .iu-practice .fp-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
-  .iu-practice .fp-ring circle { fill: none; stroke-width: 9; }
-  .iu-practice .fp-ring-track { stroke: var(--iu-sunken); }
-  .iu-practice .fp-ring-arc { stroke: var(--iu-teal); stroke-linecap: round; stroke-dashoffset: 264; transition: stroke-dashoffset .9s cubic-bezier(.22,1,.36,1); }
-  .iu-practice .fp-ring.is-drawn .fp-ring-arc { stroke-dashoffset: var(--fp-off); }
-  .iu-practice .fp-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-  .iu-practice .fp-stat { padding: 6px 12px 6px 10px; font-size: 13px; }
-  .iu-practice .fp-stat svg { width: 16px; height: 16px; }
-  .iu-practice .fp-note { margin-top: 14px; padding: 16px; border-radius: 20px; background: var(--iu-teal-wash); display: flex; flex-direction: column; gap: 8px; }
-  .iu-practice .fp-note p:first-child { display: inline-flex; align-items: center; gap: 8px; }
-  .iu-practice .fp-note p:first-child svg { width: 16px; height: 16px; color: var(--iu-teal); }
-  .iu-practice .fp-section { display: flex; align-items: baseline; justify-content: space-between; margin: 20px 2px 14px; }
-  .iu-practice .fp-cards { display: flex; flex-direction: column; gap: 14px; }
-  .iu-practice .fp-card { padding: 14px 18px 16px; display: flex; flex-direction: column; }
-  .iu-practice .fp-card header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
-  .iu-practice .fp-answer { margin-top: 2px; }
-  .iu-practice .fp-parts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-  .iu-practice .fp-parts .iu-tag { padding: 4px 10px 4px 8px; font-size: 12px; }
-  .iu-practice .fp-gap { margin-top: 12px; }
-  .iu-practice .fp-explain { margin-top: 12px; padding: 10px 14px; border-radius: 14px; background: var(--iu-sunken); }
   .iu-practice .fp-nav-end { margin-top: 22px; }
 </style>

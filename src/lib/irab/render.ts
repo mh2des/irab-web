@@ -39,14 +39,14 @@ function irabHtml(irab: string): string {
   return `${esc(irab.slice(0, m.index))}<span class="c-error">${esc(irab.slice(m.index))}</span>`;
 }
 
-export function heroHtml(r: IrabResult, s: Strings, caption: string | null): string {
+export function heroHtml(r: IrabResult, s: Strings, caption: string | null, editable = true): string {
   const words = r.words.map((w, i) =>
     `<button type="button" class="az-hero-word t-hero c-1" data-word="${i}">${esc(w.word)}</button>`).join('');
   return `
     <div class="az-hero">
       ${caption ? `<p class="t-caption c-3">${esc(caption)}</p>` : ''}
       <div class="az-hero-words" dir="rtl" lang="ar" role="text" aria-label="${esc(r.words.map((w) => w.word).join(' '))}">${words}</div>
-      <button type="button" class="iu-pill outline az-edit" data-edit>${I.pencil}<span>${esc(s.edit)}</span></button>
+      ${editable ? `<button type="button" class="iu-pill outline az-edit" data-edit>${I.pencil}<span>${esc(s.edit)}</span></button>` : ''}
     </div>`;
 }
 

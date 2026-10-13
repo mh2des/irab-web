@@ -1,0 +1,88 @@
+/*
+ * The result views shared by the analyzer, practice and /history: the
+ * analyzer's sentence, word cards, correction and deep analysis, and the
+ * practice result (score ring, counts, note, graded cards). Scoped to .iu.
+ */
+
+/* ── Analyzer result ─────────────────────────────────────────────── */
+  .iu .az-block { margin-top: 14px; }
+  .iu [data-correction].az-block { margin-top: 4px; margin-bottom: 6px; }
+  .iu .az-hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 6px 0 10px; }
+  .iu .az-hero > p { margin-bottom: 8px; }
+  .iu .az-hero-words { display: flex; flex-wrap: wrap; justify-content: center; column-gap: 16px; row-gap: 2px; }
+  .iu .az-hero-word { border: 0; background: none; padding: 0; cursor: pointer; border-radius: 8px; color: var(--iu-text); }
+  .iu .az-hero-word:hover { color: var(--iu-primary-text); }
+  .iu .az-hero-word:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
+  .iu .az-edit { margin-top: 8px; height: 32px; }
+  .iu .az-section { margin: 18px 2px 14px; }
+  .iu .az-cards { display: flex; flex-direction: column; gap: 14px; }
+  .iu .az-word { padding: 10px 18px 0; transition: box-shadow .3s ease, border-color .3s ease; scroll-margin-top: 140px; }
+  .iu .az-word.is-flash { border-color: var(--iu-primary); box-shadow: 0 0 0 4px var(--iu-primary-wash), var(--iu-shadow-card); }
+  .iu .az-word-title { margin: 0; }
+  .iu .az-word-irab { margin: 6px 0 0; padding-bottom: 16px; }
+  .iu .az-word:has(.az-word-foot) .az-word-irab { padding-bottom: 6px; }
+  .iu .az-details-inner { margin-top: 6px; padding: 12px 14px; border-radius: 14px; background: var(--iu-sunken); display: flex; flex-direction: column; gap: 6px; }
+  .iu .az-word-foot { display: flex; padding: 4px 0 12px; }
+  .iu .az-details-toggle .az-chev svg { width: 14px; height: 14px; transition: transform .2s ease; }
+  .iu .az-details-toggle.is-open { background: var(--iu-sunken); color: var(--iu-text-2); }
+  .iu .az-details-toggle.is-open .az-chev svg { transform: rotate(180deg); }
+
+  .iu .az-corr { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .iu .az-corr-head { display: flex; align-items: center; gap: 8px; }
+  .iu .az-corr-icon svg { width: 18px; height: 18px; color: var(--iu-error); display: block; }
+  .iu .az-corr-row { display: flex; align-items: center; gap: 10px; }
+  .iu .az-corr-row > span:first-child { width: 46px; flex: none; }
+  .iu .az-astyped { padding: 14px 16px 10px; }
+  .iu .az-astyped-row { display: flex; gap: 8px; align-items: flex-start; }
+  .iu .az-astyped-icon svg { width: 18px; height: 18px; margin-top: 2px; color: var(--iu-text-2); display: block; }
+  .iu .az-note-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .iu .az-note-icon svg { width: 18px; height: 18px; color: var(--iu-gold); display: block; }
+
+  .iu .az-deep-jump {
+    display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 14px; border-radius: 16px; cursor: pointer;
+    background: var(--iu-primary-wash); border: 1px solid var(--iu-primary-soft); color: var(--iu-primary-text); text-align: start;
+  }
+  .iu .az-deep-jump span { flex: 1; }
+  .iu .az-deep-jump svg { width: 16px; height: 16px; color: var(--iu-primary); }
+  .iu .az-deep { margin-top: 10px; scroll-margin-top: 140px; display: flex; flex-direction: column; }
+  .iu .az-deep-chip { align-self: flex-start; padding: 5px 12px; font-size: 13px; }
+  .iu .az-deep h2 { margin: 8px 0 2px; }
+  .iu .az-deep > p { margin-bottom: 14px; }
+  .iu .az-deep-card { padding: 16px; margin-bottom: 14px; }
+  .iu .az-deep-card header { display: flex; align-items: center; gap: 10px; }
+  .iu .az-deep-icon { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--iu-primary-soft); color: var(--iu-primary); }
+  .iu .az-deep-icon svg { width: 18px; height: 18px; }
+  .iu .az-deep-entry { border-top: 1px solid var(--iu-border); margin-top: 10px; padding-top: 10px; }
+  .iu .az-deep-body { margin-top: 10px; }
+
+/* ── Practice result ─────────────────────────────────────────────── */
+  .iu .fp-answer-input {
+    display: block; width: 100%; min-height: 56px; resize: none; border: 1.5px solid transparent; outline: 0; border-radius: 14px;
+    background: var(--iu-sunken); padding: 12px 14px; color: var(--iu-text); font-family: var(--iu-ui); font-size: 16px; line-height: 1.7;
+    transition: border-color .15s ease;
+  }
+  .iu .fp-answer-input:focus { border-color: var(--iu-teal); background: var(--iu-card); }
+  .iu .fp-answer-input::placeholder { color: var(--iu-text-3); }
+  .iu .fp-summary { display: flex; align-items: center; gap: 12px; padding: 18px; }
+  .iu .fp-summary > div:first-child { flex: 1; }
+  .iu .fp-ring { position: relative; width: 96px; height: 96px; flex: none; display: grid; place-items: center; }
+  .iu .fp-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .iu .fp-ring circle { fill: none; stroke-width: 9; }
+  .iu .fp-ring-track { stroke: var(--iu-sunken); }
+  .iu .fp-ring-arc { stroke: var(--iu-teal); stroke-linecap: round; stroke-dashoffset: 264; transition: stroke-dashoffset .9s cubic-bezier(.22,1,.36,1); }
+  .iu .fp-ring.is-drawn .fp-ring-arc { stroke-dashoffset: var(--fp-off); }
+  .iu .fp-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .iu .fp-stat { padding: 6px 12px 6px 10px; font-size: 13px; }
+  .iu .fp-stat svg { width: 16px; height: 16px; }
+  .iu .fp-note { margin-top: 14px; padding: 16px; border-radius: 20px; background: var(--iu-teal-wash); display: flex; flex-direction: column; gap: 8px; }
+  .iu .fp-note p:first-child { display: inline-flex; align-items: center; gap: 8px; }
+  .iu .fp-note p:first-child svg { width: 16px; height: 16px; color: var(--iu-teal); }
+  .iu .fp-section { display: flex; align-items: baseline; justify-content: space-between; margin: 20px 2px 14px; }
+  .iu .fp-cards { display: flex; flex-direction: column; gap: 14px; }
+  .iu .fp-card { padding: 14px 18px 16px; display: flex; flex-direction: column; }
+  .iu .fp-card header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .iu .fp-answer { margin-top: 2px; }
+  .iu .fp-parts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .iu .fp-parts .iu-tag { padding: 4px 10px 4px 8px; font-size: 12px; }
+  .iu .fp-gap { margin-top: 12px; }
+  .iu .fp-explain { margin-top: 12px; padding: 10px 14px; border-radius: 14px; background: var(--iu-sunken); }

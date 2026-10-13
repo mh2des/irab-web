@@ -7,6 +7,8 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import Container from '../../components/Container.astro';
 import Section from '../../components/Section.astro';
+import '../../styles/irab-ui.css';
+import '../../styles/irab-result.css';
 ---
 <BaseLayout lang="en" noindex title="My history: Irab" description="Your saved analyzer and practice results on Irab.">
   <Nav lang="en" />
@@ -51,6 +53,9 @@ import Section from '../../components/Section.astro';
 </BaseLayout>
 
 <style is:global>
+  .hd-iu .hd-iu-sentence { text-align: center; margin: 4px 0 14px; }
+  .hd-iu .hd-iu-open { margin-top: 20px; }
+  .hd-iu .az-hero { padding-top: 4px; }
   .hist-chip {
     padding: 0.5rem 1.1rem; border-radius: 9999px; font-weight: 600; font-size: var(--text-caption);
     background: var(--color-card); border: 1px solid var(--color-card-edge); color: var(--color-ink);
@@ -137,6 +142,8 @@ import Section from '../../components/Section.astro';
 <script>
   import { maybeSignedIn } from '../../lib/session';
   import { getHistory, getHistoryItem, removeHistory, clearHistory, formatAgo, type HistoryKind } from '../../lib/history';
+  import { historyDetailHtml, wireDetails } from '../../lib/irab/history-detail';
+  import { STRINGS, ago, digits } from '../../lib/irab/strings';
 
   const root = document.querySelector<HTMLElement>('[data-hist-root]');
   if (root) {
@@ -152,7 +159,7 @@ import Section from '../../components/Section.astro';
     const esc = (s: string) => (s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as Record<string, string>)[c]);
     const icA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>';
     const icP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>';
-    const icDel = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1 1-2 2H8a2 2 0 0 1 1-2-2L5 6"/></svg>';
+    const icDel = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
 
     const dayKey = (ts: number) => { const d = new Date(ts); d.setHours(0, 0, 0, 0); return d.getTime(); };
     function bucketOf(ts: number) {
@@ -179,9 +186,12 @@ import Section from '../../components/Section.astro';
           listEl.appendChild(h);
         }
         const isA = it.kind === 'analyze';
+        // The app's wording: «قبل ساعتين · ٦ كلمات», «٦٣٪ · مقبول».
+        const S = STRINGS['en'];
+        const n = it.wordCount ?? String(it.sentence || '').trim().split(/\s+/).filter(Boolean).length;
         const meta = isA
-          ? (it.wordCount ? `${it.wordCount} words` : 'analysis')
-          : (typeof it.score === 'number' ? `${Math.round(it.score * 100)}%${it.level ? ' · ' + it.level : ''}` : 'practice');
+          ? digits(`${ago(it.ts, S)} · ${S.words(n)}`, 'en')
+          : (typeof it.score === 'number' ? digits(`${ago(it.ts, S)} · ${Math.round(it.score * 100)}%${it.level ? ' · ' + it.level : ''}`, 'en') : digits(ago(it.ts, S), 'en'));
         const li = document.createElement('li');
         li.className = 'hist-row';
         li.style.animationDelay = `${Math.min(idx, 14) * 35}ms`;
@@ -189,7 +199,6 @@ import Section from '../../components/Section.astro';
           `<button type="button" class="hist-card" data-open="${it.id}">` +
             `<span class="hist-ic hist-ic-${isA ? 'analyze' : 'practice'}" aria-hidden="true">${isA ? icA : icP}</span>` +
             `<span class="hist-main"><span class="hist-sentence" dir="rtl">${esc(it.vocalized || it.sentence)}</span><span class="hist-meta">${esc(meta)}</span></span>` +
-            `<span class="hist-time">${esc(formatAgo(it.ts, lang))}</span>` +
           `</button>` +
           `<button type="button" class="hist-del" data-del="${it.id}" aria-label="Delete">${icDel}</button>`;
         listEl.appendChild(li);
@@ -204,44 +213,16 @@ import Section from '../../components/Section.astro';
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
+    // The saved result in the design of the tool that made it.
+    detail.className = 'iu hd-iu';
+    detail.dir = 'ltr';
+    wireDetails(detail, 'en');
     function openDetail(id: string) {
       const item = getHistoryItem(id);
       if (!item) return;
-      const d: any = item.data || {};
-      detail.replaceChildren();
-      const html: string[] = [];
-      html.push(`<p class="hd-sentence" dir="rtl">${esc(item.vocalized || d.vocalizedSentence || item.sentence || '')}</p>`);
-      if (item.kind === 'analyze') {
-        if (d.meaning) html.push(`<p class="hd-meaning" dir="rtl">"${esc(d.meaning)}"</p>`);
-        const words = Array.isArray(d.words) ? d.words : [];
-        html.push('<div class="hd-words">');
-        for (const w of words) {
-          const det = (w.details && w.details !== 'لا توجد تفاصيل إضافية') ? `<p class="hd-details" dir="rtl">${esc(w.details)}</p>` : '';
-          html.push(
-            `<div class="hd-word"><div class="hd-word-head"><span class="hd-tok" dir="rtl">${esc(w.word || '')}</span>` +
-            `${w.caseLabel ? `<span class="hd-chip">${esc(w.caseLabel)}</span>` : ''}</div>` +
-            `<p class="hd-irab" dir="rtl">${esc(w.irab || '')}</p>${det}</div>`);
-        }
-        html.push('</div>');
-        if (d.explanation) html.push(`<div class="hd-block"><p class="hd-block-label">Sentence structure</p><p dir="rtl">${esc(d.explanation)}</p></div>`);
-        if (d.additionalClarification) html.push(`<div class="hd-block"><p class="hd-block-label">Rhetorical note</p><p dir="rtl">${esc(d.additionalClarification)}</p></div>`);
-      } else {
-        if (typeof d.score === 'number') html.push(`<div class="hd-score">${Math.round(d.score * 100)}%${d.level ? ' · ' + esc(d.level) : ''}</div>`);
-        const wf = Array.isArray(d.wordFeedback) ? d.wordFeedback : [];
-        html.push('<div class="hd-words">');
-        for (const w of wf) {
-          const ok = w.isCorrect === true;
-          const corr = (!ok && w.correctIrab) ? `<p class="hd-correct" dir="rtl">Correct: ${esc(w.correctIrab)}</p>` : '';
-          const exp = w.explanation ? `<p class="hd-details" dir="rtl">${esc(w.explanation)}</p>` : '';
-          html.push(
-            `<div class="hd-word ${ok ? 'ok' : 'bad'}"><div class="hd-word-head"><span class="hd-tok" dir="rtl">${esc(w.word || '')}</span>` +
-            `<span class="hd-mark ${ok ? 'ok' : 'bad'}">${ok ? '✓' : '✗'}</span></div>` +
-            `<p class="hd-irab" dir="rtl">Your answer: ${esc(w.userIrab || '—')}</p>${corr}${exp}</div>`);
-        }
-        html.push('</div>');
-      }
-      detail.innerHTML = html.join('');
+      detail.innerHTML = historyDetailHtml(item, 'en');
       modal.classList.remove('hidden');
+      requestAnimationFrame(() => detail.querySelector('.fp-ring')?.classList.add('is-drawn'));
     }
 
     listEl.addEventListener('click', (e) => {
