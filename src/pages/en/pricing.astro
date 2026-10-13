@@ -16,17 +16,18 @@ import Footer from '../../components/sections/Footer.astro';
 const features = [
   { t: "Unlimited i'rab analyses", b: 'Parse anything, anytime: word by word, with type, role, case marker, and vocalization.', i: 'M12 12c-2-2.67-4-4-6-4a4 4 0 0 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4Z' },
   { t: "Unlimited grading of your i'rab", b: 'Write the i\'rab yourself and get corrections with per-word explanations, with no cap instead of 3 a day on the free plan.', i: 'M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4 12 14.01l-3-3' },
+  { t: 'Ask the teacher, unlimited', b: "Ask about any word in your sentence and the teacher explains it from its i'rab, with an example, instead of 5 questions a day on the free plan.", i: 'M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0zM22 10v6M6 12.5V16a6 3 0 0 0 12 0v-3.5' },
   { t: 'The full practice bank: 576', b: 'Curated sentences across progressive levels, instead of two levels on the free plan.', i: 'M12 2 2 7l10 5 10-5-10-5ZM2 17l10 5 10-5M2 12l10 5 10-5' },
   { t: 'All seven challenge babs', b: 'With full explanations for every answer, not just the first two babs.', i: 'M6 9H4.5a2.5 2.5 0 0 1 0-5H6m12 5h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22m7-7.34V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z' },
   { t: 'Smart Dictionary, unlimited', b: 'Unlimited AI-powered lookups, instead of 5 per day.', i: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2V3Zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7V3Z' },
-  { t: 'OCR camera', b: 'Capture a page from your book with the OCR camera and parse its sentences directly.', i: 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2v11ZM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z' },
-  { t: 'PDF export and share cards', b: 'Export your analyses and share elegant cards with no watermark.', i: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3' },
+  { t: 'OCR camera and PDF export', b: 'Capture a page from your book with the OCR camera and parse its sentences, then export your analyses and share cards with no watermark.', i: 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2v11ZM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z' },
   { t: 'Mastery certificates', b: 'On the annual plan: a shareable certificate after mastering each topic.', i: 'M12 15a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm0 0 3.5 7L12 20l-3.5 2 3.5-7Z' },
 ];
 
 const compare = [
   { f: "I'rab analyses", free: '5 per day (7 in your first week)', plus: 'Unlimited' },
   { f: "Grading your own i'rab", free: '3 per day', plus: 'Unlimited, with per-word explanations' },
+  { f: 'Ask the teacher', free: '5 questions per day', plus: 'Unlimited' },
   { f: 'Practice bank', free: 'Levels 1–2', plus: 'All 576 sentences' },
   { f: 'Challenge babs', free: 'Babs 1–2', plus: 'All seven babs' },
   { f: 'Smart Dictionary', free: '5 per day (10 in your first week)', plus: 'Unlimited' },

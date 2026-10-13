@@ -1,9 +1,9 @@
 /**
- * Whether «اسأل الأستاذ» shows on the website. Off until the owner launches
- * it; `?teacher=1` turns a preview on in this browser (`?teacher=0` off), so
- * it can be tried on irab.app before launch.
+ * Whether «اسأل الأستاذ» shows on the website: on for everyone since the
+ * owner launched it (2026-10-13). With TEACHER_WEB false, `?teacher=1` turns
+ * a preview on in one browser (`?teacher=0` off).
  */
-export const TEACHER_WEB = false;
+export const TEACHER_WEB = true;
 
 export function teacherEnabled(): boolean {
   try {
