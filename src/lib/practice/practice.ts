@@ -241,7 +241,10 @@ export function mountPractice(root: HTMLElement): void {
     last = r;
     q('[data-results]').innerHTML = R.resultsHtml(r, s, lang);
     show('results');
-    requestAnimationFrame(() => q('[data-results]').querySelector('.fp-ring')?.classList.add('is-drawn'));
+    // Next frame, so the ring animates; the timer covers a tab that renders no frames.
+    const draw = () => q('[data-results]').querySelector('.fp-ring')?.classList.add('is-drawn');
+    requestAnimationFrame(draw);
+    window.setTimeout(draw, 120);
   }
 
   q('[data-retry]').addEventListener('click', () => { if (words.length) openWord(0); });
@@ -353,6 +356,9 @@ export function mountPractice(root: HTMLElement): void {
     show('compose', false);
   }
   if (!maybeSignedIn()) { show('gate', false); return; }
+  // The sign-in screen replaces only an empty writing screen: never a result
+  // from history or answers in progress.
+  const idle = () => !views.compose.hidden && !input.value.trim();
   // A returning user's writing screen paints now; Firebase loads behind it,
   // and only the check itself needs the token.
   openFirst();
@@ -363,7 +369,7 @@ export function mountPractice(root: HTMLElement): void {
         authResolved = true;
         if (!u) {
           user.getToken = null;
-          if (views.compose.hidden === false && !input.value.trim()) show('gate', false);
+          if (idle()) show('gate', false);
           return;
         }
         user.uid = u.uid;
@@ -372,7 +378,7 @@ export function mountPractice(root: HTMLElement): void {
         await refreshQuota();
       });
     } catch {
-      if (!authResolved) show('gate', false);
+      if (!authResolved && idle()) show('gate', false);
     }
   })();
 }
