@@ -334,6 +334,8 @@ export function mountAnalyzer(root: HTMLElement): void {
   async function openTeacherFor(o: { focusWord?: number | null; pickReview?: boolean }) {
     if (!last) return;
     const result = last.result;
+    // Whoever has opened the teacher has met it: no introduction again.
+    dismissIntro();
     const { openTeacher } = await import('../teacher/teacher');
     openTeacher({
       lang,

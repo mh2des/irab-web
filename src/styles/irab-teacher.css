@@ -49,11 +49,13 @@ html.tc-open { overflow: hidden; }
   .tc-root .tc-header { padding-top: 14px; }
 }
 html.tc-open:has(.tc-root[data-layout="dialog"]) { overflow: hidden; }
-/* The page makes room for the docked panel; the sticky nav keeps its full
-   width (the panel sits under it). */
-html body { transition: padding .3s cubic-bezier(.2, .8, .2, 1); }
-html.tc-docked body { padding-inline-end: 440px; }
-html.tc-docked body > nav.sticky { margin-inline-end: -440px; }
+/* The page makes room for the docked panel: everything under the sticky nav
+   moves over (the nav keeps its full width; the panel sits under it).
+   Margins on the page's blocks, so nothing overflows while it animates. */
+html body > :not(nav):not(.tc-root):not(script) { transition: margin .3s cubic-bezier(.2, .8, .2, 1); }
+html.tc-docked body > :not(nav):not(.tc-root):not(script) { margin-inline-end: 440px; }
+/* The result's own ask bar is not needed while the teacher is open. */
+html.tc-open .iu .tc-dock { visibility: hidden; }
 
 /* ── Header ────────────────────────────────────────────────────────────── */
 .tc-root .tc-header { display: flex; align-items: center; gap: 10px; padding: 4px 12px 10px 16px; flex: none; }
