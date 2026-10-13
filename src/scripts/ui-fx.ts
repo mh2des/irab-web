@@ -248,3 +248,6 @@ if (!noMotion && matchMedia('(hover: hover) and (pointer: fine)').matches) {
   initSpotlight();
 }
 if (!noMotion) initAccordion();
+
+// Loaded with import() from BaseLayout: a module, though it exports nothing.
+export {};

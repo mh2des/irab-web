@@ -302,7 +302,7 @@ export function mountAnalyzer(root: HTMLElement): void {
       const i = toggle.dataset.details!;
       const panel = root.querySelector<HTMLElement>(`#az-details-${i}`);
       if (!panel) return;
-      const open = panel.hidden;
+      const open = panel.hidden === true;
       panel.hidden = !open;
       toggle.setAttribute('aria-expanded', String(open));
       toggle.classList.toggle('is-open', open);
