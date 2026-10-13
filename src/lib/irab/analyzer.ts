@@ -123,7 +123,8 @@ export function mountAnalyzer(root: HTMLElement): void {
     return '';
   }
   function standardStatusText(): string {
-    if (!user.signedIn) return D(s.leftGuest(String(Math.max(0, GUEST_TRIES - guestUsed())), String(GUEST_TRIES)));
+    // A guest's free tries are not counted out to them (owner, 2026-10-13).
+    if (!user.signedIn) return '';
     if (premium() || !usage?.standard) return '';
     return D(s.leftToday(String(usage.standard.remaining), String(usage.standard.limit)));
   }
