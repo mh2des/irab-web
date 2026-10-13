@@ -154,18 +154,6 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
   .iu-analyzer { max-width: 720px; margin: 0 auto; padding: 8px 16px 48px; }
   .iu-analyzer .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .iu-analyzer .az-view { display: flex; flex-direction: column; }
-
-  /* A1: the composer card turns purple while writing (IrabCard borderColor). */
-  .iu-analyzer .az-composer { overflow: hidden; transition: border-color .18s ease, box-shadow .18s ease; }
-  .iu-analyzer .az-composer.is-focused, .iu-analyzer .az-composer.is-filled { border-color: var(--iu-primary); }
-  .iu-analyzer .az-input {
-    display: block; width: 100%; min-height: 78px; max-height: 190px; resize: none; border: 0; outline: 0;
-    background: transparent; padding: 16px 18px 0; color: var(--iu-text);
-    font-family: var(--iu-ui); font-size: 20px; line-height: 1.8; font-weight: 400;
-  }
-  .iu-analyzer .az-input::placeholder { color: var(--iu-text-3); opacity: .85; }
-  .iu-analyzer .az-meta { padding: 6px 18px 12px; display: flex; justify-content: flex-end; }
-  .iu-analyzer .az-bar { display: flex; align-items: center; gap: 4px; padding: 8px 10px; border-top: 1px solid var(--iu-border); }
   .iu-analyzer .az-mode {
     margin-inline-start: auto; display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px;
     border-radius: 999px; border: 0; cursor: pointer; background: var(--iu-sunken); color: var(--iu-text);
@@ -174,23 +162,7 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
   .iu-analyzer .az-mode svg { width: 14px; height: 14px; }
   .iu-analyzer .az-mode.is-deep { background: var(--iu-primary-soft); color: var(--iu-primary-text); }
   .iu-analyzer .az-mode [data-mode-crown] svg { width: 14px; height: 14px; color: var(--iu-primary); }
-  .iu-analyzer .az-mic.is-live { background: var(--iu-error-soft); color: var(--iu-error); animation: az-pulse 1.4s ease-in-out infinite; }
-  @keyframes az-pulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--iu-error) 14%, transparent); } }
-  .iu-analyzer .az-msg { margin: 10px 4px 0; }
   .iu-analyzer [data-composer-note] { color: var(--iu-error-text); }
-  .iu-analyzer .az-arabic-note {
-    display: flex; align-items: center; gap: 10px; overflow: hidden;
-    max-height: 0; opacity: 0; margin: 0; padding: 0 14px; border-radius: 14px;
-    background: var(--iu-primary-soft); color: var(--iu-primary-text);
-    transition: max-height .25s ease, opacity .2s ease, margin .25s ease, padding .25s ease;
-  }
-  .iu-analyzer .az-arabic-note.is-on { max-height: 6rem; opacity: 1; margin-top: 10px; padding: 10px 14px; }
-  .iu-analyzer .az-arabic-glyph {
-    flex: none; width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center;
-    background: var(--iu-card); color: var(--iu-primary); font-family: var(--iu-ui); font-weight: 700; font-size: 15px;
-  }
-  .iu-analyzer .az-input.ar-only-nudge { animation: az-nudge .36s ease; }
-  @keyframes az-nudge { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
   .iu-analyzer .az-submit { margin-top: 16px; }
   .iu-analyzer .az-hint { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; }
   .iu-analyzer .az-hint svg { width: 15px; height: 15px; }
@@ -210,31 +182,6 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
   .iu-analyzer .az-recent-text { flex: 1; display: flex; flex-direction: column; min-width: 0; }
   .iu-analyzer .az-recent-text .t-sentence-s { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .iu-analyzer .az-recent-chev svg { width: 16px; height: 16px; color: var(--iu-text-3); }
-
-  /* A3 */
-  .iu-analyzer .az-analyzing { gap: 14px; }
-  .iu-analyzer .az-echo { padding: 14px 18px; }
-  .iu-analyzer .az-steps { padding: 18px; }
-  .iu-analyzer .az-steps-head { display: flex; align-items: center; gap: 10px; }
-  .iu-analyzer .az-spinner { width: 20px; height: 20px; border-radius: 999px; border: 2.5px solid var(--iu-primary-soft); border-top-color: var(--iu-primary); animation: az-spin .9s linear infinite; flex: none; }
-  @keyframes az-spin { to { transform: rotate(360deg); } }
-  .iu-analyzer .az-steps ol { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 12px; }
-  .iu-analyzer .az-steps li { display: flex; align-items: center; gap: 10px; color: var(--iu-text-3); transition: color .2s ease; }
-  .iu-analyzer .az-step-dot { width: 18px; height: 18px; border-radius: 999px; border: 2px solid var(--iu-border-strong); flex: none; position: relative; transition: all .2s ease; }
-  .iu-analyzer .az-steps li[data-state='active'] { color: var(--iu-text); }
-  .iu-analyzer .az-steps li[data-state='active'] .az-step-dot { border-color: var(--iu-primary); }
-  .iu-analyzer .az-steps li[data-state='active'] .az-step-dot::after { content: ''; position: absolute; inset: 3px; border-radius: 999px; background: var(--iu-primary); animation: az-breathe 1.2s ease-in-out infinite; }
-  .iu-analyzer .az-steps li[data-state='done'] { color: var(--iu-text-2); }
-  .iu-analyzer .az-steps li[data-state='done'] .az-step-dot { border-color: var(--iu-success); background: var(--iu-success); }
-  .iu-analyzer .az-steps li[data-state='done'] .az-step-dot::after { content: ''; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
-  @keyframes az-breathe { 50% { transform: scale(.6); opacity: .6; } }
-  .iu-analyzer .az-skel { padding: 18px; display: flex; flex-direction: column; gap: 10px; }
-  .iu-analyzer .az-skel span { height: 12px; border-radius: 6px; background: linear-gradient(90deg, var(--iu-sunken), var(--iu-border), var(--iu-sunken)); background-size: 200% 100%; animation: az-shimmer 1.3s ease-in-out infinite; }
-  .iu-analyzer .az-skel span:first-child { width: 28%; height: 18px; }
-  .iu-analyzer .az-skel span:nth-child(2) { width: 92%; }
-  .iu-analyzer .az-skel span:nth-child(3) { width: 60%; }
-  @keyframes az-shimmer { to { background-position: -200% 0; } }
-  .iu-analyzer .az-takes { text-align: center; }
 
   /* A4 */
   .iu-analyzer .az-head { display: flex; align-items: center; gap: 4px; height: 52px; margin: 0 -8px 4px; }

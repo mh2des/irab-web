@@ -120,14 +120,17 @@ function dateLine(lang: Lang): string {
   }
 }
 
-function newPage(s: Strings, lang: Lang): HTMLElement {
+/** A report's fixed words: its title, the footer credit, the page count. */
+export interface ReportLabels { title: string; madeWith: string; page: (n: string, m: string) => string }
+
+function newPage(l: ReportLabels, lang: Lang): HTMLElement {
   const page = document.createElement('div');
   page.className = 'xp xp-page';
   page.dir = lang === 'ar' ? 'rtl' : 'ltr';
   page.innerHTML = `
-    <div class="xp-head"><img src="/brand-mark.png" alt=""><div><b>${esc(s.pdfTitle)}</b><small>${esc(dateLine(lang))}</small></div><span class="xp-url xp-ltr">irab.app</span></div>
+    <div class="xp-head"><img src="/brand-mark.png" alt=""><div><b>${esc(l.title)}</b><small>${esc(dateLine(lang))}</small></div><span class="xp-url xp-ltr">irab.app</span></div>
     <div class="xp-body"></div>
-    <div class="xp-foot"><span>${esc(s.pdfMadeWith)}</span><span class="xp-ltr">irab.app</span><span class="xp-n"></span></div>`;
+    <div class="xp-foot"><span>${esc(l.madeWith)}</span><span class="xp-ltr">irab.app</span><span class="xp-n"></span></div>`;
   return page;
 }
 
@@ -162,16 +165,20 @@ function reportBlocks(r: IrabResult, s: Strings): string[] {
   return blocks;
 }
 
-/** Lays the blocks onto as many A4 pages as they need. */
 export async function buildPages(r: IrabResult, s: Strings, lang: Lang): Promise<HTMLElement[]> {
+  return paginate(reportBlocks(r, s), { title: s.pdfTitle, madeWith: s.pdfMadeWith, page: s.pdfPage }, lang);
+}
+
+/** Lays the blocks onto as many A4 pages as they need. */
+export async function paginate(blocks: string[], l: ReportLabels, lang: Lang): Promise<HTMLElement[]> {
   const host = stage();
   const pages: HTMLElement[] = [];
-  let page = newPage(s, lang);
+  let page = newPage(l, lang);
   host.appendChild(page);
   pages.push(page);
   await imagesReady(page);
   let body = page.querySelector<HTMLElement>('.xp-body')!;
-  for (const html of reportBlocks(r, s)) {
+  for (const html of blocks) {
     const holder = document.createElement('div');
     holder.innerHTML = html.trim();
     const block = holder.firstElementChild as HTMLElement;
@@ -183,7 +190,7 @@ export async function buildPages(r: IrabResult, s: Strings, lang: Lang): Promise
       const prev = body.lastElementChild as HTMLElement | null;
       const carry = prev && prev.tagName === 'H2' ? prev : null;
       carry?.remove();
-      page = newPage(s, lang);
+      page = newPage(l, lang);
       host.appendChild(page);
       pages.push(page);
       body = page.querySelector<HTMLElement>('.xp-body')!;
@@ -192,15 +199,19 @@ export async function buildPages(r: IrabResult, s: Strings, lang: Lang): Promise
     }
   }
   pages.forEach((p, i) => {
-    p.querySelector('.xp-n')!.textContent = s.pdfPage(digits(i + 1, lang), digits(pages.length, lang));
+    p.querySelector('.xp-n')!.textContent = l.page(digits(i + 1, lang), digits(pages.length, lang));
   });
   return pages;
 }
 
 export async function downloadReport(r: IrabResult, s: Strings, lang: Lang): Promise<void> {
-  const pages = await buildPages(r, s, lang);
+  await downloadPages(await buildPages(r, s, lang), sentenceOf(r));
+}
+
+/** Captures the pages into one PDF named after the sentence, then clears them. */
+export async function downloadPages(pages: HTMLElement[], sentence: string): Promise<void> {
   try {
-    await downloadPdfPages(pages, exportFilename(sentenceOf(r), 'pdf'));
+    await downloadPdfPages(pages, exportFilename(sentence, 'pdf'));
   } finally {
     pages.forEach((p) => p.remove());
   }

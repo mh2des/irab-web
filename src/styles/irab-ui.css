@@ -132,6 +132,7 @@
 .iu .c-teal { color: var(--iu-teal-text); }
 .iu .c-error { color: var(--iu-error-text); }
 .iu .c-success { color: var(--iu-success-text); }
+.iu .c-partial { color: var(--iu-partial-text); }
 
 /* ── Surfaces: IrabCard ─────────────────────────────────────────────── */
 .iu .iu-card {
@@ -210,6 +211,62 @@
 
 /* Forward chevrons point the reading way: left in Arabic, right in English. */
 .iu[dir='ltr'] .flip-ltr { transform: scaleX(-1); }
+
+/* ── Tool parts shared by the analyzer and practice: the composer, the
+   in-progress screen, the Arabic-only notice ─────────────────────────── */
+
+  /* A1: the composer card turns purple while writing (IrabCard borderColor). */
+  .iu .az-composer { overflow: hidden; transition: border-color .18s ease, box-shadow .18s ease; }
+  .iu .az-composer.is-focused, .iu .az-composer.is-filled { border-color: var(--iu-primary); }
+  .iu .az-input {
+    display: block; width: 100%; min-height: 78px; max-height: 190px; resize: none; border: 0; outline: 0;
+    background: transparent; padding: 16px 18px 0; color: var(--iu-text);
+    font-family: var(--iu-ui); font-size: 20px; line-height: 1.8; font-weight: 400;
+  }
+  .iu .az-input::placeholder { color: var(--iu-text-3); opacity: .85; }
+  .iu .az-meta { padding: 6px 18px 12px; display: flex; justify-content: flex-end; }
+  .iu .az-bar { display: flex; align-items: center; gap: 4px; padding: 8px 10px; border-top: 1px solid var(--iu-border); }
+  .iu .az-mic.is-live { background: var(--iu-error-soft); color: var(--iu-error); animation: az-pulse 1.4s ease-in-out infinite; }
+  @keyframes az-pulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--iu-error) 14%, transparent); } }
+  .iu .az-msg { margin: 10px 4px 0; }
+  .iu .az-arabic-note {
+    display: flex; align-items: center; gap: 10px; overflow: hidden;
+    max-height: 0; opacity: 0; margin: 0; padding: 0 14px; border-radius: 14px;
+    background: var(--iu-primary-soft); color: var(--iu-primary-text);
+    transition: max-height .25s ease, opacity .2s ease, margin .25s ease, padding .25s ease;
+  }
+  .iu .az-arabic-note.is-on { max-height: 6rem; opacity: 1; margin-top: 10px; padding: 10px 14px; }
+  .iu .az-arabic-glyph {
+    flex: none; width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center;
+    background: var(--iu-card); color: var(--iu-primary); font-family: var(--iu-ui); font-weight: 700; font-size: 15px;
+  }
+  .iu .az-input.ar-only-nudge { animation: az-nudge .36s ease; }
+  @keyframes az-nudge { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+
+  /* A3 */
+  .iu .az-analyzing { gap: 14px; }
+  .iu .az-echo { padding: 14px 18px; }
+  .iu .az-steps { padding: 18px; }
+  .iu .az-steps-head { display: flex; align-items: center; gap: 10px; }
+  .iu .az-spinner { width: 20px; height: 20px; border-radius: 999px; border: 2.5px solid var(--iu-primary-soft); border-top-color: var(--iu-primary); animation: az-spin .9s linear infinite; flex: none; }
+  @keyframes az-spin { to { transform: rotate(360deg); } }
+  .iu .az-steps ol { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 12px; }
+  .iu .az-steps li { display: flex; align-items: center; gap: 10px; color: var(--iu-text-3); transition: color .2s ease; }
+  .iu .az-step-dot { width: 18px; height: 18px; border-radius: 999px; border: 2px solid var(--iu-border-strong); flex: none; position: relative; transition: all .2s ease; }
+  .iu .az-steps li[data-state='active'] { color: var(--iu-text); }
+  .iu .az-steps li[data-state='active'] .az-step-dot { border-color: var(--iu-primary); }
+  .iu .az-steps li[data-state='active'] .az-step-dot::after { content: ''; position: absolute; inset: 3px; border-radius: 999px; background: var(--iu-primary); animation: az-breathe 1.2s ease-in-out infinite; }
+  .iu .az-steps li[data-state='done'] { color: var(--iu-text-2); }
+  .iu .az-steps li[data-state='done'] .az-step-dot { border-color: var(--iu-success); background: var(--iu-success); }
+  .iu .az-steps li[data-state='done'] .az-step-dot::after { content: ''; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  @keyframes az-breathe { 50% { transform: scale(.6); opacity: .6; } }
+  .iu .az-skel { padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .iu .az-skel span { height: 12px; border-radius: 6px; background: linear-gradient(90deg, var(--iu-sunken), var(--iu-border), var(--iu-sunken)); background-size: 200% 100%; animation: az-shimmer 1.3s ease-in-out infinite; }
+  .iu .az-skel span:first-child { width: 28%; height: 18px; }
+  .iu .az-skel span:nth-child(2) { width: 92%; }
+  .iu .az-skel span:nth-child(3) { width: 60%; }
+  @keyframes az-shimmer { to { background-position: -200% 0; } }
+  .iu .az-takes { text-align: center; }
 
 .iu [hidden] { display: none !important; }
 

@@ -1,0 +1,255 @@
+---
+/**
+ * FeedbackPractice: «أعرب بنفسك», the app's practice screens on the web
+ * (P1-P5 in the app's redesign). Write a sentence, parse it one word at a
+ * time with quick terms, review, and the teacher's check (grader g2): the
+ * mark and level, the teacher's note, and per word the answer, which
+ * elements of the full i'rab it has, and the full i'rab. Signed-in only.
+ * Logic: lib/practice/practice.ts. Tokens: irab-ui.css.
+ */
+import '../../styles/irab-ui.css';
+import '../../styles/irab-export.css';
+import Paywall from '../Paywall.astro';
+import { PRACTICE } from '../../lib/practice/strings';
+import * as I from '../../lib/irab/icons';
+
+interface Props { lang?: 'ar' | 'en' }
+const { lang = 'ar' } = Astro.props;
+const s = PRACTICE[lang];
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
+const login = lang === 'ar' ? '/login?next=/practice/play' : '/en/login?next=/en/practice/play';
+const curated = lang === 'ar' ? '/challenges' : '/en/challenges';
+const fwd = lang === 'ar' ? I.arrowLeft : I.arrowRight;
+const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
+const chev = I.chevronLeft.replace('<svg', '<svg class="flip-ltr"');
+---
+
+<div class="iu iu-practice" data-practice data-lang={lang} dir={dir} lang={lang}>
+
+  <section data-view="loading" class="fp-view" hidden></section>
+
+  <section data-view="gate" class="fp-view" hidden>
+    <div class="iu-card fp-gate">
+      <span class="fp-gate-icon"><Fragment set:html={I.pencil} /></span>
+      <h1 class="t-display c-1">{s.title}</h1>
+      <p class="t-body c-2">{s.gateBody}</p>
+      <a class="iu-btn teal lg" href={login}>{s.signIn}</a>
+    </div>
+  </section>
+
+  <!-- P1 -->
+  <section data-view="compose" class="fp-view">
+    <h1 class="t-display c-1 fp-title">{s.title}</h1>
+    <p class="t-body-s c-2 fp-sub">{s.subtitle}</p>
+    <div class="iu-card az-composer fp-composer" data-composer>
+      <label class="sr-only" for={`fp-input-${lang}`}>{s.composerHint}</label>
+      <textarea id={`fp-input-${lang}`} class="az-input" data-input rows="3" dir="rtl" lang="ar"
+        placeholder={s.composerHint} autocomplete="off" spellcheck="false"></textarea>
+      <div class="az-meta"><span class="t-caption c-3" data-counter aria-live="polite"></span></div>
+      <div class="az-bar">
+        <button type="button" class="iu-icon-btn az-mic" data-mic hidden aria-pressed="false" aria-label={s.micStart} title={s.micStart}><Fragment set:html={I.mic} /></button>
+        <span class="fp-quota" data-quota hidden><Fragment set:html={I.zap} /><span data-quota-text></span></span>
+      </div>
+    </div>
+    <p class="t-caption az-msg c-error" data-compose-msg hidden role="alert"></p>
+    <p class="t-caption c-3 az-msg" data-mic-status hidden aria-live="polite"></p>
+    <p class="az-arabic-note" data-arabic-only-note data-text={s.arabicOnly} role="status" aria-live="polite">
+      <span class="az-arabic-glyph" aria-hidden="true">ع</span><span class="t-label" data-arabic-only-text></span>
+    </p>
+    <button type="button" class="iu-btn teal lg block fp-start" data-start disabled>{s.start}<Fragment set:html={fwd} /></button>
+    <div class="fp-or"><span class="t-caption c-3">{s.or}</span></div>
+    <a class="iu-card fp-curated" href={curated}>
+      <span class="fp-curated-icon"><Fragment set:html={I.book} /></span>
+      <span class="fp-curated-text"><span class="t-body-strong c-1">{s.curatedTitle}</span><span class="t-caption c-2">{s.curatedSub}</span></span>
+      <Fragment set:html={chev} />
+    </a>
+  </section>
+
+  <!-- P2 -->
+  <section data-view="stepper" class="fp-view" hidden>
+    <div class="fp-head">
+      <button type="button" class="iu-icon-btn" data-to-compose aria-label={s.back} title={s.back}><Fragment set:html={back} /></button>
+      <h2 class="t-title c-1">{s.stepperTitle}</h2>
+    </div>
+    <div class="fp-progress" data-progress aria-hidden="true"></div>
+    <div class="fp-strip" data-strip dir="rtl" lang="ar"></div>
+    <div class="iu-card fp-word-card">
+      <p class="t-caption c-3" data-word-n></p>
+      <p class="fp-word" data-word dir="rtl" lang="ar"></p>
+      <label class="sr-only" for={`fp-answer-${lang}`}>{s.answerHint}</label>
+      <textarea id={`fp-answer-${lang}`} class="fp-answer-input" data-answer rows="2" dir="rtl" lang="ar" placeholder={s.answerHint} autocomplete="off" spellcheck="false"></textarea>
+      <p class="t-micro c-3 fp-terms-label">{s.quickTerms}</p>
+      <div class="fp-terms" data-terms dir="rtl"></div>
+    </div>
+    <div class="fp-nav">
+      <button type="button" class="iu-btn teal lg" data-next>{s.next}<Fragment set:html={fwd} /></button>
+      <button type="button" class="iu-btn secondary lg" data-previous><Fragment set:html={back} />{s.previous}</button>
+    </div>
+  </section>
+
+  <!-- P2c -->
+  <section data-view="review" class="fp-view" hidden>
+    <div class="fp-head">
+      <button type="button" class="iu-icon-btn" data-review-back aria-label={s.back} title={s.back}><Fragment set:html={back} /></button>
+      <h2 class="t-title c-1">{s.reviewHead}</h2>
+    </div>
+    <h1 class="t-title-l c-1">{s.reviewTitle}</h1>
+    <p class="t-body-s c-3 fp-sub">{s.reviewSub}</p>
+    <div class="fp-review" data-review-list></div>
+    <p class="t-caption az-msg c-error" data-review-msg hidden role="alert"></p>
+    <button type="button" class="iu-btn teal lg block fp-check" data-check disabled><Fragment set:html={I.clipboardCheck} />{s.check}</button>
+    <p class="t-caption c-3 fp-review-quota" data-review-quota hidden></p>
+  </section>
+
+  <!-- P3 (filled by the script) -->
+  <section data-view="grading" class="fp-view az-analyzing" hidden aria-live="polite"></section>
+
+  <!-- P4 -->
+  <section data-view="results" class="fp-view" hidden>
+    <div class="fp-head">
+      <button type="button" class="iu-icon-btn" data-to-compose aria-label={s.back} title={s.back}><Fragment set:html={back} /></button>
+      <h2 class="t-title c-1">{s.result}</h2>
+      <div class="fp-share">
+        <button type="button" class="iu-icon-btn" data-share aria-haspopup="menu" aria-label={s.share} title={s.share}><Fragment set:html={I.share} /></button>
+        <div class="iu-card fp-menu" data-share-menu role="menu" hidden>
+          <button type="button" role="menuitem" data-share-pdf><Fragment set:html={I.pdf} /><span data-label>{s.sharePdf}</span></button>
+          <button type="button" role="menuitem" data-share-text><Fragment set:html={I.fileText} /><span data-label>{s.shareText}</span></button>
+        </div>
+      </div>
+    </div>
+    <div data-results></div>
+    <div class="fp-nav fp-nav-end">
+      <button type="button" class="iu-btn secondary lg" data-retry><Fragment set:html={I.refresh} />{s.retry}</button>
+      <button type="button" class="iu-btn teal lg" data-new><Fragment set:html={I.plusCircle} />{s.newSentence}</button>
+    </div>
+  </section>
+
+  <section data-view="error" class="fp-view" hidden>
+    <div class="iu-card fp-gate" role="alert">
+      <span class="fp-gate-icon is-error"><Fragment set:html={I.info} /></span>
+      <h2 class="t-title c-1">{s.failedTitle}</h2>
+      <p class="t-body-s c-2">{s.failedBody}</p>
+      <div class="fp-nav">
+        <button type="button" class="iu-btn teal" data-error-retry><Fragment set:html={I.refresh} />{s.retry}</button>
+        <button type="button" class="iu-btn secondary" data-error-edit><Fragment set:html={I.pencil} />{s.reviewHead}</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<Paywall lang={lang} />
+
+<script>
+  import { mountPractice } from '../../lib/practice/practice';
+  document.querySelectorAll<HTMLElement>('[data-practice]').forEach(mountPractice);
+</script>
+
+<style is:global>
+  .iu-practice { max-width: 720px; margin: 0 auto; padding: 0 0 40px; }
+  .iu-practice .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .iu-practice .fp-view { display: flex; flex-direction: column; }
+  .iu-practice .fp-title { margin-top: 4px; }
+  .iu-practice .fp-sub { margin: 4px 0 16px; }
+
+  /* P1: the practice composer turns teal while writing. */
+  .iu-practice .fp-composer.is-focused, .iu-practice .fp-composer.is-filled { border-color: var(--iu-teal); }
+  .iu-practice .fp-quota {
+    margin-inline-start: auto; display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px;
+    border-radius: 999px; background: var(--iu-teal-soft); color: var(--iu-teal-text); font-size: 12px; font-weight: 600;
+  }
+  .iu-practice .fp-quota svg { width: 14px; height: 14px; }
+  .iu-practice .fp-quota.is-out { background: var(--iu-sunken); color: var(--iu-text-3); }
+  .iu-practice .fp-start { margin-top: 16px; }
+  .iu-practice .fp-or { display: flex; align-items: center; gap: 12px; margin: 22px 0 14px; }
+  .iu-practice .fp-or::before, .iu-practice .fp-or::after { content: ''; flex: 1; height: 1px; background: var(--iu-border); }
+  .iu-practice .fp-curated { display: flex; align-items: center; gap: 12px; padding: 14px 16px; text-decoration: none; color: inherit; transition: border-color .15s ease; }
+  .iu-practice .fp-curated:hover { border-color: var(--iu-teal); }
+  .iu-practice .fp-curated > svg { width: 16px; height: 16px; color: var(--iu-text-3); }
+  .iu-practice .fp-curated-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--iu-teal-soft); color: var(--iu-teal); flex: none; }
+  .iu-practice .fp-curated-icon svg { width: 20px; height: 20px; }
+  .iu-practice .fp-curated-text { flex: 1; display: flex; flex-direction: column; }
+
+  .iu-practice .fp-gate { padding: 26px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+  .iu-practice .fp-gate .iu-btn { margin-top: 6px; }
+  .iu-practice .fp-gate-icon { width: 52px; height: 52px; border-radius: 999px; display: grid; place-items: center; background: var(--iu-teal-soft); color: var(--iu-teal); }
+  .iu-practice .fp-gate-icon.is-error { background: var(--iu-error-soft); color: var(--iu-error); }
+  .iu-practice .fp-gate-icon svg { width: 24px; height: 24px; }
+
+  /* P2 */
+  .iu-practice .fp-head { display: flex; align-items: center; gap: 4px; height: 52px; margin: 0 -8px 4px; }
+  .iu-practice .fp-head h2 { flex: 1; }
+  .iu-practice .fp-progress { display: flex; gap: 6px; margin-bottom: 14px; }
+  .iu-practice .fp-progress span { flex: 1; height: 4px; border-radius: 2px; background: var(--iu-border); transition: background-color .2s ease; }
+  .iu-practice .fp-progress span.is-done { background: color-mix(in srgb, var(--iu-teal) 55%, transparent); }
+  .iu-practice .fp-progress span.is-on { background: var(--iu-teal); }
+  .iu-practice .fp-strip { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; margin-bottom: 14px; }
+  .iu-practice .fp-strip-word { border: 0; background: none; cursor: pointer; padding: 0 10px; border-radius: 12px; color: var(--iu-text-2); }
+  .iu-practice .fp-strip-word.is-on { background: var(--iu-teal-soft); color: var(--iu-teal-text); }
+  .iu-practice .fp-word-card { padding: 16px 18px 18px; border-color: var(--iu-teal); }
+  .iu-practice .fp-word { font-family: var(--iu-studied); font-size: 32px; font-weight: 700; line-height: 1.7; text-align: center; color: var(--iu-word); margin: 2px 0 10px; }
+  .iu-practice .fp-answer-input {
+    display: block; width: 100%; min-height: 56px; resize: none; border: 1.5px solid transparent; outline: 0; border-radius: 14px;
+    background: var(--iu-sunken); padding: 12px 14px; color: var(--iu-text); font-family: var(--iu-ui); font-size: 16px; line-height: 1.7;
+    transition: border-color .15s ease;
+  }
+  .iu-practice .fp-answer-input:focus { border-color: var(--iu-teal); background: var(--iu-card); }
+  .iu-practice .fp-answer-input::placeholder { color: var(--iu-text-3); }
+  .iu-practice .fp-terms-label { margin: 14px 0 8px; }
+  .iu-practice .fp-terms { display: flex; flex-wrap: wrap; gap: 8px; }
+  .iu-practice .fp-term {
+    height: 34px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--iu-border); background: var(--iu-card); cursor: pointer;
+    font-family: var(--iu-ui); font-size: 13px; font-weight: 600; color: var(--iu-text); transition: border-color .15s ease, background-color .15s ease;
+  }
+  .iu-practice .fp-term:hover { border-color: var(--iu-teal); background: var(--iu-teal-wash); }
+  .iu-practice .fp-nav { display: flex; gap: 10px; margin-top: 18px; }
+  .iu-practice .fp-nav .iu-btn { flex: 1; }
+  .iu-practice .fp-nav .iu-btn.teal { flex: 1.6; }
+
+  /* P2c */
+  .iu-practice .fp-review { display: flex; flex-direction: column; gap: 12px; }
+  .iu-practice .fp-review-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; cursor: pointer; text-align: start; font: inherit; color: inherit; width: 100%; }
+  .iu-practice .fp-review-row:hover { border-color: var(--iu-teal); }
+  .iu-practice .fp-review-text { flex: 1; display: flex; flex-direction: column; }
+  .iu-practice .fp-review-edit svg { width: 18px; height: 18px; color: var(--iu-text-2); }
+  .iu-practice .fp-check { margin-top: 18px; }
+  .iu-practice .fp-review-quota { text-align: center; margin-top: 10px; }
+
+  /* P3 in teal */
+  .iu-practice .fp-teal .az-spinner { border-color: var(--iu-teal-soft); border-top-color: var(--iu-teal); }
+  .iu-practice .fp-teal li[data-state='active'] .az-step-dot { border-color: var(--iu-teal); }
+  .iu-practice .fp-teal li[data-state='active'] .az-step-dot::after { background: var(--iu-teal); }
+
+  /* P4 */
+  .iu-practice .fp-share { position: relative; }
+  .iu-practice .fp-menu { position: absolute; inset-inline-end: 0; top: 44px; z-index: 10; padding: 6px; min-width: 210px; display: flex; flex-direction: column; }
+  .iu-practice .fp-menu button {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 0; background: none; border-radius: 12px; cursor: pointer;
+    font-family: var(--iu-ui); font-size: 14px; font-weight: 600; color: var(--iu-text); text-align: start;
+  }
+  .iu-practice .fp-menu button:hover { background: var(--iu-sunken); }
+  .iu-practice .fp-menu svg { width: 18px; height: 18px; color: var(--iu-text-2); }
+  .iu-practice .fp-summary { display: flex; align-items: center; gap: 12px; padding: 18px; }
+  .iu-practice .fp-summary > div:first-child { flex: 1; }
+  .iu-practice .fp-ring { position: relative; width: 96px; height: 96px; flex: none; display: grid; place-items: center; }
+  .iu-practice .fp-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .iu-practice .fp-ring circle { fill: none; stroke-width: 9; }
+  .iu-practice .fp-ring-track { stroke: var(--iu-sunken); }
+  .iu-practice .fp-ring-arc { stroke: var(--iu-teal); stroke-linecap: round; stroke-dashoffset: 264; transition: stroke-dashoffset .9s cubic-bezier(.22,1,.36,1); }
+  .iu-practice .fp-ring.is-drawn .fp-ring-arc { stroke-dashoffset: var(--fp-off); }
+  .iu-practice .fp-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .iu-practice .fp-stat { padding: 6px 12px 6px 10px; font-size: 13px; }
+  .iu-practice .fp-stat svg { width: 16px; height: 16px; }
+  .iu-practice .fp-note { margin-top: 14px; padding: 16px; border-radius: 20px; background: var(--iu-teal-wash); display: flex; flex-direction: column; gap: 8px; }
+  .iu-practice .fp-note p:first-child { display: inline-flex; align-items: center; gap: 8px; }
+  .iu-practice .fp-note p:first-child svg { width: 16px; height: 16px; color: var(--iu-teal); }
+  .iu-practice .fp-section { display: flex; align-items: baseline; justify-content: space-between; margin: 20px 2px 14px; }
+  .iu-practice .fp-cards { display: flex; flex-direction: column; gap: 14px; }
+  .iu-practice .fp-card { padding: 14px 18px 16px; display: flex; flex-direction: column; }
+  .iu-practice .fp-card header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .iu-practice .fp-answer { margin-top: 2px; }
+  .iu-practice .fp-parts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .iu-practice .fp-parts .iu-tag { padding: 4px 10px 4px 8px; font-size: 12px; }
+  .iu-practice .fp-gap { margin-top: 12px; }
+  .iu-practice .fp-explain { margin-top: 12px; padding: 10px 14px; border-radius: 14px; background: var(--iu-sunken); }
+  .iu-practice .fp-nav-end { margin-top: 22px; }
+</style>
