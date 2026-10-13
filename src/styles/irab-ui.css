@@ -1,0 +1,218 @@
+/*
+ * irab-ui: the app's design system on the web.
+ *
+ * The analyzer and the practice tools are the same product as the app's
+ * screens, so they use the app's own tokens (lib/config/irab_tokens.dart),
+ * type scale (lib/config/irab_text.dart) and parts (IrabCard, IrabButton,
+ * pills). Everything is scoped under .iu so the marketing pages around the
+ * tools keep their own look. Amiri sets the Arabic being studied, exactly
+ * as in the app; the site's Thmanyah Text carries everything else.
+ */
+
+@font-face {
+  font-family: 'Amiri';
+  src: url('/fonts/amiri-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Amiri';
+  src: url('/fonts/amiri-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.iu {
+  --iu-canvas: #F8F6F1;
+  --iu-card: #FFFFFF;
+  --iu-sunken: #F4F1EA;
+  --iu-border: #E8E5DD;
+  --iu-border-strong: #D3CEC1;
+  --iu-text: #173847;
+  --iu-text-2: #2A4858;
+  --iu-text-3: #5E7077;
+  --iu-primary: #7C4DFF;
+  --iu-primary-soft: #F2EDFF;
+  --iu-primary-wash: rgba(124, 77, 255, 0.06);
+  --iu-primary-disabled: rgba(124, 77, 255, 0.32);
+  --iu-primary-text: #6200EA;
+  --iu-teal: #1F789B;
+  --iu-teal-soft: #E9F2F5;
+  --iu-teal-wash: rgba(31, 120, 155, 0.06);
+  --iu-teal-text: #186A8B;
+  --iu-word: #5F6C75;
+  --iu-success: #059669;
+  --iu-success-soft: #E6F4EF;
+  --iu-success-text: #047857;
+  --iu-error: #E53E3E;
+  --iu-error-soft: #FDECEC;
+  --iu-error-text: #C62828;
+  --iu-partial: #D09A2D;
+  --iu-partial-soft: #FAF1DF;
+  --iu-partial-text: #8A5B0C;
+  --iu-gold: #F59E0B;
+  --iu-shadow-card: 0 1px 3px rgba(23, 56, 71, 0.10), 0 8px 18px -4px rgba(23, 56, 71, 0.08);
+  --iu-shadow-primary: 0 10px 22px -8px rgba(124, 77, 255, 0.32);
+  --iu-ui: 'Thmanyah Text', system-ui, sans-serif;
+  --iu-studied: 'Amiri', 'Thmanyah Text', serif;
+
+  font-family: var(--iu-ui);
+  color: var(--iu-text);
+}
+
+.dark .iu {
+  --iu-canvas: #0B1115;
+  --iu-card: #131B22;
+  --iu-sunken: #0F171D;
+  --iu-border: #1C262E;
+  --iu-border-strong: #2B3844;
+  --iu-text: #F5F5F0;
+  --iu-text-2: #C8C5BC;
+  --iu-text-3: #8A9096;
+  --iu-primary: #8F66FF;
+  --iu-primary-soft: #26244A;
+  --iu-primary-wash: rgba(143, 102, 255, 0.10);
+  --iu-primary-disabled: rgba(143, 102, 255, 0.32);
+  --iu-primary-text: #A88BFF;
+  --iu-teal: #3A9BC0;
+  --iu-teal-soft: #152C38;
+  --iu-teal-wash: rgba(58, 155, 192, 0.10);
+  --iu-teal-text: #4FB3D9;
+  --iu-word: #8E9AA3;
+  --iu-success: #34C08F;
+  --iu-success-soft: #12302A;
+  --iu-success-text: #34C08F;
+  --iu-error: #F07070;
+  --iu-error-soft: #3A1C1F;
+  --iu-error-text: #F07070;
+  --iu-partial: #E3B55A;
+  --iu-partial-soft: #33291A;
+  --iu-partial-text: #E3B55A;
+  --iu-gold: #F5B03A;
+  --iu-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.30), 0 8px 18px -4px rgba(0, 0, 0, 0.25);
+  --iu-shadow-primary: 0 10px 22px -8px rgba(124, 77, 255, 0.40);
+}
+
+/* The site styles headings in its display face; inside the tools a heading
+   is a size and weight from the app's scale, in the UI face. */
+.iu :is(h1, h2, h3, h4, h5, h6) { font-family: var(--iu-ui); letter-spacing: normal; margin: 0; }
+
+/* ── Type: IrabText ─────────────────────────────────────────────────── */
+.iu .t-display { font-size: 26px; font-weight: 700; line-height: 1.45; }
+.iu .t-title-l { font-size: 20px; font-weight: 700; line-height: 1.5; }
+.iu .t-title { font-size: 17px; font-weight: 600; line-height: 1.6; }
+.iu .t-body { font-size: 15px; font-weight: 400; line-height: 1.85; }
+.iu .t-body-strong { font-size: 15px; font-weight: 600; line-height: 1.85; }
+.iu .t-body-s { font-size: 13px; font-weight: 400; line-height: 1.75; }
+.iu .t-label { font-size: 13px; font-weight: 600; line-height: 1.5; }
+.iu .t-caption { font-size: 12px; font-weight: 500; line-height: 1.5; }
+.iu .t-micro { font-size: 11px; font-weight: 600; line-height: 1.4; }
+.iu .t-hero { font-family: var(--iu-studied); font-size: 30px; font-weight: 700; line-height: 1.9; }
+.iu .t-word { font-family: var(--iu-studied); font-size: 25px; font-weight: 700; line-height: 1.6; }
+.iu .t-sentence { font-family: var(--iu-studied); font-size: 21px; font-weight: 400; line-height: 1.85; }
+.iu .t-sentence-s { font-family: var(--iu-studied); font-size: 17px; font-weight: 400; line-height: 1.8; }
+.iu .t-context { font-family: var(--iu-studied); font-size: 19px; font-weight: 700; line-height: 1.7; }
+
+/* A little more room on a desk than in a hand. */
+@media (min-width: 768px) {
+  .iu .t-body { font-size: 16px; }
+  .iu .t-body-s { font-size: 14px; }
+  .iu .t-hero { font-size: 36px; }
+  .iu .t-word { font-size: 27px; }
+  .iu .t-sentence { font-size: 23px; }
+}
+
+.iu .c-1 { color: var(--iu-text); }
+.iu .c-2 { color: var(--iu-text-2); }
+.iu .c-3 { color: var(--iu-text-3); }
+.iu .c-word { color: var(--iu-word); }
+.iu .c-primary { color: var(--iu-primary-text); }
+.iu .c-teal { color: var(--iu-teal-text); }
+.iu .c-error { color: var(--iu-error-text); }
+.iu .c-success { color: var(--iu-success-text); }
+
+/* ── Surfaces: IrabCard ─────────────────────────────────────────────── */
+.iu .iu-card {
+  background: var(--iu-card);
+  border: 1px solid var(--iu-border);
+  border-radius: 20px;
+  box-shadow: var(--iu-shadow-card);
+}
+.iu .iu-card.flat { box-shadow: none; }
+.iu .iu-panel { background: var(--iu-sunken); border-radius: 20px; }
+.iu .iu-wash-teal { background: var(--iu-teal-wash); border-radius: 20px; }
+.iu .iu-wash-error { background: var(--iu-error-soft); border-radius: 20px; }
+
+/* ── Buttons: IrabButton ────────────────────────────────────────────── */
+.iu .iu-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  height: 38px; padding: 0 16px; border-radius: 999px;
+  font-family: var(--iu-ui); font-size: 13px; font-weight: 600; line-height: 1.5;
+  border: 0; cursor: pointer; white-space: nowrap;
+  transition: background-color .18s ease, box-shadow .18s ease, transform .12s ease, opacity .18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.iu .iu-btn:active:not(:disabled) { transform: scale(0.98); }
+.iu .iu-btn:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 3px; }
+.iu .iu-btn.lg { height: 52px; padding: 0 24px; font-size: 16px; font-weight: 700; gap: 8px; }
+.iu .iu-btn.block { display: flex; width: 100%; }
+.iu .iu-btn.primary { background: var(--iu-primary); color: #fff; box-shadow: var(--iu-shadow-primary); }
+.iu .iu-btn.primary:disabled { background: var(--iu-primary-disabled); box-shadow: none; cursor: default; }
+.iu .iu-btn.teal { background: var(--iu-teal); color: #fff; }
+.iu .iu-btn.teal:disabled { background: color-mix(in srgb, var(--iu-teal) 32%, transparent); cursor: default; }
+.iu .iu-btn.secondary { background: var(--iu-card); color: var(--iu-text); border: 1px solid var(--iu-border-strong); }
+.iu .iu-btn.ghost { background: transparent; color: var(--iu-primary-text); }
+.iu .iu-btn svg { width: 18px; height: 18px; flex: none; }
+.iu .iu-btn.lg svg { width: 20px; height: 20px; }
+
+.iu .iu-icon-btn {
+  display: inline-grid; place-items: center; width: 40px; height: 40px;
+  border-radius: 999px; background: transparent; border: 0; cursor: pointer;
+  color: var(--iu-text-2); transition: background-color .15s ease;
+}
+.iu .iu-icon-btn:hover { background: var(--iu-sunken); }
+.iu .iu-icon-btn:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
+.iu .iu-icon-btn svg { width: 20px; height: 20px; }
+
+/* ── Pills and chips ────────────────────────────────────────────────── */
+.iu .iu-pill {
+  display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px;
+  border-radius: 999px; border: 0; cursor: pointer;
+  font-family: var(--iu-ui); font-size: 13px; font-weight: 600;
+  background: var(--iu-primary-soft); color: var(--iu-primary-text);
+  transition: background-color .18s ease, color .18s ease;
+}
+.iu .iu-pill svg { width: 16px; height: 16px; }
+.iu .iu-pill.quiet { background: var(--iu-sunken); color: var(--iu-text-2); }
+.iu .iu-pill.outline { background: var(--iu-card); border: 1px solid var(--iu-border); color: var(--iu-text); }
+.iu .iu-pill:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
+
+.iu .iu-tag {
+  display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; line-height: 1.4;
+}
+.iu .iu-tag svg { width: 14px; height: 14px; }
+.iu .iu-tag.success { background: var(--iu-success-soft); color: var(--iu-success-text); }
+.iu .iu-tag.partial { background: var(--iu-partial-soft); color: var(--iu-partial-text); }
+.iu .iu-tag.error { background: var(--iu-error-soft); color: var(--iu-error-text); }
+.iu .iu-tag.primary { background: var(--iu-primary-soft); color: var(--iu-primary-text); }
+.iu .iu-tag.missing { background: transparent; color: var(--iu-text-2); box-shadow: inset 0 0 0 1px var(--iu-border); }
+
+/* The «… ›» text link at the foot of a card. */
+.iu .iu-card-link {
+  display: inline-flex; align-items: center; gap: 4px; padding: 6px 0; border: 0; background: none;
+  font-family: var(--iu-ui); font-size: 13px; font-weight: 600; color: var(--iu-text); cursor: pointer;
+}
+.iu .iu-card-link svg { width: 14px; height: 14px; color: var(--iu-text-2); }
+.iu .iu-card-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Forward chevrons point the reading way: left in Arabic, right in English. */
+.iu[dir='ltr'] .flip-ltr { transform: scaleX(-1); }
+
+.iu [hidden] { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .iu * { transition: none !important; animation: none !important; }
+}

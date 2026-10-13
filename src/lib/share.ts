@@ -9,7 +9,7 @@
 
 const SCALE = 2.5; // retina-crisp; keeps tashkeel + Ruqaa swashes sharp
 const ARABIC_SAMPLE = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الإعراب ٢:٢٥٥';
-const FONT_FACES = ['"Uthmanic Hafs"', '"Aref Ruqaa"', '"Thmanyah Text"'];
+const FONT_FACES = ['"Uthmanic Hafs"', '"Aref Ruqaa"', '"Thmanyah Text"', '"Amiri"'];
 
 /** Decode the Arabic faces before rasterizing: the #1 cause of "Arabic broken
  *  in the screenshot" is capturing before the woff2 has loaded. */
@@ -42,7 +42,7 @@ function downloadBlob(blob: Blob, filename: string): void {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export interface ShareOpts { filename?: string; title?: string; text?: string; }
+export interface ShareOpts { filename?: string; title?: string; text?: string; background?: string; }
 
 /**
  * Preload what an export needs. snapdom and jsPDF are only imported when
@@ -65,16 +65,16 @@ export function warmExport(): Promise<unknown> {
 }
 
 /** Capture an element to a PNG Blob (Arabic + custom fonts embedded). */
-export async function captureBlob(el: HTMLElement): Promise<Blob> {
+export async function captureBlob(el: HTMLElement, background = bgColor()): Promise<Blob> {
   await ensureFonts();
   const { snapdom } = await import('@zumer/snapdom');
-  return snapdom.toBlob(el, { scale: SCALE, embedFonts: true, type: 'png', backgroundColor: bgColor() });
+  return snapdom.toBlob(el, { scale: SCALE, embedFonts: true, type: 'png', backgroundColor: background });
 }
 
 /** Share the element as an image via the native sheet; fall back to download. */
 export async function shareImage(el: HTMLElement, opts: ShareOpts = {}): Promise<void> {
   const filename = opts.filename ?? 'irab.png';
-  const blob = await captureBlob(el);
+  const blob = await captureBlob(el, opts.background);
   const file = new File([blob], filename, { type: 'image/png' });
   const nav = navigator as any;
   if (nav.canShare && nav.canShare({ files: [file] })) {
@@ -100,6 +100,25 @@ export async function downloadPdf(el: HTMLElement, filename = 'irab.pdf'): Promi
   const { jsPDF } = await import('jspdf');
   const pdf = new jsPDF({ unit: 'px', format: [w, h], orientation: w > h ? 'landscape' : 'portrait' });
   pdf.addImage(dataUrl, 'PNG', 0, 0, w, h);
+  pdf.save(filename);
+}
+
+/**
+ * A4 pages (794 x 1123 CSS px each, the size at 96 dpi) as one PDF, one
+ * captured page per PDF page. Arabic stays exactly as the browser shaped it.
+ */
+export async function downloadPdfPages(pages: HTMLElement[], filename = 'irab.pdf'): Promise<void> {
+  await ensureFonts();
+  const { snapdom } = await import('@zumer/snapdom');
+  const { jsPDF } = await import('jspdf');
+  const pdf = new jsPDF({ unit: 'pt', format: 'a4', orientation: 'portrait', compress: true });
+  const pw = pdf.internal.pageSize.getWidth();
+  const ph = pdf.internal.pageSize.getHeight();
+  for (let i = 0; i < pages.length; i++) {
+    const canvas = await snapdom.toCanvas(pages[i], { scale: 2, embedFonts: true, backgroundColor: '#FFFFFF' });
+    if (i > 0) pdf.addPage('a4', 'portrait');
+    pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, pw, ph);
+  }
   pdf.save(filename);
 }
 

@@ -13,7 +13,7 @@ import Nav from '../components/Nav.astro';
 import Container from '../components/Container.astro';
 import Section from '../components/Section.astro';
 import ArticleHero from '../components/ArticleHero.astro';
-import LiveDemo from '../components/sections/LiveDemo.astro';
+import Analyzer from '../components/analyzer/Analyzer.astro';
 import ArticleFaq from '../components/ArticleFaq.astro';
 import Footer from '../components/sections/Footer.astro';
 
@@ -131,7 +131,7 @@ const whys = [
     nowrapTitle
     eyebrow="أداة الإعراب"
     title="إعراب الجمل بالذكاء الاصطناعي"
-    summary="أداة إعراب مجانية بالذكاء الاصطناعي: اكتب أيّ جملة عربية فتحصل فورًا على إعرابها الكامل كلمةً كلمة: نوع الكلمة، ووظيفتها في الجملة، وإعرابها، وعلامة الإعراب وسببها، مع التشكيل الكامل وشرح بنية الجملة. تعمل في المتصفح مباشرة، بدون تحميل برنامج وبدون تسجيل."
+    summary="اكتب أيّ جملة عربية واحصل فورًا على إعرابها الكامل كلمةً كلمة، مجانًا وفي المتصفح."
   >
     {/* nowrap on the accent: above md the whole title is one line anyway, and below
         md it forces the break BEFORE the purple phrase instead of through it. */}
@@ -139,7 +139,11 @@ const whys = [
   </ArticleHero>
 
   {/* The live analyzer (its own header is suppressed: the hero above is the page header) */}
-  <LiveDemo lang="ar" showHeader={false} />
+  <section class="pb-10">
+    <Analyzer lang="ar" />
+    {/* The full description, under the tool: the tool comes first on a phone. */}
+    <p class="max-w-[720px] mx-auto px-4 mt-8 text-ink-subtle dark:text-mist-subtle font-arabic leading-loose text-[15px]">أداة إعراب مجانية بالذكاء الاصطناعي: اكتب أيّ جملة عربية فتحصل فورًا على إعرابها الكامل كلمةً كلمة: نوع الكلمة، ووظيفتها في الجملة، وإعرابها، وعلامة الإعراب وسببها، مع التشكيل الكامل وشرح بنية الجملة. تعمل في المتصفح مباشرة، بدون تحميل برنامج وبدون تسجيل.</p>
+  </section>
 
   {/* Worked examples: the substance under the tool. What full i'rab looks like, and where each rule is taught.
       The canvas is tinted a shade deeper than the page so the soft-UI cards below

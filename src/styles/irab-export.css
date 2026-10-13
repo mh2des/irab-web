@@ -1,0 +1,78 @@
+/*
+ * The analyzer's exports: the share image and the A4 report, built off
+ * screen and captured. Always the app's light palette (they are read in
+ * chats and printed in class whatever theme the sender uses), so the
+ * colours are literal, not theme variables. Mirrors the app's
+ * irab_card_service.dart and pdf_report_kit.dart.
+ */
+.xp-stage { position: fixed; left: -12000px; top: 0; z-index: -1; pointer-events: none; }
+
+.xp { font-family: 'Thmanyah Text', system-ui, sans-serif; color: #173847; direction: rtl; text-align: right; }
+.xp[dir='ltr'] { direction: ltr; text-align: left; }
+.xp * { box-sizing: border-box; margin: 0; }
+.xp :is(h1, h2, h3) { font-family: 'Thmanyah Text', system-ui, sans-serif; letter-spacing: normal; }
+.xp .xp-studied { font-family: 'Amiri', 'Thmanyah Text', serif; }
+.xp .xp-ltr { direction: ltr; unicode-bidi: isolate; }
+
+/* ── Share card (720 wide, height follows the sentence) ───────────────── */
+.xp-card { width: 720px; background: #F8F6F1; padding: 36px 40px 32px; }
+.xp-card .xp-brand { display: flex; align-items: center; gap: 12px; }
+.xp-card .xp-brand img { width: 40px; height: 40px; border-radius: 11px; }
+.xp-card .xp-brand b { font-size: 20px; font-weight: 700; line-height: 1.3; }
+.xp-card .xp-brand span { margin-inline-start: auto; font-size: 15px; font-weight: 600; color: #5E7077; }
+.xp-card .xp-sentence { margin-top: 28px; background: #fff; border: 1px solid #E8E5DD; border-radius: 24px; padding: 20px 28px 24px; text-align: center; }
+.xp-card .xp-sentence p:first-child { font-size: 14px; font-weight: 500; color: #5E7077; line-height: 1.6; }
+.xp-card .xp-sentence p:last-child { margin-top: 6px; font-weight: 700; line-height: 1.9; color: #173847; }
+.xp-card h2 { margin-top: 28px; font-size: 19px; font-weight: 700; line-height: 1.6; }
+.xp-card .xp-words { margin-top: 12px; background: #fff; border: 1px solid #E8E5DD; border-radius: 24px; overflow: hidden; }
+.xp-card .xp-row { display: flex; gap: 16px; padding: 16px 24px 18px; border-bottom: 1px solid #E8E5DD; }
+.xp-card .xp-row:last-child { border-bottom: 0; }
+.xp-card .xp-row .xp-w { flex: none; width: 120px; font-size: 27px; font-weight: 700; line-height: 1.5; color: #5F6C75; }
+.xp-card .xp-row .xp-i { flex: 1; padding-top: 4px; font-size: 17px; font-weight: 500; line-height: 1.8; }
+.xp-card .xp-row .xp-d { margin-top: 4px; font-size: 15px; line-height: 1.75; color: #5E7077; }
+.xp-card .xp-note { margin-top: 16px; background: #F4F1EA; border-radius: 20px; padding: 18px 22px 20px; }
+.xp-card .xp-note b { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; }
+.xp-card .xp-note b svg { width: 20px; height: 20px; color: #F59E0B; }
+.xp-card .xp-note p { margin-top: 6px; font-size: 16px; line-height: 1.8; color: #2A4858; }
+.xp-card .xp-foot { margin-top: 28px; padding-top: 20px; border-top: 1px solid #E8E5DD; display: flex; align-items: center; gap: 16px; }
+.xp-card .xp-foot div { flex: 1; }
+.xp-card .xp-foot b { display: block; font-size: 17px; font-weight: 700; line-height: 1.4; }
+.xp-card .xp-foot span { font-size: 15px; font-weight: 600; line-height: 1.4; color: #6200EA; }
+.xp-card .xp-qr { width: 76px; height: 76px; padding: 6px; background: #fff; border: 1px solid #E8E5DD; border-radius: 12px; }
+
+/* ── A4 report page: 794 x 1123 px (A4 at 96 dpi) ─────────────────────── */
+.xp-page { width: 794px; height: 1123px; background: #fff; padding: 45px 59px 40px; display: flex; flex-direction: column; }
+.xp-page .xp-head { display: flex; align-items: center; gap: 12px; padding-bottom: 13px; margin-bottom: 24px; border-bottom: 1px solid #E8E5DD; }
+.xp-page .xp-head img { width: 35px; height: 35px; border-radius: 8px; }
+.xp-page .xp-head b { display: block; font-size: 18px; font-weight: 700; line-height: 1.3; }
+.xp-page .xp-head small { display: block; font-size: 11.5px; color: #5E7077; }
+.xp-page .xp-head .xp-url { margin-inline-start: auto; font-size: 13px; font-weight: 700; color: #6200EA; }
+.xp-page .xp-body { flex: 1; overflow: hidden; }
+.xp-page .xp-foot { display: flex; align-items: center; gap: 6px; padding-top: 10px; margin-top: 16px; border-top: 1px solid #E8E5DD; font-size: 10.5px; color: #5E7077; }
+.xp-page .xp-foot .xp-n { margin-inline-start: auto; }
+
+.xp-page .xp-panel { background: #F4F1EA; border-radius: 16px; padding: 18px 26px 24px; text-align: center; margin-bottom: 16px; }
+.xp-page .xp-panel p:first-child { font-size: 12px; color: #5E7077; }
+.xp-page .xp-panel p:last-child { margin-top: 5px; font-weight: 700; line-height: 1.75; }
+.xp-page .xp-box { border: 1px solid #E8E5DD; border-radius: 16px; padding: 18px; margin-bottom: 16px; }
+.xp-page .xp-box b { font-size: 14px; font-weight: 700; }
+.xp-page .xp-box .xp-lab { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.xp-page .xp-box .xp-lab span:first-child { width: 58px; flex: none; font-size: 12px; color: #5E7077; }
+.xp-page .xp-box .xp-lab span:last-child { font-size: 17px; font-weight: 700; line-height: 1.7; }
+.xp-page .xp-box p { margin-top: 6px; font-size: 12.5px; line-height: 1.75; color: #2A4858; }
+.xp-page h2 { font-size: 16.5px; font-weight: 700; margin: 4px 0 4px; }
+.xp-page .xp-wb { display: flex; gap: 16px; padding: 11px 0; border-bottom: 1px solid #E8E5DD; }
+.xp-page .xp-wb.last { border-bottom: 0; }
+.xp-page .xp-wb .xp-wc { width: 128px; flex: none; }
+.xp-page .xp-wb .xp-wc p:first-child { font-size: 22.5px; font-weight: 700; line-height: 1.55; color: #5F6C75; }
+.xp-page .xp-wb .xp-wc p:last-child { font-size: 11.5px; color: #5E7077; }
+.xp-page .xp-wb .xp-wi { flex: 1; padding-top: 4px; }
+.xp-page .xp-wb .xp-wi p:first-child { font-size: 14.5px; line-height: 1.85; }
+.xp-page .xp-wb .xp-wi p + p { margin-top: 4px; font-size: 12.5px; line-height: 1.75; color: #2A4858; }
+.xp-page .xp-clar { background: #F4F1EA; border-radius: 16px; padding: 16px 21px 19px; margin-top: 16px; }
+.xp-page .xp-clar b { font-size: 14px; font-weight: 700; }
+.xp-page .xp-clar p { margin-top: 4px; font-size: 13px; line-height: 1.8; color: #2A4858; }
+.xp-page .xp-deep { margin-top: 16px; border: 1px solid #E8E5DD; border-radius: 16px; padding: 14px 18px; }
+.xp-page .xp-deep b { font-size: 14px; font-weight: 700; color: #6200EA; }
+.xp-page .xp-deep .xp-q { margin-top: 8px; font-size: 16px; line-height: 1.7; }
+.xp-page .xp-deep .xp-a { font-size: 12.5px; line-height: 1.75; color: #2A4858; }

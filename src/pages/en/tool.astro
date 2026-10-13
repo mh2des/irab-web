@@ -12,7 +12,7 @@ import Nav from '../../components/Nav.astro';
 import Container from '../../components/Container.astro';
 import Section from '../../components/Section.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
-import LiveDemo from '../../components/sections/LiveDemo.astro';
+import Analyzer from '../../components/analyzer/Analyzer.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import Footer from '../../components/sections/Footer.astro';
 
@@ -59,11 +59,15 @@ const whys = [
   <ArticleHero
     lang="en"
     title="AI Arabic i'rab analyzer"
-    summary="A free AI i'rab tool: paste any Arabic sentence and get its full grammatical analysis word by word: the part of speech, the role in the sentence, the i'rab, the case marker and its reason, and full diacritics, with an explanation of the whole sentence. It runs in the browser, with no download and no sign-up."
+    summary="Type any Arabic sentence and get its full i'rab word by word, free, in your browser."
   />
 
   {/* The live analyzer (its own header is suppressed: the hero above is the page header) */}
-  <LiveDemo lang="en" showHeader={false} />
+  <section class="pb-10">
+    <Analyzer lang="en" />
+    {/* The full description, under the tool: the tool comes first on a phone. */}
+    <p class="max-w-[720px] mx-auto px-4 mt-8 text-ink-subtle dark:text-mist-subtle leading-relaxed text-[15px]">A free AI i'rab tool: paste any Arabic sentence and get its full grammatical analysis word by word: the part of speech, the role in the sentence, the i'rab, the case marker and its reason, and full diacritics, with an explanation of the whole sentence. It runs in the browser, with no download and no sign-up.</p>
+  </section>
 
   <Section>
     <Container>

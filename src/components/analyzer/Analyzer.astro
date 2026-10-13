@@ -1,0 +1,325 @@
+---
+/**
+ * Analyzer: the app's analyzer screen on the web (A1-A9 in the app's
+ * redesign). Writing the sentence, choosing the analysis type, the
+ * analysis in progress, and the result: the sentence in one colour, a card
+ * per word (the word alone on top, its full i'rab, «التفاصيل» on demand),
+ * the correction and «أعرب كما كتبتُها», the deep analysis, and the share
+ * image and A4 report. Logic: lib/irab/analyzer.ts. Tokens: irab-ui.css.
+ */
+import '../../styles/irab-ui.css';
+import '../../styles/irab-export.css';
+import Paywall from '../Paywall.astro';
+import { STRINGS } from '../../lib/irab/strings';
+import * as I from '../../lib/irab/icons';
+
+interface Props { lang?: 'ar' | 'en' }
+const { lang = 'ar' } = Astro.props;
+const s = STRINGS[lang];
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
+const login = lang === 'ar' ? '/login' : '/en/login';
+const historyHref = lang === 'ar' ? '/history' : '/en/history';
+const fwd = lang === 'ar' ? I.arrowLeft : I.arrowRight;
+const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
+---
+
+<div class="iu iu-analyzer" data-analyzer data-lang={lang} data-login={login} data-history={historyHref} dir={dir} lang={lang}>
+
+  <!-- A1: writing the sentence -->
+  <section data-view="compose" class="az-view">
+    <form class="iu-card az-composer" data-form novalidate>
+      <label class="sr-only" for={`az-input-${lang}`}>{s.composerHint}</label>
+      <textarea id={`az-input-${lang}`} class="az-input" data-input rows="3" dir="rtl" lang="ar"
+        placeholder={s.composerHint} autocomplete="off" spellcheck="false"></textarea>
+      <div class="az-meta">
+        <span class="t-caption c-3" data-counter aria-live="polite"></span>
+      </div>
+      <div class="az-bar">
+        <button type="button" class="iu-icon-btn az-mic" data-mic hidden aria-pressed="false" aria-label={s.micStart} title={s.micStart}>
+          <Fragment set:html={I.mic} />
+        </button>
+        <button type="button" class="az-mode" data-mode aria-haspopup="dialog">
+          <span data-mode-crown hidden><Fragment set:html={I.crown} /></span>
+          <span data-mode-label>{s.modeStandard}</span>
+          <Fragment set:html={I.chevronDown} />
+        </button>
+      </div>
+    </form>
+    <p class="t-caption az-msg" data-composer-note hidden role="alert"></p>
+    <p class="t-caption c-3 az-msg" data-mic-status hidden aria-live="polite"></p>
+    <p class="t-caption az-msg" data-arabic-only-note data-text={s.arabicOnly} hidden><span data-arabic-only-text></span></p>
+
+    <button type="button" class="iu-btn primary lg block az-submit" data-submit disabled>
+      <span data-submit-label>{s.analyze}</span><Fragment set:html={fwd} />
+    </button>
+    <p class="t-caption c-3 az-hint"><Fragment set:html={I.lightbulb} />{s.tashkeelHint}</p>
+
+    <div class="iu-card az-gate" data-gate hidden role="alert">
+      <h2 class="t-title c-1" data-gate-title></h2>
+      <p class="t-body-s c-2" data-gate-body></p>
+      <div class="az-gate-actions">
+        <a class="iu-btn primary" data-gate-cta href={login}>{s.signIn}</a>
+        <button type="button" class="iu-btn ghost" data-gate-later>{s.later}</button>
+      </div>
+    </div>
+
+    <section class="az-recent" data-recent hidden></section>
+  </section>
+
+  <!-- A3: the analysis in progress (filled by the script) -->
+  <section data-view="analyzing" class="az-view az-analyzing" hidden aria-live="polite"></section>
+
+  <!-- A4-A7: the result -->
+  <section data-view="result" class="az-view" hidden>
+    <div class="az-head">
+      <button type="button" class="iu-icon-btn" data-back aria-label={s.back} title={s.back}><Fragment set:html={back} /></button>
+      <h2 class="t-title c-1">{s.result}</h2>
+      <div class="az-head-actions">
+        <button type="button" class="iu-icon-btn" data-copy aria-label={s.copy} title={s.copy}><Fragment set:html={I.copy} /></button>
+        <button type="button" class="iu-icon-btn" data-share aria-label={s.share} title={s.share}><Fragment set:html={I.share} /></button>
+      </div>
+    </div>
+    <div class="az-sticky t-context" data-sticky hidden aria-hidden="true"></div>
+    <div data-correction class="az-block" hidden></div>
+    <div data-hero></div>
+    <div data-deep-jump-slot class="az-block" hidden></div>
+    <h2 class="t-title c-1 az-section">{s.wordBreakdown}</h2>
+    <div class="az-cards" data-cards></div>
+    <div data-note class="az-block" hidden></div>
+    <div data-deep class="az-block" hidden></div>
+    <div class="az-share-row">
+      <button type="button" class="iu-btn secondary" data-share><Fragment set:html={I.share} /><span data-label>{s.share}</span></button>
+      <button type="button" class="iu-btn secondary" data-pdf>
+        <span class="az-crown" data-pdf-crown><Fragment set:html={I.crown} /></span><Fragment set:html={I.pdf} /><span data-label>{s.pdf}</span>
+      </button>
+      <button type="button" class="iu-btn ghost" data-copy><Fragment set:html={I.copy} /><span data-label>{s.copy}</span></button>
+    </div>
+  </section>
+
+  <!-- A9: the analysis failed -->
+  <section data-view="error" class="az-view" hidden>
+    <div class="iu-card az-error" role="alert">
+      <span class="az-error-icon"><Fragment set:html={I.info} /></span>
+      <h2 class="t-title c-1">{s.failedTitle}</h2>
+      <p class="t-body-s c-2">{s.failedBody}</p>
+      <div class="az-gate-actions">
+        <button type="button" class="iu-btn primary" data-retry><Fragment set:html={I.refresh} />{s.retry}</button>
+        <button type="button" class="iu-btn secondary" data-error-edit><Fragment set:html={I.pencil} />{s.editSentence}</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- A2: the analysis type -->
+  <dialog class="az-sheet" data-mode-sheet aria-labelledby={`az-sheet-title-${lang}`}>
+    <div class="az-sheet-body">
+      <span class="az-sheet-handle" aria-hidden="true"></span>
+      <button type="button" class="iu-icon-btn az-sheet-close" data-sheet-close aria-label={s.back}><Fragment set:html={I.x} /></button>
+      <h2 class="t-title-l c-1" id={`az-sheet-title-${lang}`}>{s.modeTitle}</h2>
+      <p class="t-body-s c-3">{s.modeSub}</p>
+      <div class="az-options" role="radiogroup">
+        <button type="button" class="az-option" role="radio" data-mode-option="standard">
+          <span class="az-option-text">
+            <span class="t-body-strong c-1">{s.modeStandard}</span>
+            <span class="t-body-s c-2">{s.modeStandardDesc}</span>
+            <span class="t-caption c-3 az-option-status" data-standard-status hidden><Fragment set:html={I.zap} /><span data-text></span></span>
+          </span>
+          <span class="az-radio" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="az-option" role="radio" data-mode-option="deep">
+          <span class="az-option-text">
+            <span class="az-option-title"><span class="t-body-strong c-1">{s.modeDeep}</span>
+              <span class="iu-tag primary" data-plus-chip><Fragment set:html={I.crown} />{s.plus}</span></span>
+            <span class="t-body-s c-2">{s.modeDeepDesc}</span>
+            <span class="t-caption c-primary az-option-status" data-deep-status hidden><Fragment set:html={I.info} /><span data-text></span></span>
+          </span>
+          <span class="az-radio" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<Paywall lang={lang} />
+
+<script>
+  import { mountAnalyzer } from '../../lib/irab/analyzer';
+  document.querySelectorAll<HTMLElement>('[data-analyzer]').forEach(mountAnalyzer);
+</script>
+
+<style is:global>
+  .iu-analyzer { max-width: 720px; margin: 0 auto; padding: 8px 16px 48px; }
+  .iu-analyzer .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .iu-analyzer .az-view { display: flex; flex-direction: column; }
+
+  /* A1: the composer card turns purple while writing (IrabCard borderColor). */
+  .iu-analyzer .az-composer { overflow: hidden; transition: border-color .18s ease, box-shadow .18s ease; }
+  .iu-analyzer .az-composer.is-focused, .iu-analyzer .az-composer.is-filled { border-color: var(--iu-primary); }
+  .iu-analyzer .az-input {
+    display: block; width: 100%; min-height: 78px; max-height: 190px; resize: none; border: 0; outline: 0;
+    background: transparent; padding: 16px 18px 0; color: var(--iu-text);
+    font-family: var(--iu-studied); font-size: 21px; line-height: 1.85; font-weight: 400;
+  }
+  .iu-analyzer .az-input::placeholder { color: var(--iu-text-3); opacity: .85; }
+  .iu-analyzer .az-meta { padding: 6px 18px 12px; display: flex; justify-content: flex-end; }
+  .iu-analyzer .az-bar { display: flex; align-items: center; gap: 4px; padding: 8px 10px; border-top: 1px solid var(--iu-border); }
+  .iu-analyzer .az-mode {
+    margin-inline-start: auto; display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px;
+    border-radius: 999px; border: 0; cursor: pointer; background: var(--iu-sunken); color: var(--iu-text);
+    font-family: var(--iu-ui); font-size: 13px; font-weight: 600;
+  }
+  .iu-analyzer .az-mode svg { width: 14px; height: 14px; }
+  .iu-analyzer .az-mode.is-deep { background: var(--iu-primary-soft); color: var(--iu-primary-text); }
+  .iu-analyzer .az-mode [data-mode-crown] svg { width: 14px; height: 14px; color: var(--iu-primary); }
+  .iu-analyzer .az-mic.is-live { background: var(--iu-error-soft); color: var(--iu-error); animation: az-pulse 1.4s ease-in-out infinite; }
+  @keyframes az-pulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--iu-error) 14%, transparent); } }
+  .iu-analyzer .az-msg { margin: 10px 4px 0; }
+  .iu-analyzer [data-composer-note] { color: var(--iu-error-text); }
+  .iu-analyzer [data-arabic-only-note] { color: var(--iu-error-text); }
+  .iu-analyzer .az-submit { margin-top: 16px; }
+  .iu-analyzer .az-hint { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; }
+  .iu-analyzer .az-hint svg { width: 15px; height: 15px; }
+
+  .iu-analyzer .az-gate { margin-top: 18px; padding: 18px; display: flex; flex-direction: column; gap: 6px; border-color: var(--iu-primary-soft); }
+  .iu-analyzer .az-gate-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+  .iu-analyzer .az-recent { margin-top: 30px; }
+  .iu-analyzer .az-recent-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; padding: 0 2px; }
+  .iu-analyzer .az-recent-list { overflow: hidden; }
+  .iu-analyzer .az-recent-row {
+    display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 18px; border: 0; background: none; cursor: pointer;
+    text-align: start; border-bottom: 1px solid var(--iu-border); font: inherit; color: inherit;
+  }
+  .iu-analyzer .az-recent-row:last-child { border-bottom: 0; }
+  .iu-analyzer .az-recent-row:hover { background: var(--iu-sunken); }
+  .iu-analyzer .az-recent-text { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .iu-analyzer .az-recent-text .t-sentence-s { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .iu-analyzer .az-recent-chev svg { width: 16px; height: 16px; color: var(--iu-text-3); }
+
+  /* A3 */
+  .iu-analyzer .az-analyzing { gap: 14px; }
+  .iu-analyzer .az-echo { padding: 14px 18px; }
+  .iu-analyzer .az-steps { padding: 18px; }
+  .iu-analyzer .az-steps-head { display: flex; align-items: center; gap: 10px; }
+  .iu-analyzer .az-spinner { width: 20px; height: 20px; border-radius: 999px; border: 2.5px solid var(--iu-primary-soft); border-top-color: var(--iu-primary); animation: az-spin .9s linear infinite; flex: none; }
+  @keyframes az-spin { to { transform: rotate(360deg); } }
+  .iu-analyzer .az-steps ol { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 12px; }
+  .iu-analyzer .az-steps li { display: flex; align-items: center; gap: 10px; color: var(--iu-text-3); transition: color .2s ease; }
+  .iu-analyzer .az-step-dot { width: 18px; height: 18px; border-radius: 999px; border: 2px solid var(--iu-border-strong); flex: none; position: relative; transition: all .2s ease; }
+  .iu-analyzer .az-steps li[data-state='active'] { color: var(--iu-text); }
+  .iu-analyzer .az-steps li[data-state='active'] .az-step-dot { border-color: var(--iu-primary); }
+  .iu-analyzer .az-steps li[data-state='active'] .az-step-dot::after { content: ''; position: absolute; inset: 3px; border-radius: 999px; background: var(--iu-primary); animation: az-breathe 1.2s ease-in-out infinite; }
+  .iu-analyzer .az-steps li[data-state='done'] { color: var(--iu-text-2); }
+  .iu-analyzer .az-steps li[data-state='done'] .az-step-dot { border-color: var(--iu-success); background: var(--iu-success); }
+  .iu-analyzer .az-steps li[data-state='done'] .az-step-dot::after { content: ''; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  @keyframes az-breathe { 50% { transform: scale(.6); opacity: .6; } }
+  .iu-analyzer .az-skel { padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .iu-analyzer .az-skel span { height: 12px; border-radius: 6px; background: linear-gradient(90deg, var(--iu-sunken), var(--iu-border), var(--iu-sunken)); background-size: 200% 100%; animation: az-shimmer 1.3s ease-in-out infinite; }
+  .iu-analyzer .az-skel span:first-child { width: 28%; height: 18px; }
+  .iu-analyzer .az-skel span:nth-child(2) { width: 92%; }
+  .iu-analyzer .az-skel span:nth-child(3) { width: 60%; }
+  @keyframes az-shimmer { to { background-position: -200% 0; } }
+  .iu-analyzer .az-takes { text-align: center; }
+
+  /* A4 */
+  .iu-analyzer .az-head { display: flex; align-items: center; gap: 4px; height: 52px; margin: 0 -8px 4px; }
+  .iu-analyzer .az-head h2 { flex: 1; }
+  .iu-analyzer .az-head-actions { display: flex; gap: 2px; }
+  .iu-analyzer .az-sticky {
+    position: sticky; top: 64px; z-index: 5; margin: 0 -16px; padding: 8px 16px; text-align: center;
+    background: color-mix(in srgb, var(--iu-canvas) 92%, transparent); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--iu-border); color: var(--iu-text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .iu-analyzer .az-block { margin-top: 14px; }
+  .iu-analyzer [data-correction].az-block { margin-top: 4px; margin-bottom: 6px; }
+  .iu-analyzer .az-hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 6px 0 10px; }
+  .iu-analyzer .az-hero > p { margin-bottom: 8px; }
+  .iu-analyzer .az-hero-words { display: flex; flex-wrap: wrap; justify-content: center; column-gap: 16px; row-gap: 2px; }
+  .iu-analyzer .az-hero-word { border: 0; background: none; padding: 0; cursor: pointer; border-radius: 8px; color: var(--iu-text); }
+  .iu-analyzer .az-hero-word:hover { color: var(--iu-primary-text); }
+  .iu-analyzer .az-hero-word:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
+  .iu-analyzer .az-edit { margin-top: 8px; height: 32px; }
+  .iu-analyzer .az-section { margin: 18px 2px 14px; }
+  .iu-analyzer .az-cards { display: flex; flex-direction: column; gap: 14px; }
+  .iu-analyzer .az-word { padding: 10px 18px 0; transition: box-shadow .3s ease, border-color .3s ease; scroll-margin-top: 140px; }
+  .iu-analyzer .az-word.is-flash { border-color: var(--iu-primary); box-shadow: 0 0 0 4px var(--iu-primary-wash), var(--iu-shadow-card); }
+  .iu-analyzer .az-word-title { margin: 0; }
+  .iu-analyzer .az-word-irab { margin: 6px 0 0; padding-bottom: 16px; }
+  .iu-analyzer .az-word:has(.az-word-foot) .az-word-irab { padding-bottom: 6px; }
+  .iu-analyzer .az-details-inner { margin-top: 6px; padding: 12px 14px; border-radius: 14px; background: var(--iu-sunken); display: flex; flex-direction: column; gap: 6px; }
+  .iu-analyzer .az-word-foot { display: flex; padding: 4px 0 12px; }
+  .iu-analyzer .az-details-toggle .az-chev svg { width: 14px; height: 14px; transition: transform .2s ease; }
+  .iu-analyzer .az-details-toggle.is-open { background: var(--iu-sunken); color: var(--iu-text-2); }
+  .iu-analyzer .az-details-toggle.is-open .az-chev svg { transform: rotate(180deg); }
+
+  .iu-analyzer .az-corr { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .iu-analyzer .az-corr-head { display: flex; align-items: center; gap: 8px; }
+  .iu-analyzer .az-corr-icon svg { width: 18px; height: 18px; color: var(--iu-error); display: block; }
+  .iu-analyzer .az-corr-row { display: flex; align-items: center; gap: 10px; }
+  .iu-analyzer .az-corr-row > span:first-child { width: 46px; flex: none; }
+  .iu-analyzer .az-astyped { padding: 14px 16px 10px; }
+  .iu-analyzer .az-astyped-row { display: flex; gap: 8px; align-items: flex-start; }
+  .iu-analyzer .az-astyped-icon svg { width: 18px; height: 18px; margin-top: 2px; color: var(--iu-text-2); display: block; }
+  .iu-analyzer .iu-card.az-note { padding: 16px; }
+  .iu-analyzer .az-note-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .iu-analyzer .az-note-icon svg { width: 18px; height: 18px; color: var(--iu-gold); display: block; }
+
+  .iu-analyzer .az-deep-jump {
+    display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 14px; border-radius: 16px; cursor: pointer;
+    background: var(--iu-primary-wash); border: 1px solid var(--iu-primary-soft); color: var(--iu-primary-text); text-align: start;
+  }
+  .iu-analyzer .az-deep-jump span { flex: 1; }
+  .iu-analyzer .az-deep-jump svg { width: 16px; height: 16px; color: var(--iu-primary); }
+  .iu-analyzer .az-deep { margin-top: 10px; scroll-margin-top: 140px; display: flex; flex-direction: column; }
+  .iu-analyzer .az-deep-chip { align-self: flex-start; padding: 5px 12px; font-size: 13px; }
+  .iu-analyzer .az-deep h2 { margin: 8px 0 2px; }
+  .iu-analyzer .az-deep > p { margin-bottom: 14px; }
+  .iu-analyzer .az-deep-card { padding: 16px; margin-bottom: 14px; }
+  .iu-analyzer .az-deep-card header { display: flex; align-items: center; gap: 10px; }
+  .iu-analyzer .az-deep-icon { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--iu-primary-soft); color: var(--iu-primary); }
+  .iu-analyzer .az-deep-icon svg { width: 18px; height: 18px; }
+  .iu-analyzer .az-deep-entry { border-top: 1px solid var(--iu-border); margin-top: 10px; padding-top: 10px; }
+  .iu-analyzer .az-deep-body { margin-top: 10px; }
+
+  .iu-analyzer .az-share-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .iu-analyzer .az-share-row .iu-btn { flex: 1 1 160px; height: 44px; }
+  .iu-analyzer .az-share-row .iu-btn.ghost { flex: 1 1 100%; }
+  .iu-analyzer .az-crown svg { width: 14px; height: 14px; color: var(--iu-primary); }
+  .iu-analyzer [data-busy='1'] { opacity: .7; cursor: progress; }
+  .iu-analyzer .is-done { color: var(--iu-success-text) !important; }
+
+  .iu-analyzer .az-error { padding: 22px 18px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+  .iu-analyzer .az-error-icon { width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; background: var(--iu-error-soft); color: var(--iu-error); margin-bottom: 4px; }
+  .iu-analyzer .az-error-icon svg { width: 22px; height: 22px; }
+  .iu-analyzer .az-error .az-gate-actions { justify-content: center; }
+
+  /* A2: a bottom sheet on a phone, a dialog on a desk. */
+  .iu-analyzer .az-sheet { border: 0; padding: 0; background: transparent; max-width: none; max-height: none; color: inherit; }
+  .iu-analyzer .az-sheet::backdrop { background: rgba(23, 56, 71, 0.42); backdrop-filter: blur(2px); }
+  .iu-analyzer .az-sheet-body {
+    position: relative; background: var(--iu-card); padding: 14px 18px 22px; display: flex; flex-direction: column; gap: 2px;
+    border-radius: 24px 24px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.18);
+  }
+  .iu-analyzer .az-sheet[open] { position: fixed; inset: auto 0 0 0; width: 100%; margin: 0; animation: az-up .22s ease-out; }
+  @keyframes az-up { from { transform: translateY(24px); opacity: 0; } }
+  @media (min-width: 640px) {
+    .iu-analyzer .az-sheet[open] { inset: 0; margin: auto; width: min(480px, calc(100% - 32px)); height: fit-content; }
+    .iu-analyzer .az-sheet-body { border-radius: 24px; }
+    .iu-analyzer .az-sheet-handle { display: none; }
+  }
+  .iu-analyzer .az-sheet-handle { align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--iu-border-strong); margin-bottom: 12px; }
+  .iu-analyzer .az-sheet-close { position: absolute; top: 10px; inset-inline-end: 10px; }
+  .iu-analyzer .az-options { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+  .iu-analyzer .az-option {
+    display: flex; gap: 12px; align-items: flex-start; width: 100%; padding: 14px; border-radius: 18px; cursor: pointer; text-align: start;
+    background: var(--iu-card); border: 1.5px solid var(--iu-border); font: inherit; color: inherit; transition: border-color .15s ease, background-color .15s ease;
+  }
+  .iu-analyzer .az-option.is-on { border-color: var(--iu-primary); background: var(--iu-primary-wash); }
+  .iu-analyzer .az-option-text { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .iu-analyzer .az-option-title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .iu-analyzer .az-option-status { display: inline-flex; align-items: center; gap: 6px; }
+  .iu-analyzer .az-option-status svg { width: 15px; height: 15px; }
+  .iu-analyzer .az-radio { width: 22px; height: 22px; border-radius: 999px; border: 2px solid var(--iu-border-strong); flex: none; margin-top: 2px; display: grid; place-items: center; }
+  .iu-analyzer .az-option.is-on .az-radio { border-color: var(--iu-primary); }
+  .iu-analyzer .az-option.is-on .az-radio::after { content: ''; width: 10px; height: 10px; border-radius: 999px; background: var(--iu-primary); }
+</style>
