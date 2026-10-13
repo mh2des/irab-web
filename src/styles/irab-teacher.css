@@ -261,6 +261,18 @@ html.tc-open .iu .tc-dock { visibility: hidden; }
 .tc-root .tc-follow::-webkit-scrollbar { display: none; }
 .tc-root .tc-follow[hidden] { display: none; }
 .tc-root .tc-follow:not([hidden]) + .tc-composer { border-top: 0; }
+.tc-root .tc-limitbar {
+  display: flex; align-items: center; gap: 10px; flex: none;
+  margin: 6px 12px max(12px, env(safe-area-inset-bottom)); padding: 10px 10px 10px 12px;
+  border-radius: 20px; background: var(--iu-primary-wash); border: 1px solid color-mix(in srgb, var(--iu-primary) 22%, transparent);
+  animation: tc-arrive .24s cubic-bezier(.2, .8, .2, 1) both;
+}
+.tc-root[dir="rtl"] .tc-limitbar { padding: 10px 12px 10px 10px; }
+.tc-root .tc-limitbar[hidden] { display: none; }
+.tc-root .tc-limitbar .tc-crown { width: 36px; height: 36px; border-radius: 11px; }
+.tc-root .tc-limitbar-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.tc-root .tc-limitbar .iu-btn { flex: none; }
+.tc-root .tc-composer[hidden] { display: none; }
 .tc-root .tc-composer {
   display: flex; align-items: flex-end; gap: 2px; margin: 6px 12px max(12px, env(safe-area-inset-bottom));
   padding-inline: 18px 6px; border-radius: 27px; border: 1px solid var(--iu-border);

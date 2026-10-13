@@ -116,6 +116,11 @@ class Panel {
         </div>
         <button type="button" class="tc-jump" data-jump aria-label="${s.toLatest}" title="${s.toLatest}" hidden>${I.chevronDown}</button>
         <div class="tc-follow" data-follow hidden></div>
+        <div class="tc-limitbar" data-limitbar hidden>
+          <span class="tc-crown">${I.crown}</span>
+          <span class="tc-limitbar-text"><span class="t-label c-1">${s.limitTitle}</span><span class="t-caption c-2">${s.limitBody}</span></span>
+          <button type="button" class="iu-btn primary" data-act="plus">${I.crown}<span>${s.limitCtaShort}</span></button>
+        </div>
         <form class="tc-composer" data-composer>
           <textarea data-input rows="1" maxlength="500" dir="auto" aria-label="${s.inputHint}"></textarea>
           <button type="button" class="iu-icon-btn tc-mic" data-mic aria-label="${s.micStart}" title="${s.micStart}" hidden>${I.mic}</button>
@@ -317,6 +322,12 @@ class Panel {
     send.setAttribute('aria-label', this.busy ? s.stop : s.send);
     send.title = this.busy ? s.stop : s.send;
     this.q<HTMLElement>('[data-composer]').classList.toggle('is-off', off);
+    // The allowance ran out with this answer: say so where the input was,
+    // with the way to more (the limit card already does when it is shown).
+    const spent = this.limitReached && this.signedIn !== false;
+    const cardShown = this.entries[this.entries.length - 1]?.kind === 'limit';
+    this.q<HTMLElement>('[data-limitbar]').hidden = !spent || cardShown;
+    this.q<HTMLElement>('[data-composer]').hidden = spent;
     const mic = this.root.querySelector<HTMLButtonElement>('[data-mic]');
     if (mic) mic.disabled = off;
   }
@@ -351,7 +362,7 @@ class Panel {
       if (a === 'plus') {
         this.o.track?.('teacher_upgrade_tapped', {});
         const pw = (window as any).IrabPaywall;
-        if (pw?.show) { this.close(true); pw.show(); } else location.href = this.o.lang === 'ar' ? '/pricing' : '/en/pricing';
+        if (pw?.show) { this.close(true); pw.show({ reason: 'limit' }); } else location.href = this.o.lang === 'ar' ? '/pricing' : '/en/pricing';
         return;
       }
       if (entry?.kind === 'answer') this.answerAction(entry, a!, act);
