@@ -47,7 +47,11 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
     </form>
     <p class="t-caption az-msg" data-composer-note hidden role="alert"></p>
     <p class="t-caption c-3 az-msg" data-mic-status hidden aria-live="polite"></p>
-    <p class="t-caption az-msg" data-arabic-only-note data-text={s.arabicOnly} hidden><span data-arabic-only-text></span></p>
+    {/* Shown by the Arabic-only guard when it refuses a character (English
+        letters, Latin digits): says why the box did not take them. */}
+    <p class="az-arabic-note" data-arabic-only-note data-text={s.arabicOnly} role="status" aria-live="polite">
+      <span class="az-arabic-glyph" aria-hidden="true">ع</span><span class="t-label" data-arabic-only-text></span>
+    </p>
 
     <button type="button" class="iu-btn primary lg block az-submit" data-submit disabled>
       <span data-submit-label>{s.analyze}</span><Fragment set:html={fwd} />
@@ -157,7 +161,7 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
   .iu-analyzer .az-input {
     display: block; width: 100%; min-height: 78px; max-height: 190px; resize: none; border: 0; outline: 0;
     background: transparent; padding: 16px 18px 0; color: var(--iu-text);
-    font-family: var(--iu-studied); font-size: 21px; line-height: 1.85; font-weight: 400;
+    font-family: var(--iu-ui); font-size: 20px; line-height: 1.8; font-weight: 400;
   }
   .iu-analyzer .az-input::placeholder { color: var(--iu-text-3); opacity: .85; }
   .iu-analyzer .az-meta { padding: 6px 18px 12px; display: flex; justify-content: flex-end; }
@@ -174,7 +178,19 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
   @keyframes az-pulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--iu-error) 14%, transparent); } }
   .iu-analyzer .az-msg { margin: 10px 4px 0; }
   .iu-analyzer [data-composer-note] { color: var(--iu-error-text); }
-  .iu-analyzer [data-arabic-only-note] { color: var(--iu-error-text); }
+  .iu-analyzer .az-arabic-note {
+    display: flex; align-items: center; gap: 10px; overflow: hidden;
+    max-height: 0; opacity: 0; margin: 0; padding: 0 14px; border-radius: 14px;
+    background: var(--iu-primary-soft); color: var(--iu-primary-text);
+    transition: max-height .25s ease, opacity .2s ease, margin .25s ease, padding .25s ease;
+  }
+  .iu-analyzer .az-arabic-note.is-on { max-height: 6rem; opacity: 1; margin-top: 10px; padding: 10px 14px; }
+  .iu-analyzer .az-arabic-glyph {
+    flex: none; width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center;
+    background: var(--iu-card); color: var(--iu-primary); font-family: var(--iu-ui); font-weight: 700; font-size: 15px;
+  }
+  .iu-analyzer .az-input.ar-only-nudge { animation: az-nudge .36s ease; }
+  @keyframes az-nudge { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
   .iu-analyzer .az-submit { margin-top: 16px; }
   .iu-analyzer .az-hint { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; }
   .iu-analyzer .az-hint svg { width: 15px; height: 15px; }

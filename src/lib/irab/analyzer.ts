@@ -61,7 +61,8 @@ export function mountAnalyzer(root: HTMLElement): void {
   let lastRun: Run | null = null;
   let usage: UsageStatus | null = null;
 
-  const arabic = guardArabicOnly(input, { note: q('[data-arabic-only-note]') });
+  // A refused character says why, and the notice stays long enough to read.
+  const arabic = guardArabicOnly(input, { note: q('[data-arabic-only-note]'), linger: 4500 });
 
   // ── Views ────────────────────────────────────────────────────────────────
   function show(view: View, scroll = true) {
