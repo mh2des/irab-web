@@ -2,6 +2,7 @@
 import Container from '../Container.astro';
 import Section from '../Section.astro';
 import Paywall from '../Paywall.astro';
+import '../../styles/arabic-only.css';
 import { EXAMPLES } from '../../data/demo-examples';
 
 interface Props { lang?: 'en' | 'ar'; showHeader?: boolean; }
@@ -53,7 +54,7 @@ const t = lang === 'ar'
       hint:       'أو اضغط ⌘ + Enter',
       retry:      'أعد المحاولة',
       tooLong:    (n: number) => `${n} حرفًا متبقية`,
-      arabicOnly: 'إعراب يفهم العربية فقط. اكتب جملتك بالحروف العربية.',
+      arabicOnly: 'إعراب لا يفهم الإنجليزية ولا الحروف اللاتينية. اكتب جملتك بالعربية.',
     }
   : {
       eyebrow:    'Live demo',
@@ -97,7 +98,7 @@ const t = lang === 'ar'
       hint:       'or press ⌘ + Enter',
       retry:      'Try again',
       tooLong:    (n: number) => `${n} characters left`,
-      arabicOnly: 'Irab understands Arabic only. Type your sentence in Arabic letters.',
+      arabicOnly: "Irab doesn't understand English or Latin letters. Write your sentence in Arabic.",
     };
 
 ---
