@@ -27,7 +27,7 @@ html.tc-open { overflow: hidden; }
 
 @media (min-width: 900px) {
   /* Beside the result: no dimming, the page stays readable and scrollable. */
-  .tc-root[data-layout="side"] { inset: auto; top: var(--tc-top, 0px); bottom: 0; inset-inline-end: 0; width: 440px; z-index: 40; }
+  .tc-root[data-layout="side"] { inset: auto; top: var(--tc-top, 0px); bottom: 0; inset-inline-end: 0; width: 460px; z-index: 40; }
   .tc-root[data-layout="side"] .tc-scrim { display: none; }
   .tc-root[data-layout="side"] .tc-panel {
     inset: 12px; inset-inline-start: 0; height: auto; border-radius: 24px;
@@ -53,7 +53,7 @@ html.tc-open:has(.tc-root[data-layout="dialog"]) { overflow: hidden; }
    moves over (the nav keeps its full width; the panel sits under it).
    Margins on the page's blocks, so nothing overflows while it animates. */
 html body > :not(nav):not(.tc-root):not(script) { transition: margin .3s cubic-bezier(.2, .8, .2, 1); }
-html.tc-docked body > :not(nav):not(.tc-root):not(script) { margin-inline-end: 440px; }
+html.tc-docked body > :not(nav):not(.tc-root):not(script) { margin-inline-end: 460px; }
 /* The result's own ask bar is not needed while the teacher is open. */
 html.tc-open .iu .tc-dock { visibility: hidden; }
 
@@ -66,7 +66,7 @@ html.tc-open .iu .tc-dock { visibility: hidden; }
 .tc-root .tc-left {
   display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px 4px 8px;
   border-radius: 999px; background: var(--iu-sunken); color: var(--iu-text-2);
-  font-size: 12px; font-weight: 500; white-space: nowrap;
+  font-size: 13px; font-weight: 500; white-space: nowrap;
 }
 .tc-root .tc-left svg { width: 12px; height: 12px; color: var(--iu-teal); fill: currentColor; }
 .tc-root .tc-left.is-none svg { color: var(--iu-text-3); }
@@ -75,8 +75,8 @@ html.tc-open .iu .tc-dock { visibility: hidden; }
   display: inline-grid; place-items: center; flex: none; border-radius: 999px;
   background: var(--iu-teal-soft); color: var(--iu-teal);
 }
-.tc-root .tc-avatar.md { width: 36px; height: 36px; }
-.tc-root .tc-avatar.md svg { width: 19px; height: 19px; }
+.tc-root .tc-avatar.md { width: 40px; height: 40px; }
+.tc-root .tc-avatar.md svg { width: 21px; height: 21px; }
 .tc-root .tc-avatar.sm { width: 24px; height: 24px; }
 .tc-root .tc-avatar.sm svg { width: 13px; height: 13px; }
 .tc-root .tc-avatar.lg { width: 56px; height: 56px; }
@@ -87,7 +87,7 @@ html.tc-open .iu .tc-dock { visibility: hidden; }
 .tc-root .tc-context p { margin: 0; }
 .tc-root .tc-words { display: flex; flex-wrap: wrap; gap: 2px 4px; margin-top: 2px; }
 .tc-root .tc-word {
-  font-family: var(--iu-studied); font-size: 19px; font-weight: 700; line-height: 1.7;
+  font-family: var(--iu-studied); font-size: 21px; font-weight: 700; line-height: 1.7;
   padding: 1px 6px; border-radius: 8px; border: 0; background: transparent; color: var(--iu-text);
   cursor: pointer; transition: background-color .16s ease, color .16s ease;
 }
@@ -139,10 +139,10 @@ html.tc-open .iu .tc-dock { visibility: hidden; }
 .tc-root p.tc-grounded { margin-top: 8px; }
 .tc-root .tc-acts { display: inline-flex; }
 .tc-root .tc-act {
-  width: 36px; height: 36px; display: inline-grid; place-items: center; border: 0; border-radius: 999px;
+  width: 40px; height: 40px; display: inline-grid; place-items: center; border: 0; border-radius: 999px;
   background: transparent; color: var(--iu-text-3); cursor: pointer; transition: background-color .15s ease, color .15s ease;
 }
-.tc-root .tc-act svg { width: 18px; height: 18px; }
+.tc-root .tc-act svg { width: 20px; height: 20px; }
 .tc-root .tc-act:hover:not(:disabled) { background: var(--iu-sunken); }
 .tc-root .tc-act.is-on { color: var(--iu-teal); }
 .tc-root .tc-act.is-on svg { fill: color-mix(in srgb, var(--iu-teal) 18%, transparent); }
@@ -153,15 +153,15 @@ html.tc-open .iu .tc-dock { visibility: hidden; }
 .tc-root .tc-fb-reasons { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
 .tc-root .tc-fb-note {
   width: 100%; box-sizing: border-box; resize: none; border: 0; border-radius: 12px; padding: 8px 12px;
-  background: var(--iu-sunken); color: var(--iu-text); font: inherit; font-size: 13px; line-height: 1.75;
+  background: var(--iu-sunken); color: var(--iu-text); font: inherit; font-size: 14.5px; line-height: 1.75;
 }
 .tc-root .tc-fb-note:focus { outline: 2px solid color-mix(in srgb, var(--iu-teal) 45%, transparent); }
 .tc-root .tc-fb-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
 
 .tc-root .tc-chip {
-  display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; flex: none;
+  display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 16px; flex: none;
   border-radius: 999px; border: 1px solid var(--iu-border); background: var(--iu-card); color: var(--iu-text);
-  font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+  font: inherit; font-size: 14.5px; font-weight: 600; cursor: pointer; white-space: nowrap;
   transition: background-color .15s ease, border-color .15s ease, color .15s ease;
 }
 .tc-root .tc-chip:hover { border-color: var(--iu-border-strong); }
@@ -180,7 +180,7 @@ html.tc-open .iu .tc-dock { visibility: hidden; }
 .tc-root .tc-opt > span:nth-child(2) { flex: 1; }
 .tc-root .tc-opt-letter {
   width: 24px; height: 24px; flex: none; display: grid; place-items: center; border-radius: 50%;
-  background: var(--iu-sunken); color: var(--iu-text-2); font-size: 11px; font-weight: 600;
+  background: var(--iu-sunken); color: var(--iu-text-2); font-size: 12px; font-weight: 600;
 }
 .tc-root .tc-opt-mark svg { width: 18px; height: 18px; display: block; }
 .tc-root .tc-opt.is-right { background: var(--iu-success-soft); border: 1.5px solid var(--iu-success); cursor: default; }
@@ -227,7 +227,7 @@ html.tc-open .iu .tc-dock { visibility: hidden; }
 .tc-root .tc-sg {
   display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;
   padding: 12px 14px; border-radius: 14px; border: 1px solid var(--iu-border); background: var(--iu-card);
-  color: var(--iu-text); font: inherit; font-size: 14px; font-weight: 500; text-align: start; cursor: pointer;
+  color: var(--iu-text); font: inherit; font-size: 15.5px; font-weight: 500; text-align: start; cursor: pointer;
   transition: border-color .15s ease, background-color .15s ease;
 }
 .tc-root .tc-sg svg { width: 18px; height: 18px; color: var(--iu-teal); flex: none; }
@@ -282,16 +282,16 @@ html.tc-open .iu .tc-dock { visibility: hidden; }
 .tc-root .tc-composer.is-off { opacity: .7; }
 .tc-root .tc-composer textarea {
   flex: 1; min-width: 0; resize: none; border: 0; outline: 0; background: transparent; color: var(--iu-text);
-  font: inherit; font-size: 15px; line-height: 1.6; padding: 13px 0; max-height: 132px;
+  font: inherit; font-size: 17px; line-height: 1.6; padding: 13px 0; max-height: 132px;
 }
 .tc-root .tc-composer textarea::placeholder { color: var(--iu-text-3); }
 .tc-root .tc-composer .iu-icon-btn { margin-bottom: 7px; }
 .tc-root .tc-mic.is-live { color: var(--iu-error); background: var(--iu-error-soft); }
 .tc-root .tc-send {
-  width: 40px; height: 40px; margin-bottom: 7px; flex: none; border-radius: 50%; border: 0; display: grid; place-items: center;
+  width: 44px; height: 44px; margin-bottom: 6px; flex: none; border-radius: 50%; border: 0; display: grid; place-items: center;
   background: var(--iu-teal); color: #fff; cursor: pointer; transition: background-color .15s ease, opacity .15s ease;
 }
-.tc-root .tc-send svg { width: 20px; height: 20px; }
+.tc-root .tc-send svg { width: 22px; height: 22px; }
 .tc-root .tc-send.is-busy svg { width: 14px; height: 14px; fill: currentColor; }
 .tc-root .tc-send:disabled { background: color-mix(in srgb, var(--iu-teal) 32%, transparent); cursor: default; }
 .tc-root .tc-send:focus-visible { outline: 2px solid var(--iu-teal); outline-offset: 2px; }
@@ -299,7 +299,7 @@ html.tc-open .iu .tc-dock { visibility: hidden; }
 .tc-root .tc-toast {
   position: absolute; left: 50%; bottom: 84px; transform: translateX(-50%); z-index: 3;
   padding: 10px 16px; border-radius: 12px; background: var(--iu-text); color: var(--iu-card);
-  font-size: 13px; font-weight: 600; white-space: nowrap; transition: opacity .3s ease;
+  font-size: 14.5px; font-weight: 600; white-space: nowrap; transition: opacity .3s ease;
 }
 .tc-root .tc-toast.is-out { opacity: 0; }
 

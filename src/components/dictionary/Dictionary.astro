@@ -75,32 +75,32 @@ const login = lang === 'ar' ? '/login?next=/dictionary' : '/en/login?next=/en/di
 </script>
 
 <style is:global>
-  .iu-dict { max-width: 720px; margin: 0 auto; padding: 0 0 40px; }
+  .iu-dict { max-width: 800px; margin: 0 auto; padding: 0 0 40px; }
   .iu-dict .dc-view { display: flex; flex-direction: column; }
-  .iu-dict .dc-sub { margin: 4px 0 18px; }
-  .iu-dict .dc-ar-strong { font-family: var(--iu-studied); font-size: 18px; font-weight: 700; line-height: 1.7; color: var(--iu-text); }
+  .iu-dict .dc-sub { margin: 6px 0 20px; }
+  .iu-dict .dc-ar-strong { font-family: var(--iu-studied); font-size: 20px; font-weight: 700; line-height: 1.7; color: var(--iu-text); }
 
   .iu-dict .dc-gate { max-width: 560px; margin: 0 auto; padding: 26px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
   .iu-dict .dc-gate .iu-btn { margin-top: 6px; }
-  .iu-dict .dc-gate-icon { width: 52px; height: 52px; border-radius: 999px; display: grid; place-items: center; background: var(--iu-primary-soft); color: var(--iu-primary); }
-  .iu-dict .dc-gate-icon svg { width: 24px; height: 24px; }
+  .iu-dict .dc-gate-icon { width: 60px; height: 60px; border-radius: 999px; display: grid; place-items: center; background: var(--iu-primary-soft); color: var(--iu-primary); }
+  .iu-dict .dc-gate-icon svg { width: 28px; height: 28px; }
 
   /* The search box turns purple while writing, as the analyzer's does. */
   .iu-dict .dc-composer {
-    display: flex; align-items: center; gap: 4px; padding: 8px; padding-inline-start: 16px;
+    display: flex; align-items: center; gap: 6px; padding: 9px; padding-inline-start: 18px;
     transition: border-color .18s ease, box-shadow .18s ease;
   }
   .iu-dict .dc-composer.is-focused, .iu-dict .dc-composer.is-filled { border-color: var(--iu-primary); }
   .iu-dict .dc-search-icon { display: grid; color: var(--iu-text-3); flex: none; }
-  .iu-dict .dc-search-icon svg { width: 20px; height: 20px; }
+  .iu-dict .dc-search-icon svg { width: 23px; height: 23px; }
   .iu-dict .dc-input {
-    flex: 1; min-width: 0; height: 44px; border: 0; outline: 0; background: transparent; padding: 0 6px;
-    font-family: var(--iu-ui); font-size: 19px; color: var(--iu-text);
+    flex: 1; min-width: 0; height: 50px; border: 0; outline: 0; background: transparent; padding: 0 6px;
+    font-family: var(--iu-ui); font-size: 22px; color: var(--iu-text);
   }
   .iu-dict .dc-input::placeholder { color: var(--iu-text-3); opacity: .85; }
-  .iu-dict .dc-composer .iu-btn { height: 44px; padding: 0 22px; font-size: 15px; }
+  .iu-dict .dc-composer .iu-btn { height: 50px; padding: 0 26px; font-size: 17px; }
   .iu-dict .dc-quota { min-height: 22px; margin: 8px 4px 0; display: flex; }
-  .iu-dict .dc-quota .iu-tag svg { width: 13px; height: 13px; }
+  .iu-dict .dc-quota .iu-tag svg { width: 15px; height: 15px; }
   .iu-dict .dc-msg { margin-top: 10px; padding: 12px 16px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .iu-dict .dc-msg p { margin: 0; }
   .iu-dict .dc-msg .iu-btn { flex: none; height: 34px; }
@@ -111,11 +111,11 @@ const login = lang === 'ar' ? '/login?next=/dictionary' : '/en/login?next=/en/di
   .iu-dict .dc-group h2, .iu-dict .dc-group h3 { margin-bottom: 8px; }
   .iu-dict .dc-group-head { display: flex; align-items: center; justify-content: space-between; }
   .iu-dict .dc-group-head h2 { margin: 0; }
-  .iu-dict .dc-words { display: flex; flex-wrap: wrap; gap: 8px; }
+  .iu-dict .dc-words { display: flex; flex-wrap: wrap; gap: 10px; }
   .iu-dict .dc-word {
-    height: 42px; padding: 0 18px; border-radius: 999px; cursor: pointer;
+    height: 50px; padding: 0 22px; border-radius: 999px; cursor: pointer;
     border: 1px solid var(--iu-border); background: var(--iu-card); color: var(--iu-text); box-shadow: var(--iu-shadow-card);
-    font-family: var(--iu-studied); font-size: 19px; font-weight: 700; line-height: 1;
+    font-family: var(--iu-studied); font-size: 23px; font-weight: 700; line-height: 1;
     transition: border-color .2s ease, box-shadow .25s ease, transform .3s cubic-bezier(.22, 1, .36, 1), color .2s ease;
   }
   .iu-dict .dc-word:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
@@ -129,34 +129,34 @@ const login = lang === 'ar' ? '/login?next=/dictionary' : '/en/login?next=/en/di
   .iu-dict .dc-pending-note { text-align: center; margin: 0; }
 
   /* The entry */
-  .iu-dict .dc-result { margin-top: 14px; display: flex; flex-direction: column; gap: 12px; }
+  .iu-dict .dc-result { margin-top: 16px; display: flex; flex-direction: column; gap: 14px; }
   .iu-dict .dc-hero {
-    padding: 24px 20px 18px; text-align: center;
+    padding: 28px 22px 22px; text-align: center;
     background: color-mix(in srgb, var(--iu-primary) 5%, var(--iu-card));
     border-color: color-mix(in srgb, var(--iu-primary) 20%, var(--iu-border));
   }
-  .iu-dict .dc-lemma { margin: 0; font-family: var(--iu-studied); font-size: clamp(40px, 9vw, 54px); font-weight: 700; line-height: 1.5; color: var(--iu-text); overflow-wrap: anywhere; }
-  .iu-dict .dc-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 4px; }
-  .iu-dict .dc-tags .iu-tag { font-size: 12px; padding: 4px 11px; }
-  .iu-dict .dc-tags b { font-family: var(--iu-studied); font-size: 15px; font-weight: 700; line-height: 1; margin-inline-start: 4px; color: var(--iu-text); }
-  .iu-dict .dc-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+  .iu-dict .dc-lemma { margin: 0; font-family: var(--iu-studied); font-size: clamp(46px, 11vw, 66px); font-weight: 700; line-height: 1.5; color: var(--iu-text); overflow-wrap: anywhere; }
+  .iu-dict .dc-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px; }
+  .iu-dict .dc-tags .iu-tag { font-size: 14px; padding: 5px 13px; }
+  .iu-dict .dc-tags b { font-family: var(--iu-studied); font-size: 17px; font-weight: 700; line-height: 1; margin-inline-start: 4px; color: var(--iu-text); }
+  .iu-dict .dc-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 18px; }
   .iu-dict .dc-hero .iu-pill.is-done, .iu-dict .dc-hero .iu-pill.is-done:hover { background: var(--iu-success-soft); color: var(--iu-success-text); }
   .iu-dict .dc-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   .iu-dict .dc-readings { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--iu-border); }
   .iu-dict .dc-reading {
-    height: 40px; padding: 0 16px; border-radius: 999px; cursor: pointer;
+    height: 46px; padding: 0 18px; border-radius: 999px; cursor: pointer;
     border: 1px solid var(--iu-border); background: var(--iu-card); color: var(--iu-text);
-    font-family: var(--iu-studied); font-size: 19px; font-weight: 700; line-height: 1;
+    font-family: var(--iu-studied); font-size: 22px; font-weight: 700; line-height: 1;
     transition: border-color .2s ease, background-color .2s ease, color .2s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
   }
   .iu-dict .dc-reading.is-on { background: var(--iu-primary-soft); border-color: var(--iu-primary); color: var(--iu-primary-text); }
   .iu-dict .dc-reading:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
 
   /* One card per part, a tinted icon tile and title as the app's _ContentCard. */
-  .iu-dict .dc-sec { padding: 18px; }
-  .iu-dict .dc-sec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .iu-dict .dc-sec-icon { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; }
-  .iu-dict .dc-sec-icon svg { width: 18px; height: 18px; }
+  .iu-dict .dc-sec { padding: 22px; }
+  .iu-dict .dc-sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .iu-dict .dc-sec-icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; flex: none; }
+  .iu-dict .dc-sec-icon svg { width: 22px; height: 22px; }
   .iu-dict .dc-sec-note { margin-inline-start: auto; }
   .iu-dict .dc-primary .dc-sec-icon { background: var(--iu-primary-soft); color: var(--iu-primary); }
   .iu-dict .dc-primary .dc-sec-title { color: var(--iu-primary-text); }
@@ -167,48 +167,47 @@ const login = lang === 'ar' ? '/login?next=/dictionary' : '/en/login?next=/en/di
   .iu-dict .dc-gap { margin: 10px 0 0; }
 
   .iu-dict .dc-senses { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
-  .iu-dict .dc-sense { display: flex; align-items: flex-start; gap: 12px; }
-  .iu-dict .dc-sense-n { width: 26px; height: 26px; margin-top: 4px; border-radius: 999px; display: grid; place-items: center; flex: none; background: var(--iu-primary-soft); color: var(--iu-primary-text); font-size: 13px; font-weight: 700; }
+  .iu-dict .dc-sense { display: flex; align-items: flex-start; gap: 14px; }
+  .iu-dict .dc-sense-n { width: 32px; height: 32px; margin-top: 4px; border-radius: 999px; display: grid; place-items: center; flex: none; background: var(--iu-primary-soft); color: var(--iu-primary-text); font-size: 15px; font-weight: 700; }
   .iu-dict .dc-sense-body { flex: 1; min-width: 0; }
-  .iu-dict .dc-def { margin: 0; font-size: 16px; }
+  .iu-dict .dc-def { margin: 0; }
   .iu-dict .dc-examples { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
   .iu-dict .dc-example { padding-inline-start: 12px; border-inline-start: 2px solid color-mix(in srgb, var(--iu-teal) 45%, transparent); }
   .iu-dict .dc-example p { margin: 0; }
-  .iu-dict .dc-example .t-sentence-s { font-size: 18px; }
-  .iu-dict .dc-example .iu-card-link { color: var(--iu-teal-text); padding: 2px 0 0; }
+    .iu-dict .dc-example .iu-card-link { color: var(--iu-teal-text); padding: 2px 0 0; }
 
-  .iu-dict .dc-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .iu-dict .dc-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .iu-dict .dc-sec-head + .dc-chips { margin-top: 0; }
-  .iu-dict .dc-chip { display: inline-flex; align-items: center; padding: 3px 12px; border-radius: 999px; font-family: var(--iu-studied); font-size: 16px; font-weight: 700; line-height: 1.7; }
+  .iu-dict .dc-chip { display: inline-flex; align-items: center; padding: 4px 14px; border-radius: 999px; font-family: var(--iu-studied); font-size: 19px; font-weight: 700; line-height: 1.7; }
   .iu-dict .dc-chip.primary { background: var(--iu-primary-soft); color: var(--iu-primary-text); }
   .iu-dict .dc-chip.quiet { background: var(--iu-sunken); color: var(--iu-text-2); }
   .iu-dict .dc-chip.outline { border: 1px solid var(--iu-border-strong); color: var(--iu-text); }
 
-  .iu-dict .dc-morph { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
-  .iu-dict .dc-morph > div { padding: 8px 12px; border-radius: 12px; background: var(--iu-sunken); }
+  .iu-dict .dc-morph { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+  .iu-dict .dc-morph > div { padding: 10px 14px; border-radius: 12px; background: var(--iu-sunken); }
   .iu-dict .dc-morph dd { margin: 0; }
 
   .iu-dict .dc-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
   .iu-dict .dc-rows > * + * { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--iu-border); }
   .iu-dict .dc-rows p { margin: 0; }
   .iu-dict .dc-mistake { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-bottom: 4px !important; }
-  .iu-dict .dc-wrong { font-family: var(--iu-studied); font-size: 18px; color: var(--iu-error-text); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .iu-dict .dc-wrong { font-family: var(--iu-studied); font-size: 20px; color: var(--iu-error-text); text-decoration: line-through; text-decoration-thickness: 1px; }
   .iu-dict .dc-mistake .c-success { color: var(--iu-success-text); }
   .iu-dict .dc-tr { display: flex; flex-direction: column; gap: 2px; }
   .iu-dict[dir='rtl'] .dc-tr [dir='ltr'] { text-align: right; }
 
   .iu-dict .dc-sec .dc-group + .dc-group { margin-top: 14px; }
-  .iu-dict .dc-family { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
-  .iu-dict .dc-family li { display: flex; flex-direction: column; padding: 8px 12px; border-radius: 12px; background: var(--iu-sunken); }
+  .iu-dict .dc-family { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .iu-dict .dc-family li { display: flex; flex-direction: column; padding: 10px 14px; border-radius: 12px; background: var(--iu-sunken); }
 
   .iu-dict .dc-ayat { display: flex; flex-direction: column; gap: 8px; }
   .iu-dict .dc-ayah {
-    display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 14px;
+    display: flex; flex-direction: column; gap: 3px; padding: 14px 16px; border-radius: 16px;
     border: 1px solid var(--iu-border); background: var(--iu-card); color: inherit; text-decoration: none;
     transition: border-color .2s ease, box-shadow .25s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
   }
   .iu-dict .dc-ayah:focus-visible { outline: 2px solid var(--iu-teal); outline-offset: 2px; }
-  .iu-dict .dc-classical { margin: 0; padding: 12px 14px; border-radius: 14px; background: var(--iu-teal-wash); }
+  .iu-dict .dc-classical { margin: 0; padding: 14px 16px; border-radius: 14px; background: var(--iu-teal-wash); }
   .iu-dict .dc-classical + .dc-classical { margin-top: 8px; }
   .iu-dict .dc-classical p { margin: 4px 0 0; line-height: 2; }
 

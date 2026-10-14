@@ -36,7 +36,7 @@ export function topicsHtml(topics: Topic[], premium: boolean, s: ChallengeString
         <span class="ch-topic-icon" aria-hidden="true">${locked ? lock : I.book}</span>
         <span class="ch-topic-text">
           <span class="t-micro ch-topic-level">${esc(level)}</span>
-          <span class="t-body-strong c-1">${esc(t.name)}</span>
+          <span class="t-card-title c-1">${esc(t.name)}</span>
           ${t.sentenceCount > 0 ? `<span class="t-caption c-3">${esc(digits(s.sentences(t.sentenceCount), lang))}</span>` : ''}
         </span>
         ${locked ? `<span class="iu-tag primary ch-plus">${I.crown}${esc(s.plusTag)}</span>` : chev}
@@ -48,7 +48,7 @@ export function plusBannerHtml(s: ChallengeStrings): string {
   return `
     <button type="button" class="iu-card ch-plus-banner" data-plus>
       <span class="ch-plus-icon" aria-hidden="true">${I.crown}</span>
-      <span class="ch-topic-text"><span class="t-body-strong c-1">${esc(s.plusTitle)}</span><span class="t-caption c-2">${esc(s.plusSub)}</span></span>
+      <span class="ch-topic-text"><span class="t-card-title c-1">${esc(s.plusTitle)}</span><span class="t-caption c-2">${esc(s.plusSub)}</span></span>
       ${chev}
     </button>`;
 }
@@ -88,7 +88,7 @@ function options(values: string[], picked: string, kind: string): string {
 function step(n: number, title: string, body: string, state: 'open' | 'done' | 'locked', hint: string, lang: Lang): string {
   return `
     <section class="iu-card ch-step is-${state}">
-      <h3 class="ch-step-head"><span class="ch-step-n" aria-hidden="true">${state === 'done' ? I.check : digits(n, lang)}</span><span class="t-body-strong">${esc(title)}</span></h3>
+      <h3 class="ch-step-head"><span class="ch-step-n" aria-hidden="true">${state === 'done' ? I.check : digits(n, lang)}</span><span class="t-card-title">${esc(title)}</span></h3>
       ${state === 'locked' ? `<p class="t-caption c-3 ch-locked">${lock}<span>${esc(hint)}</span></p>` : `<div class="ch-opts" dir="rtl" lang="ar">${body}</div>`}
     </section>`;
 }

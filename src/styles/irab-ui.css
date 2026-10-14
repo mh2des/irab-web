@@ -102,28 +102,43 @@
 .iu :is(h1, h2, h3, h4, h5, h6) { font-family: var(--iu-ui); letter-spacing: normal; margin: 0; }
 
 /* ── Type: IrabText ─────────────────────────────────────────────────── */
-.iu .t-display { font-size: 26px; font-weight: 700; line-height: 1.45; }
-.iu .t-title-l { font-size: 20px; font-weight: 700; line-height: 1.5; }
-.iu .t-title { font-size: 17px; font-weight: 600; line-height: 1.6; }
-.iu .t-body { font-size: 15px; font-weight: 400; line-height: 1.85; }
-.iu .t-body-strong { font-size: 15px; font-weight: 600; line-height: 1.85; }
-.iu .t-body-s { font-size: 13px; font-weight: 400; line-height: 1.75; }
-.iu .t-label { font-size: 13px; font-weight: 600; line-height: 1.5; }
-.iu .t-caption { font-size: 12px; font-weight: 500; line-height: 1.5; }
-.iu .t-micro { font-size: 11px; font-weight: 600; line-height: 1.4; }
-.iu .t-hero { font-family: var(--iu-studied); font-size: 30px; font-weight: 700; line-height: 1.9; }
-.iu .t-word { font-family: var(--iu-studied); font-size: 25px; font-weight: 700; line-height: 1.6; }
-.iu .t-sentence { font-family: var(--iu-studied); font-size: 21px; font-weight: 400; line-height: 1.85; }
-.iu .t-sentence-s { font-family: var(--iu-studied); font-size: 17px; font-weight: 400; line-height: 1.8; }
-.iu .t-context { font-family: var(--iu-studied); font-size: 19px; font-weight: 700; line-height: 1.7; }
+/* The app's scale, a size up for the web: the site around the tools reads
+   at 20px, and the app's phone sizes looked small beside it (owner,
+   2026-10-14). Headings and titles grow the most. */
+.iu .t-display { font-size: 28px; font-weight: 700; line-height: 1.45; }
+.iu .t-title-l { font-size: 22px; font-weight: 700; line-height: 1.5; }
+.iu .t-title { font-size: 19px; font-weight: 600; line-height: 1.6; }
+.iu .t-body { font-size: 16px; font-weight: 400; line-height: 1.85; }
+.iu .t-body-strong { font-size: 16.5px; font-weight: 600; line-height: 1.8; }
+.iu .t-body-s { font-size: 14px; font-weight: 400; line-height: 1.75; }
+.iu .t-label { font-size: 14px; font-weight: 600; line-height: 1.5; }
+.iu .t-caption { font-size: 13px; font-weight: 500; line-height: 1.5; }
+.iu .t-micro { font-size: 12px; font-weight: 600; line-height: 1.4; }
+.iu .t-hero { font-family: var(--iu-studied); font-size: 32px; font-weight: 700; line-height: 1.9; }
+.iu .t-word { font-family: var(--iu-studied); font-size: 27px; font-weight: 700; line-height: 1.6; }
+.iu .t-sentence { font-family: var(--iu-studied); font-size: 22px; font-weight: 400; line-height: 1.85; }
+.iu .t-sentence-s { font-family: var(--iu-studied); font-size: 19px; font-weight: 400; line-height: 1.8; }
+.iu .t-context { font-family: var(--iu-studied); font-size: 20px; font-weight: 700; line-height: 1.7; }
+/* The name on a card you can open: a topic, a tool, a part of an entry. */
+.iu .t-card-title { font-size: 18px; font-weight: 700; line-height: 1.55; }
 
-/* A little more room on a desk than in a hand. */
+/* More room on a desk than in a hand. */
 @media (min-width: 768px) {
-  .iu .t-body { font-size: 16px; }
-  .iu .t-body-s { font-size: 14px; }
-  .iu .t-hero { font-size: 36px; }
-  .iu .t-word { font-size: 27px; }
-  .iu .t-sentence { font-size: 23px; }
+  .iu .t-display { font-size: 34px; line-height: 1.4; }
+  .iu .t-title-l { font-size: 26px; }
+  .iu .t-title { font-size: 21px; }
+  .iu .t-body { font-size: 18px; }
+  .iu .t-body-strong { font-size: 18px; }
+  .iu .t-body-s { font-size: 16px; }
+  .iu .t-label { font-size: 15px; }
+  .iu .t-caption { font-size: 14px; }
+  .iu .t-micro { font-size: 13px; }
+  .iu .t-hero { font-size: 42px; }
+  .iu .t-word { font-size: 31px; }
+  .iu .t-sentence { font-size: 26px; }
+  .iu .t-sentence-s { font-size: 21px; }
+  .iu .t-context { font-size: 22px; }
+  .iu .t-card-title { font-size: 20px; }
 }
 
 .iu .c-1 { color: var(--iu-text); }
@@ -151,15 +166,15 @@
 /* ── Buttons: IrabButton ────────────────────────────────────────────── */
 .iu .iu-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  height: 38px; padding: 0 16px; border-radius: 999px;
-  font-family: var(--iu-ui); font-size: 13px; font-weight: 600; line-height: 1.5;
+  height: 42px; padding: 0 18px; border-radius: 999px;
+  font-family: var(--iu-ui); font-size: 15px; font-weight: 600; line-height: 1.5;
   border: 0; cursor: pointer; white-space: nowrap;
   transition: background-color .18s ease, box-shadow .18s ease, transform .12s ease, opacity .18s ease;
   -webkit-tap-highlight-color: transparent;
 }
 .iu .iu-btn:active:not(:disabled) { transform: scale(0.98); }
 .iu .iu-btn:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 3px; }
-.iu .iu-btn.lg { height: 52px; padding: 0 24px; font-size: 16px; font-weight: 700; gap: 8px; }
+.iu .iu-btn.lg { height: 56px; padding: 0 26px; font-size: 17px; font-weight: 700; gap: 8px; }
 .iu .iu-btn.block { display: flex; width: 100%; }
 .iu .iu-btn.primary { background: var(--iu-primary); color: #fff; box-shadow: var(--iu-shadow-primary); }
 .iu .iu-btn.primary:disabled { background: var(--iu-primary-disabled); box-shadow: none; cursor: default; }
@@ -167,36 +182,36 @@
 .iu .iu-btn.teal:disabled { background: color-mix(in srgb, var(--iu-teal) 32%, transparent); cursor: default; }
 .iu .iu-btn.secondary { background: var(--iu-card); color: var(--iu-text); border: 1px solid var(--iu-border-strong); }
 .iu .iu-btn.ghost { background: transparent; color: var(--iu-primary-text); }
-.iu .iu-btn svg { width: 18px; height: 18px; flex: none; }
-.iu .iu-btn.lg svg { width: 20px; height: 20px; }
+.iu .iu-btn svg { width: 19px; height: 19px; flex: none; }
+.iu .iu-btn.lg svg { width: 22px; height: 22px; }
 
 .iu .iu-icon-btn {
-  display: inline-grid; place-items: center; width: 40px; height: 40px;
+  display: inline-grid; place-items: center; width: 44px; height: 44px;
   border-radius: 999px; background: transparent; border: 0; cursor: pointer;
   color: var(--iu-text-2); transition: background-color .15s ease;
 }
 .iu .iu-icon-btn:hover { background: var(--iu-sunken); }
 .iu .iu-icon-btn:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
-.iu .iu-icon-btn svg { width: 20px; height: 20px; }
+.iu .iu-icon-btn svg { width: 22px; height: 22px; }
 
 /* ── Pills and chips ────────────────────────────────────────────────── */
 .iu .iu-pill {
-  display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px;
+  display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 14px;
   border-radius: 999px; border: 0; cursor: pointer;
-  font-family: var(--iu-ui); font-size: 13px; font-weight: 600;
+  font-family: var(--iu-ui); font-size: 14.5px; font-weight: 600;
   background: var(--iu-primary-soft); color: var(--iu-primary-text);
   transition: background-color .18s ease, color .18s ease;
 }
-.iu .iu-pill svg { width: 16px; height: 16px; }
+.iu .iu-pill svg { width: 18px; height: 18px; }
 .iu .iu-pill.quiet { background: var(--iu-sunken); color: var(--iu-text-2); }
 .iu .iu-pill.outline { background: var(--iu-card); border: 1px solid var(--iu-border); color: var(--iu-text); }
 .iu .iu-pill:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
 
 .iu .iu-tag {
-  display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px;
-  font-size: 11px; font-weight: 600; line-height: 1.4;
+  display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 600; line-height: 1.4;
 }
-.iu .iu-tag svg { width: 14px; height: 14px; }
+.iu .iu-tag svg { width: 15px; height: 15px; }
 .iu .iu-tag.success { background: var(--iu-success-soft); color: var(--iu-success-text); }
 .iu .iu-tag.partial { background: var(--iu-partial-soft); color: var(--iu-partial-text); }
 .iu .iu-tag.error { background: var(--iu-error-soft); color: var(--iu-error-text); }
@@ -205,10 +220,10 @@
 
 /* The «… ›» text link at the foot of a card. */
 .iu .iu-card-link {
-  display: inline-flex; align-items: center; gap: 4px; padding: 6px 0; border: 0; background: none;
-  font-family: var(--iu-ui); font-size: 13px; font-weight: 600; color: var(--iu-text); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 5px; padding: 6px 0; border: 0; background: none;
+  font-family: var(--iu-ui); font-size: 15px; font-weight: 600; color: var(--iu-text); cursor: pointer;
 }
-.iu .iu-card-link svg { width: 14px; height: 14px; color: var(--iu-text-2); }
+.iu .iu-card-link svg { width: 16px; height: 16px; color: var(--iu-text-2); }
 .iu .iu-card-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 /* Forward chevrons point the reading way: left in Arabic, right in English. */
@@ -223,7 +238,7 @@
   .iu .az-input {
     display: block; width: 100%; min-height: 78px; max-height: 190px; resize: none; border: 0; outline: 0;
     background: transparent; padding: 16px 18px 0; color: var(--iu-text);
-    font-family: var(--iu-ui); font-size: 20px; line-height: 1.8; font-weight: 400;
+    font-family: var(--iu-ui); font-size: 22px; line-height: 1.8; font-weight: 400;
   }
   .iu .az-input::placeholder { color: var(--iu-text-3); opacity: .85; }
   .iu .az-meta { padding: 6px 18px 12px; display: flex; justify-content: flex-end; }

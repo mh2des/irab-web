@@ -79,7 +79,7 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
   <section data-view="result" class="az-view" hidden>
     <div class="az-head">
       <button type="button" class="iu-icon-btn" data-back aria-label={s.back} title={s.back}><Fragment set:html={back} /></button>
-      <h2 class="t-title c-1">{s.result}</h2>
+      <h2 class="t-title-l c-1">{s.result}</h2>
       <div class="az-head-actions">
         <button type="button" class="iu-icon-btn" data-copy aria-label={s.copy} title={s.copy}><Fragment set:html={I.copy} /></button>
         <button type="button" class="iu-icon-btn" data-share aria-label={s.share} title={s.share}><Fragment set:html={I.share} /></button>
@@ -108,7 +108,7 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
   <section data-view="error" class="az-view" hidden>
     <div class="iu-card az-error" role="alert">
       <span class="az-error-icon"><Fragment set:html={I.info} /></span>
-      <h2 class="t-title c-1">{s.failedTitle}</h2>
+      <h2 class="t-title-l c-1">{s.failedTitle}</h2>
       <p class="t-body-s c-2">{s.failedBody}</p>
       <div class="az-gate-actions">
         <button type="button" class="iu-btn primary" data-retry><Fragment set:html={I.refresh} />{s.retry}</button>
@@ -155,21 +155,21 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
 </script>
 
 <style is:global>
-  .iu-analyzer { max-width: 720px; margin: 0 auto; padding: 8px 16px 48px; }
+  .iu-analyzer { max-width: 780px; margin: 0 auto; padding: 8px 16px 48px; }
   .iu-analyzer .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .iu-analyzer .az-view { display: flex; flex-direction: column; }
   .iu-analyzer .az-mode {
-    margin-inline-start: auto; display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px;
+    margin-inline-start: auto; display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 14px;
     border-radius: 999px; border: 0; cursor: pointer; background: var(--iu-sunken); color: var(--iu-text);
-    font-family: var(--iu-ui); font-size: 13px; font-weight: 600;
+    font-family: var(--iu-ui); font-size: 14.5px; font-weight: 600;
   }
-  .iu-analyzer .az-mode svg { width: 14px; height: 14px; }
+  .iu-analyzer .az-mode svg { width: 16px; height: 16px; }
   .iu-analyzer .az-mode.is-deep { background: var(--iu-primary-soft); color: var(--iu-primary-text); }
-  .iu-analyzer .az-mode [data-mode-crown] svg { width: 14px; height: 14px; color: var(--iu-primary); }
+  .iu-analyzer .az-mode [data-mode-crown] svg { width: 16px; height: 16px; color: var(--iu-primary); }
   .iu-analyzer [data-composer-note] { color: var(--iu-error-text); }
   .iu-analyzer .az-submit { margin-top: 16px; }
   .iu-analyzer .az-hint { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; }
-  .iu-analyzer .az-hint svg { width: 15px; height: 15px; }
+  .iu-analyzer .az-hint svg { width: 17px; height: 17px; }
 
   .iu-analyzer .az-gate { margin-top: 18px; padding: 18px; display: flex; flex-direction: column; gap: 6px; border-color: var(--iu-primary-soft); }
   .iu-analyzer .az-gate-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
@@ -178,17 +178,17 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
   .iu-analyzer .az-recent-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; padding: 0 2px; }
   .iu-analyzer .az-recent-list { overflow: hidden; }
   .iu-analyzer .az-recent-row {
-    display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 18px; border: 0; background: none; cursor: pointer;
+    display: flex; align-items: center; gap: 14px; width: 100%; padding: 15px 20px; border: 0; background: none; cursor: pointer;
     text-align: start; border-bottom: 1px solid var(--iu-border); font: inherit; color: inherit;
   }
   .iu-analyzer .az-recent-row:last-child { border-bottom: 0; }
   .iu-analyzer .az-recent-row:hover { background: var(--iu-sunken); }
   .iu-analyzer .az-recent-text { flex: 1; display: flex; flex-direction: column; min-width: 0; }
   .iu-analyzer .az-recent-text .t-sentence-s { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .iu-analyzer .az-recent-chev svg { width: 16px; height: 16px; color: var(--iu-text-3); }
+  .iu-analyzer .az-recent-chev svg { width: 19px; height: 19px; color: var(--iu-text-3); }
 
   /* A4 */
-  .iu-analyzer .az-head { display: flex; align-items: center; gap: 4px; height: 52px; margin: 0 -8px 4px; }
+  .iu-analyzer .az-head { display: flex; align-items: center; gap: 4px; height: 56px; margin: 0 -8px 4px; }
   .iu-analyzer .az-head h2 { flex: 1; }
   .iu-analyzer .az-head-actions { display: flex; gap: 2px; }
   .iu-analyzer .az-sticky {
@@ -197,18 +197,18 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
     border-bottom: 1px solid var(--iu-border); color: var(--iu-text);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .iu-analyzer .iu-card.az-note { padding: 16px; }
+  .iu-analyzer .iu-card.az-note { padding: 18px; }
 
   .iu-analyzer .az-share-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-  .iu-analyzer .az-share-row .iu-btn { flex: 1 1 160px; height: 44px; }
+  .iu-analyzer .az-share-row .iu-btn { flex: 1 1 160px; height: 48px; }
   .iu-analyzer .az-share-row .iu-btn.ghost { flex: 1 1 100%; }
-  .iu-analyzer .az-crown svg { width: 14px; height: 14px; color: var(--iu-primary); }
+  .iu-analyzer .az-crown svg { width: 16px; height: 16px; color: var(--iu-primary); }
   .iu-analyzer [data-busy='1'] { opacity: .7; cursor: progress; }
   .iu-analyzer .is-done { color: var(--iu-success-text) !important; }
 
   .iu-analyzer .az-error { padding: 22px 18px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
-  .iu-analyzer .az-error-icon { width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; background: var(--iu-error-soft); color: var(--iu-error); margin-bottom: 4px; }
-  .iu-analyzer .az-error-icon svg { width: 22px; height: 22px; }
+  .iu-analyzer .az-error-icon { width: 52px; height: 52px; border-radius: 999px; display: grid; place-items: center; background: var(--iu-error-soft); color: var(--iu-error); margin-bottom: 4px; }
+  .iu-analyzer .az-error-icon svg { width: 26px; height: 26px; }
   .iu-analyzer .az-error .az-gate-actions { justify-content: center; }
 
   /* A2: a bottom sheet on a phone, a dialog on a desk. */

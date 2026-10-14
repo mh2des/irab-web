@@ -33,7 +33,7 @@ const ar = (cls: string, s: string, tag = 'span') => `<${tag} class="${cls}" dir
 function card(title: string, icon: string, body: string, tone = 'primary', note = ''): string {
   return `
     <section class="iu-card dc-sec dc-${tone}">
-      <h2 class="dc-sec-head"><span class="dc-sec-icon" aria-hidden="true">${icon}</span><span class="t-body-strong dc-sec-title">${esc(title)}</span>${note ? `<span class="t-caption c-3 dc-sec-note">${esc(note)}</span>` : ''}</h2>
+      <h2 class="dc-sec-head"><span class="dc-sec-icon" aria-hidden="true">${icon}</span><span class="t-card-title dc-sec-title">${esc(title)}</span>${note ? `<span class="t-caption c-3 dc-sec-note">${esc(note)}</span>` : ''}</h2>
       ${body}
     </section>`;
 }
