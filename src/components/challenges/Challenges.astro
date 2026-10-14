@@ -135,9 +135,28 @@ const next = I.chevronLeft.replace('<svg', '<svg class="ch-next-ic"');
   @media (min-width: 640px) { .iu-challenges .ch-topics { grid-template-columns: 1fr 1fr; } }
   .iu-challenges .ch-topic, .iu-challenges .ch-plus-banner, .iu-challenges .ch-sentence {
     display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; text-align: start; cursor: pointer;
-    font: inherit; color: inherit; transition: border-color .15s ease, transform .15s ease;
+    font: inherit; color: inherit;
+    transition: border-color .2s ease, box-shadow .25s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
   }
   .iu-challenges .ch-topic:hover, .iu-challenges .ch-sentence:hover { border-color: var(--iu-teal); }
+  /* Hover: the card lifts a little and its shadow deepens, the icon tile
+     grows a touch and the chevron leans the reading way. Pointer devices
+     only; a press settles the card back down. */
+  .iu-challenges :is(.ch-topic-icon, .ch-plus-icon, .ch-num) { transition: transform .3s cubic-bezier(.22, 1, .36, 1), background-color .2s ease, color .2s ease; }
+  .iu-challenges :is(.ch-topic, .ch-plus-banner, .ch-sentence) > svg { transition: translate .3s cubic-bezier(.22, 1, .36, 1), color .2s ease; }
+  @media (hover: hover) {
+    .iu-challenges :is(.ch-topic, .ch-plus-banner, .ch-sentence):hover { transform: translateY(-3px); box-shadow: var(--iu-shadow-lift); }
+    .iu-challenges :is(.ch-topic, .ch-plus-banner):hover :is(.ch-topic-icon, .ch-plus-icon) { transform: scale(1.06); }
+    .iu-challenges .ch-sentence:hover .ch-num { transform: scale(1.06); background: var(--iu-teal-soft); color: var(--iu-teal-text); }
+    .iu-challenges :is(.ch-topic, .ch-sentence):hover > svg { color: var(--iu-teal); translate: -3px 0; }
+    .iu-challenges .ch-plus-banner:hover > svg { color: var(--iu-primary); translate: -3px 0; }
+    .iu-challenges[dir='ltr'] :is(.ch-topic, .ch-plus-banner, .ch-sentence):hover > svg { translate: 3px 0; }
+  }
+  .iu-challenges :is(.ch-topic, .ch-plus-banner, .ch-sentence):active { transform: translateY(-1px) scale(.99); transition-duration: .2s, .2s, .1s; }
+  @media (prefers-reduced-motion: reduce) {
+    .iu-challenges :is(.ch-topic, .ch-plus-banner, .ch-sentence, .ch-topic-icon, .ch-plus-icon, .ch-num) { transform: none !important; }
+    .iu-challenges :is(.ch-topic, .ch-plus-banner, .ch-sentence) > svg { translate: none !important; }
+  }
   .iu-challenges .ch-topic:focus-visible, .iu-challenges .ch-plus-banner:focus-visible, .iu-challenges .ch-sentence:focus-visible { outline: 2px solid var(--iu-teal); outline-offset: 2px; }
   .iu-challenges .ch-topic > svg, .iu-challenges .ch-plus-banner > svg, .iu-challenges .ch-sentence > svg { width: 16px; height: 16px; color: var(--iu-text-3); flex: none; }
   .iu-challenges .ch-topic-icon, .iu-challenges .ch-plus-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; flex: none; }

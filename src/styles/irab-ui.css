@@ -55,6 +55,7 @@
   --iu-gold: #F59E0B;
   --iu-shadow-card: 0 1px 3px rgba(23, 56, 71, 0.10), 0 8px 18px -4px rgba(23, 56, 71, 0.08);
   --iu-shadow-primary: 0 10px 22px -8px rgba(124, 77, 255, 0.32);
+  --iu-shadow-lift: 0 2px 6px rgba(23, 56, 71, 0.10), 0 16px 30px -10px rgba(23, 56, 71, 0.20);
   --iu-ui: 'Thmanyah Text', system-ui, sans-serif;
   --iu-studied: 'Amiri', 'Thmanyah Text', serif;
 
@@ -93,6 +94,7 @@
   --iu-gold: #F5B03A;
   --iu-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.30), 0 8px 18px -4px rgba(0, 0, 0, 0.25);
   --iu-shadow-primary: 0 10px 22px -8px rgba(124, 77, 255, 0.40);
+  --iu-shadow-lift: 0 2px 6px rgba(0, 0, 0, 0.35), 0 18px 32px -10px rgba(0, 0, 0, 0.50);
 }
 
 /* The site styles headings in its display face; inside the tools a heading
