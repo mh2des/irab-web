@@ -1,27 +1,18 @@
 ---
+/**
+ * /dictionary: the smart dictionary tool. Login-gated and noindex; Firebase
+ * loads lazily inside Dictionary. The public word pages are /dictionary/<word>.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/sections/Footer.astro';
-import DictionarySearch from '../components/DictionarySearch.astro';
+import Dictionary from '../components/dictionary/Dictionary.astro';
 ---
-<BaseLayout lang="ar" title="المعجم الذكي · إعراب آب" description="معجم عربي ذكي مدعوم بالذكاء الاصطناعي: المعاني، الجذر، الأمثلة، والترجمة لأي كلمة.">
+<BaseLayout lang="ar" title="المعجم الذكي · إعراب آب" description="معجم عربي ذكي: معاني الكلمة وجذرها ووزنها وصرفها وإعرابها، مع مواضعها في القرآن الكريم وما قالته المعاجم الكلاسيكية.">
   <meta slot="head" name="robots" content="noindex, nofollow" />
   <Nav lang="ar" />
-  <main class="px-6 py-14 md:py-20">
-    {/* Hero on the مجالس / tool / practice pattern: start-aligned, plain
-        eyebrow, purple accent, body on the AA-safe muted token. */}
-    <div class="max-w-6xl mx-auto">
-      <div class="max-w-3xl mb-10">
-        <p class="eyebrow mb-4">المعجم</p>
-        <h1 class="font-arabic font-bold text-[clamp(2rem,5vw,3.4rem)] leading-[1.25] tracking-tight text-ink dark:text-mist">
-          معجم عربي <span class="text-purple">ذكي</span>.
-        </h1>
-        <p class="mt-6 font-arabic text-body md:text-body-lg text-ink-muted dark:text-mist-muted leading-loose max-w-2xl">
-          ابحث عن أي كلمة عربية فتحصل على معانيها ومشتقاتها وجذرها وصرفها وإعرابها، مع شواهد من القرآن والمعاجم الكلاسيكية وترجمتها.
-        </p>
-      </div>
-      <DictionarySearch lang="ar" />
-    </div>
+  <main class="px-4 sm:px-6 py-8 md:py-12">
+    <Dictionary lang="ar" />
   </main>
   <Footer lang="ar" />
 </BaseLayout>
