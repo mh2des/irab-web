@@ -1,1864 +1,298 @@
 ---
 /**
- * AppHub: signed in profile dashboard for /app and /en/app.
- *
- * This is intentionally a product surface, not a marketing section: plan state,
- * upgrade choice, daily usage, and tools are visible at a glance. Firebase still
- * loads lazily only after the local signed in hint passes.
+ * AppHub: the signed-in account hub for /app and /en/app, in the tools'
+ * design (irab-ui): the profile card with plan and progress, the tools with
+ * today's allowance, Irab+ for a free account (Paddle checkout and the
+ * activation wait), and recent activity. Firebase loads lazily only after the
+ * local signed-in hint passes. Words: lib/hub/strings.ts.
  */
+import '../styles/irab-ui.css';
 import { PADDLE_ENABLED } from '../lib/paddle';
+import { HUB } from '../lib/hub/strings';
+import { BOOKS } from '../lib/library';
+import { digits } from '../lib/irab/strings';
+import * as I from '../lib/irab/icons';
 
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
-const login = lang === 'ar' ? '/login' : '/en/login';
-const home = lang === 'ar' ? '/' : '/en';
-const account = lang === 'ar' ? '/account' : '/en/account';
-const dir = lang === 'ar' ? 'rtl' : 'ltr';
-const titleClass = lang === 'ar' ? 'font-arabic-display' : 'font-display';
+const s = HUB[lang];
+const en = lang === 'en';
+const p = (path: string) => (en ? `/en${path}` : path);
+const login = p('/login');
+const home = en ? '/en' : '/';
+const dir = en ? 'ltr' : 'rtl';
+const chev = I.chevronLeft.replace('<svg', '<svg class="flip-ltr"');
 
-const tools = lang === 'ar'
+const svg = (body: string) => `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
+const ic = {
+  analyzer: svg('<path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/>'),
+  practice: I.pencil,
+  challenges: svg('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="m9 8 1.5 1.5L14 6"/><path d="M9 14h7"/>'),
+  dictionary: svg('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.34-4.34"/>'),
+  majalis: svg('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
+  quran: I.book,
+  lessons: I.graduationCap,
+  library: svg('<path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/>'),
+  user: svg('<path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/>'),
+  logOut: svg('<path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>'),
+  lock: svg('<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>'),
+};
+
+const books = digits(BOOKS.length, lang);
+const tools = en
   ? [
-      { key: 'analyzer', title: 'محلّل الإعراب', desc: 'إعراب كامل للجمل العربية كلمة بكلمة، مع العلامة والسبب.', href: '/tool', usageKey: '', accent: 'purple', cta: 'حلّل الآن' },
-      { key: 'majalis', title: 'مجالس الإعراب', desc: 'استضف مسابقة إعراب مباشرة: أسئلة يدوية أو بالذكاء الاصطناعي، رمز دخول، وتقرير كامل.', href: '/majlis/host', usageKey: '', accent: 'teal', cta: 'مجالسي' },
-      { key: 'practice', title: 'التدريب بالتصحيح الذكي', desc: 'اكتب جملتك وإعرابك بنفسك، ثم احصل على تصحيح وشرح لكل كلمة.', href: '/practice/play', usageKey: 'customPractice', accent: 'teal', cta: 'ابدأ التدريب' },
-      { key: 'challenges', title: 'التحديات', desc: 'اختر من الجمل الجاهزة، ثم حدّد نوع كل كلمة وموقعها وعلامتها.', href: '/challenges', usageKey: 'practiceMode', accent: 'purple', cta: 'ابدأ التحدي' },
-      { key: 'dictionary', title: 'المعجم الذكي', desc: 'معنى الكلمة وجذرها ووزنها وأمثلة عليها في سياقها.', href: '/dictionary', usageKey: 'smartDictionary', accent: 'purple', cta: 'افتح المعجم' },
-      { key: 'quran', title: 'إعراب القرآن', desc: 'مكتبة منظمة لإعراب الآيات، مناسبة للمراجعة والدراسة.', href: '/quran', usageKey: '', accent: 'teal', cta: 'تصفّح' },
-      { key: 'library', title: 'المكتبة النحوية', desc: '٤٧ كتابًا في النحو والصرف والبلاغة، تُقرأ كاملةً.', href: '/library', usageKey: '', accent: 'purple', cta: 'افتح المكتبة' },
+      { key: 'analyzer', title: "I'rab analyzer", desc: "Full word by word i'rab for Arabic sentences, with the marker and why.", href: '/en/tool', usage: 'irabAnalysis', tone: 'primary' },
+      { key: 'practice', title: 'Parse it yourself', desc: 'Write a sentence, parse its words yourself, and the teacher checks each answer.', href: '/en/practice/play', usage: 'customPractice', tone: 'teal' },
+      { key: 'challenges', title: 'Challenges', desc: "Choose a ready-made sentence, then set each word's type, role, and case marker.", href: '/en/challenges', usage: '', tone: 'primary' },
+      { key: 'dictionary', title: 'Dictionary', desc: "Meaning, root, pattern, morphology and i'rab for any Arabic word.", href: '/en/dictionary', usage: 'smartDictionary', tone: 'teal' },
+      { key: 'majalis', title: "Majalis: live i'rab quizzes", desc: 'Host a live grammar competition: manual or AI questions, a join PIN, and a full report.', href: '/majlis/host', usage: '', tone: 'primary' },
+      { key: 'quran', title: "Quran i'rab", desc: "Browse structured i'rab pages for Quranic verses.", href: '/en/quran', usage: '', tone: 'teal' },
+      { key: 'lessons', title: 'Grammar lessons', desc: "Short lessons on the rules of i'rab, chapter by chapter.", href: '/en/duroos', usage: '', tone: 'primary' },
+      { key: 'library', title: 'Grammar library', desc: `${books} works on nahw, sarf, and balagha: read in full.`, href: '/en/library', usage: '', tone: 'teal' },
     ]
   : [
-      { key: 'analyzer', title: "I'rab analyzer", desc: "Full word by word i'rab for Arabic sentences, with the marker and why.", href: '/en/tool', usageKey: '', accent: 'purple', cta: 'Analyze now' },
-      { key: 'majalis', title: "Majalis: live i'rab quizzes", desc: 'Host a live grammar competition: manual or AI questions, a join PIN, and a full report.', href: '/majlis/host', usageKey: '', accent: 'teal', cta: 'My majalis' },
-      { key: 'practice', title: 'AI feedback practice', desc: "Write your own sentence and i'rab, then get word-by-word correction and explanation.", href: '/en/practice/play', usageKey: 'customPractice', accent: 'teal', cta: 'Start practicing' },
-      { key: 'challenges', title: 'Challenges', desc: "Choose a ready-made sentence, then set each word's type, role, and case marker.", href: '/en/challenges', usageKey: 'practiceMode', accent: 'purple', cta: 'Start a challenge' },
-      { key: 'dictionary', title: 'Smart dictionary', desc: 'Meaning, root, pattern, examples, and translation for any word.', href: '/en/dictionary', usageKey: 'smartDictionary', accent: 'purple', cta: 'Open dictionary' },
-      { key: 'quran', title: "Quran i'rab", desc: "Browse structured i'rab pages for Quranic verses.", href: '/en/quran', usageKey: '', accent: 'teal', cta: 'Browse' },
-      { key: 'library', title: 'Grammar library', desc: '47 works on nahw, sarf, and balagha: read in full.', href: '/en/library', usageKey: '', accent: 'purple', cta: 'Open library' },
+      { key: 'analyzer', title: 'محلّل الإعراب', desc: 'إعراب كامل للجمل العربية كلمة بكلمة، مع العلامة والسبب.', href: '/tool', usage: 'irabAnalysis', tone: 'primary' },
+      { key: 'practice', title: 'أعرب بنفسك', desc: 'اكتب جملة، ثم أعرب كلماتها بنفسك، ويقيّم الأستاذ إجابتك كلمة كلمة.', href: '/practice/play', usage: 'customPractice', tone: 'teal' },
+      { key: 'challenges', title: 'التحديات', desc: 'اختر من الجمل الجاهزة، ثم حدّد نوع كل كلمة وموقعها وعلامتها.', href: '/challenges', usage: '', tone: 'primary' },
+      { key: 'dictionary', title: 'المعجم', desc: 'معنى الكلمة وجذرها ووزنها وصرفها وكيف تُعرب.', href: '/dictionary', usage: 'smartDictionary', tone: 'teal' },
+      { key: 'majalis', title: 'مجالس الإعراب', desc: 'استضف مسابقة إعراب مباشرة: أسئلة يدوية أو بالذكاء الاصطناعي، رمز دخول، وتقرير كامل.', href: '/majlis/host', usage: '', tone: 'primary' },
+      { key: 'quran', title: 'إعراب القرآن', desc: 'مكتبة منظمة لإعراب الآيات، مناسبة للمراجعة والدراسة.', href: '/quran', usage: '', tone: 'teal' },
+      { key: 'lessons', title: 'دروس النحو', desc: 'دروس قصيرة في قواعد الإعراب، بابًا بابًا.', href: '/duroos', usage: '', tone: 'primary' },
+      { key: 'library', title: 'المكتبة النحوية', desc: `${books} كتابًا في النحو والصرف والبلاغة، تُقرأ كاملةً.`, href: '/library', usage: '', tone: 'teal' },
     ];
-
-const t = lang === 'ar'
-  ? {
-      loading: 'جارٍ التحميل…',
-      signInTitle: 'سجّل الدخول لفتح حسابك',
-      signInBody: 'لوحة واحدة لحسابك، خطتك، تقدّمك، وأدوات إعراب على الويب والتطبيق.',
-      signInCta: 'تسجيل الدخول',
-      dashboard: 'لوحة الحساب',
-      profile: 'الملف الشخصي',
-      signedIn: 'متصل الآن',
-      planFree: 'الخطة المجانية',
-      freeNote: 'خطة مجانية نشطة. ابدأ بما تحتاجه الآن.',
-      plusNote: 'اشتراكك فعّال على الويب والتطبيق بالحساب نفسه.',
-      history: 'السجل',
-      manage: 'إدارة الحساب',
-      signOut: 'تسجيل الخروج',
-      continueTitle: 'ابدأ الآن',
-      continueBody: 'اختر مهمتك التالية',
-      primaryTool: 'حلّل جملة',
-      secondaryTool: 'تدرّب الآن',
-      today: 'استخدام اليوم',
-      todayBody: 'حدود التدريب والمعجم',
-      practice: 'التدريب',
-      challenges: 'التحديات',
-      dictionary: 'المعجم',
-      workspaceEyebrow: 'مساحة العمل',
-      tools: 'الأدوات',
-      toolsBody: 'أدوات الحساب مرتبة كسطور عمل واضحة.',
-      upgradeEyebrow: 'إعراب بلس',
-      upgradeBody: 'تحليل غير محدود وحدود أعلى بنفس الحساب على الويب والتطبيق.',
-      annualPrice: '٣٥٫٩٩$',
-      monthlyPrice: '٤٫٩٩$',
-      annualMeta: 'تجربة مجانية ٧ أيام',
-      annualCta: 'ابدأ التجربة المجانية',
-      monthlyCta: 'اشترك شهريًّا',
-      activatingTitle: 'تم الدفع: جارٍ تفعيل اشتراكك',
-      activatingBody: 'سيُفتح كل شيء تلقائيًّا خلال لحظات.',
-      activatingSlow: 'ما زلنا نفعّل اشتراكك… قد يستغرق الأمر دقيقة أو دقيقتين. أبقِ هذه الصفحة مفتوحة.',
-      timeoutTitle: 'دفعتك مسجَّلة',
-      timeoutBody: 'التفعيل يستغرق أطول من المعتاد. سيتفعّل اشتراكك تلقائيًّا خلال دقائق — حدّث الصفحة بعد قليل، وإن لم يظهر الاشتراك راسلنا على hello@irab.app.',
-      refresh: 'تحديث الصفحة',
-      checkoutError: 'تعذّر فتح صفحة الدفع. تحقّق من اتصالك بالإنترنت أو عطّل مانع الإعلانات، ثم أعد المحاولة.',
-      leftToday: (n: number) => `${n} متبقٍ`,
-      unlimited: 'غير محدود',
-      user: 'مستخدم',
-      statsKicker: 'تقدّمك',
-      statAnalyzed: 'جملة محلَّلة',
-      statPracticed: 'تمرين',
-      statAvg: 'متوسّط الدقّة',
-      statStreak: 'يوم متتالٍ',
-      recentTitle: 'النشاط الأخير',
-      recentEmpty: 'لا نشاط بعد: ابدأ بتحليل جملة أو تمرين، وسيظهر هنا.',
-      seeAll: 'عرض الكل',
-    }
-  : {
-      loading: 'Loading…',
-      signInTitle: 'Sign in to open your profile',
-      signInBody: 'One dashboard for your account, plan, progress, and Irab tools across web and mobile.',
-      signInCta: 'Sign in',
-      dashboard: 'Account dashboard',
-      profile: 'Profile',
-      signedIn: 'Signed in',
-      planFree: 'Free plan',
-      freeNote: 'Your free plan is active. Start with what you need now.',
-      plusNote: 'Your subscription is active on web and mobile with the same account.',
-      history: 'History',
-      manage: 'Manage account',
-      signOut: 'Sign out',
-      continueTitle: 'Start now',
-      continueBody: 'Choose your next task',
-      primaryTool: 'Analyze a sentence',
-      secondaryTool: 'Practice now',
-      today: "Today's usage",
-      todayBody: 'Practice and dictionary limits',
-      practice: 'Practice',
-      challenges: 'Challenges',
-      dictionary: 'Dictionary',
-      workspaceEyebrow: 'Workspace',
-      tools: 'Tools',
-      toolsBody: 'Your account tools, arranged as clear action rows.',
-      upgradeEyebrow: 'Irab Plus',
-      upgradeBody: 'Unlimited analysis and higher limits with the same account on web and mobile.',
-      annualPrice: '$35.99',
-      monthlyPrice: '$4.99',
-      annualMeta: '7 day free trial',
-      annualCta: 'Start free trial',
-      monthlyCta: 'Subscribe monthly',
-      activatingTitle: 'Payment received: activating your subscription',
-      activatingBody: 'Everything unlocks automatically in a few moments.',
-      activatingSlow: 'Still activating… this can take a minute or two. Keep this page open.',
-      timeoutTitle: 'Your payment went through',
-      timeoutBody: "Activation is taking longer than usual. Your subscription will unlock automatically within a few minutes — refresh shortly, and if it still doesn't show, email hello@irab.app.",
-      refresh: 'Refresh page',
-      checkoutError: "Couldn't open the checkout. Check your connection or disable ad-blockers, then try again.",
-      leftToday: (n: number) => `${n} left`,
-      unlimited: 'Unlimited',
-      user: 'User',
-      statsKicker: 'Your progress',
-      statAnalyzed: 'analyzed',
-      statPracticed: 'practiced',
-      statAvg: 'avg accuracy',
-      statStreak: 'day streak',
-      recentTitle: 'Recent activity',
-      recentEmpty: 'No activity yet: analyze a sentence or practice, and it shows up here.',
-      seeAll: 'See all',
-    };
-const historyHref = lang === 'ar' ? '/history' : '/en/history';
-const toolHref = lang === 'ar' ? '/tool' : '/en/tool';
-const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
 ---
-<div data-hub-root data-lang={lang} data-login={login} data-home={home} dir={dir} class="app-shell w-full max-w-6xl mx-auto">
-  <div data-hub-loading aria-busy="true" aria-label={t.loading} class="space-y-6">
-    <div class="app-hero skeleton h-56"></div>
-    <div class="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] gap-5">
-      <div class="skeleton h-96"></div>
-      <div class="skeleton h-96"></div>
+
+<div class="iu iu-hub" data-hub-root data-lang={lang} data-login={login} data-home={home} dir={dir} lang={lang}>
+  <div data-hub-loading aria-busy="true" aria-label={s.loading} class="hb-loading">
+    <div class="iu-card az-skel" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="hb-tools" aria-hidden="true">
+      {[0, 1, 2, 3].map(() => <div class="iu-card az-skel"><span></span><span></span><span></span></div>)}
     </div>
   </div>
 
-  <div data-hub-gate class="hidden app-gate panel-in text-center">
-    <div class="mx-auto mb-5 grid place-items-center app-gate-mark" aria-hidden="true">
-      <svg viewBox="0 0 24 24" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 15v2"/><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/>
-      </svg>
+  <section data-hub-gate class="hidden">
+    <div class="iu-card hb-gate">
+      <span class="hb-gate-icon"><Fragment set:html={ic.lock} /></span>
+      <h1 class="t-display c-1">{s.gateTitle}</h1>
+      <p class="t-body c-2">{s.gateBody}</p>
+      <a href={`${login}?next=${encodeURIComponent(p('/app'))}`} data-hub-gate-signin class="iu-btn teal lg">{s.signIn}</a>
     </div>
-    <h2 class:list={[titleClass, 'text-h2 leading-tight mb-3']}>{t.signInTitle}</h2>
-    <p class="text-body text-ink/70 dark:text-mist/70 mb-7 max-w-lg mx-auto">{t.signInBody}</p>
-    <a href={login} data-hub-gate-signin class="btn-primary btn-lg">{t.signInCta}</a>
-  </div>
+  </section>
 
-  <div data-hub class="hidden panel-in profile-dashboard">
-    <section class="profile-shell" aria-label={t.dashboard}>
-      <div class="profile-main-row">
-        <div class="identity-block">
-          <div class="profile-avatar" data-hub-avatar aria-hidden="true">إ</div>
-          <div class="identity-copy">
-            <p class="app-kicker">{t.profile}</p>
-            <h1 class:list={[titleClass, 'profile-title']} data-hub-name></h1>
-            <div class="profile-meta">
-              <span data-hub-email class="profile-email"></span>
-              <span class="profile-dot" aria-hidden="true"></span>
-              <span>{t.signedIn}</span>
-            </div>
-          </div>
+  <div data-hub class="hidden hb-body">
+    <section class="iu-card hb-profile" aria-label={s.statsLabel}>
+      <div class="hb-identity">
+        <div class="hb-avatar" data-hub-avatar aria-hidden="true">{en ? 'I' : 'إ'}</div>
+        <div class="hb-who">
+          <h1 class="t-title-l c-1 hb-name" data-hub-name></h1>
+          <p class="t-caption c-3 hb-email" data-hub-email dir="ltr"></p>
         </div>
-
-      <div class="account-actions">
-        <span data-hub-plan class="app-plan-pill">{t.planFree}</span>
-        <a href={historyHref} class="app-link">{t.history}</a>
-        <a href={account} class="app-link">{t.manage}</a>
-        <button type="button" data-hub-signout class="app-link app-link-muted">{t.signOut}</button>
+        <span data-hub-plan class="iu-tag missing hb-plan">{s.planFree}</span>
       </div>
+      <p data-plan-note class="t-body-s c-2 hb-note">{s.freeNote}</p>
+      <div class="hb-stats">
+        <div><span class="hb-stat" data-stat="analyze">{digits(0, lang)}</span><span class="t-caption c-3">{s.statAnalyzed}</span></div>
+        <div><span class="hb-stat" data-stat="practice">{digits(0, lang)}</span><span class="t-caption c-3">{s.statPracticed}</span></div>
+        <div><span class="hb-stat" data-stat="avg">-</span><span class="t-caption c-3">{s.statAvg}</span></div>
+        <div><span class="hb-stat" data-stat="streak">{digits(0, lang)}</span><span class="t-caption c-3">{s.statStreak}</span></div>
       </div>
-
-      <div class="profile-support-row">
-        <p data-plan-note class="profile-note">{t.freeNote}</p>
-        <div class="profile-metrics" aria-label={t.statsKicker}>
-          <div class="metric-item"><span class="metric-value" data-stat="analyze">0</span><span>{t.statAnalyzed}</span></div>
-          <div class="metric-item"><span class="metric-value" data-stat="practice">0</span><span>{t.statPracticed}</span></div>
-          <div class="metric-item"><span class="metric-value" data-stat="avg">0%</span><span>{t.statAvg}</span></div>
-          <div class="metric-item"><span class="metric-value" data-stat="streak">0</span><span>{t.statStreak}</span></div>
-        </div>
+      <div class="hb-links">
+        <a href={p('/history')} class="iu-pill quiet"><Fragment set:html={I.history} /><span>{s.history}</span></a>
+        <a href={p('/account')} class="iu-pill quiet"><Fragment set:html={ic.user} /><span>{s.manage}</span></a>
+        <button type="button" data-hub-signout class="iu-pill quiet hb-signout"><Fragment set:html={ic.logOut} /><span>{s.signOut}</span></button>
       </div>
     </section>
 
-    <section class="command-bar">
-      <div class="command-copy">
-        <p class="app-kicker">{t.continueTitle}</p>
-        <h2 class:list={[titleClass, 'command-title']}>{t.continueBody}</h2>
-      </div>
-      <div class="command-actions">
-        <a href={toolHref} class="command-action command-action-primary">
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>
-          <span>{t.primaryTool}</span>
-        </a>
-        <a href={practiceHref} class="command-action">
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
-          <span>{t.secondaryTool}</span>
-        </a>
-      </div>
-    </section>
-
-    <div data-hub-activating class="hidden app-activating" aria-live="polite"
-         data-s-slow={t.activatingSlow} data-s-timeout-title={t.timeoutTitle} data-s-timeout-body={t.timeoutBody}>
-      <svg viewBox="0 0 24 24" class="w-7 h-7 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M20 6 9 17l-5-5"/>
-      </svg>
+    <div data-hub-activating class="hidden iu-card hb-activating" aria-live="polite"
+         data-s-slow={s.activatingSlow} data-s-timeout-title={s.timeoutTitle} data-s-timeout-body={s.timeoutBody}>
+      <span class="hb-act-icon"><Fragment set:html={I.check} /></span>
       <div>
-        <p data-hub-act-title class:list={[titleClass, 'text-h3 leading-tight']}>{t.activatingTitle}</p>
-        <p data-hub-act-body class="text-small text-ink/70 dark:text-mist/70">{t.activatingBody}</p>
-        <button type="button" data-hub-refresh class="hidden act-refresh">{t.refresh}</button>
+        <p data-hub-act-title class="t-body-strong c-1">{s.activatingTitle}</p>
+        <p data-hub-act-body class="t-body-s c-2">{s.activatingBody}</p>
+        <button type="button" data-hub-refresh class="hidden iu-btn secondary hb-refresh"><Fragment set:html={I.refresh} />{s.refresh}</button>
       </div>
     </div>
 
-    <section class="workspace-panel">
-      <div class="workspace-head">
-        <div>
-          <p class="app-kicker">{t.workspaceEyebrow}</p>
-          <h2 class:list={[titleClass, 'workspace-title']}>{t.tools}</h2>
-          <p class="workspace-body">{t.toolsBody}</p>
-        </div>
-      </div>
-
-      <div class="workspace-list">
+    <section>
+      <h2 class="t-title c-1 hb-h2">{s.tools}</h2>
+      <div class="hb-tools" data-hub-tools>
         {tools.map((tool) => (
-          <a href={tool.href} data-usage-key={tool.usageKey} class:list={['workspace-row', tool.accent === 'teal' ? 'workspace-row-teal' : 'workspace-row-purple']}>
-            <span class="workspace-icon" aria-hidden="true">
-              {tool.key === 'analyzer' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>
-              )}
-              {tool.key === 'practice' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
-              )}
-              {tool.key === 'challenges' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="m9 8 1.5 1.5L14 6"/><path d="M9 14h7"/></svg>
-              )}
-              {tool.key === 'dictionary' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7"/><path d="M9 11h5"/></svg>
-              )}
-              {tool.key === 'quran' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v15"/><path d="M5 4h4a3 3 0 0 1 3 3v14a3 3 0 0 0-3-3H5z"/><path d="M19 4h-4a3 3 0 0 0-3 3"/></svg>
-              )}
-              {tool.key === 'library' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9.5 2v15"/><path d="M13 6h3"/></svg>
-              )}
+          <a href={tool.href} data-usage-key={tool.usage || undefined} class:list={['iu-card', 'hb-tool', `hb-${tool.tone}`]}>
+            <span class="hb-tool-icon" aria-hidden="true"><Fragment set:html={ic[tool.key as keyof typeof ic]} /></span>
+            <span class="hb-tool-text">
+              <span class="t-body-strong c-1">{tool.title}</span>
+              <span class="t-caption c-2">{tool.desc}</span>
+              {tool.usage && <span data-usage class="t-micro hb-usage"></span>}
             </span>
-            <span class="workspace-main">
-              <span class:list={[titleClass, 'workspace-row-title']}>{tool.title}</span>
-              <span class="workspace-row-desc">{tool.desc}</span>
-            </span>
-            <span data-usage class="workspace-usage"></span>
-            <span class="workspace-cta">{tool.cta}<span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></span>
+            <Fragment set:html={chev} />
           </a>
         ))}
       </div>
     </section>
 
-    <div class="profile-info-rail">
-      <details class="usage-disclosure" data-acc>
-        <summary>
-          <span>
-            <span class="app-kicker">{t.today}</span>
-            <strong>{t.todayBody}</strong>
-          </span>
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-        </summary>
-        <div class="usage-inline-list">
-          <div class="usage-inline-row">
-            <span>{t.practice}</span>
-            <strong data-usage-summary="customPractice">0</strong>
-          </div>
-          <div class="usage-inline-row">
-            <span>{t.challenges}</span>
-            <strong data-usage-summary="practiceMode">0</strong>
-          </div>
-          <div class="usage-inline-row">
-            <span>{t.dictionary}</span>
-            <strong data-usage-summary="smartDictionary">0</strong>
-          </div>
+    <section data-hub-upgrade class="hidden iu-card hb-upgrade">
+      <div class="hb-upgrade-head">
+        <span class="hb-upgrade-icon" aria-hidden="true"><Fragment set:html={I.crown} /></span>
+        <div>
+          <h2 class="t-title c-1">{s.upgradeTitle}</h2>
+          <p class="t-body-s c-2">{s.upgradeBody}</p>
         </div>
-      </details>
-
-      <section data-hub-upgrade class="hidden upgrade-nudge">
-        <div class="upgrade-copy">
-          <p class="app-kicker">{t.upgradeEyebrow}</p>
-          <p class:list={[titleClass, 'upgrade-lead']}>{t.upgradeBody}</p>
-        </div>
-        {PADDLE_ENABLED ? (
-          <div class="upgrade-actions">
-            <button type="button" data-paddle-plan="annual" class="upgrade-btn upgrade-btn-primary">
-              <span>{t.annualCta}</span>
-              <small>{t.annualPrice} · {t.annualMeta}</small>
-            </button>
-            <button type="button" data-paddle-plan="monthly" class="upgrade-btn">
-              <span>{t.monthlyCta}</span>
-              <small>{t.monthlyPrice}</small>
-            </button>
-            <p data-hub-pay-error class="hidden upgrade-error" role="alert">{t.checkoutError}</p>
-          </div>
-        ) : (
-          <a href={`${home}#cta`} class="upgrade-btn upgrade-btn-primary">{lang === 'ar' ? 'حمّل التطبيق' : 'Get the app'}</a>
-        )}
-      </section>
-    </div>
-
-    <section data-hub-recent class="app-panel hidden">
-      <div class="flex items-center justify-between gap-4 mb-5">
-        <h2 class="recent-heading">{t.recentTitle}</h2>
-        <a href={historyHref} data-recent-seeall class="btn-ghost app-action hidden">{t.seeAll}</a>
       </div>
-      <ul data-recent-list class="recent-list"></ul>
-      <p data-recent-empty class="hidden text-small text-ink/65 dark:text-mist/65 py-8 text-center">{t.recentEmpty}</p>
+      <ul class="hb-benefits">
+        {s.benefits.map((b) => <li class="t-body-s c-1"><Fragment set:html={I.checkCircle} /><span>{b}</span></li>)}
+      </ul>
+      {PADDLE_ENABLED ? (
+        <div class="hb-plans">
+          <button type="button" data-paddle-plan="annual" class="iu-btn primary lg hb-plan-btn">
+            <span>{s.annualCta}</span><small>{s.annualMeta}</small>
+          </button>
+          <button type="button" data-paddle-plan="monthly" class="iu-btn secondary lg hb-plan-btn">
+            <span>{s.monthlyCta}</span><small>{s.monthlyMeta}</small>
+          </button>
+          <p data-hub-pay-error class="hidden t-body-s c-error hb-pay-error" role="alert">{s.checkoutError}</p>
+        </div>
+      ) : (
+        <a href={`${home}#cta`} class="iu-btn primary lg">{s.getApp}</a>
+      )}
+    </section>
+
+    <section data-hub-recent class="hidden">
+      <div class="hb-recent-head">
+        <h2 class="t-title c-1 hb-h2">{s.recentTitle}</h2>
+        <a href={p('/history')} data-recent-seeall class="iu-card-link">{s.seeAll}<Fragment set:html={chev} /></a>
+      </div>
+      <div data-recent-list class="hb-recent"></div>
     </section>
   </div>
 </div>
 
-<style>
-  .app-shell { --panel-pad: clamp(1.25rem, 2.4vw, 2rem); }
-  .app-gate,
-  .app-hero,
-  .app-panel,
-  .usage-panel,
-  .upgrade-panel,
-  .app-activating {
-    background: var(--color-card);
-    border: 1px solid var(--color-card-edge);
-    box-shadow: var(--shadow-lift);
-  }
-  :global(.dark) .app-gate,
-  :global(.dark) .app-hero,
-  :global(.dark) .app-panel,
-  :global(.dark) .usage-panel,
-  :global(.dark) .upgrade-panel,
-  :global(.dark) .app-activating {
-    background: var(--color-coal-soft);
-    border-color: var(--color-coal-edge);
-    box-shadow: 0 20px 46px -24px rgb(0 0 0 / 0.75);
-  }
-  .upgrade-error {
-    grid-column: 1 / -1;
-    margin-top: 0.6rem; padding: 0.7rem 0.95rem; border-radius: 10px;
-    font-size: 0.92rem; line-height: 1.6;
-    color: #8C2E2A; background: #FBEDEB; border: 1px solid #EBCFCC;
-  }
-  :global(.dark) .upgrade-error { color: #F0A9A2; background: rgb(164 64 60 / 0.16); border-color: rgb(164 64 60 / 0.38); }
-  .upgrade-error.hidden { display: none; }
-
-  .act-refresh {
-    margin-top: 0.9rem; padding: 0.55rem 1.3rem; border-radius: 10px;
-    font-weight: 700; cursor: pointer;
-    color: var(--color-paper); background: var(--color-ink); border: none;
-    transition: background 0.2s;
-  }
-  .act-refresh:hover { background: var(--color-purple); color: #fff; }
-  :global(.dark) .act-refresh { color: var(--color-coal); background: var(--color-mist); }
-  :global(.dark) .act-refresh:hover { background: var(--color-purple); color: #fff; }
-  .act-refresh.hidden { display: none; }
-
-  .app-gate { border-radius: 1.25rem; padding: clamp(2rem, 6vw, 4rem); }
-  .app-gate-mark {
-    width: 4.25rem; height: 4.25rem; border-radius: 1.2rem;
-    color: var(--color-purple-deep);
-    background: color-mix(in srgb, var(--color-purple) 12%, white);
-    border: 1px solid color-mix(in srgb, var(--color-purple) 28%, var(--color-card-edge));
-  }
-  .app-hero {
-    border-radius: 1.25rem;
-    padding: clamp(1.4rem, 3vw, 2.25rem);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 1.25rem;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .app-hero::before {
-    content: "";
-    position: absolute;
-    inset-inline-start: 0;
-    top: 0;
-    width: 0.45rem;
-    height: 100%;
-    background: var(--color-purple);
-  }
-  .app-title { font-size: clamp(2.25rem, 5vw, 4.25rem); }
-  .app-subtitle { max-width: 42rem; color: color-mix(in srgb, var(--color-ink) 70%, transparent); font-size: var(--text-small); }
-  :global(.dark) .app-subtitle { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
-  .app-kicker {
-    display: block;
-    color: var(--color-purple-deep);
-    font-weight: 800;
-    font-size: var(--text-caption);
-    line-height: 1.35;
-  }
-  :global(.dark) .app-kicker { color: color-mix(in srgb, var(--color-purple) 85%, white); }
-  .app-kicker-light { color: color-mix(in srgb, white 86%, transparent); }
-  .app-status { display: flex; flex-direction: column; align-items: flex-end; gap: 1rem; }
-  .app-plan-pill {
-    display: inline-flex; align-items: center; justify-content: center;
-    min-width: 8rem;
-    border-radius: 999px;
-    padding: 0.65rem 1.1rem;
-    font-size: var(--text-caption);
-    font-weight: 800;
-    background: color-mix(in srgb, var(--color-ink) 8%, transparent);
-    color: var(--color-ink);
-  }
-  .app-plan-pill.is-plus {
-    background: var(--color-purple);
-    color: white;
-    box-shadow: 0 14px 26px -12px color-mix(in srgb, var(--color-purple) 70%, transparent);
-  }
-  .app-action { padding: 0.7rem 1.05rem; font-size: var(--text-caption); }
-  .app-action-muted { color: color-mix(in srgb, var(--color-ink) 62%, transparent); }
-  :global(.dark) .app-action-muted { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
-
-  .profile-hero,
-  .quick-panel {
-    border-radius: 0.65rem;
-    border: 1px solid var(--color-card-edge);
-    background: var(--color-card);
-    box-shadow: var(--shadow-card);
-  }
-  :global(.dark) .profile-hero,
-  :global(.dark) .quick-panel {
-    background: var(--color-coal-soft);
-    border-color: var(--color-coal-edge);
-    box-shadow: 0 18px 46px -28px rgb(0 0 0 / 0.78);
-  }
-  .profile-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(21rem, 0.46fr);
-    gap: 1px;
-    overflow: hidden;
-    background: var(--color-card-edge);
-  }
-  :global(.dark) .profile-hero { background: var(--color-coal-edge); }
-  .profile-card,
-  .profile-side {
-    background: var(--color-card);
-    padding: clamp(1.25rem, 2.6vw, 2rem);
-  }
-  :global(.dark) .profile-card,
-  :global(.dark) .profile-side { background: var(--color-coal-soft); }
-  .profile-card {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 1.15rem;
-    align-items: center;
-  }
-  .profile-avatar {
-    width: clamp(4.4rem, 8vw, 6rem);
-    height: clamp(4.4rem, 8vw, 6rem);
-    border-radius: 0.65rem;
-    display: grid;
-    place-items: center;
-    flex: none;
-    color: white;
-    background: var(--color-ink);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 16px 28px -18px rgb(23 56 71 / 0.46);
-    font-family: var(--font-arabic-display);
-    font-weight: 800;
-    font-size: clamp(2.2rem, 5vw, 3.3rem);
-    line-height: 1;
-  }
-  :global(.dark) .profile-avatar { background: var(--color-purple-deep); }
-  .profile-copy { min-width: 0; }
-  .profile-title {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35em;
-    align-items: baseline;
-    margin-top: 0.15rem;
-    font-size: clamp(2.4rem, 5vw, 4.4rem);
-    line-height: 1.03;
-  }
-  .profile-meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.55rem;
-    margin-top: 0.6rem;
-    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
-    font-size: var(--text-caption);
-    font-weight: 700;
-  }
-  :global(.dark) .profile-meta { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
-  .profile-email {
-    max-width: min(32rem, 100%);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    direction: ltr;
-    unicode-bidi: plaintext;
-  }
-  .profile-dot {
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 999px;
-    background: var(--color-teal);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-teal) 14%, transparent);
-  }
-  .profile-side {
-    display: grid;
-    align-content: space-between;
-    gap: 1rem;
-  }
-  .profile-plan-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.8rem;
-  }
-  .profile-side-label {
-    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
-    font-size: var(--text-caption);
-    font-weight: 800;
-  }
-  :global(.dark) .profile-side-label { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
-  .profile-ready {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.75rem;
-    align-items: start;
-    border-radius: 0.55rem;
-    padding: 0.95rem;
-    background: color-mix(in srgb, var(--color-paper-soft) 70%, white);
-    border: 1px solid var(--color-card-edge);
-  }
-  :global(.dark) .profile-ready { background: color-mix(in srgb, var(--color-coal) 56%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
-  .profile-ready strong,
-  .profile-ready small { display: block; }
-  .profile-ready strong { font-size: var(--text-small); line-height: 1.2; }
-  .profile-ready small {
-    margin-top: 0.2rem;
-    color: color-mix(in srgb, var(--color-ink) 66%, transparent);
-    font-size: var(--text-caption);
-    line-height: 1.45;
-  }
-  :global(.dark) .profile-ready small { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
-  .ready-icon {
-    width: 2.15rem;
-    height: 2.15rem;
-    border-radius: 0.5rem;
-    display: grid;
-    place-items: center;
-    color: white;
-    background: var(--color-teal);
-  }
-  .ready-icon svg { width: 1.1rem; height: 1.1rem; }
-  .profile-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-
-  .quick-panel {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 1rem;
-    align-items: center;
-    padding: clamp(1rem, 2vw, 1.35rem);
-  }
-  .quick-title { font-size: clamp(1.75rem, 3vw, 2.35rem); line-height: 1.12; }
-  .quick-body {
-    color: color-mix(in srgb, var(--color-ink) 66%, transparent);
-    font-size: var(--text-caption);
-    line-height: 1.5;
-  }
-  :global(.dark) .quick-body { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
-  .quick-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(10rem, 1fr));
-    gap: 0.75rem;
-  }
-  .quick-action {
-    min-height: 3.8rem;
-    border-radius: 0.55rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.65rem;
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--color-card-edge);
-    background: color-mix(in srgb, var(--color-paper-soft) 66%, white);
-    color: var(--color-ink);
-    font-size: var(--text-caption);
-    font-weight: 900;
-    transition: transform .22s var(--ease-out-quart), box-shadow .22s var(--ease-out-quart), border-color .2s, background-color .2s, color .2s;
-  }
-  :global(.dark) .quick-action { background: color-mix(in srgb, var(--color-coal) 54%, var(--color-coal-soft)); color: var(--color-mist); border-color: var(--color-coal-edge); }
-  .quick-action:hover {
-    transform: translateY(-3px);
-    border-color: color-mix(in srgb, var(--color-teal) 52%, var(--color-card-edge));
-    box-shadow: var(--lift-shadow);
-  }
-  .quick-action-primary {
-    color: white;
-    background: var(--color-ink);
-    border-color: var(--color-ink);
-  }
-  :global(.dark) .quick-action-primary { background: var(--color-purple); border-color: var(--color-purple); color: white; }
-  .quick-action-primary:hover { border-color: var(--color-purple); background: var(--color-purple); }
-  .quick-icon {
-    width: 1.8rem;
-    height: 1.8rem;
-    display: grid;
-    place-items: center;
-  }
-  .quick-icon svg { width: 1.25rem; height: 1.25rem; transition: transform .22s var(--ease-out-quart); }
-  .quick-action:hover .quick-icon svg { transform: scale(1.12); }
-
-  .dashboard-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.16fr) minmax(21rem, 0.84fr);
-    gap: 1rem;
-    align-items: start;
-  }
-
-  /* Stats strip */
-  .app-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem; }
-  .stat-tile {
-    border-radius: 0.55rem; padding: 1.05rem 1.1rem;
-    background: var(--color-card); border: 1px solid var(--color-card-edge); box-shadow: var(--shadow-card);
-    display: flex; flex-direction: column; gap: 0.25rem;
-    transition: transform .22s var(--ease-out-quart), border-color .22s, box-shadow .22s;
-  }
-  :global(.dark) .stat-tile { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
-  .stat-tile:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--color-ink) 18%, var(--color-card-edge)); box-shadow: var(--lift-shadow); }
-  :global(.dark) .stat-tile:hover { border-color: color-mix(in srgb, var(--color-purple) 34%, var(--color-coal-edge)); }
-  .stat-tile-num { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1; color: var(--color-ink); }
-  :global(.dark) .stat-tile-num { color: var(--color-mist); }
-  .stat-tile-purple .stat-tile-num { color: var(--color-purple-deep); }
-  :global(.dark) .stat-tile-purple .stat-tile-num { color: color-mix(in srgb, var(--color-purple) 85%, white); }
-  .stat-tile-teal .stat-tile-num { color: var(--color-teal); }
-  .stat-tile-label { font-size: var(--text-caption); font-weight: 700; color: color-mix(in srgb, var(--color-ink) 66%, transparent); }
-  :global(.dark) .stat-tile-label { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
-
-  /* Recent activity */
-  /* .recent-* rows are injected via JS — styled in the global block below. */
-  .app-panel,
-  .usage-panel {
-    border-radius: 0.65rem;
-    padding: var(--panel-pad);
-  }
-  .app-activating {
-    border-radius: 0.65rem;
-    padding: 1rem 1.25rem;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    color: var(--color-teal);
-    border-color: color-mix(in srgb, var(--color-teal) 45%, var(--color-card-edge));
-  }
-  .app-activating.hidden { display: none; }
-  .tool-card {
-    min-height: 13.75rem;
-    border-radius: 0.55rem;
-    padding: 1.15rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    background: color-mix(in srgb, var(--color-paper-soft) 62%, white);
-    border: 1px solid var(--color-card-edge);
-    transition: transform .24s var(--ease-out-quart), border-color .22s, box-shadow .22s, background-color .22s;
-  }
-  :global(.dark) .tool-card {
-    background: color-mix(in srgb, var(--color-coal) 52%, var(--color-coal-soft));
-    border-color: var(--color-coal-edge);
-  }
-  .tool-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--lift-shadow);
-    background: var(--color-card);
-  }
-  :global(.dark) .tool-card:hover { background: var(--color-coal-soft); }
-  .tool-card-purple:hover { border-color: color-mix(in srgb, var(--color-purple) 48%, var(--color-card-edge)); }
-  .tool-card-teal:hover { border-color: color-mix(in srgb, var(--color-teal) 52%, var(--color-card-edge)); }
-  .tool-icon {
-    width: 3rem; height: 3rem; border-radius: 0.55rem;
-    display: grid; place-items: center;
-    background: white;
-    border: 1px solid var(--color-card-edge);
-  }
-  :global(.dark) .tool-icon { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
-  .tool-card-purple .tool-icon, .tool-card-purple .tool-cta { color: var(--color-purple-deep); }
-  .tool-card-teal .tool-icon, .tool-card-teal .tool-cta { color: var(--color-teal); }
-  .tool-icon svg { width: 1.55rem; height: 1.55rem; }
-  .tool-title { display: block; font-size: 1.5rem; line-height: 1.25; }
-  .tool-desc {
-    display: block;
-    margin-top: 0.35rem;
-    color: color-mix(in srgb, var(--color-ink) 68%, transparent);
-    font-size: var(--text-caption);
-    line-height: 1.55;
-  }
-  :global(.dark) .tool-desc { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
-  .tool-footer {
-    margin-top: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.8rem;
-  }
-  .tool-usage {
-    min-height: 1.75rem;
-    color: color-mix(in srgb, var(--color-ink) 58%, transparent);
-    font-size: var(--text-caption);
-    font-weight: 800;
-  }
-  :global(.dark) .tool-usage { color: color-mix(in srgb, var(--color-mist) 70%, transparent); }
-  .tool-cta {
-    display: inline-flex;
-    gap: 0.35rem;
-    align-items: center;
-    font-size: var(--text-caption);
-    font-weight: 800;
-    white-space: nowrap;
-  }
-  .usage-panel { display: grid; gap: 1rem; }
-  .usage-intro {
-    margin-top: 0.25rem;
-    color: color-mix(in srgb, var(--color-ink) 64%, transparent);
-    font-size: var(--text-caption);
-    line-height: 1.45;
-  }
-  :global(.dark) .usage-intro { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
-  .usage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-  .usage-card {
-    border-radius: 0.55rem;
-    border: 1px solid var(--color-card-edge);
-    background: color-mix(in srgb, var(--color-paper-soft) 58%, white);
-    padding: 1rem;
-  }
-  :global(.dark) .usage-card { background: color-mix(in srgb, var(--color-coal) 48%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
-  .usage-label {
-    display: block;
-    font-size: var(--text-caption);
-    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
-    font-weight: 700;
-  }
-  :global(.dark) .usage-label { color: color-mix(in srgb, var(--color-mist) 68%, transparent); }
-  .usage-card strong {
-    display: block;
-    margin-top: 0.15rem;
-    font-family: var(--font-display);
-    font-size: clamp(1.8rem, 4vw, 2.55rem);
-    line-height: 1.05;
-    color: var(--color-ink);
-  }
-  :global(.dark) .usage-card strong { color: var(--color-mist); }
-  .upgrade-panel {
-    border-radius: 0.65rem;
-    padding: var(--panel-pad);
-    color: white;
-    background: var(--color-ink);
-    border-color: color-mix(in srgb, var(--color-purple) 42%, transparent);
-  }
-  :global(.dark) .upgrade-panel {
-    background: color-mix(in srgb, var(--color-coal-soft) 72%, var(--color-purple-deep));
-  }
-  .upgrade-title { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.08; }
-  .upgrade-body {
-    margin-top: 0.75rem;
-    color: color-mix(in srgb, white 78%, transparent);
-    font-size: var(--text-small);
-    line-height: 1.55;
-  }
-  .upgrade-features {
-    list-style: none;
-    display: grid;
-    gap: 0.55rem;
-    margin: 1rem 0 0;
-    padding: 0;
-  }
-  .upgrade-features li {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    color: color-mix(in srgb, white 88%, transparent);
-    font-size: var(--text-caption);
-    font-weight: 800;
-    line-height: 1.35;
-  }
-  .upgrade-features svg {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex: none;
-    color: var(--color-teal);
-    background: white;
-    border-radius: 999px;
-    padding: 0.18rem;
-  }
-  .upgrade-plans { display: grid; gap: 0.85rem; margin-top: 1.25rem; }
-  .plan-card {
-    position: relative;
-    width: 100%;
-    text-align: start;
-    border-radius: 0.55rem;
-    padding: 1.05rem;
-    background: rgb(255 255 255 / 0.1);
-    border: 1px solid rgb(255 255 255 / 0.18);
-    color: white;
-    transition: transform .2s var(--ease-out-quart), background-color .2s, border-color .2s;
-  }
-  .plan-card:hover {
-    transform: translateY(-3px);
-    background: rgb(255 255 255 / 0.16);
-    border-color: rgb(255 255 255 / 0.38);
-  }
-  .plan-card-featured {
-    background: white;
-    color: var(--color-ink);
-    border-color: white;
-    box-shadow: 0 18px 34px -18px rgb(0 0 0 / 0.55);
-  }
-  .plan-card-featured:hover { background: white; border-color: white; }
-  .plan-badge {
-    position: absolute;
-    inset-inline-end: 1rem;
-    top: 1rem;
-    border-radius: 999px;
-    padding: 0.26rem 0.7rem;
-    background: var(--color-teal);
-    color: white;
-    font-size: 0.95rem;
-    font-weight: 900;
-  }
-  .plan-name,
-  .plan-meta,
-  .plan-cta { display: block; }
-  .plan-name { font-size: var(--text-caption); font-weight: 900; opacity: 0.78; }
-  .plan-price { display: block; margin-top: 0.2rem; font-family: var(--font-display); font-size: 2.45rem; line-height: 1; font-weight: 700; }
-  .plan-meta { margin-top: 0.2rem; font-size: var(--text-caption); opacity: 0.76; }
-  .plan-cta {
-    margin-top: 0.8rem;
-    border-radius: 999px;
-    padding: 0.62rem 0.9rem;
-    text-align: center;
-    font-size: var(--text-caption);
-    font-weight: 900;
-    background: rgb(255 255 255 / 0.16);
-  }
-  .plan-card-featured .plan-cta { background: var(--color-purple); color: white; }
-  .upgrade-fineprint {
-    margin-top: 1rem;
-    color: color-mix(in srgb, white 66%, transparent);
-    font-size: var(--text-caption);
-    line-height: 1.45;
-  }
-  .upgrade-link {
-    display: inline-flex;
-    margin-top: 0.55rem;
-    color: white;
-    font-size: var(--text-caption);
-    font-weight: 800;
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
-  }
-  @media (max-width: 780px) {
-    .profile-hero,
-    .dashboard-grid,
-    .quick-panel { grid-template-columns: 1fr; }
-    .profile-card { grid-template-columns: 1fr; text-align: center; }
-    .profile-avatar { margin-inline: auto; }
-    .profile-title { justify-content: center; }
-    .profile-meta { justify-content: center; }
-    .profile-plan-row { align-items: flex-start; }
-    .profile-actions { flex-direction: column; }
-    .quick-actions { grid-template-columns: 1fr; }
-    .app-hero { grid-template-columns: 1fr; }
-    .app-status { align-items: stretch; }
-    .app-status > .flex { flex-direction: column; }
-    .app-action { width: 100%; }
-    .usage-grid { grid-template-columns: 1fr; }
-    .tool-card { min-height: 14rem; }
-    .app-stats { grid-template-columns: 1fr 1fr; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .tool-card:hover,
-    .plan-card:hover,
-    .stat-tile:hover,
-    .quick-action:hover { transform: none; }
-    .quick-action:hover .quick-icon svg { transform: none; }
-  }
-
-  /* Profile dashboard v2: calm, sparse, and action-led. These rules override
-     the older card-heavy dashboard styles above while keeping the same auth
-     wiring and Paddle hooks. */
-  .dashboard-flow {
-    display: grid;
-    gap: 0.9rem;
-  }
-  .profile-strip,
-  .start-panel,
-  .stats-strip,
-  .workspace-panel,
-  .usage-panel,
-  .upgrade-panel,
-  .app-panel,
-  .app-activating {
-    border-radius: 0.55rem;
-    border: 1px solid var(--color-card-edge);
-    background: var(--color-card);
-    box-shadow: 0 12px 28px -22px rgb(23 56 71 / 0.34);
-  }
-  :global(.dark) .profile-strip,
-  :global(.dark) .start-panel,
-  :global(.dark) .stats-strip,
-  :global(.dark) .workspace-panel,
-  :global(.dark) .usage-panel,
-  :global(.dark) .upgrade-panel,
-  :global(.dark) .app-panel,
-  :global(.dark) .app-activating {
-    background: var(--color-coal-soft);
-    border-color: var(--color-coal-edge);
-    box-shadow: 0 16px 42px -28px rgb(0 0 0 / 0.78);
-  }
-  .profile-strip {
-    min-height: 7.5rem;
-    padding: 1.15rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  .identity-block {
-    display: flex;
-    align-items: center;
-    gap: 0.95rem;
-    min-width: 0;
-  }
-  .profile-avatar {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 0.55rem;
-    display: grid;
-    place-items: center;
-    color: white;
-    background: var(--color-ink);
-    box-shadow: 0 14px 24px -18px rgb(23 56 71 / 0.55);
-    font-family: var(--font-display);
-    font-size: 2.15rem;
-    line-height: 1;
-  }
-  :global(.dark) .profile-avatar { background: var(--color-purple-deep); }
-  .identity-copy { min-width: 0; }
-  .profile-title {
-    margin-top: 0.1rem;
-    max-width: 38rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: clamp(2rem, 3.4vw, 3.15rem);
-    line-height: 1.05;
-    color: var(--color-ink);
-  }
-  :global(.dark) .profile-title { color: var(--color-mist); }
-  .profile-meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.25rem;
-    color: color-mix(in srgb, var(--color-ink) 60%, transparent);
-    font-size: var(--text-caption);
-    font-weight: 700;
-  }
-  :global(.dark) .profile-meta { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
-  .profile-email {
-    max-width: min(30rem, 100%);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    direction: ltr;
-    unicode-bidi: plaintext;
-  }
-  .profile-dot {
-    width: 0.42rem;
-    height: 0.42rem;
-    border-radius: 999px;
-    background: var(--color-teal);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-teal) 14%, transparent);
-  }
-  .account-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.55rem;
-    flex-wrap: wrap;
-  }
-  .app-plan-pill {
-    min-width: 0;
-    border-radius: 999px;
-    padding: 0.48rem 0.85rem;
-    background: color-mix(in srgb, var(--color-ink) 7%, transparent);
-    color: var(--color-ink);
-    font-size: var(--text-caption);
-    font-weight: 900;
-  }
-  :global(.dark) .app-plan-pill { color: var(--color-mist); background: color-mix(in srgb, white 9%, transparent); }
-  .app-plan-pill.is-plus {
-    color: white;
-    background: var(--color-purple);
-    box-shadow: 0 12px 24px -16px color-mix(in srgb, var(--color-purple) 80%, transparent);
-  }
-  .app-link {
-    border-radius: 0.5rem;
-    border: 1px solid var(--color-card-edge);
-    background: var(--color-card);
-    padding: 0.55rem 0.85rem;
-    color: var(--color-ink);
-    font-size: var(--text-caption);
-    font-weight: 800;
-    transition: transform .18s var(--ease-out-quart), border-color .18s, box-shadow .18s, color .18s;
-  }
-  :global(.dark) .app-link { background: var(--color-coal-soft); border-color: var(--color-coal-edge); color: var(--color-mist); }
-  .app-link:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--color-purple) 38%, var(--color-card-edge));
-    box-shadow: var(--shadow-card);
-    color: var(--color-purple-deep);
-  }
-  .app-link-muted { color: color-mix(in srgb, var(--color-ink) 56%, transparent); }
-  :global(.dark) .app-link-muted { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
-
-  .start-panel {
-    padding: 1.1rem;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 1rem;
-  }
-  .start-title,
-  .workspace-title,
-  .panel-title {
-    font-size: clamp(1.65rem, 2.7vw, 2.25rem);
-    line-height: 1.12;
-    color: var(--color-ink);
-  }
-  :global(.dark) .start-title,
-  :global(.dark) .workspace-title,
-  :global(.dark) .panel-title { color: var(--color-mist); }
-  .start-note,
-  .workspace-body,
-  .panel-note {
-    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
-    font-size: var(--text-caption);
-    line-height: 1.5;
-  }
-  :global(.dark) .start-note,
-  :global(.dark) .workspace-body,
-  :global(.dark) .panel-note { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
-  .start-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(9.75rem, 1fr));
-    gap: 0.65rem;
-  }
-  .start-action {
-    min-height: 3.3rem;
-    border-radius: 0.5rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.55rem;
-    padding: 0.7rem 0.95rem;
-    border: 1px solid var(--color-card-edge);
-    background: color-mix(in srgb, var(--color-paper-soft) 64%, white);
-    color: var(--color-ink);
-    font-size: var(--text-caption);
-    font-weight: 900;
-    transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, background-color .2s;
-  }
-  :global(.dark) .start-action { background: color-mix(in srgb, var(--color-coal) 54%, var(--color-coal-soft)); border-color: var(--color-coal-edge); color: var(--color-mist); }
-  .start-action svg { width: 1.1rem; height: 1.1rem; transition: transform .2s var(--ease-out-quart); }
-  .start-action:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--color-teal) 48%, var(--color-card-edge));
-    box-shadow: var(--shadow-card);
-  }
-  .start-action:hover svg { transform: scale(1.1); }
-  .start-action-primary {
-    color: white;
-    background: var(--color-ink);
-    border-color: var(--color-ink);
-  }
-  .start-action-primary:hover { background: var(--color-purple); border-color: var(--color-purple); }
-  :global(.dark) .start-action-primary { background: var(--color-purple); border-color: var(--color-purple); color: white; }
-
-  .stats-strip {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .stat-cell {
-    min-height: 5.2rem;
-    padding: 0.9rem 1rem;
-    border-inline-start: 1px solid var(--color-card-edge);
-    display: grid;
-    gap: 0.1rem;
-    align-content: center;
-  }
-  :global(.dark) .stat-cell { border-color: var(--color-coal-edge); }
-  .stat-cell:first-child { border-inline-start: 0; }
-  .stat-value {
-    font-family: var(--font-display);
-    color: var(--color-ink);
-    font-size: clamp(1.7rem, 3vw, 2.45rem);
-    line-height: 1;
-  }
-  :global(.dark) .stat-value { color: var(--color-mist); }
-  .stat-purple { color: var(--color-purple-deep); }
-  .stat-teal { color: var(--color-teal); }
-  .stat-label {
-    color: color-mix(in srgb, var(--color-ink) 58%, transparent);
-    font-size: var(--text-caption);
-    font-weight: 800;
-  }
-  :global(.dark) .stat-label { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
-
-  .workspace-panel,
-  .usage-panel,
-  .upgrade-panel,
-  .app-panel { padding: clamp(1rem, 2vw, 1.35rem); }
-  .workspace-head { margin-bottom: 0.85rem; }
-  .workspace-list {
-    display: grid;
-    gap: 0.55rem;
-  }
-  .workspace-row {
-    min-height: 5.4rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--color-card-edge);
-    background: color-mix(in srgb, var(--color-paper-soft) 48%, white);
-    padding: 0.8rem;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto auto;
-    align-items: center;
-    gap: 0.8rem;
-    transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, background-color .2s;
-  }
-  :global(.dark) .workspace-row { background: color-mix(in srgb, var(--color-coal) 50%, var(--color-coal-soft)); border-color: var(--color-coal-edge); }
-  .workspace-row:hover {
-    transform: translateY(-2px);
-    background: var(--color-card);
-    box-shadow: var(--shadow-card);
-  }
-  :global(.dark) .workspace-row:hover { background: var(--color-coal-soft); }
-  .workspace-row-purple:hover { border-color: color-mix(in srgb, var(--color-purple) 42%, var(--color-card-edge)); }
-  .workspace-row-teal:hover { border-color: color-mix(in srgb, var(--color-teal) 46%, var(--color-card-edge)); }
-  .workspace-icon {
-    width: 2.65rem;
-    height: 2.65rem;
-    border-radius: 0.5rem;
-    display: grid;
-    place-items: center;
-    color: var(--color-purple-deep);
-    background: var(--color-card);
-    border: 1px solid var(--color-card-edge);
-  }
-  .workspace-row-teal .workspace-icon,
-  .workspace-row-teal .workspace-cta { color: var(--color-teal); }
-  :global(.dark) .workspace-icon { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
-  .workspace-icon svg { width: 1.25rem; height: 1.25rem; }
-  .workspace-main { min-width: 0; }
-  .workspace-row-title {
-    display: block;
-    color: var(--color-ink);
-    font-size: 1.35rem;
-    line-height: 1.2;
-  }
-  :global(.dark) .workspace-row-title { color: var(--color-mist); }
-  .workspace-row-desc {
-    display: block;
-    margin-top: 0.18rem;
-    color: color-mix(in srgb, var(--color-ink) 60%, transparent);
-    font-size: var(--text-caption);
-    line-height: 1.4;
-  }
-  :global(.dark) .workspace-row-desc { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
-  .workspace-usage {
-    color: color-mix(in srgb, var(--color-ink) 56%, transparent);
-    font-size: var(--text-caption);
-    font-weight: 900;
-    white-space: nowrap;
-  }
-  :global(.dark) .workspace-usage { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
-  .workspace-cta {
-    color: var(--color-purple-deep);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: var(--text-caption);
-    font-weight: 900;
-    white-space: nowrap;
-  }
-
-  .lower-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
-    gap: 0.9rem;
-    align-items: stretch;
-  }
-  .usage-panel,
-  .upgrade-panel {
-    display: grid;
-    gap: 0.9rem;
-  }
-  .usage-list {
-    display: grid;
-    gap: 0.5rem;
-  }
-  .usage-row {
-    border-radius: 0.5rem;
-    border: 1px solid var(--color-card-edge);
-    padding: 0.75rem 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.8rem;
-    background: color-mix(in srgb, var(--color-paper-soft) 50%, white);
-    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
-    font-size: var(--text-caption);
-    font-weight: 800;
-  }
-  :global(.dark) .usage-row { background: color-mix(in srgb, var(--color-coal) 50%, var(--color-coal-soft)); border-color: var(--color-coal-edge); color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
-  .usage-row strong {
-    color: var(--color-ink);
-    font-size: var(--text-small);
-    white-space: nowrap;
-  }
-  :global(.dark) .usage-row strong { color: var(--color-mist); }
-
-  .upgrade-panel {
-    color: var(--color-ink);
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-  }
-  :global(.dark) .upgrade-panel { color: var(--color-mist); }
-  .upgrade-tags {
-    margin-top: 0.65rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-  }
-  .upgrade-tags span {
-    border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--color-purple) 22%, var(--color-card-edge));
-    padding: 0.28rem 0.62rem;
-    color: color-mix(in srgb, var(--color-ink) 68%, transparent);
-    background: color-mix(in srgb, var(--color-purple) 6%, transparent);
-    font-size: 0.94rem;
-    font-weight: 800;
-  }
-  :global(.dark) .upgrade-tags span { color: color-mix(in srgb, var(--color-mist) 72%, transparent); border-color: color-mix(in srgb, var(--color-purple) 28%, var(--color-coal-edge)); }
-  .upgrade-actions {
-    display: grid;
-    gap: 0.5rem;
-    min-width: min(18rem, 100%);
-  }
-  .upgrade-btn {
-    border-radius: 0.5rem;
-    border: 1px solid var(--color-card-edge);
-    background: var(--color-card);
-    color: var(--color-ink);
-    padding: 0.72rem 0.9rem;
-    display: grid;
-    gap: 0.08rem;
-    text-align: center;
-    font-weight: 900;
-    transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, background-color .2s;
-  }
-  .upgrade-btn small {
-    color: color-mix(in srgb, currentColor 62%, transparent);
-    font-size: 0.9rem;
-    font-weight: 800;
-  }
-  :global(.dark) .upgrade-btn { background: var(--color-coal-soft); color: var(--color-mist); border-color: var(--color-coal-edge); }
-  .upgrade-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-card);
-    border-color: color-mix(in srgb, var(--color-purple) 38%, var(--color-card-edge));
-  }
-  .upgrade-btn-primary {
-    color: white;
-    background: var(--color-purple);
-    border-color: var(--color-purple);
-  }
-  :global(.dark) .upgrade-btn-primary { color: white; background: var(--color-purple); border-color: var(--color-purple); }
-
-  @media (max-width: 900px) {
-    .profile-strip,
-    .start-panel,
-    .upgrade-panel { grid-template-columns: 1fr; }
-    .profile-strip { align-items: stretch; }
-    .account-actions { justify-content: flex-start; }
-    .start-actions { grid-template-columns: 1fr; }
-    .lower-grid { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 680px) {
-    .profile-strip,
-    .start-panel,
-    .workspace-panel,
-    .usage-panel,
-    .upgrade-panel,
-    .app-panel { padding: 0.9rem; }
-    .identity-block { align-items: flex-start; }
-    .profile-avatar { width: 3.35rem; height: 3.35rem; font-size: 1.75rem; }
-    .profile-title { font-size: 2rem; white-space: normal; }
-    .stats-strip { grid-template-columns: repeat(2, 1fr); }
-    .stat-cell:nth-child(3) { border-inline-start: 0; border-top: 1px solid var(--color-card-edge); }
-    .stat-cell:nth-child(4) { border-top: 1px solid var(--color-card-edge); }
-    :global(.dark) .stat-cell:nth-child(3),
-    :global(.dark) .stat-cell:nth-child(4) { border-top-color: var(--color-coal-edge); }
-    .workspace-row {
-      grid-template-columns: auto minmax(0, 1fr);
-      align-items: start;
-    }
-    .workspace-usage,
-    .workspace-cta {
-      grid-column: 2;
-      justify-self: start;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .app-link:hover,
-    .start-action:hover,
-    .workspace-row:hover,
-    .upgrade-btn:hover { transform: none; }
-    .start-action:hover svg { transform: none; }
-  }
-
-  /* Profile dashboard v3: fewer visible boxes, clearer action hierarchy. */
-  .profile-dashboard {
-    gap: 0.8rem;
-  }
-  .profile-dashboard:not(.hidden) { display: grid; }
-  .profile-shell,
-  .command-bar,
-  .workspace-panel,
-  .usage-disclosure,
-  .upgrade-nudge,
-  .app-panel,
-  .app-activating {
-    border-radius: 0.62rem;
-    border: 1px solid var(--color-card-edge);
-    background: var(--color-card);
-    box-shadow: 0 16px 34px -26px rgb(23 56 71 / 0.36);
-  }
-  :global(.dark) .profile-shell,
-  :global(.dark) .command-bar,
-  :global(.dark) .workspace-panel,
-  :global(.dark) .usage-disclosure,
-  :global(.dark) .upgrade-nudge,
-  :global(.dark) .app-panel,
-  :global(.dark) .app-activating {
-    background: var(--color-coal-soft);
-    border-color: var(--color-coal-edge);
-    box-shadow: 0 18px 42px -30px rgb(0 0 0 / 0.8);
-  }
-  .profile-shell {
-    padding: clamp(1rem, 2vw, 1.35rem);
-    display: grid;
-    gap: 1rem;
-  }
-  .profile-main-row,
-  .profile-support-row,
-  .command-bar,
-  .profile-info-rail {
-    display: grid;
-    align-items: center;
-    gap: 1rem;
-  }
-  .upgrade-nudge:not(.hidden) {
-    display: grid;
-    align-items: center;
-    gap: 1rem;
-  }
-  .profile-main-row { grid-template-columns: minmax(0, 1fr) auto; }
-  .profile-support-row {
-    grid-template-columns: minmax(0, 0.78fr) minmax(20rem, 1fr);
-    padding-top: 0.95rem;
-    border-top: 1px solid var(--color-card-edge);
-  }
-  :global(.dark) .profile-support-row { border-color: var(--color-coal-edge); }
-  .identity-block { gap: 0.85rem; }
-  .profile-avatar {
-    width: 3.65rem;
-    height: 3.65rem;
-    border-radius: 0.5rem;
-    font-size: 1.95rem;
-  }
-  .profile-title {
-    font-size: clamp(2rem, 3.1vw, 2.85rem);
-    max-width: 34rem;
-  }
-  .profile-note {
-    margin: 0;
-    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
-    font-size: var(--text-caption);
-    font-weight: 800;
-    line-height: 1.55;
-  }
-  :global(.dark) .profile-note { color: color-mix(in srgb, var(--color-mist) 66%, transparent); }
-  .profile-metrics {
-    min-width: 0;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    border-radius: 0.5rem;
-    border: 1px solid var(--color-card-edge);
-    overflow: hidden;
-    background: color-mix(in srgb, var(--color-paper-soft) 56%, white);
-  }
-  :global(.dark) .profile-metrics {
-    background: color-mix(in srgb, var(--color-coal) 48%, var(--color-coal-soft));
-    border-color: var(--color-coal-edge);
-  }
-  .metric-item {
-    min-width: 0;
-    min-height: 4.15rem;
-    padding: 0.72rem 0.82rem;
-    display: grid;
-    align-content: center;
-    gap: 0.08rem;
-    color: color-mix(in srgb, var(--color-ink) 58%, transparent);
-    font-size: 0.9rem;
-    font-weight: 800;
-    line-height: 1.25;
-  }
-  .metric-item + .metric-item { border-inline-start: 1px solid var(--color-card-edge); }
-  :global(.dark) .metric-item {
-    color: color-mix(in srgb, var(--color-mist) 64%, transparent);
-  }
-  :global(.dark) .metric-item + .metric-item { border-color: var(--color-coal-edge); }
-  .metric-value {
-    color: var(--color-ink);
-    font-family: var(--font-display);
-    font-size: clamp(1.28rem, 2.1vw, 1.8rem);
-    line-height: 1;
-  }
-  :global(.dark) .metric-value { color: var(--color-mist); }
-  .app-link {
-    appearance: none;
-    cursor: pointer;
-    font-family: inherit;
-  }
-
-  .command-bar {
-    grid-template-columns: minmax(0, 1fr) auto;
-    padding: clamp(1rem, 2vw, 1.25rem);
-  }
-  .command-copy { min-width: 0; }
-  .command-title,
-  .nudge-title {
-    color: var(--color-ink);
-    font-size: clamp(1.55rem, 2.4vw, 2.1rem);
-    line-height: 1.16;
-  }
-  :global(.dark) .command-title,
-  :global(.dark) .nudge-title { color: var(--color-mist); }
-  .command-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.58rem;
-    flex-wrap: wrap;
-  }
-  .command-action {
-    min-height: 3.18rem;
-    border-radius: 0.5rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.55rem;
-    padding: 0.7rem 0.95rem;
-    border: 1px solid var(--color-card-edge);
-    background: color-mix(in srgb, var(--color-paper-soft) 58%, white);
-    color: var(--color-ink);
-    font-size: var(--text-caption);
-    font-weight: 900;
-    white-space: nowrap;
-    transition: transform .2s var(--ease-out-quart), box-shadow .2s, border-color .2s, background-color .2s, color .2s;
-  }
-  :global(.dark) .command-action {
-    background: color-mix(in srgb, var(--color-coal) 52%, var(--color-coal-soft));
-    border-color: var(--color-coal-edge);
-    color: var(--color-mist);
-  }
-  .command-action svg {
-    width: 1.1rem;
-    height: 1.1rem;
-    transition: transform .2s var(--ease-out-quart);
-  }
-  .command-action:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--color-teal) 46%, var(--color-card-edge));
-    box-shadow: var(--shadow-card);
-    background: var(--color-card);
-  }
-  .command-action:hover svg { transform: scale(1.08); }
-  .command-action-primary {
-    color: white;
-    background: var(--color-ink);
-    border-color: var(--color-ink);
-  }
-  .command-action-primary:hover {
-    color: white;
-    background: var(--color-purple);
-    border-color: var(--color-purple);
-  }
-  :global(.dark) .command-action-primary {
-    color: white;
-    background: var(--color-purple);
-    border-color: var(--color-purple);
-  }
-
-  .workspace-panel { padding: clamp(1rem, 2vw, 1.25rem); }
-  .workspace-head { margin-bottom: 0.75rem; }
-  .workspace-row {
-    min-height: 4.8rem;
-    background: transparent;
-    box-shadow: none;
-  }
-  .workspace-row:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 30px -24px rgb(23 56 71 / 0.5);
-  }
-  .workspace-row-desc { max-width: 58rem; }
-
-  .profile-info-rail {
-    grid-template-columns: minmax(0, 0.52fr) minmax(0, 1.48fr);
-    align-items: stretch;
-  }
-  .usage-disclosure {
-    padding: 0;
-    overflow: hidden;
-  }
-  .usage-disclosure summary {
-    min-height: 4.8rem;
-    padding: 0.95rem 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    cursor: pointer;
-    list-style: none;
-  }
-  .usage-disclosure summary::-webkit-details-marker { display: none; }
-  .usage-disclosure summary strong {
-    display: block;
-    color: var(--color-ink);
-    font-size: var(--text-small);
-    line-height: 1.25;
-  }
-  :global(.dark) .usage-disclosure summary strong { color: var(--color-mist); }
-  .usage-disclosure summary svg {
-    width: 1.05rem;
-    height: 1.05rem;
-    color: color-mix(in srgb, var(--color-ink) 54%, transparent);
-    transition: transform .2s var(--ease-out-quart);
-  }
-  :global(.dark) .usage-disclosure summary svg { color: color-mix(in srgb, var(--color-mist) 60%, transparent); }
-  .usage-disclosure.acc-open summary svg,
-  .usage-disclosure[open]:not(.acc-on) summary svg { transform: rotate(180deg); }
-  .usage-inline-list {
-    display: grid;
-    gap: 0.45rem;
-    padding: 0 1rem 1rem;
-  }
-  .usage-inline-row {
-    border-radius: 0.5rem;
-    border: 1px solid var(--color-card-edge);
-    padding: 0.68rem 0.78rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.8rem;
-    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
-    font-size: var(--text-caption);
-    font-weight: 800;
-  }
-  :global(.dark) .usage-inline-row {
-    border-color: var(--color-coal-edge);
-    color: color-mix(in srgb, var(--color-mist) 66%, transparent);
-  }
-  .usage-inline-row strong {
-    color: var(--color-ink);
-    white-space: nowrap;
-  }
-  :global(.dark) .usage-inline-row strong { color: var(--color-mist); }
-
-  .upgrade-nudge {
-    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.68fr);
-    padding: clamp(1.2rem, 2.4vw, 1.65rem);
-    overflow: hidden;
-    color: white;
-    background:
-      radial-gradient(circle at 12% 0%, rgb(255 255 255 / 0.18), transparent 34%),
-      linear-gradient(135deg, var(--color-ink) 0%, #243f4a 54%, #5b36e9 100%);
-    border-color: color-mix(in srgb, var(--color-purple) 38%, var(--color-ink));
-    box-shadow: 0 24px 52px -30px color-mix(in srgb, var(--color-purple) 62%, black);
-  }
-  :global(.dark) .upgrade-nudge {
-    background:
-      radial-gradient(circle at 12% 0%, rgb(255 255 255 / 0.16), transparent 34%),
-      linear-gradient(135deg, var(--color-coal-soft) 0%, #172f39 56%, #4f2fce 100%);
-    border-color: color-mix(in srgb, var(--color-purple) 42%, var(--color-coal-edge));
-  }
-  .upgrade-nudge .app-kicker {
-    color: color-mix(in srgb, white 78%, var(--color-teal));
-  }
-  .upgrade-lead {
-    margin-top: 0.18rem;
-    max-width: 46rem;
-    color: white;
-    font-size: clamp(1.55rem, 2.55vw, 2.35rem);
-    line-height: 1.18;
-  }
-  .upgrade-nudge .upgrade-actions {
-    display: grid;
-    gap: 0.7rem;
-    min-width: min(22rem, 100%);
-  }
-  .upgrade-nudge .upgrade-btn {
-    min-height: 5.15rem;
-    border-radius: 0.78rem;
-    padding: 1rem 1.15rem;
-    border-color: rgb(255 255 255 / 0.22);
-    color: white;
-    background: rgb(255 255 255 / 0.1);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14);
-  }
-  .upgrade-nudge .upgrade-btn span {
-    font-size: clamp(1.18rem, 2vw, 1.7rem);
-    line-height: 1.12;
-    white-space: normal;
-  }
-  .upgrade-nudge .upgrade-btn small {
-    color: rgb(255 255 255 / 0.72);
-    font-size: clamp(0.95rem, 1.4vw, 1.08rem);
-  }
-  .upgrade-nudge .upgrade-btn:hover {
-    transform: translateY(-3px);
-    border-color: rgb(255 255 255 / 0.42);
-    box-shadow: 0 18px 34px -24px rgb(0 0 0 / 0.72), inset 0 1px 0 rgb(255 255 255 / 0.18);
-  }
-  .upgrade-nudge .upgrade-btn-primary {
-    background: linear-gradient(135deg, #8d62ff 0%, var(--color-purple) 60%, #5b36e9 100%);
-    border-color: transparent;
-    box-shadow: 0 20px 42px -24px rgb(124 77 255 / 0.95), inset 0 1px 0 rgb(255 255 255 / 0.2);
-  }
-  .upgrade-nudge .upgrade-btn-primary:hover {
-    border-color: transparent;
-    box-shadow: 0 24px 46px -24px rgb(124 77 255 / 1), inset 0 1px 0 rgb(255 255 255 / 0.26);
-  }
-
-  @media (max-width: 980px) {
-    .profile-main-row,
-    .profile-support-row,
-    .command-bar,
-    .profile-info-rail,
-    .upgrade-nudge { grid-template-columns: 1fr; }
-    .account-actions,
-    .command-actions { justify-content: flex-start; }
-  }
-  @media (max-width: 680px) {
-    .profile-shell,
-    .command-bar,
-    .workspace-panel,
-    .app-panel,
-    .upgrade-nudge { padding: 0.9rem; }
-    .profile-support-row { padding-top: 0.85rem; }
-    .profile-avatar {
-      width: 3.25rem;
-      height: 3.25rem;
-      font-size: 1.68rem;
-    }
-    .profile-title {
-      max-width: 100%;
-      white-space: normal;
-      font-size: 1.95rem;
-    }
-    .profile-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .metric-item:nth-child(3) {
-      border-inline-start: 0;
-      border-top: 1px solid var(--color-card-edge);
-    }
-    .metric-item:nth-child(4) { border-top: 1px solid var(--color-card-edge); }
-    :global(.dark) .metric-item:nth-child(3),
-    :global(.dark) .metric-item:nth-child(4) { border-top-color: var(--color-coal-edge); }
-    .command-actions { display: grid; grid-template-columns: 1fr; }
-    .command-action { width: 100%; }
-    .profile-info-rail { gap: 0.75rem; }
-    .upgrade-nudge .upgrade-actions { min-width: 0; }
-    .upgrade-nudge .upgrade-btn { min-height: 4.65rem; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .command-action:hover,
-    .workspace-row:hover,
-    .upgrade-btn:hover { transform: none; }
-    .command-action:hover svg,
-    .usage-disclosure[open] summary svg { transform: none; }
-  }
-
-  /* Profile dashboard v4: spacious Thmanyah hierarchy shared with /account. */
-  .app-shell { font-family: var(--font-sans); }
-  .profile-dashboard { gap: 1.25rem; }
-  .profile-shell,
-  .command-bar,
-  .workspace-panel,
-  .usage-disclosure,
-  .upgrade-nudge,
-  .app-panel,
-  .app-activating {
-    border-radius: 1.05rem;
-    box-shadow: var(--shadow-card);
-  }
-  .profile-shell { padding: clamp(1.5rem, 3vw, 2.15rem); gap: 1.55rem; }
-  .profile-main-row,
-  .profile-support-row,
-  .command-bar,
-  .profile-info-rail { gap: 1.45rem; }
-  .profile-support-row { padding-top: 1.4rem; }
-  .identity-block { gap: 1.2rem; }
-  .profile-avatar {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 1.1rem;
-    font-family: var(--font-sans);
-    font-size: 2.35rem;
-  }
-  .identity-copy .app-kicker {
-    margin-bottom: 0.3rem;
-    font-size: clamp(1.08rem, 1.8vw, 1.3rem);
-    line-height: 1.55;
-  }
-  .profile-title {
-    max-width: 38rem;
-    font-family: var(--font-sans);
-    font-size: clamp(2.35rem, 4vw, 3.45rem);
-    font-weight: 900;
-    line-height: 1.24;
-  }
-  .profile-meta { gap: 0.65rem; margin-top: 0.55rem; font-size: 1rem; line-height: 1.65; }
-  .account-actions { gap: 0.72rem; }
-  .app-plan-pill { padding: 0.62rem 1rem; font-size: 0.96rem; line-height: 1.5; }
-  .app-link { padding: 0.68rem 0.95rem; font-size: 0.95rem; line-height: 1.5; }
-  .profile-note { font-size: 1rem; line-height: 1.8; }
-  .profile-metrics { border-radius: 0.82rem; }
-  .metric-item { min-height: 5.5rem; padding: 1rem 1.05rem; gap: 0.25rem; font-size: 0.9rem; line-height: 1.5; }
-  .metric-value { font-family: var(--font-sans); font-size: clamp(1.7rem, 2.7vw, 2.25rem); font-weight: 900; line-height: 1.15; }
-
-  .command-bar { padding: clamp(1.4rem, 2.7vw, 1.85rem); }
-  .command-copy .app-kicker,
-  .workspace-head .app-kicker,
-  .usage-disclosure .app-kicker { font-size: 1rem; line-height: 1.55; }
-  .command-title {
-    margin-top: 0.28rem;
-    font-family: var(--font-sans);
-    font-size: clamp(1.9rem, 3vw, 2.5rem);
-    font-weight: 900;
-    line-height: 1.35;
-  }
-  .command-actions { gap: 0.8rem; }
-  .command-action { min-height: 3.75rem; border-radius: 0.75rem; padding: 0.85rem 1.15rem; font-size: 1rem; line-height: 1.5; }
-
-  .workspace-panel { padding: clamp(1.5rem, 3vw, 2rem); }
-  .workspace-head { margin-bottom: 1.25rem; }
-  .workspace-title {
-    margin-top: 0.25rem;
-    font-family: var(--font-sans);
-    font-size: clamp(2rem, 3.2vw, 2.65rem);
-    font-weight: 900;
-    line-height: 1.3;
-  }
-  .workspace-body { margin-top: 0.45rem; font-size: 1rem; line-height: 1.75; }
-  .workspace-list { gap: 0.8rem; }
-  .workspace-row { min-height: 6.25rem; border-radius: 0.85rem; padding: 1rem 1.1rem; gap: 1rem; }
-  .workspace-icon { width: 3rem; height: 3rem; border-radius: 0.78rem; }
-  .workspace-row-title { font-family: var(--font-sans); font-size: 1.3rem; font-weight: 900; line-height: 1.45; }
-  .workspace-row-desc { margin-top: 0.18rem; font-size: 0.92rem; line-height: 1.7; }
-  .workspace-usage,
-  .workspace-cta { font-size: 0.94rem; line-height: 1.55; }
-
-  .profile-info-rail { gap: 1.25rem; }
-  .usage-disclosure summary { min-height: 6.1rem; padding: 1.25rem 1.35rem; }
-  .usage-disclosure summary strong { margin-top: 0.18rem; font-family: var(--font-sans); font-size: 1.25rem; font-weight: 900; line-height: 1.5; }
-  .usage-inline-list { gap: 0.65rem; padding: 0 1.25rem 1.25rem; }
-  .usage-inline-row { padding: 0.85rem 0.95rem; font-size: 0.95rem; line-height: 1.55; }
-  .upgrade-nudge { padding: clamp(1.55rem, 3vw, 2.15rem); gap: 1.4rem; }
-  .upgrade-lead { margin-top: 0.35rem; font-family: var(--font-sans); font-weight: 900; line-height: 1.45; }
-  .recent-heading { color: var(--color-ink); font-family: var(--font-sans); font-size: clamp(1.9rem, 3vw, 2.45rem); font-weight: 900; line-height: 1.35; }
-  :global(.dark) .recent-heading { color: var(--color-mist); }
-
-  @media (max-width: 680px) {
-    .profile-dashboard { gap: 1rem; }
-    .profile-shell,
-    .command-bar,
-    .workspace-panel,
-    .app-panel,
-    .upgrade-nudge { padding: 1.15rem; }
-    .identity-block { align-items: flex-start; gap: 0.9rem; }
-    .profile-avatar { width: 4rem; height: 4rem; border-radius: 0.9rem; font-size: 1.9rem; }
-    .profile-title { font-size: 2.15rem; line-height: 1.3; }
-    .profile-main-row,
-    .profile-support-row,
-    .command-bar { gap: 1.15rem; }
-    .metric-item { min-height: 5.25rem; padding: 0.9rem; }
-    .workspace-row { min-height: 6rem; padding: 0.95rem; }
-    .workspace-row-desc { white-space: normal; }
-  }
-  </style>
-
 <style is:global>
-  /* Recent-activity rows are built in JS (renderRecent), so they must be styled
-     globally — scoped styles never reach injected nodes. recent-* prefixed. */
-  .recent-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin: 0; padding: 0; }
-  .recent-item {
-    display: flex; align-items: center; gap: 0.8rem;
-    border-radius: 0.85rem; padding: 0.7rem 0.95rem;
-    border: 1px solid var(--color-card-edge); background: var(--color-card);
-    box-shadow: var(--shadow-card);
-    text-decoration: none; transition: transform .16s var(--ease-out-quart), border-color .16s, box-shadow .16s;
+  .iu-hub { max-width: 880px; margin: 0 auto; padding: 0 0 40px; }
+  /* The script shows and hides parts with the .hidden class; card layouts must not win over it. */
+  .iu-hub .hidden { display: none !important; }
+  .iu-hub .hb-loading, .iu-hub .hb-body { display: flex; flex-direction: column; gap: 22px; }
+  .iu-hub .hb-h2 { margin: 0 0 10px; }
+
+  .iu-hub .hb-gate { max-width: 560px; margin: 0 auto; padding: 26px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+  .iu-hub .hb-gate .iu-btn { margin-top: 6px; }
+  .iu-hub .hb-gate-icon { width: 52px; height: 52px; border-radius: 999px; display: grid; place-items: center; background: var(--iu-primary-soft); color: var(--iu-primary); }
+  .iu-hub .hb-gate-icon svg { width: 24px; height: 24px; }
+
+  /* Profile */
+  .iu-hub .hb-profile { padding: 20px; }
+  .iu-hub .hb-identity { display: flex; align-items: center; gap: 14px; }
+  .iu-hub .hb-avatar {
+    width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; flex: none;
+    background: var(--iu-primary-soft); color: var(--iu-primary-text); font-size: 24px; font-weight: 700;
   }
-  .dark .recent-item { background: var(--color-coal-soft); border-color: var(--color-coal-edge); }
-  .recent-item:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--color-purple) 38%, var(--color-card-edge)); box-shadow: var(--shadow-lift); }
-  .recent-ic { width: 2.1rem; height: 2.1rem; border-radius: 0.6rem; display: grid; place-items: center; flex: none; }
-  .recent-ic svg { width: 1rem; height: 1rem; }
-  .recent-ic-analyze { color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 12%, transparent); }
-  .recent-ic-practice { color: var(--color-teal); background: color-mix(in srgb, var(--color-teal) 12%, transparent); }
-  .recent-main { min-width: 0; flex: 1; }
-  .recent-sentence { display: block; font-family: var(--font-arabic-classical); font-size: 1.3rem; line-height: 1.45; color: var(--color-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .dark .recent-sentence { color: var(--color-mist); }
-  .recent-meta { display: block; margin-top: 0.1rem; font-size: 0.98rem; color: color-mix(in srgb, var(--color-ink) 60%, transparent); }
-  .dark .recent-meta { color: color-mix(in srgb, var(--color-mist) 64%, transparent); }
-  .recent-time { flex: none; font-family: var(--font-mono); font-size: 0.92rem; color: color-mix(in srgb, var(--color-ink) 52%, transparent); }
-  .dark .recent-time { color: color-mix(in srgb, var(--color-mist) 58%, transparent); }
+  .iu-hub .hb-who { flex: 1; min-width: 0; }
+  .iu-hub .hb-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .iu-hub .hb-email { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .iu-hub[dir='rtl'] .hb-email { text-align: right; }
+  .iu-hub .hb-plan { flex: none; font-size: 12px; padding: 5px 12px; }
+  .iu-hub .hb-plan svg { width: 14px; height: 14px; }
+  .iu-hub .hb-note { margin: 14px 0 0; }
+  .iu-hub .hb-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
+  .iu-hub .hb-stats > div { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 6px; border-radius: 14px; background: var(--iu-sunken); text-align: center; }
+  .iu-hub .hb-stat { font-size: 22px; font-weight: 700; line-height: 1.3; color: var(--iu-text); }
+  @media (max-width: 520px) { .iu-hub .hb-stats { grid-template-columns: repeat(2, 1fr); } }
+  .iu-hub .hb-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--iu-border); }
+  .iu-hub .hb-links .iu-pill { text-decoration: none; }
+  .iu-hub .hb-signout { margin-inline-start: auto; }
+  @media (hover: hover) {
+    .iu-hub .hb-links .iu-pill:hover { background: var(--iu-primary-soft); color: var(--iu-primary-text); }
+    .iu-hub .hb-links .hb-signout:hover { background: var(--iu-error-soft); color: var(--iu-error-text); }
+  }
+
+  /* After a checkout: the wait for the subscription to arrive */
+  .iu-hub .hb-activating { display: flex; align-items: flex-start; gap: 12px; padding: 16px 18px; background: var(--iu-success-soft); border-color: transparent; }
+  .iu-hub .hb-activating p { margin: 0; }
+  .iu-hub .hb-act-icon { width: 34px; height: 34px; border-radius: 999px; display: grid; place-items: center; flex: none; background: var(--iu-card); color: var(--iu-success); }
+  .iu-hub .hb-act-icon svg { width: 18px; height: 18px; }
+  .iu-hub .hb-refresh { margin-top: 10px; }
+
+  /* Tools: cards as the challenge topics, lifting on hover */
+  .iu-hub .hb-tools { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 640px) { .iu-hub .hb-tools { grid-template-columns: 1fr 1fr; } }
+  .iu-hub .hb-tool {
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px; color: inherit; text-decoration: none;
+    transition: border-color .2s ease, box-shadow .25s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
+  }
+  .iu-hub .hb-tool:focus-visible { outline: 2px solid var(--iu-teal); outline-offset: 2px; }
+  .iu-hub .hb-tool-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; flex: none; transition: transform .3s cubic-bezier(.22, 1, .36, 1); }
+  .iu-hub .hb-tool-icon svg { width: 20px; height: 20px; }
+  .iu-hub .hb-primary .hb-tool-icon { background: var(--iu-primary-soft); color: var(--iu-primary); }
+  .iu-hub .hb-teal .hb-tool-icon { background: var(--iu-teal-soft); color: var(--iu-teal); }
+  .iu-hub .hb-tool-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+  .iu-hub .hb-usage { margin-top: 4px; color: var(--iu-teal-text); }
+  .iu-hub .hb-usage:empty { display: none; }
+  .iu-hub .hb-usage.is-out { color: var(--iu-error-text); }
+  .iu-hub .hb-tool > svg { width: 16px; height: 16px; flex: none; color: var(--iu-text-3); transition: translate .3s cubic-bezier(.22, 1, .36, 1), color .2s ease; }
+  @media (hover: hover) {
+    .iu-hub .hb-tool:hover { transform: translateY(-3px); box-shadow: var(--iu-shadow-lift); }
+    .iu-hub .hb-primary:hover { border-color: var(--iu-primary); }
+    .iu-hub .hb-teal:hover { border-color: var(--iu-teal); }
+    .iu-hub .hb-tool:hover .hb-tool-icon { transform: scale(1.06); }
+    .iu-hub .hb-tool:hover > svg { translate: -3px 0; color: var(--iu-text-2); }
+    .iu-hub[dir='ltr'] .hb-tool:hover > svg { translate: 3px 0; }
+  }
+  .iu-hub .hb-tool:active { transform: translateY(-1px) scale(.99); }
+
+  /* Irab+ for a free account */
+  .iu-hub .hb-upgrade { padding: 20px; background: color-mix(in srgb, var(--iu-primary) 5%, var(--iu-card)); border-color: color-mix(in srgb, var(--iu-primary) 20%, var(--iu-border)); }
+  .iu-hub .hb-upgrade-head { display: flex; align-items: flex-start; gap: 12px; }
+  .iu-hub .hb-upgrade-head p { margin: 2px 0 0; }
+  .iu-hub .hb-upgrade-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; flex: none; background: var(--iu-primary-soft); color: var(--iu-primary); }
+  .iu-hub .hb-upgrade-icon svg { width: 22px; height: 22px; }
+  .iu-hub .hb-benefits { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .iu-hub .hb-benefits li { display: flex; align-items: center; gap: 8px; }
+  .iu-hub .hb-benefits svg { width: 16px; height: 16px; flex: none; color: var(--iu-primary); }
+  .iu-hub .hb-plans { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 16px; }
+  @media (min-width: 640px) { .iu-hub .hb-plans { grid-template-columns: 1fr 1fr; } }
+  .iu-hub .hb-plan-btn { height: auto; min-height: 60px; padding: 10px 18px; flex-direction: column; gap: 2px; white-space: normal; }
+  .iu-hub .hb-plan-btn small { font-size: 12px; font-weight: 500; opacity: .85; }
+  .iu-hub .hb-pay-error { grid-column: 1 / -1; margin: 0; }
+
+  /* Recent activity, as the challenge sentence cards */
+  .iu-hub .hb-recent-head { display: flex; align-items: center; justify-content: space-between; }
+  .iu-hub .hb-recent { display: flex; flex-direction: column; gap: 10px; }
+  .iu-hub .hb-recent-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: inherit; text-decoration: none;
+    transition: border-color .2s ease, box-shadow .25s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
+  }
+  .iu-hub .hb-recent-icon { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; flex: none; }
+  .iu-hub .hb-recent-icon svg { width: 18px; height: 18px; }
+  .iu-hub .hb-recent-item.is-analyze .hb-recent-icon { background: var(--iu-primary-soft); color: var(--iu-primary); }
+  .iu-hub .hb-recent-item.is-practice .hb-recent-icon { background: var(--iu-teal-soft); color: var(--iu-teal); }
+  .iu-hub .hb-recent-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .iu-hub .hb-recent-main .t-sentence-s { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .iu-hub .hb-recent-time { flex: none; }
+  @media (hover: hover) {
+    .iu-hub .hb-recent-item:hover { transform: translateY(-2px); border-color: var(--iu-teal); box-shadow: var(--iu-shadow-lift); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .iu-hub :is(.hb-tool, .hb-tool-icon, .hb-recent-item) { transform: none !important; }
+    .iu-hub .hb-tool > svg { translate: none !important; }
+  }
 </style>
 
 <script>
   import { maybeSignedIn } from '../lib/session';
   import { getStats, getHistory, formatAgo } from '../lib/history';
+  import { HUB } from '../lib/hub/strings';
+  import { WORKER } from '../lib/irab/api';
+  import { esc } from '../lib/irab/render';
+  import { digits } from '../lib/irab/strings';
+  import { revealOnScroll } from '../lib/scroll-in';
+  import * as I from '../lib/irab/icons';
 
   const root = document.querySelector<HTMLElement>('[data-hub-root]');
   if (root) {
     const lang = root.dataset.lang === 'en' ? 'en' : 'ar';
+    const s = HUB[lang];
     const home = root.dataset.home || '/';
-    const WORKER = 'https://irab-api-v2.mansourhassan783.workers.dev';
-    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const q = <T extends Element>(sel: string) => root.querySelector<T>(sel)!;
     const loadingEl = q<HTMLElement>('[data-hub-loading]');
     const gate = q<HTMLElement>('[data-hub-gate]');
 
@@ -1883,80 +317,52 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
     const planNoteEl = q<HTMLElement>('[data-plan-note]');
     const upgradeEl = q<HTMLElement>('[data-hub-upgrade]');
 
-    const T = lang === 'ar'
-      ? {
-          plus: 'إعراب بلس',
-          free: 'الخطة المجانية',
-          plusNote: 'اشتراكك فعّال على الويب والتطبيق بالحساب نفسه.',
-          freeNote: 'خطة مجانية نشطة. ابدأ بما تحتاجه الآن.',
-          unlimited: 'غير محدود',
-          leftToday: (n: number) => `${n} متبقٍ`,
-          user: 'مستخدم',
-        }
-      : {
-          plus: 'Irab Plus',
-          free: 'Free plan',
-          plusNote: 'Your subscription is active on web and mobile with the same account.',
-          freeNote: 'Your free plan is active. Start with what you need now.',
-          unlimited: 'Unlimited',
-          leftToday: (n: number) => `${n} left`,
-          user: 'User',
-        };
-
-    function setUsage(key: string, text: string) {
-      const card = root!.querySelector<HTMLElement>(`[data-usage-key="${key}"]`);
-      const span = card?.querySelector<HTMLElement>('[data-usage]');
-      const summary = root!.querySelector<HTMLElement>(`[data-usage-summary="${key}"]`);
-      if (span) span.textContent = text;
-      if (summary) summary.textContent = text;
+    function setUsage(key: string, text: string, out = false) {
+      const span = root!.querySelector<HTMLElement>(`[data-usage-key="${key}"] [data-usage]`);
+      if (!span) return;
+      span.textContent = text;
+      span.classList.toggle('is-out', out);
     }
-
-    const escapeHtml = (s: string) => (s || '').replace(/[&<>"]/g, (c) =>
-      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as Record<string, string>)[c]);
+    const unlimitedAll = () => ['irabAnalysis', 'customPractice', 'smartDictionary'].forEach((k) => setUsage(k, s.unlimited));
 
     function renderStats(uid: string) {
       const stats = getStats(uid);
       const set = (k: string, v: string) => { const el = root!.querySelector<HTMLElement>(`[data-stat="${k}"]`); if (el) el.textContent = v; };
-      set('analyze', String(stats.analyzeCount));
-      set('practice', String(stats.practiceCount));
-      set('avg', stats.avgScore == null ? '0%' : `${stats.avgScore}%`);
-      set('streak', String(stats.streak));
+      set('analyze', digits(stats.analyzeCount, lang));
+      set('practice', digits(stats.practiceCount, lang));
+      set('avg', stats.avgScore == null ? '-' : lang === 'ar' ? `${digits(stats.avgScore, lang)}٪` : `${stats.avgScore}%`);
+      set('streak', digits(stats.streak, lang));
     }
 
     function renderRecent(uid: string) {
       const section = root!.querySelector<HTMLElement>('[data-hub-recent]');
       const list = root!.querySelector<HTMLElement>('[data-recent-list]');
-      const empty = root!.querySelector<HTMLElement>('[data-recent-empty]');
-      const seeAll = root!.querySelector<HTMLElement>('[data-recent-seeall]');
       if (!section || !list) return;
       section.classList.add('hidden');
-      empty?.classList.add('hidden');
-      seeAll?.classList.add('hidden');
-      list.replaceChildren();
       const items = getHistory(uid).slice(0, 5);
       if (!items.length) return;
       section.classList.remove('hidden');
-      seeAll?.classList.remove('hidden');
       const toolBase = lang === 'ar' ? '/tool' : '/en/tool';
       const practiceBase = lang === 'ar' ? '/practice/play' : '/en/practice/play';
-      const icA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>';
-      const icP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v15h16V5a2 2 0 0 0-2-2h-2"/><path d="M8 3h8v4H8z"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>';
-      for (const it of items) {
+      const icA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><path d="m16 16 2 2 4-5"/></svg>';
+      list.innerHTML = items.map((it) => {
         const isA = it.kind === 'analyze';
+        const pct = (n: number) => (lang === 'ar' ? `${digits(Math.round(n * 100), lang)}٪` : `${Math.round(n * 100)}%`);
         const meta = isA
-          ? (it.wordCount ? `${it.wordCount} ${lang === 'ar' ? 'كلمة' : 'words'}` : (lang === 'ar' ? 'تحليل' : 'analysis'))
-          : (typeof it.score === 'number'
-              ? `${Math.round(it.score * 100)}%${it.level ? ' · ' + it.level : ''}`
-              : (lang === 'ar' ? 'تمرين' : 'practice'));
-        const a = document.createElement('a');
-        a.className = 'recent-item';
-        a.href = `${isA ? toolBase : practiceBase}?h=${encodeURIComponent(it.id)}`;
-        a.innerHTML =
-          `<span class="recent-ic recent-ic-${isA ? 'analyze' : 'practice'}" aria-hidden="true">${isA ? icA : icP}</span>` +
-          `<span class="recent-main"><span class="recent-sentence" dir="rtl">${escapeHtml(it.sentence)}</span><span class="recent-meta">${escapeHtml(meta)}</span></span>` +
-          `<span class="recent-time">${escapeHtml(formatAgo(it.ts, lang))}</span>`;
-        list.appendChild(a);
-      }
+          ? (it.wordCount ? s.words(digits(it.wordCount, lang)) : s.analysis)
+          : (typeof it.score === 'number' ? `${pct(it.score)}${it.level ? ' · ' + it.level : ''}` : s.practice);
+        const href = `${isA ? toolBase : practiceBase}?h=${encodeURIComponent(it.id)}`;
+        return `
+          <a class="iu-card hb-recent-item ${isA ? 'is-analyze' : 'is-practice'}" href="${href}">
+            <span class="hb-recent-icon" aria-hidden="true">${isA ? icA : I.pencil}</span>
+            <span class="hb-recent-main">
+              <span class="t-sentence-s c-1" dir="rtl" lang="ar">${esc(it.sentence)}</span>
+              <span class="t-caption c-3">${esc(meta)}</span>
+            </span>
+            <span class="t-caption c-3 hb-recent-time">${esc(digits(formatAgo(it.ts, lang), lang))}</span>
+          </a>`;
+      }).join('');
+      revealOnScroll(list, '.hb-recent-item');
     }
 
     (async () => {
@@ -1979,17 +385,20 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
           loadingEl.classList.add('hidden');
           if (!u) {
             forgetSignedIn();
+            hub.classList.add('hidden');
             gate.classList.remove('hidden');
             return;
           }
           rememberSignedIn();
+          gate.classList.add('hidden');
           hub.classList.remove('hidden');
+          revealOnScroll(q('[data-hub-tools]'), '.hb-tool');
 
-          const name = u.displayName || (u.email ? u.email.split('@')[0] : T.user);
+          const name = u.displayName || (u.email ? u.email.split('@')[0] : s.user);
           nameEl.textContent = name;
           emailEl.textContent = u.email || '';
-          const initialSource = (u.displayName || u.email || T.user).trim();
-          avatarEl.textContent = initialSource ? Array.from(initialSource)[0] : (lang === 'ar' ? 'إ' : 'I');
+          const initialSource = (u.displayName || u.email || s.user).trim();
+          avatarEl.textContent = initialSource ? Array.from(initialSource)[0].toUpperCase() : (lang === 'ar' ? 'إ' : 'I');
 
           // Stats + recent activity from this account's saved history.
           try { renderStats(u.uid); renderRecent(u.uid); } catch {}
@@ -2005,19 +414,17 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
 
           if (premium) {
             if (checkoutIntent) window.history.replaceState(null, '', window.location.pathname);
-            planEl.textContent = T.plus;
-            planEl.className = 'app-plan-pill is-plus';
-            planNoteEl.textContent = T.plusNote;
-            setUsage('customPractice', T.unlimited);
-            setUsage('practiceMode', T.unlimited);
-            setUsage('smartDictionary', T.unlimited);
+            planEl.innerHTML = `${I.crown}${esc(s.planPlus)}`;
+            planEl.className = 'iu-tag primary hb-plan';
+            planNoteEl.textContent = s.plusNote;
+            unlimitedAll();
           } else {
-            planEl.textContent = T.free;
-            planEl.className = 'app-plan-pill';
-            planNoteEl.textContent = T.freeNote;
+            planEl.textContent = s.planFree;
+            planEl.className = 'iu-tag missing hb-plan';
+            planNoteEl.textContent = s.freeNote;
             upgradeEl.classList.remove('hidden');
 
-    const track = (e: string, p?: Record<string, string | number | boolean | null | undefined>) => import('../lib/analytics').then((m) => m.track(e, p)).catch(() => {});
+            const track = (e: string, p?: Record<string, string | number | boolean | null | undefined>) => import('../lib/analytics').then((m) => m.track(e, p)).catch(() => {});
             const payError = root!.querySelector<HTMLElement>('[data-hub-pay-error]');
             root!.querySelectorAll<HTMLButtonElement>('[data-paddle-plan]').forEach((btn) => {
               btn.addEventListener('click', async () => {
@@ -2088,23 +495,17 @@ const practiceHref = lang === 'ar' ? '/practice/play' : '/en/practice/play';
               if (res.ok) {
                 const j = await res.json();
                 const usage = j?.data?.usage || {};
-                for (const key of ['customPractice', 'practiceMode', 'smartDictionary']) {
+                if (premium || j?.data?.isPremium === true) { unlimitedAll(); return; }
+                for (const key of ['irabAnalysis', 'customPractice', 'smartDictionary']) {
                   const u2 = usage[key];
-                  if (premium) {
-                    setUsage(key, T.unlimited);
-                    continue;
-                  }
-                  if (u2 && typeof u2.remaining === 'number' && u2.limit !== -1) {
-                    setUsage(key, T.leftToday(u2.remaining));
+                  if (u2 && typeof u2.remaining === 'number' && u2.limit > 0) {
+                    const left = Math.max(0, u2.remaining);
+                    setUsage(key, left > 0 ? s.leftToday(digits(left, lang)) : s.noneLeft, left === 0);
                   }
                 }
               }
             } catch {
-              if (premium) {
-                setUsage('customPractice', T.unlimited);
-                setUsage('practiceMode', T.unlimited);
-                setUsage('smartDictionary', T.unlimited);
-              }
+              if (premium) unlimitedAll();
             }
           }
         });
