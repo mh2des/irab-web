@@ -17,6 +17,7 @@ import { esc } from '../irab/render';
 import { digits, type Lang } from '../irab/strings';
 import { maybeSignedIn } from '../session';
 import { addHistory } from '../history';
+import { revealOnScroll } from '../scroll-in';
 
 type View = 'gate' | 'topics' | 'sentences' | 'solve' | 'results';
 interface Route { ch: View; t?: string; x?: string }
@@ -79,6 +80,7 @@ export function mountChallenges(root: HTMLElement): void {
     const shown = topics.filter((t) => level === 0 || t.level === level);
     topicsEl.innerHTML = R.topicsHtml(shown, premium, s, lang) + (premium ? '' : R.plusBannerHtml(s));
     topicsEl.setAttribute('aria-busy', 'false');
+    revealOnScroll(topicsEl, '.iu-card');
   }
   async function openTopics(push: boolean) {
     show('topics');
@@ -138,6 +140,7 @@ export function mountChallenges(root: HTMLElement): void {
   function renderSentences() {
     const started = new Set([...answers.entries()].filter(([, a]) => a.some(complete)).map(([id]) => id));
     sentencesEl.innerHTML = R.sentencesHtml(list, s, lang, started);
+    revealOnScroll(sentencesEl, '.ch-sentence');
   }
   sentencesEl.addEventListener('click', (e) => {
     const b = (e.target as HTMLElement).closest<HTMLElement>('[data-sentence]');
