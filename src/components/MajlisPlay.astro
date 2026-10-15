@@ -137,6 +137,15 @@
     </div>
   </section>
 
+  <!-- ═══ WAIT (time's up, or the result is on its way) ═══ -->
+  <section data-s="wait" class="hidden text-center">
+    <div class="rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft py-16 px-6">
+      <h2 data-wait-title class="font-sans font-black text-2xl text-ink dark:text-mist"></h2>
+      <p data-wait-body class="mt-2 text-ink-muted dark:text-mist-muted"></p>
+      <button data-wait-retry type="button" class="hidden mt-6 rounded-xl bg-purple text-white font-black px-6 py-3">أعد المحاولة</button>
+    </div>
+  </section>
+
   <!-- ═══ REVEAL ═══ -->
   <section data-s="reveal" class="hidden">
     <div data-reveal-verdict class="rounded-2xl p-6 text-center text-white">
@@ -197,16 +206,15 @@
 
 <script>
   import { signInAnonymously, onAuthStateChanged, type User } from 'firebase/auth';
-  import { httpsCallable, getFunctions } from 'firebase/functions';
   import {
-    getDatabase, ref, onValue, get, set, serverTimestamp, type Database, type Unsubscribe,
+    ref, onValue, onDisconnect, get, set, serverTimestamp, type Database, type Unsubscribe,
   } from 'firebase/database';
-  import { app, auth } from '../lib/firebase';
+  import { auth } from '../lib/firebase';
+  import { rtdb, callMajlis, track as trackEvent } from '../lib/majlis/fb';
   import { confetti } from '../lib/celebrate';
 
   const root = document.querySelector<HTMLElement>('[data-majlis-root]');
   if (root) {
-    const RTDB_URL = 'https://arabic-grammar-app-43de9-default-rtdb.firebaseio.com';
     const AVATAR_COUNT = 64;
     const REJOIN_MS = 90 * 60 * 1000; // mirrors the app's 90-min rejoin memory
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
@@ -231,6 +239,13 @@
     let participants: Array<{ uid: string; name: string; avatar: number; score: number }> = [];
     let serverOffset = 0;
     let qIndex = ''; let qData: any = null; let answered = false; let reveal: any = null;
+    // submitted: this device tried to send an answer for the current question
+    // (the write may still have been refused after the deadline).
+    let submitted = false; let renderedIdx = '';
+    // A stuck question (host asleep) may be closed by any player once the
+    // deadline has passed; each device waits a random extra moment so they
+    // don't all call at once. The server elects a single scorer anyway.
+    let closeAskedIdx = ''; let closeJitter = 0;
     let tickTimer: number | undefined;
     let unsubs: Unsubscribe[] = [];
     // fix_error two-step selection
@@ -240,14 +255,22 @@
     const avatarUrl = (i: number) => `/majlis-avatars/a${((i % AVATAR_COUNT) + AVATAR_COUNT) % AVATAR_COUNT}.svg`;
 
     // ── Screens ────────────────────────────────────────────────────────────
-    const screens = ['join', 'lobby', 'count', 'question', 'locked', 'reveal', 'board', 'podium', 'terminal'];
+    const screens = ['join', 'lobby', 'count', 'question', 'locked', 'wait', 'reveal', 'board', 'podium', 'terminal'];
     function show(name: string) {
       for (const s of screens) q(`[data-s="${s}"]`).classList.toggle('hidden', s !== name);
       window.scrollTo({ top: 0 });
     }
-    const track = (event: string, params: Record<string, unknown> = {}) => {
-      try { (window as any).gtag?.('event', event, params); } catch { /* ignore */ }
-    };
+    const track = (event: string, params: Record<string, string | number | boolean | null | undefined> = {}) =>
+      trackEvent(event, { platform: 'web', ...params });
+
+    function showWait(title: string, body: string, retry?: () => void) {
+      q('[data-wait-title]').textContent = title;
+      q('[data-wait-body]').textContent = body;
+      const btn = q<HTMLButtonElement>('[data-wait-retry]');
+      btn.classList.toggle('hidden', !retry);
+      btn.onclick = retry ? () => { btn.classList.add('hidden'); retry(); } : null;
+      show('wait');
+    }
 
     // ── PIN input (6 segmented boxes backed by one hidden input) ───────────
     const pinInput = q<HTMLInputElement>('[data-pin-input]');
@@ -325,10 +348,9 @@
       try {
         const user = await ensureUser();
         uid = user.uid;
-        db = getDatabase(app, RTDB_URL);
-        const call = httpsCallable(getFunctions(app, 'us-central1'), 'majalisJoinRoom');
-        const res: any = await call({ pin: pinInput.value, displayName: nameInput.value.trim(), avatar: myAvatar });
-        roomId = res.data.roomId; myName = res.data.displayName; myAvatar = res.data.avatar ?? myAvatar;
+        db = await rtdb();
+        const res: any = await callMajlis('majalisJoinRoom', { pin: pinInput.value, displayName: nameInput.value.trim(), avatar: myAvatar });
+        roomId = res.roomId; myName = res.displayName; myAvatar = res.avatar ?? myAvatar;
         joined = true;
         try {
           localStorage.setItem('mj-name', nameInput.value.trim());
@@ -355,8 +377,13 @@
       unsubs.push(onValue(ref(db, '.info/connected'), (s) => {
         q('[data-s="offline"]').classList.toggle('hidden', s.val() === true || !joined);
         if (s.val() === true && joined) {
-          // Re-assert presence after reconnects (profile must already exist).
-          set(ref(db, `rooms/${roomId}/participants/${uid}/presence`), { connected: true, lastSeen: serverTimestamp() }).catch(() => {});
+          // Register the offline write first, then mark this device present.
+          // Re-runs on every reconnect so one network blip never leaves the
+          // player dimmed (or a closed tab counted as present) on the host.
+          const pres = ref(db, `rooms/${roomId}/participants/${uid}/presence`);
+          onDisconnect(pres).set({ connected: false, lastSeen: serverTimestamp() })
+            .then(() => set(pres, { connected: true, lastSeen: serverTimestamp() }))
+            .catch(() => {});
         }
       }));
       unsubs.push(onValue(ref(db, `rooms/${roomId}/participants`), (s) => {
@@ -401,8 +428,10 @@
           else renderPhase();
           break;
         case 'answerReview':
-          if (reveal?.__idx !== idx) fetchReveal(idx);
-          else renderReveal();
+          if (reveal?.__idx !== idx) {
+            showWait('انتهى السؤال', 'النتيجة بعد لحظات…');
+            fetchReveal(idx);
+          } else renderReveal();
           break;
         case 'leaderboard': renderBoard(); break;
         case 'finished': renderPodium(); break;
@@ -410,8 +439,9 @@
     }
 
     async function loadQuestion(idx: string) {
-      qIndex = idx; qData = null; answered = false; reveal = null;
+      qIndex = idx; qData = null; answered = false; submitted = false; reveal = null; renderedIdx = '';
       selWord = -1; selOpt = -1; arrangeOrder = [];
+      closeJitter = Math.random() * 2500;
       try {
         const snap = await get(ref(db, `rooms/${roomId}/publicQ/${idx}`));
         qData = snap.val();
@@ -429,8 +459,12 @@
         show('count');
       } else if (answered) {
         show('locked');
+      } else if (now() >= (meta.questionEndAt ?? Infinity)) {
+        showWait('انتهى الوقت', 'النتيجة بعد لحظات…');
       } else {
-        renderQuestion();
+        // Render once per question: a meta change mid-question must not wipe
+        // a half-built arrangement or a fix_error selection.
+        if (renderedIdx !== qIndex) { renderQuestion(); renderedIdx = qIndex; }
         show('question');
       }
     }
@@ -451,6 +485,15 @@
           const left = Math.max(0, endAt - now());
           q('[data-time-left]').textContent = toAr(Math.ceil(left / 1000));
           q<SVGCircleElement>('[data-time-ring]').style.strokeDashoffset = String(100.5 * (1 - left / span));
+          if (left === 0 && !answered && !q('[data-s="question"]').classList.contains('hidden')) {
+            showWait('انتهى الوقت', 'النتيجة بعد لحظات…');
+          }
+          // The host normally closes on time. If it hasn't (device asleep),
+          // ask the server to close; it only accepts after the deadline.
+          if (endAt > 0 && now() > endAt + 2000 + closeJitter && closeAskedIdx !== qIndex) {
+            closeAskedIdx = qIndex;
+            callMajlis('majalisCloseQuestion', { roomId, questionIndex: Number(qIndex) }).catch(() => {});
+          }
         }
       }, 200);
     }
@@ -574,7 +617,8 @@
     // ── Submit (write-once; rules enforce the window) ──────────────────────
     async function submitAnswer(answer: unknown, btn?: HTMLButtonElement) {
       if (answered) return;
-      answered = true;
+      if (now() >= (meta?.questionEndAt ?? Infinity)) { showWait('انتهى الوقت', 'النتيجة بعد لحظات…'); return; }
+      answered = true; submitted = true;
       if (btn) btn.classList.add('border-purple');
       try {
         await set(ref(db, `rooms/${roomId}/answers/${qIndex}/${uid}`), { answer, ts: serverTimestamp() });
@@ -587,14 +631,27 @@
     }
 
     // ── Reveal ─────────────────────────────────────────────────────────────
+    // Close runs server-side and the reveal lands moments after the status
+    // flips; a cold function can take several seconds. Back off for about
+    // 15 s, then offer a retry instead of leaving the player stranded.
+    const REVEAL_DELAYS = [...Array(10).fill(200), ...Array(10).fill(500), ...Array(8).fill(1000)];
     async function fetchReveal(idx: string, attempt = 0) {
-      // Close runs server-side; the reveal node lands moments after the flip.
       try {
         const snap = await get(ref(db, `rooms/${roomId}/reveal/${idx}`));
-        if (snap.exists()) { reveal = { ...snap.val(), __idx: idx }; renderReveal(); return; }
+        if (snap.exists()) {
+          reveal = { ...snap.val(), __idx: idx };
+          if (meta?.status === 'answerReview' && String(meta?.currentQuestionIndex) === idx) renderReveal();
+          return;
+        }
       } catch { /* readable only after close per rules; retry below */ }
-      if (attempt < 20 && meta?.status === 'answerReview') {
-        setTimeout(() => fetchReveal(idx, attempt + 1), 200);
+      if (meta?.status !== 'answerReview' || String(meta?.currentQuestionIndex) !== idx) return;
+      if (attempt < REVEAL_DELAYS.length) {
+        setTimeout(() => fetchReveal(idx, attempt + 1), REVEAL_DELAYS[attempt]);
+      } else {
+        showWait('تأخرت النتيجة', 'تحقق من اتصالك ثم أعد المحاولة.', () => {
+          showWait('انتهى السؤال', 'النتيجة بعد لحظات…');
+          fetchReveal(idx);
+        });
       }
     }
 
@@ -605,11 +662,15 @@
     }
 
     function renderReveal() {
+      // The server's award is the truth: it survives a reload and knows when
+      // a tap arrived after the deadline.
       const award = reveal?.awarded?.[uid];
       const correct = !!award?.correct;
       const verdict = q<HTMLElement>('[data-reveal-verdict]');
       verdict.style.background = correct ? 'var(--color-teal)' : 'var(--color-ink)';
-      q('[data-reveal-title]').textContent = answered ? (correct ? 'إجابة صحيحة!' : 'إجابة غير صحيحة') : 'لم تُجب هذه المرة';
+      q('[data-reveal-title]').textContent = award
+        ? (correct ? 'إجابة صحيحة!' : 'إجابة غير صحيحة')
+        : submitted ? 'انتهى الوقت قبل وصول إجابتك' : 'لم تُجب هذه المرة';
       q('[data-reveal-points]').textContent = correct ? `+${toAr(award?.points ?? 0)} نقطة` : '';
       q('[data-reveal-correct]').textContent = reveal?.correctDisplay ?? '';
       q('[data-reveal-explain]').textContent = reveal?.explanation ?? '';

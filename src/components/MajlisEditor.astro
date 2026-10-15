@@ -288,6 +288,7 @@
 
 <script>
   import { maybeSignedIn } from '../lib/session';
+  import { firestore, callMajlis } from '../lib/majlis/fb';
   import { stagger, refire, showAnimated } from '../lib/majlis-fx';
 
   const root = document.querySelector<HTMLElement>('[data-medit-root]');
@@ -315,9 +316,7 @@
     else init();
 
     async function init() {
-      const [{ onAuth }, fb] = await Promise.all([import('../lib/auth'), import('../lib/firebase')]);
-      const fs = await import('firebase/firestore');
-      const db = fs.getFirestore(fb.app);
+      const [{ onAuth }, fs, db] = await Promise.all([import('../lib/auth'), import('firebase/firestore'), firestore()]);
       let started = false;
 
       onAuth(async (u) => {
@@ -329,9 +328,8 @@
 
         let isPremium = false;
         try {
-          const { getFunctions, httpsCallable } = await import('firebase/functions');
-          const res: any = await httpsCallable(getFunctions(fb.app, 'us-central1'), 'majalisQuotaStatus')({});
-          isPremium = !!res?.data?.isPremium;
+          const res: any = await callMajlis('majalisQuotaStatus', {});
+          isPremium = !!res?.isPremium;
         } catch { /* default to free; the server re-enforces at launch */ }
         const maxQ = isPremium ? 50 : 10;
 
@@ -693,7 +691,7 @@
           if (!built) return false;
           if (editingIndex != null) { questions[editingIndex] = built; }
           else {
-            if (questions.length >= maxQ) { err(`اكتمل المجلس، الحد الأقصى ${maxQ} أسئلة`); return false; }
+            if (questions.length >= maxQ) { err('اكتمل المجلس: وصل إلى أقصى عدد من الأسئلة في خطتك.'); return false; }
             questions.push(built);
           }
           markDirty();
@@ -755,7 +753,7 @@
             row.innerHTML = `<span class="text-xs font-black text-ink-subtle dark:text-mist-subtle">${TYPE_LABELS[String(v.type)] ?? '؟'}</span><p class="mt-1 text-[15px] font-bold text-ink dark:text-mist leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden"></p>`;
             row.querySelector('p')!.textContent = String(v.questionText ?? '');
             row.addEventListener('click', () => {
-              if (questions.length >= maxQ) { sheet.classList.add('hidden'); err(`اكتمل المجلس، الحد الأقصى ${maxQ} أسئلة`); return; }
+              if (questions.length >= maxQ) { sheet.classList.add('hidden'); err('اكتمل المجلس: وصل إلى أقصى عدد من الأسئلة في خطتك.'); return; }
               if (!isPremium && PREMIUM_TYPES.has(String(v.type))) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
               const c = v.correctAnswer ?? {};
               // Bank reuse mints a FRESH id and drops provenance/bank flags (contract §2).
@@ -1030,7 +1028,7 @@
             if (qd && typeof qd.remaining === 'number') {
               aiQuota = { used: Number(qd.used) || 0, limit: Number(qd.limit) || 0, remaining: Number(qd.remaining) || 0 };
               const pill = q<HTMLElement>('[data-ai-quota]');
-              pill.textContent = `حصة اليوم: ${aiQuota.remaining} من ${aiQuota.limit}`;
+              pill.textContent = `متبقٍّ اليوم: ${aiQuota.remaining}`;
               pill.classList.remove('hidden');
             }
           } catch { /* row stays hidden */ }
@@ -1152,12 +1150,12 @@
           }
 
           const room = maxQ - questions.length;
-          if (room <= 0) { aiErr(`اكتمل المجلس، الحد الأقصى ${maxQ} أسئلة`); return; }
+          if (room <= 0) { aiErr('اكتمل المجلس: وصل إلى أقصى عدد من الأسئلة في خطتك.'); return; }
 
           // Pre-flight quota gate: never silently short-order.
           if (aiQuota) {
             if (aiQuota.remaining <= 0) {
-              aiErr(`استنفدت حصة أسئلة الذكاء الاصطناعي اليوم (${aiQuota.used} من ${aiQuota.limit}). تتجدد يوميًّا.`);
+              aiErr('انتهت أسئلة الذكاء الاصطناعي المتاحة لك اليوم، وتتجدد غدًا.');
               if (!isPremium) (window as any).IrabPaywall?.show({ reason: 'limit' });
               return;
             }
@@ -1179,7 +1177,7 @@
             const j: any = await res.json().catch(() => null);
             if (res.status === 429 && j?.error === 'majalis_ai_quota') {
               aiQuota = { used: Number(j.used) || 0, limit: Number(j.limit) || 0, remaining: 0 };
-              aiErr(`استنفدت حصة أسئلة الذكاء الاصطناعي اليوم (${aiQuota.used} من ${aiQuota.limit}). تتجدد يوميًّا.`);
+              aiErr('انتهت أسئلة الذكاء الاصطناعي المتاحة لك اليوم، وتتجدد غدًا.');
               if (!isPremium) (window as any).IrabPaywall?.show({ reason: 'limit' });
               return;
             }

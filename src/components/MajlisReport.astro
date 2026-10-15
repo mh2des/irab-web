@@ -51,6 +51,7 @@
       <a href="/majlis/host?tab=history" class="btn-ghost px-4 text-sm">السجل</a>
     </div>
     <p data-r-title class="mt-2 text-[15px] font-bold text-ink-soft dark:text-mist-soft leading-relaxed"></p>
+    <div data-r-meta class="mt-2 flex flex-wrap items-center gap-2 text-sm text-ink-subtle dark:text-mist-subtle"></div>
 
     <!-- Stats -->
     <div data-r-stats class="mt-5 grid grid-cols-2 gap-2"></div>
@@ -70,6 +71,7 @@
 
 <script>
   import { maybeSignedIn } from '../lib/session';
+  import { firestore } from '../lib/majlis/fb';
   import { stagger, countUp, refire, showAnimated } from '../lib/majlis-fx';
 
   const root = document.querySelector<HTMLElement>('[data-mreport-root]');
@@ -91,9 +93,7 @@
     else init();
 
     async function init() {
-      const [{ onAuth }, fb] = await Promise.all([import('../lib/auth'), import('../lib/firebase')]);
-      const fs = await import('firebase/firestore');
-      const db = fs.getFirestore(fb.app);
+      const [{ onAuth }, fs, db] = await Promise.all([import('../lib/auth'), import('firebase/firestore'), firestore()]);
       let started = false;
 
       onAuth(async (u) => {
@@ -137,12 +137,37 @@
       const per: any[] = Array.isArray(v.perQuestion) ? v.perQuestion : [];
       q<HTMLElement>('[data-r-title]').textContent = String(per[0]?.questionText ?? 'مجلس إعرابي');
 
+      // Accuracy is out of the questions actually played. Reports written
+      // before playedCount existed divided by the planned count, so it is
+      // recomputed here from each player's correct answers.
+      const players: any[] = Array.isArray(v.participants) ? v.participants : [];
+      const played = Number(v.playedCount) || per.length;
+      const planned = Math.max(Number(v.qCount) || 0, played);
+      const avg = players.length && played
+        ? players.reduce((sum, p) => sum + Math.min(1, (Number(p?.correctCount) || 0) / played), 0) / players.length
+        : 0;
+
+      const metaRow = q<HTMLElement>('[data-r-meta]');
+      metaRow.innerHTML = '';
+      const chip = (text: string, strong = false) => {
+        const c = document.createElement('span');
+        c.className = strong
+          ? 'rounded-full bg-paper-soft dark:bg-coal border border-stone dark:border-coal-edge px-2.5 py-0.5 text-xs font-black text-ink-soft dark:text-mist-soft'
+          : '';
+        c.textContent = text;
+        metaRow.appendChild(c);
+      };
+      const at = typeof v.finishedAt?.toDate === 'function' ? v.finishedAt.toDate() : null;
+      if (at) chip(at.toLocaleDateString('ar-u-nu-latn', { day: 'numeric', month: 'long', year: 'numeric' }));
+      if (v.partial === true) chip('انتهى تلقائيًّا بعد انقطاع المضيف', true);
+      else if (played < planned) chip(`لُعب ${played} من ${planned} أسئلة`, true);
+
       const statsWrap = q<HTMLElement>('[data-r-stats]');
       statsWrap.innerHTML = '';
       const stats: Array<{ label: string; val: number; suffix?: string }> = [
         { label: 'مشاركون', val: Number(v.participantCount) || 0 },
-        { label: 'أسئلة', val: Number(v.qCount) || 0 },
-        { label: 'متوسط الدقة', val: Math.round((Number(v.avgAccuracy) || 0) * 100), suffix: '%' },
+        { label: played < planned ? `أسئلة لُعبت من ${planned}` : 'أسئلة', val: played },
+        { label: 'متوسط الدقة', val: Math.round(avg * 100), suffix: '%' },
         { label: 'أعلى نقاط', val: Number(v.topScore) || 0 },
       ];
       stats.forEach((s, i) => {
@@ -186,7 +211,7 @@
       // Standings (all, stored score-desc)
       const st = q<HTMLElement>('[data-r-standings]');
       st.innerHTML = '';
-      const rows: any[] = Array.isArray(v.participants) ? v.participants : [];
+      const rows = players;
       rows.forEach((p, i) => {
         const row = document.createElement('div');
         row.className = 'flex items-center gap-3 rounded-xl border border-stone dark:border-coal-edge bg-card dark:bg-coal-soft px-3.5 py-2.5';
@@ -194,7 +219,8 @@
         row.innerHTML = `<span class="w-6 text-center font-black tabular-nums ${i === 0 ? 'text-purple' : 'text-ink-muted dark:text-mist-muted'}">${i + 1}</span>
           <img src="/majlis-avatars/a${((Number(p.avatar) || 0) % 64 + 64) % 64}.svg" width="28" height="28" alt="" class="w-7 h-7 rounded-full" />
           <span class="flex-1 font-bold text-[15px] text-ink dark:text-mist truncate"></span>
-          <span class="font-black tabular-nums text-ink-soft dark:text-mist-soft">${Number(p.score) || 0}</span>`;
+          <span class="text-sm tabular-nums text-ink-subtle dark:text-mist-subtle">${Number(p.correctCount) || 0} من ${played} صحيحة</span>
+          <span class="w-14 text-end font-black tabular-nums text-ink-soft dark:text-mist-soft">${Number(p.score) || 0}</span>`;
         row.querySelector('span.flex-1')!.textContent = String(p.name ?? '؟');
         st.appendChild(row);
       });

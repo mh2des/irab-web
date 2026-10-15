@@ -16,6 +16,9 @@
  *            hold 3s, start next; last question → majalisFinish
  *   podium : top-3 + standings from participants; awardXP majalis_hosted
  *            (idempotencyKey = majalis_hosted_<roomId>, once per majlis)
+ *   resume : the URL carries ?room=<id> once a room exists, and
+ *            hostActive/{uid} points at the host's live room, so a refresh,
+ *            a crash or another device rejoins the same room and PIN.
  * The VIEW follows meta.status (like the app's flow screen), host actions
  * only issue calls. hostPresence is event-driven onDisconnect, not a timer.
  * Machine error codes arrive in error.message (MAJLIS_QUOTA, PREMIUM_TYPES,
@@ -80,7 +83,8 @@
       <div data-lobby-players class="mt-3 flex flex-wrap gap-2"></div>
     </div>
 
-    <button data-start-btn class="btn-primary btn-block btn-lg mt-4">ابدأ المجلس</button>
+    <button data-start-btn class="btn-primary btn-block btn-lg mt-4" disabled>ابدأ المجلس</button>
+    <p data-start-hint class="mt-2 text-center text-sm text-ink-subtle dark:text-mist-subtle">يبدأ المجلس بعد انضمام لاعب واحد على الأقل</p>
   </section>
 
   <!-- GAME (question live: countdown overlay OR question + live bars) -->
@@ -123,6 +127,7 @@
   <section data-v="board" class="hidden">
     <h2 class="font-sans font-black text-2xl text-center text-ink dark:text-mist">المتصدرون</h2>
     <div data-board-list class="mt-4 grid gap-2"></div>
+    <button data-board-next class="hidden btn-primary btn-block btn-lg mt-4">السؤال التالي</button>
   </section>
 
   <!-- PODIUM -->
@@ -169,12 +174,12 @@
 
 <script>
   import { maybeSignedIn } from '../lib/session';
+  import { rtdb, callMajlis, track } from '../lib/majlis/fb';
   import { confetti, sfx } from '../lib/celebrate';
   import { stagger, countUp, refire, showAnimated } from '../lib/majlis-fx';
 
   const root = document.querySelector<HTMLElement>('[data-mlive-root]');
   if (root) {
-    const RTDB_URL = 'https://arabic-grammar-app-43de9-default-rtdb.firebaseio.com';
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
     const views = ['boot', 'fatal', 'quota', 'lobby', 'game', 'reveal', 'board', 'podium'];
     function show(v: string) {
@@ -191,23 +196,22 @@
       );
     };
 
-    const draftId = new URLSearchParams(location.search).get('draft') ?? '';
-    if (!draftId) { fatal('لا توجد مسودة محددة. افتح مجلسًا من صفحة مجالسي.'); }
-    else if (!maybeSignedIn()) { location.href = `/login?next=${encodeURIComponent('/majlis/live?draft=' + draftId)}`; }
+    const params = new URLSearchParams(location.search);
+    const draftId = params.get('draft') ?? '';
+    const roomParam = params.get('room') ?? '';
+    const loginUrl = () => `/login?next=${encodeURIComponent('/majlis/live' + location.search)}`;
+    if (!draftId && !roomParam) { fatal('لا توجد مسودة محددة. افتح مجلسًا من صفحة مجالسي.'); }
+    else if (!maybeSignedIn()) { location.href = loginUrl(); }
     else init();
 
     function fatal(msg: string) { q('[data-fatal-msg]').textContent = msg; show('fatal'); }
 
     async function init() {
-      const [{ onAuth }, fb] = await Promise.all([import('../lib/auth'), import('../lib/firebase')]);
-      const rt = await import('firebase/database');
-      const { getFunctions, httpsCallable } = await import('firebase/functions');
-      const fns = getFunctions(fb.app, 'us-central1');
-      const db = rt.getDatabase(fb.app, RTDB_URL);
+      const [{ onAuth }, rt, db] = await Promise.all([import('../lib/auth'), import('firebase/database'), rtdb()]);
 
       let launched = false;
       onAuth((u) => {
-        if (!u || u.isAnonymous) { location.href = `/login?next=${encodeURIComponent('/majlis/live?draft=' + draftId)}`; return; }
+        if (!u || u.isAnonymous) { location.href = loginUrl(); return; }
         if (launched) return;
         launched = true;
         run(u.uid);
@@ -219,21 +223,42 @@
         let meta: any = null; let serverOffset = 0;
         let participants: Array<{ uid: string; name: string; avatar: number; score: number; connected: boolean }> = [];
         let qIndex = -1; let qData: any = null; let answers: Record<string, any> = {};
-        let reveal: any = null; let busy = false; let finished = false;
+        let reveal: any = null; let busy = false; let finished = false; let startBusy = false;
         let answersUnsub: (() => void) | null = null;
         let closeTimer: number | undefined; let tick: number | undefined;
         const now = () => Date.now() + serverOffset;
         const avatarUrl = (i: number) => `/majlis-avatars/a${((Number(i) || 0) % 64 + 64) % 64}.svg`;
 
-        const call = async (name: string, payload: unknown) => {
-          const res: any = await httpsCallable(fns, name)(payload);
-          return res?.data;
-        };
+        const call = callMajlis;
 
-        // ── Launch ────────────────────────────────────────────────────────
-        try {
+        // ── Resume or launch ──────────────────────────────────────────────
+        // A refresh, a crash or another device must land in the SAME room:
+        // creating a new one strands the students and, on the free plan,
+        // the new room would stop at the day's limit.
+        let target = roomParam;
+        if (!target && draftId) {
+          try {
+            const ptr = (await rt.get(rt.ref(db, `hostActive/${uid}`))).val();
+            if (ptr?.roomId && ptr.draftId === draftId) target = String(ptr.roomId);
+          } catch { /* no pointer readable: launch a new room */ }
+        }
+        if (target) {
+          try {
+            const m = (await rt.get(rt.ref(db, `rooms/${target}/meta`))).val();
+            if (m && m.hostUid === uid) {
+              roomId = target; pin = String(m.pin ?? ''); maxPlayers = Number(m.maxPlayers) || 20;
+            }
+          } catch { /* unreadable: fall through */ }
+        }
+        if (roomId) {
+          track('majlis_host_resumed', { platform: 'web' });
+        } else if (!draftId) {
+          fatal('انتهى هذا المجلس أو لم يعد متاحًا. افتح مجالسك لتبدأ مجلسًا جديدًا.');
+          return;
+        } else try {
           const res = await call('majalisCreateRoom', { draftId });
           roomId = res.roomId; pin = String(res.pin); maxPlayers = Number(res.maxPlayers) || 20;
+          track('majlis_host_room_created', { platform: 'web' });
         } catch (e: any) {
           const m = String(e?.message ?? '');
           if (m.includes('PREMIUM_TYPES')) {
@@ -246,6 +271,8 @@
           else fatal('تعذّر إنشاء المجلس، تحقق من اتصالك ثم جرّب مجددًا.');
           return;
         }
+        // From here a refresh resumes this room.
+        history.replaceState(null, '', `/majlis/live?room=${encodeURIComponent(roomId)}`);
 
         // ── Streams + presence ────────────────────────────────────────────
         rt.onValue(rt.ref(db, '.info/serverTimeOffset'), (s) => { serverOffset = s.val() ?? 0; });
@@ -327,6 +354,7 @@
               show('game');
               break;
             case 'answerReview':
+              await loadQ(idx);
               if (!reveal || reveal.__idx !== idx) await loadReveal(idx);
               renderReveal(idx);
               break;
@@ -342,28 +370,43 @@
           setStartBusy(true);
           try {
             await call('majalisStartQuestion', { roomId, questionIndex: index });
+            if (index === 0) track('majlis_host_started', { platform: 'web', players: participants.length });
           } catch (e: any) {
             const m = String(e?.message ?? '');
             if (m.includes('MAJLIS_QUOTA')) { await showQuota(); busy = false; setStartBusy(false); return; }
             if (m.includes('QUESTION_ALREADY_PLAYED')) { busy = false; setStartBusy(false); return start(index + 1); }
-            alertMsg(m.includes('RATE_LIMITED') ? 'محاولات كثيرة، انتظر قليلًا.' : 'تعذّر بدء السؤال، جرّب مجددًا.');
+            alertMsg(m.includes('NO_PLAYERS') ? 'انتظر انضمام لاعب واحد على الأقل.'
+              : m.includes('RATE_LIMITED') ? 'محاولات كثيرة، انتظر قليلًا.' : 'تعذّر بدء السؤال، جرّب مجددًا.');
           }
           busy = false;
           setStartBusy(false);
         }
         function setStartBusy(b: boolean) {
+          startBusy = b;
+          updateStartBtn();
+        }
+        // Starting is what spends the day's majlis, so it needs a player.
+        function updateStartBtn() {
           const btn = q<HTMLButtonElement>('[data-start-btn]');
-          btn.disabled = b; btn.classList.toggle('btn-busy', b);
+          btn.disabled = startBusy || participants.length === 0;
+          btn.classList.toggle('btn-busy', startBusy);
+          q('[data-start-hint]').classList.toggle('hidden', participants.length > 0);
         }
 
-        async function enterQuestion(index: number) {
-          qIndex = index; qData = null; answers = {}; reveal = null;
-          if (answersUnsub) { answersUnsub(); answersUnsub = null; }
-          if (closeTimer) { clearTimeout(closeTimer); closeTimer = undefined; }
+        async function loadQ(index: number, force = false) {
+          if (!force && qIndex === index && qData) return;
+          qIndex = index; qData = null;
           try {
             const snap = await rt.get(rt.ref(db, `rooms/${roomId}/publicQ/${index}`));
             qData = snap.val();
           } catch { /* retry via meta re-fire */ }
+        }
+
+        async function enterQuestion(index: number) {
+          answers = {}; reveal = null;
+          if (answersUnsub) { answersUnsub(); answersUnsub = null; }
+          if (closeTimer) { clearTimeout(closeTimer); closeTimer = undefined; }
+          await loadQ(index, true);
           q('[data-q-num]').textContent = `${index + 1} من ${meta?.qCount ?? '؟'}`;
           q('[data-q-text]').textContent = qData?.questionText ?? '';
           const src = q<HTMLElement>('[data-q-source]');
@@ -385,10 +428,13 @@
           closeTimer = window.setTimeout(() => guardedClose(), delay);
         }
 
+        // Close early only when EVERY connected player has an answer. Counting
+        // answers against connected players let an answer from someone who
+        // then dropped cut off a student who was still thinking.
         function maybeEarlyClose() {
           if (meta?.status !== 'questionLive') return;
-          const connected = participants.filter((p) => p.connected).length;
-          if (connected > 0 && Object.keys(answers).length >= connected) guardedClose();
+          const present = participants.filter((p) => p.connected);
+          if (present.length > 0 && present.every((p) => answers[p.uid] !== undefined)) guardedClose();
         }
 
         // Only while questionLive, never concurrently; errors swallowed —
@@ -401,12 +447,19 @@
           busy = false;
         }
 
-        async function loadReveal(idx: number, attempt = 0) {
+        // The reveal lands moments after the status flips; a cold function
+        // can take several seconds, so back off for about 15 s.
+        const REVEAL_DELAYS = [...Array(10).fill(200), ...Array(10).fill(500), ...Array(8).fill(1000)];
+        async function loadReveal(idx: number, attempt = 0): Promise<void> {
           try {
             const snap = await rt.get(rt.ref(db, `rooms/${roomId}/reveal/${idx}`));
             if (snap.exists()) { reveal = { ...snap.val(), __idx: idx }; return; }
           } catch { /* not readable yet */ }
-          if (attempt < 20) { await new Promise((r) => setTimeout(r, 200)); return loadReveal(idx, attempt + 1); }
+          if (attempt < REVEAL_DELAYS.length) {
+            await new Promise((r) => setTimeout(r, REVEAL_DELAYS[attempt]));
+            return loadReveal(idx, attempt + 1);
+          }
+          alertMsg('تأخرت النتيجة. أعد تحميل الصفحة، فالمجلس يستأنف من حيث توقف.');
         }
 
         async function showLeaderboardThenNext() {
@@ -417,7 +470,7 @@
             await new Promise((r) => setTimeout(r, 3000));
           } catch { /* rules refused (state changed) */ }
           busy = false;
-          if (!finished) start(qIndex + 1);
+          if (!finished) start(Number(meta?.currentQuestionIndex ?? qIndex) + 1);
         }
 
         async function finish() {
@@ -433,6 +486,7 @@
           if (answersUnsub) { answersUnsub(); answersUnsub = null; }
           stopTick();
           renderPodium();
+          track('majlis_host_finished', { platform: 'web', players: participants.length });
           // Hosting XP — once per majlis, keyed by roomId so retries can't double-award.
           call('awardXP', { source: 'majalis_hosted', idempotencyKey: `majalis_hosted_${roomId}` }).catch(() => {});
         }
@@ -476,6 +530,7 @@
           if (participants.length !== lastCount) { bump(countEl); lastCount = participants.length; }
           q('[data-lobby-cap]').textContent = `من ${maxPlayers} في المجلس`;
           q('[data-waiting-dots]').textContent = participants.length === 0 ? '، بانتظار أول لاعب…' : '';
+          updateStartBtn();
           const wrap = q<HTMLElement>('[data-lobby-players]');
           wrap.innerHTML = '';
           for (const p of participants) {
@@ -493,10 +548,10 @@
 
         let lastAnswered = 0;
         function renderAnsweredPill() {
-          const connected = participants.filter((p) => p.connected).length;
           const n = Object.keys(answers).length;
+          const inPlay = participants.filter((p) => p.connected || answers[p.uid] !== undefined).length;
           const pill = q<HTMLElement>('[data-answered-pill]');
-          pill.textContent = `أجاب ${n} من ${connected}`;
+          pill.textContent = `أجاب ${n} من ${Math.max(inPlay, n)}`;
           if (n !== lastAnswered) { bump(pill); lastAnswered = n; }
         }
 
@@ -507,9 +562,19 @@
             : String(a);
 
         type BarRow = { key: string; label: string; count: number };
-        function barRows(): BarRow[] {
+        function liveCounts(): Record<string, number> {
           const counts: Record<string, number> = {};
           for (const a of Object.values(answers)) counts[answerKey(a)] = (counts[answerKey(a)] ?? 0) + 1;
+          return counts;
+        }
+        // RTDB returns contiguous numeric keys as an array, possibly with holes.
+        function distCounts(raw: unknown): Record<string, number> {
+          const out: Record<string, number> = {};
+          if (Array.isArray(raw)) raw.forEach((v, i) => { if (v != null) out[String(i)] = Number(v) || 0; });
+          else if (raw && typeof raw === 'object') for (const [k, v] of Object.entries(raw)) if (v != null) out[k] = Number(v) || 0;
+          return out;
+        }
+        function barRows(counts: Record<string, number> = liveCounts()): BarRow[] {
           const type = qData?.type; const options: string[] = qData?.options ?? [];
           const words = String(qData?.sourceText ?? '').split(/\s+/).filter(Boolean);
           let rows: BarRow[] = [];
@@ -604,7 +669,8 @@
           const wrap = q<HTMLElement>('[data-reveal-bars]');
           wrap.innerHTML = '';
           const key = correctKeyOf(reveal);
-          const rows = barRows();
+          const counts = reveal?.distribution != null ? distCounts(reveal.distribution) : liveCounts();
+          const rows = barRows(counts);
           if (!rows.some((r) => r.key === key)) {
             const c = reveal?.correctAnswer ?? {}; const options: string[] = qData?.options ?? [];
             const words = String(qData?.sourceText ?? '').split(/\s+/).filter(Boolean);
@@ -617,7 +683,7 @@
           }
           // Reveal grammar: bars grow from zero with a stagger, correct stays
           // lit, wrong rows recede (barEl correct===false dims them).
-          const total = Object.keys(answers).length;
+          const total = Object.values(counts).reduce((a, b) => a + b, 0);
           rows.forEach((row, i) => {
             const el = barEl(row, total, row.key === key);
             const fill = el.querySelector<HTMLElement>('[data-fill]')!;
@@ -651,6 +717,11 @@
           list.innerHTML = '';
           [...participants].sort((a, b) => b.score - a.score).slice(0, 5)
             .forEach((p, i) => { const r = boardRow(p, i); stagger(r, i); list.appendChild(r); });
+          // The 3-second hold advances on its own; a host who lands here after
+          // a refresh has no hold running, so offer the next question.
+          const next = q<HTMLButtonElement>('[data-board-next]');
+          next.classList.toggle('hidden', busy);
+          next.onclick = () => { next.classList.add('hidden'); start(Number(meta?.currentQuestionIndex ?? 0) + 1); };
           show('board');
         }
 
@@ -709,8 +780,8 @@
             const d: any = await call('majalisQuotaStatus', {});
             const next = d?.nextFreeAtMs ? new Date(d.nextFreeAtMs) : null;
             q('[data-quota-msg]').textContent =
-              `استخدمت ${d?.used ?? '؟'} من ${d?.limit ?? '؟'} مجالس خلال 24 ساعة.` +
-              (next ? ` تتجدد حصتك ${next.toLocaleTimeString('ar-u-nu-latn', { hour: '2-digit', minute: '2-digit' })}.` : '');
+              'بلغت حد المجالس اليومي في خطتك.' +
+              (next ? ` تتجدد حصتك الساعة ${next.toLocaleTimeString('ar-u-nu-latn', { hour: '2-digit', minute: '2-digit' })}.` : '');
             const up = q<HTMLElement>('[data-quota-upgrade]');
             if (d?.isPremium !== true) {
               up.classList.remove('hidden');

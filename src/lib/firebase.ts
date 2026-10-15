@@ -8,7 +8,7 @@
  * app (arabic-grammar-app-43de9), so accounts + subscriptions are shared.
  */
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
-import { getAuth, type Auth } from 'firebase/auth';
+import { getAuth, connectAuthEmulator, type Auth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAMdgmQFdoiHmkMacLjsyaQvw0rufOmTYo',
@@ -29,3 +29,19 @@ const firebaseConfig = {
 
 export const app: FirebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
 export const auth: Auth = getAuth(app);
+
+/**
+ * Local testing against the Firebase emulators: in `astro dev` on localhost
+ * (or any *.localhost name: a separate origin, so a second tab can be a
+ * different user),
+ * set `localStorage.irabEmu = '1'` and reload. Auth connects here; the majlis
+ * islands connect RTDB, Firestore and Functions in lib/majlis/fb.ts.
+ * Production builds drop this (import.meta.env.DEV is false there).
+ */
+export const useEmulators: boolean =
+  import.meta.env.DEV &&
+  typeof location !== 'undefined' &&
+  (location.hostname === 'localhost' || location.hostname.endsWith('.localhost')) &&
+  (() => { try { return localStorage.getItem('irabEmu') === '1'; } catch { return false; } })();
+
+if (useEmulators) connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });

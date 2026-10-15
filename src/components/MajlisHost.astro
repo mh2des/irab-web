@@ -8,7 +8,9 @@
  *   bank   : majalis_bank/{uid}/questions limit 100 (NO orderBy — docs have no timestamp)
  * Deletes are direct doc deletes (owner-only rules), optimistic UI.
  * Quota pill via callable majalisQuotaStatus {used, limit, remaining,
- * nextFreeAtMs, isPremium}. Cache-first then server refresh, per-doc
+ * nextFreeAtMs, isPremium}; it shows what is left today, never the plan's
+ * allowance (numbers live on /pricing). A banner returns the host to a room
+ * that is still live (hostActive/{uid} in RTDB). Cache-first then server refresh, per-doc
  * parse-or-skip — mirrors the app's resilience. Western digits (owner call).
  * Thmanyah only: headings carry font-sans to beat the global display-font rule.
  */
@@ -43,6 +45,15 @@
       <span data-quota-pill class="hidden rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3.5 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
     </div>
 
+    <!-- Live room still running (refresh, closed tab, another device) -->
+    <a data-live-banner href="#" class="hidden mt-4 flex items-center justify-between gap-4 rounded-2xl border-2 border-teal bg-teal/10 px-5 py-4 text-ink dark:text-mist">
+      <span>
+        <span class="block font-black text-lg">مجلسك ما زال مباشرًا</span>
+        <span data-live-sub class="block text-sm text-ink-muted dark:text-mist-muted"></span>
+      </span>
+      <span class="btn-primary shrink-0">عُد إليه</span>
+    </a>
+
     <!-- Create CTA (same drafts on app and web) -->
     <div class="card mt-4 p-5 flex items-center justify-between gap-4 flex-wrap">
       <p class="text-[15px] text-ink-muted dark:text-mist-muted">أنشئ مجلسًا هنا أو من التطبيق، فمسوداتك متزامنة بينهما.</p>
@@ -60,11 +71,17 @@
     <p data-empty class="hidden mt-6 text-center text-ink-muted dark:text-mist-muted text-[15px] leading-relaxed px-6"></p>
     <p data-note class="hidden mt-4 text-center text-sm text-ink-subtle dark:text-mist-subtle">المسودات لا تُحتسب من حصتك اليومية حتى تبدأ المجلس</p>
   </section>
+
+  <div data-undo role="status" class="hidden fixed bottom-6 inset-x-0 mx-auto w-fit max-w-[90vw] z-50 flex items-center gap-4 rounded-xl bg-ink text-paper dark:bg-mist dark:text-coal px-4 py-3 text-sm font-bold">
+    <span data-undo-msg></span>
+    <button data-undo-btn type="button" class="underline underline-offset-4">تراجع</button>
+  </div>
 </div>
 
 <script>
   import { maybeSignedIn } from '../lib/session';
   import { stagger, showAnimated } from '../lib/majlis-fx';
+  import { firestore, rtdb, callMajlis } from '../lib/majlis/fb';
 
   const root = document.querySelector<HTMLElement>('[data-mhost-root]');
   if (root) {
@@ -84,15 +101,14 @@
     else init();
 
     async function init() {
-      const [{ onAuth }, fb] = await Promise.all([import('../lib/auth'), import('../lib/firebase')]);
-      const fs = await import('firebase/firestore');
-      const db = fs.getFirestore(fb.app);
+      const [{ onAuth }, fs, db] = await Promise.all([import('../lib/auth'), import('firebase/firestore'), firestore()]);
 
       onAuth(async (u) => {
         if (!u || u.isAnonymous) { show('gate'); return; }
         const uid = u.uid;
         show('hub');
-        loadQuota(fb.app);
+        loadQuota();
+        loadLiveRoom(uid);
 
         type Tab = 'drafts' | 'history' | 'bank';
         const tabParam = new URLSearchParams(location.search).get('tab');
@@ -100,6 +116,10 @@
         let drafts: Array<{ id: string; title: string; count: number }> = [];
         let reports: Array<{ id: string; data: any }> = [];
         let bank: Array<{ id: string; data: any }> = [];
+
+        // Ids whose delete is waiting behind the undo toast. A background
+        // refresh must not bring them back on screen.
+        const hiddenIds = new Set<string>();
 
         const tabBtns = root!.querySelectorAll<HTMLButtonElement>('[data-tab]');
         tabBtns.forEach((b) => b.addEventListener('click', () => { tab = b.dataset.tab as Tab; render(); }));
@@ -120,7 +140,7 @@
 
         loadList(
           fs.query(fs.collection(db, 'majalis_drafts', uid, 'drafts'), fs.orderBy('updatedAt', 'desc'), fs.limit(30)),
-          (docs) => { drafts = docs.flatMap((d) => { try { const v = d.data(); return [{ id: d.id, title: String(v.title ?? '؟'), count: Array.isArray(v.questions) ? v.questions.length : 0 }]; } catch { return []; } }); },
+          (docs) => { drafts = docs.flatMap((d) => { if (hiddenIds.has(d.id)) return []; try { const v = d.data(); return [{ id: d.id, title: String(v.title ?? '؟'), count: Array.isArray(v.questions) ? v.questions.length : 0 }]; } catch { return []; } }); },
         );
         loadList(
           fs.query(fs.collection(db, 'majalis_reports'), fs.where('hostUid', '==', uid), fs.orderBy('finishedAt', 'desc'), fs.limit(20)),
@@ -128,7 +148,7 @@
         );
         loadList(
           fs.query(fs.collection(db, 'majalis_bank', uid, 'questions'), fs.limit(100)),
-          (docs) => { bank = docs.flatMap((d) => { try { return [{ id: d.id, data: d.data() }]; } catch { return []; } }); },
+          (docs) => { bank = docs.flatMap((d) => { if (hiddenIds.has(d.id)) return []; try { return [{ id: d.id, data: d.data() }]; } catch { return []; } }); },
         );
 
         const EMPTIES: Record<Tab, string> = {
@@ -185,10 +205,13 @@
           const edit = btn('متابعة', 'btn-ghost px-4 text-sm');
           edit.addEventListener('click', () => { location.href = `/majlis/create?draft=${encodeURIComponent(d.id)}`; });
           const del = btn('حذف', 'btn-ghost px-4 text-sm');
-          del.addEventListener('click', async () => {
+          del.addEventListener('click', () => {
+            const at = drafts.findIndex((x) => x.id === d.id);
             drafts = drafts.filter((x) => x.id !== d.id); render();
-            try { await fs.deleteDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', d.id)); }
-            catch { drafts = [...drafts, d]; render(); }
+            withUndo(d.id, 'حُذفت المسودة', async () => {
+              try { await fs.deleteDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', d.id)); }
+              catch { drafts.splice(at, 0, d); render(); }
+            }, () => { drafts.splice(Math.max(0, at), 0, d); render(); });
           });
           row.append(host, edit, del);
           el.appendChild(row);
@@ -222,27 +245,64 @@
             <p class="mt-2 text-[15px] font-bold text-ink dark:text-mist leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden"></p>`;
           el.querySelector('p:last-child')!.textContent = String(v.questionText ?? '');
           const del = btn('حذف من البنك', 'btn-ghost mt-3 px-4 text-sm');
-          del.addEventListener('click', async () => {
+          del.addEventListener('click', () => {
+            const at = bank.findIndex((x) => x.id === b.id);
             bank = bank.filter((x) => x.id !== b.id); render();
-            try { await fs.deleteDoc(fs.doc(db, 'majalis_bank', uid, 'questions', b.id)); }
-            catch { bank = [...bank, b]; render(); }
+            withUndo(b.id, 'حُذف السؤال من البنك', async () => {
+              try { await fs.deleteDoc(fs.doc(db, 'majalis_bank', uid, 'questions', b.id)); }
+              catch { bank.splice(at, 0, b); render(); }
+            }, () => { bank.splice(Math.max(0, at), 0, b); render(); });
           });
           el.appendChild(del);
           return el;
         }
 
+        // A delete waits 5 s behind an undo toast before it reaches Firestore.
+        // Starting another delete commits the pending one first.
+        let pending: { commit: () => void; timer: number } | null = null;
+        function withUndo(id: string, msg: string, commit: () => Promise<void>, undo: () => void) {
+          if (pending) { clearTimeout(pending.timer); pending.commit(); }
+          hiddenIds.add(id);
+          const bar = q<HTMLElement>('[data-undo]');
+          q('[data-undo-msg]').textContent = msg;
+          bar.classList.remove('hidden');
+          const run = () => { commit().finally(() => hiddenIds.delete(id)); };
+          const timer = window.setTimeout(() => { bar.classList.add('hidden'); pending = null; run(); }, 5000);
+          pending = { commit: run, timer };
+          q<HTMLButtonElement>('[data-undo-btn]').onclick = () => {
+            clearTimeout(timer); pending = null; hiddenIds.delete(id); bar.classList.add('hidden'); undo();
+          };
+        }
+        // A tab closed with a delete pending: commit it rather than lose it.
+        window.addEventListener('pagehide', () => { if (pending) { clearTimeout(pending.timer); pending.commit(); pending = null; } });
+
         render();
       });
     }
 
-    async function loadQuota(app: unknown) {
+    async function loadLiveRoom(uid: string) {
       try {
-        const { getFunctions, httpsCallable } = await import('firebase/functions');
-        const call = httpsCallable(getFunctions(app as any, 'us-central1'), 'majalisQuotaStatus');
-        const res: any = await call({});
-        const d = res?.data ?? {};
+        const rt = await import('firebase/database');
+        const db = await rtdb();
+        const ptr = (await rt.get(rt.ref(db, `hostActive/${uid}`))).val();
+        if (!ptr?.roomId) return;
+        const meta = (await rt.get(rt.ref(db, `rooms/${ptr.roomId}/meta`))).val();
+        if (!meta || meta.status === 'finished' || meta.hostUid !== uid) return;
+        const banner = q<HTMLAnchorElement>('[data-live-banner]');
+        banner.href = `/majlis/live?room=${encodeURIComponent(ptr.roomId)}`;
+        q('[data-live-sub]').textContent = meta.status === 'lobby'
+          ? `الرمز ${meta.pin} · اللاعبون في الانتظار`
+          : `الرمز ${meta.pin} · السؤال ${Number(meta.currentQuestionIndex ?? 0) + 1} من ${meta.qCount ?? '؟'}`;
+        banner.classList.remove('hidden');
+        banner.classList.add('panel-in');
+      } catch { /* no live room, or the pointer is not readable yet */ }
+    }
+
+    async function loadQuota() {
+      try {
+        const d: any = (await callMajlis('majalisQuotaStatus', {})) ?? {};
         const pill = q<HTMLElement>('[data-quota-pill]');
-        pill.textContent = `مجالس اليوم: ${d.remaining ?? '؟'} من ${d.limit ?? '؟'}`;
+        pill.textContent = `مجالس متبقية اليوم: ${d.remaining ?? '؟'}`;
         pill.classList.remove('hidden');
         pill.classList.add('panel-in');
       } catch { /* pill stays hidden — the server still enforces */ }
