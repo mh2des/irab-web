@@ -1,9 +1,9 @@
 /*
- * Majalis board tokens, shared by the stage (projector) and the player
- * (phone). Values are the app's majalis board family (majalis_tokens.dart)
+ * Majalis board tokens, shared by the stage (projector), the player
+ * (phone) and the creator. Values are the app's majalis board family (majalis_tokens.dart)
  * plus the four answer colours, each paired with a shape.
  */
-.ms-page, .mp-page {
+.ms-page, .mp-page, .me-root {
   --b-bg: #15223F; --b-deep: #101A33; --b-card: #20304F; --b-card-2: #1A2842;
   --b-elev: #26385C; --b-track: #283A5C; --b-line: #35497A; --b-gold: #F5C15E;
   --b-text: #F5F5F0; --b-muted: #C8C5BC; --b-dim: #8F96A8;

@@ -7,7 +7,7 @@
  * Two modes:
  *   host     (default) runs the game against the verified contract
  *            (docs/majlis-host-contracts.md):
- *              launch : majalisCreateRoom {draftId, readTime}
+ *              launch : majalisCreateRoom {draftId, readTime} (draft settings)
  *              lobby  : participants stream, joinLocked + readTime toggles,
  *                       remove a player (banned/{uid} + participant delete)
  *              start  : majalisStartQuestion → meta questionReadAt /
@@ -181,6 +181,7 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
   import { cue, startLobbyLoop, stopLobbyLoop, soundOn, setSound } from '../lib/majlis/stage/sound';
   import { shapeSvg, tileClass, LETTERS, TICK_SVG } from '../lib/majlis/stage/shapes';
   import { BADGES, readAwards, type Award } from '../lib/majlis/badges';
+  import { sentenceInto } from '../lib/majlis/sentence';
 
   const viewport = document.querySelector<HTMLElement>('[data-ms-viewport]');
   if (viewport) {
@@ -323,8 +324,17 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
           fatal('انتهى هذا المجلس أو لم يعد متاحًا. افتح مجالسك لتبدأ مجلسًا جديدًا.');
           return;
         } else try {
-          const res = await callMajlis('majalisCreateRoom', { draftId, readTime: false });
+          // Read time and «الدقة أولًا» chosen in the creator ride on the
+          // draft (settings); both stay changeable in the lobby.
+          let readTime = false; let accuracy = false;
+          try {
+            const [fs, fdb] = await Promise.all([import('firebase/firestore'), firestore()]);
+            const st = (await fs.getDoc(fs.doc(fdb, 'majalis_drafts', uid, 'drafts', draftId))).get('settings');
+            readTime = st?.readTime === true; accuracy = st?.scoring === 'accuracy';
+          } catch { /* defaults: no read time, speed scoring */ }
+          const res = await callMajlis('majalisCreateRoom', { draftId, readTime });
           roomId = res.roomId; pin = String(res.pin);
+          if (accuracy) rt.set(rt.ref(db, `rooms/${roomId}/meta/scoring`), 'accuracy').catch(() => {});
           track('majlis_host_room_created', { platform: 'web' });
         } catch (e: any) {
           const m = String(e?.message ?? '');
@@ -666,20 +676,6 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
         }
 
         // ── rendering: question ───────────────────────────────────────────
-        // The word the question asks about, «like this», lit in the sentence.
-        function sentenceInto(el: HTMLElement, sentence: string, questionText: string) {
-          el.textContent = '';
-          const m = /«([^»]+)»/.exec(questionText ?? '');
-          // Match the letters and ignore harakat on either side: the question
-          // may write «الطالبُ» while the sentence has الطالب.
-          const letters = (m?.[1] ?? '').replace(/[\u064B-\u0652\u0670\u0640]/g, '').trim();
-          const found = letters
-            ? new RegExp([...letters].map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[\u064B-\u0652\u0670\u0640]*') + '[\u064B-\u0652\u0670]*').exec(sentence)
-            : null;
-          if (!found) { el.textContent = sentence; return; }
-          const hl = document.createElement('span'); hl.className = 'hl'; hl.textContent = found[0];
-          el.append(document.createTextNode(sentence.slice(0, found.index)), hl, document.createTextNode(sentence.slice(found.index + found[0].length)));
-        }
         function qNumText() { return `السؤال <b>${qIndex + 1}</b> من ${meta?.qCount ?? '؟'}`; }
         function fillIntro() {
           q('[data-intro-num]').innerHTML = qNumText();

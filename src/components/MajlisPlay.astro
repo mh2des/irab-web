@@ -230,6 +230,7 @@ const REACTIONS = [
 </div>
 
 <script>
+  import { sentenceInto } from '../lib/majlis/sentence';
   import { signInAnonymously, onAuthStateChanged, type User } from 'firebase/auth';
   import {
     ref, onValue, onDisconnect, get, set, serverTimestamp, type Database, type Unsubscribe,
@@ -571,18 +572,6 @@ const REACTIONS = [
       if (qData) renderPhase();
     }
 
-    // The asked-about word, «like this», lit in the sentence (harakat ignored).
-    function sentenceInto(el: HTMLElement, sentence: string, questionText: string) {
-      el.textContent = '';
-      const m = /«([^»]+)»/.exec(questionText ?? '');
-      const letters = (m?.[1] ?? '').replace(/[\u064B-\u0652\u0670\u0640]/g, '').trim();
-      const found = letters
-        ? new RegExp([...letters].map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[\u064B-\u0652\u0670\u0640]*') + '[\u064B-\u0652\u0670]*').exec(sentence)
-        : null;
-      if (!found) { el.textContent = sentence; return; }
-      const hl = document.createElement('span'); hl.className = 'hl'; hl.textContent = found[0];
-      el.append(document.createTextNode(sentence.slice(0, found.index)), hl, document.createTextNode(sentence.slice(found.index + found[0].length)));
-    }
     const qNum = () => `السؤال ${Number(qIndex) + 1} من ${meta?.qCount ?? '؟'}`;
 
     // countdown, read time, then the question; driven by meta and the ticker

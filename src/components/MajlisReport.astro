@@ -147,6 +147,20 @@
           render(v);
           wireActions(v, uid);
           show('report');
+          namedTitle(v, uid);
+        }
+
+        // A majlis named in the creator shows that name instead of its
+        // first question (launched quiz -> its draft -> titleCustom).
+        async function namedTitle(v: any, uid: string) {
+          try {
+            if (!v.quizId) return;
+            const draftId = String((await fs.getDoc(fs.doc(db, 'majalis_quizzes', String(v.quizId)))).get('draftId') ?? '');
+            if (!draftId) return;
+            const d = await fs.getDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', draftId));
+            const t = String(d.get('title') ?? '').trim();
+            if (d.get('titleCustom') === true && t) q<HTMLElement>('[data-r-title]').textContent = t;
+          } catch { /* the first question stays */ }
         }
 
         // ── Next steps: host again, remedial majlis, CSV ─────────────────

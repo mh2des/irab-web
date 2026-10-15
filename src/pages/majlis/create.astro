@@ -1,7 +1,7 @@
 ---
 /**
- * /majlis/create: create a new majlis (manual editor + review), or resume an
- * existing draft into review via ?draft=<id>. Writes the same Firestore
+ * /majlis/create: the majlis creator, the whole majlis on one screen; a new
+ * majlis, or an existing draft via ?draft=<id>. Writes the same Firestore
  * drafts/bank the mobile app uses. Login-gated island, noindex.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -9,10 +9,10 @@ import Nav from '../../components/Nav.astro';
 import MajlisEditor from '../../components/MajlisEditor.astro';
 import Paywall from '../../components/Paywall.astro';
 ---
-<BaseLayout lang="ar" title="مجلس جديد · إعراب آب" description="أنشئ أسئلة مجلس الإعراب وراجعها ثم أطلقها مباشرة.">
+<BaseLayout lang="ar" title="مجلس جديد · إعراب آب" description="أنشئ مجلس الإعراب على شاشة واحدة، وعاينه كما يظهر على شاشة العرض، ثم استضفه مباشرة.">
   <meta slot="head" name="robots" content="noindex, nofollow" />
   <Nav lang="ar" />
-  <main class="px-4 sm:px-6 py-8 md:py-12">
+  <main class="px-3 sm:px-5 py-4 md:py-6">
     <MajlisEditor />
   </main>
   <Paywall lang="ar" />

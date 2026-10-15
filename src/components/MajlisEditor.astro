@@ -1,316 +1,300 @@
 ---
 /**
- * MajlisEditor — create/edit a majlis draft on the web with full app parity
- * (contract: docs/majlis-host-contracts.md, creation section):
- *   - Draft doc majalis_drafts/{uid}/drafts: title auto-derived from Q1,
- *     client-side Timestamps (updatedAt every save, createdAt first save only),
- *     hasAiQuestions; question wire shape with ALL keys (explicit nulls).
- *   - Editor types: mcq, true_false, fix_error, arrange_irab (tap_word retired
- *     from authoring; old tap_word questions still render in review).
- *   - fix_error options shuffled at build; arrange fragments shuffled with a
- *     guaranteed non-identity permutation; mcq correct index re-derived after
- *     dropping blank rows.
- *   - saveToBank questions upsert to majalis_bank AFTER the draft write, fire
- *     and forget; bank reuse mints a FRESH id; edits PRESERVE the question id
- *     and AI provenance; sourceReference cleared when sourceText changes.
- *   - Free: 10 questions, mcq+true_false only. Premium: 50, all types.
- *   - Saves at continue-to-review and launch (like the app), plus quiet
- *     background saves after review edits so a closed tab loses nothing.
- * Western digits, Thmanyah only (font-sans on headings), no em-dashes.
+ * MajlisEditor: the majlis creator (/majlis/create), the whole majlis on
+ * one screen (rail of questions, the selected question typed into the
+ * game's own coloured and shaped tiles, its settings, the majlis settings).
+ *
+ * Wire contract (docs/majlis-host-contracts.md, creation section) is kept:
+ *   - Draft doc majalis_drafts/{uid}/drafts: client Timestamps (updatedAt
+ *     every save, createdAt first save only), hasAiQuestions, questions in
+ *     play order with ALL keys (explicit nulls). New fields: titleCustom
+ *     (the host named the majlis; the title is otherwise derived from Q1)
+ *     and settings {readTime, scoring}, applied by /majlis/live at launch.
+ *   - Editor types: mcq, true_false, fix_error, arrange_irab (tap_word is
+ *     shown read-only). mcq and true_false may now carry a sentence
+ *     (sourceText), lit on the stage at the word «quoted» in the question.
+ *   - fix_error options shuffled, arrange fragments shuffled with a
+ *     non-identity permutation; the shuffle is kept while the content is
+ *     unchanged so saves and the preview stay stable.
+ *   - Saves on its own (debounced). Only complete questions are written; a
+ *     question being edited keeps its last complete version in the draft.
+ *   - saveToBank upserts AFTER the draft write, only when changed; bank
+ *     reuse mints a FRESH id; edits PRESERVE id and AI provenance;
+ *     sourceReference cleared when the sentence changes.
+ *   - Free: the two basic types and fewer questions; the plan's numbers are
+ *     never shown here (they live on /pricing).
+ * Western digits, Thmanyah only, no em-dashes.
  */
+import '../styles/irab-ui.css';
+import '../styles/majlis-stage.css';
+import '../styles/majlis-editor.css';
+import { MARK_SVG } from '../lib/majlis/stage/shapes';
 ---
 
-<div data-medit-root dir="rtl" class="mx-auto w-full max-w-2xl">
+<div class="iu me-root" data-medit-root dir="rtl" lang="ar">
 
-  <div data-v="loading" class="grid gap-3">
-    <div class="skeleton h-12 rounded-2xl"></div>
-    <div class="skeleton h-72 rounded-2xl"></div>
+  <div data-v="loading" class="me-center" aria-busy="true">
+    <div class="me-skel"></div>
+    <div class="me-skel tall"></div>
   </div>
 
-  <section data-v="gate" class="hidden">
-    <div class="card p-8 text-center">
-      <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">سجّل الدخول لإنشاء مجلسك</h1>
-      <p class="mt-2 text-ink-muted dark:text-mist-muted">أنشئ أسئلة الإعراب مرة واحدة، واستضفها من الويب أو التطبيق.</p>
-      <a data-login-link href="/login?next=/majlis/create" class="btn-primary btn-lg mt-5">تسجيل الدخول</a>
+  <section data-v="gate" class="me-center" hidden>
+    <div class="iu-card me-gate">
+      <h1 class="t-display">سجّل الدخول لإنشاء مجلسك</h1>
+      <p class="t-body c-word">أنشئ أسئلة الإعراب مرة واحدة، واستضفها من الويب أو التطبيق.</p>
+      <a data-login-link href="/login?next=/majlis/create" class="iu-btn primary lg">تسجيل الدخول</a>
     </div>
   </section>
 
-  <section data-v="fatal" class="hidden">
-    <div class="card p-8 text-center">
-      <h1 class="font-sans font-black text-xl text-ink dark:text-mist" data-fatal-msg></h1>
-      <a href="/majlis/host" class="btn-ghost mt-5">العودة إلى مجالسي</a>
+  <section data-v="fatal" class="me-center" hidden>
+    <div class="iu-card me-gate">
+      <h1 class="t-title-l" data-fatal-msg></h1>
+      <a href="/majlis/host" class="iu-btn secondary">العودة إلى مجالسي</a>
     </div>
   </section>
 
-  <!-- ═══ Editor ═══ -->
-  <section data-v="editor" class="hidden">
-    <div class="flex items-center justify-between gap-3">
-      <div>
-        <p class="text-sm font-bold text-teal">مجالس الإعراب</p>
-        <h1 data-ed-title class="font-sans font-black text-2xl text-ink dark:text-mist">سؤال جديد</h1>
+  <!-- ═══ The creator ═══ -->
+  <section data-v="app" class="me-app" hidden>
+    <header class="iu-card flat me-bar">
+      <a href="/majlis/host" class="iu-btn secondary" data-back>مجالسي</a>
+      <input id="me-title" data-title class="me-title" type="text" maxlength="60" autocomplete="off" placeholder="سمِّ مجلسك" aria-label="اسم المجلس" />
+      <div class="me-bar-meta">
+        <span class="me-saved" data-saved aria-live="polite"><i></i><span></span></span>
+        <span class="me-count" data-count></span>
       </div>
-      <span data-count-badge class="hidden rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3.5 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
-    </div>
-
-    <!-- Manual / AI mode switch (fresh flow only, like the app) -->
-    <div data-mode-switch class="mt-4 rounded-2xl border border-stone dark:border-coal-edge bg-paper-soft dark:bg-coal p-1.5 grid grid-cols-2 gap-1">
-      <button type="button" data-mode-btn="manual" class="rounded-xl py-2.5 text-sm font-black bg-purple text-white">يدويًّا</button>
-      <button type="button" data-mode-btn="ai" class="rounded-xl py-2.5 text-sm font-black text-ink-muted dark:text-mist-muted">بالذكاء الاصطناعي</button>
-    </div>
-
-    <div class="mt-5 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5 grid gap-5">
-
-      <!-- Type chips -->
-      <div>
-        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">نوع السؤال</p>
-        <div data-type-chips class="flex flex-wrap gap-2"></div>
+      <div class="me-bar-actions">
+        <button type="button" class="iu-btn secondary" data-preview-open>معاينة</button>
+        <button type="button" class="iu-btn primary" data-launch>استضف الآن</button>
       </div>
+    </header>
 
-      <!-- Question text -->
-      <div>
-        <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" for="medit-qtext">نص السؤال</label>
-        <textarea id="medit-qtext" data-qtext rows="2"
-          class="input mt-2 text-[15px] leading-relaxed resize-y"
-          placeholder="اكتب سؤالك هنا"></textarea>
-      </div>
-
-      <!-- Source sentence / target word (sentence types) -->
-      <div data-src-block class="hidden">
-        <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" for="medit-src" data-src-label></label>
-        <input id="medit-src" data-src type="text"
-          class="input mt-2 text-[15px]" />
-      </div>
-
-      <!-- MCQ -->
-      <div data-sec-mcq class="hidden">
-        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">الخيارات، وحدد الصحيح</p>
-        <div data-mcq-rows class="grid gap-2"></div>
-        <button type="button" data-mcq-add class="mt-2 text-sm font-bold text-purple">+ خيار آخر</button>
-      </div>
-
-      <!-- True / False -->
-      <div data-sec-tf class="hidden">
-        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">الحكم الصحيح</p>
-        <div class="grid grid-cols-2 gap-2">
-          <button type="button" data-tf="true" class="rounded-xl border py-3.5 font-black"></button>
-          <button type="button" data-tf="false" class="rounded-xl border py-3.5 font-black"></button>
+    <div class="me-body">
+      <aside class="iu-card flat me-rail" aria-label="أسئلة المجلس">
+        <div class="me-rail-h"><span>أسئلة المجلس</span><span class="me-hint">اسحب لتغيير الترتيب</span></div>
+        <ol class="me-list" data-list></ol>
+        <div class="me-adds">
+          <button type="button" class="me-add main" data-add-new><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>سؤال جديد</button>
+          <button type="button" class="me-add" data-add-ai>ولّد بالذكاء الاصطناعي</button>
+          <button type="button" class="me-add" data-add-bank>من بنك الأسئلة</button>
         </div>
-      </div>
+      </aside>
 
-      <!-- Fix error -->
-      <div data-sec-fix class="hidden grid gap-4">
-        <div>
-          <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">اضغط الكلمة الخاطئة في الجملة</p>
-          <div data-fix-words class="flex flex-wrap gap-2"></div>
-          <p data-fix-words-hint class="text-xs text-ink-subtle dark:text-mist-subtle mt-2">اكتب الجملة في الحقل أعلاه أولًا</p>
+      <main class="me-canvas" data-canvas>
+        <p class="me-note" data-ai-note hidden>هذا السؤال مولّد بالذكاء الاصطناعي. راجعه وتأكد من صحته قبل الإطلاق، فأنت المسؤول عما يُعرض في مجلسك.</p>
+        <div class="me-types" data-types role="group" aria-label="نوع السؤال"></div>
+
+        <div class="iu-card flat me-legacy" data-legacy hidden>
+          <span class="me-tag" style="justify-self:start">تحديد الكلمة</span>
+          <p class="t-title" data-legacy-text></p>
+          <p class="t-body c-word" data-legacy-src></p>
+          <p class="t-body-s c-word">سؤال من نوع قديم يعمل في المجلس كما هو، ولا يُعدّل هنا. يمكنك نقله أو تكراره أو حذفه.</p>
         </div>
-        <div data-fix-stage2 class="hidden grid gap-2">
-          <label class="text-sm font-bold text-ink-soft dark:text-mist-soft">الصورة الصحيحة للكلمة</label>
-          <input data-fix-correct type="text" class="input text-[15px]" />
-          <label class="text-sm font-bold text-ink-soft dark:text-mist-soft mt-1">مموهات، إجابات خاطئة مشابهة (واحد على الأقل)</label>
-          <input data-fix-d1 type="text" placeholder="مموه 1" class="input text-[15px]" />
-          <input data-fix-d2 type="text" placeholder="مموه 2 (اختياري)" class="input text-[15px]" />
-        </div>
-      </div>
 
-      <!-- Arrange i'rab -->
-      <div data-sec-arr class="hidden">
-        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">أجزاء الإعراب بالترتيب الصحيح، وستُخلط تلقائيًّا للاعبين</p>
-        <div data-arr-rows class="grid gap-2"></div>
-        <button type="button" data-arr-add class="mt-2 text-sm font-bold text-purple">+ جزء آخر</button>
-      </div>
-
-      <!-- Explanation -->
-      <div>
-        <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" for="medit-expl">شرح الإجابة (اختياري)</label>
-        <input id="medit-expl" data-expl type="text"
-          class="input mt-2 text-[15px]" />
-      </div>
-
-      <!-- Time + bank -->
-      <div class="flex items-center justify-between gap-4 flex-wrap">
-        <div class="flex items-center gap-3">
-          <span class="text-sm font-bold text-ink-soft dark:text-mist-soft">مدة السؤال</span>
-          <div class="flex items-center gap-2" dir="ltr">
-            <button type="button" data-t-minus class="w-9 h-9 rounded-lg border border-stone dark:border-coal-edge font-black text-ink dark:text-mist">-</button>
-            <span data-t-val class="w-16 text-center font-black tabular-nums whitespace-nowrap text-ink dark:text-mist">30 ث</span>
-            <button type="button" data-t-plus class="w-9 h-9 rounded-lg border border-stone dark:border-coal-edge font-black text-ink dark:text-mist">+</button>
+        <div class="iu-card flat me-qcard" data-qcard>
+          <div class="me-field">
+            <label class="me-lbl" for="me-sentence"><span data-sentence-lbl></span><span class="me-hint" data-sentence-hint></span></label>
+            <input id="me-sentence" data-sentence class="me-sentence" type="text" autocomplete="off" spellcheck="false" />
+            <div class="me-words" data-words></div>
+            <p class="me-hint" data-words-hint style="text-align:center"></p>
           </div>
-        </div>
-        <label class="flex items-center gap-2 cursor-pointer select-none">
-          <input data-bank-toggle type="checkbox" class="w-4 h-4 accent-[var(--color-purple)]" />
-          <span class="text-sm font-bold text-ink-soft dark:text-mist-soft">حفظ في بنك الأسئلة</span>
-        </label>
-      </div>
-
-      <p data-form-err class="hidden text-sm font-bold text-rose-500"></p>
-
-      <div class="grid gap-2">
-        <button type="button" data-continue class="btn-primary btn-block">متابعة إلى المراجعة</button>
-        <div class="grid grid-cols-2 gap-2">
-          <button type="button" data-add-another class="btn-ghost text-sm">أضف سؤالًا آخر</button>
-          <button type="button" data-from-bank class="btn-ghost text-sm">من بنك الأسئلة</button>
-        </div>
-        <a data-back-review href="#" class="hidden text-center text-sm font-bold text-ink-muted dark:text-mist-muted py-1">رجوع إلى المراجعة دون حفظ هذا السؤال</a>
-      </div>
-    </div>
-    <p class="mt-4 text-center text-sm text-ink-subtle dark:text-mist-subtle">المسودات لا تُحتسب من حصتك اليومية حتى تبدأ المجلس</p>
-  </section>
-
-  <!-- ═══ AI setup ═══ -->
-  <section data-v="ai" class="hidden">
-    <div class="flex items-center justify-between gap-3 flex-wrap">
-      <div>
-        <p class="text-sm font-bold text-teal">مجالس الإعراب</p>
-        <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">توليد بالذكاء الاصطناعي</h1>
-      </div>
-      <span data-ai-quota class="hidden rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3.5 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
-    </div>
-
-    <div class="mt-5 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-5 grid gap-5">
-
-      <div>
-        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">مصدر الأسئلة</p>
-        <div data-ai-src-seg class="flex flex-wrap gap-2"></div>
-      </div>
-
-      <!-- Topic -->
-      <div data-ai-topic-block>
-        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">اختر موضوعًا أو أكثر</p>
-        <div data-ai-topics class="flex flex-wrap gap-2"></div>
-        <input data-ai-topic-free type="text" placeholder="أو اكتب موضوعًا آخر"
-          class="mt-3 w-full rounded-xl border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-4 py-3 text-[15px] text-ink dark:text-mist focus:outline-none focus:border-purple" />
-      </div>
-
-      <!-- Text / Photo -->
-      <div data-ai-text-block class="hidden">
-        <div data-ai-photo-row class="hidden mb-3">
-          <label class="inline-flex items-center gap-2 rounded-xl border border-stone dark:border-coal-edge px-4 py-2.5 text-sm font-black text-ink dark:text-mist cursor-pointer">
-            اختر صورة من الكتاب
-            <input data-ai-photo type="file" accept="image/*" class="hidden" />
-          </label>
-          <span data-ai-ocr-status class="ms-3 text-sm text-ink-muted dark:text-mist-muted"></span>
-        </div>
-        <label class="text-sm font-bold text-ink-soft dark:text-mist-soft" data-ai-text-label>النص المصدر (من 10 إلى 1000 حرف)</label>
-        <textarea data-ai-text rows="5" maxlength="1000"
-          class="input mt-2 text-[15px] leading-relaxed resize-y"
-          placeholder="الصق النص الذي تريد التوليد منه"></textarea>
-      </div>
-
-      <!-- Smart review -->
-      <div data-ai-review-block class="hidden">
-        <p data-ai-weak-label class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">نقاط الضعف من مجالسك الأخيرة</p>
-        <div data-ai-weak class="grid gap-1.5"></div>
-      </div>
-
-      <div>
-        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">المستوى</p>
-        <div data-ai-diff-seg class="grid grid-cols-3 gap-2"></div>
-      </div>
-
-      <div class="flex items-center justify-between gap-4 flex-wrap">
-        <div class="flex items-center gap-3">
-          <span class="text-sm font-bold text-ink-soft dark:text-mist-soft">عدد الأسئلة</span>
-          <div class="flex items-center gap-2" dir="ltr">
-            <button type="button" data-ai-c-minus class="w-9 h-9 rounded-lg border border-stone dark:border-coal-edge font-black text-ink dark:text-mist">-</button>
-            <span data-ai-c-val class="w-8 text-center font-black tabular-nums text-ink dark:text-mist">5</span>
-            <button type="button" data-ai-c-plus class="w-9 h-9 rounded-lg border border-stone dark:border-coal-edge font-black text-ink dark:text-mist">+</button>
+          <div class="me-harakat" data-harakat role="group" aria-label="أضف حركة إلى الحقل الذي تكتب فيه"></div>
+          <div class="me-field">
+            <label class="me-lbl" for="me-qtext"><span>السؤال</span><span class="me-hint" data-qtext-hint>الكلمة بين «» تُضاء في الجملة على الشاشة</span></label>
+            <textarea id="me-qtext" data-qtext class="me-qtext" rows="2" maxlength="300"></textarea>
           </div>
+          <div class="me-field" data-answers></div>
         </div>
-        <div>
-          <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">أنواع الأسئلة</p>
-          <div data-ai-type-chips class="flex flex-wrap gap-2"></div>
+
+        <div class="me-why" data-why-box>
+          <label class="me-lbl" for="me-why"><span>التعليل</span><span class="me-hint">يقرؤه كل اللاعبين بعد السؤال</span></label>
+          <textarea id="me-why" data-why rows="3" maxlength="600" placeholder="اشرح لماذا هذه هي الإجابة الصحيحة، مثل: خبر كان منصوب وعلامة نصبه الفتحة."></textarea>
         </div>
-      </div>
+        <p class="me-issue" data-issue hidden></p>
+      </main>
 
-      <p data-ai-err class="hidden text-sm font-bold text-rose-500"></p>
-      <div data-ai-confirm class="hidden rounded-xl border border-stone dark:border-coal-edge p-4 grid gap-2">
-        <p data-ai-confirm-msg class="text-sm text-ink dark:text-mist leading-relaxed"></p>
-        <div class="flex gap-2 flex-wrap">
-          <button type="button" data-ai-confirm-go class="btn-primary text-sm"></button>
-          <button type="button" data-ai-confirm-up class="btn-ghost text-sm">ترقية</button>
-          <button type="button" data-ai-confirm-cancel class="btn-ghost text-sm">إلغاء</button>
+      <aside class="iu-card flat me-side">
+        <h2 class="me-h">هذا السؤال</h2>
+        <div class="me-field" data-time-box>
+          <span class="me-lbl">المدة بالثواني</span>
+          <div class="me-times" data-times role="group" aria-label="مدة السؤال بالثواني"></div>
         </div>
-      </div>
-
-      <button type="button" data-ai-generate class="btn-primary btn-block">ولّد الأسئلة</button>
-      <button type="button" data-ai-back class="text-center text-sm font-bold text-ink-muted dark:text-mist-muted py-1">رجوع إلى الإنشاء اليدوي</button>
-    </div>
-    <p class="mt-4 text-center text-sm text-ink-subtle dark:text-mist-subtle">ستراجع كل الأسئلة المولّدة قبل إطلاق المجلس</p>
-
-    <!-- Generation overlay -->
-    <div data-ai-overlay class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-6">
-      <div class="w-full max-w-sm rounded-2xl bg-card dark:bg-coal-soft border border-card-edge dark:border-coal-edge p-8 text-center">
-        <div class="w-10 h-10 mx-auto rounded-full border-4 border-purple border-t-transparent animate-spin"></div>
-        <p data-ai-step class="mt-5 font-bold text-ink dark:text-mist"></p>
-      </div>
+        <div class="me-set" data-bank-box><span id="me-bank-l">احفظه في بنك أسئلتك</span><button type="button" class="me-sw" role="switch" aria-checked="false" aria-labelledby="me-bank-l" data-bank-sw></button></div>
+        <div class="me-acts">
+          <button type="button" class="iu-btn secondary" data-dup>تكرار</button>
+          <button type="button" class="iu-btn secondary" data-up>تقديم</button>
+          <button type="button" class="iu-btn secondary" data-down>تأخير</button>
+          <button type="button" class="iu-btn secondary" data-del>حذف</button>
+        </div>
+        <hr class="me-sep" />
+        <h2 class="me-h">إعدادات المجلس</h2>
+        <div class="me-set"><span id="me-read-l">مهلة القراءة</span><button type="button" class="me-sw" role="switch" aria-checked="false" aria-labelledby="me-read-l" data-read-sw></button></div>
+        <p class="me-hint">تظهر الجملة والسؤال وحدهما لحظات قبل الخيارات، ليقرأ الجميع قبل السباق.</p>
+        <div class="me-set"><span id="me-acc-l">الدقة أولًا</span><button type="button" class="me-sw" role="switch" aria-checked="false" aria-labelledby="me-acc-l" data-acc-sw></button></div>
+        <p class="me-hint">لكل إجابة صحيحة النقاط نفسها، بلا نقاط للسرعة. يمكنك تغيير الإعدادين في ردهة المجلس أيضًا.</p>
+      </aside>
     </div>
   </section>
 
-  <!-- ═══ Review ═══ -->
-  <section data-v="review" class="hidden">
-    <div class="flex items-center justify-between gap-3 flex-wrap">
-      <div>
-        <p class="text-sm font-bold text-teal">مجالس الإعراب</p>
-        <h1 class="font-sans font-black text-2xl text-ink dark:text-mist">راجع مجلسك</h1>
+  <!-- ═══ AI drawer ═══ -->
+  <div class="me-scrim" data-ai-drawer hidden>
+    <div class="me-drawer" role="dialog" aria-modal="true" aria-labelledby="me-ai-h">
+      <div class="me-drawer-h">
+        <h2 id="me-ai-h">ولّد أسئلة بالذكاء الاصطناعي</h2>
+        <button type="button" class="iu-btn secondary" data-close>إغلاق</button>
       </div>
-      <span data-r-count class="rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3.5 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
-    </div>
+      <p class="t-body-s c-word">تُضاف الأسئلة المولّدة إلى مجلسك بعد السؤال الحالي، فتراجعها وتعدلها في مكانها. <span data-ai-quota hidden></span></p>
 
-    <div data-ai-banner class="hidden mt-4 rounded-2xl border border-purple/30 bg-purple/5 p-4 text-sm text-ink-soft dark:text-mist-soft leading-relaxed">
-      بعض الأسئلة مولّدة بالذكاء الاصطناعي. راجعها وتأكد من صحتها قبل الانطلاق، فأنت المسؤول عما يُعرض في مجلسك.
-    </div>
-
-    <p data-r-notice class="hidden mt-4 rounded-xl border border-stone dark:border-coal-edge bg-paper-soft dark:bg-coal px-4 py-3 text-sm font-bold text-ink-soft dark:text-mist-soft"></p>
-
-    <div data-r-list class="mt-4 grid gap-3"></div>
-
-    <div class="mt-5 grid gap-2">
-      <button type="button" data-r-add class="btn-ghost btn-block">أضف سؤالًا</button>
-      <button type="button" data-r-launch class="btn-primary btn-block btn-lg">أطلق المجلس مباشرة</button>
-      <p data-r-err class="hidden text-center text-sm font-bold text-rose-500"></p>
-      <a href="/majlis/host" class="text-center text-sm font-bold text-ink-muted dark:text-mist-muted py-1">حفظ والعودة إلى مجالسي</a>
-    </div>
-  </section>
-
-  <!-- Bank sheet -->
-  <div data-bank-sheet class="hidden fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-6" dir="rtl">
-    <div class="w-full max-w-lg max-h-[80vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-card dark:bg-coal-soft border border-card-edge dark:border-coal-edge p-5">
-      <div class="flex items-center justify-between">
-        <h2 class="font-sans font-black text-lg text-ink dark:text-mist">من بنك الأسئلة</h2>
-        <button type="button" data-bank-close class="rounded-lg border border-stone dark:border-coal-edge px-3 py-1.5 text-sm font-bold text-ink-muted dark:text-mist-muted">إغلاق</button>
+      <div class="me-sec">
+        <span class="me-lbl">المصدر</span>
+        <div class="me-chips" data-ai-src-seg></div>
       </div>
-      <div data-bank-list class="mt-4 grid gap-2"></div>
-      <p data-bank-empty class="hidden mt-4 text-center text-sm text-ink-muted dark:text-mist-muted">بنك أسئلتك فارغ. فعّل «حفظ في بنك الأسئلة» عند إنشاء سؤال ليظهر هنا.</p>
+
+      <div class="me-sec" data-ai-topic-block>
+        <span class="me-lbl">اختر موضوعًا أو أكثر</span>
+        <div class="me-chips" data-ai-topics></div>
+        <input data-ai-topic-free type="text" class="me-search" placeholder="أو اكتب موضوعًا آخر" aria-label="موضوع آخر" />
+      </div>
+
+      <div class="me-sec" data-ai-text-block hidden>
+        <div data-ai-photo-row hidden>
+          <label class="iu-btn secondary">اختر صورة من الكتاب<input data-ai-photo type="file" accept="image/*" hidden /></label>
+          <p class="me-hint" data-ai-ocr-status></p>
+        </div>
+        <label class="me-lbl" for="me-ai-text" data-ai-text-label>النص المصدر (من 10 إلى 1000 حرف)</label>
+        <textarea id="me-ai-text" data-ai-text rows="6" maxlength="1000" class="me-qtext" style="text-align:start;font-size:16px;font-weight:500" placeholder="الصق النص الذي تريد التوليد منه"></textarea>
+      </div>
+
+      <div class="me-sec" data-ai-review-block hidden>
+        <span class="me-lbl" data-ai-weak-label>نقاط الضعف من مجالسك الأخيرة</span>
+        <div class="me-rows" data-ai-weak></div>
+      </div>
+
+      <div class="me-sec">
+        <span class="me-lbl">المستوى</span>
+        <div class="me-chips" data-ai-diff-seg></div>
+      </div>
+
+      <div class="me-sec">
+        <span class="me-lbl">أنواع الأسئلة</span>
+        <div class="me-chips" data-ai-type-chips></div>
+      </div>
+
+      <div class="me-set">
+        <span>عدد الأسئلة</span>
+        <div class="me-stepper">
+          <button type="button" class="me-mini" data-ai-c-minus aria-label="أقل">-</button>
+          <span data-ai-c-val>5</span>
+          <button type="button" class="me-mini" data-ai-c-plus aria-label="أكثر">+</button>
+        </div>
+      </div>
+
+      <p class="me-err" data-ai-err hidden></p>
+      <div class="me-confirm" data-ai-confirm hidden>
+        <p class="t-body-s" data-ai-confirm-msg></p>
+        <div class="me-acts">
+          <button type="button" class="iu-btn primary" data-ai-confirm-go></button>
+          <button type="button" class="iu-btn secondary" data-ai-confirm-up>ترقية</button>
+          <button type="button" class="iu-btn secondary" data-ai-confirm-cancel>إلغاء</button>
+        </div>
+      </div>
+      <button type="button" class="iu-btn primary lg block" data-ai-generate>ولّد الأسئلة</button>
+      <p class="me-hint" style="text-align:center">ستراجع كل الأسئلة المولّدة قبل إطلاق المجلس.</p>
     </div>
   </div>
+
+  <div class="me-busy" data-ai-overlay hidden>
+    <div class="iu-card">
+      <span class="az-spinner" style="width:36px;height:36px;border-width:4px"></span>
+      <p class="t-title" data-ai-step></p>
+    </div>
+  </div>
+
+  <!-- ═══ Bank drawer ═══ -->
+  <div class="me-scrim" data-bank-drawer hidden>
+    <div class="me-drawer" role="dialog" aria-modal="true" aria-labelledby="me-bank-h">
+      <div class="me-drawer-h">
+        <h2 id="me-bank-h">من بنك أسئلتك</h2>
+        <button type="button" class="iu-btn secondary" data-close>إغلاق</button>
+      </div>
+      <input data-bank-q type="search" class="me-search" placeholder="ابحث في أسئلتك" aria-label="ابحث في أسئلتك" />
+      <div class="me-chips" data-bank-types style="display:flex;flex-wrap:wrap;gap:6px"></div>
+      <div class="me-rows" data-bank-list></div>
+      <p class="t-body-s c-word" data-bank-empty hidden>بنك أسئلتك فارغ. فعّل «احفظه في بنك أسئلتك» في أي سؤال ليظهر هنا.</p>
+    </div>
+  </div>
+
+  <!-- ═══ Preview: the real stage ═══ -->
+  <div class="me-prev ms-page" data-prev hidden role="dialog" aria-modal="true" aria-label="معاينة على شاشة العرض">
+    <div class="me-prev-top">
+      <span class="me-prev-n" style="text-align:start">معاينة على شاشة العرض</span>
+      <button type="button" class="me-prev-btn" data-p-close>إغلاق المعاينة</button>
+    </div>
+    <div class="me-prev-vp" data-p-vp>
+      <div class="ms-scaler" data-p-scaler>
+        <div class="ms-stage" data-p-stage>
+          <div class="ms-top"><div class="ms-brand"><Fragment set:html={MARK_SVG} /><b class="ms-title" data-p-name></b></div></div>
+          <div class="ms-view on">
+            <div class="ms-qhead"><p class="ms-qnum" data-p-num></p><p class="ms-sentence" data-p-sent></p><p class="ms-qtext" data-p-text></p></div>
+            <div class="ms-timer"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="#283A5C" stroke-width="9"/><circle cx="50" cy="50" r="44" fill="none" stroke="#F5C15E" stroke-width="9" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="0"/></svg><span class="num" data-p-time></span></div>
+            <div class="ms-words ms-hide" data-p-words></div>
+            <div class="ms-tiles" data-p-tiles></div>
+            <div class="ms-explain ms-hide" data-p-why><b>التعليل</b><span data-p-why-t></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="me-prev-bot">
+      <button type="button" class="me-prev-btn" data-p-prev>السابق</button>
+      <button type="button" class="me-prev-btn" data-p-mode="q" aria-pressed="true">السؤال</button>
+      <button type="button" class="me-prev-btn" data-p-mode="a" aria-pressed="false">الإجابة</button>
+      <span class="me-prev-n" data-p-n></span>
+      <button type="button" class="me-prev-btn" data-p-next>التالي</button>
+    </div>
+  </div>
+
+  <div class="me-toast" data-toast role="status" hidden><span data-toast-msg></span><button type="button" data-toast-act hidden></button></div>
 </div>
 
 <script>
   import { maybeSignedIn } from '../lib/session';
-  import { firestore, callMajlis } from '../lib/majlis/fb';
-  import { stagger, refire, showAnimated } from '../lib/majlis-fx';
+  import { firestore, callMajlis, track } from '../lib/majlis/fb';
+  import { shapeSvg, tileClass, LETTERS, TICK_SVG } from '../lib/majlis/stage/shapes';
+  import { fitStage } from '../lib/majlis/stage/fit';
+  import { askedRange, sentenceInto } from '../lib/majlis/sentence';
+  import { crown } from '../lib/irab/icons';
 
   const root = document.querySelector<HTMLElement>('[data-medit-root]');
   if (root) {
-    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
-    const views = ['loading', 'gate', 'fatal', 'editor', 'ai', 'review'];
-    const show = (v: string) => showAnimated(root!, views, v);
+    const q = <T extends Element = HTMLElement>(s: string) => root.querySelector<T>(s)!;
+    const VIEWS = ['loading', 'gate', 'fatal', 'app'];
+    const show = (v: string) => { for (const x of VIEWS) q(`[data-v="${x}"]`).hidden = x !== v; };
 
-    const draftParam = new URLSearchParams(location.search).get('draft');
+    const params = new URLSearchParams(location.search);
+    const draftParam = params.get('draft');
+    const remedialRoom = params.get('remedial');
     if (draftParam) {
-      const link = q<HTMLAnchorElement>('[data-login-link]');
-      link.href = `/login?next=${encodeURIComponent('/majlis/create?draft=' + draftParam)}`;
+      q<HTMLAnchorElement>('[data-login-link]').href = `/login?next=${encodeURIComponent('/majlis/create?draft=' + draftParam)}`;
     }
 
+    type Kind = 'mcq' | 'true_false' | 'fix_error' | 'arrange_irab' | 'tap_word';
     const TYPE_LABELS: Record<string, string> = {
       mcq: 'اختيار من متعدد', true_false: 'صواب وخطأ', tap_word: 'تحديد الكلمة',
       fix_error: 'صحّح الخطأ', arrange_irab: 'ترتيب الإعراب',
     };
+    const EDITOR_TYPES: Kind[] = ['mcq', 'true_false', 'fix_error', 'arrange_irab'];
+    const PREMIUM_TYPES = new Set(['fix_error', 'arrange_irab', 'tap_word']);
     // The app prefills this fixed instruction when fix_error is picked on an empty box.
     const FIX_INSTRUCTION = 'في الجملة خطأ إعرابي واحد، اضغط الكلمة الخاطئة ثم اختر صوابها';
-    const EDITOR_TYPES = ['mcq', 'true_false', 'fix_error', 'arrange_irab'];
-    const PREMIUM_TYPES = new Set(['fix_error', 'arrange_irab', 'tap_word']);
+    const TIMES = [10, 20, 30, 45, 60, 90, 120];
+    const HARAKAT: Array<[string, string]> = [
+      ['َ', 'فتحة'], ['ُ', 'ضمة'], ['ِ', 'كسرة'], ['ً', 'تنوين فتح'],
+      ['ٌ', 'تنوين ضم'], ['ٍ', 'تنوين كسر'], ['ْ', 'سكون'], ['ّ', 'شدة'],
+    ];
+    const PLUS_CHIP = `<span class="me-plus" title="لمشتركي إعراب بلس">${crown}بلس</span>`;
+    const ICON_UP = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const ICON_DOWN = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const ICON_X = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+    const paywall = () => (window as any).IrabPaywall?.show({ reason: 'limit' });
 
     if (!maybeSignedIn()) { show('gate'); }
     else init();
@@ -333,20 +317,23 @@
         } catch { /* default to free; the server re-enforces at launch */ }
         const maxQ = isPremium ? 50 : 10;
 
-        // ── Draft state (wire-shape question objects, order = play order) ──
-        let questions: any[] = [];
-        let draftId: string | null = draftParam;
-        let dirty = false;
-        let rev = 0;
-        const markDirty = () => { dirty = true; rev++; };
-        let mode: 'fresh' | 'append' | 'edit' = 'fresh';
-        let editingIndex: number | null = null;
-
-        window.addEventListener('beforeunload', (e) => { if (dirty) e.preventDefault(); });
+        // ═══ Model ═══════════════════════════════════════════════════════
+        interface Order { key: string; options: string[]; optionIndex?: number; arrangement?: number[] }
+        interface Item {
+          id: string; type: Kind;
+          text: string; sentence: string;
+          mcq: string[]; mcqRight: number;
+          tf: boolean | null;
+          fixWord: number | null; fixCorrect: string; fixDecoys: string[];
+          arr: string[];
+          why: string; time: number; bank: boolean;
+          ai: boolean; topic: any; difficulty: any; ref: any; refSentence: string;
+          raw?: any; order?: Order; lastGood?: any;
+        }
 
         const freshId = () => `mq_${Date.now() * 1000 + Math.floor(Math.random() * 1000)}`;
         const wordsOf = (s: any) => String(s ?? '').split(/\s+/).filter(Boolean);
-
+        const clampTime = (n: any) => Math.min(120, Math.max(5, Math.round(Number(n)) || 30));
         function shuffled<T>(arr: T[]): T[] {
           const a = [...arr];
           for (let i = a.length - 1; i > 0; i--) {
@@ -362,530 +349,779 @@
           while (n > 1 && p.every((v, i) => v === i));
           return p;
         }
+        /** «سؤال واحد، سؤالان، 3 أسئلة، 11 سؤالًا». */
+        const countText = (n: number) => n === 0 ? 'لا أسئلة بعد' : n === 1 ? 'سؤال واحد' : n === 2 ? 'سؤالان'
+          : n <= 10 ? `${n} أسئلة` : `${n} سؤالًا`;
 
-        // All saves run through one chain: overlapping saves (a background save
-        // racing the launch save) could otherwise both see draftId==null and
-        // addDoc TWO draft docs.
-        let saveChain: Promise<boolean> = Promise.resolve(true);
-        function saveDraft(): Promise<boolean> {
-          const p = saveChain.then(() => doSaveDraft());
-          saveChain = p.catch(() => false);
-          return p;
-        }
-        async function doSaveDraft(): Promise<boolean> {
-          if (!questions.length) return false;
-          const myRev = rev;
-          try {
-            const first = questions[0] ?? {};
-            const src = String(first.sourceText ?? '').trim();
-            const title = (src || String(first.questionText ?? '').trim()).slice(0, 60);
-            const data: any = {
-              title, questions,
-              updatedAt: fs.Timestamp.now(),
-              hasAiQuestions: questions.some((x) => !!x.aiGenerated),
-            };
-            if (!draftId) {
-              data.createdAt = fs.Timestamp.now();
-              const ref = await fs.addDoc(fs.collection(db, 'majalis_drafts', uid, 'drafts'), data);
-              draftId = ref.id;
-            } else {
-              await fs.setDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', draftId), data, { merge: true });
-            }
-            // Bank upserts only after the draft write succeeded; failures are silent.
-            for (const qq of questions) {
-              if (qq?.saveToBank) {
-                fs.setDoc(fs.doc(db, 'majalis_bank', uid, 'questions', String(qq.id)), qq, { merge: true }).catch(() => {});
-              }
-            }
-            if (rev === myRev) dirty = false;
-            return true;
-          } catch { return false; }
-        }
-        const bgSave = () => { saveDraft(); };
-
-        // ── Form elements ──
-        const chipsWrap = q<HTMLElement>('[data-type-chips]');
-        const qtext = q<HTMLTextAreaElement>('[data-qtext]');
-        const srcBlock = q<HTMLElement>('[data-src-block]');
-        const srcLabel = q<HTMLElement>('[data-src-label]');
-        const srcInput = q<HTMLInputElement>('[data-src]');
-        const mcqRows = q<HTMLElement>('[data-mcq-rows]');
-        const fixWords = q<HTMLElement>('[data-fix-words]');
-        const fixStage2 = q<HTMLElement>('[data-fix-stage2]');
-        const fixCorrect = q<HTMLInputElement>('[data-fix-correct]');
-        const fixD1 = q<HTMLInputElement>('[data-fix-d1]');
-        const fixD2 = q<HTMLInputElement>('[data-fix-d2]');
-        const arrRows = q<HTMLElement>('[data-arr-rows]');
-        const expl = q<HTMLInputElement>('[data-expl]');
-        const tVal = q<HTMLElement>('[data-t-val]');
-        const bankToggle = q<HTMLInputElement>('[data-bank-toggle]');
-        const formErr = q<HTMLElement>('[data-form-err]');
-        const ctaBtn = q<HTMLButtonElement>('[data-continue]');
-        const addAnotherBtn = q<HTMLButtonElement>('[data-add-another]');
-        const fromBankBtn = q<HTMLButtonElement>('[data-from-bank]');
-        const backReview = q<HTMLAnchorElement>('[data-back-review]');
-
-        let fType = 'mcq';
-        let tfVerdict: boolean | null = null;
-        let fixWordIndex: number | null = null;
-        let mcqCorrectRow = 0;
-        let tLimit = 30;
-
-        const err = (m: string) => { formErr.textContent = m; formErr.classList.remove('hidden'); };
-        const clearErr = () => formErr.classList.add('hidden');
-
-        function renderChips() {
-          chipsWrap.innerHTML = '';
-          for (const t of EDITOR_TYPES) {
-            const locked = !isPremium && PREMIUM_TYPES.has(t);
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = fType === t ? 'mj-chip-on' : 'ex-chip';
-            b.textContent = TYPE_LABELS[t] + (locked ? ' 🔒' : '');
-            b.addEventListener('click', () => {
-              if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
-              fType = t;
-              if (t === 'fix_error' && !qtext.value.trim()) qtext.value = FIX_INSTRUCTION;
-              renderChips(); renderTypeSections();
-            });
-            chipsWrap.appendChild(b);
-          }
+        function blankItem(type: Kind = 'mcq'): Item {
+          return {
+            id: freshId(), type, text: type === 'fix_error' ? FIX_INSTRUCTION : '', sentence: '',
+            mcq: ['', '', '', ''], mcqRight: -1, tf: null,
+            fixWord: null, fixCorrect: '', fixDecoys: [''], arr: ['', '', ''],
+            why: '', time: 30, bank: false,
+            ai: false, topic: null, difficulty: null, ref: null, refSentence: '',
+          };
         }
 
-        function renderTypeSections() {
-          clearErr();
-          const sentence = fType === 'fix_error' || fType === 'arrange_irab';
-          srcBlock.classList.toggle('hidden', !sentence);
-          srcLabel.textContent = fType === 'arrange_irab' ? 'الكلمة المستهدفة بالإعراب' : 'الجملة، وفيها الخطأ';
-          srcInput.placeholder = fType === 'arrange_irab' ? 'مثال: الطالبُ' : 'اكتب الجملة كاملة';
-          q('[data-sec-mcq]').classList.toggle('hidden', fType !== 'mcq');
-          q('[data-sec-tf]').classList.toggle('hidden', fType !== 'true_false');
-          q('[data-sec-fix]').classList.toggle('hidden', fType !== 'fix_error');
-          q('[data-sec-arr]').classList.toggle('hidden', fType !== 'arrange_irab');
-          if (fType === 'true_false') renderTf();
-          if (fType === 'fix_error') renderFixWords();
-        }
-
-        // MCQ rows: 2 initial, cap 4; radio marks the correct row.
-        function mcqInputs(): HTMLInputElement[] {
-          return [...mcqRows.querySelectorAll<HTMLInputElement>('input[type="text"]')];
-        }
-        function addMcqRow(value = '') {
-          const i = mcqInputs().length;
-          if (i >= 4) return;
-          const row = document.createElement('div');
-          row.className = 'flex items-center gap-2';
-          const radio = document.createElement('input');
-          radio.type = 'radio'; radio.name = 'medit-mcq-correct';
-          radio.className = 'w-4 h-4 accent-[var(--color-teal)]';
-          radio.checked = i === mcqCorrectRow;
-          radio.addEventListener('change', () => { mcqCorrectRow = mcqInputs().findIndex((x) => x.parentElement === row); });
-          const input = document.createElement('input');
-          input.type = 'text'; input.value = value;
-          input.placeholder = `الخيار ${i + 1}`;
-          input.className = 'input flex-1 text-[15px]';
-          row.append(radio, input);
-          mcqRows.appendChild(row);
-          if (mcqInputs().length >= 4) q('[data-mcq-add]').classList.add('hidden');
-        }
-        function resetMcq(values: string[] = ['', ''], correct = 0) {
-          mcqRows.innerHTML = ''; mcqCorrectRow = correct;
-          q('[data-mcq-add]').classList.remove('hidden');
-          values.forEach((v) => addMcqRow(v));
-        }
-        q<HTMLButtonElement>('[data-mcq-add]').addEventListener('click', () => addMcqRow());
-
-        function renderTf() {
-          const bT = q<HTMLButtonElement>('[data-tf="true"]');
-          const bF = q<HTMLButtonElement>('[data-tf="false"]');
-          bT.textContent = 'صحيح'; bF.textContent = 'خطأ';
-          bT.className = 'rounded-xl border py-3.5 font-black ' + (tfVerdict === true ? 'bg-teal text-white border-teal' : 'border-stone dark:border-coal-edge text-ink dark:text-mist');
-          bF.className = 'rounded-xl border py-3.5 font-black ' + (tfVerdict === false ? 'bg-rose-500 text-white border-rose-500' : 'border-stone dark:border-coal-edge text-ink dark:text-mist');
-        }
-        q('[data-tf="true"]').addEventListener('click', () => { tfVerdict = true; renderTf(); });
-        q('[data-tf="false"]').addEventListener('click', () => { tfVerdict = false; renderTf(); });
-
-        function renderFixWords() {
-          const words = wordsOf(srcInput.value);
-          fixWords.innerHTML = '';
-          q('[data-fix-words-hint]').classList.toggle('hidden', words.length > 0);
-          if (fixWordIndex != null && fixWordIndex >= words.length) fixWordIndex = null;
-          words.forEach((w, i) => {
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = 'rounded-lg px-3 py-1.5 text-[15px] font-bold border transition-all duration-150 active:scale-95 ' + (fixWordIndex === i
-              ? 'bg-rose-500 text-white border-rose-500 shadow-md'
-              : 'border-stone dark:border-coal-edge text-ink dark:text-mist hover:border-rose-400');
-            b.textContent = w;
-            b.addEventListener('click', () => { fixWordIndex = i; renderFixWords(); });
-            fixWords.appendChild(b);
-          });
-          fixStage2.classList.toggle('hidden', fixWordIndex == null);
-        }
-        srcInput.addEventListener('input', () => { if (fType === 'fix_error') renderFixWords(); });
-
-        // Arrange fragments: 3 initial, min 2, max 6.
-        function arrInputs(): HTMLInputElement[] {
-          return [...arrRows.querySelectorAll<HTMLInputElement>('input')];
-        }
-        function addArrRow(value = '') {
-          const n = arrInputs().length;
-          if (n >= 6) return;
-          const row = document.createElement('div');
-          row.className = 'flex items-center gap-2';
-          const num = document.createElement('span');
-          num.className = 'w-6 text-center font-black text-ink-muted dark:text-mist-muted tabular-nums';
-          const input = document.createElement('input');
-          input.type = 'text'; input.value = value;
-          input.placeholder = 'جزء من الإعراب';
-          input.className = 'input flex-1 text-[15px]';
-          const rm = document.createElement('button');
-          rm.type = 'button'; rm.textContent = 'حذف';
-          rm.className = 'text-xs font-bold text-ink-subtle dark:text-mist-subtle';
-          rm.addEventListener('click', () => { if (arrInputs().length > 2) { row.remove(); renumberArr(); } });
-          row.append(num, input, rm);
-          arrRows.appendChild(row);
-          renumberArr();
-        }
-        function renumberArr() {
-          [...arrRows.children].forEach((row, i) => { (row.firstElementChild as HTMLElement).textContent = String(i + 1); });
-          q('[data-arr-add]').classList.toggle('hidden', arrInputs().length >= 6);
-        }
-        function resetArr(values: string[] = ['', '', '']) {
-          arrRows.innerHTML = '';
-          values.forEach((v) => addArrRow(v));
-        }
-        q<HTMLButtonElement>('[data-arr-add]').addEventListener('click', () => addArrRow());
-
-        const stepTime = (d: number) => { tLimit = Math.min(120, Math.max(5, tLimit + d)); tVal.textContent = `${tLimit} ث`; };
-        q('[data-t-minus]').addEventListener('click', () => stepTime(-5));
-        q('[data-t-plus]').addEventListener('click', () => stepTime(5));
-
-        function resetForm(prefill?: any) {
-          clearErr();
-          tfVerdict = null; fixWordIndex = null; tLimit = 30;
-          qtext.value = ''; srcInput.value = ''; expl.value = '';
-          fixCorrect.value = ''; fixD1.value = ''; fixD2.value = '';
-          bankToggle.checked = false;
-          resetMcq(); resetArr();
-          if (prefill) {
-            fType = EDITOR_TYPES.includes(String(prefill.type)) ? String(prefill.type) : 'mcq';
-            qtext.value = String(prefill.questionText ?? '');
-            expl.value = String(prefill.explanation ?? '');
-            tLimit = Math.min(120, Math.max(5, Number(prefill.timeLimitSeconds) || 30));
-            bankToggle.checked = !!prefill.saveToBank;
-            const c = prefill.correctAnswer ?? {};
-            if (fType === 'mcq') {
-              const opts: string[] = Array.isArray(prefill.options) ? prefill.options.map(String) : ['', ''];
-              resetMcq(opts.length >= 2 ? opts : ['', ''], Number(c.optionIndex) || 0);
-            } else if (fType === 'true_false') {
-              tfVerdict = typeof c.boolValue === 'boolean' ? c.boolValue : null;
-            } else if (fType === 'fix_error') {
-              srcInput.value = String(prefill.sourceText ?? '');
-              fixWordIndex = typeof c.wordIndex === 'number' ? c.wordIndex : null;
-              const opts: string[] = Array.isArray(prefill.options) ? prefill.options.map(String) : [];
-              const correct = typeof c.optionIndex === 'number' ? (opts[c.optionIndex] ?? '') : '';
-              fixCorrect.value = correct;
-              const decoys = opts.filter((_, i) => i !== c.optionIndex);
-              fixD1.value = decoys[0] ?? ''; fixD2.value = decoys[1] ?? '';
-            } else if (fType === 'arrange_irab') {
-              srcInput.value = String(prefill.sourceText ?? '');
-              const opts: string[] = Array.isArray(prefill.options) ? prefill.options.map(String) : [];
-              const arrangement: number[] = Array.isArray(c.arrangement) ? c.arrangement : [];
-              const inOrder = arrangement.map((i) => opts[i] ?? '');
-              resetArr(inOrder.length >= 2 ? inOrder : ['', '', '']);
-            }
+        function fromWire(w: any): Item {
+          const type = String(w?.type ?? 'mcq') as Kind;
+          const c = w?.correctAnswer ?? {};
+          const opts: string[] = Array.isArray(w?.options) ? w.options.map(String) : [];
+          const it = blankItem('mcq');
+          it.id = String(w?.id ?? freshId());
+          it.type = (EDITOR_TYPES.includes(type) || type === 'tap_word') ? type : 'tap_word';
+          it.text = String(w?.questionText ?? '');
+          it.sentence = String(w?.sourceText ?? '');
+          it.why = String(w?.explanation ?? '');
+          it.time = clampTime(w?.timeLimitSeconds);
+          it.bank = !!w?.saveToBank;
+          it.ai = !!w?.aiGenerated;
+          it.topic = w?.grammarTopic ?? null;
+          it.difficulty = w?.difficulty ?? null;
+          it.ref = w?.sourceReference ?? null;
+          it.refSentence = it.sentence.trim();
+          if (it.type === 'mcq') {
+            it.mcq = [...opts];
+            while (it.mcq.length < 4) it.mcq.push('');
+            it.mcqRight = typeof c.optionIndex === 'number' && c.optionIndex < opts.length ? c.optionIndex : -1;
+          } else if (it.type === 'true_false') {
+            it.tf = typeof c.boolValue === 'boolean' ? c.boolValue : null;
+          } else if (it.type === 'fix_error') {
+            it.fixWord = typeof c.wordIndex === 'number' ? c.wordIndex : null;
+            const oi = typeof c.optionIndex === 'number' ? c.optionIndex : -1;
+            it.fixCorrect = opts[oi] ?? '';
+            it.fixDecoys = opts.filter((_, i) => i !== oi);
+            if (!it.fixDecoys.length) it.fixDecoys = [''];
+            it.order = { key: fixKey(it), options: opts, optionIndex: oi };
+          } else if (it.type === 'arrange_irab') {
+            const arrangement: number[] = Array.isArray(c.arrangement) ? c.arrangement.map(Number) : [];
+            it.arr = arrangement.map((i) => opts[i] ?? '');
+            while (it.arr.length < 2) it.arr.push('');
+            it.order = { key: arrKey(it), options: opts, arrangement };
           } else {
-            fType = 'mcq';
+            it.raw = w;
           }
-          tVal.textContent = `${tLimit} ث`;
-          renderChips(); renderTypeSections();
-          updateCountBadge();
+          return it;
         }
 
-        function updateCountBadge() {
-          const badge = q<HTMLElement>('[data-count-badge]');
-          badge.textContent = `الأسئلة: ${questions.length} من ${maxQ}`;
-          badge.classList.toggle('hidden', questions.length === 0);
-          q<HTMLElement>('[data-ed-title]').textContent = mode === 'edit' ? 'تعديل السؤال' : 'سؤال جديد';
-          ctaBtn.textContent = mode === 'edit' ? 'حفظ التعديل' : mode === 'append' ? 'أضف السؤال' : 'متابعة إلى المراجعة';
-          addAnotherBtn.parentElement!.classList.toggle('hidden', mode !== 'fresh');
-          backReview.classList.toggle('hidden', mode === 'fresh');
-          q('[data-mode-switch]').classList.toggle('hidden', mode !== 'fresh');
+        function fixKey(it: Item) {
+          return JSON.stringify([it.fixCorrect.trim(), [...new Set(it.fixDecoys.map((t) => t.trim()).filter(Boolean))]]);
         }
+        function arrKey(it: Item) { return JSON.stringify(it.arr.map((t) => t.trim()).filter(Boolean)); }
 
-        // The fix_error chip prefills the question box; an untouched prefill is
-        // still an "empty form" for continue purposes.
-        const formIsEmpty = () => {
-          const t = qtext.value.trim();
-          return (!t || t === FIX_INSTRUCTION) && !srcInput.value.trim();
-        };
-
-        function buildQuestion(): any | null {
-          const text = qtext.value.trim();
-          if (!text) { err('اكتب نص السؤال'); return null; }
-          const editing = editingIndex != null ? questions[editingIndex] : null;
+        /** The wire question, or the reasons it is not complete yet. */
+        function toWire(it: Item): { wire: any | null; issues: string[] } {
+          if (it.type === 'tap_word') return { wire: it.raw ?? null, issues: [] };
+          const issues: string[] = [];
+          const text = it.text.trim();
+          if (!text) issues.push('اكتب نص السؤال');
           let sourceText: string | null = null;
           let options: string[] = [];
           let optionIndex: number | null = null, wordIndex: number | null = null;
           let boolValue: boolean | null = null, arrangement: number[] | null = null;
 
-          if (fType === 'mcq') {
-            const rows = mcqInputs().map((x) => x.value);
-            const nonBlank = rows.map((v, i) => ({ v: v.trim(), i })).filter((x) => x.v);
-            if (nonBlank.length < 2) { err('أضف خيارين غير فارغين على الأقل'); return null; }
-            if (!rows[mcqCorrectRow]?.trim()) { err('حدد الإجابة الصحيحة في خيار غير فارغ'); return null; }
-            options = nonBlank.map((x) => x.v);
-            optionIndex = nonBlank.findIndex((x) => x.i === mcqCorrectRow);
-          } else if (fType === 'true_false') {
-            if (tfVerdict == null) { err('اختر الحكم: صحيح أم خطأ'); return null; }
-            boolValue = tfVerdict;
-          } else if (fType === 'fix_error') {
-            const src = srcInput.value.trim();
-            const words = wordsOf(src);
-            if (words.length < 2) { err('اكتب جملة من كلمتين على الأقل'); return null; }
-            if (fixWordIndex == null || fixWordIndex >= words.length) { err('اضغط الكلمة الخاطئة في الجملة'); return null; }
-            const correct = fixCorrect.value.trim();
-            if (!correct) { err('اكتب الصورة الصحيحة للكلمة'); return null; }
-            if (correct === words[fixWordIndex]) { err('الصورة الصحيحة يجب أن تختلف عن الكلمة الخاطئة'); return null; }
-            // Duplicate decoys collapse silently (like the app); only correct==decoy errors.
-            const decoys = [...new Set([fixD1.value.trim(), fixD2.value.trim()].filter(Boolean))];
-            if (!decoys.length) { err('أضف مموهًا واحدًا على الأقل'); return null; }
-            if (decoys.includes(correct)) { err('المموهات يجب أن تختلف عن الصورة الصحيحة'); return null; }
-            options = shuffled([correct, ...decoys]);
-            optionIndex = options.indexOf(correct);
-            wordIndex = fixWordIndex;
-            sourceText = src;
-          } else if (fType === 'arrange_irab') {
-            const target = srcInput.value.trim();
-            if (!target) { err('اكتب الكلمة المستهدفة'); return null; }
-            const frags = arrInputs().map((x) => x.value.trim()).filter(Boolean);
-            if (frags.length < 2) { err('أضف جزأين غير فارغين على الأقل'); return null; }
-            if (new Set(frags).size !== frags.length) { err('أجزاء الإعراب يجب أن تكون مختلفة'); return null; }
-            const perm = nonIdentityPerm(frags.length);
-            options = perm.map((i) => frags[i]);
-            arrangement = frags.map((_, k) => perm.indexOf(k));
-            sourceText = target;
+          if (it.type === 'mcq' || it.type === 'true_false') {
+            sourceText = it.sentence.trim() || null;
           }
-
-          const srcChanged = editing ? String(editing.sourceText ?? '') !== String(sourceText ?? '') : true;
+          if (it.type === 'mcq') {
+            const nonBlank = it.mcq.map((v, i) => ({ v: v.trim(), i })).filter((x) => x.v);
+            if (nonBlank.length < 2) issues.push('أضف خيارين على الأقل');
+            else if (it.mcqRight < 0 || !it.mcq[it.mcqRight]?.trim()) issues.push('اضغط دائرة الخيار الصحيح');
+            else if (new Set(nonBlank.map((x) => x.v)).size !== nonBlank.length) issues.push('الخيارات متكررة');
+            options = nonBlank.map((x) => x.v);
+            optionIndex = nonBlank.findIndex((x) => x.i === it.mcqRight);
+          } else if (it.type === 'true_false') {
+            if (it.tf == null) issues.push('اختر الحكم: صواب أم خطأ');
+            boolValue = it.tf;
+          } else if (it.type === 'fix_error') {
+            const src = it.sentence.trim();
+            const words = wordsOf(src);
+            const correct = it.fixCorrect.trim();
+            const decoys = [...new Set(it.fixDecoys.map((t) => t.trim()).filter(Boolean))];
+            if (words.length < 2) issues.push('اكتب جملة من كلمتين على الأقل');
+            else if (it.fixWord == null || it.fixWord >= words.length) issues.push('اضغط الكلمة الخاطئة في الجملة');
+            if (!correct) issues.push('اكتب صواب الكلمة');
+            else if (it.fixWord != null && words[it.fixWord] === correct) issues.push('صواب الكلمة يجب أن يختلف عن الكلمة الخاطئة');
+            if (!decoys.length) issues.push('أضف مموّهًا واحدًا على الأقل');
+            else if (decoys.includes(correct)) issues.push('المموّهات يجب أن تختلف عن الصواب');
+            if (!issues.length) {
+              const key = fixKey(it);
+              if (it.order?.key !== key || it.order.optionIndex == null) {
+                const o = shuffled([correct, ...decoys]);
+                it.order = { key, options: o, optionIndex: o.indexOf(correct) };
+              }
+              options = [...it.order.options];
+              optionIndex = it.order.optionIndex!;
+              wordIndex = it.fixWord;
+            }
+            sourceText = src || null;
+          } else if (it.type === 'arrange_irab') {
+            const target = it.sentence.trim();
+            const frags = it.arr.map((t) => t.trim()).filter(Boolean);
+            if (!target) issues.push('اكتب الكلمة المستهدفة');
+            if (frags.length < 2) issues.push('أضف جزأين على الأقل');
+            else if (new Set(frags).size !== frags.length) issues.push('أجزاء الإعراب يجب أن تختلف');
+            if (!issues.length) {
+              const key = arrKey(it);
+              if (it.order?.key !== key || !it.order.arrangement) {
+                const perm = nonIdentityPerm(frags.length);
+                it.order = { key, options: perm.map((i) => frags[i]), arrangement: frags.map((_, k) => perm.indexOf(k)) };
+              }
+              options = [...it.order.options];
+              arrangement = [...it.order.arrangement!];
+            }
+            sourceText = target || null;
+          }
+          if (issues.length) return { wire: null, issues };
           return {
-            id: editing ? editing.id : freshId(),
-            type: fType,
-            questionText: text,
-            sourceText,
-            options,
-            correctAnswer: { optionIndex, boolValue, wordIndex, arrangement },
-            explanation: expl.value.trim() || null,
-            grammarTopic: editing?.grammarTopic ?? null,
-            difficulty: editing?.difficulty ?? null,
-            timeLimitSeconds: tLimit,
-            sourceReference: editing && !srcChanged ? (editing.sourceReference ?? null) : null,
-            aiGenerated: editing?.aiGenerated ?? false,
-            saveToBank: bankToggle.checked,
+            wire: {
+              id: it.id,
+              type: it.type,
+              questionText: text,
+              sourceText,
+              options,
+              correctAnswer: { optionIndex, boolValue, wordIndex, arrangement },
+              explanation: it.why.trim() || null,
+              grammarTopic: it.topic ?? null,
+              difficulty: it.difficulty ?? null,
+              timeLimitSeconds: it.time,
+              sourceReference: (sourceText ?? '') === it.refSentence ? (it.ref ?? null) : null,
+              aiGenerated: it.ai,
+              saveToBank: it.bank,
+            },
+            issues: [],
           };
         }
 
-        function commitForm(): boolean {
-          const built = buildQuestion();
-          if (!built) return false;
-          if (editingIndex != null) { questions[editingIndex] = built; }
-          else {
-            if (questions.length >= maxQ) { err('اكتمل المجلس: وصل إلى أقصى عدد من الأسئلة في خطتك.'); return false; }
-            questions.push(built);
-          }
-          markDirty();
-          return true;
+        function isBlank(it: Item): boolean {
+          if (it.type === 'tap_word') return false;
+          const t = it.text.trim();
+          return (!t || t === FIX_INSTRUCTION) && !it.sentence.trim() && !it.why.trim()
+            && it.mcq.every((v) => !v.trim()) && !it.fixCorrect.trim() && it.fixDecoys.every((v) => !v.trim())
+            && it.arr.every((v) => !v.trim());
         }
 
-        ctaBtn.addEventListener('click', async () => {
-          if (mode === 'edit') {
-            if (!commitForm()) return;
-            editingIndex = null; mode = 'fresh';
-            bgSave(); enterReview();
-            return;
-          }
-          if (mode === 'append') {
-            if (!commitForm()) return;
-            bgSave(); enterReview();
-            return;
-          }
-          // fresh: commit any non-empty form, then save and review (like the app).
-          if (!formIsEmpty() && !commitForm()) return;
-          if (!questions.length) { err('أضف سؤالًا واحدًا على الأقل'); return; }
-          ctaBtn.disabled = true; ctaBtn.classList.add('btn-busy');
-          addAnotherBtn.disabled = true; fromBankBtn.disabled = true;
-          await saveDraft();
-          ctaBtn.disabled = false; ctaBtn.classList.remove('btn-busy');
-          addAnotherBtn.disabled = false; fromBankBtn.disabled = false;
-          enterReview();
-        });
+        // ═══ State ═══════════════════════════════════════════════════════
+        let items: Item[] = [];
+        let sel: Item = blankItem();
+        let draftId: string | null = draftParam;
+        let titleCustom = false;
+        const settings = { readTime: false, scoring: 'speed' as 'speed' | 'accuracy' };
+        let rev = 0; let savedRev = 0;
+        let leaving = false;
+        const bankSent = new Map<string, string>();
+        const idx = () => Math.max(0, items.indexOf(sel));
 
-        addAnotherBtn.addEventListener('click', () => {
-          if (commitForm()) { editingIndex = null; resetForm(); }
-        });
-
-        backReview.addEventListener('click', (e) => {
-          e.preventDefault();
-          editingIndex = null; mode = 'fresh';
-          enterReview();
-        });
-
-        // ── Bank sheet ──
-        const sheet = q<HTMLElement>('[data-bank-sheet]');
-        fromBankBtn.addEventListener('click', async () => {
-          sheet.classList.remove('hidden');
-          refire(sheet.firstElementChild as HTMLElement, 'panel-in');
-          const list = q<HTMLElement>('[data-bank-list]');
-          list.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted text-center py-4">جارٍ التحميل</p>';
-          let docs: any[] = [];
+        // ═══ Saving ══════════════════════════════════════════════════════
+        const savedEl = q('[data-saved]');
+        function setSaved(state: 'saved' | 'saving' | 'error' | 'empty') {
+          savedEl.dataset.state = state;
+          savedEl.querySelector('span')!.textContent = state === 'saved' ? 'حُفظ'
+            : state === 'saving' ? 'يُحفظ…'
+            : state === 'error' ? 'تعذّر الحفظ، نعيد المحاولة'
+            : 'يُحفظ حين يكتمل سؤال';
+        }
+        let saveTimer: number | undefined;
+        let retryTimer: number | undefined;
+        function touch() {
+          rev++;
+          clearTimeout(saveTimer);
+          saveTimer = window.setTimeout(() => { saveNow(); }, 900);
+          if (savedEl.dataset.state !== 'error') setSaved('saving');
+        }
+        // One chain: overlapping saves could otherwise both see draftId==null
+        // and addDoc TWO draft docs.
+        let chain: Promise<boolean> = Promise.resolve(true);
+        function saveNow(): Promise<boolean> {
+          clearTimeout(saveTimer);
+          const p = chain.then(() => doSave());
+          chain = p.catch(() => false);
+          return p;
+        }
+        async function doSave(): Promise<boolean> {
+          const myRev = rev;
+          if (myRev === savedRev && draftId) { setSaved('saved'); return true; }
+          const wires = items.map((it) => {
+            const r = toWire(it);
+            if (r.wire) { it.lastGood = r.wire; return r.wire; }
+            return it.lastGood ?? null;
+          }).filter(Boolean);
+          if (!wires.length && !draftId) { setSaved('empty'); return false; }
           try {
-            const s = await fs.getDocs(fs.query(fs.collection(db, 'majalis_bank', uid, 'questions'), fs.limit(100)));
-            docs = s.docs;
-          } catch { /* fall through to empty */ }
-          list.innerHTML = '';
-          q('[data-bank-empty]').classList.toggle('hidden', docs.length > 0);
-          docs.forEach((d) => {
-            let v: any; try { v = d.data(); } catch { return; }
-            const row = document.createElement('button');
-            row.type = 'button';
-            row.className = 'text-start rounded-xl border border-stone dark:border-coal-edge p-3.5 hover:border-purple';
-            row.innerHTML = `<span class="text-xs font-black text-ink-subtle dark:text-mist-subtle">${TYPE_LABELS[String(v.type)] ?? '؟'}</span><p class="mt-1 text-[15px] font-bold text-ink dark:text-mist leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden"></p>`;
-            row.querySelector('p')!.textContent = String(v.questionText ?? '');
-            row.addEventListener('click', () => {
-              if (questions.length >= maxQ) { sheet.classList.add('hidden'); err('اكتمل المجلس: وصل إلى أقصى عدد من الأسئلة في خطتك.'); return; }
-              if (!isPremium && PREMIUM_TYPES.has(String(v.type))) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
-              const c = v.correctAnswer ?? {};
-              // Bank reuse mints a FRESH id and drops provenance/bank flags (contract §2).
-              questions.push({
-                id: freshId(),
-                type: String(v.type ?? 'mcq'),
-                questionText: String(v.questionText ?? ''),
-                sourceText: v.sourceText == null ? null : String(v.sourceText),
-                options: Array.isArray(v.options) ? v.options.map(String) : [],
-                correctAnswer: {
-                  optionIndex: typeof c.optionIndex === 'number' ? c.optionIndex : null,
-                  boolValue: typeof c.boolValue === 'boolean' ? c.boolValue : null,
-                  wordIndex: typeof c.wordIndex === 'number' ? c.wordIndex : null,
-                  arrangement: Array.isArray(c.arrangement) ? c.arrangement : null,
-                },
-                explanation: v.explanation == null ? null : String(v.explanation),
-                grammarTopic: null, difficulty: null,
-                timeLimitSeconds: Number(v.timeLimitSeconds) || 30,
-                sourceReference: null, aiGenerated: false, saveToBank: false,
+            const data: any = { questions: wires, settings: { ...settings }, updatedAt: fs.Timestamp.now(), hasAiQuestions: wires.some((w: any) => !!w.aiGenerated) };
+            const custom = titleInput.value.trim();
+            if (titleCustom && custom) { data.title = custom.slice(0, 60); data.titleCustom = true; }
+            else if (wires.length) {
+              const first = wires[0];
+              data.title = (String(first.sourceText ?? '').trim() || String(first.questionText ?? '').trim()).slice(0, 60);
+              data.titleCustom = false;
+            }
+            if (!draftId) {
+              data.createdAt = fs.Timestamp.now();
+              const ref = await fs.addDoc(fs.collection(db, 'majalis_drafts', uid, 'drafts'), data);
+              draftId = ref.id;
+              history.replaceState(null, '', `/majlis/create?draft=${encodeURIComponent(draftId)}`);
+            } else {
+              await fs.setDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', draftId), data, { merge: true });
+            }
+            // Bank upserts only after the draft write, only what changed; failures are silent.
+            for (const w of wires) {
+              if (!w.saveToBank) continue;
+              const j = JSON.stringify(w);
+              if (bankSent.get(w.id) === j) continue;
+              bankSent.set(w.id, j);
+              fs.setDoc(fs.doc(db, 'majalis_bank', uid, 'questions', String(w.id)), w, { merge: true }).catch(() => bankSent.delete(w.id));
+            }
+            savedRev = Math.max(savedRev, myRev);
+            setSaved(rev === savedRev ? 'saved' : 'saving');
+            return true;
+          } catch {
+            setSaved('error');
+            clearTimeout(retryTimer);
+            retryTimer = window.setTimeout(() => { saveNow(); }, 8000);
+            return false;
+          }
+        }
+        const hasUnfinished = () => items.some((it) => !isBlank(it) && !toWire(it).wire);
+        window.addEventListener('beforeunload', (e) => {
+          if (leaving) return;
+          if (rev !== savedRev || hasUnfinished()) e.preventDefault();
+        });
+
+        // ═══ Elements ════════════════════════════════════════════════════
+        const titleInput = q<HTMLInputElement>('[data-title]');
+        const listEl = q('[data-list]');
+        const typesEl = q('[data-types]');
+        const sentenceIn = q<HTMLInputElement>('[data-sentence]');
+        const qtextIn = q<HTMLTextAreaElement>('[data-qtext]');
+        const whyIn = q<HTMLTextAreaElement>('[data-why]');
+        const answersEl = q('[data-answers]');
+        const wordsEl = q('[data-words]');
+        const issueEl = q('[data-issue]');
+
+        // ═══ Toast ═══════════════════════════════════════════════════════
+        const toastEl = q('[data-toast]');
+        let toastTimer: number | undefined;
+        function toast(msg: string, action?: { label: string; fn: () => void }, ms = 5000) {
+          q('[data-toast-msg]').textContent = msg;
+          const b = q<HTMLButtonElement>('[data-toast-act]');
+          b.hidden = !action;
+          b.textContent = action?.label ?? '';
+          b.onclick = action ? () => { toastEl.hidden = true; action.fn(); } : null;
+          toastEl.hidden = false;
+          clearTimeout(toastTimer);
+          toastTimer = window.setTimeout(() => { toastEl.hidden = true; }, ms);
+        }
+        function canAdd(n = 1): boolean {
+          const used = items.filter((x) => !isBlank(x)).length;
+          if (used + n <= maxQ) return true;
+          toast('وصل مجلسك إلى أقصى عدد من الأسئلة في خطتك.');
+          if (!isPremium) paywall();
+          return false;
+        }
+
+        // ═══ Rail ════════════════════════════════════════════════════════
+        let dragFrom: Item | null = null;
+        function renderRail() {
+          listEl.textContent = '';
+          items.forEach((it, i) => listEl.appendChild(railItem(it, i)));
+          q('[data-count]').textContent = countText(items.filter((x) => !isBlank(x)).length);
+        }
+        function railItem(it: Item, i: number): HTMLElement {
+          const li = document.createElement('li');
+          li.className = 'me-qi';
+          li.draggable = true;
+          li.setAttribute('aria-current', String(it === sel));
+          li.innerHTML = `<button type="button" class="me-qi-btn"><span class="me-qi-n">${i + 1}</span><span class="me-qi-body"><span class="me-qi-meta"></span><span class="me-qi-tx"></span></span></button>`;
+          fillRailItem(li, it);
+          li.querySelector('button')!.addEventListener('click', () => select(it));
+          li.addEventListener('dragstart', (e) => {
+            dragFrom = it; li.classList.add('dragging');
+            e.dataTransfer?.setData('text/plain', it.id);
+            if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+          });
+          li.addEventListener('dragend', () => {
+            dragFrom = null;
+            listEl.querySelectorAll('.me-qi').forEach((x) => x.classList.remove('dragging', 'drop-before', 'drop-after'));
+          });
+          li.addEventListener('dragover', (e) => {
+            if (!dragFrom) return;
+            e.preventDefault();
+            const r = li.getBoundingClientRect();
+            const after = e.clientY > r.top + r.height / 2;
+            listEl.querySelectorAll('.me-qi').forEach((x) => x.classList.remove('drop-before', 'drop-after'));
+            li.classList.add(after ? 'drop-after' : 'drop-before');
+          });
+          li.addEventListener('drop', (e) => {
+            if (!dragFrom) return;
+            e.preventDefault();
+            const r = li.getBoundingClientRect();
+            const after = e.clientY > r.top + r.height / 2;
+            const moving = dragFrom;
+            const from = items.indexOf(moving);
+            let to = items.indexOf(it) + (after ? 1 : 0);
+            if (from < 0 || to < 0) return;
+            items.splice(from, 1);
+            if (to > from) to--;
+            items.splice(to, 0, moving);
+            renderRail(); renderSide(); touch();
+          });
+          return li;
+        }
+        function fillRailItem(li: Element, it: Item) {
+          const meta = li.querySelector('.me-qi-meta')!;
+          const r = toWire(it);
+          const blank = isBlank(it);
+          meta.innerHTML = `<span class="me-tag">${TYPE_LABELS[it.type] ?? '؟'}</span>${it.ai ? '<span class="me-tag ai">مولّد</span>' : ''}${r.wire && !it.why.trim() && it.type !== 'tap_word' ? '<span class="me-tag warn">بلا تعليل</span>' : ''}`;
+          const tx = it.type === 'fix_error' && it.text.trim() === FIX_INSTRUCTION ? it.sentence : (it.text.trim() || it.sentence);
+          li.querySelector('.me-qi-tx')!.textContent = blank ? '' : tx;
+          li.querySelector('.me-qi-dot')?.remove();
+          if (!r.wire && !blank) {
+            const d = document.createElement('span');
+            d.className = 'me-qi-dot'; d.title = 'سؤال غير مكتمل';
+            li.querySelector('button')!.appendChild(d);
+          }
+        }
+        function refreshCurrentRail() {
+          const li = listEl.children[idx()];
+          if (li) fillRailItem(li, sel);
+          q('[data-count]').textContent = countText(items.filter((x) => !isBlank(x)).length);
+        }
+
+        // ═══ Canvas ══════════════════════════════════════════════════════
+        function select(it: Item) {
+          sel = it;
+          renderAll();
+        }
+        function renderAll() {
+          renderRail();
+          renderCanvas();
+          renderSide();
+        }
+        function renderTypes() {
+          typesEl.textContent = '';
+          for (const t of EDITOR_TYPES) {
+            const locked = !isPremium && PREMIUM_TYPES.has(t);
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'me-chip';
+            b.setAttribute('aria-pressed', String(sel.type === t));
+            b.innerHTML = `<span></span>${locked ? PLUS_CHIP : ''}`;
+            b.firstElementChild!.textContent = TYPE_LABELS[t];
+            b.addEventListener('click', () => {
+              if (locked) { paywall(); return; }
+              if (sel.type === t) return;
+              const wasFix = sel.type === 'fix_error';
+              sel.type = t;
+              if (t === 'fix_error' && !sel.text.trim()) sel.text = FIX_INSTRUCTION;
+              if (wasFix && sel.text.trim() === FIX_INSTRUCTION) sel.text = '';
+              renderCanvas(); refreshCurrentRail(); touch();
+            });
+            typesEl.appendChild(b);
+          }
+        }
+        function renderCanvas() {
+          const legacy = sel.type === 'tap_word';
+          q('[data-ai-note]').hidden = !sel.ai;
+          q('[data-legacy]').hidden = !legacy;
+          q('[data-qcard]').hidden = legacy;
+          q('[data-why-box]').hidden = legacy;
+          typesEl.hidden = legacy;
+          if (legacy) {
+            q('[data-legacy-text]').textContent = String(sel.raw?.questionText ?? '');
+            q('[data-legacy-src]').textContent = sel.raw?.sourceText ? `«${sel.raw.sourceText}»` : '';
+            issueEl.hidden = true;
+            return;
+          }
+          renderTypes();
+          const t = sel.type;
+          q('[data-sentence-lbl]').textContent = t === 'arrange_irab' ? 'الكلمة المستهدفة بالإعراب' : t === 'fix_error' ? 'الجملة، وفيها الخطأ' : 'الجملة';
+          q('[data-sentence-hint]').textContent = t === 'mcq' || t === 'true_false' ? 'اختيارية، تظهر كبيرة على الشاشة' : '';
+          sentenceIn.placeholder = t === 'arrange_irab' ? 'مثال: الطالبُ' : t === 'fix_error' ? 'اكتب الجملة كاملة، وفيها خطأ واحد' : 'مثال: كانَ الطالبُ مجتهدًا';
+          qtextIn.placeholder = t === 'true_false' ? 'عبارة يحكم عليها اللاعبون، مثل: «الطالبُ» اسم كان مرفوع'
+            : t === 'arrange_irab' ? 'مثال: رتّب إعراب «الطالبُ»' : 'مثال: ما إعراب «مجتهدًا»؟';
+          q('[data-qtext-hint]').hidden = t === 'fix_error' || t === 'arrange_irab';
+          sentenceIn.value = sel.sentence;
+          qtextIn.value = sel.text;
+          whyIn.value = sel.why;
+          renderWords();
+          renderAnswers();
+          renderIssue();
+        }
+
+        function wordSpans(s: string): Array<{ w: string; a: number; b: number }> {
+          const out: Array<{ w: string; a: number; b: number }> = [];
+          const re = /\S+/g; let m: RegExpExecArray | null;
+          while ((m = re.exec(s))) out.push({ w: m[0], a: m.index, b: m.index + m[0].length });
+          return out;
+        }
+        const bare = (w: string) => w.replace(/[،؛.,!?؟:"'«»()\[\]]/g, '');
+
+        function renderWords() {
+          const t = sel.type;
+          wordsEl.textContent = '';
+          const hint = q('[data-words-hint]');
+          const spans = t === 'arrange_irab' ? [] : wordSpans(sel.sentence);
+          wordsEl.hidden = spans.length === 0;
+          if (t === 'fix_error') {
+            if (sel.fixWord != null && sel.fixWord >= spans.length) sel.fixWord = null;
+            spans.forEach((s, i) => {
+              const b = document.createElement('button');
+              b.type = 'button';
+              b.className = 'me-word' + (sel.fixWord === i ? ' bad' : '');
+              b.setAttribute('aria-pressed', String(sel.fixWord === i));
+              b.textContent = s.w;
+              b.addEventListener('click', () => { sel.fixWord = i; renderWords(); renderAnswers(); renderIssue(); refreshCurrentRail(); touch(); });
+              wordsEl.appendChild(b);
+            });
+            hint.textContent = spans.length ? (sel.fixWord == null ? 'اضغط الكلمة الخاطئة' : 'الكلمة الخاطئة معلّمة. اكتب صوابها ومموّهاتها أدناه') : 'اكتب الجملة لتختار الكلمة الخاطئة';
+            return;
+          }
+          if (t === 'arrange_irab') { hint.textContent = ''; return; }
+          const r = askedRange(sel.sentence, sel.text);
+          spans.forEach((s) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            const lit = !!r && s.a < r[1] && s.b > r[0];
+            b.className = 'me-word' + (lit ? ' lit' : '');
+            b.setAttribute('aria-pressed', String(lit));
+            b.textContent = s.w;
+            b.addEventListener('click', () => askAbout(bare(s.w)));
+            wordsEl.appendChild(b);
+          });
+          hint.textContent = !spans.length ? ''
+            : r ? `تُضاء «${sel.sentence.slice(r[0], r[1])}» على الشاشة. اضغط كلمة أخرى لتغييرها`
+            : 'اضغط الكلمة التي تسأل عنها لتُضاء على الشاشة';
+        }
+
+        /** Make the question ask about `w`: quote it, or write the usual question. */
+        function askAbout(w: string) {
+          if (!w) return;
+          const t = sel.text.trim();
+          const letters = (s: string) => s.replace(/[ً-ْٰـ]/g, '');
+          if (!t || /^ما إعراب «[^»]*»؟?$/.test(t)) sel.text = `ما إعراب «${w}»؟`;
+          else if (/«[^»]*»/.test(sel.text)) sel.text = sel.text.replace(/«[^»]*»/, `«${w}»`);
+          else {
+            // The word already written plainly in the question: quote it there.
+            const r = askedRange(sel.text, `«${letters(w)}»`);
+            if (r) sel.text = `${sel.text.slice(0, r[0])}«${sel.text.slice(r[0], r[1])}»${sel.text.slice(r[1])}`;
+            else { toast('ضع الكلمة بين «» في نص السؤال لتُضاء على الشاشة.'); return; }
+          }
+          qtextIn.value = sel.text;
+          renderWords(); renderIssue(); refreshCurrentRail(); touch();
+        }
+
+        function tickBtn(on: boolean, label: string): HTMLButtonElement {
+          const b = document.createElement('button');
+          b.type = 'button'; b.className = 'me-ck';
+          b.setAttribute('aria-pressed', String(on));
+          b.setAttribute('aria-label', label);
+          b.innerHTML = TICK_SVG;
+          return b;
+        }
+        function lbl(text: string): HTMLElement {
+          const p = document.createElement('span');
+          p.className = 'me-lbl'; p.textContent = text;
+          return p;
+        }
+
+        function renderAnswers() {
+          answersEl.textContent = '';
+          const t = sel.type;
+          if (t === 'mcq') {
+            answersEl.appendChild(lbl('الخيارات · اضغط دائرة الخيار الصحيح'));
+            const tiles = document.createElement('div'); tiles.className = 'me-tiles';
+            sel.mcq.forEach((v, i) => {
+              const tile = document.createElement('div');
+              tile.className = `me-tile ${tileClass(i)}${sel.mcqRight === i ? ' right' : ''}`;
+              tile.innerHTML = `${shapeSvg(i)}<span class="lt">${LETTERS[i] ?? ''}</span>`;
+              const input = document.createElement('input');
+              input.type = 'text'; input.className = 'me-tile-in'; input.maxLength = 80; input.value = v;
+              input.placeholder = i < 2 ? 'خيار' : 'خيار (اختياري)';
+              input.setAttribute('aria-label', `الخيار ${LETTERS[i] ?? i + 1}`);
+              input.addEventListener('input', () => { sel.mcq[i] = input.value; renderIssue(); refreshCurrentRail(); touch(); });
+              const ck = tickBtn(sel.mcqRight === i, `اجعل الخيار ${LETTERS[i] ?? i + 1} الإجابة الصحيحة`);
+              ck.addEventListener('click', () => {
+                sel.mcqRight = i;
+                tiles.querySelectorAll('.me-tile').forEach((x, k) => { x.classList.toggle('right', k === i); x.querySelector('.me-ck')?.setAttribute('aria-pressed', String(k === i)); });
+                renderIssue(); refreshCurrentRail(); touch();
               });
-              markDirty();
-              sheet.classList.add('hidden');
-              updateCountBadge();
+              tile.append(input, ck);
+              tiles.appendChild(tile);
+            });
+            answersEl.appendChild(tiles);
+          } else if (t === 'true_false') {
+            answersEl.appendChild(lbl('الحكم الصحيح'));
+            const tiles = document.createElement('div'); tiles.className = 'me-tiles';
+            [true, false].forEach((val, i) => {
+              const tile = document.createElement('div');
+              tile.className = `me-tile ${tileClass(i)}${sel.tf === val ? ' right' : ''}`;
+              tile.innerHTML = `${shapeSvg(i)}<span class="lt">${LETTERS[i]}</span><span class="tx">${val ? 'صواب' : 'خطأ'}</span>`;
+              const ck = tickBtn(sel.tf === val, val ? 'الحكم الصحيح: صواب' : 'الحكم الصحيح: خطأ');
+              const pick = () => { sel.tf = val; renderAnswers(); renderIssue(); refreshCurrentRail(); touch(); };
+              tile.style.cursor = 'pointer';
+              tile.addEventListener('click', pick);
+              tile.appendChild(ck);
+              tiles.appendChild(tile);
+            });
+            answersEl.appendChild(tiles);
+          } else if (t === 'fix_error') {
+            answersEl.appendChild(lbl('صواب الكلمة ومموّهاتها · تُخلط للاعبين'));
+            const rows = document.createElement('div'); rows.className = 'me-rows';
+            const row = (k: string, ok: boolean, value: string, ph: string, on: (v: string) => void, rm?: () => void) => {
+              const r = document.createElement('div'); r.className = 'me-row';
+              const key = document.createElement('span'); key.className = 'me-row-k' + (ok ? ' ok' : ''); key.textContent = k;
+              const input = document.createElement('input');
+              input.type = 'text'; input.className = 'me-input'; input.maxLength = 60; input.value = value; input.placeholder = ph;
+              input.setAttribute('aria-label', k);
+              input.addEventListener('input', () => { on(input.value); renderIssue(); refreshCurrentRail(); touch(); });
+              r.append(key, input);
+              if (rm) {
+                const x = document.createElement('button');
+                x.type = 'button'; x.className = 'me-mini'; x.innerHTML = ICON_X; x.setAttribute('aria-label', 'احذف المموّه');
+                x.addEventListener('click', rm);
+                r.appendChild(x);
+              }
+              rows.appendChild(r);
+            };
+            const wrong = sel.fixWord != null ? wordsOf(sel.sentence)[sel.fixWord] : '';
+            row('الصواب', true, sel.fixCorrect, wrong ? `صواب «${wrong}»` : 'الصورة الصحيحة للكلمة', (v) => { sel.fixCorrect = v; });
+            sel.fixDecoys.forEach((d, i) => row('مموّه', false, d, 'صورة خاطئة مغرية', (v) => { sel.fixDecoys[i] = v; },
+              sel.fixDecoys.length > 1 ? () => { sel.fixDecoys.splice(i, 1); renderAnswers(); renderIssue(); touch(); } : undefined));
+            answersEl.appendChild(rows);
+            if (sel.fixDecoys.length < 2) {
+              const add = document.createElement('button');
+              add.type = 'button'; add.className = 'me-link'; add.textContent = '+ مموّه آخر';
+              add.addEventListener('click', () => { sel.fixDecoys.push(''); renderAnswers(); (answersEl.querySelectorAll('input')[sel.fixDecoys.length] as HTMLInputElement)?.focus(); });
+              answersEl.appendChild(add);
+            }
+          } else if (t === 'arrange_irab') {
+            answersEl.appendChild(lbl('أجزاء الإعراب بترتيبها الصحيح · تُخلط للاعبين'));
+            const rows = document.createElement('div'); rows.className = 'me-rows';
+            sel.arr.forEach((v, i) => {
+              const r = document.createElement('div'); r.className = 'me-row';
+              const n = document.createElement('span'); n.className = 'me-num'; n.textContent = String(i + 1);
+              const input = document.createElement('input');
+              input.type = 'text'; input.className = 'me-input'; input.maxLength = 60; input.value = v;
+              input.placeholder = i === 0 ? 'مثال: مبتدأ' : i === 1 ? 'مثال: مرفوع' : 'جزء من الإعراب';
+              input.setAttribute('aria-label', `الجزء ${i + 1}`);
+              input.addEventListener('input', () => { sel.arr[i] = input.value; renderIssue(); refreshCurrentRail(); touch(); });
+              const mv = (d: number) => { const j = i + d; [sel.arr[i], sel.arr[j]] = [sel.arr[j], sel.arr[i]]; renderAnswers(); renderIssue(); touch(); };
+              const up = document.createElement('button'); up.type = 'button'; up.className = 'me-mini'; up.innerHTML = ICON_UP; up.disabled = i === 0; up.setAttribute('aria-label', 'قدّم الجزء');
+              up.addEventListener('click', () => mv(-1));
+              const down = document.createElement('button'); down.type = 'button'; down.className = 'me-mini'; down.innerHTML = ICON_DOWN; down.disabled = i === sel.arr.length - 1; down.setAttribute('aria-label', 'أخّر الجزء');
+              down.addEventListener('click', () => mv(1));
+              r.append(n, input, up, down);
+              if (sel.arr.length > 2) {
+                const x = document.createElement('button'); x.type = 'button'; x.className = 'me-mini'; x.innerHTML = ICON_X; x.setAttribute('aria-label', 'احذف الجزء');
+                x.addEventListener('click', () => { sel.arr.splice(i, 1); renderAnswers(); renderIssue(); touch(); });
+                r.appendChild(x);
+              }
+              rows.appendChild(r);
+            });
+            answersEl.appendChild(rows);
+            if (sel.arr.length < 6) {
+              const add = document.createElement('button');
+              add.type = 'button'; add.className = 'me-link'; add.textContent = '+ جزء آخر';
+              add.addEventListener('click', () => { sel.arr.push(''); renderAnswers(); const ins = answersEl.querySelectorAll<HTMLInputElement>('input'); ins[ins.length - 1]?.focus(); });
+              answersEl.appendChild(add);
+            }
+          }
+        }
+
+        function renderIssue() {
+          const r = toWire(sel);
+          const show = !r.wire && !isBlank(sel);
+          issueEl.hidden = !show;
+          if (show) issueEl.textContent = `لم يكتمل: ${r.issues.join('، ')}`;
+        }
+
+        // Shared inputs.
+        sentenceIn.addEventListener('input', () => { sel.sentence = sentenceIn.value; renderWords(); renderIssue(); refreshCurrentRail(); touch(); });
+        qtextIn.addEventListener('input', () => { sel.text = qtextIn.value; renderWords(); renderIssue(); refreshCurrentRail(); touch(); });
+        whyIn.addEventListener('input', () => { sel.why = whyIn.value; refreshCurrentRail(); touch(); });
+        titleInput.addEventListener('input', () => { titleCustom = titleInput.value.trim().length > 0; touch(); });
+
+        // Harakat: typed into whichever field was last in use.
+        let lastField: HTMLInputElement | HTMLTextAreaElement = sentenceIn;
+        q('[data-canvas]').addEventListener('focusin', (e) => {
+          const el = e.target as HTMLElement;
+          if ((el instanceof HTMLInputElement && el.type === 'text') || el instanceof HTMLTextAreaElement) lastField = el;
+        });
+        const hk = q('[data-harakat]');
+        for (const [ch, name] of HARAKAT) {
+          const b = document.createElement('button');
+          b.type = 'button'; b.className = 'me-hk'; b.textContent = 'ـ' + ch;
+          b.setAttribute('aria-label', name); b.title = name;
+          b.addEventListener('pointerdown', (e) => e.preventDefault());
+          b.addEventListener('click', () => {
+            const el = document.contains(lastField) ? lastField : sentenceIn;
+            el.focus();
+            const s = el.selectionStart ?? el.value.length; const en = el.selectionEnd ?? s;
+            el.setRangeText(ch, s, en, 'end');
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+          });
+          hk.appendChild(b);
+        }
+
+        // ═══ Side ════════════════════════════════════════════════════════
+        function renderSide() {
+          const legacy = sel.type === 'tap_word';
+          q('[data-time-box]').hidden = legacy;
+          q('[data-bank-box]').hidden = legacy;
+          const times = q('[data-times]');
+          times.textContent = '';
+          const list = [...new Set([...TIMES, sel.time])].sort((a, b) => a - b);
+          for (const s of list) {
+            const b = document.createElement('button');
+            b.type = 'button'; b.className = 'me-chip teal'; b.textContent = String(s);
+            b.setAttribute('aria-pressed', String(s === sel.time));
+            b.addEventListener('click', () => { sel.time = s; renderSide(); touch(); });
+            times.appendChild(b);
+          }
+          q('[data-bank-sw]').setAttribute('aria-checked', String(sel.bank));
+          const i = idx();
+          q<HTMLButtonElement>('[data-up]').disabled = i === 0;
+          q<HTMLButtonElement>('[data-down]').disabled = i >= items.length - 1;
+          q('[data-read-sw]').setAttribute('aria-checked', String(settings.readTime));
+          q('[data-acc-sw]').setAttribute('aria-checked', String(settings.scoring === 'accuracy'));
+        }
+        q('[data-bank-sw]').addEventListener('click', () => { sel.bank = !sel.bank; renderSide(); touch(); });
+        q('[data-read-sw]').addEventListener('click', () => { settings.readTime = !settings.readTime; renderSide(); touch(); });
+        q('[data-acc-sw]').addEventListener('click', () => { settings.scoring = settings.scoring === 'accuracy' ? 'speed' : 'accuracy'; renderSide(); touch(); });
+
+        function insertAfterSel(...add: Item[]) {
+          let at = idx() + 1;
+          // A blank question in hand is replaced, not kept.
+          if (items.length && isBlank(sel)) { at = idx(); items.splice(at, 1); }
+          items.splice(at, 0, ...add);
+          sel = add[0];
+        }
+        q('[data-add-new]').addEventListener('click', () => {
+          if (isBlank(sel)) { q<HTMLInputElement>('[data-sentence]').focus(); return; }
+          if (!canAdd()) return;
+          const type: Kind = sel.type === 'tap_word' ? 'mcq' : sel.type;
+          const it = blankItem(!isPremium && PREMIUM_TYPES.has(type) ? 'mcq' : type);
+          it.time = sel.time;
+          insertAfterSel(it);
+          renderAll(); touch();
+          sentenceIn.focus();
+        });
+        q('[data-dup]').addEventListener('click', () => {
+          if (!canAdd()) return;
+          const c: Item = {
+            ...sel, id: freshId(), mcq: [...sel.mcq], fixDecoys: [...sel.fixDecoys], arr: [...sel.arr],
+            bank: false, lastGood: undefined, order: sel.order ? { ...sel.order } : undefined,
+            raw: sel.raw ? { ...sel.raw } : undefined,
+          };
+          if (c.raw) c.raw.id = c.id;
+          items.splice(idx() + 1, 0, c);
+          sel = c;
+          renderAll(); touch();
+          toast('كُرّر السؤال. عدّل النسخة كما تشاء.');
+        });
+        const move = (d: number) => {
+          const i = idx(); const j = i + d;
+          if (j < 0 || j >= items.length) return;
+          [items[i], items[j]] = [items[j], items[i]];
+          renderRail(); renderSide(); touch();
+        };
+        q('[data-up]').addEventListener('click', () => move(-1));
+        q('[data-down]').addEventListener('click', () => move(1));
+        q('[data-del]').addEventListener('click', () => {
+          const i = idx();
+          const gone = sel;
+          items.splice(i, 1);
+          // The last question gone leaves an empty one in its place.
+          const placeholder = items.length ? null : blankItem();
+          if (placeholder) items.push(placeholder);
+          sel = items[Math.min(i, items.length - 1)];
+          renderAll(); touch();
+          if (!isBlank(gone)) {
+            toast('حُذف السؤال.', { label: 'تراجع', fn: () => {
+              if (placeholder && isBlank(placeholder)) items = items.filter((x) => x !== placeholder);
+              items.splice(Math.min(i, items.length), 0, gone);
+              sel = gone; renderAll(); touch();
+            } }, 7000);
+          }
+        });
+
+        // Leaving through «مجالسي»: save first; warn about unfinished work.
+        q<HTMLAnchorElement>('[data-back]').addEventListener('click', async (e) => {
+          e.preventDefault();
+          const go = () => { leaving = true; location.href = '/majlis/host'; };
+          if (hasUnfinished()) {
+            const n = items.filter((it) => !isBlank(it) && !toWire(it).wire).length;
+            toast(n === 1 ? 'في مجلسك سؤال غير مكتمل، تُحفظ آخر نسخة مكتملة منه فقط.' : 'في مجلسك أسئلة غير مكتملة، تُحفظ آخر نسخة مكتملة منها فقط.',
+              { label: 'اخرج', fn: async () => { await saveNow(); go(); } }, 8000);
+            return;
+          }
+          await saveNow();
+          go();
+        });
+
+        // ═══ Bank ════════════════════════════════════════════════════════
+        const bankDrawer = q('[data-bank-drawer]');
+        let bankDocs: any[] = [];
+        let bankType = '';
+        function openDrawer(el: HTMLElement) {
+          el.hidden = false;
+          (el.querySelector('[data-close]') as HTMLElement)?.focus();
+        }
+        root!.querySelectorAll<HTMLElement>('.me-scrim').forEach((s) => {
+          s.addEventListener('click', (e) => { if (e.target === s || (e.target as HTMLElement).closest('[data-close]')) s.hidden = true; });
+        });
+        function renderBank() {
+          const list = q('[data-bank-list]');
+          list.textContent = '';
+          const term = q<HTMLInputElement>('[data-bank-q]').value.trim();
+          const types = q('[data-bank-types]');
+          types.textContent = '';
+          for (const [k, label] of [['', 'الكل'], ...EDITOR_TYPES.map((t) => [t, TYPE_LABELS[t]])]) {
+            const b = document.createElement('button');
+            b.type = 'button'; b.className = 'me-chip'; b.textContent = label;
+            b.setAttribute('aria-pressed', String(bankType === k));
+            b.addEventListener('click', () => { bankType = k; renderBank(); });
+            types.appendChild(b);
+          }
+          const shown = bankDocs.filter((v) => (!bankType || String(v.type) === bankType)
+            && (!term || `${v.questionText ?? ''} ${v.sourceText ?? ''}`.includes(term)));
+          q('[data-bank-empty]').hidden = bankDocs.length > 0;
+          if (bankDocs.length && !shown.length) {
+            list.innerHTML = '<p class="t-body-s c-word">لا نتائج.</p>';
+          }
+          for (const v of shown) {
+            const row = document.createElement('button');
+            row.type = 'button'; row.className = 'me-bank-row';
+            const locked = !isPremium && PREMIUM_TYPES.has(String(v.type));
+            row.innerHTML = `<span class="me-qi-meta"><span class="me-tag">${TYPE_LABELS[String(v.type)] ?? '؟'}</span>${locked ? PLUS_CHIP : ''}</span><p></p>`;
+            row.querySelector('p')!.textContent = String(v.questionText ?? '') + (v.sourceText ? ` «${v.sourceText}»` : '');
+            row.addEventListener('click', () => {
+              if (locked) { paywall(); return; }
+              if (!canAdd()) return;
+              // Bank reuse mints a FRESH id and drops provenance/bank flags (contract §2).
+              const it = fromWire({ ...v, id: freshId(), grammarTopic: null, difficulty: null, sourceReference: null, aiGenerated: false, saveToBank: false });
+              insertAfterSel(it);
+              bankDrawer.hidden = true;
+              renderAll(); touch();
+              toast('أُضيف السؤال من بنك أسئلتك.');
             });
             list.appendChild(row);
-          });
-        });
-        q('[data-bank-close]').addEventListener('click', () => sheet.classList.add('hidden'));
-
-        // ── Review ──
-        const rErr = q<HTMLElement>('[data-r-err]');
-        function answerPreview(v: any): string {
-          const c = v.correctAnswer ?? {};
-          if (v.type === 'mcq') return String(v.options?.[c.optionIndex] ?? '؟');
-          if (v.type === 'true_false') return c.boolValue === true ? 'صحيح' : c.boolValue === false ? 'خطأ' : '؟';
-          if (v.type === 'tap_word') return String(wordsOf(v.sourceText)[c.wordIndex] ?? '؟');
-          if (v.type === 'fix_error') return `«${wordsOf(v.sourceText)[c.wordIndex] ?? '؟'}» صوابها «${v.options?.[c.optionIndex] ?? '؟'}»`;
-          if (v.type === 'arrange_irab') return (Array.isArray(c.arrangement) ? c.arrangement : []).map((i: number) => String(v.options?.[i] ?? '؟')).join(' ثم ');
-          return '؟';
-        }
-
-        function enterReview() {
-          rErr.classList.add('hidden');
-          q('[data-r-notice]').classList.add('hidden');
-          q<HTMLElement>('[data-r-count]').textContent = `${questions.length} من ${maxQ} أسئلة`;
-          q('[data-ai-banner]').classList.toggle('hidden', !questions.some((x) => !!x.aiGenerated));
-          const list = q<HTMLElement>('[data-r-list]');
-          list.innerHTML = '';
-          questions.forEach((v, i) => { const c = reviewCard(v, i); stagger(c, i); list.appendChild(c); });
-          q<HTMLButtonElement>('[data-r-add]').classList.toggle('hidden', questions.length >= maxQ);
-          show('review');
-        }
-
-        function reviewCard(v: any, i: number) {
-          const el = document.createElement('div');
-          el.className = 'card p-5';
-          el.innerHTML = `
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="w-7 h-7 rounded-full bg-purple/10 text-purple font-black text-sm flex items-center justify-center tabular-nums">${i + 1}</span>
-              <span class="rounded-full bg-paper-soft dark:bg-coal border border-stone dark:border-coal-edge px-2.5 py-0.5 text-xs font-black text-ink-soft dark:text-mist-soft">${TYPE_LABELS[String(v.type)] ?? '؟'}</span>
-              ${v.aiGenerated ? '<span class="rounded-full bg-purple/10 border border-purple/30 px-2.5 py-0.5 text-xs font-black text-purple">ذكاء اصطناعي</span>' : ''}
-              <span class="text-xs text-ink-subtle dark:text-mist-subtle tabular-nums">${Number(v.timeLimitSeconds) || 30} ث</span>
-            </div>
-            <p data-c-text class="mt-3 text-[15px] font-bold text-ink dark:text-mist leading-relaxed"></p>
-            <p data-c-src class="hidden mt-1.5 text-[15px] text-ink-soft dark:text-mist-soft leading-relaxed"></p>
-            <p class="mt-2 text-sm text-teal font-bold"><span data-c-ans></span></p>
-            <p data-c-expl class="hidden mt-1 text-sm text-ink-muted dark:text-mist-muted leading-relaxed"></p>`;
-          el.querySelector('[data-c-text]')!.textContent = String(v.questionText ?? '');
-          if (v.sourceText) {
-            const s = el.querySelector('[data-c-src]')!;
-            s.textContent = `«${v.sourceText}»`;
-            s.classList.remove('hidden');
           }
-          el.querySelector('[data-c-ans]')!.textContent = `الإجابة: ${answerPreview(v)}`;
-          if (v.explanation) {
-            const x = el.querySelector('[data-c-expl]')!;
-            x.textContent = String(v.explanation);
-            x.classList.remove('hidden');
-          }
-          const row = document.createElement('div');
-          row.className = 'mt-4 flex items-center gap-2 flex-wrap';
-          const mk = (label: string, on: () => void, cls = 'rounded-lg border border-stone dark:border-coal-edge px-3 py-1.5 text-sm font-bold text-ink-soft dark:text-mist-soft transition-all duration-200 hover:border-purple hover:text-purple active:scale-95') => {
-            const b = document.createElement('button');
-            b.type = 'button'; b.className = cls; b.textContent = label;
-            b.addEventListener('click', on);
-            return b;
-          };
-          if (String(v.type) !== 'tap_word') {
-            row.appendChild(mk('تعديل', () => {
-              mode = 'edit'; editingIndex = i;
-              resetForm(v);
-              show('editor');
-            }));
-          }
-          row.appendChild(mk('حذف', () => {
-            questions.splice(i, 1); markDirty(); bgSave(); enterReview();
-          }));
-          if (i > 0) row.appendChild(mk('أعلى', () => {
-            [questions[i - 1], questions[i]] = [questions[i], questions[i - 1]];
-            markDirty(); bgSave(); enterReview();
-          }));
-          if (i < questions.length - 1) row.appendChild(mk('أسفل', () => {
-            [questions[i], questions[i + 1]] = [questions[i + 1], questions[i]];
-            markDirty(); bgSave(); enterReview();
-          }));
-          el.appendChild(row);
-          return el;
         }
-
-        q('[data-r-add]').addEventListener('click', () => {
-          mode = 'append'; editingIndex = null;
-          resetForm();
-          show('editor');
+        q('[data-bank-q]').addEventListener('input', renderBank);
+        q('[data-add-bank]').addEventListener('click', async () => {
+          openDrawer(bankDrawer);
+          const list = q('[data-bank-list]');
+          list.innerHTML = '<p class="t-body-s c-word">جارٍ التحميل</p>';
+          try {
+            const s = await fs.getDocs(fs.query(fs.collection(db, 'majalis_bank', uid, 'questions'), fs.limit(200)));
+            bankDocs = s.docs.flatMap((d) => { try { return [d.data()]; } catch { return []; } });
+          } catch { bankDocs = []; }
+          renderBank();
         });
 
-        let launching = false;
-        q<HTMLButtonElement>('[data-r-launch]').addEventListener('click', async (e) => {
-          if (launching) return;
-          launching = true;
-          const b = e.currentTarget as HTMLButtonElement;
-          b.disabled = true; b.classList.add('btn-busy');
-          const ok = await saveDraft();
-          if (!ok || !draftId) {
-            launching = false; b.disabled = false; b.classList.remove('btn-busy');
-            rErr.textContent = 'تعذر حفظ المجلس. تحقق من اتصالك وحاول مجددًا.';
-            rErr.classList.remove('hidden');
-            return;
-          }
-          location.href = `/majlis/live?draft=${encodeURIComponent(draftId)}`;
-        });
-
-        // ═══ AI generation (contract: AI Generation + Quotas section) ═══
+        // ═══ AI generation (contract: AI Generation + Quotas section) ═════
         const API_PRIMARY = 'https://api.irab.app';
         const API_FALLBACK = 'https://irab-api-v2.mansourhassan783.workers.dev';
         // Fallback host only on network-level failure (never 4xx/5xx, never
@@ -922,7 +1158,7 @@
           { key: 'photo', label: 'صورة من الكتاب', free: false },
           { key: 'review', label: 'مراجعة ذكية', free: false },
         ];
-        const AI_STEPS = ['نقرأ المصدر ونحدد المفاهيم', 'نصوغ الأسئلة بأنواعها', 'ندقق الإعراب والإجابات', 'نجهز مجلسك للمراجعة'];
+        const AI_STEPS = ['نقرأ المصدر ونحدد المفاهيم', 'نصوغ الأسئلة بأنواعها', 'ندقق الإعراب والإجابات', 'نجهز الأسئلة لمجلسك'];
 
         let aiSrc = 'topic';
         const aiTopics = new Set<string>();
@@ -935,86 +1171,76 @@
         let aiBusy = false;
         let stepTimer: ReturnType<typeof setInterval> | null = null;
 
-        const aiErrEl = q<HTMLElement>('[data-ai-err]');
+        const aiDrawer = q('[data-ai-drawer]');
+        const aiErrEl = q('[data-ai-err]');
         const aiText = q<HTMLTextAreaElement>('[data-ai-text]');
         const aiTopicFree = q<HTMLInputElement>('[data-ai-topic-free]');
-        const aiConfirm = q<HTMLElement>('[data-ai-confirm]');
-        const aiErr = (m: string) => { aiErrEl.textContent = m; aiErrEl.classList.remove('hidden'); };
-        const aiClearErr = () => { aiErrEl.classList.add('hidden'); aiConfirm.classList.add('hidden'); };
+        const aiConfirm = q('[data-ai-confirm]');
+        const aiErr = (m: string) => { aiErrEl.textContent = m; aiErrEl.hidden = false; };
+        const aiClearErr = () => { aiErrEl.hidden = true; aiConfirm.hidden = true; };
+
+        function chip(label: string, on: boolean, locked: boolean, click: () => void, cls = 'me-chip') {
+          const b = document.createElement('button');
+          b.type = 'button'; b.className = cls;
+          b.setAttribute('aria-pressed', String(on));
+          b.innerHTML = `<span></span>${locked ? PLUS_CHIP : ''}`;
+          b.firstElementChild!.textContent = label;
+          b.addEventListener('click', click);
+          return b;
+        }
 
         function renderAiControls() {
-          const seg = q<HTMLElement>('[data-ai-src-seg]');
-          seg.innerHTML = '';
+          const seg = q('[data-ai-src-seg]');
+          seg.textContent = '';
           for (const s of AI_SOURCES) {
             const locked = !isPremium && !s.free;
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = aiSrc === s.key ? 'mj-chip-on' : 'ex-chip';
-            b.textContent = s.label + (locked ? ' 🔒' : '');
-            b.addEventListener('click', () => {
+            seg.appendChild(chip(s.label, aiSrc === s.key, locked, () => {
               aiClearErr();
-              if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+              if (locked) { paywall(); return; }
               const was = aiSrc; aiSrc = s.key;
               // Entering photo mode clears stale text + the OCR-done flag (app parity).
-              if (s.key === 'photo' && was !== 'photo') { aiText.value = ''; ocrDone = false; q<HTMLElement>('[data-ai-ocr-status]').textContent = ''; }
+              if (s.key === 'photo' && was !== 'photo') { aiText.value = ''; ocrDone = false; q('[data-ai-ocr-status]').textContent = ''; }
               if (s.key === 'review') mineWeakPoints();
               renderAiControls();
-            });
-            seg.appendChild(b);
+            }));
           }
-          q('[data-ai-topic-block]').classList.toggle('hidden', aiSrc !== 'topic');
-          q('[data-ai-text-block]').classList.toggle('hidden', aiSrc !== 'text' && aiSrc !== 'photo');
-          q('[data-ai-photo-row]').classList.toggle('hidden', aiSrc !== 'photo');
-          q<HTMLElement>('[data-ai-text-label]').textContent = aiSrc === 'photo' ? 'النص المستخرج من الصورة (يمكنك تعديله)' : 'النص المصدر (من 10 إلى 1000 حرف)';
-          q('[data-ai-review-block]').classList.toggle('hidden', aiSrc !== 'review');
+          q('[data-ai-topic-block]').hidden = aiSrc !== 'topic';
+          q('[data-ai-text-block]').hidden = aiSrc !== 'text' && aiSrc !== 'photo';
+          q('[data-ai-photo-row]').hidden = aiSrc !== 'photo';
+          q('[data-ai-text-label]').textContent = aiSrc === 'photo' ? 'النص المستخرج من الصورة (يمكنك تعديله)' : 'النص المصدر (من 10 إلى 1000 حرف)';
+          q('[data-ai-review-block]').hidden = aiSrc !== 'review';
 
-          const topics = q<HTMLElement>('[data-ai-topics]');
-          topics.innerHTML = '';
+          const topics = q('[data-ai-topics]');
+          topics.textContent = '';
           for (const t of AI_TOPICS) {
             const on = aiTopics.has(t);
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = on ? 'mj-chip-teal' : 'ex-chip';
-            b.textContent = t;
-            b.addEventListener('click', () => { on ? aiTopics.delete(t) : aiTopics.add(t); renderAiControls(); });
-            topics.appendChild(b);
+            topics.appendChild(chip(t, on, false, () => { on ? aiTopics.delete(t) : aiTopics.add(t); renderAiControls(); }, 'me-chip teal'));
           }
 
-          const diffs = q<HTMLElement>('[data-ai-diff-seg]');
-          diffs.innerHTML = '';
+          const diffs = q('[data-ai-diff-seg]');
+          diffs.textContent = '';
           for (const [k, label] of [['beginner', 'مبتدئ'], ['intermediate', 'متوسط'], ['advanced', 'متقدم']] as const) {
             const locked = !isPremium && k === 'advanced';
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = (aiDiff === k ? 'mj-chip-on' : 'ex-chip') + ' justify-center';
-            b.textContent = label + (locked ? ' 🔒' : '');
-            b.addEventListener('click', () => {
-              if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+            diffs.appendChild(chip(label, aiDiff === k, locked, () => {
+              if (locked) { paywall(); return; }
               aiDiff = k; renderAiControls();
-            });
-            diffs.appendChild(b);
+            }));
           }
 
-          const typeChips = q<HTMLElement>('[data-ai-type-chips]');
-          typeChips.innerHTML = '';
+          const typeChips = q('[data-ai-type-chips]');
+          typeChips.textContent = '';
           for (const t of ['mcq', 'true_false', 'fix_error']) {
             const locked = !isPremium && t === 'fix_error';
             const on = aiTypes.has(t);
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = on ? 'mj-chip-teal' : 'ex-chip';
-            b.textContent = TYPE_LABELS[t] + (locked ? ' 🔒' : '');
-            b.addEventListener('click', () => {
-              if (locked) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+            typeChips.appendChild(chip(TYPE_LABELS[t], on, locked, () => {
+              if (locked) { paywall(); return; }
               // At least one type must stay selected (app parity).
               if (on && aiTypes.size === 1) return;
               on ? aiTypes.delete(t) : aiTypes.add(t);
               renderAiControls();
-            });
-            typeChips.appendChild(b);
+            }, 'me-chip teal'));
           }
-
-          q<HTMLElement>('[data-ai-c-val]').textContent = String(aiCount);
+          q('[data-ai-c-val]').textContent = String(aiCount);
         }
         q('[data-ai-c-minus]').addEventListener('click', () => { aiCount = Math.max(1, aiCount - 1); renderAiControls(); });
         q('[data-ai-c-plus]').addEventListener('click', () => { aiCount = Math.min(10, aiCount + 1); renderAiControls(); });
@@ -1027,22 +1253,21 @@
             const qd = j?.data?.quota;
             if (qd && typeof qd.remaining === 'number') {
               aiQuota = { used: Number(qd.used) || 0, limit: Number(qd.limit) || 0, remaining: Number(qd.remaining) || 0 };
-              const pill = q<HTMLElement>('[data-ai-quota]');
-              pill.textContent = `متبقٍّ اليوم: ${aiQuota.remaining}`;
-              pill.classList.remove('hidden');
+              const pill = q('[data-ai-quota]');
+              pill.textContent = `متبقٍّ لك اليوم: ${aiQuota.remaining}.`;
+              pill.hidden = false;
             }
-          } catch { /* row stays hidden */ }
+          } catch { /* stays hidden */ }
         }
 
         // Smart review: mine weak points from the host's last 5 reports
         // (answeredCount > 0 and correctRate <= 0.6, worst 6 by wrong pct).
         // From the report's «مجلس علاجي»: mine that one majlis only.
-        const remedialRoom = new URLSearchParams(location.search).get('remedial');
         async function mineWeakPoints() {
-          const wrap = q<HTMLElement>('[data-ai-weak]');
-          wrap.innerHTML = `<p class="text-sm text-ink-muted dark:text-mist-muted">${remedialRoom ? 'جارٍ قراءة تقرير المجلس' : 'جارٍ قراءة مجالسك الأخيرة'}</p>`;
+          const wrap = q('[data-ai-weak]');
+          wrap.innerHTML = `<p class="t-body-s c-word">${remedialRoom ? 'جارٍ قراءة تقرير المجلس' : 'جارٍ قراءة مجالسك الأخيرة'}</p>`;
           weakFocus = '';
-          q<HTMLElement>('[data-ai-weak-label]').textContent = remedialRoom ? 'نقاط الضعف في هذا المجلس' : 'نقاط الضعف من مجالسك الأخيرة';
+          q('[data-ai-weak-label]').textContent = remedialRoom ? 'نقاط الضعف في هذا المجلس' : 'نقاط الضعف من مجالسك الأخيرة';
           try {
             const docs = remedialRoom
               ? [await fs.getDoc(fs.doc(db, 'majalis_reports', remedialRoom))].filter((d) => d.exists())
@@ -1069,9 +1294,9 @@
             }
             weak.sort((a, b) => b.wrongPct - a.wrongPct);
             const top = weak.slice(0, 6);
-            wrap.innerHTML = '';
+            wrap.textContent = '';
             if (!top.length) {
-              wrap.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted leading-relaxed">لا نقاط ضعف كافية بعد. أدر بعض المجالس أولًا ثم عد إلى المراجعة الذكية.</p>';
+              wrap.innerHTML = '<p class="t-body-s c-word">لا نقاط ضعف كافية بعد. أدر بعض المجالس أولًا ثم عد إلى المراجعة الذكية.</p>';
               return;
             }
             let focus = top.map((w) => `أخطأ ${w.wrongPct}% في: ${w.label}`).join('؛');
@@ -1079,12 +1304,12 @@
             weakFocus = focus;
             top.forEach((w) => {
               const row = document.createElement('div');
-              row.className = 'rounded-xl border border-stone dark:border-coal-edge px-3.5 py-2.5 text-sm text-ink dark:text-mist leading-relaxed';
+              row.className = 'me-weak';
               row.textContent = `أخطأ ${w.wrongPct}% في: ${w.label}`;
               wrap.appendChild(row);
             });
           } catch {
-            wrap.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted">تعذر قراءة مجالسك. حاول مجددًا.</p>';
+            wrap.innerHTML = '<p class="t-body-s c-word">تعذر قراءة مجالسك. حاول مجددًا.</p>';
           }
         }
 
@@ -1092,7 +1317,7 @@
         q<HTMLInputElement>('[data-ai-photo]').addEventListener('change', async (e) => {
           const file = (e.currentTarget as HTMLInputElement).files?.[0];
           if (!file) return;
-          const status = q<HTMLElement>('[data-ai-ocr-status]');
+          const status = q('[data-ai-ocr-status]');
           status.textContent = 'جارٍ قراءة الصورة';
           try {
             const bmp = await createImageBitmap(file);
@@ -1104,7 +1329,7 @@
             const b64 = canvas.toDataURL('image/jpeg', 0.82).split(',')[1] ?? '';
             const res = await workerPost('/api/ocr', { imageBase64: b64, mimeType: 'image/jpeg' }, 60000);
             const j: any = await res.json().catch(() => null);
-            if (res.status === 403) { status.textContent = ''; (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+            if (res.status === 403) { status.textContent = ''; paywall(); return; }
             if (!res.ok) { status.textContent = 'تعذر استخراج النص. حاول بصورة أوضح.'; return; }
             const text = String(j?.data?.text ?? '').trim();
             if (text.length < 10) { status.textContent = 'لم نجد نصًّا كافيًا في الصورة. حاول بصورة أوضح.'; ocrDone = false; return; }
@@ -1117,21 +1342,16 @@
         });
 
         function startOverlay() {
-          const ov = q<HTMLElement>('[data-ai-overlay]');
-          const step = q<HTMLElement>('[data-ai-step]');
+          const ov = q('[data-ai-overlay]');
+          const step = q('[data-ai-step]');
           let i = 0;
           step.textContent = AI_STEPS[0];
-          ov.classList.remove('hidden');
-          refire(ov.firstElementChild as HTMLElement, 'panel-in');
-          stepTimer = setInterval(() => {
-            i = (i + 1) % AI_STEPS.length;
-            step.textContent = AI_STEPS[i];
-            refire(step, 'panel-in');
-          }, 1900);
+          ov.hidden = false;
+          stepTimer = setInterval(() => { i = (i + 1) % AI_STEPS.length; step.textContent = AI_STEPS[i]; }, 1900);
         }
         function stopOverlay() {
           if (stepTimer) { clearInterval(stepTimer); stepTimer = null; }
-          q('[data-ai-overlay]').classList.add('hidden');
+          q('[data-ai-overlay]').hidden = true;
         }
 
         async function runGenerate() {
@@ -1154,23 +1374,21 @@
             body.focus = weakFocus;
           }
 
-          const room = maxQ - questions.length;
-          if (room <= 0) { aiErr('اكتمل المجلس: وصل إلى أقصى عدد من الأسئلة في خطتك.'); return; }
+          const room = maxQ - items.filter((x) => !isBlank(x)).length;
+          if (room <= 0) { aiErr('وصل مجلسك إلى أقصى عدد من الأسئلة في خطتك.'); if (!isPremium) paywall(); return; }
 
           // Pre-flight quota gate: never silently short-order.
           if (aiQuota) {
             if (aiQuota.remaining <= 0) {
               aiErr('انتهت أسئلة الذكاء الاصطناعي المتاحة لك اليوم، وتتجدد غدًا.');
-              if (!isPremium) (window as any).IrabPaywall?.show({ reason: 'limit' });
+              if (!isPremium) paywall();
               return;
             }
             if (aiCount > aiQuota.remaining) {
-              const msg = q<HTMLElement>('[data-ai-confirm-msg]');
-              msg.textContent = `بقي لك ${aiQuota.remaining} من حصة اليوم، وطلبت ${aiCount} أسئلة.`;
-              const go = q<HTMLButtonElement>('[data-ai-confirm-go]');
-              go.textContent = `ولّد المتبقي ${aiQuota.remaining}`;
-              q('[data-ai-confirm-up]').classList.toggle('hidden', isPremium);
-              aiConfirm.classList.remove('hidden');
+              q('[data-ai-confirm-msg]').textContent = `بقي لك ${aiQuota.remaining} من حصة اليوم، وطلبت ${aiCount}.`;
+              q('[data-ai-confirm-go]').textContent = `ولّد المتبقي ${aiQuota.remaining}`;
+              q('[data-ai-confirm-up]').hidden = isPremium;
+              aiConfirm.hidden = false;
               return;
             }
           }
@@ -1183,28 +1401,27 @@
             if (res.status === 429 && j?.error === 'majalis_ai_quota') {
               aiQuota = { used: Number(j.used) || 0, limit: Number(j.limit) || 0, remaining: 0 };
               aiErr('انتهت أسئلة الذكاء الاصطناعي المتاحة لك اليوم، وتتجدد غدًا.');
-              if (!isPremium) (window as any).IrabPaywall?.show({ reason: 'limit' });
+              if (!isPremium) paywall();
               return;
             }
-            if (res.status === 403) { (window as any).IrabPaywall?.show({ reason: 'limit' }); return; }
+            if (res.status === 403) { paywall(); return; }
             const maps: any[] = Array.isArray(j?.data?.questions) ? j.data.questions : [];
             if (!res.ok || !maps.length) { aiErr('تعذر التوليد. حاول مجددًا.'); return; }
 
             // Server-validated wire questions go into the draft VERBATIM.
-            const toAdd = maps.slice(0, room);
-            questions.push(...toAdd);
-            markDirty();
+            const toAdd = maps.slice(0, room).map((w) => { const it = fromWire(w); it.lastGood = w; return it; });
+            insertAfterSel(...toAdd);
             const qd = j?.data?.quota;
             if (qd && typeof qd.remaining === 'number') {
               aiQuota = { used: Number(qd.used) || 0, limit: Number(qd.limit) || 0, remaining: Number(qd.remaining) || 0 };
+              q('[data-ai-quota]').textContent = `متبقٍّ لك اليوم: ${aiQuota.remaining}.`;
             }
-            bgSave();
-            enterReview();
-            if (toAdd.length < aiCount) {
-              const note = q<HTMLElement>('[data-r-notice]');
-              note.textContent = `تم توليد ${toAdd.length} من ${aiCount}. يمكنك إضافة البقية يدويًّا.`;
-              note.classList.remove('hidden');
-            }
+            aiDrawer.hidden = true;
+            renderAll(); touch();
+            track('majlis_ai_generated', { platform: 'web', count: toAdd.length, source: aiSrc });
+            toast(toAdd.length < aiCount
+              ? `وُلّد ${toAdd.length} من ${aiCount}. راجعها، وأضف البقية يدويًّا إن أردت.`
+              : 'أُضيفت الأسئلة المولّدة إلى مجلسك. راجعها قبل الإطلاق.', undefined, 7000);
           } catch (e: any) {
             aiErr(e?.name === 'AbortError' ? 'استغرق التوليد وقتًا طويلًا. حاول مجددًا.' : 'تعذر التوليد. تحقق من اتصالك وحاول مجددًا.');
           } finally {
@@ -1215,47 +1432,191 @@
         q('[data-ai-generate]').addEventListener('click', () => { runGenerate(); });
         q('[data-ai-confirm-go]').addEventListener('click', () => {
           aiCount = Math.max(1, aiQuota?.remaining ?? 1);
-          aiConfirm.classList.add('hidden');
+          aiConfirm.hidden = true;
           renderAiControls();
           runGenerate();
         });
-        q('[data-ai-confirm-up]').addEventListener('click', () => (window as any).IrabPaywall?.show({ reason: 'limit' }));
-        q('[data-ai-confirm-cancel]').addEventListener('click', () => aiConfirm.classList.add('hidden'));
+        q('[data-ai-confirm-up]').addEventListener('click', paywall);
+        q('[data-ai-confirm-cancel]').addEventListener('click', () => { aiConfirm.hidden = true; });
 
-        function enterAi() {
+        function openAi() {
           aiClearErr();
           renderAiControls();
           probeAiQuota();
-          show('ai');
+          openDrawer(aiDrawer);
         }
-        q('[data-mode-btn="ai"]').addEventListener('click', () => enterAi());
-        q('[data-ai-back]').addEventListener('click', () => show('editor'));
+        q('[data-add-ai]').addEventListener('click', openAi);
 
-        // ── Entry: resume an existing draft into review, or start fresh ──
+        // ═══ Preview: the real stage ═════════════════════════════════════
+        const prev = q('[data-prev]');
+        let prevAt = 0; let prevMode: 'q' | 'a' = 'q';
+        let unfit: (() => void) | null = null;
+        function displayWire(it: Item): any {
+          const r = toWire(it);
+          if (r.wire) return r.wire;
+          return {
+            type: it.type, questionText: it.text, sourceText: it.sentence.trim() || null,
+            options: it.type === 'mcq' ? it.mcq.filter((v) => v.trim())
+              : it.type === 'fix_error' ? [it.fixCorrect, ...it.fixDecoys].filter((v) => v.trim())
+              : it.type === 'arrange_irab' ? it.arr.filter((v) => v.trim()) : [],
+            correctAnswer: {}, explanation: it.why, timeLimitSeconds: it.time,
+          };
+        }
+        function renderPreview() {
+          const list = items.filter((x) => !isBlank(x));
+          const it = list[prevAt] ?? sel;
+          const w = displayWire(it);
+          const type = String(w.type ?? 'mcq');
+          const options: string[] = (w.options ?? []).map(String);
+          const sentence = String(w.sourceText ?? '');
+          const c = w.correctAnswer ?? {};
+          const answer = prevMode === 'a';
+          q('[data-p-name]').textContent = titleInput.value.trim() || 'مجلس الإعراب';
+          q('[data-p-num]').innerHTML = `السؤال <b>${prevAt + 1}</b> من ${Math.max(list.length, 1)}`;
+          const wordsMode = type === 'fix_error' || type === 'tap_word' || type === 'arrange_irab';
+          const sEl = q('[data-p-sent]');
+          sEl.classList.toggle('ms-hide', wordsMode || !sentence);
+          if (!wordsMode && sentence) sentenceInto(sEl, sentence, String(w.questionText ?? ''));
+          q('[data-p-text]').textContent = String(w.questionText ?? '');
+          q('[data-p-time]').textContent = String(w.timeLimitSeconds ?? 30);
+
+          const words = q('[data-p-words]');
+          words.textContent = '';
+          const arrangement: number[] = Array.isArray(c.arrangement) ? c.arrangement : [];
+          const chips = type === 'arrange_irab'
+            ? (answer && arrangement.length ? arrangement.map((i) => options[i] ?? '') : options)
+            : wordsMode ? sentence.split(/\s+/).filter(Boolean) : [];
+          words.classList.toggle('ms-hide', chips.length === 0);
+          chips.forEach((t, i) => {
+            const s = document.createElement('span');
+            s.className = 'ms-word';
+            if (answer && ((type === 'fix_error' && i === c.wordIndex) || (type === 'arrange_irab' && arrangement.length))) s.classList.add('right');
+            s.textContent = t;
+            words.appendChild(s);
+          });
+          words.style.top = type === 'fix_error' ? '220px' : '';
+
+          const tiles = q('[data-p-tiles]');
+          tiles.textContent = '';
+          const labels = type === 'true_false' ? ['صواب', 'خطأ'] : (type === 'mcq' || type === 'fix_error') ? options : [];
+          const right = type === 'true_false' ? (c.boolValue === true ? 0 : c.boolValue === false ? 1 : -1) : typeof c.optionIndex === 'number' ? c.optionIndex : -1;
+          tiles.classList.toggle('ms-hide', labels.length === 0);
+          labels.forEach((label, i) => {
+            const t = document.createElement('div');
+            t.className = `ms-tile ${tileClass(i)}`;
+            if (answer && right >= 0) t.classList.add(i === right ? 'right' : 'dim');
+            t.innerHTML = `<div class="fill"></div>${shapeSvg(i)}<span class="lt">${LETTERS[i] ?? ''}</span><span class="tx"></span><span class="pc"></span><span class="tick">${TICK_SVG}</span>`;
+            t.querySelector('.tx')!.textContent = label;
+            tiles.appendChild(t);
+          });
+          const why = String(w.explanation ?? '').trim();
+          const showWhy = answer && !!why;
+          q('[data-p-why]').classList.toggle('ms-hide', !showWhy);
+          q('[data-p-why-t]').textContent = why;
+          tiles.classList.toggle('up', showWhy);
+
+          q('[data-p-n]').textContent = `${prevAt + 1} / ${Math.max(list.length, 1)}`;
+          q<HTMLButtonElement>('[data-p-prev]').disabled = prevAt <= 0;
+          q<HTMLButtonElement>('[data-p-next]').disabled = prevAt >= list.length - 1;
+          root!.querySelectorAll('[data-p-mode]').forEach((b) => b.setAttribute('aria-pressed', String((b as HTMLElement).dataset.pMode === prevMode)));
+        }
+        function openPreview() {
+          const list = items.filter((x) => !isBlank(x));
+          if (!list.length) { toast('اكتب سؤالًا أولًا لتراه على شاشة العرض.'); return; }
+          prevAt = Math.max(0, list.indexOf(sel));
+          prevMode = 'q';
+          prev.hidden = false;
+          unfit = fitStage(q('[data-p-vp]'), q('[data-p-scaler]'), q('[data-p-stage]'));
+          renderPreview();
+          q<HTMLButtonElement>('[data-p-close]').focus();
+        }
+        function closePreview() { prev.hidden = true; unfit?.(); unfit = null; }
+        q('[data-preview-open]').addEventListener('click', openPreview);
+        q('[data-p-close]').addEventListener('click', closePreview);
+        q('[data-p-prev]').addEventListener('click', () => { prevAt = Math.max(0, prevAt - 1); renderPreview(); });
+        q('[data-p-next]').addEventListener('click', () => { prevAt += 1; renderPreview(); });
+        root!.querySelectorAll<HTMLElement>('[data-p-mode]').forEach((b) => b.addEventListener('click', () => { prevMode = b.dataset.pMode as 'q' | 'a'; renderPreview(); }));
+        document.addEventListener('keydown', (e) => {
+          if (e.key !== 'Escape') return;
+          if (!prev.hidden) { closePreview(); return; }
+          root!.querySelectorAll<HTMLElement>('.me-scrim').forEach((s) => { s.hidden = true; });
+        });
+
+        // ═══ Launch ══════════════════════════════════════════════════════
+        let launching = false;
+        q<HTMLButtonElement>('[data-launch]').addEventListener('click', async (e) => {
+          if (launching) return;
+          const unfinished = items.find((it) => !isBlank(it) && !toWire(it).wire);
+          if (unfinished) {
+            select(unfinished);
+            toast(`أكمل السؤال ${items.indexOf(unfinished) + 1} أو احذفه قبل الإطلاق.`);
+            return;
+          }
+          if (!items.some((it) => !isBlank(it))) { toast('أضف سؤالًا واحدًا على الأقل.'); return; }
+          if (!isPremium && items.some((it) => PREMIUM_TYPES.has(it.type))) {
+            toast('في مجلسك أسئلة من أنواع إعراب بلس.');
+            paywall();
+            return;
+          }
+          launching = true;
+          const b = e.currentTarget as HTMLButtonElement;
+          b.disabled = true;
+          // Blank questions are dropped before the final save.
+          const kept = items.filter((it) => !isBlank(it));
+          if (kept.length !== items.length) { items = kept; if (!items.includes(sel)) sel = items[0]; renderAll(); }
+          rev++;
+          const ok = await saveNow();
+          if (!ok || !draftId) {
+            launching = false; b.disabled = false;
+            toast('تعذر حفظ المجلس. تحقق من اتصالك وحاول مجددًا.');
+            return;
+          }
+          leaving = true;
+          location.href = `/majlis/live?draft=${encodeURIComponent(draftId)}`;
+        });
+
+        // ═══ Entry ═══════════════════════════════════════════════════════
         if (draftId) {
           try {
             const snap = await fs.getDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', draftId));
             if (!snap.exists()) {
-              q<HTMLElement>('[data-fatal-msg]').textContent = 'المسودة غير موجودة';
+              q('[data-fatal-msg]').textContent = 'المسودة غير موجودة';
               show('fatal'); return;
             }
             const d: any = snap.data() ?? {};
-            questions = Array.isArray(d.questions) ? d.questions.filter((x: any) => x && typeof x === 'object') : [];
-            enterReview();
+            const raw: any[] = Array.isArray(d.questions) ? d.questions.filter((x: any) => x && typeof x === 'object') : [];
+            items = raw.map((w) => {
+              const it = fromWire(w);
+              // A loaded question keeps its saved form until it is complete again.
+              it.lastGood = toWire(it).wire ?? w;
+              if (it.lastGood?.saveToBank) bankSent.set(String(it.lastGood.id), JSON.stringify(it.lastGood));
+              return it;
+            });
+            if (d.titleCustom === true) { titleInput.value = String(d.title ?? ''); titleCustom = !!titleInput.value.trim(); }
+            settings.readTime = d.settings?.readTime === true;
+            settings.scoring = d.settings?.scoring === 'accuracy' ? 'accuracy' : 'speed';
+            if (!items.length) items = [blankItem()];
+            sel = items[0];
+            setSaved('saved');
           } catch {
-            q<HTMLElement>('[data-fatal-msg]').textContent = 'تعذر فتح المسودة. تحقق من اتصالك وحاول مجددًا.';
+            q('[data-fatal-msg]').textContent = 'تعذر فتح المسودة. تحقق من اتصالك وحاول مجددًا.';
             show('fatal'); return;
           }
-        } else if (remedialRoom) {
-          // «مجلس علاجي» lands straight in AI mode on that majlis's weak
-          // points (a Plus source; free hosts see the upgrade sheet).
-          resetForm();
-          if (isPremium) { aiSrc = 'review'; mineWeakPoints(); }
-          enterAi();
-          if (!isPremium) (window as any).IrabPaywall?.show({ reason: 'limit' });
         } else {
-          resetForm();
-          show('editor');
+          items = [blankItem()];
+          sel = items[0];
+          setSaved('empty');
+        }
+        show('app');
+        renderAll();
+        if (remedialRoom && !draftId) {
+          // «مجلس علاجي» opens the generator on that majlis's weak points
+          // (a Plus source; free hosts see the upgrade sheet).
+          if (isPremium) { aiSrc = 'review'; mineWeakPoints(); }
+          openAi();
+          if (!isPremium) paywall();
+        } else if (!draftId) {
+          sentenceIn.focus();
         }
       });
     }
