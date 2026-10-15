@@ -1,31 +1,31 @@
 ---
 /**
- * /majlis: web player for مجالس الإعراب live rooms.
+ * /majlis: the web player for مجالس الإعراب live rooms, full screen on the
+ * majlis board (no site nav: during a game the phone is the game).
  *
- * This is the URL the mobile app's QR codes have always encoded
- * (https://irab.app/majlis?pin=NNNNNN) — players who scan without the app
- * land here and play in the browser. Player-only: hosting lives in the app.
- * Indexed as a lightweight landing (the join UI doubles as the hero);
- * Firebase loads only inside the MajlisPlay island after interaction.
+ * This is the URL the app's and the stage's QR codes encode
+ * (https://irab.app/majlis?pin=NNNNNN): players who scan without the app
+ * land here and play in the browser. Indexed as a lightweight landing (the
+ * join UI doubles as the hero); Firebase loads inside the island only after
+ * the player joins.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/sections/Footer.astro';
 import MajlisPlay from '../components/MajlisPlay.astro';
+import '../styles/majlis-play.css';
 ---
 <BaseLayout
   lang="ar"
   title="انضم إلى مجلس إعراب · إعراب آب"
   description="ادخل رمز المجلس أو امسح رمز QR وانضم إلى مسابقة إعراب مباشرة من متصفحك، بلا تسجيل وبلا تطبيق."
 >
-  <Nav lang="ar" />
-  <main class="px-4 sm:px-6 py-8 md:py-12">
-    <MajlisPlay />
-    <noscript>
-      <p class="mx-auto max-w-xl mt-6 text-center text-ink-muted">
-        يحتاج مجلس الإعراب إلى تفعيل JavaScript في المتصفح، أو حمّل تطبيق إعراب للانضمام.
-      </p>
-    </noscript>
-  </main>
-  <Footer lang="ar" />
+  <MajlisPlay />
+  <noscript>
+    <p style="max-width:28rem;margin:1rem auto;text-align:center;color:#C8C5BC">
+      يحتاج مجلس الإعراب إلى تفعيل JavaScript في المتصفح، أو حمّل تطبيق إعراب للانضمام.
+    </p>
+  </noscript>
 </BaseLayout>
+
+<style is:global>
+  html, body { background: #15223F; }
+</style>

@@ -366,6 +366,15 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
           maybeEarlyClose();
         });
         rt.onValue(rt.ref(db, `rooms/${roomId}/meta`), (s) => onMeta(s.val()));
+        // Reactions from phones float up the board between questions.
+        const onReact = (s: any) => {
+          const v = s.val();
+          if (!v || Number(v.ts) < now() - 4000) return; // old ones on (re)load
+          if (!['lobby', 'reveal', 'board', 'podium'].includes(currentView)) return;
+          floatReaction(Number(v.e));
+        };
+        rt.onChildAdded(rt.ref(db, `rooms/${roomId}/reactions`), onReact);
+        rt.onChildChanged(rt.ref(db, `rooms/${roomId}/reactions`), onReact);
 
         // ── lobby chrome ──────────────────────────────────────────────────
         q('[data-ms-pin]').textContent = pin.replace(/(\d{3})(\d{3})/, '$1 $2');
@@ -901,6 +910,26 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
           show('quota');
         }
       }
+    }
+
+    const REACTION_IMGS = ['react-clapping-hands', 'react-fire', 'react-face-with-open-mouth', 'react-thinking-face'];
+    let floating = 0;
+    function floatReaction(e: number) {
+      const name = REACTION_IMGS[e];
+      if (!name || floating > 24) return; // a class tapping at once stays readable
+      floating++;
+      const img = document.createElement('img');
+      img.src = `/majlis-fx/${name}.png`; img.alt = '';
+      img.style.cssText = `position:absolute;width:64px;height:64px;bottom:40px;left:${80 + Math.random() * 1060}px;z-index:14;pointer-events:none`;
+      stage.appendChild(img);
+      const done = () => { img.remove(); floating--; };
+      if (reduced) { setTimeout(done, 1200); return; }
+      const drift = (Math.random() - .5) * 120;
+      img.animate([
+        { opacity: 0, transform: 'translate(0,0) scale(.6)' },
+        { opacity: 1, transform: `translate(${drift * .3}px,-140px) scale(1.1)`, offset: .25 },
+        { opacity: 0, transform: `translate(${drift}px,-560px) scale(1)` },
+      ], { duration: 2600 + Math.random() * 800, easing: 'cubic-bezier(.2,.7,.3,1)' }).onfinish = done;
     }
 
     function stageConfetti(cv: HTMLCanvasElement) {

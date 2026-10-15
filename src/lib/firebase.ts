@@ -42,6 +42,12 @@ export const useEmulators: boolean =
   import.meta.env.DEV &&
   typeof location !== 'undefined' &&
   (location.hostname === 'localhost' || location.hostname.endsWith('.localhost')) &&
-  (() => { try { return localStorage.getItem('irabEmu') === '1'; } catch { return false; } })();
+  (() => {
+    try {
+      // ?irabEmu=1 turns it on for this origin (handy for iframe test rigs).
+      if (new URLSearchParams(location.search).get('irabEmu') === '1') localStorage.setItem('irabEmu', '1');
+      return localStorage.getItem('irabEmu') === '1';
+    } catch { return false; }
+  })();
 
 if (useEmulators) connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
