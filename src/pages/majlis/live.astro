@@ -1,20 +1,25 @@
 ---
 /**
- * /majlis/live?draft=<draftId>: the live HOST console. Creates a room from
- * the draft via majalisCreateRoom, then runs the full game: lobby (PIN + QR
- * + join lock), questions with live answer bars, reveal, leaderboard,
- * podium. Login-gated island, noindex.
+ * /majlis/live: the live majlis stage, full screen and projector-first.
+ *   ?draft=<id>              launch (or resume) a room from a draft
+ *   ?room=<id>               resume a live room (the URL after launch)
+ *   ?room=<id>&view=display  show a room without driving it (app-hosted)
+ * No site nav: the board fills the screen. Login-gated island, noindex.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Nav from '../../components/Nav.astro';
 import MajlisHostLive from '../../components/MajlisHostLive.astro';
 import Paywall from '../../components/Paywall.astro';
+import '../../styles/majlis-stage.css';
 ---
-<BaseLayout lang="ar" title="مجلس مباشر · إعراب آب" description="أدر مجلس إعراب مباشرًا: رمز الدخول، الأسئلة، النتائج.">
+<BaseLayout lang="ar" title="مجلس مباشر · إعراب آب" description="أدر مجلس إعراب مباشرًا على شاشة العرض: رمز الدخول، الأسئلة، النتائج.">
   <meta slot="head" name="robots" content="noindex, nofollow" />
-  <Nav lang="ar" />
-  <main class="px-4 sm:px-6 py-8 md:py-12">
+  <main class="ms-page">
     <MajlisHostLive />
   </main>
   <Paywall lang="ar" />
 </BaseLayout>
+
+<style is:global>
+  /* The stage is a dark room in every site theme. */
+  html, body { background: #101A33; overflow: hidden; }
+</style>

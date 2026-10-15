@@ -1,214 +1,273 @@
 ---
 /**
- * MajlisHostLive — the live HOST console for مجالس الإعراب on web.
+ * MajlisHostLive: the live majlis STAGE (/majlis/live), built for a
+ * projector. A 1280 × 720 board scaled to any screen (styles/majlis-stage.css)
+ * with the host's controls inside it.
  *
- * Mirrors the app's host flow against the verified contract
- * (docs/majlis-host-contracts.md):
- *   launch : callable majalisCreateRoom {draftId} → {roomId, pin, quizId, maxPlayers}
- *   lobby  : participants stream, joinLocked RTDB toggle, QR = irab.app/majlis?pin=
- *   start  : majalisStartQuestion {roomId, questionIndex} → {startAt, endAt}
- *   during : read publicQ/{i}; host-only answers/{i} stream drives the live
- *            bars + "answered x of y"; early close when all connected
- *            answered; auto close at endAt; manual close button
- *   close  : majalisCloseQuestion (guarded: only while questionLive, errors
- *            swallowed — the server elects a single scorer)
- *   next   : host-only RTDB write meta/status answerReview→leaderboard,
- *            hold 3s, start next; last question → majalisFinish
- *   podium : top-3 + standings from participants; awardXP majalis_hosted
- *            (idempotencyKey = majalis_hosted_<roomId>, once per majlis)
- *   resume : the URL carries ?room=<id> once a room exists, and
- *            hostActive/{uid} points at the host's live room, so a refresh,
- *            a crash or another device rejoins the same room and PIN.
- * The VIEW follows meta.status (like the app's flow screen), host actions
- * only issue calls. hostPresence is event-driven onDisconnect, not a timer.
- * Machine error codes arrive in error.message (MAJLIS_QUOTA, PREMIUM_TYPES,
- * RATE_LIMITED, QUESTION_NOT_LIVE...). Western digits (owner decision).
+ * Two modes:
+ *   host     (default) runs the game against the verified contract
+ *            (docs/majlis-host-contracts.md):
+ *              launch : majalisCreateRoom {draftId, readTime}
+ *              lobby  : participants stream, joinLocked + readTime toggles,
+ *                       remove a player (banned/{uid} + participant delete)
+ *              start  : majalisStartQuestion → meta questionReadAt /
+ *                       questionStartAt / questionEndAt
+ *              during : host-only answers/{i} stream: counter, early close
+ *                       when every connected player answered, auto close at
+ *                       endAt, manual close
+ *              next   : meta/status answerReview → leaderboard, 3 s hold,
+ *                       next question; last → majalisFinish; podium + XP
+ *              resume : ?room=<id> in the URL and hostActive/{uid}
+ *   display  (?view=display) shows the same room without driving it, for a
+ *            teacher who runs the game from the app and projects the site.
+ *            Signed in as the host (only the host can read live answers);
+ *            writes nothing, runs no timers.
+ * Western digits throughout (owner decision).
  */
+import { MARK_SVG } from '../lib/majlis/stage/shapes';
 ---
 
-<div data-mlive-root dir="rtl" class="mx-auto w-full max-w-2xl">
-
-  <!-- BOOT / launch -->
-  <section data-v="boot">
-    <div class="card p-10 text-center">
-      <p data-boot-msg class="font-bold text-lg text-ink dark:text-mist">جارٍ تجهيز المجلس…</p>
-      <div class="mt-3 flex justify-center gap-1.5" aria-hidden="true">
-        <span class="ml-dot"></span><span class="ml-dot" style="animation-delay:.2s"></span><span class="ml-dot" style="animation-delay:.4s"></span>
-      </div>
-    </div>
-  </section>
-
-  <!-- FATAL -->
-  <section data-v="fatal" class="hidden">
-    <div class="card p-8 text-center">
-      <h2 class="font-sans font-black text-2xl text-ink dark:text-mist">تعذّر فتح المجلس</h2>
-      <p data-fatal-msg class="mt-2 text-ink-muted dark:text-mist-muted"></p>
-      <a href="/majlis/host" class="btn-primary mt-5">عودة إلى مجالسي</a>
-    </div>
-  </section>
-
-  <!-- QUOTA -->
-  <section data-v="quota" class="hidden">
-    <div class="card p-8 text-center">
-      <h2 class="font-sans font-black text-2xl text-ink dark:text-mist">استنفدت حصة المجالس لليوم</h2>
-      <p data-quota-msg class="mt-2 text-ink-muted dark:text-mist-muted"></p>
-      <button data-quota-upgrade class="hidden btn-primary mt-5">رقِّ إلى إعراب بلس</button>
-      <p class="mt-4"><a href="/majlis/host" class="text-sm font-bold text-teal underline underline-offset-4">عودة إلى مجالسي</a></p>
-    </div>
-  </section>
-
-  <!-- LOBBY -->
-  <section data-v="lobby" class="hidden">
-    <div class="card relative overflow-hidden p-6 sm:p-8 text-center">
-      <div class="mj-blob mj-blob-a" aria-hidden="true"></div>
-      <div class="mj-blob mj-blob-b" aria-hidden="true"></div>
-      <div class="relative">
-        <p class="text-sm font-bold text-teal">مجلس مباشر</p>
-        <h1 class="font-sans font-black text-2xl mt-1 text-ink dark:text-mist">ادعُ اللاعبين</h1>
-        <button data-pin-view dir="ltr" type="button" title="انقر لنسخ رابط الدخول"
-          class="mt-5 flex gap-2 justify-center mx-auto cursor-pointer transition-transform duration-200 active:scale-[.98]"></button>
-        <p data-invite-hint class="mt-3 text-sm text-ink-muted dark:text-mist-muted">على irab.app/majlis أو من تطبيق إعراب، وانقر الرمز لنسخ الرابط</p>
-        <div class="mt-5 grid place-items-center">
-          <canvas data-qr class="rounded-xl border border-stone dark:border-coal-edge bg-white p-2"></canvas>
+<div class="ms-viewport" data-ms-viewport>
+  <div class="ms-scaler" data-ms-scaler>
+    <div class="ms-stage" data-ms-stage>
+      <header class="ms-top">
+        <div class="ms-brand"><Fragment set:html={MARK_SVG} /><b>مجالس الإعراب</b><span class="ms-title" data-ms-title></span></div>
+        <div class="ms-top-end">
+          <span class="ms-chip ms-hide" data-ms-chip>irab.app/majlis <span class="pin" data-ms-pin></span> · <span class="cnt" data-ms-count>0</span></span>
+          <button class="ms-icon" type="button" data-ms-sound aria-pressed="false" aria-label="الصوت" title="الصوت">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path data-wave d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
+          </button>
+          <button class="ms-icon" type="button" data-ms-full aria-label="ملء الشاشة" title="ملء الشاشة">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+          </button>
+          <button class="ms-icon" type="button" data-ms-end data-host-only aria-label="إنهاء المجلس للجميع" title="إنهاء المجلس للجميع">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
         </div>
-        <div class="mt-5 flex gap-2 justify-center flex-wrap">
-          <button data-copy-link class="btn-ghost text-sm">انسخ رابط الدخول</button>
-          <button data-lock-toggle class="btn-ghost text-sm">أغلق باب الانضمام</button>
+      </header>
+
+      <section class="ms-view on" data-view="boot">
+        <div class="ms-msg"><h2>جارٍ تجهيز المجلس…</h2></div>
+      </section>
+
+      <section class="ms-view" data-view="fatal">
+        <div class="ms-msg">
+          <h2>تعذّر فتح المجلس</h2>
+          <p data-fatal-msg></p>
+          <div class="row"><a class="ms-btn primary" href="/majlis/host">عودة إلى مجالسي</a></div>
+        </div>
+      </section>
+
+      <section class="ms-view" data-view="quota">
+        <div class="ms-msg">
+          <h2>استنفدت حصة المجالس لليوم</h2>
+          <p data-quota-msg></p>
+          <div class="row">
+            <button class="ms-btn primary ms-hide" type="button" data-quota-upgrade>رقِّ إلى إعراب بلس</button>
+            <a class="ms-btn" href="/majlis/host">عودة إلى مجالسي</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="ms-view" data-view="lobby">
+        <div class="ms-lobby">
+          <div class="ms-join">
+            <p class="lbl">انضم من هاتفك</p>
+            <p class="url">irab.app/majlis</p>
+            <div class="ms-pin" data-pin-view role="button" tabindex="0" aria-label="انسخ رابط الدخول"></div>
+            <div class="ms-qr"><canvas data-qr></canvas></div>
+            <p class="ms-copied" data-copied></p>
+          </div>
+          <div class="ms-wall">
+            <div class="ms-wall-h">
+              <span class="count" data-lobby-count></span>
+              <span class="hint" data-lobby-hint></span>
+            </div>
+            <div class="ms-names" data-lobby-names></div>
+          </div>
+        </div>
+        <div class="ms-bar" data-host-only>
+          <div class="ms-bar-group">
+            <button class="ms-toggle" type="button" data-lock-toggle aria-pressed="false"><span class="sw"></span>قفل الانضمام</button>
+            <button class="ms-toggle" type="button" data-read-toggle aria-pressed="false" title="تظهر الجملة وحدها لحظات قبل الخيارات"><span class="sw"></span>مهلة القراءة</button>
+          </div>
+          <div class="ms-bar-group">
+            <span class="ms-note" data-start-hint>يبدأ المجلس بعد انضمام لاعب واحد على الأقل</span>
+            <button class="ms-btn primary" type="button" data-start-btn disabled>ابدأ المجلس</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="ms-view" data-view="intro">
+        <div class="ms-intro">
+          <p class="ms-qnum" data-intro-num></p>
+          <p class="ms-sentence" data-intro-sentence></p>
+          <p class="ms-qtext" data-intro-q></p>
+          <div class="ms-countnum" data-intro-count></div>
+          <div class="ms-readbar ms-hide" data-intro-bar><i></i></div>
+          <p class="ms-readnote" data-intro-note></p>
+        </div>
+      </section>
+
+      <section class="ms-view" data-view="question">
+        <div class="ms-qhead">
+          <p class="ms-qnum" data-q-num></p>
+          <p class="ms-sentence" data-q-sentence></p>
+          <p class="ms-qtext" data-q-text></p>
+        </div>
+        <div class="ms-timer" data-timer>
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="#283A5C" stroke-width="9"/><circle data-ring cx="50" cy="50" r="44" fill="none" stroke="#F5C15E" stroke-width="9" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="0"/></svg>
+          <span class="num" data-time-left></span>
+        </div>
+        <div class="ms-answered"><b data-answered></b><span>أجابوا</span></div>
+        <div class="ms-drops" data-drops></div>
+        <div class="ms-timeup" data-timeup>انتهى الوقت</div>
+        <div class="ms-words ms-hide" data-words></div>
+        <div class="ms-tiles" data-tiles></div>
+        <div class="ms-bar" data-host-only><span></span><button class="ms-btn" type="button" data-close-btn>أنهِ السؤال الآن</button></div>
+      </section>
+
+      <section class="ms-view" data-view="reveal">
+        <div class="ms-answer-line">
+          <span class="k">الإجابة الصحيحة</span>
+          <span class="v" data-rv-correct></span>
+          <span class="s" data-rv-stats></span>
+        </div>
+        <div class="ms-rv" data-rv-tiles></div>
+        <div class="ms-rows" data-rv-rows></div>
+        <div class="ms-explain" data-rv-explain><b>التعليل</b><span data-rv-explain-text></span></div>
+        <div class="ms-bar" data-host-only><span></span><button class="ms-btn primary" type="button" data-next-btn></button></div>
+      </section>
+
+      <section class="ms-view" data-view="board">
+        <p class="ms-board-title" data-board-title>المتصدرون</p>
+        <div class="ms-board" data-board></div>
+        <div class="ms-bar" data-host-only><span></span><button class="ms-btn primary ms-hide" type="button" data-board-next>السؤال التالي</button></div>
+      </section>
+
+      <section class="ms-view" data-view="podium">
+        <p class="ms-pod-title">انتهى المجلس</p>
+        <div class="ms-pod" data-pod></div>
+        <div class="ms-rest" data-rest></div>
+        <div class="ms-bar" data-host-only>
+          <a class="ms-btn" href="/majlis/host">مجالسي</a>
+          <a class="ms-btn primary" data-report-link href="/majlis/host?tab=history">افتح التقرير</a>
+        </div>
+      </section>
+
+      <div class="ms-modal" data-modal role="dialog" aria-modal="true" aria-labelledby="ms-modal-h">
+        <div class="ms-modal-card">
+          <h3 id="ms-modal-h" data-modal-title></h3>
+          <p data-modal-body></p>
+          <div class="row">
+            <button class="ms-btn" type="button" data-modal-cancel>إلغاء</button>
+            <button class="ms-btn danger" type="button" data-modal-ok></button>
+          </div>
         </div>
       </div>
+      <div class="ms-toast" data-toast role="status"></div>
+      <canvas class="ms-confetti" data-confetti width="1280" height="720"></canvas>
     </div>
-
-    <div class="card mt-4 p-5">
-      <p class="text-sm font-bold text-ink-soft dark:text-mist-soft"><span data-lobby-count class="inline-block font-black">0</span> <span data-lobby-cap></span><span data-waiting-dots class="inline-block"></span></p>
-      <div data-lobby-players class="mt-3 flex flex-wrap gap-2"></div>
-    </div>
-
-    <button data-start-btn class="btn-primary btn-block btn-lg mt-4" disabled>ابدأ المجلس</button>
-    <p data-start-hint class="mt-2 text-center text-sm text-ink-subtle dark:text-mist-subtle">يبدأ المجلس بعد انضمام لاعب واحد على الأقل</p>
-  </section>
-
-  <!-- GAME (question live: countdown overlay OR question + live bars) -->
-  <section data-v="game" class="hidden">
-    <div data-game-count class="hidden rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft py-20 text-center">
-      <p class="text-sm font-bold text-ink-muted dark:text-mist-muted">استعد…</p>
-      <div data-count-num class="font-sans font-black text-8xl text-purple mt-2">3</div>
-    </div>
-
-    <div data-game-live class="hidden">
-      <div class="flex items-center justify-between gap-3 flex-wrap">
-        <p class="text-sm font-bold text-ink-muted dark:text-mist-muted">سؤال <span data-q-num></span></p>
-        <div class="flex items-center gap-3">
-          <span data-answered-pill class="rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-3 py-1 text-sm font-bold text-ink-soft dark:text-mist-soft"></span>
-          <span data-time-left class="text-xl font-black tabular-nums w-9 text-center"></span>
-        </div>
-      </div>
-      <div class="card mt-3 p-6">
-        <p data-q-text class="text-xl sm:text-2xl font-bold leading-relaxed text-ink dark:text-mist"></p>
-        <p data-q-source class="hidden mt-3 rounded-xl bg-paper-soft dark:bg-coal px-4 py-3 text-lg leading-loose text-ink-soft dark:text-mist-soft"></p>
-      </div>
-      <div data-live-bars class="mt-4 grid gap-2"></div>
-      <button data-close-btn class="btn-ghost btn-block mt-4">أنهِ السؤال الآن</button>
-    </div>
-  </section>
-
-  <!-- REVEAL -->
-  <section data-v="reveal" class="hidden">
-    <div class="card p-6">
-      <p class="text-sm font-bold text-teal">الإجابة الصحيحة</p>
-      <p data-reveal-correct class="mt-1 text-lg font-bold text-ink dark:text-mist"></p>
-      <p data-reveal-stats class="mt-1 text-sm text-ink-subtle dark:text-mist-subtle"></p>
-      <p data-reveal-explain class="hidden mt-3 text-[15px] leading-relaxed text-ink-muted dark:text-mist-muted"></p>
-    </div>
-    <div data-reveal-bars class="mt-4 grid gap-2"></div>
-    <button data-next-btn class="btn-primary btn-block btn-lg mt-4"></button>
-  </section>
-
-  <!-- LEADERBOARD (3s hold) -->
-  <section data-v="board" class="hidden">
-    <h2 class="font-sans font-black text-2xl text-center text-ink dark:text-mist">المتصدرون</h2>
-    <div data-board-list class="mt-4 grid gap-2"></div>
-    <button data-board-next class="hidden btn-primary btn-block btn-lg mt-4">السؤال التالي</button>
-  </section>
-
-  <!-- PODIUM -->
-  <section data-v="podium" class="hidden text-center">
-    <h2 class="font-sans font-black text-3xl text-ink dark:text-mist">انتهى المجلس</h2>
-    <div data-podium-top class="mt-8 grid grid-cols-3 items-end gap-3 max-w-md mx-auto"></div>
-    <div data-podium-list class="mt-6 grid gap-2 text-start"></div>
-    <div class="card mt-6 p-6">
-      <p class="text-ink-muted dark:text-mist-muted text-[15px]">تقرير المجلس الكامل متاح في سجل مجالسك.</p>
-      <div class="mt-4 flex gap-2 justify-center flex-wrap">
-        <a data-report-link href="/majlis/host?tab=history" class="lift rounded-xl bg-teal text-white font-black px-6 py-3">افتح التقرير</a>
-        <a href="/majlis/host" class="btn-ghost">مجالسي</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- End-majlis affordance shown during lobby/game/reveal/board -->
-  <div data-end-wrap class="hidden mt-6 text-center">
-    <button data-end-btn class="text-sm font-bold text-ink-subtle dark:text-mist-subtle underline underline-offset-4">إنهاء المجلس للجميع</button>
   </div>
 </div>
 
-<style>
-  .ml-dot {
-    width: 8px; height: 8px; border-radius: 9999px;
-    background: var(--color-teal); opacity: .35;
-    animation: ml-pulse 1.2s ease-in-out infinite;
-  }
-  @keyframes ml-pulse { 0%,100% { opacity:.25; transform:scale(1);} 50% { opacity:1; transform:scale(1.25);} }
-  @media (prefers-reduced-motion: reduce) { .ml-dot { animation: none; opacity:.6; } }
-
-  /* Ambient lobby heartbeat: two slow-drifting brand blobs behind the PIN
-     card (the visual analog of Kahoot's lobby music). */
-  .mj-blob {
-    position: absolute; width: 260px; height: 260px; border-radius: 9999px;
-    filter: blur(60px); opacity: .13; pointer-events: none;
-  }
-  .mj-blob-a { background: var(--color-purple); top: -70px; inset-inline-start: -50px; animation: mj-drift-a 24s ease-in-out infinite alternate; }
-  .mj-blob-b { background: var(--color-teal); bottom: -80px; inset-inline-end: -60px; animation: mj-drift-b 28s ease-in-out infinite alternate; }
-  @keyframes mj-drift-a { to { transform: translate(45px, 35px) scale(1.15); } }
-  @keyframes mj-drift-b { to { transform: translate(-40px, -30px) scale(1.1); } }
-  @media (prefers-reduced-motion: reduce) { .mj-blob { animation: none; } }
-</style>
-
 <script>
   import { maybeSignedIn } from '../lib/session';
-  import { rtdb, callMajlis, track } from '../lib/majlis/fb';
-  import { confetti, sfx } from '../lib/celebrate';
-  import { stagger, countUp, refire, showAnimated } from '../lib/majlis-fx';
+  import { rtdb, firestore, callMajlis, track } from '../lib/majlis/fb';
+  import { fitStage } from '../lib/majlis/stage/fit';
+  import { cue, startLobbyLoop, stopLobbyLoop, soundOn, setSound } from '../lib/majlis/stage/sound';
+  import { shapeSvg, tileClass, LETTERS, TICK_SVG } from '../lib/majlis/stage/shapes';
 
-  const root = document.querySelector<HTMLElement>('[data-mlive-root]');
-  if (root) {
-    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
-    const views = ['boot', 'fatal', 'quota', 'lobby', 'game', 'reveal', 'board', 'podium'];
-    function show(v: string) {
-      showAnimated(root!, views, v);
-      q('[data-end-wrap]').classList.toggle('hidden', !['lobby', 'game', 'reveal', 'board'].includes(v));
-      window.scrollTo({ top: 0 });
-    }
-    // Quick scale bump for live counters (player joins, answers arriving).
-    const bump = (el: HTMLElement) => {
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      el.animate(
-        [{ transform: 'scale(1)' }, { transform: 'scale(1.25)' }, { transform: 'scale(1)' }],
-        { duration: 250, easing: 'ease-out' },
-      );
-    };
+  const viewport = document.querySelector<HTMLElement>('[data-ms-viewport]');
+  if (viewport) {
+    const stage = viewport.querySelector<HTMLElement>('[data-ms-stage]')!;
+    fitStage(viewport, viewport.querySelector<HTMLElement>('[data-ms-scaler]')!, stage);
+    const q = <T extends Element = HTMLElement>(s: string) => stage.querySelector<T>(s)!;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const params = new URLSearchParams(location.search);
-    const draftId = params.get('draft') ?? '';
+    const draftParam = params.get('draft') ?? '';
     const roomParam = params.get('room') ?? '';
+    const display = params.get('view') === 'display';
     const loginUrl = () => `/login?next=${encodeURIComponent('/majlis/live' + location.search)}`;
-    if (!draftId && !roomParam) { fatal('لا توجد مسودة محددة. افتح مجلسًا من صفحة مجالسي.'); }
-    else if (!maybeSignedIn()) { location.href = loginUrl(); }
-    else init();
+    if (display) stage.querySelectorAll('[data-host-only]').forEach((el) => el.classList.add('ms-hide'));
 
+    // ── views ───────────────────────────────────────────────────────────
+    const VIEWS = ['boot', 'fatal', 'quota', 'lobby', 'intro', 'question', 'reveal', 'board', 'podium'];
+    let currentView = 'boot';
+    function show(v: string) {
+      if (v === currentView) return;
+      currentView = v;
+      for (const name of VIEWS) {
+        const el = q(`[data-view="${name}"]`);
+        const on = name === v;
+        el.classList.toggle('on', on);
+        if (on && !reduced) { el.classList.remove('ms-in'); void el.offsetWidth; el.classList.add('ms-in'); }
+      }
+      if (v === 'lobby') { if (soundOn()) startLobbyLoop(); } else stopLobbyLoop();
+    }
     function fatal(msg: string) { q('[data-fatal-msg]').textContent = msg; show('fatal'); }
+    let toastTimer: number | undefined;
+    function toast(msg: string) {
+      const t = q('[data-toast]'); t.textContent = msg; t.classList.add('on');
+      clearTimeout(toastTimer); toastTimer = window.setTimeout(() => t.classList.remove('on'), 3800);
+    }
+    function confirmModal(title: string, body: string, ok: string): Promise<boolean> {
+      const m = q('[data-modal]');
+      q('[data-modal-title]').textContent = title;
+      q('[data-modal-body]').textContent = body;
+      const okBtn = q<HTMLButtonElement>('[data-modal-ok]'); okBtn.textContent = ok;
+      m.classList.add('on'); okBtn.focus();
+      return new Promise((resolve) => {
+        const done = (v: boolean) => { m.classList.remove('on'); okBtn.onclick = null; cancel.onclick = null; document.removeEventListener('keydown', esc); resolve(v); };
+        const cancel = q<HTMLButtonElement>('[data-modal-cancel]');
+        const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') done(false); };
+        okBtn.onclick = () => done(true); cancel.onclick = () => done(false);
+        document.addEventListener('keydown', esc);
+      });
+    }
+    const pop = (el: Element, delay = 0) => { if (reduced) return; (el as HTMLElement).style.animationDelay = `${delay}ms`; el.classList.add('ms-pop'); };
+    const tickFx = (el: Element) => { if (reduced) return; el.classList.remove('ms-tickfx'); void (el as HTMLElement).offsetWidth; el.classList.add('ms-tickfx'); };
+    function countUp(el: HTMLElement, from: number, to: number, ms = 800) {
+      if (reduced || from === to) { el.textContent = String(to); return; }
+      const st = performance.now();
+      const step = (t: number) => { const p = Math.min(1, (t - st) / ms); el.textContent = String(Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }
+    const avatarUrl = (i: number) => `/majlis-avatars/a${((Number(i) || 0) % 64 + 64) % 64}.svg`;
+    const playersNoun = (n: number) => n === 1 ? 'لاعب واحد' : n === 2 ? 'لاعبان' : n <= 10 ? `${n} لاعبين` : `${n} لاعبًا`;
+
+    // ── chrome: sound, fullscreen, wake lock ────────────────────────────
+    const soundBtn = q<HTMLButtonElement>('[data-ms-sound]');
+    const paintSound = () => {
+      soundBtn.setAttribute('aria-pressed', String(soundOn()));
+      soundBtn.querySelector('[data-wave]')!.setAttribute('opacity', soundOn() ? '1' : '0');
+    };
+    paintSound();
+    soundBtn.addEventListener('click', () => {
+      setSound(!soundOn()); paintSound();
+      if (soundOn() && currentView === 'lobby') startLobbyLoop();
+    });
+    // Browsers play audio only after a click; the first one starts the loop.
+    stage.addEventListener('pointerdown', () => { if (currentView === 'lobby' && soundOn()) startLobbyLoop(); }, { once: true });
+    q('[data-ms-full]').addEventListener('click', () => {
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      else document.documentElement.requestFullscreen?.().catch(() => {});
+    });
+    // Keep the projector laptop awake for the whole majlis.
+    // The browser drops the lock when the tab is hidden; take it back on return.
+    let wake: any = null; let wantAwake = false;
+    const holdAwake = async () => { wantAwake = true; try { wake = await (navigator as any).wakeLock?.request('screen'); } catch { /* not granted */ } };
+    document.addEventListener('visibilitychange', () => {
+      if (wantAwake && document.visibilityState === 'visible' && (!wake || wake.released)) holdAwake();
+    });
+
+    if (!draftParam && !roomParam && !display) fatal('لا توجد مسودة محددة. افتح مجلسًا من صفحة مجالسي.');
+    else if (!maybeSignedIn()) location.href = loginUrl();
+    else init();
 
     async function init() {
       const [{ onAuth }, rt, db] = await Promise.all([import('../lib/auth'), import('firebase/database'), rtdb()]);
-
       let launched = false;
       onAuth((u) => {
         if (!u || u.isAnonymous) { location.href = loginUrl(); return; }
@@ -218,46 +277,50 @@
       });
 
       async function run(uid: string) {
-        // ── Room state ────────────────────────────────────────────────────
-        let roomId = ''; let pin = ''; let maxPlayers = 20;
+        // ── state ─────────────────────────────────────────────────────────
+        let roomId = ''; let pin = ''; let draftId = draftParam;
         let meta: any = null; let serverOffset = 0;
-        let participants: Array<{ uid: string; name: string; avatar: number; score: number; connected: boolean }> = [];
+        type P = { uid: string; name: string; avatar: number; score: number; connected: boolean; joinedAt: number };
+        let participants: P[] = [];
         let qIndex = -1; let qData: any = null; let answers: Record<string, any> = {};
         let reveal: any = null; let busy = false; let finished = false; let startBusy = false;
         let answersUnsub: (() => void) | null = null;
-        let closeTimer: number | undefined; let tick: number | undefined;
+        let closeTimer: number | undefined;
+        // Scores when the current question went live, for the standings
+        // animation (who climbed, by how much).
+        let before: Record<string, number> = {}; let beforeIdx = -1;
+        // Lobby, ticker and podium state, declared before any stream can fire.
+        const seen = new Set<string>(); let lobbyPrimed = false;
+        let phase = ''; let lastSecond = -1; let lastCount = -1; let timeupPlayed = -1;
+        let celebrated = false;
+        const REVEAL_DELAYS = [...Array(10).fill(200), ...Array(10).fill(500), ...Array(8).fill(1000)];
         const now = () => Date.now() + serverOffset;
-        const avatarUrl = (i: number) => `/majlis-avatars/a${((Number(i) || 0) % 64 + 64) % 64}.svg`;
 
-        const call = callMajlis;
-
-        // ── Resume or launch ──────────────────────────────────────────────
-        // A refresh, a crash or another device must land in the SAME room:
-        // creating a new one strands the students and, on the free plan,
-        // the new room would stop at the day's limit.
+        // ── resume or launch ──────────────────────────────────────────────
         let target = roomParam;
-        if (!target && draftId) {
+        if (!target && (draftId || display)) {
           try {
             const ptr = (await rt.get(rt.ref(db, `hostActive/${uid}`))).val();
-            if (ptr?.roomId && ptr.draftId === draftId) target = String(ptr.roomId);
-          } catch { /* no pointer readable: launch a new room */ }
+            if (ptr?.roomId && (display || ptr.draftId === draftId)) { target = String(ptr.roomId); draftId = draftId || String(ptr.draftId ?? ''); }
+          } catch { /* no pointer: launch a new room */ }
         }
         if (target) {
           try {
             const m = (await rt.get(rt.ref(db, `rooms/${target}/meta`))).val();
-            if (m && m.hostUid === uid) {
-              roomId = target; pin = String(m.pin ?? ''); maxPlayers = Number(m.maxPlayers) || 20;
-            }
+            if (m && m.hostUid === uid) { roomId = target; pin = String(m.pin ?? ''); }
           } catch { /* unreadable: fall through */ }
         }
         if (roomId) {
-          track('majlis_host_resumed', { platform: 'web' });
+          track(display ? 'majlis_stage_display' : 'majlis_host_resumed', { platform: 'web' });
+        } else if (display) {
+          fatal('لا يوجد مجلس مباشر لحسابك الآن. ابدأ المجلس من التطبيق أو من مجالسي، ثم افتح هذه الصفحة.');
+          return;
         } else if (!draftId) {
           fatal('انتهى هذا المجلس أو لم يعد متاحًا. افتح مجالسك لتبدأ مجلسًا جديدًا.');
           return;
         } else try {
-          const res = await call('majalisCreateRoom', { draftId });
-          roomId = res.roomId; pin = String(res.pin); maxPlayers = Number(res.maxPlayers) || 20;
+          const res = await callMajlis('majalisCreateRoom', { draftId, readTime: false });
+          roomId = res.roomId; pin = String(res.pin);
           track('majlis_host_room_created', { platform: 'web' });
         } catch (e: any) {
           const m = String(e?.message ?? '');
@@ -271,18 +334,22 @@
           else fatal('تعذّر إنشاء المجلس، تحقق من اتصالك ثم جرّب مجددًا.');
           return;
         }
-        // From here a refresh resumes this room.
-        history.replaceState(null, '', `/majlis/live?room=${encodeURIComponent(roomId)}`);
+        // From here a refresh lands in this room.
+        history.replaceState(null, '', `/majlis/live?room=${encodeURIComponent(roomId)}${display ? '&view=display' : ''}`);
+        holdAwake();
+        loadTitle();
 
-        // ── Streams + presence ────────────────────────────────────────────
+        // ── streams ───────────────────────────────────────────────────────
         rt.onValue(rt.ref(db, '.info/serverTimeOffset'), (s) => { serverOffset = s.val() ?? 0; });
-        const presRef = rt.ref(db, `rooms/${roomId}/hostPresence`);
-        rt.onValue(rt.ref(db, '.info/connected'), (s) => {
-          if (s.val() !== true) return;
-          rt.onDisconnect(presRef).set({ connected: false, lastSeen: rt.serverTimestamp() }).then(() =>
-            rt.set(presRef, { connected: true, lastSeen: rt.serverTimestamp() })
-          ).catch(() => {});
-        });
+        if (!display) {
+          const presRef = rt.ref(db, `rooms/${roomId}/hostPresence`);
+          rt.onValue(rt.ref(db, '.info/connected'), (s) => {
+            if (s.val() !== true) return;
+            rt.onDisconnect(presRef).set({ connected: false, lastSeen: rt.serverTimestamp() })
+              .then(() => rt.set(presRef, { connected: true, lastSeen: rt.serverTimestamp() }))
+              .catch(() => {});
+          });
+        }
         rt.onValue(rt.ref(db, `rooms/${roomId}/participants`), (s) => {
           const val = s.val() ?? {};
           participants = Object.entries<any>(val).map(([id, p]) => ({
@@ -292,66 +359,72 @@
             score: Number(p?.score) || 0,
             connected: p?.presence?.connected === true,
             joinedAt: Number(p?.profile?.joinedAt) || 0,
-          })).sort((a: any, b: any) => a.joinedAt - b.joinedAt);
-          renderPlayers();
+          })).sort((a, b) => a.joinedAt - b.joinedAt);
+          q('[data-ms-count]').textContent = String(participants.length);
+          renderLobby();
+          renderAnswered();
           maybeEarlyClose();
         });
         rt.onValue(rt.ref(db, `rooms/${roomId}/meta`), (s) => onMeta(s.val()));
 
-        // ── Lobby chrome ──────────────────────────────────────────────────
-        const pinView = q<HTMLElement>('[data-pin-view]');
-        [...pin].forEach((ch, i) => {
-          const b = document.createElement('div');
-          b.className = 'w-12 h-16 sm:w-14 sm:h-[4.5rem] rounded-xl border-2 border-purple bg-card dark:bg-coal-soft grid place-items-center text-3xl sm:text-4xl font-black text-ink dark:text-mist tabular-nums';
-          b.textContent = ch;
-          b.classList.add('mj-pop');
-          b.style.animationDelay = `${i * 70}ms`;
-          pinView.appendChild(b);
-        });
+        // ── lobby chrome ──────────────────────────────────────────────────
+        q('[data-ms-pin]').textContent = pin.replace(/(\d{3})(\d{3})/, '$1 $2');
+        q('[data-ms-chip]').classList.remove('ms-hide');
+        const pinView = q('[data-pin-view]');
+        [...pin].forEach((ch, i) => { const b = document.createElement('span'); b.textContent = ch; pinView.appendChild(b); pop(b, i * 70); });
         const joinUrl = `https://irab.app/majlis?pin=${pin}`;
-        import('qrcode').then((QR) =>
-          QR.toCanvas(q<HTMLCanvasElement>('[data-qr]'), joinUrl, { width: 200, margin: 1 })
-        ).catch(() => q('[data-qr]').classList.add('hidden'));
-        const copyJoin = async (label: HTMLElement) => {
-          try {
-            await navigator.clipboard.writeText(joinUrl);
-            const prev = label.textContent;
-            label.textContent = 'نُسخ الرابط ✓';
-            setTimeout(() => { label.textContent = prev; }, 2000);
-          } catch { /* ignore */ }
+        import('qrcode').then((QR) => QR.toCanvas(q<HTMLCanvasElement>('[data-qr]'), joinUrl, { width: 320, margin: 0 }))
+          .catch(() => q('.ms-qr').classList.add('ms-hide'));
+        const copyJoin = async () => {
+          try { await navigator.clipboard.writeText(joinUrl); q('[data-copied]').textContent = 'نُسخ رابط الدخول'; }
+          catch { q('[data-copied]').textContent = joinUrl; }
+          setTimeout(() => { q('[data-copied]').textContent = ''; }, 2500);
         };
-        // Kahoot affordance: the PIN itself copies the join link.
-        pinView.addEventListener('click', () => copyJoin(q<HTMLElement>('[data-invite-hint]')));
-        q('[data-copy-link]').addEventListener('click', () => copyJoin(q<HTMLElement>('[data-copy-link]')));
-        q('[data-lock-toggle]').addEventListener('click', () => {
-          rt.set(rt.ref(db, `rooms/${roomId}/meta/joinLocked`), !(meta?.joinLocked === true)).catch(() => {});
-        });
-        q('[data-start-btn]').addEventListener('click', () => start(0));
-        q('[data-close-btn]').addEventListener('click', () => guardedClose());
-        q('[data-end-btn]').addEventListener('click', () => {
-          if (confirm('سينتهي المجلس لجميع اللاعبين. متابعة؟')) finish();
-        });
+        pinView.addEventListener('click', copyJoin);
+        pinView.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copyJoin(); } });
 
-        const beforeUnload = (e: BeforeUnloadEvent) => { if (!finished) { e.preventDefault(); } };
-        window.addEventListener('beforeunload', beforeUnload);
+        if (!display) {
+          q('[data-lock-toggle]').addEventListener('click', () => {
+            rt.set(rt.ref(db, `rooms/${roomId}/meta/joinLocked`), !(meta?.joinLocked === true)).catch(() => toast('تعذّر تغيير باب الانضمام.'));
+          });
+          q('[data-read-toggle]').addEventListener('click', () => {
+            rt.set(rt.ref(db, `rooms/${roomId}/meta/readTime`), !(meta?.readTime === true)).catch(() => toast('تعذّر تغيير مهلة القراءة.'));
+          });
+          q('[data-start-btn]').addEventListener('click', () => start(0));
+          q('[data-close-btn]').addEventListener('click', () => guardedClose());
+          q('[data-ms-end]').addEventListener('click', async () => {
+            if (finished) return;
+            if (await confirmModal('إنهاء المجلس للجميع؟', 'يتوقف المجلس عند هذا السؤال، ويُحفظ تقريره في سجل مجالسك.', 'أنهِ المجلس')) finish();
+          });
+          window.addEventListener('beforeunload', beforeUnload);
+        }
+        function beforeUnload(e: BeforeUnloadEvent) { if (!finished) e.preventDefault(); }
 
         show('lobby');
         startTick();
 
-        // ── View follows meta.status ──────────────────────────────────────
+        async function loadTitle() {
+          if (!draftId) return;
+          try {
+            const [fs, fdb] = await Promise.all([import('firebase/firestore'), firestore()]);
+            const d = await fs.getDoc(fs.doc(fdb, 'majalis_drafts', uid, 'drafts', draftId));
+            const t = String(d.get('title') ?? '').trim();
+            if (t) q('[data-ms-title]').textContent = t;
+          } catch { /* the title is decoration */ }
+        }
+
+        // ── view follows meta.status ──────────────────────────────────────
         async function onMeta(m: any) {
-          if (m == null) {
-            if (!finished) fatal('أُغلق المجلس.');
-            return;
-          }
+          if (m == null) { if (!finished) fatal('أُغلق المجلس.'); return; }
           meta = m;
-          q('[data-lock-toggle]').textContent = m.joinLocked === true ? 'افتح باب الانضمام' : 'أغلق باب الانضمام';
+          q('[data-lock-toggle]').setAttribute('aria-pressed', String(m.joinLocked === true));
+          q('[data-read-toggle]').setAttribute('aria-pressed', String(m.readTime === true));
           const idx = Number(m.currentQuestionIndex ?? 0);
           switch (m.status) {
-            case 'lobby': if (!finished) show('lobby'); break;
+            case 'lobby': if (!finished) { show('lobby'); renderLobby(); } break;
             case 'questionLive':
               if (idx !== qIndex || qData == null) await enterQuestion(idx);
-              show('game');
+              renderPhase(true);
               break;
             case 'answerReview':
               await loadQ(idx);
@@ -363,209 +436,300 @@
           }
         }
 
-        // ── Question lifecycle ────────────────────────────────────────────
-        async function start(index: number) {
-          if (busy || finished) return;
-          busy = true;
-          setStartBusy(true);
+        // ── lobby ─────────────────────────────────────────────────────────
+        function renderLobby() {
+          const n = participants.length;
+          q('[data-lobby-count]').textContent = n === 0 ? 'بانتظار اللاعبين' : playersNoun(n);
+          q('[data-lobby-hint]').textContent = display || n === 0 ? '' : 'انقر اسمًا لإخراجه من المجلس';
+          const wrap = q('[data-lobby-names]');
+          wrap.textContent = '';
+          if (n === 0) {
+            wrap.innerHTML = '<div class="ms-empty" style="width:100%"><span>افتحوا irab.app/majlis وأدخلوا الرمز</span><span class="dots"><i></i><i></i><i></i></span></div>';
+          }
+          for (const p of participants) {
+            const chip = document.createElement(display ? 'span' : 'button');
+            chip.className = 'ms-name' + (p.connected ? '' : ' away');
+            if (!display) {
+              (chip as HTMLButtonElement).type = 'button';
+              chip.setAttribute('aria-label', `إخراج ${p.name}`);
+              chip.addEventListener('click', () => removePlayer(p));
+            }
+            const img = document.createElement('img'); img.src = avatarUrl(p.avatar); img.alt = '';
+            chip.append(img, document.createTextNode(p.name));
+            wrap.appendChild(chip);
+            if (!seen.has(p.uid)) { seen.add(p.uid); if (lobbyPrimed) { pop(chip); if (meta?.status === 'lobby') cue.join(); } }
+          }
+          // A big class overflows the wall: keep whole rows and count the rest.
+          if (wrap.scrollHeight > wrap.clientHeight + 2) {
+            const more = document.createElement('span');
+            more.className = 'ms-name';
+            more.dir = 'ltr';
+            wrap.appendChild(more);
+            let hidden = 0;
+            while (wrap.scrollHeight > wrap.clientHeight + 2 && wrap.children.length > 1) {
+              wrap.children[wrap.children.length - 2].remove();
+              hidden++;
+              more.textContent = `+${hidden}`;
+            }
+          }
+          lobbyPrimed = true;
+          updateStartBtn();
+        }
+        async function removePlayer(p: P) {
+          const ok = await confirmModal(`إخراج «${p.name}» من المجلس؟`, 'لن يتمكن من العودة إلى هذا المجلس.', 'أخرجه');
+          if (!ok) return;
           try {
-            await call('majalisStartQuestion', { roomId, questionIndex: index });
-            if (index === 0) track('majlis_host_started', { platform: 'web', players: participants.length });
+            await rt.set(rt.ref(db, `rooms/${roomId}/banned/${p.uid}`), true);
+            await rt.remove(rt.ref(db, `rooms/${roomId}/participants/${p.uid}`));
+            track('majlis_host_removed_player', { platform: 'web' });
+          } catch { toast('تعذّر إخراج اللاعب. تحقق من اتصالك.'); }
+        }
+
+        // ── question lifecycle (host) ─────────────────────────────────────
+        async function start(index: number) {
+          if (busy || finished || display) return;
+          busy = true; setStartBusy(true);
+          try {
+            await callMajlis('majalisStartQuestion', { roomId, questionIndex: index });
+            if (index === 0) track('majlis_host_started', { platform: 'web', players: participants.length, read_time: meta?.readTime === true });
           } catch (e: any) {
             const m = String(e?.message ?? '');
             if (m.includes('MAJLIS_QUOTA')) { await showQuota(); busy = false; setStartBusy(false); return; }
             if (m.includes('QUESTION_ALREADY_PLAYED')) { busy = false; setStartBusy(false); return start(index + 1); }
-            alertMsg(m.includes('NO_PLAYERS') ? 'انتظر انضمام لاعب واحد على الأقل.'
+            toast(m.includes('NO_PLAYERS') ? 'انتظر انضمام لاعب واحد على الأقل.'
               : m.includes('RATE_LIMITED') ? 'محاولات كثيرة، انتظر قليلًا.' : 'تعذّر بدء السؤال، جرّب مجددًا.');
           }
-          busy = false;
-          setStartBusy(false);
+          busy = false; setStartBusy(false);
         }
-        function setStartBusy(b: boolean) {
-          startBusy = b;
-          updateStartBtn();
-        }
-        // Starting is what spends the day's majlis, so it needs a player.
+        function setStartBusy(b: boolean) { startBusy = b; updateStartBtn(); }
         function updateStartBtn() {
           const btn = q<HTMLButtonElement>('[data-start-btn]');
           btn.disabled = startBusy || participants.length === 0;
-          btn.classList.toggle('btn-busy', startBusy);
-          q('[data-start-hint]').classList.toggle('hidden', participants.length > 0);
+          btn.classList.toggle('busy', startBusy);
+          q('[data-start-hint]').classList.toggle('ms-hide', participants.length > 0);
         }
 
         async function loadQ(index: number, force = false) {
           if (!force && qIndex === index && qData) return;
           qIndex = index; qData = null;
-          try {
-            const snap = await rt.get(rt.ref(db, `rooms/${roomId}/publicQ/${index}`));
-            qData = snap.val();
-          } catch { /* retry via meta re-fire */ }
+          try { qData = (await rt.get(rt.ref(db, `rooms/${roomId}/publicQ/${index}`))).val(); }
+          catch { /* meta re-fires */ }
         }
 
         async function enterQuestion(index: number) {
-          answers = {}; reveal = null;
+          answers = {}; reveal = null; phase = ''; lastSecond = -1; lastCount = -1;
+          if (beforeIdx !== index) { before = Object.fromEntries(participants.map((p) => [p.uid, p.score])); beforeIdx = index; }
           if (answersUnsub) { answersUnsub(); answersUnsub = null; }
           if (closeTimer) { clearTimeout(closeTimer); closeTimer = undefined; }
           await loadQ(index, true);
-          q('[data-q-num]').textContent = `${index + 1} من ${meta?.qCount ?? '؟'}`;
-          q('[data-q-text]').textContent = qData?.questionText ?? '';
-          const src = q<HTMLElement>('[data-q-source]');
-          src.classList.toggle('hidden', !qData?.sourceText);
-          if (qData?.sourceText) src.textContent = qData.sourceText;
-
+          renderQuestion();
           const unsub = rt.onValue(rt.ref(db, `rooms/${roomId}/answers/${index}`), (s) => {
             const val = s.val() ?? {};
-            answers = {};
-            for (const [pid, a] of Object.entries<any>(val)) answers[pid] = a?.answer;
-            renderLiveBars();
-            renderAnsweredPill();
+            const nextAnswers: Record<string, any> = {};
+            for (const [pid, a] of Object.entries<any>(val)) nextAnswers[pid] = a?.answer;
+            const arrived = Object.keys(nextAnswers).filter((k) => !(k in answers));
+            answers = nextAnswers;
+            if (arrived.length && phase === 'answer') cue.answer();
+            renderAnswered(arrived);
             maybeEarlyClose();
           });
           answersUnsub = () => unsub();
-
-          // Auto close at endAt (server truth re-checked on fire via guard).
-          const delay = Math.min(300000, Math.max(500, (meta?.questionEndAt ?? 0) - now()));
-          closeTimer = window.setTimeout(() => guardedClose(), delay);
+          if (!display) {
+            const delay = Math.min(300000, Math.max(500, (meta?.questionEndAt ?? 0) - now()));
+            closeTimer = window.setTimeout(() => guardedClose(), delay);
+          }
         }
 
-        // Close early only when EVERY connected player has an answer. Counting
-        // answers against connected players let an answer from someone who
-        // then dropped cut off a student who was still thinking.
+        // Close early only when EVERY connected player has an answer.
         function maybeEarlyClose() {
-          if (meta?.status !== 'questionLive') return;
+          if (display || meta?.status !== 'questionLive') return;
           const present = participants.filter((p) => p.connected);
           if (present.length > 0 && present.every((p) => answers[p.uid] !== undefined)) guardedClose();
         }
-
-        // Only while questionLive, never concurrently; errors swallowed —
-        // the server elects a single scorer and meta will flip regardless.
         async function guardedClose() {
-          if (busy || finished || meta?.status !== 'questionLive') return;
+          if (display || busy || finished || meta?.status !== 'questionLive') return;
           busy = true;
-          try { await call('majalisCloseQuestion', { roomId, questionIndex: qIndex }); }
-          catch { /* QUESTION_NOT_LIVE race — meta stream resolves the truth */ }
+          try { await callMajlis('majalisCloseQuestion', { roomId, questionIndex: qIndex }); }
+          catch { /* a player or a timer won the close; meta resolves the truth */ }
           busy = false;
         }
 
-        // The reveal lands moments after the status flips; a cold function
-        // can take several seconds, so back off for about 15 s.
-        const REVEAL_DELAYS = [...Array(10).fill(200), ...Array(10).fill(500), ...Array(8).fill(1000)];
         async function loadReveal(idx: number, attempt = 0): Promise<void> {
           try {
             const snap = await rt.get(rt.ref(db, `rooms/${roomId}/reveal/${idx}`));
             if (snap.exists()) { reveal = { ...snap.val(), __idx: idx }; return; }
           } catch { /* not readable yet */ }
-          if (attempt < REVEAL_DELAYS.length) {
-            await new Promise((r) => setTimeout(r, REVEAL_DELAYS[attempt]));
-            return loadReveal(idx, attempt + 1);
-          }
-          alertMsg('تأخرت النتيجة. أعد تحميل الصفحة، فالمجلس يستأنف من حيث توقف.');
+          if (attempt < REVEAL_DELAYS.length) { await new Promise((r) => setTimeout(r, REVEAL_DELAYS[attempt])); return loadReveal(idx, attempt + 1); }
+          toast('تأخرت النتيجة. أعد تحميل الصفحة، فالمجلس يستأنف من حيث توقف.');
         }
 
         async function showLeaderboardThenNext() {
-          if (busy || finished) return;
+          if (busy || finished || display) return;
           busy = true;
           try {
             await rt.set(rt.ref(db, `rooms/${roomId}/meta/status`), 'leaderboard');
-            await new Promise((r) => setTimeout(r, 3000));
+            await new Promise((r) => setTimeout(r, 4200));
           } catch { /* rules refused (state changed) */ }
           busy = false;
           if (!finished) start(Number(meta?.currentQuestionIndex ?? qIndex) + 1);
         }
-
         async function finish() {
-          if (finished) return;
-          try { await call('majalisFinish', { roomId }); } catch { /* idempotent server-side */ }
+          if (finished || display) return;
+          try { await callMajlis('majalisFinish', { roomId }); } catch { /* idempotent server-side */ }
         }
-
         function onFinished() {
           if (finished) return;
           finished = true;
           window.removeEventListener('beforeunload', beforeUnload);
           if (closeTimer) clearTimeout(closeTimer);
           if (answersUnsub) { answersUnsub(); answersUnsub = null; }
-          stopTick();
           renderPodium();
-          track('majlis_host_finished', { platform: 'web', players: participants.length });
-          // Hosting XP — once per majlis, keyed by roomId so retries can't double-award.
-          call('awardXP', { source: 'majalis_hosted', idempotencyKey: `majalis_hosted_${roomId}` }).catch(() => {});
-        }
-
-        // ── Ticker (countdown + timer) ────────────────────────────────────
-        let lastCountNum = ''; let lastLeft = -1;
-        function startTick() {
-          stopTick();
-          tick = window.setInterval(() => {
-            if (meta?.status !== 'questionLive') return;
-            const startAt = meta.questionStartAt ?? 0; const endAt = meta.questionEndAt ?? 0;
-            const inCount = now() < startAt;
-            q('[data-game-count]').classList.toggle('hidden', !inCount);
-            q('[data-game-live]').classList.toggle('hidden', inCount);
-            if (inCount) {
-              const v = String(Math.min(3, Math.max(1, Math.ceil((startAt - now()) / 1000))));
-              const el = q<HTMLElement>('[data-count-num]');
-              if (v !== lastCountNum) { el.textContent = v; refire(el, 'mj-tick'); lastCountNum = v; }
-            } else {
-              const left = Math.max(0, Math.ceil((endAt - now()) / 1000));
-              const el = q<HTMLElement>('[data-time-left]');
-              if (left !== lastLeft) {
-                el.textContent = String(left);
-                // Urgency escalation: the final 5 seconds tick visibly.
-                if (left <= 5) refire(el, 'mj-tick');
-                lastLeft = left;
-              }
-              el.style.color = left > 10 ? 'var(--color-teal)' : left > 5 ? '#B8860B' : '#C0392B';
-            }
-          }, 200);
-        }
-        function stopTick() { if (tick) { clearInterval(tick); tick = undefined; } }
-
-        // ── Rendering ─────────────────────────────────────────────────────
-        // Pop only GENUINELY new players (Kahoot lobby energy), bump the count.
-        const seenPlayers = new Set<string>();
-        let lastCount = 0;
-        function renderPlayers() {
-          const countEl = q<HTMLElement>('[data-lobby-count]');
-          countEl.textContent = String(participants.length);
-          if (participants.length !== lastCount) { bump(countEl); lastCount = participants.length; }
-          q('[data-lobby-cap]').textContent = `من ${maxPlayers} في المجلس`;
-          q('[data-waiting-dots]').textContent = participants.length === 0 ? '، بانتظار أول لاعب…' : '';
-          updateStartBtn();
-          const wrap = q<HTMLElement>('[data-lobby-players]');
-          wrap.innerHTML = '';
-          for (const p of participants) {
-            const chip = document.createElement('span');
-            chip.className = 'inline-flex items-center gap-1.5 rounded-full border border-stone dark:border-coal-edge bg-paper dark:bg-coal px-2.5 py-1 text-sm font-bold transition-opacity duration-300 ' +
-              (p.connected ? 'text-ink-soft dark:text-mist-soft' : 'text-ink-subtle dark:text-mist-subtle opacity-60');
-            if (!seenPlayers.has(p.uid)) { seenPlayers.add(p.uid); chip.classList.add('mj-pop'); }
-            const img = document.createElement('img');
-            img.src = avatarUrl(p.avatar); img.alt = ''; img.width = 20; img.height = 20;
-            img.className = 'w-5 h-5 rounded-full';
-            chip.append(img, document.createTextNode(p.name));
-            wrap.appendChild(chip);
+          if (!display) {
+            track('majlis_host_finished', { platform: 'web', players: participants.length });
+            callMajlis('awardXP', { source: 'majalis_hosted', idempotencyKey: `majalis_hosted_${roomId}` }).catch(() => {});
           }
         }
 
-        let lastAnswered = 0;
-        function renderAnsweredPill() {
-          const n = Object.keys(answers).length;
-          const inPlay = participants.filter((p) => p.connected || answers[p.uid] !== undefined).length;
-          const pill = q<HTMLElement>('[data-answered-pill]');
-          pill.textContent = `أجاب ${n} من ${Math.max(inPlay, n)}`;
-          if (n !== lastAnswered) { bump(pill); lastAnswered = n; }
+        // ── ticker: countdown, read time, timer ──────────────────────────
+        function startTick() { window.setInterval(() => { if (meta?.status === 'questionLive') renderPhase(false); }, 150); }
+        function renderPhase(fromMeta: boolean) {
+          if (!meta || meta.status !== 'questionLive') return;
+          const startAt = Number(meta.questionStartAt ?? 0);
+          const readAt = Number(meta.questionReadAt ?? startAt);
+          const endAt = Number(meta.questionEndAt ?? 0);
+          const t = now();
+          const next = t < readAt ? 'count' : t < startAt ? 'read' : 'answer';
+          if (next !== phase || fromMeta) {
+            const entering = next !== phase;
+            phase = next;
+            if (next === 'answer') { show('question'); if (entering && !fromMeta) cue.go(); }
+            else {
+              show('intro');
+              fillIntro();
+              if (next === 'read' && entering) {
+                cue.read();
+                const bar = q('[data-intro-bar]');
+                bar.classList.remove('ms-hide');
+                const i = bar.querySelector<HTMLElement>('i')!;
+                const total = Math.max(1, startAt - readAt);
+                const done = Math.min(1, Math.max(0, (t - readAt) / total));
+                i.getAnimations().forEach((a) => a.cancel());
+                if (reduced) i.style.width = '100%';
+                else i.animate([{ width: `${done * 100}%` }, { width: '100%' }], { duration: Math.max(0, startAt - t), easing: 'linear', fill: 'forwards' });
+              }
+            }
+          }
+          if (phase === 'count') {
+            const n = Math.min(3, Math.max(1, Math.ceil((readAt - t) / 1000)));
+            if (n !== lastCount) { lastCount = n; const el = q('[data-intro-count]'); el.textContent = String(n); tickFx(el); cue.tick(); }
+          } else if (phase === 'answer') {
+            const span = Math.max(1, endAt - startAt);
+            const leftMs = Math.max(0, endAt - t);
+            const sec = Math.ceil(leftMs / 1000);
+            q<SVGCircleElement>('[data-ring]').style.strokeDashoffset = String(276.5 * (1 - leftMs / span));
+            if (sec !== lastSecond) {
+              lastSecond = sec;
+              const el = q('[data-time-left]'); el.textContent = String(sec);
+              q('[data-timer]').classList.toggle('urgent', sec <= 5);
+              if (sec <= 5 && sec > 0) { tickFx(el); cue.tick(); }
+            }
+            const over = leftMs === 0;
+            q('[data-timeup]').classList.toggle('on', over);
+            if (over && timeupPlayed !== qIndex) { timeupPlayed = qIndex; cue.timeup(); }
+          }
         }
 
-        // Distribution keys mirror the server: list → 'a,b', {w,o} → 'w|o', scalar → String.
-        const answerKey = (a: unknown): string =>
-          Array.isArray(a) ? a.join(',')
-            : a !== null && typeof a === 'object' ? `${(a as any).w}|${(a as any).o}`
-            : String(a);
+        // ── rendering: question ───────────────────────────────────────────
+        // The word the question asks about, «like this», lit in the sentence.
+        function sentenceInto(el: HTMLElement, sentence: string, questionText: string) {
+          el.textContent = '';
+          const m = /«([^»]+)»/.exec(questionText ?? '');
+          // Match the letters and ignore harakat on either side: the question
+          // may write «الطالبُ» while the sentence has الطالب.
+          const letters = (m?.[1] ?? '').replace(/[\u064B-\u0652\u0670\u0640]/g, '').trim();
+          const found = letters
+            ? new RegExp([...letters].map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[\u064B-\u0652\u0670\u0640]*') + '[\u064B-\u0652\u0670]*').exec(sentence)
+            : null;
+          if (!found) { el.textContent = sentence; return; }
+          const hl = document.createElement('span'); hl.className = 'hl'; hl.textContent = found[0];
+          el.append(document.createTextNode(sentence.slice(0, found.index)), hl, document.createTextNode(sentence.slice(found.index + found[0].length)));
+        }
+        function qNumText() { return `السؤال <b>${qIndex + 1}</b> من ${meta?.qCount ?? '؟'}`; }
+        function fillIntro() {
+          q('[data-intro-num]').innerHTML = qNumText();
+          const type = qData?.type;
+          const sentence = String(qData?.sourceText ?? '');
+          const showSentence = !!sentence && type !== 'arrange_irab';
+          q('[data-intro-sentence]').classList.toggle('ms-hide', !showSentence);
+          if (showSentence) sentenceInto(q('[data-intro-sentence]'), sentence, String(qData?.questionText ?? ''));
+          q('[data-intro-q]').textContent = String(qData?.questionText ?? '');
+          const counting = phase === 'count';
+          q('[data-intro-count]').classList.toggle('ms-hide', !counting);
+          if (counting) q('[data-intro-bar]').classList.add('ms-hide');
+          q('[data-intro-note]').textContent = counting ? 'استعدوا' : 'تظهر الخيارات بعد لحظات';
+        }
+        function renderQuestion() {
+          if (!qData) return;
+          const type = String(qData.type ?? 'mcq');
+          const options: string[] = (qData.options ?? []).map(String);
+          const sentence = String(qData.sourceText ?? '');
+          q('[data-q-num]').innerHTML = qNumText();
+          const wordsMode = type === 'fix_error' || type === 'tap_word' || type === 'arrange_irab';
+          const sEl = q('[data-q-sentence]');
+          sEl.classList.toggle('ms-hide', wordsMode || !sentence);
+          if (!wordsMode && sentence) sentenceInto(sEl, sentence, String(qData.questionText ?? ''));
+          q('[data-q-text]').textContent = String(qData.questionText ?? '');
 
-        type BarRow = { key: string; label: string; count: number };
+          const words = q('[data-words]');
+          words.textContent = '';
+          const chips = type === 'arrange_irab' ? options : wordsMode ? sentence.split(/\s+/).filter(Boolean) : [];
+          words.classList.toggle('ms-hide', chips.length === 0);
+          chips.forEach((w, i) => { const c = document.createElement('span'); c.className = 'ms-word'; c.textContent = w; words.appendChild(c); pop(c, i * 50); });
+
+          const tiles = q('[data-tiles]');
+          tiles.textContent = '';
+          const labels = type === 'true_false' ? ['صواب', 'خطأ'] : (type === 'mcq' || type === 'fix_error') ? options : [];
+          tiles.classList.toggle('ms-hide', labels.length === 0);
+          labels.forEach((label, i) => { const t = tile(label, i); tiles.appendChild(t); if (!reduced) { t.classList.add('ms-rise'); t.style.animationDelay = `${i * 70}ms`; } });
+          if (type === 'fix_error') {
+            // Words sit above the corrections.
+            words.style.top = '220px';
+          } else words.style.top = '';
+          renderAnswered();
+        }
+        function tile(label: string, i: number) {
+          const t = document.createElement('div');
+          t.className = `ms-tile ${tileClass(i)}`;
+          t.dataset.key = String(i);
+          t.innerHTML = `<div class="fill"></div>${shapeSvg(i)}<span class="lt">${LETTERS[i] ?? ''}</span><span class="tx"></span><span class="pc"></span><span class="tick">${TICK_SVG}</span>`;
+          t.querySelector('.tx')!.textContent = label;
+          return t;
+        }
+        function renderAnswered(arrived: string[] = []) {
+          if (qIndex < 0) return;
+          const n = Object.keys(answers).length;
+          const inPlay = participants.filter((p) => p.connected || answers[p.uid] !== undefined).length;
+          const el = q('[data-answered]');
+          const txt = `${n}/${Math.max(inPlay, n)}`;
+          if (el.textContent !== txt) { el.textContent = txt; if (arrived.length) tickFx(el); }
+          const drops = q('[data-drops]');
+          for (const id of arrived) {
+            if (drops.children.length >= 12) break;
+            const p = participants.find((x) => x.uid === id); if (!p) continue;
+            const img = document.createElement('img'); img.src = avatarUrl(p.avatar); img.alt = ''; drops.appendChild(img); pop(img);
+          }
+          if (n === 0) drops.textContent = '';
+        }
+
+        // ── rendering: reveal ─────────────────────────────────────────────
+        // Distribution keys mirror the server: list → 'a,b', {w,o} → 'w|o', scalar → String.
+        function answerKey(a: unknown): string {
+          return Array.isArray(a) ? a.join(',') : a !== null && typeof a === 'object' ? `${(a as any).w}|${(a as any).o}` : String(a);
+        }
         function liveCounts(): Record<string, number> {
-          const counts: Record<string, number> = {};
-          for (const a of Object.values(answers)) counts[answerKey(a)] = (counts[answerKey(a)] ?? 0) + 1;
-          return counts;
+          const c: Record<string, number> = {};
+          for (const a of Object.values(answers)) c[answerKey(a)] = (c[answerKey(a)] ?? 0) + 1;
+          return c;
         }
         // RTDB returns contiguous numeric keys as an array, possibly with holes.
         function distCounts(raw: unknown): Record<string, number> {
@@ -574,82 +738,6 @@
           else if (raw && typeof raw === 'object') for (const [k, v] of Object.entries(raw)) if (v != null) out[k] = Number(v) || 0;
           return out;
         }
-        function barRows(counts: Record<string, number> = liveCounts()): BarRow[] {
-          const type = qData?.type; const options: string[] = qData?.options ?? [];
-          const words = String(qData?.sourceText ?? '').split(/\s+/).filter(Boolean);
-          let rows: BarRow[] = [];
-          if (type === 'mcq') rows = options.map((o, i) => ({ key: String(i), label: o, count: counts[String(i)] ?? 0 }));
-          else if (type === 'true_false') rows = [
-            { key: 'true', label: 'صواب', count: counts['true'] ?? 0 },
-            { key: 'false', label: 'خطأ', count: counts['false'] ?? 0 },
-          ];
-          else if (type === 'tap_word') rows = words.map((w, i) => ({ key: String(i), label: w, count: counts[String(i)] ?? 0 }));
-          else {
-            // fix_error / arrange_irab: observation-driven, sorted by count desc
-            rows = Object.entries(counts).map(([key, count]) => {
-              let label = 'أخرى';
-              if (key !== 'other') {
-                if (type === 'fix_error') {
-                  const [w, o] = key.split('|').map(Number);
-                  label = `«${words[w] ?? '؟'}» صوابها «${options[o] ?? '؟'}»`;
-                } else {
-                  label = key.split(',').map((i) => options[Number(i)] ?? '؟').join(' ');
-                }
-              }
-              return { key, label, count };
-            }).sort((a, b) => b.count - a.count);
-          }
-          return rows;
-        }
-
-        function barEl(row: BarRow, total: number, correct: boolean | null) {
-          const ratio = row.count / Math.max(1, total);
-          const el = document.createElement('div');
-          el.dataset.key = row.key;
-          el.className = 'rounded-xl border px-3.5 py-2.5 relative overflow-hidden ' +
-            (correct === true ? 'border-teal' : correct === false ? 'border-stone dark:border-coal-edge opacity-75' : 'border-stone dark:border-coal-edge');
-          const fill = document.createElement('div');
-          fill.dataset.fill = '';
-          fill.className = 'mj-bar-fill absolute inset-y-0 start-0 ' + (correct === true ? 'bg-teal/15' : 'bg-purple/8');
-          fill.style.setProperty('--ratio', String(ratio));
-          const line = document.createElement('div');
-          line.className = 'relative flex items-center justify-between gap-3';
-          const label = document.createElement('span');
-          label.className = 'font-bold text-[15px] text-ink dark:text-mist truncate';
-          label.textContent = row.label;
-          const n = document.createElement('span');
-          n.dataset.count = '';
-          n.className = 'font-black tabular-nums text-sm ' + (correct === true ? 'text-teal' : 'text-ink-muted dark:text-mist-muted');
-          n.textContent = `${Math.round(ratio * 100)}%`;
-          line.append(label, n);
-          el.append(fill, line);
-          return el;
-        }
-
-        // Keyed update: existing bars ANIMATE to their new ratio instead of
-        // being rebuilt, so counts arriving live feel like Kahoot's console.
-        function renderLiveBars() {
-          const wrap = q<HTMLElement>('[data-live-bars]');
-          const total = Object.keys(answers).length;
-          const rows = barRows();
-          const wanted = new Set(rows.map((r) => r.key));
-          [...wrap.children].forEach((c) => {
-            if (!wanted.has((c as HTMLElement).dataset.key ?? '')) c.remove();
-          });
-          for (const row of rows) {
-            const existing = wrap.querySelector<HTMLElement>(`[data-key="${CSS.escape(row.key)}"]`);
-            if (!existing) {
-              const el = barEl(row, total, null);
-              el.classList.add('panel-in');
-              wrap.appendChild(el);
-            } else {
-              const ratio = row.count / Math.max(1, total);
-              existing.querySelector<HTMLElement>('[data-fill]')!.style.setProperty('--ratio', String(ratio));
-              existing.querySelector<HTMLElement>('[data-count]')!.textContent = `${Math.round(ratio * 100)}%`;
-            }
-          }
-        }
-
         function correctKeyOf(r: any): string {
           const c = r?.correctAnswer ?? {}; const type = qData?.type;
           if (type === 'true_false') return String(c.boolValue);
@@ -658,150 +746,175 @@
           if (type === 'tap_word') return String(c.wordIndex);
           return String(c.optionIndex);
         }
+        function labelOf(key: string): string {
+          const type = qData?.type; const options: string[] = (qData?.options ?? []).map(String);
+          const words = String(qData?.sourceText ?? '').split(/\s+/).filter(Boolean);
+          if (key === 'other') return 'أخرى';
+          if (type === 'fix_error') { const [w, o] = key.split('|').map(Number); return `«${words[w] ?? '؟'}» صوابها «${options[o] ?? '؟'}»`; }
+          if (type === 'arrange_irab') return key.split(',').map((i) => options[Number(i)] ?? '؟').join(' ');
+          if (type === 'tap_word') return words[Number(key)] ?? '؟';
+          return key;
+        }
 
         function renderReveal(idx: number) {
-          q('[data-reveal-correct]').textContent = reveal?.correctDisplay ?? '';
-          q('[data-reveal-stats]').textContent = `أجاب ${reveal?.answeredCount ?? 0} من ${participants.length}`;
-          const ex = q<HTMLElement>('[data-reveal-explain]');
-          ex.classList.toggle('hidden', !reveal?.explanation);
-          if (reveal?.explanation) ex.textContent = reveal.explanation;
-
-          const wrap = q<HTMLElement>('[data-reveal-bars]');
-          wrap.innerHTML = '';
-          const key = correctKeyOf(reveal);
+          const type = String(qData?.type ?? 'mcq');
           const counts = reveal?.distribution != null ? distCounts(reveal.distribution) : liveCounts();
-          const rows = barRows(counts);
-          if (!rows.some((r) => r.key === key)) {
-            const c = reveal?.correctAnswer ?? {}; const options: string[] = qData?.options ?? [];
-            const words = String(qData?.sourceText ?? '').split(/\s+/).filter(Boolean);
-            const label = qData?.type === 'fix_error'
-              ? `«${words[c.wordIndex] ?? '؟'}» صوابها «${options[c.optionIndex] ?? '؟'}»`
-              : qData?.type === 'arrange_irab'
-                ? (c.arrangement ?? []).map((i: number) => options[i] ?? '؟').join(' ')
-                : reveal?.correctDisplay ?? '؟';
-            rows.push({ key, label, count: 0 });
-          }
-          // Reveal grammar: bars grow from zero with a stagger, correct stays
-          // lit, wrong rows recede (barEl correct===false dims them).
           const total = Object.values(counts).reduce((a, b) => a + b, 0);
-          rows.forEach((row, i) => {
-            const el = barEl(row, total, row.key === key);
-            const fill = el.querySelector<HTMLElement>('[data-fill]')!;
-            const target = fill.style.getPropertyValue('--ratio');
-            fill.style.setProperty('--ratio', '0');
-            fill.style.transitionDelay = `${i * 80}ms`;
-            wrap.appendChild(el);
-            requestAnimationFrame(() => requestAnimationFrame(() => fill.style.setProperty('--ratio', target)));
-          });
+          const key = correctKeyOf(reveal);
+          q('[data-rv-correct]').textContent = String(reveal?.correctDisplay ?? '');
+          q('[data-rv-stats]').textContent = `أجاب ${reveal?.answeredCount ?? total} من ${participants.length}`;
+          const why = String(reveal?.explanation ?? '').trim();
+          q('[data-rv-explain]').classList.toggle('ms-hide', !why);
+          q('[data-rv-explain-text]').textContent = why;
 
+          const tilesWrap = q('[data-rv-tiles]'); const rowsWrap = q('[data-rv-rows]');
+          tilesWrap.textContent = ''; rowsWrap.textContent = '';
+          const pct = (n: number) => Math.round((n / Math.max(1, total)) * 100);
+          if (type === 'mcq' || type === 'true_false') {
+            const labels = type === 'true_false' ? ['صواب', 'خطأ'] : (qData?.options ?? []).map(String);
+            const keys = type === 'true_false' ? ['true', 'false'] : labels.map((_: string, i: number) => String(i));
+            labels.forEach((label: string, i: number) => {
+              const t = tile(label, i); const k = keys[i]; const right = k === key;
+              t.classList.add(right ? 'right' : 'dim');
+              const p = pct(counts[k] ?? 0);
+              t.querySelector('.pc')!.textContent = `${p}%`;
+              tilesWrap.appendChild(t);
+              const fill = t.querySelector<HTMLElement>('.fill')!;
+              if (reduced) fill.style.transform = `scaleX(${p / 100})`;
+              else setTimeout(() => { fill.style.transform = `scaleX(${p / 100})`; }, 120 + i * 120);
+            });
+          } else {
+            const rows = Object.entries(counts).map(([k, n]) => ({ k, n })).sort((a, b) => b.n - a.n).slice(0, 4);
+            if (!rows.some((r) => r.k === key)) { rows.pop(); rows.unshift({ k: key, n: counts[key] ?? 0 }); }
+            rows.forEach((r, i) => {
+              const row = document.createElement('div');
+              const right = r.k === key;
+              row.className = 'ms-row' + (right ? ' right' : '');
+              row.innerHTML = '<div class="fill"></div><span class="lb"></span><span class="pc"></span>';
+              row.querySelector('.lb')!.textContent = right ? String(reveal?.correctDisplay ?? labelOf(r.k)) : labelOf(r.k);
+              const p = pct(r.n);
+              row.querySelector('.pc')!.textContent = `${p}%`;
+              rowsWrap.appendChild(row);
+              const fill = row.querySelector<HTMLElement>('.fill')!;
+              if (reduced) fill.style.transform = `scaleX(${p / 100})`;
+              else setTimeout(() => { fill.style.transform = `scaleX(${p / 100})`; }, 120 + i * 120);
+            });
+          }
           const nextBtn = q<HTMLButtonElement>('[data-next-btn]');
           const last = idx >= Number(meta?.qCount ?? 1) - 1;
-          nextBtn.textContent = last ? 'أنهِ المجلس واعرض النتائج' : 'المتصدرون ثم السؤال التالي';
+          nextBtn.textContent = last ? 'اعرض النتائج النهائية' : 'المتصدرون ثم السؤال التالي';
           nextBtn.onclick = () => { last ? finish() : showLeaderboardThenNext(); };
+          const wasReveal = currentView === 'reveal';
           show('reveal');
+          if (!wasReveal) cue.reveal();
         }
 
-        function boardRow(p: { name: string; avatar: number; score: number }, i: number) {
-          const row = document.createElement('div');
-          row.className = 'flex items-center gap-3 rounded-xl border border-card-edge dark:border-coal-edge bg-card dark:bg-coal-soft px-4 py-3';
-          row.innerHTML = `<span class="w-7 text-center font-black ${i === 0 ? 'text-purple' : 'text-ink-muted dark:text-mist-muted'}">${i + 1}</span>
-            <img src="${avatarUrl(p.avatar)}" width="32" height="32" alt="" class="w-8 h-8 rounded-full" />
-            <span class="flex-1 font-bold text-ink dark:text-mist truncate"></span>
-            <span class="font-black tabular-nums text-ink-soft dark:text-mist-soft">${p.score}</span>`;
-          row.querySelector('span.flex-1')!.textContent = p.name;
-          return row;
-        }
-
+        // ── rendering: standings (rows slide to their new places) ─────────
         function renderBoard() {
-          const list = q<HTMLElement>('[data-board-list]');
-          list.innerHTML = '';
-          [...participants].sort((a, b) => b.score - a.score).slice(0, 5)
-            .forEach((p, i) => { const r = boardRow(p, i); stagger(r, i); list.appendChild(r); });
-          // The 3-second hold advances on its own; a host who lands here after
-          // a refresh has no hold running, so offer the next question.
+          const idx = Number(meta?.currentQuestionIndex ?? 0);
+          q('[data-board-title]').textContent = `المتصدرون بعد السؤال ${idx + 1}`;
+          const after = [...participants].sort((a, b) => b.score - a.score);
+          const prevOrder = [...participants]
+            .map((p) => ({ uid: p.uid, s: before[p.uid] ?? p.score }))
+            .sort((a, b) => b.s - a.s).map((p) => p.uid);
+          const hasBefore = beforeIdx === idx && Object.keys(before).length > 0;
+          const ROW = 96;
+          const board = q('[data-board]');
+          board.textContent = '';
+          after.slice(0, 5).forEach((p, i) => {
+            const r = document.createElement('div');
+            r.className = `ms-brow r${i + 1}`;
+            r.style.top = `${i * ROW}px`;
+            r.innerHTML = `<span class="rk">${i + 1}</span><img alt="" src="${avatarUrl(p.avatar)}"><span class="nm"></span><span class="gain"></span><span class="mv"></span><span class="sc"></span>`;
+            r.querySelector('.nm')!.textContent = p.name;
+            const prevRank = prevOrder.indexOf(p.uid);
+            const gain = hasBefore ? p.score - (before[p.uid] ?? p.score) : 0;
+            r.querySelector('.gain')!.textContent = gain > 0 ? `+${gain}` : '';
+            const mv = r.querySelector<HTMLElement>('.mv')!;
+            const moved = hasBefore && prevRank >= 0 ? prevRank - i : 0;
+            mv.textContent = moved > 0 ? `▲ ${moved}` : moved < 0 ? `▼ ${-moved}` : '';
+            mv.classList.add(moved > 0 ? 'up' : 'dn');
+            board.appendChild(r);
+            countUp(r.querySelector<HTMLElement>('.sc')!, hasBefore ? (before[p.uid] ?? p.score) : p.score, p.score, 900);
+            if (!reduced && hasBefore) {
+              const fromRow = prevRank >= 0 ? Math.min(prevRank, 5) : 5;
+              r.animate([{ transform: `translateY(${(fromRow - i) * ROW}px)` }, { transform: 'none' }], { duration: 700, delay: 350 + i * 50, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+            } else if (!reduced) { r.classList.add('ms-rise'); r.style.animationDelay = `${i * 60}ms`; }
+          });
           const next = q<HTMLButtonElement>('[data-board-next]');
-          next.classList.toggle('hidden', busy);
-          next.onclick = () => { next.classList.add('hidden'); start(Number(meta?.currentQuestionIndex ?? 0) + 1); };
+          next.classList.toggle('ms-hide', busy || display);
+          next.onclick = () => { next.classList.add('ms-hide'); start(idx + 1); };
+          const wasBoard = currentView === 'board';
           show('board');
+          if (!wasBoard) cue.whoosh();
         }
 
-        // Kahoot's podium moment: columns land in suspense order (3rd, then
-        // 2nd, then 1st), scores count up as each lands, confetti only after
-        // the winner appears.
-        let celebrated = false;
+        // ── rendering: podium (3rd, 2nd, then 1st) ────────────────────────
         function renderPodium() {
           const sorted = [...participants].sort((a, b) => b.score - a.score);
-          const top = q<HTMLElement>('[data-podium-top]');
-          top.innerHTML = '';
+          const pod = q('[data-pod]'); pod.textContent = '';
           const cols = [
-            { rank: 1, delay: 600, medal: '🥈', h: 'h-24', cls: 'bg-teal/15 border-teal/40' },
-            { rank: 0, delay: 1200, medal: '🥇', h: 'h-32', cls: 'bg-purple/15 border-purple/40' },
-            { rank: 2, delay: 0, medal: '🥉', h: 'h-20', cls: 'bg-paper-soft dark:bg-coal border-stone dark:border-coal-edge' },
+            { rank: 1, cls: 'p2', medal: '2nd-place-medal', delay: 900 },
+            { rank: 0, cls: 'p1', medal: '1st-place-medal', delay: 1800 },
+            { rank: 2, cls: 'p3', medal: '3rd-place-medal', delay: 0 },
           ];
-          const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
           for (const c of cols) {
-            const cell = document.createElement('div');
-            cell.className = 'grid gap-1.5 justify-items-center self-end w-full';
             const p = sorted[c.rank];
+            const col = document.createElement('div'); col.className = `ms-pcol ${c.cls}`;
             if (p) {
-              if (!reduced) { cell.classList.add('mj-rise'); cell.style.animationDelay = `${c.delay}ms`; }
-              const img = document.createElement('img');
-              img.src = avatarUrl(p.avatar); img.alt = ''; img.width = 44; img.height = 44;
-              img.className = 'w-11 h-11 rounded-full';
-              const name = document.createElement('p');
-              name.className = 'font-bold text-sm text-ink dark:text-mist max-w-[7.5rem] truncate';
-              name.textContent = p.name;
-              const score = document.createElement('p');
-              score.className = 'font-black tabular-nums text-ink-soft dark:text-mist-soft';
-              score.textContent = '0';
-              const bar = document.createElement('div');
-              bar.className = `w-full rounded-t-xl border ${c.cls} ${c.h} grid place-items-center text-2xl`;
-              bar.textContent = c.medal;
-              cell.append(img, name, score, bar);
-              setTimeout(() => countUp(score, p.score, { ms: 800 }), reduced ? 0 : c.delay + 250);
+              col.innerHTML = `${c.rank === 0 ? '<img class="ms-crown" alt="" src="/majlis-fx/crown.png">' : ''}<img class="av" alt="" src="${avatarUrl(p.avatar)}"><span class="pn"></span><span class="ps">0</span><div class="ms-pblock"><img alt="" src="/majlis-fx/${c.medal}.png"></div>`;
+              col.querySelector('.pn')!.textContent = p.name;
+              const ps = col.querySelector<HTMLElement>('.ps')!;
+              if (reduced) ps.textContent = String(p.score);
+              else { col.style.opacity = '0'; setTimeout(() => { col.style.opacity = ''; col.classList.add('ms-rise'); countUp(ps, 0, p.score, 800); }, 1400 + c.delay); }
             }
-            top.appendChild(cell);
+            pod.appendChild(col);
           }
-          const list = q<HTMLElement>('[data-podium-list]');
-          list.innerHTML = '';
-          sorted.slice(3).forEach((p, i) => { const r = boardRow(p, i + 3); stagger(r, i); list.appendChild(r); });
+          const rest = q('[data-rest]'); rest.textContent = '';
+          sorted.slice(3, 6).forEach((p, i) => {
+            const s = document.createElement('span');
+            s.innerHTML = `${i + 4}. <b></b> ${p.score}`;
+            s.querySelector('b')!.textContent = p.name;
+            rest.appendChild(s);
+          });
+          q<HTMLAnchorElement>('[data-report-link]').href = `/majlis/report?room=${encodeURIComponent(roomId)}`;
           show('podium');
           if (!celebrated) {
             celebrated = true;
-            setTimeout(() => {
-              if (!reduced) confetti();
-              try { sfx.finish(1); } catch { /* ignore */ }
-            }, reduced ? 0 : 1600);
+            cue.fanfare();
+            setTimeout(() => stageConfetti(q<HTMLCanvasElement>('[data-confetti]')), reduced ? 0 : 3700);
           }
         }
 
+        // ── quota ─────────────────────────────────────────────────────────
         async function showQuota() {
           try {
-            const d: any = await call('majalisQuotaStatus', {});
+            const d: any = await callMajlis('majalisQuotaStatus', {});
             const next = d?.nextFreeAtMs ? new Date(d.nextFreeAtMs) : null;
-            q('[data-quota-msg]').textContent =
-              'بلغت حد المجالس اليومي في خطتك.' +
+            q('[data-quota-msg]').textContent = 'بلغت حد المجالس اليومي في خطتك.' +
               (next ? ` تتجدد حصتك الساعة ${next.toLocaleTimeString('ar-u-nu-latn', { hour: '2-digit', minute: '2-digit' })}.` : '');
-            const up = q<HTMLElement>('[data-quota-upgrade]');
             if (d?.isPremium !== true) {
-              up.classList.remove('hidden');
+              const up = q('[data-quota-upgrade]'); up.classList.remove('ms-hide');
               up.addEventListener('click', () => (window as any).IrabPaywall?.show({ reason: 'limit' }));
             }
-          } catch {
-            q('[data-quota-msg]').textContent = 'بلغت حد المجالس اليومي لخطتك.';
-          }
+          } catch { q('[data-quota-msg]').textContent = 'بلغت حد المجالس اليومي لخطتك.'; }
           show('quota');
         }
-
-        function alertMsg(msg: string) {
-          // Lightweight, non-blocking toast.
-          const t = document.createElement('div');
-          t.className = 'fixed bottom-6 inset-x-0 mx-auto w-fit max-w-[90vw] rounded-xl bg-ink text-paper dark:bg-mist dark:text-coal px-4 py-3 text-sm font-bold z-50';
-          t.textContent = msg;
-          document.body.appendChild(t);
-          setTimeout(() => t.remove(), 3500);
-        }
       }
+    }
+
+    function stageConfetti(cv: HTMLCanvasElement) {
+      if (reduced) return;
+      const cx = cv.getContext('2d'); if (!cx) return;
+      const C = ['#7C4DFF', '#1F789B', '#F59E0B', '#C2603C', '#F5C15E', '#22C55E'];
+      const parts = Array.from({ length: 160 }, () => ({ x: 640 + (Math.random() - .5) * 220, y: 300, vx: (Math.random() - .5) * 14, vy: -Math.random() * 13 - 5, s: 7 + Math.random() * 8, r: Math.random() * 3, vr: (Math.random() - .5) * .3, c: C[(Math.random() * C.length) | 0] }));
+      let f = 0;
+      const step = () => {
+        f++; cx.clearRect(0, 0, 1280, 720);
+        for (const p of parts) { p.vy += .32; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr; cx.save(); cx.translate(p.x, p.y); cx.rotate(p.r); cx.globalAlpha = Math.max(0, 1 - f / 170); cx.fillStyle = p.c; cx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); cx.restore(); }
+        if (f < 170) requestAnimationFrame(step); else cx.clearRect(0, 0, 1280, 720);
+      };
+      requestAnimationFrame(step);
     }
   }
 </script>

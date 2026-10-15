@@ -101,6 +101,17 @@
     </div>
   </section>
 
+  <!-- ═══ READ (rooms with read time: the sentence before the options) ═══ -->
+  <section data-s="read" class="hidden">
+    <p class="text-sm font-bold text-ink-muted dark:text-mist-muted">سؤال <span data-read-num></span></p>
+    <div class="mt-3 rounded-2xl border border-card-edge bg-card dark:border-coal-edge dark:bg-coal-soft p-6 text-center">
+      <p data-read-source class="hidden text-2xl sm:text-3xl font-black leading-loose text-ink dark:text-mist"></p>
+      <p data-read-text class="mt-3 text-lg font-bold text-ink-soft dark:text-mist-soft"></p>
+    </div>
+    <p class="mt-4 text-center text-sm font-bold text-ink-muted dark:text-mist-muted">اقرأ جيدًا، تظهر الخيارات بعد لحظات</p>
+    <div class="mt-2 mx-auto h-2 w-48 rounded-full bg-stone dark:bg-coal-edge overflow-hidden"><div data-read-bar class="h-full w-0 bg-teal rounded-full"></div></div>
+  </section>
+
   <!-- ═══ QUESTION ═══ -->
   <section data-s="question" class="hidden">
     <div class="flex items-center justify-between gap-3">
@@ -228,6 +239,7 @@
       ROOM_FULL: 'اكتمل عدد اللاعبين في هذا المجلس.',
       NAME_LENGTH: 'اكتب اسمًا من حرفين إلى عشرين حرفًا.',
       NAME_REJECTED: 'هذا الاسم غير مناسب، جرّب اسمًا آخر.',
+      KICKED: 'أخرجك المضيف من هذا المجلس.',
       RATE_LIMITED: 'محاولات كثيرة، انتظر قليلًا ثم جرّب مجددًا.',
     };
 
@@ -255,7 +267,7 @@
     const avatarUrl = (i: number) => `/majlis-avatars/a${((i % AVATAR_COUNT) + AVATAR_COUNT) % AVATAR_COUNT}.svg`;
 
     // ── Screens ────────────────────────────────────────────────────────────
-    const screens = ['join', 'lobby', 'count', 'question', 'locked', 'wait', 'reveal', 'board', 'podium', 'terminal'];
+    const screens = ['join', 'lobby', 'count', 'read', 'question', 'locked', 'wait', 'reveal', 'board', 'podium', 'terminal'];
     function show(name: string) {
       for (const s of screens) q(`[data-s="${s}"]`).classList.toggle('hidden', s !== name);
       window.scrollTo({ top: 0 });
@@ -392,6 +404,12 @@
           .map(([id, p]) => ({ uid: id, name: p?.profile?.displayName ?? '؟', avatar: p?.profile?.avatar ?? 0, score: p?.score ?? 0, joinedAt: p?.profile?.joinedAt ?? 0 }))
           .sort((a: any, b: any) => a.joinedAt - b.joinedAt);
         renderLobbyPlayers();
+        // Our profile vanished: the host removed us (they also ban the uid).
+        if (joined && !val[uid]) {
+          get(ref(db, `rooms/${roomId}/banned/${uid}`)).then((b) => {
+            if (b.exists()) terminal('أخرجك المضيف من المجلس', 'لا يمكنك العودة إلى هذا المجلس.');
+          }).catch(() => {});
+        }
       }));
       unsubs.push(onValue(ref(db, `rooms/${roomId}/meta`), (s) => onMeta(s.val())));
       show('lobby');
@@ -455,8 +473,12 @@
     // countdown vs live answering, driven by the ticker
     function renderPhase() {
       if (!qData || meta?.status !== 'questionLive') return;
-      if (now() < (meta.questionStartAt ?? 0)) {
+      const startAt = meta.questionStartAt ?? 0;
+      const readAt = meta.questionReadAt ?? startAt;
+      if (now() < readAt) {
         show('count');
+      } else if (now() < startAt) {
+        showRead(readAt, startAt);
       } else if (answered) {
         show('locked');
       } else if (now() >= (meta.questionEndAt ?? Infinity)) {
@@ -469,18 +491,41 @@
       }
     }
 
+    // The sentence alone, while the host's read time runs.
+    let readShownIdx = '';
+    function showRead(readAt: number, startAt: number) {
+      if (readShownIdx !== qIndex) {
+        readShownIdx = qIndex;
+        q('[data-read-num]').textContent = `${Number(qIndex) + 1} من ${meta?.qCount ?? '؟'}`;
+        const src = q<HTMLElement>('[data-read-source]');
+        const sentence = qData.type === 'arrange_irab' ? '' : String(qData.sourceText ?? '');
+        src.classList.toggle('hidden', !sentence);
+        src.textContent = sentence;
+        q('[data-read-text]').textContent = qData.questionText ?? '';
+        const bar = q<HTMLElement>('[data-read-bar]');
+        bar.getAnimations().forEach((a) => a.cancel());
+        const done = Math.min(1, Math.max(0, (now() - readAt) / Math.max(1, startAt - readAt)));
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) bar.style.width = '100%';
+        else bar.animate([{ width: `${done * 100}%` }, { width: '100%' }], { duration: Math.max(0, startAt - now()), easing: 'linear', fill: 'forwards' });
+      }
+      show('read');
+    }
+
     function startTick() {
       stopTick();
       tickTimer = window.setInterval(() => {
         if (meta?.status !== 'questionLive') return;
         const startAt = meta.questionStartAt ?? 0; const endAt = meta.questionEndAt ?? 0;
-        if (now() < startAt) {
-          const n = Math.min(3, Math.max(1, Math.ceil((startAt - now()) / 1000)));
+        const readAt = meta.questionReadAt ?? startAt;
+        if (now() < readAt) {
+          const n = Math.min(3, Math.max(1, Math.ceil((readAt - now()) / 1000)));
           q('[data-count-num]').textContent = toAr(n);
           if (!q('[data-s="count"]').classList.contains('hidden')) return;
           renderPhase();
+        } else if (now() < startAt) {
+          if (q('[data-s="read"]').classList.contains('hidden')) renderPhase();
         } else {
-          if (!q('[data-s="count"]').classList.contains('hidden')) renderPhase();
+          if (!q('[data-s="count"]').classList.contains('hidden') || !q('[data-s="read"]').classList.contains('hidden')) renderPhase();
           const span = Math.max(1, endAt - startAt);
           const left = Math.max(0, endAt - now());
           q('[data-time-left]').textContent = toAr(Math.ceil(left / 1000));

@@ -46,13 +46,16 @@
     </div>
 
     <!-- Live room still running (refresh, closed tab, another device) -->
-    <a data-live-banner href="#" class="hidden mt-4 flex items-center justify-between gap-4 rounded-2xl border-2 border-teal bg-teal/10 px-5 py-4 text-ink dark:text-mist">
+    <div data-live-banner class="hidden mt-4 flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-teal bg-teal/10 px-5 py-4 text-ink dark:text-mist">
       <span>
         <span class="block font-black text-lg">مجلسك ما زال مباشرًا</span>
         <span data-live-sub class="block text-sm text-ink-muted dark:text-mist-muted"></span>
       </span>
-      <span class="btn-primary shrink-0">عُد إليه</span>
-    </a>
+      <span class="flex flex-wrap gap-2">
+        <a data-live-display href="#" class="btn-ghost text-sm" title="للعرض على جهاز العرض بينما تدير المجلس من التطبيق">اعرضه على شاشة</a>
+        <a data-live-go href="#" class="btn-primary">أدره من هنا</a>
+      </span>
+    </div>
 
     <!-- Create CTA (same drafts on app and web) -->
     <div class="card mt-4 p-5 flex items-center justify-between gap-4 flex-wrap">
@@ -288,8 +291,10 @@
         if (!ptr?.roomId) return;
         const meta = (await rt.get(rt.ref(db, `rooms/${ptr.roomId}/meta`))).val();
         if (!meta || meta.status === 'finished' || meta.hostUid !== uid) return;
-        const banner = q<HTMLAnchorElement>('[data-live-banner]');
-        banner.href = `/majlis/live?room=${encodeURIComponent(ptr.roomId)}`;
+        const banner = q<HTMLElement>('[data-live-banner]');
+        const live = `/majlis/live?room=${encodeURIComponent(ptr.roomId)}`;
+        q<HTMLAnchorElement>('[data-live-go]').href = live;
+        q<HTMLAnchorElement>('[data-live-display]').href = `${live}&view=display`;
         q('[data-live-sub]').textContent = meta.status === 'lobby'
           ? `الرمز ${meta.pin} · اللاعبون في الانتظار`
           : `الرمز ${meta.pin} · السؤال ${Number(meta.currentQuestionIndex ?? 0) + 1} من ${meta.qCount ?? '؟'}`;
