@@ -5,6 +5,7 @@ import Footer from '../../components/sections/Footer.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleSection from '../../components/ArticleSection.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
+import { appStoreUrl, QURAN_PRODUCT_PAGE } from '../../lib/stores';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 
 const faqs = [
@@ -99,7 +100,7 @@ lang="en"   title="Parse any Quran ayah for free · AI powered i'rab analysis ·
   >
     <ol>
       <li><strong>Try the demo first.</strong> No signup. <a href="/en#demo">Click here</a> to try the live i'rab parser on the homepage.</li>
-      <li><strong>Install the app.</strong> Available free on <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener">Google Play</a> and the App Store. Includes daily i'rab analyses on the free tier.</li>
+      <li><strong>Install the app.</strong> Available free on <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener">Google Play</a> and the <a href={appStoreUrl('web_quran', QURAN_PRODUCT_PAGE)} target="_blank" rel="noopener">App Store</a>. Includes daily i'rab analyses on the free tier.</li>
       <li><strong>Build a daily ritual.</strong> One ayah a day, parsed and understood. Compounds into mastery faster than you'd think.</li>
       <li><strong>Pair with study.</strong> Use Irab alongside your regular Arabic curriculum, Bayyinah, Madinah Books, your local madrasah course.</li>
     </ol>

@@ -1,6 +1,7 @@
 ---
 import Container from '../Container.astro';
 import Section from '../Section.astro';
+import { appStoreUrl } from '../../lib/stores';
 ---
 <Section size="lg" class="relative overflow-hidden" id="hero">
   {/* Ambient brand watermark: sits behind the calligraphic word, very subtle */}
@@ -65,7 +66,7 @@ import Section from '../Section.astro';
             <span>Google Play</span>
           </a>
           <a
-            href="https://apps.apple.com/app/id6765811277"
+            href={appStoreUrl('web_home')}
             target="_blank"
             rel="noopener"
             class="inline-flex items-center gap-2 px-4 py-2 border border-ink/20 hover:border-purple dark:border-mist/20 dark:hover:border-purple text-ink-muted hover:text-ink dark:text-mist-muted dark:hover:text-mist rounded-lg transition-colors duration-200"

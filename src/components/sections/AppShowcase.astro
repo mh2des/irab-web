@@ -10,6 +10,7 @@
  */
 import Container from '../Container.astro';
 import Section from '../Section.astro';
+import { appStoreUrl } from '../../lib/stores';
 
 interface Props {
   lang?: 'en' | 'ar';
@@ -17,7 +18,9 @@ interface Props {
 const { lang = 'ar' } = Astro.props;
 
 const GOOGLE = 'https://play.google.com/store/apps/details?id=com.irabapp.arabic';
-const APPLE  = 'https://apps.apple.com/app/id6765811277';
+const APPLE  = appStoreUrl('web_home');
+// The QR image encodes this same link, so scans get their own campaign.
+const APPLE_QR = appStoreUrl('web_qr');
 
 const t = lang === 'ar'
   ? {
@@ -69,7 +72,7 @@ const t = lang === 'ar'
 
         {/* QR cards: desktop (scan with your phone) */}
         <div class="hidden md:flex gap-4 mt-10 justify-center lg:justify-start" data-reveal data-reveal-delay="300">
-          <a href={APPLE} target="_blank" rel="noopener" class="qr-card lift" aria-label={t.appleBtn}>
+          <a href={APPLE_QR} target="_blank" rel="noopener" class="qr-card lift" aria-label={t.appleBtn}>
             <img src="/showcase/apple-qr.png" alt="رمز QR لتنزيل تطبيق إعراب من App Store" width="220" height="220" loading="lazy" decoding="async" class="qr-img"/>
             <span class="qr-store">{t.appStore}</span>
             <span class="qr-hint">{t.hintApple}</span>

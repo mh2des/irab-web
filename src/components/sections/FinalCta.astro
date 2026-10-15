@@ -1,6 +1,7 @@
 ---
 import Container from '../Container.astro';
 import Section from '../Section.astro';
+import { appStoreUrl } from '../../lib/stores';
 ---
 <Section id="cta" size="lg" class="relative overflow-hidden bg-ink dark:bg-mist text-paper dark:text-coal">
   {/* Watermark accent: bottom-right corner, low opacity */}
@@ -36,7 +37,7 @@ import Section from '../Section.astro';
           <span>Get on Google Play</span>
         </a>
         <a
-          href="https://apps.apple.com/app/id6765811277"
+          href={appStoreUrl('web_home')}
           target="_blank"
           rel="noopener"
           class="inline-flex items-center gap-3 px-8 py-4 border-2 border-paper/45 hover:border-paper bg-paper/5 hover:bg-paper/15 dark:border-coal/45 dark:hover:border-coal dark:bg-coal/5 dark:hover:bg-coal/15 font-medium tracking-tight rounded-full transition-colors duration-200"

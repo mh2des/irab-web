@@ -5,6 +5,7 @@ import Footer from '../components/sections/Footer.astro';
 import ArticleHero from '../components/ArticleHero.astro';
 import ArticleSection from '../components/ArticleSection.astro';
 import ArticleCta from '../components/ArticleCta.astro';
+import { appStoreUrl, QURAN_PRODUCT_PAGE } from '../lib/stores';
 import ArticleFaq from '../components/ArticleFaq.astro';
 
 const faqs = [
@@ -87,7 +88,7 @@ const faqs = [
   >
     <ol>
       <li><strong>جرّب التجربة أوّلًا.</strong> بدون تسجيل. <a href="/#demo">اضغط هنا</a> لتجربة محلّل الإعراب المباشر.</li>
-      <li><strong>حمّل التطبيق.</strong> متاح مجانًا على <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener">Google Play</a> و App Store. تتضمّن الخطّة المجانية تحليلات يومية.</li>
+      <li><strong>حمّل التطبيق.</strong> متاح مجانًا على <a href="https://play.google.com/store/apps/details?id=com.irabapp.arabic" target="_blank" rel="noopener">Google Play</a> و <a href={appStoreUrl('web_quran', QURAN_PRODUCT_PAGE)} target="_blank" rel="noopener">App Store</a>. تتضمّن الخطّة المجانية تحليلات يومية.</li>
       <li><strong>ابنِ عادة يومية.</strong> آية يوميًّا، تُعرَب وتُفهَم. تتراكم إلى الإتقان أسرع مما تتوقّع.</li>
       <li><strong>اقرنه بالدراسة المنهجية.</strong> استعمل إعراب جنبًا إلى جنب مع منهجك العربي, البيّنة، كتب المدينة، أو دورة مسجدك المحلّي.</li>
     </ol>
