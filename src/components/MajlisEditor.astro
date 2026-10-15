@@ -199,7 +199,7 @@
 
       <!-- Smart review -->
       <div data-ai-review-block class="hidden">
-        <p class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">نقاط الضعف من مجالسك الأخيرة</p>
+        <p data-ai-weak-label class="text-sm font-bold text-ink-soft dark:text-mist-soft mb-2">نقاط الضعف من مجالسك الأخيرة</p>
         <div data-ai-weak class="grid gap-1.5"></div>
       </div>
 
@@ -1036,20 +1036,25 @@
 
         // Smart review: mine weak points from the host's last 5 reports
         // (answeredCount > 0 and correctRate <= 0.6, worst 6 by wrong pct).
+        // From the report's «مجلس علاجي»: mine that one majlis only.
+        const remedialRoom = new URLSearchParams(location.search).get('remedial');
         async function mineWeakPoints() {
           const wrap = q<HTMLElement>('[data-ai-weak]');
-          wrap.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted">جارٍ قراءة مجالسك الأخيرة</p>';
+          wrap.innerHTML = `<p class="text-sm text-ink-muted dark:text-mist-muted">${remedialRoom ? 'جارٍ قراءة تقرير المجلس' : 'جارٍ قراءة مجالسك الأخيرة'}</p>`;
           weakFocus = '';
+          q<HTMLElement>('[data-ai-weak-label]').textContent = remedialRoom ? 'نقاط الضعف في هذا المجلس' : 'نقاط الضعف من مجالسك الأخيرة';
           try {
-            const s = await fs.getDocs(fs.query(
-              fs.collection(db, 'majalis_reports'),
-              fs.where('hostUid', '==', uid),
-              fs.orderBy('finishedAt', 'desc'),
-              fs.limit(5),
-            ));
+            const docs = remedialRoom
+              ? [await fs.getDoc(fs.doc(db, 'majalis_reports', remedialRoom))].filter((d) => d.exists())
+              : (await fs.getDocs(fs.query(
+                fs.collection(db, 'majalis_reports'),
+                fs.where('hostUid', '==', uid),
+                fs.orderBy('finishedAt', 'desc'),
+                fs.limit(5),
+              ))).docs;
             const seen = new Set<string>();
             const weak: Array<{ label: string; wrongPct: number }> = [];
-            for (const d of s.docs) {
+            for (const d of docs) {
               let v: any; try { v = d.data(); } catch { continue; }
               const per = Array.isArray(v?.perQuestion) ? v.perQuestion : [];
               for (const rq of per) {
@@ -1241,6 +1246,13 @@
             q<HTMLElement>('[data-fatal-msg]').textContent = 'تعذر فتح المسودة. تحقق من اتصالك وحاول مجددًا.';
             show('fatal'); return;
           }
+        } else if (remedialRoom) {
+          // «مجلس علاجي» lands straight in AI mode on that majlis's weak
+          // points (a Plus source; free hosts see the upgrade sheet).
+          resetForm();
+          if (isPremium) { aiSrc = 'review'; mineWeakPoints(); }
+          enterAi();
+          if (!isPremium) (window as any).IrabPaywall?.show({ reason: 'limit' });
         } else {
           resetForm();
           show('editor');

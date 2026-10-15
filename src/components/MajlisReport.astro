@@ -7,11 +7,15 @@
  * drill-down (correct/wrong tiles + distribution bars with per-type labels),
  * and the full standings. Server-first load with cache fallback and a retry
  * button. Distribution coerced defensively (Map OR List with holes).
+ * 2026-10 additions: the badges, the scoring mode and length, a
+ * student-by-question grid (perQuestion[i].answers), «لم يجب» counts, CSV
+ * export, «أعد المجلس» (host the same quiz again) and «مجلس علاجي» (the AI
+ * editor on this majlis's weak points).
  * Western digits, Thmanyah headings, no em-dashes.
  */
 ---
 
-<div data-mreport-root dir="rtl" class="mx-auto w-full max-w-2xl">
+<div data-mreport-root dir="rtl" class="mx-auto w-full max-w-3xl">
 
   <div data-v="loading" class="grid gap-3">
     <div class="skeleton h-10 w-44 rounded-xl"></div>
@@ -53,11 +57,34 @@
     <p data-r-title class="mt-2 text-[15px] font-bold text-ink-soft dark:text-mist-soft leading-relaxed"></p>
     <div data-r-meta class="mt-2 flex flex-wrap items-center gap-2 text-sm text-ink-subtle dark:text-mist-subtle"></div>
 
+    <!-- Next steps for the teacher -->
+    <div class="mt-4 flex flex-wrap gap-2">
+      <button type="button" data-r-again class="btn-primary">أعد المجلس</button>
+      <a data-r-remedial href="/majlis/create" class="btn-ghost" title="أسئلة جديدة يولّدها الذكاء الاصطناعي على ما أخطأ فيه طلابك في هذا المجلس">مجلس علاجي</a>
+      <button type="button" data-r-csv class="btn-ghost">تنزيل النتائج (CSV)</button>
+    </div>
+    <p data-r-action-msg class="hidden mt-2 text-sm font-bold text-ink-muted dark:text-mist-muted"></p>
+
     <!-- Stats -->
     <div data-r-stats class="mt-5 grid grid-cols-2 gap-2"></div>
 
     <!-- Hardest / easiest -->
     <div data-r-extremes class="mt-3 grid gap-2"></div>
+
+    <!-- Badges -->
+    <div data-r-badges-wrap class="hidden">
+      <h2 class="font-sans font-black text-lg text-ink dark:text-mist mt-7">الأوسمة</h2>
+      <div data-r-badges class="mt-3 grid gap-2 sm:grid-cols-2"></div>
+    </div>
+
+    <!-- Student by question -->
+    <div data-r-grid-wrap class="hidden">
+      <h2 class="font-sans font-black text-lg text-ink dark:text-mist mt-7">إجابات الطلاب</h2>
+      <p class="mt-1 text-sm text-ink-subtle dark:text-mist-subtle">كل صف طالب وكل عمود سؤال. مرّر المؤشر على خانة لترى الإجابة.</p>
+      <div class="mt-3 overflow-x-auto rounded-2xl border border-stone dark:border-coal-edge bg-card dark:bg-coal-soft">
+        <table data-r-grid class="w-full text-sm"></table>
+      </div>
+    </div>
 
     <!-- All questions -->
     <h2 class="font-sans font-black text-lg text-ink dark:text-mist mt-7">كل الأسئلة</h2>
@@ -73,6 +100,7 @@
   import { maybeSignedIn } from '../lib/session';
   import { firestore } from '../lib/majlis/fb';
   import { stagger, countUp, refire, showAnimated } from '../lib/majlis-fx';
+  import { BADGES, readAwards } from '../lib/majlis/badges';
 
   const root = document.querySelector<HTMLElement>('[data-mreport-root]');
   if (root) {
@@ -100,6 +128,7 @@
         if (!u || u.isAnonymous) { show('gate'); return; }
         if (started) return;
         started = true;
+        const uid = u.uid;
 
         q<HTMLButtonElement>('[data-retry]').addEventListener('click', () => { show('loading'); load(); });
         load();
@@ -116,7 +145,42 @@
           let v: any;
           try { v = snap.data(); } catch { show('error'); return; }
           render(v);
+          wireActions(v, uid);
           show('report');
+        }
+
+        // ── Next steps: host again, remedial majlis, CSV ─────────────────
+        function wireActions(v: any, uid: string) {
+          const msg = q<HTMLElement>('[data-r-action-msg]');
+          const say = (t: string) => { msg.textContent = t; msg.classList.remove('hidden'); };
+          q<HTMLAnchorElement>('[data-r-remedial]').href = `/majlis/create?remedial=${encodeURIComponent(String(roomId))}`;
+          q<HTMLButtonElement>('[data-r-csv]').onclick = () => downloadCsv(v);
+          const again = q<HTMLButtonElement>('[data-r-again]');
+          again.onclick = async () => {
+            again.disabled = true; say('نجهّز المجلس…');
+            try {
+              // The launched quiz remembers its draft; if that draft was
+              // deleted, rebuild one from the quiz so the same questions run.
+              const quiz = v.quizId ? await fs.getDoc(fs.doc(db, 'majalis_quizzes', String(v.quizId))) : null;
+              let draftId = String(quiz?.get('draftId') ?? '');
+              const exists = draftId ? (await fs.getDoc(fs.doc(db, 'majalis_drafts', uid, 'drafts', draftId))).exists() : false;
+              if (!exists) {
+                const questions = (quiz?.get('questions') as any[] | undefined) ?? [];
+                if (!questions.length) { say('لم نعد نجد أسئلة هذا المجلس.'); again.disabled = false; return; }
+                const first = questions[0] ?? {};
+                const title = String(first.sourceText ?? first.questionText ?? 'مجلس إعرابي').trim().slice(0, 60);
+                const ref = await fs.addDoc(fs.collection(db, 'majalis_drafts', uid, 'drafts'), {
+                  title, questions, createdAt: fs.Timestamp.now(), updatedAt: fs.Timestamp.now(),
+                  hasAiQuestions: questions.some((x: any) => !!x?.aiGenerated),
+                });
+                draftId = ref.id;
+              }
+              location.href = `/majlis/live?draft=${encodeURIComponent(draftId)}`;
+            } catch {
+              say('تعذّر تجهيز المجلس. تحقق من اتصالك ثم جرّب مجددًا.');
+              again.disabled = false;
+            }
+          };
         }
       });
     }
@@ -133,8 +197,10 @@
       return out;
     }
 
+    let playerCount = 0;
     function render(v: any) {
       const per: any[] = Array.isArray(v.perQuestion) ? v.perQuestion : [];
+      playerCount = Number(v.participantCount) || (Array.isArray(v.participants) ? v.participants.length : 0);
       q<HTMLElement>('[data-r-title]').textContent = String(per[0]?.questionText ?? 'مجلس إعرابي');
 
       // Accuracy is out of the questions actually played. Reports written
@@ -159,6 +225,12 @@
       };
       const at = typeof v.finishedAt?.toDate === 'function' ? v.finishedAt.toDate() : null;
       if (at) chip(at.toLocaleDateString('ar-u-nu-latn', { day: 'numeric', month: 'long', year: 'numeric' }));
+      const startMs = Number(v.startedAtMs) || 0;
+      if (at && startMs) {
+        const mins = Math.max(1, Math.round((at.getTime() - startMs) / 60000));
+        chip(mins === 1 ? 'استغرق دقيقة واحدة' : mins === 2 ? 'استغرق دقيقتين' : mins <= 10 ? `استغرق ${mins} دقائق` : `استغرق ${mins} دقيقة`);
+      }
+      if (v.scoring === 'accuracy') chip('الدقة أولًا', true);
       if (v.partial === true) chip('انتهى تلقائيًّا بعد انقطاع المضيف', true);
       else if (played < planned) chip(`لُعب ${played} من ${planned} أسئلة`, true);
 
@@ -225,6 +297,108 @@
         st.appendChild(row);
       });
       if (!rows.length) st.innerHTML = '<p class="text-sm text-ink-muted dark:text-mist-muted">بلا مشاركين</p>';
+
+      renderBadges(v);
+      renderGrid(per, players);
+    }
+
+    function renderBadges(v: any) {
+      const list = readAwards(Object.fromEntries((Array.isArray(v.badges) ? v.badges : []).map((b: any, i: number) => [String(i), b])));
+      q('[data-r-badges-wrap]').classList.toggle('hidden', list.length === 0);
+      const wrap = q<HTMLElement>('[data-r-badges]');
+      wrap.innerHTML = '';
+      // One card per badge; a shared badge (ties, the top three) lists names.
+      const ids = [...new Set(list.map((b) => b.id))];
+      ids.forEach((id) => {
+        const names = list.filter((b) => b.id === id).map((b) => b.name).join('، ');
+        const el = document.createElement('div');
+        el.className = 'card p-3 flex items-center gap-3';
+        el.innerHTML = `<img src="/majlis-fx/${BADGES[id].img}.png" alt="" width="36" height="36" class="w-9 h-9 shrink-0" /><div class="min-w-0"><p class="font-black text-ink dark:text-mist" data-t></p><p class="text-sm text-ink-subtle dark:text-mist-subtle" data-s></p></div>`;
+        el.querySelector('[data-t]')!.textContent = BADGES[id].title;
+        el.querySelector('[data-s]')!.textContent = `${names} · ${BADGES[id].rule}`;
+        wrap.appendChild(el);
+      });
+    }
+
+    /** An answer's words from its distribution key, per question type. */
+    function answerLabel(p: any, k: string): string {
+      if (!k || k === 'other') return 'أخرى';
+      const options: string[] = Array.isArray(p?.options) ? p.options.map(String) : [];
+      const words = wordsOf(p?.sourceText);
+      switch (p?.type) {
+        case 'true_false': return k === 'true' ? 'صواب' : 'خطأ';
+        case 'arrange_irab': return k.split(',').map((i) => options[Number(i)] ?? '؟').join(' ');
+        case 'fix_error': { const [w, o] = k.split('|').map(Number); return `«${words[w] ?? '؟'}» صوابها «${options[o] ?? '؟'}»`; }
+        case 'tap_word': return words[Number(k)] ?? '؟';
+        default: return options[Number(k)] ?? '؟';
+      }
+    }
+
+    // Rows are students (standings order), columns are questions. Reports
+    // from before 2026-10 have no per-student answers, so the grid hides.
+    function renderGrid(per: any[], players: any[]) {
+      const qs = [...per].sort((a, b) => Number(a?.index) - Number(b?.index));
+      const has = qs.some((p) => p?.answers && typeof p.answers === 'object');
+      q('[data-r-grid-wrap]').classList.toggle('hidden', !has || !players.length);
+      if (!has) return;
+      const t = q<HTMLElement>('[data-r-grid]');
+      t.innerHTML = '';
+      const head = document.createElement('tr');
+      head.className = 'border-b border-stone dark:border-coal-edge';
+      head.innerHTML = '<th class="sticky right-0 bg-card dark:bg-coal-soft px-3 py-2 text-start font-black">الطالب</th>' +
+        qs.map((p, i) => `<th class="px-2 py-2 text-center font-black tabular-nums" title="">${'س' + (i + 1)}</th>`).join('') +
+        '<th class="px-3 py-2 text-center font-black">الصحيحة</th><th class="px-3 py-2 text-center font-black">النقاط</th>';
+      qs.forEach((p, i) => { (head.children[i + 1] as HTMLElement).title = String(p?.questionText ?? ''); });
+      t.appendChild(head);
+      for (const pl of players) {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-stone/60 dark:border-coal-edge/60 last:border-0';
+        const name = document.createElement('td');
+        name.className = 'sticky right-0 bg-card dark:bg-coal-soft px-3 py-2 font-bold whitespace-nowrap max-w-[10rem] truncate';
+        name.textContent = String(pl.name ?? '؟');
+        tr.appendChild(name);
+        qs.forEach((p) => {
+          const a = p?.answers?.[pl.uid];
+          const td = document.createElement('td');
+          td.className = 'px-2 py-2 text-center font-black';
+          if (!a) { td.textContent = '–'; td.className += ' text-ink-subtle dark:text-mist-subtle'; td.title = 'لم يجب'; }
+          else if (a.c) { td.textContent = '✓'; td.className += ' text-teal'; td.title = `${answerLabel(p, a.k)} · ${a.p} نقطة`; }
+          else { td.textContent = '✗'; td.className += ' text-rose-500'; td.title = answerLabel(p, a.k); }
+          tr.appendChild(td);
+        });
+        const c = document.createElement('td'); c.className = 'px-3 py-2 text-center tabular-nums'; c.textContent = String(Number(pl.correctCount) || 0);
+        const sc = document.createElement('td'); sc.className = 'px-3 py-2 text-center tabular-nums font-black'; sc.textContent = String(Number(pl.score) || 0);
+        tr.append(c, sc);
+        t.appendChild(tr);
+      }
+    }
+
+    // A spreadsheet of the same grid, with each answer written out.
+    function downloadCsv(v: any) {
+      const per = (Array.isArray(v.perQuestion) ? v.perQuestion : []).slice().sort((a: any, b: any) => Number(a?.index) - Number(b?.index));
+      const players: any[] = Array.isArray(v.participants) ? v.participants : [];
+      const cell = (x: unknown) => { const t = String(x ?? ''); return /[",\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t; };
+      const header = ['الترتيب', 'الطالب', 'النقاط', 'الإجابات الصحيحة',
+        ...per.map((p: any, i: number) => `س${i + 1}: ${String(p?.questionText ?? '').slice(0, 50)}`)];
+      const lines = [header.map(cell).join(',')];
+      players.forEach((pl, i) => {
+        const row = [i + 1, pl.name, Number(pl.score) || 0, Number(pl.correctCount) || 0,
+          ...per.map((p: any) => {
+            const a = p?.answers?.[pl.uid];
+            if (!p?.answers) return '';
+            if (!a) return 'لم يجب';
+            return `${a.c ? 'صحيحة' : 'خطأ'}: ${answerLabel(p, a.k)}`;
+          })];
+        lines.push(row.map(cell).join(','));
+      });
+      // BOM so Excel reads the Arabic as UTF-8.
+      const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      const day = typeof v.finishedAt?.toDate === 'function' ? v.finishedAt.toDate().toISOString().slice(0, 10) : 'majlis';
+      a.download = `majlis-${day}.csv`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
     }
 
     function questionRow(p: any) {
@@ -265,11 +439,13 @@
 
       const answered = Number(p?.answeredCount) || 0;
       const correct = Number(p?.correctCount) || 0;
+      const unanswered = Math.max(0, playerCount - answered);
       const tiles = document.createElement('div');
-      tiles.className = 'grid grid-cols-2 gap-2';
+      tiles.className = 'grid grid-cols-3 gap-2';
       tiles.innerHTML =
         `<div class="rounded-xl bg-teal/10 px-3 py-2.5 text-center"><p class="font-black text-teal tabular-nums">${correct}</p><p class="text-xs text-ink-subtle dark:text-mist-subtle">أجابوا صوابًا</p></div>` +
-        `<div class="rounded-xl bg-rose-500/10 px-3 py-2.5 text-center"><p class="font-black text-rose-500 tabular-nums">${Math.max(0, answered - correct)}</p><p class="text-xs text-ink-subtle dark:text-mist-subtle">أجابوا خطأً</p></div>`;
+        `<div class="rounded-xl bg-rose-500/10 px-3 py-2.5 text-center"><p class="font-black text-rose-500 tabular-nums">${Math.max(0, answered - correct)}</p><p class="text-xs text-ink-subtle dark:text-mist-subtle">أجابوا خطأً</p></div>` +
+        `<div class="rounded-xl bg-paper-soft dark:bg-coal px-3 py-2.5 text-center"><p class="font-black text-ink-muted dark:text-mist-muted tabular-nums">${unanswered}</p><p class="text-xs text-ink-subtle dark:text-mist-subtle">لم يجيبوا</p></div>`;
       body.appendChild(tiles);
 
       // Distribution rows with app-parity per-type labels.
