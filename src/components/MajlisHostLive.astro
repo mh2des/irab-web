@@ -33,6 +33,7 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
       <header class="ms-top">
         <div class="ms-brand"><Fragment set:html={MARK_SVG} /><b>مجالس الإعراب</b><span class="ms-title" data-ms-title></span></div>
         <div class="ms-top-end">
+          <span class="ms-chip ms-hide" data-ms-mode style="direction:rtl">الدقة أولًا</span>
           <span class="ms-chip ms-hide" data-ms-chip>irab.app/majlis <span class="pin" data-ms-pin></span> · <span class="cnt" data-ms-count>0</span></span>
           <button class="ms-icon" type="button" data-ms-sound aria-pressed="false" aria-label="الصوت" title="الصوت">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path data-wave d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
@@ -90,6 +91,7 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
           <div class="ms-bar-group">
             <button class="ms-toggle" type="button" data-lock-toggle aria-pressed="false"><span class="sw"></span>قفل الانضمام</button>
             <button class="ms-toggle" type="button" data-read-toggle aria-pressed="false" title="تظهر الجملة وحدها لحظات قبل الخيارات"><span class="sw"></span>مهلة القراءة</button>
+            <button class="ms-toggle" type="button" data-scoring-toggle aria-pressed="false" title="لكل إجابة صحيحة النقاط نفسها، بلا نقاط للسرعة"><span class="sw"></span>الدقة أولًا</button>
           </div>
           <div class="ms-bar-group">
             <span class="ms-note" data-start-hint>يبدأ المجلس بعد انضمام لاعب واحد على الأقل</span>
@@ -149,6 +151,7 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
         <p class="ms-pod-title">انتهى المجلس</p>
         <div class="ms-pod" data-pod></div>
         <div class="ms-rest" data-rest></div>
+        <div class="ms-badges ms-hide" data-badges></div>
         <div class="ms-bar" data-host-only>
           <a class="ms-btn" href="/majlis/host">مجالسي</a>
           <a class="ms-btn primary" data-report-link href="/majlis/host?tab=history">افتح التقرير</a>
@@ -177,6 +180,7 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
   import { fitStage } from '../lib/majlis/stage/fit';
   import { cue, startLobbyLoop, stopLobbyLoop, soundOn, setSound } from '../lib/majlis/stage/sound';
   import { shapeSvg, tileClass, LETTERS, TICK_SVG } from '../lib/majlis/stage/shapes';
+  import { BADGES, readAwards, type Award } from '../lib/majlis/badges';
 
   const viewport = document.querySelector<HTMLElement>('[data-ms-viewport]');
   if (viewport) {
@@ -292,7 +296,7 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
         // Lobby, ticker and podium state, declared before any stream can fire.
         const seen = new Set<string>(); let lobbyPrimed = false;
         let phase = ''; let lastSecond = -1; let lastCount = -1; let timeupPlayed = -1;
-        let celebrated = false;
+        let celebrated = false; let awards: Award[] = []; let badgesShown = false;
         const REVEAL_DELAYS = [...Array(10).fill(200), ...Array(10).fill(500), ...Array(8).fill(1000)];
         const now = () => Date.now() + serverOffset;
 
@@ -366,6 +370,8 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
           maybeEarlyClose();
         });
         rt.onValue(rt.ref(db, `rooms/${roomId}/meta`), (s) => onMeta(s.val()));
+        // Badges arrive a moment after the majlis ends.
+        rt.onValue(rt.ref(db, `rooms/${roomId}/awards`), (s) => { awards = readAwards(s.val()); if (currentView === 'podium') renderBadges(); });
         // Reactions from phones float up the board between questions.
         const onReact = (s: any) => {
           const v = s.val();
@@ -396,6 +402,9 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
           q('[data-lock-toggle]').addEventListener('click', () => {
             rt.set(rt.ref(db, `rooms/${roomId}/meta/joinLocked`), !(meta?.joinLocked === true)).catch(() => toast('تعذّر تغيير باب الانضمام.'));
           });
+          q('[data-scoring-toggle]').addEventListener('click', () => {
+            rt.set(rt.ref(db, `rooms/${roomId}/meta/scoring`), meta?.scoring === 'accuracy' ? 'speed' : 'accuracy').catch(() => toast('تعذّر تغيير طريقة الاحتساب.'));
+          });
           q('[data-read-toggle]').addEventListener('click', () => {
             rt.set(rt.ref(db, `rooms/${roomId}/meta/readTime`), !(meta?.readTime === true)).catch(() => toast('تعذّر تغيير مهلة القراءة.'));
           });
@@ -413,9 +422,15 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
         startTick();
 
         async function loadTitle() {
-          if (!draftId) return;
           try {
             const [fs, fdb] = await Promise.all([import('firebase/firestore'), firestore()]);
+            // After a refresh the URL has only the room: find its draft through
+            // the launched quiz (host-readable), which records the draftId.
+            if (!draftId) {
+              const quizId = (await rt.get(rt.ref(db, `rooms/${roomId}/meta/quizId`))).val();
+              if (quizId) draftId = String((await fs.getDoc(fs.doc(fdb, 'majalis_quizzes', String(quizId)))).get('draftId') ?? '');
+            }
+            if (!draftId) return;
             const d = await fs.getDoc(fs.doc(fdb, 'majalis_drafts', uid, 'drafts', draftId));
             const t = String(d.get('title') ?? '').trim();
             if (t) q('[data-ms-title]').textContent = t;
@@ -428,6 +443,8 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
           meta = m;
           q('[data-lock-toggle]').setAttribute('aria-pressed', String(m.joinLocked === true));
           q('[data-read-toggle]').setAttribute('aria-pressed', String(m.readTime === true));
+          q('[data-scoring-toggle]').setAttribute('aria-pressed', String(m.scoring === 'accuracy'));
+          q('[data-ms-mode]').classList.toggle('ms-hide', m.scoring !== 'accuracy');
           const idx = Number(m.currentQuestionIndex ?? 0);
           switch (m.status) {
             case 'lobby': if (!finished) { show('lobby'); renderLobby(); } break;
@@ -863,12 +880,16 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
           const sorted = [...participants].sort((a, b) => b.score - a.score);
           const pod = q('[data-pod]'); pod.textContent = '';
           const cols = [
-            { rank: 1, cls: 'p2', medal: '2nd-place-medal', delay: 900 },
-            { rank: 0, cls: 'p1', medal: '1st-place-medal', delay: 1800 },
-            { rank: 2, cls: 'p3', medal: '3rd-place-medal', delay: 0 },
+            { rank: 1, cls: 'p2', delay: 900 },
+            { rank: 0, cls: 'p1', delay: 1800 },
+            { rank: 2, cls: 'p3', delay: 0 },
           ];
-          for (const c of cols) {
-            const p = sorted[c.rank];
+          // Equal scores share a medal (competition ranking), as on phones.
+          const MEDALS = ['1st-place-medal', '2nd-place-medal', '3rd-place-medal'];
+          const medalOf = (score: number) => MEDALS[sorted.filter((x) => x.score > score).length] ?? MEDALS[2];
+          for (const c0 of cols) {
+            const p = sorted[c0.rank];
+            const c = { ...c0, medal: p ? medalOf(p.score) : '' };
             const col = document.createElement('div'); col.className = `ms-pcol ${c.cls}`;
             if (p) {
               col.innerHTML = `${c.rank === 0 ? '<img class="ms-crown" alt="" src="/majlis-fx/crown.png">' : ''}<img class="av" alt="" src="${avatarUrl(p.avatar)}"><span class="pn"></span><span class="ps">0</span><div class="ms-pblock"><img alt="" src="/majlis-fx/${c.medal}.png"></div>`;
@@ -888,10 +909,36 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
           });
           q<HTMLAnchorElement>('[data-report-link]').href = `/majlis/report?room=${encodeURIComponent(roomId)}`;
           show('podium');
+          renderBadges();
           if (!celebrated) {
             celebrated = true;
             cue.fanfare();
             setTimeout(() => stageConfetti(q<HTMLCanvasElement>('[data-confetti]')), reduced ? 0 : 3700);
+          }
+        }
+
+        // The badge row under the podium (top three already have medals):
+        // one tile per badge, names joined when a badge is shared.
+        function renderBadges() {
+          const wrap = q('[data-badges]');
+          const shown = (['sibawayh', 'eye', 'steady', 'climber'] as const)
+            .map((id) => ({ id, who: awards.filter((a) => a.id === id) }))
+            .filter((x) => x.who.length > 0);
+          if (!shown.length) { wrap.classList.add('ms-hide'); return; }
+          wrap.textContent = '';
+          for (const { id, who } of shown) {
+            const t = document.createElement('div');
+            t.className = 'ms-bdg';
+            t.innerHTML = `<img alt="" src="/majlis-fx/${BADGES[id].img}.png"><div><b></b><span></span></div>`;
+            t.querySelector('b')!.textContent = BADGES[id].title;
+            t.querySelector('span')!.textContent = `${who.map((w) => w.name).join('، ')} · ${BADGES[id].rule}`;
+            wrap.appendChild(t);
+          }
+          wrap.classList.remove('ms-hide');
+          if (!badgesShown && !reduced) {
+            badgesShown = true;
+            wrap.style.opacity = '0';
+            setTimeout(() => { wrap.style.opacity = ''; [...wrap.children].forEach((c, i) => pop(c, i * 160)); }, 4300);
           }
         }
 

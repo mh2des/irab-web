@@ -192,20 +192,27 @@ button.ms-name:hover { border-color: var(--bad); }
 
 /* ── podium ──────────────────────────────────────────────── */
 .ms-pod-title { top: 80px; right: 0; left: 0; text-align: center; font-size: 40px; font-weight: 900; }
-.ms-pod { bottom: 150px; right: 270px; left: 270px; height: 390px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; align-items: end; }
+.ms-pod { bottom: 236px; right: 270px; left: 270px; height: 330px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; align-items: end; }
 .ms-pcol { position: relative; display: grid; justify-items: center; gap: 6px; }
-.ms-pcol .av { width: 86px; height: 86px; border-radius: 50%; background: var(--b-elev); border: 3px solid var(--b-line); }
+.ms-pcol .av { width: 76px; height: 76px; border-radius: 50%; background: var(--b-elev); border: 3px solid var(--b-line); }
 .ms-pcol .pn { font-size: 27px; font-weight: 900; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ms-pcol .ps { font-size: 23px; color: var(--b-muted); direction: ltr; font-variant-numeric: tabular-nums; }
 .ms-pblock { width: 100%; border-radius: 18px 18px 0 0; display: grid; place-items: start center; padding-top: 14px; background: var(--b-card); border: 1px solid var(--b-line); border-bottom: 0; }
-.ms-pblock img { width: 62px; height: 62px; }
-.ms-pcol.p1 .ms-pblock { height: 200px; background: var(--b-elev); border-color: var(--m-gold); }
-.ms-pcol.p2 .ms-pblock { height: 150px; border-color: var(--m-silver); }
-.ms-pcol.p3 .ms-pblock { height: 112px; border-color: var(--m-bronze); }
-.ms-pcol.p1 .av { width: 104px; height: 104px; border-color: var(--m-gold); }
+.ms-pblock img { width: 54px; height: 54px; }
+.ms-pcol.p1 .ms-pblock { height: 150px; background: var(--b-elev); border-color: var(--m-gold); }
+.ms-pcol.p2 .ms-pblock { height: 112px; border-color: var(--m-silver); }
+.ms-pcol.p3 .ms-pblock { height: 84px; border-color: var(--m-bronze); }
+.ms-pcol.p1 .av { width: 92px; height: 92px; border-color: var(--m-gold); }
 .ms-crown { position: absolute; top: -34px; width: 56px; height: 56px; }
-.ms-rest { bottom: 96px; right: 270px; left: 270px; display: flex; justify-content: center; gap: 18px; font-size: 19px; color: var(--b-muted); }
+.ms-rest { bottom: 196px; right: 270px; left: 270px; display: flex; justify-content: center; gap: 18px; font-size: 19px; color: var(--b-muted); }
 .ms-rest span b { color: var(--b-text); }
+
+.ms-badges { bottom: 92px; right: 36px; left: 36px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.ms-bdg { background: var(--b-card); border: 1px solid var(--b-line); border-radius: 16px; padding: 10px 14px; display: flex; gap: 12px; align-items: center; min-width: 0; }
+.ms-bdg img { width: 46px; height: 46px; flex: none; }
+.ms-bdg div { min-width: 0; }
+.ms-bdg b { display: block; font-size: 19px; font-weight: 900; }
+.ms-bdg span { display: block; font-size: 15px; color: var(--b-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ── simple message views (boot, quota, fatal) ───────────── */
 .ms-msg { top: 0; bottom: 0; right: 200px; left: 200px; display: grid; align-content: center; justify-items: center; gap: 16px; text-align: center; }

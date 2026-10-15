@@ -87,6 +87,7 @@ const REACTIONS = [
       <img class="mp-avatar-xl mp-bob" alt="" data-lobby-avatar />
       <p class="mp-name-xl" data-lobby-name></p>
       <span class="mp-chip">أنت في المجلس، واسمك ظاهر على الشاشة</span>
+      <span class="mp-chip mp-hide" data-lobby-mode style="color:var(--b-text)">الدقة أولًا: لكل إجابة صحيحة النقاط نفسها</span>
       <p class="mp-sub">ينتظر الجميع بدء المضيف. ابقَ على هذه الصفحة.</p>
       <div class="mp-dots" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="mp-card" style="width:100%">
@@ -191,6 +192,14 @@ const REACTIONS = [
         <span><b data-final-correct>0</b>إجابات صحيحة</span>
       </div>
       <p class="mp-chip mp-hide" data-final-xp>أُضيفت نقاط الخبرة إلى حسابك</p>
+      <div class="mp-card mp-screen mp-hide" data-my-badges style="width:100%;text-align:start">
+        <p class="mp-label">أوسمتك</p>
+        <div class="mp-badges" data-my-badges-list></div>
+      </div>
+      <div class="mp-card mp-screen mp-hide" data-all-badges style="width:100%;text-align:start">
+        <p class="mp-label">أوسمة المجلس</p>
+        <div class="mp-badges small" data-all-badges-list></div>
+      </div>
       <button class="mp-btn primary" type="button" data-open-review>راجع إجاباتك والتعليل</button>
       <div class="mp-react" data-react role="group" aria-label="تفاعل يظهر على الشاشة">
         {REACTIONS.map((r, i) => (<button type="button" data-react-btn={i} aria-label={r.label}><img alt="" src={`/majlis-fx/${r.img}.png`} width="36" height="36" /></button>))}
@@ -230,6 +239,7 @@ const REACTIONS = [
   import { sfx, confetti, isMuted, setMuted } from '../lib/celebrate';
   import { shapeSvg, tileClass, LETTERS } from '../lib/majlis/stage/shapes';
   import { grammarNickname } from '../lib/majlis/nicknames';
+  import { BADGES, readAwards, type Award } from '../lib/majlis/badges';
 
   const root = document.querySelector<HTMLElement>('[data-majlis-root]');
   if (root) {
@@ -531,6 +541,7 @@ const REACTIONS = [
       if (joined && m == null) { terminal('أُغلق المجلس', 'انتهت هذه الجلسة أو أغلقها المضيف.'); return; }
       meta = m;
       const status: Status = m?.status ?? 'lobby';
+      q('[data-lobby-mode]').classList.toggle('mp-hide', m?.scoring !== 'accuracy');
       const idx = String(m?.currentQuestionIndex ?? '');
       switch (status) {
         case 'lobby': show('lobby'); break;
@@ -890,8 +901,29 @@ const REACTIONS = [
     }
 
     // ── Podium ─────────────────────────────────────────────────────────────
-    let celebrated = false;
+    let celebrated = false; let awardsUnsub: Unsubscribe | null = null;
+    function renderAwards(list: Award[]) {
+      const mine = list.filter((a) => a.uid === uid);
+      const card = (a: Award, withName: boolean) => {
+        const d = document.createElement('div'); d.className = 'mp-badge';
+        d.innerHTML = `<img alt="" src="/majlis-fx/${BADGES[a.id].img}.png" width="40" height="40"><div><b></b><span></span></div>`;
+        d.querySelector('b')!.textContent = BADGES[a.id].title;
+        d.querySelector('span')!.textContent = withName ? `${a.name} · ${BADGES[a.id].rule}` : BADGES[a.id].rule;
+        return d;
+      };
+      const myList = q('[data-my-badges-list]'); myList.textContent = '';
+      mine.forEach((a, i) => { const c = card(a, false); myList.appendChild(c); pop(c, 200 + i * 150); });
+      q('[data-my-badges]').classList.toggle('mp-hide', mine.length === 0);
+      const others = list.filter((a) => a.uid !== uid && a.id !== 'knight');
+      const all = q('[data-all-badges-list]'); all.textContent = '';
+      others.forEach((a) => all.appendChild(card(a, true)));
+      q('[data-all-badges]').classList.toggle('mp-hide', others.length === 0);
+    }
     async function renderPodium() {
+      if (!awardsUnsub) {
+        awardsUnsub = onValue(ref(db, `rooms/${roomId}/awards`), (s) => renderAwards(readAwards(s.val())));
+        unsubs.push(awardsUnsub);
+      }
       stopTick();
       store.del('mj-session');
       const s = standing(); const mine = me();
@@ -953,7 +985,8 @@ const REACTIONS = [
         }
         const qt = document.createElement('p'); qt.className = 'mp-qtext'; qt.textContent = String(it.q?.questionText ?? ''); card.appendChild(qt);
         const line = (k: string, v: string) => { const p = document.createElement('p'); p.className = 'mp-rv-line'; p.innerHTML = `<span>${k}: </span>`; p.append(document.createTextNode(v)); card.appendChild(p); };
-        if (mine[String(it.i)]) line('إجابتك', mine[String(it.i)]);
+        const yours = mine[String(it.i)] ?? labelFromKey(it.q, a?.k);
+        if (yours) line('إجابتك', yours);
         line('الصحيح', String(it.r?.correctDisplay ?? ''));
         const why = String(it.r?.explanation ?? '').trim();
         if (why) { const p = document.createElement('p'); p.className = 'mp-why'; p.innerHTML = '<b>التعليل: </b>'; p.append(document.createTextNode(why)); card.appendChild(p); }
@@ -969,6 +1002,20 @@ const REACTIONS = [
         : 'لم نجد أسئلة هذا المجلس. ربما أُغلق منذ مدة.';
       track('majlis_web_review_opened', { questions: played.length });
       show('review');
+    }
+
+    /** An answer's words from its distribution key (k in the award). */
+    function labelFromKey(question: any, k: unknown): string {
+      if (typeof k !== 'string' || !k || k === 'other') return '';
+      const options: string[] = (question?.options ?? []).map(String);
+      const ws = String(question?.sourceText ?? question?.questionText ?? '').split(/\s+/).filter(Boolean);
+      switch (question?.type) {
+        case 'true_false': return k === 'true' ? 'صواب' : 'خطأ';
+        case 'arrange_irab': return k.split(',').map((i) => options[Number(i)] ?? '؟').join(' ');
+        case 'fix_error': { const [w, o] = k.split('|').map(Number); return `«${ws[w] ?? '؟'}» صوابها «${options[o] ?? '؟'}»`; }
+        case 'tap_word': return options[Number(k)] ?? '';
+        default: return options[Number(k)] ?? '';
+      }
     }
 
     // ── Terminal ───────────────────────────────────────────────────────────

@@ -177,6 +177,16 @@
 .mp-stats { display: flex; justify-content: center; gap: 18px; font-size: 15px; color: var(--b-muted); }
 .mp-stats b { color: var(--b-text); font-size: 20px; display: block; direction: ltr; font-variant-numeric: tabular-nums; }
 
+/* badges */
+.mp-badges { display: grid; gap: 8px; }
+.mp-badge { display: flex; align-items: center; gap: 12px; background: var(--b-card-2); border-radius: 14px; padding: 10px 12px; }
+.mp-badge img { width: 40px; height: 40px; flex: none; }
+.mp-badge div { min-width: 0; }
+.mp-badge b { display: block; font-size: 17px; font-weight: 900; }
+.mp-badge span { display: block; font-size: 13px; color: var(--b-muted); }
+.mp-badges.small .mp-badge img { width: 30px; height: 30px; }
+.mp-badges.small .mp-badge b { font-size: 15px; }
+
 /* review */
 .mp-rv { display: grid; gap: 10px; }
 .mp-rv-item { display: grid; gap: 8px; }
