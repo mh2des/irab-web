@@ -179,6 +179,12 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
         <div class="me-chips" data-ai-type-chips></div>
       </div>
 
+      <div class="me-sec" data-ai-pattern-block>
+        <span class="me-lbl">نمط الأسئلة</span>
+        <div class="me-chips" data-ai-patterns></div>
+        <p class="me-hint" data-ai-pattern-hint></p>
+      </div>
+
       <div class="me-set">
         <span>عدد الأسئلة</span>
         <div class="me-stepper">
@@ -188,6 +194,7 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
         </div>
       </div>
 
+      <div class="me-writer" data-ai-writer hidden></div>
       <p class="me-err" data-ai-err hidden></p>
       <div class="me-confirm" data-ai-confirm hidden>
         <p class="t-body-s" data-ai-confirm-msg></p>
@@ -1160,9 +1167,28 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
         ];
         const AI_STEPS = ['نقرأ المصدر ونحدد المفاهيم', 'نصوغ الأسئلة بأنواعها', 'ندقق الإعراب والإجابات', 'نجهز الأسئلة لمجلسك'];
 
+        // The generator's question patterns (the skill each card tests), as
+        // in the app (lib/features/majalis/logic/majlis_patterns.dart) and the
+        // Worker (cloudflare-workers/src/lib/majalis_patterns.ts).
+        const AI_PATTERNS: { id: string; name: string; hint: string; levels: string[]; types: string[] }[] = [
+          { id: 'direct', name: 'إعراب مباشر', hint: 'ما إعراب كلمة في جملة؛ للتثبيت.', levels: ['beginner', 'intermediate', 'advanced'], types: ['mcq', 'true_false', 'arrange_irab'] },
+          { id: 'intruder', name: 'الدخيل والفخ', hint: 'أيّ الجمل أو الألفاظ من الباب، والبقية من أبواب تشبهه.', levels: ['beginner', 'intermediate', 'advanced'], types: ['mcq', 'true_false'] },
+          { id: 'role', name: 'نوع اللفظ في سياقه', hint: 'اللفظ نفسه تامّ أو ناقص أو زائد، عامل أو مهمل، بحسب موقعه.', levels: ['intermediate', 'advanced'], types: ['mcq', 'true_false'] },
+          { id: 'rule', name: 'القاعدة وشرطها', hint: 'عبارة عن قاعدة أو شرط أو استثناء، والتعليل يبيّن الصواب.', levels: ['beginner', 'intermediate', 'advanced'], types: ['true_false', 'mcq'] },
+          { id: 'order', name: 'الرتبة والتقديم', hint: 'متى يتقدّم الخبر أو يتأخّر جوازًا أو وجوبًا، وما له الصدارة.', levels: ['intermediate', 'advanced'], types: ['mcq', 'true_false'] },
+          { id: 'pair', name: 'جملتان متشابهتان', hint: 'جملتان تختلفان في لفظ واحد، والسؤال عن أثر الفرق.', levels: ['beginner', 'intermediate', 'advanced'], types: ['mcq', 'true_false'] },
+          { id: 'shahid', name: 'شاهد يحتاج تأمّلًا', hint: 'آية أو شاهد مشهور، والسؤال عن موضع يحتاج نظرًا.', levels: ['intermediate', 'advanced'], types: ['mcq', 'true_false'] },
+          { id: 'ellipsis', name: 'الحذف والتقدير', hint: 'أين المحذوف، وما تقديره، ولماذا جاء الإعراب هكذا.', levels: ['advanced'], types: ['mcq'] },
+          { id: 'rank', name: 'رتّب', hint: 'رتّب أجزاء إعراب لفظ معرب.', levels: ['intermediate', 'advanced'], types: ['arrange_irab'] },
+          { id: 'fix', name: 'صحّح الخطأ', hint: 'جملة فيها خطأ واحد في تطبيق قاعدة الباب.', levels: ['beginner', 'intermediate', 'advanced'], types: ['fix_error'] },
+        ];
+        const patternsFor = () => AI_PATTERNS.filter((p) => p.levels.includes(aiDiff) && p.types.some((t) => aiTypes.has(t)));
+
         let aiSrc = 'topic';
         const aiTopics = new Set<string>();
         const aiTypes = new Set<string>(['mcq', 'true_false']);
+        // The teacher's «نمط الأسئلة»; empty: mixed by level.
+        const aiPatterns = new Set<string>();
         let aiDiff = 'intermediate';
         let aiCount = 5;
         let aiQuota: { used: number; limit: number; remaining: number } | null = null;
@@ -1229,8 +1255,8 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
 
           const typeChips = q('[data-ai-type-chips]');
           typeChips.textContent = '';
-          for (const t of ['mcq', 'true_false', 'fix_error']) {
-            const locked = !isPremium && t === 'fix_error';
+          for (const t of ['mcq', 'true_false', 'fix_error', 'arrange_irab']) {
+            const locked = !isPremium && PREMIUM_TYPES.has(t);
             const on = aiTypes.has(t);
             typeChips.appendChild(chip(TYPE_LABELS[t], on, locked, () => {
               if (locked) { paywall(); return; }
@@ -1240,8 +1266,38 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
               renderAiControls();
             }, 'me-chip teal'));
           }
+          // Patterns are for topic sets; a pattern the level or the chosen
+          // forms no longer allow drops out.
+          const allowed = patternsFor();
+          for (const id of [...aiPatterns]) if (!allowed.some((p) => p.id === id)) aiPatterns.delete(id);
+          q('[data-ai-pattern-block]').hidden = aiSrc !== 'topic';
+          const pats = q('[data-ai-patterns]');
+          pats.textContent = '';
+          pats.appendChild(chip('منوّع حسب المستوى', aiPatterns.size === 0, false, () => { aiPatterns.clear(); renderAiControls(); }));
+          for (const p of allowed) {
+            const on = aiPatterns.has(p.id);
+            pats.appendChild(chip(p.name, on, false, () => { on ? aiPatterns.delete(p.id) : aiPatterns.add(p.id); renderAiControls(); }));
+          }
+          const chosen = AI_PATTERNS.filter((p) => aiPatterns.has(p.id));
+          q('[data-ai-pattern-hint]').textContent = chosen.length === 0
+            ? 'يوزّع الأسئلة على مهاراتٍ مختلفة بحسب المستوى: الدخيل والفخ، والقاعدة وشرطها، وجملتان متشابهتان، وشواهد من القرآن للمتقدّم.'
+            : chosen.length === 1 ? chosen[0].hint : chosen.map((p) => p.name).join('، ');
+
+          // Who writes topic sets: Irab+ gets the strongest model.
+          const writer = q('[data-ai-writer]');
+          writer.hidden = aiSrc !== 'topic';
+          writer.classList.toggle('free', !isPremium);
+          writer.innerHTML = `${PLUS_CHIP}<span></span>`;
+          writer.lastElementChild!.textContent = isPremium
+            ? 'يكتب أسئلةَ مجلسك نموذجُنا الأقوى.'
+            : 'مع إعراب بلس يكتب أسئلةَ مجلسك نموذجُنا الأقوى، فتأتي أعمقَ في الفهم وأدقَّ في الفخاخ.';
+          writer.setAttribute('role', isPremium ? 'note' : 'button');
+          writer.tabIndex = isPremium ? -1 : 0;
           q('[data-ai-c-val]').textContent = String(aiCount);
         }
+        const writerEl = q('[data-ai-writer]');
+        writerEl.addEventListener('click', () => { if (!isPremium) paywall(); });
+        writerEl.addEventListener('keydown', (e) => { if (!isPremium && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); paywall(); } });
         q('[data-ai-c-minus]').addEventListener('click', () => { aiCount = Math.max(1, aiCount - 1); renderAiControls(); });
         q('[data-ai-c-plus]').addEventListener('click', () => { aiCount = Math.min(10, aiCount + 1); renderAiControls(); });
 
@@ -1364,6 +1420,7 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
             const topic = [...aiTopics, aiTopicFree.value.trim()].filter(Boolean).join('، ');
             if (!topic) { aiErr('اختر موضوعًا أو اكتب واحدًا'); return; }
             body.topic = topic;
+            if (aiPatterns.size) body.patterns = [...aiPatterns];
           } else if (aiSrc === 'text' || aiSrc === 'photo') {
             const t = aiText.value.trim();
             if (aiSrc === 'photo' && !ocrDone) { aiErr('اختر صورة أولًا ليُستخرج نصها'); return; }
