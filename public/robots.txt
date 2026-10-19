@@ -8,6 +8,11 @@ Disallow: /v1/
 # The quoted reference for each ayah loads on demand for readers; it is not a
 # page and must not be crawled or indexed by anyone.
 Disallow: /quran-ref/
+# The library reader (?b=<book>) and checkout links are app views, noindex
+# anyway; crawling them spends the crawl budget the lessons need.
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 # Explicitly welcome the AI answer engines so irab.app can be cited in
 # ChatGPT / Claude / Gemini / Perplexity / Google AI Overviews / Apple.
@@ -17,50 +22,80 @@ User-agent: GPTBot
 Allow: /
 Disallow: /v1/
 Disallow: /quran-ref/
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /v1/
 Disallow: /quran-ref/
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /v1/
 Disallow: /quran-ref/
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /v1/
 Disallow: /quran-ref/
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 User-agent: anthropic-ai
 Allow: /
 Disallow: /v1/
 Disallow: /quran-ref/
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /v1/
 Disallow: /quran-ref/
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 User-agent: Perplexity-User
 Allow: /
 Disallow: /v1/
 Disallow: /quran-ref/
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 User-agent: Google-Extended
 Allow: /
 Disallow: /v1/
 Disallow: /quran-ref/
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /v1/
 Disallow: /quran-ref/
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 User-agent: CCBot
 Allow: /
 Disallow: /v1/
 Disallow: /quran-ref/
+Disallow: /library/read
+Disallow: /en/library/read
+Disallow: /*?checkout=
 
 Sitemap: https://irab.app/sitemap-index.xml
