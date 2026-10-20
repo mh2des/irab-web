@@ -13,6 +13,9 @@ import {
   updateProfile,
   signOut,
   onAuthStateChanged,
+  reauthenticateWithPopup,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
   type User,
 } from 'firebase/auth';
 import { auth } from './firebase';
@@ -61,6 +64,39 @@ export const resendVerification = (user: User) => sendEmailVerification(user);
 /** Whoever is signed in right now, without subscribing to auth state. */
 export const currentUser = (): User | null => auth.currentUser;
 
+/** How this account signs in: 'google.com', 'apple.com' or 'password'. */
+export const signInProvider = (user: User): string =>
+  user.providerData.map((d) => d?.providerId ?? '').find(Boolean) || 'password';
+
+/**
+ * Firebase deletes an account only soon after a sign-in. The same check the
+ * app makes before it touches anything (auth_service.dart deleteAccount):
+ * both times come from the server's token, never the device clock. Fails
+ * open, so Firebase stays the authority at user.delete().
+ */
+export async function needsRecentLogin(user: User): Promise<boolean> {
+  try {
+    const t = await user.getIdTokenResult(true);
+    const signedIn = Date.parse(t.authTime);
+    const issued = Date.parse(t.issuedAtTime);
+    return Number.isFinite(signedIn) && Number.isFinite(issued) && issued - signedIn > 5 * 60_000;
+  } catch {
+    return false;
+  }
+}
+
+/** Sign in again as the same account: a popup for Google and Apple, the password otherwise. */
+export function reauthenticate(user: User, password = '') {
+  const provider = signInProvider(user);
+  if (provider === 'google.com') {
+    const p = new GoogleAuthProvider();
+    p.setCustomParameters({ prompt: 'select_account' });
+    return reauthenticateWithPopup(user, p);
+  }
+  if (provider === 'apple.com') return reauthenticateWithPopup(user, new OAuthProvider('apple.com'));
+  return reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email ?? '', password));
+}
+
 export const logout = async () => {
   await signOut(auth);
   import('./analytics').then((m) => m.syncIdentity(null)).catch(() => {});
@@ -100,6 +136,8 @@ export function authError(code: string, lang: Lang, provider?: string): string {
     'auth/operation-not-allowed': 'طريقة الدخول هذه غير مفعّلة بعد.',
     'auth/unauthorized-domain': 'تسجيل الدخول من هذا النطاق غير مسموح بعد.',
     'auth/network-request-failed': 'تعذّر الاتصال بالشبكة.',
+    'auth/user-mismatch': 'هذا حساب آخر. اختر الحساب الذي أنت داخل به الآن.',
+    'auth/requires-recent-login': 'للأمان، سجّل الدخول مرة أخرى ثم أعد المحاولة.',
   };
   const en: Record<string, string> = {
     'auth/invalid-email': 'That email address is invalid.',
@@ -117,6 +155,8 @@ export function authError(code: string, lang: Lang, provider?: string): string {
     'auth/operation-not-allowed': 'This sign-in method isn’t enabled yet.',
     'auth/unauthorized-domain': 'Sign-in from this domain isn’t allowed yet.',
     'auth/network-request-failed': 'Network error: check your connection.',
+    'auth/user-mismatch': "That's a different account. Choose the one you are signed in with.",
+    'auth/requires-recent-login': 'For your security, sign in again and retry.',
   };
   if (provider && PASSWORD_SHAPED.has(code)) {
     return lang === 'ar'
