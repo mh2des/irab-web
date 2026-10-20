@@ -1,0 +1,261 @@
+---
+/**
+ * Library: /library and /en/library in the tools' design (irab-ui), as the
+ * app's library screen: search, category chips, «تابع القراءة» from the
+ * reader's saved place, and the app's book cards (a flat spine in the
+ * category's colour, title, author, one meta line, reading progress).
+ * Every book is rendered here as a plain link, so the page stays crawlable;
+ * the script only filters and adds progress.
+ */
+import '../../styles/irab-ui.css';
+import { BOOKS, TOTAL_CHAPTERS, CATEGORIES, categoryCounts, categoryMeta, levelEn } from '../../lib/library';
+import { digits } from '../../lib/irab/strings';
+import * as I from '../../lib/irab/icons';
+import { searchIcon } from '../../lib/dict/render';
+
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const en = lang === 'en';
+const dir = en ? 'ltr' : 'rtl';
+const n = (v: number) => digits(v, lang);
+const reader = (id: string) => `${en ? '/en' : ''}/library/read?b=${encodeURIComponent(id)}`;
+const chev = I.chevronLeft.replace('<svg', '<svg class="flip-ltr lb-chev"');
+
+const s = en
+  ? {
+      title: 'Classical Arabic Grammar Library',
+      intro: `${BOOKS.length} classical works on nahw, sarf, balagha and i'rab, free to read in full in your browser, chapter by chapter.`,
+      statBooks: 'classical books', statChapters: 'readable chapters', statFields: 'fields',
+      search: 'Search a book or author…', all: 'All books',
+      continueTitle: 'Continue reading', booksTitle: 'Books', empty: 'No matching books.',
+      chapters: (v: number) => `${n(v)} chapters`,
+      chapterOf: 'Chapter {i} of {n}',
+    }
+  : {
+      title: 'المكتبة النحوية',
+      intro: `${n(BOOKS.length)} كتابًا كلاسيكيًّا في النحو والصرف والبلاغة والإعراب، تُقرأ كاملةً ومجانًا في المتصفّح، بابًا بابًا.`,
+      statBooks: 'كتاب كلاسيكي', statChapters: 'فصل للقراءة', statFields: 'فروع علمية',
+      search: 'ابحث عن كتاب أو مؤلّف…', all: 'كل الكتب',
+      continueTitle: 'تابع القراءة', booksTitle: 'الكتب', empty: 'لا توجد كتب مطابقة.',
+      chapters: (v: number) => `${n(v)} فصل`,
+      chapterOf: 'الفصل {i} من {n}',
+    };
+
+const svg = (body: string) => `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
+// The app's spine: one colour and one icon per field, from the two brand families.
+const FIELD: Record<string, { cls: string; icon: string }> = {
+  'نحو': { cls: 'nahw', icon: I.book },
+  'إعراب': { cls: 'irab', icon: svg('<path d="m6 16 6-12 6 12"/><path d="M8 12h8"/><path d="m16 20 2 2 4-4"/>') },
+  'بلاغة': { cls: 'balagha', icon: svg('<path d="M12 7v14"/><path d="M16 12h2"/><path d="M16 8h2"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/><path d="M6 12h2"/><path d="M6 8h2"/>') },
+  'صرف': { cls: 'sarf', icon: svg('<path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/>') },
+};
+const field = (cat: string) => FIELD[cat] ?? FIELD['نحو'];
+const catLabel = (cat: string) => (en ? categoryMeta(cat).en : cat);
+const levelLabel = (lvl: string) => (en ? levelEn(lvl) : lvl);
+const knownAuthor = (a: string) => (a && a.trim() !== 'غير معروف' && a.trim() !== 'مجهول' ? a.trim() : '');
+const counts = categoryCounts();
+// En spaces around the dot, as the app's double spaces: a bare «·» beside
+// Arabic digits reads as a zero.
+const SEP = '\u2002·\u2002';
+---
+
+<div class="iu iu-library" data-lib-root dir={dir} lang={lang} data-chapter-of={s.chapterOf}>
+  <header class="lb-head">
+    <h1 class="t-display c-1">{s.title}</h1>
+    <p class="t-body c-2">{s.intro}</p>
+  </header>
+
+  <div class="lb-stats">
+    <div><span class="lb-stat">{n(BOOKS.length)}</span><span class="t-caption c-3">{s.statBooks}</span></div>
+    <div><span class="lb-stat">{new Intl.NumberFormat(en ? 'en' : 'ar-u-nu-arab').format(TOTAL_CHAPTERS)}</span><span class="t-caption c-3">{s.statChapters}</span></div>
+    <div><span class="lb-stat">{n(CATEGORIES.length)}</span><span class="t-caption c-3">{s.statFields}</span></div>
+  </div>
+
+  <div class="iu-card lb-search" data-lib-search-box role="search">
+    <span class="lb-search-icon" aria-hidden="true"><Fragment set:html={searchIcon} /></span>
+    <input type="search" data-lib-search class="lb-input" placeholder={s.search} aria-label={s.search} dir={en ? 'auto' : 'rtl'} />
+  </div>
+
+  <div class="lb-chips" role="group" aria-label={s.booksTitle}>
+    <button type="button" class="lb-chip is-on" data-cat="all" aria-pressed="true">{s.all}<span class="lb-count">{n(BOOKS.length)}</span></button>
+    {CATEGORIES.map((c) => (
+      <button type="button" class="lb-chip" data-cat={c.key} aria-pressed="false">{catLabel(c.key)}<span class="lb-count">{n(counts[c.key] ?? 0)}</span></button>
+    ))}
+  </div>
+
+  <section data-lib-continue class="hidden lb-section" aria-labelledby="lb-continue-h">
+    <h2 id="lb-continue-h" class="t-title c-1 lb-h2">{s.continueTitle}</h2>
+    <div data-lib-continue-list class="lb-books"></div>
+  </section>
+
+  <section class="lb-section" aria-labelledby="lb-books-h">
+    <h2 id="lb-books-h" class="t-title c-1 lb-h2">{s.booksTitle}</h2>
+    <div class="lb-books" data-lib-grid>
+      {BOOKS.map((b) => {
+        const f = field(b.category);
+        const author = knownAuthor(b.author);
+        return (
+          <a href={reader(b.id)} class:list={['iu-card', 'lb-book', `is-${f.cls}`]}
+             data-book data-id={b.id} data-cat={b.category} data-total={b.totalChapters}
+             data-search={`${b.title} ${author} ${b.level}`}>
+            <span class="lb-spine" aria-hidden="true"><Fragment set:html={f.icon} /></span>
+            <span class="lb-text">
+              <span class="t-card-title c-1 lb-title" lang="ar" dir="rtl">{b.title}</span>
+              {author && <span class="t-caption c-3 lb-author" lang="ar" dir="rtl">{author}</span>}
+              <span class="t-caption c-2 lb-meta">{[catLabel(b.category), levelLabel(b.level), s.chapters(b.totalChapters)].join(SEP)}</span>
+              <span class="hidden lb-progress"><span class="lb-bar"><span></span></span><span class="t-micro c-2" data-pct></span></span>
+            </span>
+            <Fragment set:html={chev} />
+          </a>
+        );
+      })}
+    </div>
+    <p data-lib-empty class="hidden t-body c-2 lb-empty">{s.empty}</p>
+  </section>
+</div>
+
+<style is:global>
+  .iu-library { max-width: 960px; margin: 0 auto; padding: 0 0 40px; }
+  .iu-library .hidden { display: none !important; }
+  .iu-library .lb-head p { margin: 4px 0 0; }
+  .iu-library .lb-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+  .iu-library .lb-stats > div { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 6px; border-radius: 14px; background: var(--iu-sunken); text-align: center; }
+  .iu-library .lb-stat { font-size: 26px; font-weight: 700; line-height: 1.3; color: var(--iu-text); }
+
+  /* Search, as the dictionary's box */
+  .iu-library .lb-search { display: flex; align-items: center; gap: 6px; margin-top: 20px; padding: 6px 9px; padding-inline-start: 18px; transition: border-color .18s ease; }
+  .iu-library .lb-search:focus-within { border-color: var(--iu-primary); }
+  .iu-library .lb-search-icon { display: grid; color: var(--iu-text-3); flex: none; }
+  .iu-library .lb-search-icon svg { width: 22px; height: 22px; }
+  .iu-library .lb-input { flex: 1; min-width: 0; height: 48px; border: 0; outline: 0; background: transparent; padding: 0 6px; font-family: var(--iu-ui); font-size: 18px; color: var(--iu-text); }
+  .iu-library .lb-input::placeholder { color: var(--iu-text-3); opacity: .85; }
+
+  /* Field chips, as the challenge levels */
+  .iu-library .lb-chips { display: flex; gap: 8px; margin-top: 14px; overflow-x: auto; padding: 2px; scrollbar-width: none; }
+  .iu-library .lb-chips::-webkit-scrollbar { display: none; }
+  @media (min-width: 720px) { .iu-library .lb-chips { flex-wrap: wrap; overflow: visible; } }
+  .iu-library .lb-chip {
+    flex: none; display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--iu-border); background: var(--iu-card); color: var(--iu-text-2);
+    font-family: var(--iu-ui); font-size: 15px; font-weight: 600; white-space: nowrap; transition: background-color .15s ease, border-color .15s ease;
+  }
+  .iu-library .lb-chip:hover { border-color: var(--iu-teal); }
+  .iu-library .lb-chip.is-on { background: var(--iu-teal); border-color: var(--iu-teal); color: #fff; }
+  .iu-library .lb-chip:focus-visible { outline: 2px solid var(--iu-teal); outline-offset: 2px; }
+  .iu-library .lb-count { font-size: 13px; font-weight: 600; opacity: .7; }
+
+  .iu-library .lb-section { margin-top: 26px; }
+  .iu-library .lb-h2 { margin: 0 0 12px; }
+  .iu-library .lb-books { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 720px) { .iu-library .lb-books { grid-template-columns: 1fr 1fr; } }
+
+  /* The app's BookCard */
+  .iu-library .lb-book {
+    --spine: #7C4DFF;
+    display: flex; align-items: center; gap: 14px; padding: 14px; color: inherit; text-decoration: none;
+    transition: border-color .2s ease, box-shadow .25s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
+  }
+  .iu-library .lb-book:focus-visible { outline: 2px solid var(--iu-teal); outline-offset: 2px; }
+  /* Drawn as the app draws it: physical corners, page edge on the right. */
+  .iu-library .lb-spine {
+    position: relative; width: 50px; height: 70px; flex: none; display: grid; place-items: center;
+    background: var(--spine); color: rgba(255, 255, 255, .92);
+    border-radius: 4px 10px 10px 4px;
+  }
+  /* A thin page edge, just enough to read as a book. */
+  .iu-library .lb-spine::after { content: ''; position: absolute; right: 0; top: 7px; bottom: 7px; width: 2.5px; border-radius: 0 4px 4px 0; background: rgba(255, 255, 255, .22); }
+  .iu-library .lb-spine svg { width: 22px; height: 22px; }
+  .iu-library .lb-book.is-irab { --spine: #1F789B; }
+  .iu-library .lb-book.is-balagha { --spine: #6200EA; }
+  .iu-library .lb-book.is-sarf { --spine: #145973; }
+  .iu-library .lb-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .iu-library .lb-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .iu-library .lb-author, .iu-library .lb-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .iu-library .lb-author { margin-top: 2px; }
+  .iu-library .lb-meta { margin-top: 5px; }
+  .iu-library[dir='ltr'] :is(.lb-title, .lb-author) { text-align: left; }
+  .iu-library .lb-progress { display: flex; align-items: center; gap: 8px; margin-top: 9px; }
+  .iu-library .lb-bar { flex: 1; height: 4px; border-radius: 999px; background: var(--iu-sunken); overflow: hidden; }
+  .iu-library .lb-bar > span { display: block; height: 100%; width: var(--p, 0%); border-radius: inherit; background: var(--spine); }
+  .iu-library .lb-chev { width: 18px; height: 18px; flex: none; color: var(--iu-text-3); transition: translate .3s cubic-bezier(.22, 1, .36, 1), color .2s ease; }
+  @media (hover: hover) {
+    .iu-library .lb-book:hover { transform: translateY(-3px); box-shadow: var(--iu-shadow-lift); border-color: var(--iu-teal); }
+    .iu-library .lb-book:hover .lb-chev { translate: -3px 0; color: var(--iu-text-2); }
+    .iu-library[dir='ltr'] .lb-book:hover .lb-chev { translate: 3px 0; }
+  }
+  .iu-library .lb-book:active { transform: translateY(-1px) scale(.99); }
+  .iu-library .lb-empty { padding: 40px 0; text-align: center; }
+  @media (prefers-reduced-motion: reduce) {
+    .iu-library .lb-book { transform: none !important; }
+    .iu-library .lb-chev { translate: none !important; }
+  }
+</style>
+
+<script>
+  import { digits } from '../../lib/irab/strings';
+
+  const root = document.querySelector<HTMLElement>('[data-lib-root]');
+  if (root) {
+    const lang = root.getAttribute('lang') === 'en' ? 'en' : 'ar';
+    const cards = Array.from(root.querySelectorAll<HTMLAnchorElement>('[data-lib-grid] [data-book]'));
+    const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('.lb-chip'));
+    const search = root.querySelector<HTMLInputElement>('[data-lib-search]');
+    const empty = root.querySelector<HTMLElement>('[data-lib-empty]');
+    let activeCat = 'all';
+
+    const norm = (v: string) => (v || '')
+      .replace(/[ً-ْٰـ]/g, '')
+      .replace(/[إأآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه')
+      .toLowerCase().trim();
+
+    function apply() {
+      const qv = norm(search?.value || '');
+      let shown = 0;
+      cards.forEach((c) => {
+        const show = (activeCat === 'all' || c.dataset.cat === activeCat) && (!qv || norm(c.dataset.search || '').includes(qv));
+        c.classList.toggle('hidden', !show);
+        if (show) shown++;
+      });
+      empty?.classList.toggle('hidden', shown > 0);
+    }
+    chips.forEach((chip) => chip.addEventListener('click', () => {
+      activeCat = chip.dataset.cat || 'all';
+      chips.forEach((c) => {
+        c.classList.toggle('is-on', c === chip);
+        c.setAttribute('aria-pressed', String(c === chip));
+      });
+      apply();
+    }));
+    search?.addEventListener('input', apply);
+
+    // Reading progress: the reader keeps the last chapter (and when) per book.
+    const read = (key: string) => { try { return localStorage.getItem(key); } catch { return null; } };
+    const reading: { card: HTMLAnchorElement; at: number }[] = [];
+    cards.forEach((card) => {
+      const last = parseInt(read(`irab-lib-last:${card.dataset.id}`) || '', 10);
+      const total = parseInt(card.dataset.total || '0', 10);
+      if (!Number.isFinite(last) || last < 0 || total <= 0) return;
+      const pct = Math.min(100, Math.max(1, Math.round(((last + 1) / total) * 100)));
+      const prog = card.querySelector<HTMLElement>('.lb-progress');
+      if (!prog) return;
+      prog.classList.remove('hidden');
+      prog.querySelector<HTMLElement>('.lb-bar > span')?.style.setProperty('--p', `${pct}%`);
+      const label = prog.querySelector<HTMLElement>('[data-pct]');
+      if (label) label.textContent = lang === 'ar' ? `${digits(pct, 'ar')}٪` : `${pct}%`;
+      reading.push({ card, at: parseInt(read(`irab-lib-at:${card.dataset.id}`) || '0', 10) || 0 });
+    });
+    if (reading.length) {
+      const list = root.querySelector<HTMLElement>('[data-lib-continue-list]');
+      const tmpl = root.dataset.chapterOf || '';
+      reading.sort((a, b) => b.at - a.at).slice(0, 2).forEach(({ card }) => {
+        const copy = card.cloneNode(true) as HTMLAnchorElement;
+        const last = parseInt(read(`irab-lib-last:${card.dataset.id}`) || '0', 10);
+        const meta = copy.querySelector<HTMLElement>('.lb-meta');
+        if (meta) meta.textContent = digits(tmpl.replace('{i}', String(last + 1)).replace('{n}', card.dataset.total || ''), lang);
+        copy.removeAttribute('data-book');
+        list?.appendChild(copy);
+      });
+      root.querySelector<HTMLElement>('[data-lib-continue]')?.classList.remove('hidden');
+    }
+  }
+</script>

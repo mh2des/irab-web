@@ -73,6 +73,9 @@ import { LIBRARY_BASE } from '../../../lib/library';
 
   .reader-load { padding: 1rem 0; max-width: 44rem; }
   .reader-grid { display: grid; grid-template-columns: 19rem 1fr; gap: 2rem; align-items: start; }
+  /* The grid's display rule outranks the utility .hidden: without this the
+     empty reader showed under the skeleton and under an error. */
+  .reader-grid.hidden { display: none; }
 
   .reader-toc {
     position: sticky; top: 6rem; align-self: start;
@@ -190,7 +193,7 @@ import { LIBRARY_BASE } from '../../../lib/library';
       nextBtn.disabled = i === chapters.length - 1;
       tocList.querySelectorAll('button').forEach((b) => b.classList.toggle('is-active', b.dataset.i === String(i)));
       tocList.querySelector<HTMLElement>(`button[data-i="${i}"]`)?.scrollIntoView({ block: 'nearest' });
-      try { localStorage.setItem(lastKey, String(i)); } catch {}
+      try { localStorage.setItem(lastKey, String(i)); localStorage.setItem(`irab-lib-at:${bookId}`, String(Date.now())); } catch {}
       const u = new URL(location.href); u.searchParams.set('c', String(i)); history.replaceState(null, '', u);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -223,7 +226,7 @@ import { LIBRARY_BASE } from '../../../lib/library';
           if (isNaN(start)) { try { start = parseInt(localStorage.getItem(lastKey) || '0', 10) || 0; } catch { start = 0; } }
           go(Math.min(Math.max(start, 0), chapters.length - 1));
         })
-        .catch(() => fail("Couldn't load the book right now. Check your connection and try again."));
+        .catch((e) => (e instanceof SyntaxError || String((e as Error)?.message) === '404' ? fail('This book is not in the library. Go back to the library and choose a book.') : fail("Couldn't load the book right now. Check your connection and try again.")));
     }
   }
 </script>
