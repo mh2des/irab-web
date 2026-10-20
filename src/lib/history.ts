@@ -138,17 +138,3 @@ export function getStats(uid: string): HistoryStats {
   };
 }
 
-/** "5m ago" / "منذ ٥ د" style relative time. */
-export function formatAgo(ts: number, lang: 'ar' | 'en'): string {
-  const s = Math.max(1, Math.floor((Date.now() - ts) / 1000));
-  const ar = lang === 'ar';
-  const units: [number, string, string][] = [
-    [60, 'ث', 's'], [3600, 'د', 'm'], [86400, 'سا', 'h'], [604800, 'ي', 'd'],
-  ];
-  if (s < 60) return ar ? 'الآن' : 'just now';
-  if (s < 3600) return ar ? `منذ ${Math.floor(s / 60)} د` : `${Math.floor(s / 60)}m ago`;
-  if (s < 86400) return ar ? `منذ ${Math.floor(s / 3600)} سا` : `${Math.floor(s / 3600)}h ago`;
-  if (s < 604800) return ar ? `منذ ${Math.floor(s / 86400)} ي` : `${Math.floor(s / 86400)}d ago`;
-  const d = new Date(ts);
-  return d.toLocaleDateString(ar ? 'ar' : 'en', { day: 'numeric', month: 'short' });
-}
