@@ -190,7 +190,7 @@ import { LIBRARY_BASE } from '../../../lib/library';
       nextBtn.disabled = i === chapters.length - 1;
       tocList.querySelectorAll('button').forEach((b) => b.classList.toggle('is-active', b.dataset.i === String(i)));
       tocList.querySelector<HTMLElement>(`button[data-i="${i}"]`)?.scrollIntoView({ block: 'nearest' });
-      try { localStorage.setItem(lastKey, String(i)); } catch {}
+      try { localStorage.setItem(lastKey, String(i)); localStorage.setItem(`irab-lib-at:${bookId}`, String(Date.now())); } catch {}
       const u = new URL(location.href); u.searchParams.set('c', String(i)); history.replaceState(null, '', u);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
