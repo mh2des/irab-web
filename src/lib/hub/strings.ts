@@ -43,7 +43,6 @@ const ar = {
   refresh: 'تحديث الصفحة',
   recentTitle: 'النشاط الأخير',
   seeAll: 'عرض الكل',
-  words: (n: string) => `${n} كلمة`,
   analysis: 'تحليل',
   practice: 'تمرين',
 };
@@ -89,7 +88,6 @@ const en: HubStrings = {
   refresh: 'Refresh page',
   recentTitle: 'Recent activity',
   seeAll: 'See all',
-  words: (n) => `${n} words`,
   analysis: 'analysis',
   practice: 'practice',
 };

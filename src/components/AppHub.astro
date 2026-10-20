@@ -279,11 +279,11 @@ const tools = en
 
 <script>
   import { maybeSignedIn } from '../lib/session';
-  import { getStats, getHistory, formatAgo } from '../lib/history';
+  import { getStats, getHistory } from '../lib/history';
   import { HUB } from '../lib/hub/strings';
   import { WORKER } from '../lib/irab/api';
   import { esc } from '../lib/irab/render';
-  import { digits } from '../lib/irab/strings';
+  import { STRINGS, ago, digits } from '../lib/irab/strings';
   import { revealOnScroll } from '../lib/scroll-in';
   import * as I from '../lib/irab/icons';
 
@@ -291,6 +291,7 @@ const tools = en
   if (root) {
     const lang = root.dataset.lang === 'en' ? 'en' : 'ar';
     const s = HUB[lang];
+    const S = STRINGS[lang];
     const home = root.dataset.home || '/';
     const q = <T extends Element>(sel: string) => root.querySelector<T>(sel)!;
     const loadingEl = q<HTMLElement>('[data-hub-loading]');
@@ -349,7 +350,7 @@ const tools = en
         const isA = it.kind === 'analyze';
         const pct = (n: number) => (lang === 'ar' ? `${digits(Math.round(n * 100), lang)}٪` : `${Math.round(n * 100)}%`);
         const meta = isA
-          ? (it.wordCount ? s.words(digits(it.wordCount, lang)) : s.analysis)
+          ? (it.wordCount ? digits(S.words(it.wordCount), lang) : s.analysis)
           : (typeof it.score === 'number' ? `${pct(it.score)}${it.level ? ' · ' + it.level : ''}` : s.practice);
         const href = `${isA ? toolBase : practiceBase}?h=${encodeURIComponent(it.id)}`;
         return `
@@ -359,7 +360,7 @@ const tools = en
               <span class="t-sentence-s c-1" dir="rtl" lang="ar">${esc(it.sentence)}</span>
               <span class="t-caption c-3">${esc(meta)}</span>
             </span>
-            <span class="t-caption c-3 hb-recent-time">${esc(digits(formatAgo(it.ts, lang), lang))}</span>
+            <span class="t-caption c-3 hb-recent-time">${esc(digits(ago(it.ts, S), lang))}</span>
           </a>`;
       }).join('');
       revealOnScroll(list, '.hb-recent-item');
