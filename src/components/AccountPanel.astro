@@ -30,7 +30,10 @@ const ic = {
   scale: svg('<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>'),
   receipt: svg('<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>'),
   logOut: svg('<path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>'),
+  phone: svg('<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>'),
+  trash: svg('<path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'),
 };
+const external = { target: '_blank', rel: 'noopener' };
 ---
 
 <div class="iu iu-account" data-account-root data-lang={lang} data-login={p('/login')} dir={dir} lang={lang}>
@@ -98,6 +101,29 @@ const ic = {
         <button type="button" data-upgrade class="hidden iu-btn primary lg block ac-upgrade">
           <Fragment set:html={I.crown} /><span>{s.upgrade}</span>
         </button>
+        {/* Irab Plus only. Where to cancel depends on where the user paid;
+            the web path is the refund policy's own wording. */}
+        <button type="button" data-manage class="hidden iu-btn secondary block ac-manage" aria-expanded="false" aria-controls="ac-manage-panel">
+          <span>{s.manage}</span><Fragment set:html={I.chevronDown} />
+        </button>
+        <div id="ac-manage-panel" data-manage-panel class="hidden ac-manage-panel">
+          <p class="t-body-s c-2">{s.manageIntro}</p>
+          <div class="ac-store">
+            <span class="ac-icon"><Fragment set:html={ic.phone} /></span>
+            <span class="ac-text"><span class="t-body-strong c-1">{s.manageApple}</span><span class="t-caption c-3">{s.manageAppleHow}</span></span>
+            <a href="https://apps.apple.com/account/subscriptions" {...external} class="iu-pill outline">{s.manageAppleCta}</a>
+          </div>
+          <div class="ac-store">
+            <span class="ac-icon"><Fragment set:html={ic.phone} /></span>
+            <span class="ac-text"><span class="t-body-strong c-1">{s.manageGoogle}</span><span class="t-caption c-3">{s.manageGoogleHow}</span></span>
+            <a href="https://play.google.com/store/account/subscriptions" {...external} class="iu-pill outline">{s.manageGoogleCta}</a>
+          </div>
+          <div class="ac-store">
+            <span class="ac-icon"><Fragment set:html={ic.globe} /></span>
+            <span class="ac-text"><span class="t-body-strong c-1">{s.manageWeb}</span><span class="t-caption c-3">{s.manageWebHow}</span></span>
+          </div>
+          <p class="t-caption c-3 ac-manage-note">{s.manageNote}</p>
+        </div>
       </div>
     </section>
 
@@ -147,9 +173,36 @@ const ic = {
       </nav>
     </section>
 
-    <button type="button" data-signout class="iu-btn secondary lg block ac-signout">
-      <Fragment set:html={ic.logOut} /><span>{s.signOut}</span>
-    </button>
+    <div class="ac-exit">
+      <button type="button" data-signout class="iu-btn secondary lg block ac-signout">
+        <Fragment set:html={ic.logOut} /><span>{s.signOut}</span>
+      </button>
+      <button type="button" data-delete class="ac-delete t-label">{s.deleteAccount}</button>
+    </div>
+  </div>
+
+  <div data-del-modal class="hidden iu ac-modal" dir={dir} lang={lang} role="dialog" aria-modal="true" aria-labelledby="ac-del-h">
+    <div class="iu-card ac-dialog">
+      <span class="ac-del-icon" aria-hidden="true"><Fragment set:html={ic.trash} /></span>
+      <h2 id="ac-del-h" class="t-title c-1">{s.dlgTitle}</h2>
+      <p class="t-body-s c-2">{s.dlgBody}</p>
+      <p data-del-plus class="hidden t-body-s ac-del-plus">{s.dlgPlus}</p>
+      <div data-del-confirm class="ac-dlg-actions">
+        <button type="button" data-del-go class="iu-btn lg ac-danger">{s.dlgConfirm}</button>
+        <button type="button" data-del-cancel class="iu-btn secondary lg">{s.dlgCancel}</button>
+      </div>
+      <div data-del-reauth class="hidden ac-reauth">
+        <p class="t-body-s c-1">{s.reauthBody}</p>
+        <form data-del-pw-form class="hidden ac-pw">
+          <label class="t-label c-2" for="ac-del-pw">{s.password}</label>
+          <input id="ac-del-pw" type="password" autocomplete="current-password" class="ac-input" required />
+          <button type="submit" class="iu-btn lg ac-danger">{s.reauthPassword}</button>
+        </form>
+        <button type="button" data-del-popup class="hidden iu-btn lg ac-danger"></button>
+        <button type="button" data-del-cancel class="iu-btn secondary lg">{s.dlgCancel}</button>
+      </div>
+      <p data-del-status class="t-body-s c-2 ac-del-status" role="status" aria-live="polite"></p>
+    </div>
   </div>
 </div>
 
@@ -224,8 +277,44 @@ const ic = {
     .iu-account .iu-btn.ac-signout:hover { background: var(--iu-error-soft); border-color: transparent; }
   }
 
+  /* Manage or cancel: where to go, by where the user paid */
+  .iu-account .ac-manage { margin-top: 16px; justify-content: space-between; }
+  .iu-account .ac-manage svg { width: 18px; height: 18px; transition: rotate .25s ease; }
+  .iu-account .ac-manage[aria-expanded='true'] svg { rotate: 180deg; }
+  .iu-account .ac-manage-panel { margin-top: 14px; }
+  .iu-account .ac-manage-panel > p { margin: 0 0 4px; }
+  .iu-account .ac-store { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 0; border-top: 1px solid var(--iu-border); }
+  .iu-account .ac-store .ac-text { min-width: 180px; }
+  .iu-account .ac-store .iu-pill { text-decoration: none; }
+  .iu-account .ac-manage-note { margin: 4px 0 0; padding-top: 12px; border-top: 1px solid var(--iu-border); }
+
+  .iu-account .ac-exit { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .iu-account .ac-delete { border: 0; background: none; padding: 8px 12px; color: var(--iu-text-3); cursor: pointer; font-family: var(--iu-ui); }
+  .iu-account .ac-delete:hover { color: var(--iu-error-text); text-decoration: underline; text-underline-offset: 4px; }
+  .iu-account .ac-delete:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; border-radius: 8px; }
+
+  /* Delete: the confirmation dialog. It moves to <body> so it covers the
+     site nav, which is why these rules are not under .iu-account. */
+  .ac-modal.hidden, .ac-modal .hidden { display: none !important; }
+  .ac-modal { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 16px; background: rgba(11, 17, 21, 0.5); }
+  .ac-modal .ac-dialog { width: 100%; max-width: 460px; padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .ac-modal .ac-dialog p { margin: 0; }
+  .ac-modal .ac-del-icon { width: 52px; height: 52px; border-radius: 999px; display: grid; place-items: center; background: var(--iu-error-soft); color: var(--iu-error); }
+  .ac-modal .ac-del-icon svg { width: 24px; height: 24px; }
+  .ac-modal .ac-del-plus { padding: 10px 12px; border-radius: 12px; background: var(--iu-partial-soft); color: var(--iu-partial-text); }
+  .ac-modal .ac-dlg-actions, .ac-modal .ac-reauth, .ac-modal .ac-pw { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+  .ac-modal .iu-btn.ac-danger { background: var(--iu-error); color: #fff; }
+  .ac-modal .iu-btn.ac-danger:disabled, .ac-modal .ac-dialog .iu-btn:disabled { opacity: .55; cursor: default; }
+  .ac-modal .ac-input {
+    height: 50px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--iu-border-strong);
+    background: var(--iu-card); color: var(--iu-text); font: inherit; font-size: 16px;
+  }
+  .ac-modal .ac-input:focus { outline: none; border-color: var(--iu-primary); }
+  .ac-modal .ac-del-status:empty { display: none; }
+
   @media (prefers-reduced-motion: reduce) {
     .iu-account .ac-chev { translate: none !important; }
+    .iu-account .ac-manage svg { transition: none; }
   }
 </style>
 
@@ -233,6 +322,8 @@ const ic = {
   import { maybeSignedIn } from '../lib/session';
   import { ACCOUNT } from '../lib/account/strings';
   import { digits } from '../lib/irab/strings';
+  import { clearHistory } from '../lib/history';
+  import type { User } from 'firebase/auth';
 
   const root = document.querySelector<HTMLElement>('[data-account-root]');
   if (root) {
@@ -241,11 +332,24 @@ const ic = {
     const login = root.dataset.login || '/login';
     const q = <T extends Element>(sel: string) => root.querySelector<T>(sel)!;
     const toLogin = () => window.location.replace(`${login}?next=${encodeURIComponent(window.location.pathname)}`);
+    let current: User | null = null;
+    let isPlus = false;
+    let leaving = false; // the account is being deleted: the sign-out that follows is ours
+
+    const manage = q<HTMLButtonElement>('[data-manage]');
+    manage.addEventListener('click', () => {
+      const open = manage.getAttribute('aria-expanded') !== 'true';
+      manage.setAttribute('aria-expanded', String(open));
+      q<HTMLElement>('[data-manage-panel]').classList.toggle('hidden', !open);
+    });
 
     (async () => {
       if (!maybeSignedIn()) { toLogin(); return; }
-      const [{ onAuth, logout, resendVerification }, { fetchMe }, { rememberSignedIn, forgetSignedIn }] =
-        await Promise.all([import('../lib/auth'), import('../lib/entitlement'), import('../lib/session')]);
+      const [
+        { onAuth, logout, resendVerification, needsRecentLogin, reauthenticate, signInProvider, authError },
+        { fetchMe },
+        { rememberSignedIn, forgetSignedIn },
+      ] = await Promise.all([import('../lib/auth'), import('../lib/entitlement'), import('../lib/session')]);
 
       q<HTMLButtonElement>('[data-signout]').addEventListener('click', async () => {
         try { await logout(); } catch {}
@@ -253,8 +357,11 @@ const ic = {
         window.location.assign(login);
       });
 
+      wireDelete({ needsRecentLogin, reauthenticate, signInProvider, authError, forgetSignedIn });
+
       onAuth((user) => {
-        if (!user) { forgetSignedIn(); toLogin(); return; }
+        if (!user) { if (leaving) return; forgetSignedIn(); toLogin(); return; }
+        current = user;
         rememberSignedIn();
         q<HTMLElement>('[data-loading]').classList.add('hidden');
         q<HTMLElement>('[data-panel]').classList.remove('hidden');
@@ -323,6 +430,8 @@ const ic = {
           noteEl.textContent = s.notePlus;
           card.classList.add('is-plus');
           q<HTMLElement>('[data-plan-badge]').classList.remove('hidden');
+          manage.classList.remove('hidden');
+          isPlus = true;
         }).catch(() => {
           // The lookup failed, so this "Free plan" may be wrong. That is exactly
           // when a paying subscriber needs the account hint most.
@@ -330,5 +439,121 @@ const ic = {
         });
       });
     })();
+
+    /**
+     * Delete the account the way the app does (auth_service.dart deleteAccount):
+     * refuse up front if the sign-in is too old (sign in again first), then the
+     * deleteUserData function wipes the server side, then this device's
+     * history goes, and the Firebase account is deleted last.
+     */
+    function wireDelete(a: {
+      needsRecentLogin: (u: User) => Promise<boolean>;
+      reauthenticate: (u: User, password?: string) => Promise<unknown>;
+      signInProvider: (u: User) => string;
+      authError: (code: string, lang: 'ar' | 'en', provider?: string) => string;
+      forgetSignedIn: () => void;
+    }) {
+      const modal = q<HTMLElement>('[data-del-modal]');
+      document.body.appendChild(modal);
+      const m = <T extends Element>(sel: string) => modal.querySelector<T>(sel)!;
+      const status = m<HTMLElement>('[data-del-status]');
+      const confirmStep = m<HTMLElement>('[data-del-confirm]');
+      const reauthStep = m<HTMLElement>('[data-del-reauth]');
+      const pwForm = m<HTMLFormElement>('[data-del-pw-form]');
+      const pwInput = m<HTMLInputElement>('#ac-del-pw');
+      const popup = m<HTMLButtonElement>('[data-del-popup]');
+      const opener = q<HTMLButtonElement>('[data-delete]');
+      let busy = false;
+      let serverWiped = false;
+
+      const providerName = (u: User) => ({ 'google.com': 'Google', 'apple.com': 'Apple' } as Record<string, string>)[a.signInProvider(u)];
+      const setBusy = (on: boolean) => {
+        busy = on;
+        modal.querySelectorAll<HTMLButtonElement | HTMLInputElement>('button, input').forEach((el) => { el.disabled = on; });
+      };
+      const say = (text: string, error = false) => {
+        status.textContent = text;
+        status.classList.toggle('c-error', error);
+      };
+      const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
+      function close() {
+        if (busy) return;
+        modal.classList.add('hidden');
+        document.removeEventListener('keydown', onKey);
+        opener.focus();
+      }
+      function showReauth(u: User) {
+        confirmStep.classList.add('hidden');
+        reauthStep.classList.remove('hidden');
+        const name = providerName(u);
+        pwForm.classList.toggle('hidden', !!name);
+        popup.classList.toggle('hidden', !name);
+        if (name) { popup.textContent = s.reauthWith(name); popup.focus(); } else pwInput.focus();
+      }
+
+      async function doDelete(u: User) {
+        setBusy(true);
+        say(s.deleting);
+        try {
+          if (!serverWiped) {
+            const [{ getFunctions, httpsCallable }, { app }] = await Promise.all([import('firebase/functions'), import('../lib/firebase')]);
+            await httpsCallable(getFunctions(app, 'us-central1'), 'deleteUserData')();
+            serverWiped = true;
+          }
+          try { clearHistory(u.uid); } catch {}
+          leaving = true;
+          await u.delete();
+          a.forgetSignedIn();
+          say(s.deleted);
+          setTimeout(() => window.location.replace(lang === 'en' ? '/en' : '/'), 1800);
+        } catch (e) {
+          leaving = false;
+          setBusy(false);
+          const code = String((e as { code?: string })?.code ?? '');
+          if (code === 'auth/requires-recent-login') { say(''); showReauth(u); return; }
+          say(code.startsWith('auth/') ? a.authError(code, lang, providerName(u)) : s.deleteFailed, true);
+        }
+      }
+
+      async function reauthThenDelete(password?: string) {
+        const u = current;
+        if (!u || busy) return;
+        setBusy(true);
+        say('');
+        try {
+          await a.reauthenticate(u, password);
+        } catch (e) {
+          setBusy(false);
+          const code = String((e as { code?: string })?.code ?? '');
+          say(a.authError(code, lang, providerName(u)), true);
+          return;
+        }
+        await doDelete(u);
+      }
+
+      opener.addEventListener('click', () => {
+        if (!current) return;
+        say('');
+        confirmStep.classList.remove('hidden');
+        reauthStep.classList.add('hidden');
+        m<HTMLElement>('[data-del-plus]').classList.toggle('hidden', !isPlus);
+        modal.classList.remove('hidden');
+        document.addEventListener('keydown', onKey);
+        m<HTMLButtonElement>('[data-del-cancel]').focus();
+      });
+      modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+      modal.querySelectorAll<HTMLButtonElement>('[data-del-cancel]').forEach((b) => b.addEventListener('click', close));
+      m<HTMLButtonElement>('[data-del-go]').addEventListener('click', async () => {
+        const u = current;
+        if (!u || busy) return;
+        setBusy(true);
+        const stale = await a.needsRecentLogin(u);
+        setBusy(false);
+        if (stale) { showReauth(u); return; }
+        await doDelete(u);
+      });
+      popup.addEventListener('click', () => reauthThenDelete());
+      pwForm.addEventListener('submit', (e) => { e.preventDefault(); reauthThenDelete(pwInput.value); });
+    }
   }
 </script>
