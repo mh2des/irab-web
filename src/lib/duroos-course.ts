@@ -108,14 +108,20 @@ export const num = (lang: Lang, n: number | string, pad = 0): string => {
 };
 
 /**
- * Arabic counted noun with the right agreement: forms are
- * [one, two, three-to-ten, eleven-and-up, the bare noun for 1].
+ * Arabic counted noun with the right agreement. Forms:
+ *   [0] one            «درس واحد»
+ *   [1] two            «درسان»
+ *   [2] 3 to 10        genitive plural «دروس»
+ *   [3] 11 to 99       accusative singular «درسًا»
+ *   [4] 100 and up when the last two digits are 0 to 2, genitive singular
+ *       «درسٍ»; optional, falls back to [3] for counts that never get there
  */
-export const arCount = (n: number, f: [string, string, string, string]): string => {
+export const arCount = (n: number, f: [string, string, string, string, string?]): string => {
   const d = num('ar', n);
   if (n === 1) return f[0];
   if (n === 2) return f[1];
   const m = n % 100;
   if (m >= 3 && m <= 10) return `${d} ${f[2]}`;
+  if (n >= 100 && m <= 2) return `${d} ${f[4] ?? f[3]}`;
   return `${d} ${f[3]}`;
 };
