@@ -1,0 +1,661 @@
+---
+/**
+ * Reader: /library/read and /en/library/read (?b=<bookId>[&c=<chapter>]).
+ *
+ * A reading screen, not a page with a book in it: its own top bar (back to
+ * the library, the book and the chapter, contents, reading settings, theme)
+ * in place of the site nav, a thin line that fills as the chapter is read,
+ * and the text on one calm column. Reading settings (face, size, spacing,
+ * column width, a paper tint) and the contents panel are remembered on the
+ * device, like the last chapter read (irab-lib-last / irab-lib-at, which the
+ * library reads for «تابع القراءة»).
+ *
+ * The book streams client-side from the same CORS-open bundle the app reads;
+ * nothing here needs an account.
+ */
+import '../../styles/irab-ui.css';
+import ThemeToggle from '../ThemeToggle.astro';
+import { LIBRARY_BASE } from '../../lib/library';
+
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const en = lang === 'en';
+const dir = en ? 'ltr' : 'rtl';
+const libHref = en ? '/en/library' : '/library';
+
+const s = en
+  ? {
+      library: 'Library', contents: 'Contents', searchToc: 'Search contents…', close: 'Close',
+      prefs: 'Reading settings', font: 'Typeface', fontA: 'Thmanyah', fontB: 'Amiri',
+      size: 'Text size', smaller: 'Smaller text', larger: 'Larger text',
+      spacing: 'Line spacing', roomy: 'Roomy', compact: 'Compact',
+      width: 'Column', narrow: 'Narrow', wide: 'Wide',
+      page: 'Page', pageAuto: 'Plain', pagePaper: 'Paper',
+      prev: 'Previous chapter', next: 'Next chapter',
+      chapterOf: 'Chapter {i} of {n}', chapterN: 'Chapter {i}', pageN: 'p. {p}',
+      noBook: 'No book selected. Go back to the library and pick a book.',
+      notFound: 'This book is not in the library. Go back to the library and choose a book.',
+      loadFail: "Couldn't load the book right now. Check your connection and try again.",
+      chaptersFail: "Couldn't load this book's chapters.",
+      back: 'Back to the library',
+      docTitle: '{t}: Grammar Library | Irab App', book: 'Book',
+    }
+  : {
+      library: 'المكتبة', contents: 'الفهرس', searchToc: 'ابحث في الفهرس…', close: 'إغلاق',
+      prefs: 'إعدادات القراءة', font: 'الخط', fontA: 'ثمانية', fontB: 'أميري',
+      size: 'حجم الخط', smaller: 'تصغير الخط', larger: 'تكبير الخط',
+      spacing: 'تباعد الأسطر', roomy: 'واسع', compact: 'متقارب',
+      width: 'عرض العمود', narrow: 'ضيّق', wide: 'واسع',
+      page: 'الصفحة', pageAuto: 'عادية', pagePaper: 'ورقية',
+      prev: 'الفصل السابق', next: 'الفصل التالي',
+      chapterOf: 'الفصل {i} من {n}', chapterN: 'الفصل {i}', pageN: 'ص {p}',
+      noBook: 'لم يُحدَّد كتاب. عُد إلى المكتبة واختر كتابًا.',
+      notFound: 'هذا الكتاب غير موجود في المكتبة. عُد إلى المكتبة واختر كتابًا.',
+      loadFail: 'تعذّر تحميل الكتاب الآن. تأكّد من اتصالك وحاول مرة أخرى.',
+      chaptersFail: 'تعذّر تحميل فصول هذا الكتاب.',
+      back: 'العودة إلى المكتبة',
+      docTitle: '{t}: المكتبة النحوية | إعراب آب', book: 'كتاب',
+    };
+
+// Back: right-pointing in Arabic (back is toward the start), left in English.
+const backPath = en ? 'M19 12H5m6-6-6 6 6 6' : 'M5 12h14m-6-6 6 6-6 6';
+const icon = (d: string, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+---
+
+<div class="iu iu-reader" data-reader data-lang={lang} data-base={LIBRARY_BASE} dir={dir} lang={lang}
+     data-font="thmanyah" data-size="2" data-lh="roomy" data-width="narrow" data-page="auto"
+     data-strings={JSON.stringify(s)}>
+  <header class="rd-bar">
+    <div class="rd-bar-in">
+      <a href={libHref} class="rd-back">
+        <Fragment set:html={icon(backPath)} />
+        <span>{s.library}</span>
+      </a>
+      <div class="rd-mid">
+        <h1 class="rd-book" data-book-title lang="ar" dir="rtl"></h1>
+        <p class="rd-pos" data-chapter-pos></p>
+      </div>
+      <div class="rd-tools">
+        <button type="button" class="rd-btn" data-toc-toggle aria-label={s.contents} aria-controls="rd-toc" aria-expanded="false" title={s.contents}>
+          <Fragment set:html={icon('M4 6h11M4 12h16M4 18h11M19 5v2M19 17v2')} />
+        </button>
+        <button type="button" class="rd-btn rd-aa" data-prefs-toggle aria-label={s.prefs} aria-controls="rd-prefs" aria-expanded="false" title={s.prefs}>
+          <span aria-hidden="true">Aa</span>
+        </button>
+        <span class="rd-theme"><ThemeToggle /></span>
+      </div>
+    </div>
+    <div class="rd-progress" aria-hidden="true"><span data-progress></span></div>
+
+    <div id="rd-prefs" class="rd-prefs" data-prefs role="dialog" aria-label={s.prefs} hidden>
+      <div class="rd-pref">
+        <span class="rd-pref-label">{s.font}</span>
+        <div class="rd-seg" role="radiogroup" aria-label={s.font}>
+          <button type="button" role="radio" data-pref="font" data-val="thmanyah" class="rd-seg-opt rd-f-thmanyah">{s.fontA}</button>
+          <button type="button" role="radio" data-pref="font" data-val="amiri" class="rd-seg-opt rd-f-amiri">{s.fontB}</button>
+        </div>
+      </div>
+      <div class="rd-pref">
+        <span class="rd-pref-label">{s.size}</span>
+        <div class="rd-stepper">
+          <button type="button" class="rd-step" data-size-step="-1" aria-label={s.smaller}><span aria-hidden="true" class="rd-a-s">ا</span></button>
+          <span class="rd-dots" aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <span data-dot={i}></span>)}</span>
+          <button type="button" class="rd-step" data-size-step="1" aria-label={s.larger}><span aria-hidden="true" class="rd-a-l">ا</span></button>
+        </div>
+      </div>
+      <div class="rd-pref">
+        <span class="rd-pref-label">{s.spacing}</span>
+        <div class="rd-seg" role="radiogroup" aria-label={s.spacing}>
+          <button type="button" role="radio" data-pref="lh" data-val="compact" class="rd-seg-opt">{s.compact}</button>
+          <button type="button" role="radio" data-pref="lh" data-val="roomy" class="rd-seg-opt">{s.roomy}</button>
+        </div>
+      </div>
+      <div class="rd-pref">
+        <span class="rd-pref-label">{s.width}</span>
+        <div class="rd-seg" role="radiogroup" aria-label={s.width}>
+          <button type="button" role="radio" data-pref="width" data-val="narrow" class="rd-seg-opt">{s.narrow}</button>
+          <button type="button" role="radio" data-pref="width" data-val="wide" class="rd-seg-opt">{s.wide}</button>
+        </div>
+      </div>
+      <div class="rd-pref">
+        <span class="rd-pref-label">{s.page}</span>
+        <div class="rd-seg" role="radiogroup" aria-label={s.page}>
+          <button type="button" role="radio" data-pref="page" data-val="auto" class="rd-seg-opt"><span class="rd-swatch is-auto" aria-hidden="true"></span>{s.pageAuto}</button>
+          <button type="button" role="radio" data-pref="page" data-val="paper" class="rd-seg-opt"><span class="rd-swatch is-paper" aria-hidden="true"></span>{s.pagePaper}</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="rd-body">
+    <aside id="rd-toc" class="rd-toc" data-toc aria-label={s.contents}>
+      <div class="rd-toc-head">
+        <p class="rd-toc-title">{s.contents}<span class="rd-toc-count" data-toc-count></span></p>
+        <button type="button" class="rd-btn rd-toc-close" data-toc-close aria-label={s.close}>
+          <Fragment set:html={icon('M6 6l12 12M18 6 6 18')} />
+        </button>
+      </div>
+      <div class="rd-toc-search">
+        <input type="search" data-toc-search placeholder={s.searchToc} aria-label={s.searchToc} dir={en ? 'auto' : 'rtl'} />
+      </div>
+      <ol data-toc-list lang="ar" dir="rtl" class="rd-toc-list"></ol>
+    </aside>
+
+    <main class="rd-main">
+      <div data-reader-loading class="rd-sheet rd-loading" aria-busy="true">
+        <div class="skeleton rd-sk" style="width:38%;height:14px"></div>
+        <div class="skeleton rd-sk" style="width:72%;height:30px;margin-bottom:28px"></div>
+        {[100, 96, 99, 88, 100, 93, 97, 70].map((w) => <div class="skeleton rd-sk" style={`width:${w}%`}></div>)}
+      </div>
+
+      <div data-reader-error class="rd-sheet rd-error hidden" role="alert">
+        <span class="rd-error-ic" aria-hidden="true"><Fragment set:html={icon('M12 8v5M12 16.5v.01M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z')} /></span>
+        <p data-error-text></p>
+        <a href={libHref} class="rd-error-btn">{s.back}</a>
+      </div>
+
+      <article data-article class="rd-sheet rd-article hidden">
+        <p class="rd-kicker" data-chapter-kicker></p>
+        <h2 class="rd-title" data-chapter-title lang="ar" dir="rtl"></h2>
+        <div class="rd-text" data-chapter-html lang="ar" dir="rtl"></div>
+      </article>
+
+      <nav class="rd-nav hidden" data-chapter-nav aria-label={s.contents}>
+        <button type="button" class="rd-nav-card is-prev" data-prev>
+          <span class="rd-nav-label"><Fragment set:html={icon(backPath)} />{s.prev}</span>
+          <span class="rd-nav-title" data-prev-title lang="ar" dir="rtl"></span>
+        </button>
+        <button type="button" class="rd-nav-card is-next" data-next>
+          <span class="rd-nav-label">{s.next}<Fragment set:html={icon(en ? 'M5 12h14m-6-6 6 6-6 6' : 'M19 12H5m6-6-6 6 6 6')} /></span>
+          <span class="rd-nav-title" data-next-title lang="ar" dir="rtl"></span>
+        </button>
+      </nav>
+    </main>
+  </div>
+  <div class="rd-scrim" data-toc-scrim></div>
+</div>
+
+<style is:global>
+  .iu-reader {
+    --rd-ease: cubic-bezier(.22, 1, .36, 1);
+    --rd-bar-h: 64px;
+    --rd-sheet: var(--iu-card);
+    --rd-ink: var(--iu-text);
+    --rd-ink-2: var(--iu-text-2);
+    --rd-rule: var(--iu-border);
+    --rd-size: 22px;
+    --rd-lh: 2.15;
+    --rd-measure: 42rem;
+    min-height: 100dvh;
+  }
+  .iu-reader .hidden { display: none !important; }
+  .iu-reader[data-size='0'] { --rd-size: 18px; }
+  .iu-reader[data-size='1'] { --rd-size: 20px; }
+  .iu-reader[data-size='3'] { --rd-size: 25px; }
+  .iu-reader[data-size='4'] { --rd-size: 28px; }
+  .iu-reader[data-lh='compact'] { --rd-lh: 1.85; }
+  .iu-reader[data-width='wide'] { --rd-measure: 54rem; }
+  /* Paper: a warm page for long reading, in both themes. */
+  .iu-reader[data-page='paper'] { --rd-sheet: #F6EFDF; --rd-ink: #3A2E1E; --rd-ink-2: #5C4C36; --rd-rule: #E6DAC0; }
+  .dark .iu-reader[data-page='paper'] { --rd-sheet: #1D1913; --rd-ink: #E9DEC7; --rd-ink-2: #BDAE92; --rd-rule: #3A3122; }
+
+  /* ── Top bar ── */
+  .iu-reader .rd-bar {
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in srgb, var(--iu-canvas) 88%, transparent);
+    backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid var(--iu-border);
+  }
+  .iu-reader .rd-bar-in { max-width: 1280px; height: var(--rd-bar-h); margin: 0 auto; padding: 0 clamp(12px, 3vw, 24px); display: flex; align-items: center; gap: 12px; }
+  .iu-reader .rd-back {
+    flex: none; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px 0 12px; border-radius: 999px;
+    font-size: 15px; font-weight: 700; color: var(--iu-text-2); text-decoration: none;
+    background: var(--iu-card); border: 1px solid var(--iu-border); transition: border-color .2s ease, color .2s ease;
+  }
+  .iu-reader .rd-back svg { width: 17px; height: 17px; transition: translate .3s var(--rd-ease); }
+  .iu-reader .rd-back:hover { color: var(--iu-primary-text); border-color: var(--iu-border-strong); }
+  .iu-reader .rd-back:hover svg { translate: 3px 0; }
+  .iu-reader[dir='ltr'] .rd-back:hover svg { translate: -3px 0; }
+  .iu-reader .rd-mid { flex: 1; min-width: 0; text-align: center; }
+  .iu-reader .rd-book { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .iu-reader .rd-pos { margin: 0; font-size: 12.5px; font-weight: 600; color: var(--iu-text-3); line-height: 1.4; }
+  .iu-reader .rd-tools { flex: none; display: flex; align-items: center; gap: 6px; }
+  .iu-reader .rd-btn {
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; cursor: pointer;
+    color: var(--iu-text-2); background: transparent; border: 1px solid transparent;
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .iu-reader .rd-btn svg { width: 20px; height: 20px; }
+  .iu-reader .rd-btn:hover, .iu-reader .rd-btn[aria-expanded='true'] { color: var(--iu-primary-text); background: var(--iu-primary-soft); }
+  .iu-reader .rd-btn:focus-visible, .iu-reader .rd-back:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
+  /* The UI face, not Amiri: Amiri is fetched only when it is chosen (or its
+     option is on screen in the open settings panel). */
+  .iu-reader .rd-aa span { font-family: var(--iu-ui); font-size: 17px; font-weight: 700; line-height: 1; }
+  .iu-reader .rd-theme { display: grid; place-items: center; width: 40px; height: 40px; }
+  @media (max-width: 479px) { .iu-reader .rd-back span { display: none; } .iu-reader .rd-back { width: 40px; padding: 0; justify-content: center; } }
+
+  .iu-reader .rd-progress { height: 2px; background: transparent; }
+  .iu-reader .rd-progress > span { display: block; height: 100%; background: var(--iu-primary); transform: scaleX(var(--p, 0)); transform-origin: right; transition: transform .12s linear; }
+  .iu-reader[dir='ltr'] .rd-progress > span { transform-origin: left; }
+
+  /* ── Reading settings ── */
+  .iu-reader .rd-prefs {
+    position: absolute; top: calc(var(--rd-bar-h) + 8px); inset-inline-end: clamp(12px, 3vw, 24px);
+    width: min(340px, calc(100vw - 24px)); padding: 16px; border-radius: 20px; display: grid; gap: 14px;
+    background: var(--iu-card); border: 1px solid var(--iu-border); box-shadow: 0 2px 6px rgba(23, 56, 71, .08), 0 24px 48px -16px rgba(23, 56, 71, .32);
+    transform-origin: top right;
+  }
+  .iu-reader[dir='ltr'] .rd-prefs { transform-origin: top left; }
+  .dark .iu-reader .rd-prefs { box-shadow: 0 24px 48px -16px rgba(0, 0, 0, .7); }
+  .iu-reader .rd-prefs[hidden] { display: none; }
+  .iu-reader .rd-prefs.is-in { animation: rd-pop .26s var(--rd-ease) both; }
+  @keyframes rd-pop { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: none; } }
+  .iu-reader .rd-pref { display: grid; gap: 7px; }
+  .iu-reader .rd-pref-label { font-size: 13px; font-weight: 700; color: var(--iu-text-3); }
+  .iu-reader .rd-seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 4px; border-radius: 14px; background: var(--iu-sunken); }
+  .iu-reader .rd-seg-opt {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; border-radius: 10px; cursor: pointer;
+    font-family: var(--iu-ui); font-size: 15px; font-weight: 600; color: var(--iu-text-2); background: transparent; border: 0;
+    transition: background-color .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .iu-reader .rd-seg-opt[aria-checked='true'] { color: var(--iu-primary-text); background: var(--iu-card); box-shadow: 0 1px 3px rgba(23, 56, 71, .14); }
+  .iu-reader .rd-seg-opt:focus-visible, .iu-reader .rd-step:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 1px; }
+  .iu-reader .rd-f-amiri { font-family: 'Amiri', serif; font-size: 17px; }
+  .iu-reader .rd-swatch { width: 16px; height: 16px; border-radius: 5px; border: 1px solid var(--iu-border-strong); }
+  .iu-reader .rd-swatch.is-auto { background: var(--iu-card); }
+  .iu-reader .rd-swatch.is-paper { background: #F6EFDF; border-color: #DCCBA6; }
+  .iu-reader .rd-stepper { display: flex; align-items: center; gap: 10px; padding: 4px; border-radius: 14px; background: var(--iu-sunken); }
+  .iu-reader .rd-step { display: grid; place-items: center; width: 44px; height: 40px; border-radius: 10px; cursor: pointer; border: 0; color: var(--iu-text); background: var(--iu-card); box-shadow: 0 1px 3px rgba(23, 56, 71, .12); transition: opacity .2s ease; }
+  .iu-reader .rd-step:disabled { opacity: .4; cursor: default; }
+  .iu-reader .rd-a-s { font-size: 15px; font-weight: 700; }
+  .iu-reader .rd-a-l { font-size: 23px; font-weight: 700; }
+  .iu-reader .rd-dots { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .iu-reader .rd-dots span { width: 7px; height: 7px; border-radius: 99px; background: var(--iu-border-strong); transition: background-color .2s ease, transform .25s var(--rd-ease); }
+  .iu-reader .rd-dots span.is-on { background: var(--iu-primary); transform: scale(1.25); }
+
+  /* ── Body: contents beside the text on wide screens ── */
+  .iu-reader .rd-body { max-width: 1280px; margin: 0 auto; padding: 24px clamp(12px, 3vw, 24px) 64px; display: grid; gap: 28px; align-items: start; }
+  @media (min-width: 1100px) {
+    .iu-reader .rd-body { grid-template-columns: 300px minmax(0, 1fr); }
+    .iu-reader.toc-off .rd-body { grid-template-columns: minmax(0, 1fr); }
+    .iu-reader.toc-off .rd-toc { display: none; }
+  }
+
+  .iu-reader .rd-toc {
+    display: flex; flex-direction: column; min-height: 0;
+    background: var(--iu-card); border: 1px solid var(--iu-border); border-radius: 20px; box-shadow: var(--iu-shadow-card); overflow: hidden;
+  }
+  @media (min-width: 1100px) { .iu-reader .rd-toc { position: sticky; top: calc(var(--rd-bar-h) + 20px); max-height: calc(100dvh - var(--rd-bar-h) - 40px); } }
+  .iu-reader .rd-toc-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px 6px; }
+  .iu-reader .rd-toc-title { margin: 0; display: flex; align-items: baseline; gap: 8px; font-size: 17px; font-weight: 800; }
+  .iu-reader .rd-toc-count { font-size: 13px; font-weight: 600; color: var(--iu-text-3); }
+  .iu-reader .rd-toc-close { display: none; }
+  .iu-reader .rd-toc-search { padding: 6px 12px 10px; border-bottom: 1px solid var(--iu-border); }
+  .iu-reader .rd-toc-search input {
+    width: 100%; height: 42px; padding: 0 14px; border-radius: 12px; outline: 0;
+    font-family: var(--iu-ui); font-size: 15px; color: var(--iu-text); background: var(--iu-sunken); border: 1px solid transparent;
+    transition: border-color .18s ease, background-color .18s ease;
+  }
+  .iu-reader .rd-toc-search input:focus { border-color: var(--iu-primary); background: var(--iu-card); }
+  .iu-reader .rd-toc-list { list-style: none; margin: 0; padding: 6px; overflow-y: auto; overscroll-behavior: contain; }
+  .iu-reader .rd-toc-list li { content-visibility: auto; contain-intrinsic-size: auto 48px; }
+  .iu-reader .rd-toc-list button {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; width: 100%; text-align: start; cursor: pointer;
+    padding: 9px 10px; border: 0; border-radius: 10px; background: transparent;
+    font-family: var(--iu-ui); font-size: 15px; line-height: 1.65; color: var(--iu-text-2);
+    transition: background-color .15s ease, color .15s ease;
+  }
+  .iu-reader .rd-toc-list button:hover { background: var(--iu-sunken); color: var(--iu-text); }
+  .iu-reader .rd-toc-list button.is-active { background: var(--iu-primary-soft); color: var(--iu-primary-text); font-weight: 700; }
+  .iu-reader .rd-toc-list button.toc-plain { font-weight: 700; color: var(--iu-text); }
+  .iu-reader .rd-toc-list .toc-t { flex: 1; min-width: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .iu-reader .rd-toc-list .toc-p { flex: none; margin-top: 3px; padding: 1px 8px; border-radius: 99px; font-size: 12px; font-weight: 700; color: var(--iu-teal-text); background: var(--iu-teal-soft); }
+
+  /* Below 1100px the contents slide in from the start side over a scrim. */
+  @media (max-width: 1099px) {
+    .iu-reader .rd-toc {
+      position: fixed; z-index: 60; top: 0; bottom: 0; inset-inline-start: 0; width: min(88vw, 360px);
+      border-radius: 0; border-block: 0; border-inline-start: 0;
+      transform: translateX(100%); visibility: hidden;
+      transition: transform .38s var(--rd-ease), visibility .38s;
+    }
+    .iu-reader[dir='ltr'] .rd-toc { transform: translateX(-100%); }
+    .iu-reader.toc-open .rd-toc { transform: none; visibility: visible; box-shadow: 0 0 60px rgba(0, 0, 0, .3); }
+    .iu-reader .rd-toc-close { display: grid; }
+    .iu-reader .rd-toc-head { padding-top: 16px; }
+    .iu-reader .rd-scrim { position: fixed; inset: 0; z-index: 55; background: rgba(11, 17, 21, .45); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+    .iu-reader.toc-open .rd-scrim { opacity: 1; pointer-events: auto; }
+  }
+  @media (min-width: 1100px) { .iu-reader .rd-scrim { display: none; } }
+
+  /* ── The page ── */
+  .iu-reader .rd-main { min-width: 0; display: grid; gap: 16px; justify-items: center; }
+  .iu-reader .rd-sheet {
+    width: 100%; max-width: var(--rd-measure);
+    padding: clamp(24px, 5vw, 52px) clamp(20px, 5vw, 56px);
+    border-radius: 24px; color: var(--rd-ink); background: var(--rd-sheet);
+    border: 1px solid var(--rd-rule); box-shadow: var(--iu-shadow-card);
+    transition: background-color .3s ease, color .3s ease, border-color .3s ease, max-width .35s var(--rd-ease);
+  }
+  .iu-reader .rd-sk { height: 16px; margin-bottom: 16px; border-radius: 8px; }
+  .iu-reader .rd-kicker { margin: 0 0 8px; font-size: 14px; font-weight: 700; color: var(--iu-primary-text); }
+  .iu-reader[data-page='paper'] .rd-kicker { color: #8A5B0C; }
+  .dark .iu-reader[data-page='paper'] .rd-kicker { color: #E3B55A; }
+  .iu-reader .rd-title { margin: 0 0 24px; padding-bottom: 20px; border-bottom: 1px solid var(--rd-rule); font-size: clamp(22px, 3.2vw, 30px); font-weight: 800; line-height: 1.6; color: var(--rd-ink); }
+
+  .iu-reader .rd-text { font-family: var(--iu-ui); font-size: var(--rd-size); line-height: var(--rd-lh); color: var(--rd-ink); overflow-wrap: anywhere; }
+  .iu-reader[data-font='amiri'] .rd-text { font-family: var(--iu-studied); font-size: calc(var(--rd-size) * 1.08); }
+  .iu-reader .rd-text p { margin: 0 0 1em; }
+  .iu-reader .rd-text :is(h1, h2, h3, h4) { margin: 1.4em 0 .6em; font-family: var(--iu-ui); font-size: 1.12em; font-weight: 800; line-height: 1.6; color: var(--rd-ink); }
+  .iu-reader .rd-text .category-badge { display: inline-block; padding: 2px 12px; border-radius: 99px; font-size: .72em; font-weight: 700; color: var(--iu-teal-text); background: var(--iu-teal-soft); }
+  .iu-reader .rd-text .book-info-title { display: block; margin-bottom: .5em; font-size: 1.3em; font-weight: 800; }
+  .iu-reader .rd-text table { width: 100%; margin: 1.2em 0; border-collapse: collapse; font-size: .9em; }
+  .iu-reader .rd-text :is(td, th) { padding: .5em .8em; border: 1px solid var(--rd-rule); }
+  .iu-reader .rd-text a { color: var(--iu-primary-text); text-underline-offset: 3px; }
+  .iu-reader .rd-text ::selection { background: color-mix(in srgb, var(--iu-primary) 24%, transparent); }
+
+  /* ── Previous / next ── */
+  .iu-reader .rd-nav { width: 100%; max-width: var(--rd-measure); display: grid; grid-template-columns: 1fr 1fr; gap: 12px; transition: max-width .35s var(--rd-ease); }
+  .iu-reader .rd-nav-card {
+    display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 14px 16px; border-radius: 18px; cursor: pointer; text-align: start;
+    font-family: var(--iu-ui); color: var(--iu-text); background: var(--iu-card); border: 1px solid var(--iu-border); box-shadow: var(--iu-shadow-card);
+    transition: transform .3s var(--rd-ease), box-shadow .3s ease, border-color .2s ease;
+  }
+  .iu-reader .rd-nav-card.is-next { align-items: flex-end; text-align: end; }
+  .iu-reader .rd-nav-card.is-next .rd-nav-title { text-align: start; }
+  .iu-reader .rd-nav-card:disabled { visibility: hidden; }
+  .iu-reader .rd-nav-label { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--iu-text-3); }
+  .iu-reader .rd-nav-label svg { width: 15px; height: 15px; }
+  .iu-reader .rd-nav-card.is-next .rd-nav-label { color: var(--iu-primary-text); }
+  .iu-reader .rd-nav-title { max-width: 100%; font-size: 15px; font-weight: 700; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  @media (hover: hover) {
+    .iu-reader .rd-nav-card:hover { transform: translateY(-2px); box-shadow: var(--iu-shadow-lift); border-color: var(--iu-border-strong); }
+  }
+  .iu-reader .rd-nav-card:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
+
+  /* ── Error ── */
+  .iu-reader .rd-error { display: grid; justify-items: center; gap: 14px; text-align: center; padding-block: 56px; }
+  .iu-reader .rd-error p { margin: 0; max-width: 28rem; font-size: 18px; line-height: 1.8; color: var(--iu-text-2); }
+  .iu-reader .rd-error-ic { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 99px; color: var(--iu-partial-text); background: var(--iu-partial-soft); }
+  .iu-reader .rd-error-ic svg { width: 26px; height: 26px; }
+  .iu-reader .rd-error-btn { display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 999px; font-weight: 700; color: #fff; background: var(--iu-primary); text-decoration: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .iu-reader :is(.rd-toc, .rd-scrim, .rd-sheet, .rd-nav, .rd-nav-card, .rd-progress > span, .rd-back svg) { transition: none !important; }
+    .iu-reader .rd-prefs.is-in { animation: none; }
+  }
+</style>
+
+<script>
+  import { digits } from '../../lib/irab/strings';
+
+  interface Chapter { id: number; title: string; html: string; }
+  type Prefs = { font: string; size: number; lh: string; width: string; page: string; toc: boolean };
+
+  const root = document.querySelector<HTMLElement>('[data-reader]');
+  if (root) {
+    const lang = root.dataset.lang === 'en' ? 'en' : 'ar';
+    const S = JSON.parse(root.dataset.strings || '{}') as Record<string, string>;
+    const base = root.dataset.base || 'https://qamoos.org/grammar/data';
+    const q = <T extends Element>(sel: string) => root.querySelector<T>(sel)!;
+    const params = new URLSearchParams(location.search);
+    const bookId = params.get('b') || '';
+    const num = (v: number | string) => digits(v, lang);
+    const fill = (t: string, map: Record<string, string | number>) => t.replace(/\{(\w+)\}/g, (_, k) => num(map[k] ?? ''));
+
+    const loadingEl = q<HTMLElement>('[data-reader-loading]');
+    const errorEl = q<HTMLElement>('[data-reader-error]');
+    const articleEl = q<HTMLElement>('[data-article]');
+    const navEl = q<HTMLElement>('[data-chapter-nav]');
+    const titleEl = q<HTMLElement>('[data-book-title]');
+    const posEl = q<HTMLElement>('[data-chapter-pos]');
+    const tocList = q<HTMLOListElement>('[data-toc-list]');
+    const tocSearch = q<HTMLInputElement>('[data-toc-search]');
+    const tocCount = q<HTMLElement>('[data-toc-count]');
+    const tocToggle = q<HTMLButtonElement>('[data-toc-toggle]');
+    const scrim = q<HTMLElement>('[data-toc-scrim]');
+    const kickerEl = q<HTMLElement>('[data-chapter-kicker]');
+    const chTitle = q<HTMLElement>('[data-chapter-title]');
+    const chHtml = q<HTMLElement>('[data-chapter-html]');
+    const prevBtn = q<HTMLButtonElement>('[data-prev]');
+    const nextBtn = q<HTMLButtonElement>('[data-next]');
+    const prevTitle = q<HTMLElement>('[data-prev-title]');
+    const nextTitle = q<HTMLElement>('[data-next-title]');
+    const prefsEl = q<HTMLElement>('[data-prefs]');
+    const prefsToggle = q<HTMLButtonElement>('[data-prefs-toggle]');
+    const progressEl = q<HTMLElement>('[data-progress]');
+
+    const wide = matchMedia('(min-width: 1100px)');
+    const lastKey = `irab-lib-last:${bookId}`;
+    let chapters: Chapter[] = [];
+    let labels: string[] = [];
+    let bookTitle = '';
+    let idx = 0;
+
+    /* ── Reading settings, remembered on this device ── */
+    const PREFS_KEY = 'irab-reader';
+    const prefs: Prefs = { font: 'thmanyah', size: 2, lh: 'roomy', width: 'narrow', page: 'auto', toc: true };
+    try { Object.assign(prefs, JSON.parse(localStorage.getItem(PREFS_KEY) || '{}')); } catch { /* defaults */ }
+    const savePrefs = () => { try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch { /* private mode */ } };
+
+    function applyPrefs() {
+      prefs.size = Math.min(4, Math.max(0, Number(prefs.size) || 0));
+      root!.dataset.font = prefs.font;
+      root!.dataset.size = String(prefs.size);
+      root!.dataset.lh = prefs.lh;
+      root!.dataset.width = prefs.width;
+      root!.dataset.page = prefs.page;
+      root!.querySelectorAll<HTMLButtonElement>('[data-pref]').forEach((b) => {
+        b.setAttribute('aria-checked', String((prefs as any)[b.dataset.pref!] === b.dataset.val));
+        b.tabIndex = (prefs as any)[b.dataset.pref!] === b.dataset.val ? 0 : -1;
+      });
+      root!.querySelectorAll<HTMLElement>('[data-dot]').forEach((d) => d.classList.toggle('is-on', Number(d.dataset.dot) <= prefs.size));
+      root!.querySelectorAll<HTMLButtonElement>('[data-size-step]').forEach((b) => {
+        b.disabled = Number(b.dataset.sizeStep) < 0 ? prefs.size <= 0 : prefs.size >= 4;
+      });
+      root!.classList.toggle('toc-off', !prefs.toc);
+      syncTocButton();
+    }
+    root.querySelectorAll<HTMLButtonElement>('[data-pref]').forEach((b) => b.addEventListener('click', () => {
+      (prefs as any)[b.dataset.pref!] = b.dataset.val;
+      applyPrefs(); savePrefs(); updateProgress();
+    }));
+    root.querySelectorAll<HTMLButtonElement>('[data-size-step]').forEach((b) => b.addEventListener('click', () => {
+      prefs.size += Number(b.dataset.sizeStep);
+      applyPrefs(); savePrefs(); updateProgress();
+    }));
+    // Radio groups: arrow keys move the choice, as native radios do.
+    root.querySelectorAll<HTMLElement>('.rd-seg').forEach((group) => group.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
+      const opts = [...group.querySelectorAll<HTMLButtonElement>('[data-pref]')];
+      const i = opts.findIndex((o) => o.getAttribute('aria-checked') === 'true');
+      const rtl = getComputedStyle(group).direction === 'rtl';
+      const fwd = e.key === 'ArrowDown' || e.key === (rtl ? 'ArrowLeft' : 'ArrowRight');
+      const next = opts[(i + (fwd ? 1 : -1) + opts.length) % opts.length];
+      e.preventDefault();
+      next.click();
+      next.focus();
+    }));
+
+    function openPrefs(open: boolean) {
+      prefsEl.toggleAttribute('hidden', !open);
+      prefsToggle.setAttribute('aria-expanded', String(open));
+      if (open) {
+        prefsEl.classList.remove('is-in'); void prefsEl.offsetWidth; prefsEl.classList.add('is-in');
+        prefsEl.querySelector<HTMLButtonElement>('[aria-checked="true"]')?.focus({ preventScroll: true });
+      }
+    }
+    prefsToggle.addEventListener('click', () => openPrefs(prefsEl.hasAttribute('hidden')));
+    document.addEventListener('pointerdown', (e) => {
+      if (prefsEl.hasAttribute('hidden')) return;
+      const t = e.target as Node;
+      if (!prefsEl.contains(t) && !prefsToggle.contains(t)) openPrefs(false);
+    });
+
+    /* ── Contents: a column on wide screens, a drawer below 1100px ── */
+    function syncTocButton() {
+      const open = wide.matches ? prefs.toc : root!.classList.contains('toc-open');
+      tocToggle.setAttribute('aria-expanded', String(open));
+    }
+    function setDrawer(open: boolean) {
+      root!.classList.toggle('toc-open', open);
+      syncTocButton();
+      if (open) {
+        tocList.querySelector<HTMLElement>('button.is-active')?.scrollIntoView({ block: 'center' });
+        if (matchMedia('(hover: hover)').matches) tocSearch.focus({ preventScroll: true });
+      }
+    }
+    tocToggle.addEventListener('click', () => {
+      if (wide.matches) { prefs.toc = !prefs.toc; applyPrefs(); savePrefs(); }
+      else setDrawer(!root!.classList.contains('toc-open'));
+    });
+    q<HTMLButtonElement>('[data-toc-close]').addEventListener('click', () => { setDrawer(false); tocToggle.focus(); });
+    scrim.addEventListener('click', () => setDrawer(false));
+    wide.addEventListener('change', () => { root!.classList.remove('toc-open'); syncTocButton(); });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (!prefsEl.hasAttribute('hidden')) { openPrefs(false); prefsToggle.focus(); }
+        else if (root!.classList.contains('toc-open')) { setDrawer(false); tocToggle.focus(); }
+        return;
+      }
+      const el = e.target as HTMLElement;
+      // Arrow keys already used by the settings' option groups are not chapter turns.
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || el.closest('input, textarea, [contenteditable], [data-prefs]') || !chapters.length) return;
+      // The arrow toward "next" follows the buttons: left in Arabic, right in English.
+      const nextKey = lang === 'ar' ? 'ArrowLeft' : 'ArrowRight';
+      const prevKey = lang === 'ar' ? 'ArrowRight' : 'ArrowLeft';
+      if (e.key === nextKey && idx < chapters.length - 1) { e.preventDefault(); go(idx + 1); }
+      else if (e.key === prevKey && idx > 0) { e.preventDefault(); go(idx - 1); }
+    });
+
+    /* ── Reading progress line ── */
+    let raf = 0;
+    function updateProgress() {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        progressEl.style.setProperty('--p', String(max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 1));
+      });
+    }
+    addEventListener('scroll', updateProgress, { passive: true });
+    addEventListener('resize', updateProgress, { passive: true });
+
+    /* ── Contents list ──
+       Raw chapter titles arrive as one string, usually
+       "<book name>(ص: ١٨)<first words of the chapter>": split into a readable
+       label and a page chip so the fahras reads like a real index. */
+    // dotAll: some titles carry a line break after the page marker.
+    const pageRe = /^(.*?)\(\s*ص\s*:\s*([٠-٩0-9]+)\s*\)\s*(.*)$/s;
+    function buildToc() {
+      const frag = document.createDocumentFragment();
+      labels = chapters.map((c, i) => {
+        let raw = (c.title || '').trim();
+        if (bookTitle && raw.startsWith(bookTitle) && raw.length > bookTitle.length + 2) {
+          raw = raw.slice(bookTitle.length).replace(/^[\s:،-]+/, '');
+        }
+        const m = raw.match(pageRe);
+        const label = (m ? (m[3].trim() || m[1].trim()) : raw).replace(/\s+/g, ' ') || fill(S.chapterN, { i: i + 1 });
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.dataset.i = String(i);
+        const t = document.createElement('span');
+        t.className = 'toc-t';
+        t.textContent = label;
+        btn.appendChild(t);
+        if (m) {
+          const p = document.createElement('span');
+          p.className = 'toc-p';
+          p.textContent = fill(S.pageN, { p: m[2] });
+          btn.appendChild(p);
+        } else {
+          btn.classList.add('toc-plain');
+        }
+        li.appendChild(btn);
+        frag.appendChild(li);
+        return label;
+      });
+      tocList.replaceChildren(frag);
+      tocCount.textContent = num(chapters.length);
+    }
+    tocList.addEventListener('click', (e) => {
+      const b = (e.target as Element).closest<HTMLButtonElement>('button[data-i]');
+      if (!b) return;
+      go(Number(b.dataset.i));
+      if (!wide.matches) setDrawer(false);
+    });
+    tocSearch.addEventListener('input', () => {
+      const v = (tocSearch.value || '').replace(/[ً-ْٰـ]/g, '').trim();
+      tocList.querySelectorAll<HTMLElement>('li').forEach((li) => {
+        const t = (li.textContent || '').replace(/[ً-ْٰـ]/g, '');
+        li.style.display = !v || t.includes(v) ? '' : 'none';
+      });
+    });
+
+    /* ── A chapter ── */
+    function go(i: number, first = false) {
+      if (i < 0 || i >= chapters.length) return;
+      idx = i;
+      const c = chapters[i];
+      const n = chapters.length;
+      kickerEl.textContent = fill(S.chapterOf, { i: i + 1, n });
+      posEl.textContent = kickerEl.textContent;
+      chTitle.textContent = labels[i] || c.title || fill(S.chapterN, { i: i + 1 });
+      chHtml.innerHTML = c.html || '';
+      prevBtn.disabled = i === 0;
+      nextBtn.disabled = i === n - 1;
+      prevTitle.textContent = i > 0 ? labels[i - 1] : '';
+      nextTitle.textContent = i < n - 1 ? labels[i + 1] : '';
+      const was = tocList.querySelector('button.is-active');
+      was?.classList.remove('is-active');
+      was?.removeAttribute('aria-current');
+      const active = tocList.querySelector<HTMLElement>(`button[data-i="${i}"]`);
+      active?.classList.add('is-active');
+      active?.setAttribute('aria-current', 'true');
+      if (wide.matches || root!.classList.contains('toc-open')) active?.scrollIntoView({ block: 'nearest' });
+      try { localStorage.setItem(lastKey, String(i)); localStorage.setItem(`irab-lib-at:${bookId}`, String(Date.now())); } catch { /* private mode */ }
+      const u = new URL(location.href); u.searchParams.set('c', String(i)); history.replaceState(null, '', u);
+      if (!first) {
+        window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          articleEl.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.22, 1, .36, 1)' });
+        }
+      }
+      updateProgress();
+    }
+    prevBtn.addEventListener('click', () => go(idx - 1));
+    nextBtn.addEventListener('click', () => go(idx + 1));
+
+    function fail(msg: string) {
+      loadingEl.classList.add('hidden');
+      q<HTMLElement>('[data-error-text]').textContent = msg;
+      errorEl.classList.remove('hidden');
+    }
+
+    applyPrefs();
+
+    if (!bookId) fail(S.noBook);
+    else {
+      fetch(`${base}/bundle/${encodeURIComponent(bookId)}.json`)
+        .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+        .then((bundle) => {
+          chapters = Array.isArray(bundle?.chapters) ? bundle.chapters : [];
+          if (!chapters.length) { fail(S.chaptersFail); return; }
+          bookTitle = (bundle.title || '').trim();
+          titleEl.textContent = bookTitle;
+          document.title = S.docTitle.replace('{t}', bookTitle || S.book);
+          buildToc();
+          loadingEl.classList.add('hidden');
+          articleEl.classList.remove('hidden');
+          navEl.classList.remove('hidden');
+          let start = parseInt(params.get('c') || '', 10);
+          if (isNaN(start)) { try { start = parseInt(localStorage.getItem(lastKey) || '0', 10) || 0; } catch { start = 0; } }
+          go(Math.min(Math.max(start, 0), chapters.length - 1), true);
+        })
+        // qamoos answers a missing book with an HTML page and status 200, so
+        // a JSON SyntaxError means "not in the library", as a 404 does.
+        .catch((e) => fail(e instanceof SyntaxError || String((e as Error)?.message) === '404' ? S.notFound : S.loadFail));
+    }
+  }
+</script>

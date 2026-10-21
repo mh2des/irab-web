@@ -1,0 +1,673 @@
+---
+/**
+ * Pricing: /pricing and /en/pricing.
+ *
+ * Two plans side by side: Irab Plus first (the decision the page exists for),
+ * Free beside it. Plus holds its own billing choice as two option rows, so the
+ * price, the button and the small print change together and the Free card,
+ * which has no billing, never pretends to react. The choice is two radios and
+ * :has(), so it works before (and without) any script, and the page stays
+ * Firebase-free: the buttons carry the plan to /app?checkout=…, which signs in
+ * and opens Paddle.
+ *
+ * Below: a grouped comparison that becomes stacked rows on a phone, the
+ * pre-purchase questions beside their heading, and one closing call.
+ * Solid surfaces only, the site's tokens in both themes, motion from the
+ * site's own reveal and accordion scripts.
+ */
+import * as I from '../../lib/irab/icons';
+import { pricingFaqs } from '../../lib/pricing';
+
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const en = lang === 'en';
+const dir = en ? 'ltr' : 'rtl';
+const base = en ? '/en' : '';
+
+type Cell = string | true | null;
+interface Row { f: string; d?: string; free: Cell; plus: Cell; }
+interface Group { title: string; rows: Row[]; }
+
+const s = en
+  ? {
+      eyebrow: 'Pricing',
+      title: 'Start free. Unlock everything when you need it.',
+      lead: 'One subscription on your account unlocks Irab Plus on the web and in the iOS and Android apps.',
+      plusBadge: 'Irab Plus',
+      plusName: 'Everything, without daily limits',
+      cycle: 'Billing period',
+      annual: 'Annual', monthly: 'Monthly',
+      save: 'Save 40%',
+      annualNote: 'About $3.00 a month · 7-day free trial',
+      monthlyNote: 'Flexible, month to month',
+      perYear: '/ year', perMonth: '/ month',
+      ctaAnnual: 'Start the free trial', ctaMonthly: 'Subscribe monthly',
+      fineAnnual: "You pay $0.00 today. Cancel before day 7 and you won't be charged.",
+      fineMonthly: 'Renews every month. Cancel whenever you like.',
+      plusList: [
+        'Everything in Free, with no daily limits',
+        'The full practice bank (576 sentences) and all seven challenge babs',
+        'Bigger majalis with every question type',
+        'OCR camera and PDF export',
+        'Mastery certificates on the annual plan',
+      ],
+      freeName: 'Free',
+      freePrice: '$0',
+      freeSub: 'For everyone learning. No card needed.',
+      freeCta: 'Create a free account',
+      freeList: [
+        "5 i'rab analyses a day (7 in your first week)",
+        "3 gradings of your own i'rab a day",
+        '5 questions to the teacher a day',
+        'Practice levels 1–2 and challenge babs 1–2',
+        'One majlis every 24 hours',
+        'The whole grammar library',
+      ],
+      trust: ['Secure payment through Paddle', 'Cancel anytime', 'One account for web and app'],
+      fine1: 'Regional prices may vary, and tax is added at checkout based on your country. Payments are processed by',
+      fine2: '(Merchant of Record). See the',
+      refund: 'refund policy', and: 'and', terms: 'terms',
+      compareEyebrow: 'Compare',
+      compareTitle: 'What each plan includes',
+      colFeature: 'Feature', colFree: 'Free', colPlus: 'Plus',
+      included: 'Included', notIncluded: 'Not included',
+      faqEyebrow: 'Questions',
+      faqTitle: 'Before you subscribe',
+      faqLead: "Can't find your answer? Write to us and a person will reply.",
+      finalTitle: 'Try Plus free for 7 days.',
+      finalLead: "You pay nothing today, and you'll feel the difference from the first sentence you parse.",
+      finalCta: 'Start your free trial',
+      finalFine: '7 days free, then $35.99 a year · Cancel anytime',
+    }
+  : {
+      eyebrow: 'الأسعـــار',
+      title: 'ابدأ مجانًا، وافتح كلَّ شيء حين تحتاجه.',
+      lead: 'اشتراكٌ واحد بحسابك يفتح إعراب بلس على الموقع وفي تطبيقَي iOS وAndroid.',
+      plusBadge: 'إعراب بلس',
+      plusName: 'كلُّ شيء، بلا حدود يومية',
+      cycle: 'مدة الاشتراك',
+      annual: 'سنوي', monthly: 'شهري',
+      save: 'وفّر ٤٠٪',
+      annualNote: 'نحو ٣٫٠٠$ شهريًّا · تجربة مجانية ٧ أيام',
+      monthlyNote: 'مرونة كاملة، شهرًا بشهر',
+      perYear: '/ سنويًّا', perMonth: '/ شهريًّا',
+      ctaAnnual: 'ابدأ التجربة المجانية', ctaMonthly: 'اشترك شهريًّا',
+      fineAnnual: 'تدفع ٠٫٠٠$ اليوم. ألغِ قبل اليوم السابع ولن تُحاسَب.',
+      fineMonthly: 'يتجدّد كل شهر، وتلغيه متى شئت.',
+      plusList: [
+        'كل ما في المجاني، بلا حدود يومية',
+        'بنك التدريب كاملًا (٥٧٦ جملة) وكل أبواب التحدّي السبعة',
+        'مجالس أكبر بكل أنواع الأسئلة',
+        'الكاميرا وتصدير PDF',
+        'شهادات الإتقان مع الخطة السنوية',
+      ],
+      freeName: 'المجاني',
+      freePrice: 'مجانًا',
+      freeSub: 'لكل من يتعلّم، بلا بطاقة دفع.',
+      freeCta: 'أنشئ حسابًا مجانيًّا',
+      freeList: [
+        '٥ تحليلات إعرابية يوميًّا (٧ في أسبوعك الأول)',
+        '٣ تقييمات لإعرابك يوميًّا',
+        '٥ أسئلة للأستاذ يوميًّا',
+        'المستويان ١–٢ من بنك التدريب، والبابان ١–٢ من التحديات',
+        'مجلس إعراب كل ٢٤ ساعة',
+        'المكتبة النحوية كاملة',
+      ],
+      trust: ['دفعٌ آمن عبر Paddle', 'ألغِ متى شئت', 'حسابٌ واحد للويب والتطبيق'],
+      fine1: 'قد تختلف الأسعار الإقليمية، وتُضاف الضرائب عند الدفع حسب بلدك. يعالج الدفعَ',
+      fine2: '(بائع التسجيل). راجع',
+      refund: 'سياسة الاسترداد', and: 'و', terms: 'الشروط',
+      compareEyebrow: 'المقارنة',
+      compareTitle: 'ماذا تتضمّن كل خطة',
+      colFeature: 'الميزة', colFree: 'المجاني', colPlus: 'بلس',
+      included: 'مضمّن', notIncluded: 'غير متاح',
+      faqEyebrow: 'أسئلة',
+      faqTitle: 'قبل أن تشترك',
+      faqLead: 'لم تجد جوابك؟ راسلنا وسيردّ عليك شخصٌ من فريقنا.',
+      finalTitle: 'جرّب بلس سبعة أيام، مجانًا.',
+      finalLead: 'لن تدفع شيئًا اليوم، وستشعر بالفرق من أول جملةٍ تُعربها.',
+      finalCta: 'ابدأ تجربتك المجانية',
+      finalFine: '٧ أيام مجانًا ثم ٣٥٫٩٩$ سنويًّا · ألغِ في أيّ وقت',
+    };
+
+const groups: Group[] = en
+  ? [
+      { title: "I'rab", rows: [
+        { f: "I'rab analyses", d: 'Word by word: type, role, case marker and vocalization.', free: '5 a day (7 in your first week)', plus: 'Unlimited' },
+        { f: "Grading your own i'rab", d: 'Write the i\'rab yourself and get every word corrected.', free: '3 a day', plus: 'Unlimited, with per-word explanations' },
+        { f: 'Ask the teacher', d: 'Ask about any word in your sentence and get the reason, with an example.', free: '5 questions a day', plus: 'Unlimited' },
+        { f: 'Smart Dictionary', d: "A word's meaning, root, pattern and how it is parsed.", free: '5 a day (10 in your first week)', plus: 'Unlimited' },
+      ] },
+      { title: 'Practice', rows: [
+        { f: 'Practice bank', d: 'Curated sentences across progressive levels.', free: 'Levels 1–2', plus: 'All 576 sentences' },
+        { f: 'Challenge babs', d: 'Challenges by topic, with an explanation for every answer.', free: 'Babs 1–2', plus: 'All seven babs' },
+      ] },
+      { title: 'Majalis', rows: [
+        { f: 'Hosting majalis', d: 'Live i\'rab quizzes for your class or friends.', free: '1 every 24 hours, up to 10 questions and 20 players', plus: '10 a day, up to 50 questions and 100 players' },
+        { f: 'Question types', free: 'Multiple choice and true or false', plus: "Every type, including fix-the-mistake and order-the-i'rab" },
+        { f: 'AI questions', free: '10 a day', plus: '100 a day, from your text or a book photo, with smart review' },
+      ] },
+      { title: 'Tools and extras', rows: [
+        { f: 'Grammar library', d: '47 classical books, readable in full.', free: true, plus: true },
+        { f: 'OCR camera and PDF export', d: 'Capture a page from your book, parse it, export your analyses.', free: null, plus: true },
+        { f: 'Mastery certificates', d: 'A shareable certificate after mastering each topic.', free: null, plus: 'With the annual plan' },
+      ] },
+    ]
+  : [
+      { title: 'الإعراب', rows: [
+        { f: 'التحليلات الإعرابية', d: 'كلمة بكلمة: النوع والوظيفة والعلامة والتشكيل.', free: '٥ يوميًّا (٧ في أسبوعك الأول)', plus: 'غير محدودة' },
+        { f: 'تقييم إعرابك الخاص', d: 'أعرِب بنفسك واحصل على تصحيحٍ لكل كلمة.', free: '٣ يوميًّا', plus: 'بلا حدود، مع شرحٍ لكل كلمة' },
+        { f: 'اسأل الأستاذ', d: 'اسأل عن أي كلمة في جملتك فيشرح لك السبب مع مثال.', free: '٥ أسئلة يوميًّا', plus: 'بلا حدود' },
+        { f: 'المعجم الذكي', d: 'معنى الكلمة وجذرها ووزنها وكيف تُعرب.', free: '٥ يوميًّا (١٠ في أسبوعك الأول)', plus: 'بلا حدود' },
+      ] },
+      { title: 'التدريب', rows: [
+        { f: 'بنك التدريب', d: 'جملٌ منتقاة بمستويات متدرّجة.', free: 'المستويان ١–٢', plus: '٥٧٦ جملة كاملة' },
+        { f: 'أبواب التحدّيات', d: 'تحدّيات مبوّبة مع شرحٍ لكل إجابة.', free: 'البابان ١–٢', plus: 'كل الأبواب السبعة' },
+      ] },
+      { title: 'مجالس الإعراب', rows: [
+        { f: 'استضافة المجالس', d: 'مسابقات إعراب مباشرة لصفّك أو أصدقائك.', free: 'مجلس كل ٢٤ ساعة، حتى ١٠ أسئلة و٢٠ لاعبًا', plus: '١٠ مجالس يوميًّا، حتى ٥٠ سؤالًا و١٠٠ لاعب' },
+        { f: 'أنواع الأسئلة', free: 'اختيار من متعدد وصواب وخطأ', plus: 'كل الأنواع، ومنها صحّح الخطأ وترتيب الإعراب' },
+        { f: 'أسئلة بالذكاء الاصطناعي', free: '١٠ يوميًّا', plus: '١٠٠ يوميًّا، مع التوليد من نصك أو صورة الكتاب والمراجعة الذكية' },
+      ] },
+      { title: 'أدوات وإضافات', rows: [
+        { f: 'المكتبة النحوية', d: '٤٧ كتابًا كلاسيكيًّا تُقرأ كاملة.', free: true, plus: true },
+        { f: 'الكاميرا وتصدير PDF', d: 'صوّر صفحة من كتابك وأعرِب جملها، وصدّر تحليلاتك.', free: null, plus: true },
+        { f: 'شهادات الإتقان', d: 'شهادة قابلة للمشاركة بعد إتقان كل موضوع.', free: null, plus: 'مع الخطة السنوية' },
+      ] },
+    ];
+
+const faqList = pricingFaqs(lang);
+
+// Prices: the whole part and the cents, so the cents can sit as a raised
+// fraction. At display size the Arabic decimal separator reads as a comma
+// between two numbers; the raised cents read as one price.
+const price = en
+  ? { annual: ['$35', '.99'], monthly: ['$4', '.99'] }
+  : { annual: ['$٣٥', '٫٩٩'], monthly: ['$٤', '٫٩٩'] };
+
+const tick = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+const dash = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg>';
+// "Onward": left in Arabic, right in English.
+const arrow = `<svg class="pr-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${en ? 'M5 12h14m-7-7 7 7-7 7' : 'M19 12H5m7-7-7 7 7 7'}"/></svg>`;
+const trustIcons = [
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="13" height="10" rx="1.8"/><path d="M6 18.5h6"/><rect x="16" y="8" width="5.5" height="11" rx="1.4"/></svg>',
+];
+const cellHtml = (v: Cell, plus: boolean) => v === true
+  ? `<span class="pr-yes${plus ? ' is-plus' : ''}" role="img" aria-label="${s.included}">${tick}</span>`
+  : v === null
+    ? `<span class="pr-no" role="img" aria-label="${s.notIncluded}">${dash}</span>`
+    : v;
+---
+
+<div class="pr" dir={dir} lang={lang}>
+  {/* ── Hero ─────────────────────────────────────────────────────────── */}
+  <header class="pr-hero">
+    <p class="pr-eyebrow">{s.eyebrow}</p>
+    <h1 class="pr-title">{s.title}</h1>
+    <p class="pr-lead">{s.lead}</p>
+  </header>
+
+  {/* ── Plans ────────────────────────────────────────────────────────── */}
+  <div class="pr-plans">
+    <article class="pr-plan pr-plus" aria-labelledby="pr-plus-name">
+      <span class="pr-badge"><Fragment set:html={I.crown} />{s.plusBadge}</span>
+      <h2 id="pr-plus-name" class="pr-plan-name">{s.plusName}</h2>
+
+      <fieldset class="pr-cycle">
+        <legend class="sr-only">{s.cycle}</legend>
+        <label class="pr-opt">
+          <input type="radio" name="pr-cycle" value="annual" class="pr-radio" checked />
+          <span class="pr-dot" aria-hidden="true"></span>
+          <span class="pr-opt-main">
+            <span class="pr-opt-name">{s.annual}<span class="pr-save">{s.save}</span></span>
+            <span class="pr-opt-note">{s.annualNote}</span>
+          </span>
+          <span class="pr-opt-price"><bdi dir="ltr" class="pr-num">{price.annual[0]}<span class="pr-frac">{price.annual[1]}</span></bdi><span class="pr-per">{s.perYear}</span></span>
+        </label>
+        <label class="pr-opt">
+          <input type="radio" name="pr-cycle" value="monthly" class="pr-radio" />
+          <span class="pr-dot" aria-hidden="true"></span>
+          <span class="pr-opt-main">
+            <span class="pr-opt-name">{s.monthly}</span>
+            <span class="pr-opt-note">{s.monthlyNote}</span>
+          </span>
+          <span class="pr-opt-price"><bdi dir="ltr" class="pr-num">{price.monthly[0]}<span class="pr-frac">{price.monthly[1]}</span></bdi><span class="pr-per">{s.perMonth}</span></span>
+        </label>
+      </fieldset>
+
+      {/* Both calls are in the page; the chosen one shows. Stacked in one grid
+          cell so switching is a cross-fade with no jump in height. */}
+      <div class="pr-ctas">
+        <div class="pr-cta is-annual">
+          <a href={`${base}/app?checkout=annual`} class="btn-primary btn-block btn-lg">{s.ctaAnnual}<Fragment set:html={arrow} /></a>
+          <p class="pr-cta-fine">{s.fineAnnual}</p>
+        </div>
+        <div class="pr-cta is-monthly">
+          <a href={`${base}/app?checkout=monthly`} class="btn-primary btn-block btn-lg">{s.ctaMonthly}<Fragment set:html={arrow} /></a>
+          <p class="pr-cta-fine">{s.fineMonthly}</p>
+        </div>
+      </div>
+
+      <ul class="pr-list is-plus">
+        {s.plusList.map((li) => <li><span class="pr-li-ic" set:html={tick} />{li}</li>)}
+      </ul>
+    </article>
+
+    <article class="pr-plan pr-free" aria-labelledby="pr-free-name">
+      <h2 id="pr-free-name" class="pr-free-name">{s.freeName}</h2>
+      {/* Arabic says «مجانًا»: a lone Arabic zero (٠) is a dot and «$٠» read as «$ •». */}
+      <p class="pr-free-price">{en ? <bdi dir="ltr" class="pr-num">{s.freePrice}</bdi> : <span class="pr-num">{s.freePrice}</span>}</p>
+      <p class="pr-free-sub">{s.freeSub}</p>
+      <a href={`${base}/login?mode=up`} class="btn-ghost btn-block btn-lg pr-free-cta">{s.freeCta}</a>
+      <ul class="pr-list">
+        {s.freeList.map((li) => <li><span class="pr-li-ic" set:html={tick} />{li}</li>)}
+      </ul>
+    </article>
+  </div>
+
+  <ul class="pr-trust">
+    {s.trust.map((t, i) => <li><span class="pr-trust-ic" set:html={trustIcons[i]} />{t}</li>)}
+  </ul>
+  <p class="pr-fine">
+    {s.fine1} <strong>Paddle</strong> {s.fine2} <a href={`${base}/refund`}>{s.refund}</a> {s.and} <a href={`${base}/terms`}>{s.terms}</a>.
+  </p>
+
+  {/* ── Comparison ───────────────────────────────────────────────────── */}
+  <section class="pr-section" aria-labelledby="pr-compare-h">
+    <header class="pr-sec-head" data-reveal>
+      <p class="pr-sec-eyebrow">{s.compareEyebrow}</p>
+      <h2 id="pr-compare-h" class="pr-sec-title">{s.compareTitle}</h2>
+    </header>
+    <div class="pr-table-wrap" data-reveal>
+      <table class="pr-table">
+        <thead>
+          <tr>
+            <th scope="col" class="pr-th-f">{s.colFeature}</th>
+            <th scope="col">{s.colFree}</th>
+            <th scope="col" class="is-plus">{s.colPlus}</th>
+          </tr>
+        </thead>
+        {groups.map((g) => (
+          <tbody>
+            <tr class="pr-group"><th scope="rowgroup" colspan="3">{g.title}</th></tr>
+            {g.rows.map((r) => (
+              <tr>
+                <th scope="row" class="pr-feat">
+                  <span class="pr-feat-name">{r.f}</span>
+                  {r.d && <span class="pr-feat-desc">{r.d}</span>}
+                </th>
+                <td data-label={s.colFree}><span class="pr-val" set:html={cellHtml(r.free, false)} /></td>
+                <td data-label={s.colPlus} class="is-plus"><span class="pr-val" set:html={cellHtml(r.plus, true)} /></td>
+              </tr>
+            ))}
+          </tbody>
+        ))}
+      </table>
+    </div>
+  </section>
+
+  {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+  <section class="pr-section pr-faq" aria-labelledby="pr-faq-h">
+    <header class="pr-faq-head" data-reveal>
+      <p class="pr-sec-eyebrow">{s.faqEyebrow}</p>
+      <h2 id="pr-faq-h" class="pr-sec-title">{s.faqTitle}</h2>
+      <p class="pr-faq-lead">{s.faqLead}</p>
+      <a href="mailto:support@irab.app" class="pr-mail" dir="ltr">support@irab.app</a>
+    </header>
+    <div class="pr-faq-list" data-acc-group data-reveal>
+      {faqList.map((f) => (
+        <details class="pr-q" data-acc>
+          <summary>
+            <h3>{f.q}</h3>
+            <span class="acc-icon pr-q-ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path class="acc-v" d="M12 5v14"/><path d="M5 12h14"/></svg>
+            </span>
+          </summary>
+          <div><p class="pr-a">{f.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  {/* ── Closing call ─────────────────────────────────────────────────── */}
+  <section class="pr-final" data-reveal>
+    <h2 class="pr-final-title">{s.finalTitle}</h2>
+    <p class="pr-final-lead">{s.finalLead}</p>
+    <a href={`${base}/app?checkout=annual`} class="pr-final-btn">{s.finalCta}<Fragment set:html={arrow} /></a>
+    <p class="pr-final-fine">{s.finalFine}</p>
+  </section>
+</div>
+
+<style>
+  .pr {
+    --pr-surface: var(--color-card);
+    --pr-edge: var(--color-card-edge);
+    --pr-sunken: var(--color-paper-soft);
+    --pr-text: var(--color-ink);
+    --pr-muted: var(--color-ink-muted);
+    --pr-subtle: var(--color-ink-subtle);
+    --pr-accent: var(--color-purple);
+    --pr-accent-text: var(--color-purple-deep);
+    --pr-accent-soft: color-mix(in srgb, var(--color-purple) 7%, var(--color-card));
+    --pr-accent-line: color-mix(in srgb, var(--color-purple) 30%, var(--color-card-edge));
+    --pr-teal: var(--color-teal);
+    --pr-shadow: 0 1px 2px rgb(23 56 71 / 0.06), 0 10px 30px -14px rgb(23 56 71 / 0.18);
+    --pr-shadow-plus: 0 1px 2px rgb(23 56 71 / 0.06), 0 22px 50px -22px color-mix(in srgb, var(--color-purple) 45%, rgb(23 56 71 / 0.3));
+    --pr-ease: var(--ease-out-quart);
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1rem, 4vw, 2rem) clamp(3rem, 7vw, 5rem);
+    color: var(--pr-text);
+  }
+  :global(.dark) .pr {
+    --pr-surface: var(--color-coal-soft);
+    --pr-edge: var(--color-coal-edge);
+    --pr-sunken: var(--color-coal);
+    --pr-text: var(--color-mist);
+    --pr-muted: var(--color-mist-muted);
+    --pr-subtle: var(--color-mist-subtle);
+    --pr-accent: #8F66FF;
+    --pr-accent-text: #B49BFF;
+    --pr-accent-soft: color-mix(in srgb, #8F66FF 12%, var(--color-coal-soft));
+    --pr-accent-line: color-mix(in srgb, #8F66FF 45%, var(--color-coal-edge));
+    --pr-teal: #4FB3D9;
+    --pr-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 14px 32px -14px rgb(0 0 0 / 0.6);
+    --pr-shadow-plus: 0 1px 2px rgb(0 0 0 / 0.4), 0 24px 54px -22px rgb(0 0 0 / 0.75);
+  }
+
+  /* ── Hero ── */
+  .pr-hero { text-align: center; max-width: 44rem; margin: 0 auto; }
+  /* The one short label in the decorative face, drawn out with kashida
+     (letter-spacing breaks Arabic joins). */
+  .pr-eyebrow {
+    margin: 0 0 1rem;
+    font-family: var(--font-arabic-display); font-weight: 700;
+    font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.3;
+    color: var(--pr-accent);
+  }
+  .pr[lang='en'] .pr-eyebrow {
+    font-family: var(--font-sans); font-size: 0.95rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .pr-title {
+    margin: 0;
+    font-family: var(--font-arabic); font-weight: 700;
+    font-size: clamp(2rem, 4.6vw, 3.1rem); line-height: 1.32;
+    letter-spacing: 0; text-wrap: balance;
+  }
+  .pr[lang='en'] .pr-title { font-family: var(--font-sans); line-height: 1.12; letter-spacing: -0.02em; }
+  .pr-lead {
+    margin: 1.1rem auto 0; max-width: 34rem;
+    font-size: clamp(1.05rem, 2vw, 1.25rem); line-height: 1.8;
+    color: var(--pr-muted); text-wrap: pretty;
+  }
+
+  /* ── Plans ── */
+  .pr-plans {
+    display: grid; gap: 1.25rem;
+    max-width: 58rem; margin: clamp(2.25rem, 5vw, 3.25rem) auto 0;
+    align-items: stretch;
+  }
+  @media (min-width: 860px) { .pr-plans { grid-template-columns: 1.12fr 1fr; gap: 1.5rem; } }
+
+  .pr-plan {
+    position: relative; display: flex; flex-direction: column;
+    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+    border-radius: 24px;
+    background: var(--pr-surface);
+    border: 1px solid var(--pr-edge);
+    box-shadow: var(--pr-shadow);
+    transition: transform .35s var(--pr-ease), box-shadow .35s var(--pr-ease), border-color .25s;
+  }
+  .pr-plus {
+    border: 1.5px solid var(--pr-accent-line);
+    box-shadow: var(--pr-shadow-plus), 0 0 0 5px color-mix(in srgb, var(--pr-accent) 6%, transparent);
+  }
+  @media (hover: hover) {
+    .pr-plan:hover { transform: translateY(-4px); }
+    .pr-free:hover { border-color: color-mix(in srgb, var(--pr-teal) 40%, var(--pr-edge)); }
+    .pr-plus:hover { border-color: var(--pr-accent); }
+  }
+
+  .pr-badge {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.35rem 0.85rem 0.35rem 0.75rem; border-radius: 999px;
+    font-size: 0.95rem; font-weight: 700; line-height: 1.4;
+    color: var(--pr-accent-text);
+    background: color-mix(in srgb, var(--pr-accent) 11%, transparent);
+  }
+  .pr-badge :global(svg) { width: 1.05rem; height: 1.05rem; }
+  .pr-plan-name {
+    margin: 0.9rem 0 1.25rem;
+    font-family: var(--font-arabic); font-weight: 700;
+    font-size: clamp(1.45rem, 2.6vw, 1.75rem); line-height: 1.4;
+  }
+  .pr[lang='en'] .pr-plan-name { font-family: var(--font-sans); letter-spacing: -0.01em; }
+
+  /* Billing options: two radio rows. The native radio stays in the tree for
+     keyboard and screen readers; the dot is drawn. */
+  .pr-cycle { border: 0; margin: 0; padding: 0; display: grid; gap: 0.7rem; min-width: 0; }
+  .pr-opt {
+    position: relative; display: flex; align-items: center; gap: 0.85rem;
+    padding: 0.95rem 1.05rem; border-radius: 16px; cursor: pointer;
+    background: var(--pr-surface);
+    border: 1.5px solid var(--pr-edge);
+    transition: border-color .22s var(--pr-ease), background-color .22s var(--pr-ease), box-shadow .22s var(--pr-ease);
+  }
+  .pr-opt:hover { border-color: var(--pr-accent-line); }
+  .pr-opt:has(.pr-radio:checked) {
+    border-color: var(--pr-accent);
+    background: var(--pr-accent-soft);
+    box-shadow: 0 8px 20px -14px color-mix(in srgb, var(--pr-accent) 70%, transparent);
+  }
+  .pr-opt:has(.pr-radio:focus-visible) { outline: 2px solid var(--pr-accent); outline-offset: 2px; }
+  .pr-radio { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+  .pr-dot {
+    flex: none; position: relative; width: 1.3rem; height: 1.3rem; border-radius: 999px;
+    border: 2px solid color-mix(in srgb, var(--pr-subtle) 60%, transparent);
+    transition: border-color .22s var(--pr-ease);
+  }
+  .pr-dot::after {
+    content: ''; position: absolute; inset: 3px; border-radius: inherit;
+    background: var(--pr-accent); transform: scale(0);
+    transition: transform .28s cubic-bezier(.34, 1.4, .64, 1);
+  }
+  .pr-opt:has(.pr-radio:checked) .pr-dot { border-color: var(--pr-accent); }
+  .pr-opt:has(.pr-radio:checked) .pr-dot::after { transform: scale(1); }
+  .pr-opt-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+  .pr-opt-name { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 1.1rem; font-weight: 700; line-height: 1.5; }
+  .pr-save {
+    padding: 0.08rem 0.55rem; border-radius: 999px;
+    font-size: 0.8rem; font-weight: 700; line-height: 1.6;
+    color: #fff; background: var(--pr-teal);
+  }
+  .pr-opt-note { font-size: 0.9rem; line-height: 1.6; color: var(--pr-subtle); }
+  .pr-opt-price { flex: none; display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; }
+  .pr[dir='rtl'] .pr-opt-price { align-items: flex-start; }
+  .pr-num {
+    font-family: var(--font-arabic); font-weight: 700; font-size: 1.65rem;
+    font-variant-numeric: tabular-nums; letter-spacing: -0.01em; unicode-bidi: isolate;
+  }
+  .pr-frac { font-size: 0.5em; font-weight: 800; vertical-align: 0.8em; margin-inline-start: 0.04em; }
+  .pr-per { margin-top: 0.3rem; font-size: 0.82rem; font-weight: 600; color: var(--pr-subtle); }
+  @media (max-width: 479px) {
+    .pr-opt { gap: 0.7rem; padding: 0.85rem 0.85rem; }
+    .pr-opt .pr-num { font-size: 1.4rem; }
+    .pr-opt-note { font-size: 0.84rem; }
+  }
+
+  /* The chosen plan's call and small print. Both live in one grid cell and
+     cross-fade, so the card never changes height. */
+  .pr-ctas { display: grid; margin-top: 1.25rem; }
+  .pr-cta {
+    grid-area: 1 / 1;
+    transition: opacity .28s var(--pr-ease), translate .32s var(--pr-ease), visibility .32s;
+  }
+  .pr-cta.is-monthly, .pr-plus:has(.pr-radio[value='monthly']:checked) .pr-cta.is-annual {
+    opacity: 0; translate: 0 6px; visibility: hidden;
+  }
+  .pr-plus:has(.pr-radio[value='monthly']:checked) .pr-cta.is-monthly { opacity: 1; translate: 0 0; visibility: visible; }
+  .pr-cta-fine { margin: 0.7rem 0 0; text-align: center; font-size: 0.88rem; line-height: 1.6; color: var(--pr-subtle); }
+  /* Injected with set:html, so outside the scope: reached through :global. */
+  .pr :global(.pr-arrow) { width: 1.1rem; height: 1.1rem; flex: none; transition: translate .25s var(--pr-ease); }
+  .pr :global(a:hover > .pr-arrow) { translate: -3px 0; }
+  .pr[lang='en'] :global(a:hover > .pr-arrow) { translate: 3px 0; }
+
+  .pr-list { list-style: none; margin: 1.5rem 0 0; padding: 1.4rem 0 0; display: grid; gap: 0.8rem; border-top: 1px solid var(--pr-edge); }
+  .pr-list li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 1.02rem; line-height: 1.65; }
+  .pr-li-ic {
+    flex: none; display: grid; place-items: center; width: 1.35rem; height: 1.35rem; margin-top: 0.2rem; border-radius: 999px;
+    color: var(--pr-teal); background: color-mix(in srgb, var(--pr-teal) 13%, transparent);
+  }
+  .pr-list.is-plus .pr-li-ic { color: var(--pr-accent); background: color-mix(in srgb, var(--pr-accent) 13%, transparent); }
+  .pr-li-ic :global(svg) { width: 0.8rem; height: 0.8rem; }
+
+  .pr-free-name { margin: 0; font-family: var(--font-arabic); font-size: 1.15rem; font-weight: 700; color: var(--pr-muted); }
+  .pr-free-price { margin: 0.6rem 0 0; }
+  .pr-free-price .pr-num { font-size: clamp(2.6rem, 5vw, 3.1rem); line-height: 1; }
+  .pr-free-sub { margin: 0.55rem 0 0; font-size: 1rem; line-height: 1.7; color: var(--pr-subtle); }
+  .pr-free-cta { margin-top: 1.4rem; }
+
+  /* ── Reassurance under the plans ── */
+  .pr-trust {
+    list-style: none; padding: 0; margin: 1.75rem auto 0;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem 1.75rem;
+    font-size: 0.98rem; font-weight: 600; color: var(--pr-muted);
+  }
+  .pr-trust li { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .pr-trust-ic { display: grid; color: var(--pr-teal); }
+  .pr-trust-ic :global(svg) { width: 1.2rem; height: 1.2rem; }
+  .pr-fine {
+    max-width: 38rem; margin: 0.9rem auto 0; text-align: center;
+    font-size: 0.88rem; line-height: 1.75; color: var(--pr-subtle);
+  }
+  .pr-fine a, .pr-faq-head a { color: var(--pr-accent-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .pr-fine a:hover { text-decoration-thickness: 2px; }
+
+  /* ── Sections ── */
+  .pr-section { margin-top: clamp(4rem, 9vw, 6.5rem); }
+  .pr-sec-head { text-align: center; margin-bottom: 1.75rem; }
+  .pr-sec-eyebrow { margin: 0 0 0.4rem; font-size: 1rem; font-weight: 700; color: var(--pr-accent); }
+  .pr[lang='en'] .pr-sec-eyebrow { font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .pr-sec-title {
+    margin: 0; font-family: var(--font-arabic); font-weight: 700;
+    font-size: clamp(1.6rem, 3.4vw, 2.3rem); line-height: 1.35; text-wrap: balance;
+  }
+  .pr[lang='en'] .pr-sec-title { font-family: var(--font-sans); letter-spacing: -0.015em; line-height: 1.2; }
+
+  /* ── Comparison table ── */
+  .pr-table-wrap {
+    max-width: 58rem; margin: 0 auto;
+    border-radius: 22px; overflow: hidden;
+    background: var(--pr-surface); border: 1px solid var(--pr-edge); box-shadow: var(--pr-shadow);
+  }
+  .pr-table { width: 100%; border-collapse: collapse; text-align: center; }
+  .pr-table thead th {
+    padding: 1.05rem 1rem; font-size: 1rem; font-weight: 700; color: var(--pr-muted);
+    background: var(--pr-surface); border-bottom: 1px solid var(--pr-edge);
+  }
+  .pr-table thead th.is-plus { color: var(--pr-accent-text); }
+  .pr-th-f { text-align: start; padding-inline-start: 1.5rem !important; }
+  .pr-table td.is-plus, .pr-table thead th.is-plus { background: var(--pr-accent-soft); }
+  .pr-group th {
+    padding: 1.15rem 1.5rem 0.55rem; text-align: start;
+    font-size: 0.92rem; font-weight: 800; color: var(--pr-accent);
+    background: var(--pr-surface);
+  }
+  .pr-table tbody tr:not(.pr-group) { border-top: 1px solid color-mix(in srgb, var(--pr-edge) 70%, transparent); transition: background-color .2s; }
+  .pr-table tbody tr.pr-group + tr { border-top: 0; }
+  @media (hover: hover) { .pr-table tbody tr:not(.pr-group):hover { background: color-mix(in srgb, var(--pr-sunken) 60%, transparent); } }
+  .pr-feat { padding: 1rem 1.5rem; text-align: start; font-weight: 400; width: 40%; }
+  .pr-feat-name { display: block; font-size: 1.02rem; font-weight: 700; line-height: 1.55; }
+  .pr-feat-desc { display: block; margin-top: 0.15rem; font-size: 0.88rem; line-height: 1.6; color: var(--pr-subtle); }
+  .pr-table td { padding: 1rem; font-size: 0.97rem; line-height: 1.6; color: var(--pr-muted); width: 30%; }
+  .pr-table td.is-plus { color: var(--pr-accent-text); font-weight: 700; }
+  .pr-val { display: inline-flex; justify-content: center; }
+  .pr-val :global(.pr-yes) { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 999px; color: var(--pr-teal); background: color-mix(in srgb, var(--pr-teal) 13%, transparent); }
+  .pr-val :global(.pr-yes.is-plus) { color: var(--pr-accent); background: color-mix(in srgb, var(--pr-accent) 14%, transparent); }
+  .pr-val :global(.pr-yes svg) { width: 0.95rem; height: 0.95rem; }
+  .pr-val :global(.pr-no) { display: grid; color: color-mix(in srgb, var(--pr-subtle) 55%, transparent); }
+  .pr-val :global(.pr-no svg) { width: 1.1rem; height: 1.1rem; }
+
+  /* Phone: each feature becomes a small block, the two plans side by side
+     under its name, each labelled. */
+  @media (max-width: 639px) {
+    .pr-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .pr-table, .pr-table tbody, .pr-table tr { display: block; }
+    .pr-table tbody tr:not(.pr-group) { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; padding: 0.95rem 1.1rem 1.05rem; }
+    .pr-group th { display: block; padding: 1.1rem 1.1rem 0.35rem; }
+    .pr-feat { grid-column: 1 / -1; display: block; width: auto; padding: 0; }
+    .pr-table td { display: flex; flex-direction: column; align-items: flex-start; gap: 0.2rem; width: auto; padding: 0.6rem 0.75rem; border-radius: 12px; text-align: start; background: var(--pr-sunken); font-size: 0.92rem; }
+    .pr-table td::before { content: attr(data-label); font-size: 0.78rem; font-weight: 700; color: var(--pr-subtle); }
+    .pr-table td.is-plus::before { color: var(--pr-accent-text); }
+    .pr-val { justify-content: flex-start; }
+  }
+
+  /* ── FAQ ── */
+  .pr-faq { display: grid; gap: 2rem; max-width: 58rem; margin-inline: auto; }
+  @media (min-width: 900px) { .pr-faq { grid-template-columns: 0.8fr 1.4fr; gap: 3.5rem; align-items: start; } }
+  .pr-faq-head { text-align: center; }
+  @media (min-width: 900px) { .pr-faq-head { text-align: start; position: sticky; top: 7rem; } }
+  .pr-faq-lead { margin: 0.85rem 0 0.4rem; font-size: 1rem; line-height: 1.75; color: var(--pr-muted); }
+  .pr-mail { font-weight: 700; }
+  .pr-faq-list { border-top: 1px solid var(--pr-edge); }
+  .pr-q { border-bottom: 1px solid var(--pr-edge); }
+  .pr-q summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1.25rem;
+    padding: 1.2rem 0.25rem; cursor: pointer; list-style: none;
+  }
+  .pr-q summary::-webkit-details-marker { display: none; }
+  .pr-q h3 {
+    margin: 0; font-family: var(--font-arabic); font-weight: 700;
+    font-size: 1.12rem; line-height: 1.6; transition: color .2s;
+  }
+  .pr[lang='en'] .pr-q h3 { font-family: var(--font-sans); }
+  .pr-q summary:hover h3 { color: var(--pr-accent); }
+  .pr-q-ic {
+    flex: none; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 999px;
+    color: var(--pr-accent); background: color-mix(in srgb, var(--pr-accent) 9%, transparent);
+  }
+  .pr-q-ic svg { width: 1rem; height: 1rem; }
+  .pr-a { margin: 0; padding: 0 0.25rem 1.35rem; font-size: 1.02rem; line-height: 1.95; color: var(--pr-muted); }
+
+  /* ── Closing call: one solid brand surface with the site's lattice ── */
+  .pr-final {
+    position: relative; overflow: hidden; isolation: isolate;
+    margin: clamp(4rem, 9vw, 6.5rem) auto 0; max-width: 58rem;
+    padding: clamp(2.5rem, 6vw, 3.75rem) clamp(1.5rem, 5vw, 3rem);
+    border-radius: 28px; text-align: center; color: #fff;
+    background-color: var(--color-purple-deep);
+  }
+  .pr-final::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; opacity: 0.55;
+    background-image:
+      repeating-linear-gradient(45deg, rgb(255 255 255 / 0.07) 0 1px, transparent 1px 30px),
+      repeating-linear-gradient(135deg, rgb(255 255 255 / 0.07) 0 1px, transparent 1px 30px);
+  }
+  :global(.dark) .pr-final { background-color: #3B1E8F; }
+  .pr-final-title {
+    margin: 0; font-family: var(--font-arabic); font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.35; color: #fff;
+  }
+  .pr[lang='en'] .pr-final-title { font-family: var(--font-sans); letter-spacing: -0.02em; line-height: 1.15; }
+  .pr-final-lead { max-width: 30rem; margin: 0.9rem auto 1.75rem; font-size: 1.1rem; line-height: 1.8; color: rgb(255 255 255 / 0.86); }
+  .pr-final-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    min-height: 3.25rem; padding: 0.9rem 2rem; border-radius: 999px;
+    font-weight: 700; font-size: 1.08rem;
+    color: var(--color-purple-deep); background: #fff;
+    box-shadow: 0 12px 30px -12px rgb(0 0 0 / 0.45);
+    transition: transform .25s var(--pr-ease), box-shadow .25s var(--pr-ease);
+  }
+  .pr-final-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 36px -14px rgb(0 0 0 / 0.5); }
+  .pr-final-btn:active { transform: translateY(0) scale(0.98); }
+  .pr-final-fine { margin: 1rem 0 0; font-size: 0.9rem; color: rgb(255 255 255 / 0.72); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pr-plan, .pr-plan:hover, .pr-final-btn:hover { transform: none; }
+    .pr-cta, .pr-dot::after, .pr :global(.pr-arrow) { transition: none; }
+  }
+</style>
