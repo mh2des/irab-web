@@ -1,14 +1,22 @@
 ---
 /**
- * Library: /library and /en/library in the tools' design (irab-ui), as the
- * app's library screen: search, category chips, «تابع القراءة» from the
- * reader's saved place, and the app's book cards (a flat spine in the
- * category's colour, title, author, one meta line, reading progress).
- * Every book is rendered here as a plain link, so the page stays crawlable;
- * the script only filters and adds progress.
+ * Library: /library and /en/library.
+ *
+ * A bookshelf, not a list of links: every work is a cover in its field's
+ * colour (the app's spine colours), bound on the right as an Arabic book is,
+ * with its title set on it and one of three frames so a shelf of one
+ * colour still reads as different books. Shelves follow the order a learner
+ * meets the fields (nahw, i'rab, sarf, balagha), beginners' books first.
+ * Search and the field chips filter in place; a covers/list switch is
+ * remembered per visitor; «تابع القراءة» comes back from the reader's saved
+ * place (localStorage, as before).
+ *
+ * Every book is rendered here as a plain link, so the page stays crawlable
+ * and works before the script runs; the covers are CSS and one inline SVG
+ * symbol, no images.
  */
 import '../../styles/irab-ui.css';
-import { BOOKS, TOTAL_CHAPTERS, CATEGORIES, categoryCounts, categoryMeta, levelEn } from '../../lib/library';
+import { BOOKS, TOTAL_CHAPTERS, categoryMeta, levelEn } from '../../lib/library';
 import { digits } from '../../lib/irab/strings';
 import * as I from '../../lib/irab/icons';
 import { searchIcon } from '../../lib/dict/render';
@@ -18,190 +26,389 @@ const { lang = 'ar' } = Astro.props;
 const en = lang === 'en';
 const dir = en ? 'ltr' : 'rtl';
 const n = (v: number) => digits(v, lang);
+const fmt = (v: number) => new Intl.NumberFormat(en ? 'en' : 'ar-u-nu-arab').format(v);
+// The counted noun follows the number in Arabic: ٥ كتب، ١٣ كتابًا، ١٠٠ كتاب.
+const arCount = (v: number, [one, two, few, many, base]: string[]) => {
+  if (v === 1) return one;
+  if (v === 2) return two;
+  const r = v % 100;
+  const word = r >= 3 && r <= 10 ? few : r >= 11 ? many : base;
+  return `${fmt(v)} ${word}`;
+};
+const BOOK_W = ['كتاب واحد', 'كتابان', 'كتب', 'كتابًا', 'كتاب'];
+const CHAPTER_W = ['فصل واحد', 'فصلان', 'فصول', 'فصلًا', 'فصل'];
 const reader = (id: string) => `${en ? '/en' : ''}/library/read?b=${encodeURIComponent(id)}`;
 const chev = I.chevronLeft.replace('<svg', '<svg class="flip-ltr lb-chev"');
 
 const s = en
   ? {
+      eyebrow: 'Library',
       title: 'Classical Arabic Grammar Library',
       intro: `${BOOKS.length} classical works on nahw, sarf, balagha and i'rab, free to read in full in your browser, chapter by chapter.`,
-      statBooks: 'classical books', statChapters: 'readable chapters', statFields: 'fields',
-      search: 'Search a book or author…', all: 'All books',
-      continueTitle: 'Continue reading', booksTitle: 'Books', empty: 'No matching books.',
-      chapters: (v: number) => `${n(v)} chapters`,
+      facts: [`${BOOKS.length} books`, `${fmt(TOTAL_CHAPTERS)} chapters`, '4 fields', 'Free for everyone'],
+      search: 'Search a book…', all: 'All',
+      view: 'View', grid: 'Covers', list: 'List',
+      continueTitle: 'Continue reading', resume: 'Resume',
+      empty: 'No book matches your search.', clear: 'Clear search',
+      books: (v: number) => `${v} books`,
+      chapters: (v: number) => `${fmt(v)} chapters`,
       chapterOf: 'Chapter {i} of {n}',
     }
   : {
+      eyebrow: 'المكتبة',
       title: 'المكتبة النحوية',
       intro: `${n(BOOKS.length)} كتابًا كلاسيكيًّا في النحو والصرف والبلاغة والإعراب، تُقرأ كاملةً ومجانًا في المتصفّح، بابًا بابًا.`,
-      statBooks: 'كتاب كلاسيكي', statChapters: 'فصل للقراءة', statFields: 'فروع علمية',
-      search: 'ابحث عن كتاب أو مؤلّف…', all: 'كل الكتب',
-      continueTitle: 'تابع القراءة', booksTitle: 'الكتب', empty: 'لا توجد كتب مطابقة.',
-      chapters: (v: number) => `${n(v)} فصل`,
+      facts: [arCount(BOOKS.length, BOOK_W), arCount(TOTAL_CHAPTERS, CHAPTER_W), `${n(4)} فروع`, 'مجانًا للجميع'],
+      search: 'ابحث عن كتاب…', all: 'الكل',
+      view: 'طريقة العرض', grid: 'الأغلفة', list: 'القائمة',
+      continueTitle: 'تابع القراءة', resume: 'تابع',
+      empty: 'لا يوجد كتاب يطابق بحثك.', clear: 'امسح البحث',
+      books: (v: number) => arCount(v, BOOK_W),
+      chapters: (v: number) => arCount(v, CHAPTER_W),
       chapterOf: 'الفصل {i} من {n}',
     };
 
-const svg = (body: string) => `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
-// The app's spine: one colour and one icon per field, from the two brand families.
-const FIELD: Record<string, { cls: string; icon: string }> = {
-  'نحو': { cls: 'nahw', icon: I.book },
-  'إعراب': { cls: 'irab', icon: svg('<path d="m6 16 6-12 6 12"/><path d="M8 12h8"/><path d="m16 20 2 2 4-4"/>') },
-  'بلاغة': { cls: 'balagha', icon: svg('<path d="M12 7v14"/><path d="M16 12h2"/><path d="M16 8h2"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/><path d="M6 12h2"/><path d="M6 8h2"/>') },
-  'صرف': { cls: 'sarf', icon: svg('<path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/>') },
-};
-const field = (cat: string) => FIELD[cat] ?? FIELD['نحو'];
-const catLabel = (cat: string) => (en ? categoryMeta(cat).en : cat);
+// Shelves in the order a learner meets the fields, each with one line on
+// what the field is.
+const SHELVES = [
+  { key: 'نحو', cls: 'nahw', ar: 'قواعد بناء الجملة وأحكام أواخر الكلمات.', en: 'How sentences are built and how word endings change.' },
+  { key: 'إعراب', cls: 'irab', ar: 'تطبيق القواعد على النصوص، كلمةً كلمة.', en: 'The rules applied to real texts, word by word.' },
+  { key: 'صرف', cls: 'sarf', ar: 'أبنية الكلمة وأوزانها وتصريفها.', en: 'The forms of words, their patterns and inflection.' },
+  { key: 'بلاغة', cls: 'balagha', ar: 'علوم المعاني والبيان والبديع.', en: 'Meaning, figurative speech and style.' },
+];
+const LEVEL_ORDER: Record<string, number> = { 'مبتدئ': 0, 'متوسط': 1, 'متقدم': 2 };
+const shelf = (key: string) => BOOKS
+  .filter((b) => b.category === key)
+  .sort((a, b) => (LEVEL_ORDER[a.level] ?? 1) - (LEVEL_ORDER[b.level] ?? 1) || b.totalChapters - a.totalChapters);
+const fieldName = (key: string) => (en ? categoryMeta(key).en : key);
 const levelLabel = (lvl: string) => (en ? levelEn(lvl) : lvl);
-const knownAuthor = (a: string) => (a && a.trim() !== 'غير معروف' && a.trim() !== 'مجهول' ? a.trim() : '');
-const counts = categoryCounts();
-// En spaces around the dot, as the app's double spaces: a bare «·» beside
-// Arabic digits reads as a zero.
-const SEP = '\u2002·\u2002';
+
+// A stable small number per book, for its frame: the same book always wears
+// the same cover.
+const variant = (id: string) => [...id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % 3;
+// Long titles get a smaller face so they still fit the cover in 4-5 lines.
+const sizeClass = (t: string) => (t.length <= 14 ? 'is-s' : t.length <= 26 ? 'is-m' : t.length <= 42 ? 'is-l' : 'is-xl');
+const SEP = ' · ';
+
+const gridIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="9" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="9" rx="1.5"/><path d="M3.5 17h7M13.5 17h7M3.5 20.5h4.5M13.5 20.5h4.5"/></svg>';
+const listIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4" width="4" height="5.5" rx="1"/><rect x="3.5" y="14.5" width="4" height="5.5" rx="1"/><path d="M11 5.5h9.5M11 8.5h6M11 16h9.5M11 19h6"/></svg>';
 ---
 
-<div class="iu iu-library" data-lib-root dir={dir} lang={lang} data-chapter-of={s.chapterOf}>
-  <header class="lb-head">
-    <h1 class="t-display c-1">{s.title}</h1>
-    <p class="t-body c-2">{s.intro}</p>
+<div class="iu iu-library" data-lib-root dir={dir} lang={lang} data-chapter-of={s.chapterOf} data-resume={s.resume}>
+  {/* One ornament for every cover: an eight-point star (khātam). */}
+  <svg width="0" height="0" class="lb-sprite" aria-hidden="true" focusable="false">
+    <symbol id="lb-star" viewBox="0 0 40 40">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+        <rect x="9" y="9" width="22" height="22" />
+        <rect x="9" y="9" width="22" height="22" transform="rotate(45 20 20)" />
+        <circle cx="20" cy="20" r="4.2" />
+      </g>
+    </symbol>
+  </svg>
+
+  <header class="lb-hero">
+    <h1 class="lb-title-h">{s.title}</h1>
+    <p class="lb-intro">{s.intro}</p>
+    <ul class="lb-facts">{s.facts.map((f) => <li>{f}</li>)}</ul>
   </header>
 
-  <div class="lb-stats">
-    <div><span class="lb-stat">{n(BOOKS.length)}</span><span class="t-caption c-3">{s.statBooks}</span></div>
-    <div><span class="lb-stat">{new Intl.NumberFormat(en ? 'en' : 'ar-u-nu-arab').format(TOTAL_CHAPTERS)}</span><span class="t-caption c-3">{s.statChapters}</span></div>
-    <div><span class="lb-stat">{n(CATEGORIES.length)}</span><span class="t-caption c-3">{s.statFields}</span></div>
+  <section data-lib-continue class="hidden lb-continue" aria-labelledby="lb-continue-h">
+    <h2 id="lb-continue-h" class="lb-shelf-name">{s.continueTitle}</h2>
+    <div data-lib-continue-list class="lb-resume-row"></div>
+  </section>
+
+  <div class="lb-bar" role="search">
+    <div class="lb-search">
+      <span class="lb-search-icon" aria-hidden="true"><Fragment set:html={searchIcon} /></span>
+      <input type="search" data-lib-search class="lb-input" placeholder={s.search} aria-label={s.search} dir={en ? 'auto' : 'rtl'} />
+    </div>
+    <div class="lb-view" role="group" aria-label={s.view}>
+      <button type="button" class="lb-view-btn" data-view="grid" aria-pressed="true" aria-label={s.grid} title={s.grid}><Fragment set:html={gridIcon} /></button>
+      <button type="button" class="lb-view-btn" data-view="list" aria-pressed="false" aria-label={s.list} title={s.list}><Fragment set:html={listIcon} /></button>
+    </div>
   </div>
 
-  <div class="iu-card lb-search" data-lib-search-box role="search">
-    <span class="lb-search-icon" aria-hidden="true"><Fragment set:html={searchIcon} /></span>
-    <input type="search" data-lib-search class="lb-input" placeholder={s.search} aria-label={s.search} dir={en ? 'auto' : 'rtl'} />
-  </div>
-
-  <div class="lb-chips" role="group" aria-label={s.booksTitle}>
+  <div class="lb-chips" role="group" aria-label={s.eyebrow}>
     <button type="button" class="lb-chip is-on" data-cat="all" aria-pressed="true">{s.all}<span class="lb-count">{n(BOOKS.length)}</span></button>
-    {CATEGORIES.map((c) => (
-      <button type="button" class="lb-chip" data-cat={c.key} aria-pressed="false">{catLabel(c.key)}<span class="lb-count">{n(counts[c.key] ?? 0)}</span></button>
+    {SHELVES.map((sh) => (
+      <button type="button" class={`lb-chip is-${sh.cls}`} data-cat={sh.key} aria-pressed="false"><span class="lb-chip-dot" aria-hidden="true"></span>{fieldName(sh.key)}<span class="lb-count">{n(shelf(sh.key).length)}</span></button>
     ))}
   </div>
 
-  <section data-lib-continue class="hidden lb-section" aria-labelledby="lb-continue-h">
-    <h2 id="lb-continue-h" class="t-title c-1 lb-h2">{s.continueTitle}</h2>
-    <div data-lib-continue-list class="lb-books"></div>
-  </section>
+  <p data-lib-results class="lb-results hidden" role="status" aria-live="polite"></p>
 
-  <section class="lb-section" aria-labelledby="lb-books-h">
-    <h2 id="lb-books-h" class="t-title c-1 lb-h2">{s.booksTitle}</h2>
-    <div class="lb-books" data-lib-grid>
-      {BOOKS.map((b) => {
-        const f = field(b.category);
-        const author = knownAuthor(b.author);
-        return (
-          <a href={reader(b.id)} class:list={['iu-card', 'lb-book', `is-${f.cls}`]}
-             data-book data-id={b.id} data-cat={b.category} data-total={b.totalChapters}
-             data-search={`${b.title} ${author} ${b.level}`}>
-            <span class="lb-spine" aria-hidden="true"><Fragment set:html={f.icon} /></span>
-            <span class="lb-text">
-              <span class="t-card-title c-1 lb-title" lang="ar" dir="rtl">{b.title}</span>
-              {author && <span class="t-caption c-3 lb-author" lang="ar" dir="rtl">{author}</span>}
-              <span class="t-caption c-2 lb-meta">{[catLabel(b.category), levelLabel(b.level), s.chapters(b.totalChapters)].join(SEP)}</span>
-              <span class="hidden lb-progress"><span class="lb-bar"><span></span></span><span class="t-micro c-2" data-pct></span></span>
-            </span>
-            <Fragment set:html={chev} />
-          </a>
-        );
-      })}
-    </div>
-    <p data-lib-empty class="hidden t-body c-2 lb-empty">{s.empty}</p>
-  </section>
+  {SHELVES.map((sh) => {
+    const books = shelf(sh.key);
+    return (
+      <section class="lb-shelf" data-shelf={sh.key} aria-labelledby={`lb-shelf-${sh.cls}`}>
+        <header class="lb-shelf-head">
+          <h2 id={`lb-shelf-${sh.cls}`} class={`lb-shelf-name is-${sh.cls}`}><span class="lb-chip-dot" aria-hidden="true"></span>{fieldName(sh.key)}</h2>
+          <p class="lb-shelf-desc">{en ? sh.en : sh.ar}<span class="lb-shelf-count">{SEP}{s.books(books.length)}</span></p>
+        </header>
+        <div class="lb-grid">
+          {books.map((b) => (
+            <a href={reader(b.id)} class={`lb-book is-${sh.cls}`}
+               data-book data-id={b.id} data-cat={b.category} data-total={b.totalChapters}
+               data-search={`${b.title} ${b.level}`}>
+              <span class={`lb-cover v${variant(b.id)}`} aria-hidden="true">
+                <span class="lb-cover-field">{sh.key}</span>
+                <svg class="lb-orn"><use href="#lb-star" /></svg>
+                <span class={`lb-cover-title ${sizeClass(b.title)}`} lang="ar" dir="rtl">{b.title}</span>
+                <span class="lb-cover-level">{b.level}</span>
+                <span class="lb-cover-prog hidden"><span></span></span>
+              </span>
+              <span class="lb-text">
+                <span class="lb-name" lang="ar" dir="rtl">{b.title}</span>
+                <span class="lb-meta">{[fieldName(b.category), levelLabel(b.level), s.chapters(b.totalChapters)].join(SEP)}</span>
+                <span class="lb-meta-short">{s.chapters(b.totalChapters)}<span class="lb-pct" data-pct></span></span>
+              </span>
+              <Fragment set:html={chev} />
+            </a>
+          ))}
+        </div>
+      </section>
+    );
+  })}
+
+  <div data-lib-empty class="hidden lb-empty">
+    <p>{s.empty}</p>
+    <button type="button" data-lib-clear class="lb-clear">{s.clear}</button>
+  </div>
 </div>
 
 <style is:global>
-  .iu-library { max-width: 960px; margin: 0 auto; padding: 0 0 40px; }
+  .iu-library { --lb-ease: cubic-bezier(.22, 1, .36, 1); max-width: 1120px; margin: 0 auto; padding: 0 0 48px; }
   .iu-library .hidden { display: none !important; }
-  .iu-library .lb-head p { margin: 4px 0 0; }
-  .iu-library .lb-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
-  .iu-library .lb-stats > div { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 6px; border-radius: 14px; background: var(--iu-sunken); text-align: center; }
-  .iu-library .lb-stat { font-size: 26px; font-weight: 700; line-height: 1.3; color: var(--iu-text); }
+  .iu-library .lb-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 
-  /* Search, as the dictionary's box */
-  .iu-library .lb-search { display: flex; align-items: center; gap: 6px; margin-top: 20px; padding: 6px 9px; padding-inline-start: 18px; transition: border-color .18s ease; }
-  .iu-library .lb-search:focus-within { border-color: var(--iu-primary); }
+  /* ── Hero ── */
+  .iu-library .lb-hero { max-width: 720px; }
+  .iu-library .lb-title-h { font-size: clamp(30px, 4.6vw, 44px); font-weight: 700; line-height: 1.3; color: var(--iu-text); }
+  .iu-library[lang='en'] .lb-title-h { line-height: 1.12; letter-spacing: -0.02em; }
+  .iu-library .lb-intro { margin: 10px 0 0; font-size: 18px; line-height: 1.85; color: var(--iu-text-2); text-wrap: pretty; }
+  .iu-library .lb-facts { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .iu-library .lb-facts li { padding: 5px 13px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--iu-text-2); background: var(--iu-sunken); border: 1px solid var(--iu-border); }
+  .iu-library .lb-facts li:last-child { color: var(--iu-teal-text); background: var(--iu-teal-soft); border-color: transparent; }
+
+  /* ── Continue reading ── */
+  .iu-library .lb-continue { margin-top: 32px; }
+  .iu-library .lb-resume-row { display: grid; gap: 12px; margin-top: 12px; }
+  @media (min-width: 720px) { .iu-library .lb-resume-row { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); } }
+  .iu-library .lb-resume {
+    display: flex; align-items: center; gap: 16px; padding: 14px; padding-inline-end: 18px;
+    border-radius: 18px; text-decoration: none; color: inherit;
+    background: var(--iu-card); border: 1px solid var(--iu-border); box-shadow: var(--iu-shadow-card);
+    transition: transform .35s var(--lb-ease), box-shadow .3s ease, border-color .2s ease;
+  }
+  .iu-library .lb-resume .lb-cover { width: 58px; flex: none; }
+  .iu-library .lb-resume .lb-orn { width: 52%; margin: 0; }
+  .iu-library .lb-resume-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .iu-library .lb-resume-name { font-size: 17px; font-weight: 700; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .iu-library .lb-resume-meta { font-size: 13.5px; font-weight: 600; color: var(--iu-text-3); }
+  .iu-library .lb-resume-bar { height: 5px; margin-top: 6px; border-radius: 99px; background: var(--iu-sunken); overflow: hidden; }
+  .iu-library .lb-resume-bar > span { display: block; height: 100%; width: var(--p, 0%); border-radius: inherit; background: var(--cover); transition: width .8s var(--lb-ease); }
+  .iu-library .lb-resume-go {
+    flex: none; display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 14px; border-radius: 999px;
+    font-size: 14px; font-weight: 700; color: var(--iu-primary-text); background: var(--iu-primary-soft);
+    transition: background-color .2s ease, color .2s ease;
+  }
+  .iu-library .lb-resume-go svg { width: 16px; height: 16px; transition: translate .3s var(--lb-ease); }
+  @media (hover: hover) {
+    .iu-library .lb-resume:hover { transform: translateY(-3px); box-shadow: var(--iu-shadow-lift); border-color: var(--iu-border-strong); }
+    .iu-library .lb-resume:hover .lb-resume-go { color: #fff; background: var(--iu-primary); }
+    .iu-library .lb-resume:hover .lb-resume-go svg { translate: -3px 0; }
+    .iu-library[dir='ltr'] .lb-resume:hover .lb-resume-go svg { translate: 3px 0; }
+  }
+  @media (max-width: 479px) { .iu-library .lb-resume-go span { display: none; } .iu-library .lb-resume-go { width: 38px; padding: 0; justify-content: center; } }
+
+  /* ── Search and view ── */
+  .iu-library .lb-bar { display: flex; align-items: center; gap: 10px; margin-top: 32px; }
+  .iu-library .lb-search {
+    flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; height: 54px; padding-inline: 18px 8px; border-radius: 999px;
+    background: var(--iu-card); border: 1px solid var(--iu-border); box-shadow: var(--iu-shadow-card);
+    transition: border-color .18s ease, box-shadow .18s ease;
+  }
+  .iu-library .lb-search:focus-within { border-color: var(--iu-primary); box-shadow: 0 0 0 4px var(--iu-primary-wash), var(--iu-shadow-card); }
   .iu-library .lb-search-icon { display: grid; color: var(--iu-text-3); flex: none; }
-  .iu-library .lb-search-icon svg { width: 22px; height: 22px; }
-  .iu-library .lb-input { flex: 1; min-width: 0; height: 48px; border: 0; outline: 0; background: transparent; padding: 0 6px; font-family: var(--iu-ui); font-size: 18px; color: var(--iu-text); }
+  .iu-library .lb-search-icon svg { width: 21px; height: 21px; }
+  .iu-library .lb-input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; padding: 0 6px; font-family: var(--iu-ui); font-size: 17px; color: var(--iu-text); }
   .iu-library .lb-input::placeholder { color: var(--iu-text-3); opacity: .85; }
+  .iu-library .lb-view { flex: none; display: flex; gap: 2px; padding: 4px; border-radius: 999px; background: var(--iu-sunken); border: 1px solid var(--iu-border); }
+  .iu-library .lb-view-btn { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 999px; cursor: pointer; color: var(--iu-text-3); background: transparent; transition: background-color .2s ease, color .2s ease, box-shadow .2s ease; }
+  .iu-library .lb-view-btn svg { width: 20px; height: 20px; }
+  .iu-library .lb-view-btn[aria-pressed='true'] { color: var(--iu-primary-text); background: var(--iu-card); box-shadow: 0 1px 3px rgba(23, 56, 71, .12); }
+  .iu-library .lb-view-btn:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
 
-  /* Field chips, as the challenge levels */
+  /* ── Field chips ── */
   .iu-library .lb-chips { display: flex; gap: 8px; margin-top: 14px; overflow-x: auto; padding: 2px; scrollbar-width: none; }
   .iu-library .lb-chips::-webkit-scrollbar { display: none; }
   @media (min-width: 720px) { .iu-library .lb-chips { flex-wrap: wrap; overflow: visible; } }
   .iu-library .lb-chip {
     flex: none; display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 999px; cursor: pointer;
     border: 1px solid var(--iu-border); background: var(--iu-card); color: var(--iu-text-2);
-    font-family: var(--iu-ui); font-size: 15px; font-weight: 600; white-space: nowrap; transition: background-color .15s ease, border-color .15s ease;
+    font-family: var(--iu-ui); font-size: 15px; font-weight: 600; white-space: nowrap;
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease;
   }
-  .iu-library .lb-chip:hover { border-color: var(--iu-teal); }
-  .iu-library .lb-chip.is-on { background: var(--iu-teal); border-color: var(--iu-teal); color: #fff; }
-  .iu-library .lb-chip:focus-visible { outline: 2px solid var(--iu-teal); outline-offset: 2px; }
-  .iu-library .lb-count { font-size: 13px; font-weight: 600; opacity: .7; }
+  .iu-library .lb-chip:hover { border-color: var(--iu-border-strong); }
+  .iu-library .lb-chip.is-on { background: var(--iu-text); border-color: var(--iu-text); color: var(--iu-card); }
+  .iu-library .lb-chip:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
+  .iu-library .lb-count { font-size: 13px; font-weight: 600; opacity: .65; }
+  .iu-library .lb-chip-dot { width: 9px; height: 9px; border-radius: 3px; background: var(--cover); flex: none; }
 
-  .iu-library .lb-section { margin-top: 26px; }
-  .iu-library .lb-h2 { margin: 0 0 12px; }
-  .iu-library .lb-books { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  @media (min-width: 720px) { .iu-library .lb-books { grid-template-columns: 1fr 1fr; } }
+  .iu-library .lb-results { margin: 18px 0 0; font-size: 15px; font-weight: 600; color: var(--iu-text-3); }
 
-  /* The app's BookCard */
-  .iu-library .lb-book {
-    --spine: #7C4DFF;
-    display: flex; align-items: center; gap: 14px; padding: 14px; color: inherit; text-decoration: none;
-    transition: border-color .2s ease, box-shadow .25s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
+  /* Field colours: the app's book spines. */
+  .iu-library .is-nahw { --cover: #7C4DFF; }
+  .iu-library .is-irab { --cover: #1F789B; }
+  .iu-library .is-sarf { --cover: #145973; }
+  .iu-library .is-balagha { --cover: #6200EA; }
+
+  /* ── Shelves ── */
+  .iu-library .lb-shelf { margin-top: 36px; }
+  .iu-library .lb-shelf-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--iu-border); }
+  .iu-library .lb-shelf-name { display: inline-flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; line-height: 1.4; color: var(--iu-text); }
+  .iu-library .lb-shelf-name .lb-chip-dot { width: 12px; height: 12px; border-radius: 4px; }
+  .iu-library .lb-shelf-desc { margin: 0; font-size: 15px; line-height: 1.6; color: var(--iu-text-3); }
+  .iu-library .lb-shelf-count { font-weight: 700; }
+  .iu-library.is-searching .lb-shelf-count { display: none; }
+
+  .iu-library .lb-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 16px; }
+  @media (min-width: 560px) { .iu-library .lb-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 820px) { .iu-library .lb-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px 20px; } }
+  @media (min-width: 1080px) { .iu-library .lb-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+
+  .iu-library .lb-book { display: flex; flex-direction: column; gap: 10px; color: inherit; text-decoration: none; border-radius: 12px; -webkit-tap-highlight-color: transparent; }
+  .iu-library .lb-book:focus-visible { outline: none; }
+  .iu-library .lb-book:focus-visible .lb-cover { outline: 3px solid var(--iu-primary); outline-offset: 3px; }
+
+  /* The cover. Spine on the right with a darker binding strip, fore-edge on
+     the left, as an Arabic book is bound. Solid colour, white type. */
+  .iu-library .lb-cover {
+    position: relative; isolation: isolate; overflow: hidden;
+    aspect-ratio: 2 / 3; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 18% 12% 14%;
+    border-radius: 10px 4px 4px 10px;
+    color: #fff; background: var(--cover);
+    box-shadow:
+      inset -7px 0 0 rgba(0, 0, 0, .16),
+      inset -8px 0 0 rgba(255, 255, 255, .10),
+      0 1px 2px rgba(23, 56, 71, .16),
+      0 10px 22px -10px rgba(23, 56, 71, .45);
+    transition: transform .45s var(--lb-ease), box-shadow .45s var(--lb-ease);
   }
-  .iu-library .lb-book:focus-visible { outline: 2px solid var(--iu-teal); outline-offset: 2px; }
-  /* Drawn as the app draws it: physical corners, page edge on the right. */
-  .iu-library .lb-spine {
-    position: relative; width: 50px; height: 70px; flex: none; display: grid; place-items: center;
-    background: var(--spine); color: rgba(255, 255, 255, .92);
-    border-radius: 4px 10px 10px 4px;
+  .dark .iu-library .lb-cover { box-shadow: inset -7px 0 0 rgba(0, 0, 0, .22), inset -8px 0 0 rgba(255, 255, 255, .08), 0 1px 2px rgba(0, 0, 0, .4), 0 12px 24px -10px rgba(0, 0, 0, .7); }
+  /* Frames: a fine rule (v0), a double rule (v1), a lattice band at the head (v2). */
+  .iu-library .lb-cover::before { content: ''; position: absolute; inset: 7px 13px 7px 7px; z-index: -1; border-radius: 3px; border: 1px solid rgba(255, 255, 255, .3); }
+  .iu-library .lb-cover.v1::before { border: 3px double rgba(255, 255, 255, .34); }
+  .iu-library .lb-cover.v2::before { inset: 0 8px auto 0; height: 30%; border: 0; border-radius: 0; border-bottom: 1px solid rgba(255, 255, 255, .28);
+    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .12) 0 1px, transparent 1px 9px), repeating-linear-gradient(135deg, rgba(255, 255, 255, .12) 0 1px, transparent 1px 9px); }
+  .iu-library .lb-cover-field { position: absolute; top: 9%; inset-inline: 0; text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0; opacity: .78; }
+  .iu-library .lb-cover.v2 .lb-cover-field { display: none; }
+  .iu-library .lb-orn { width: 26%; aspect-ratio: 1; flex: none; margin-bottom: 9%; opacity: .62; }
+  .iu-library .lb-cover.v2 .lb-orn { position: absolute; top: 7%; width: 22%; margin: 0; padding: 3px; border-radius: 99px; opacity: .9; background: var(--cover); }
+  .iu-library .lb-cover.v2 { padding-top: 34%; }
+  .iu-library .lb-cover-title {
+    font-family: var(--iu-ui); font-weight: 700; text-align: center; line-height: 1.6;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; text-wrap: balance;
   }
-  /* A thin page edge, just enough to read as a book. */
-  .iu-library .lb-spine::after { content: ''; position: absolute; right: 0; top: 7px; bottom: 7px; width: 2.5px; border-radius: 0 4px 4px 0; background: rgba(255, 255, 255, .22); }
-  .iu-library .lb-spine svg { width: 22px; height: 22px; }
-  .iu-library .lb-book.is-irab { --spine: #1F789B; }
-  .iu-library .lb-book.is-balagha { --spine: #6200EA; }
-  .iu-library .lb-book.is-sarf { --spine: #145973; }
-  .iu-library .lb-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-  .iu-library .lb-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .iu-library .lb-author, .iu-library .lb-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .iu-library .lb-author { margin-top: 2px; }
-  .iu-library .lb-meta { margin-top: 5px; }
-  .iu-library[dir='ltr'] :is(.lb-title, .lb-author) { text-align: left; }
-  .iu-library .lb-progress { display: flex; align-items: center; gap: 8px; margin-top: 9px; }
-  .iu-library .lb-bar { flex: 1; height: 4px; border-radius: 999px; background: var(--iu-sunken); overflow: hidden; }
-  .iu-library .lb-bar > span { display: block; height: 100%; width: var(--p, 0%); border-radius: inherit; background: var(--spine); }
-  .iu-library .lb-chev { width: 18px; height: 18px; flex: none; color: var(--iu-text-3); transition: translate .3s cubic-bezier(.22, 1, .36, 1), color .2s ease; }
+  .iu-library .lb-cover-title.is-s { font-size: clamp(17px, 2.1vw, 21px); }
+  .iu-library .lb-cover-title.is-m { font-size: clamp(15px, 1.75vw, 17.5px); }
+  .iu-library .lb-cover-title.is-l { font-size: clamp(13.5px, 1.5vw, 15px); -webkit-line-clamp: 5; }
+  .iu-library .lb-cover-title.is-xl { font-size: clamp(12.5px, 1.35vw, 13.5px); -webkit-line-clamp: 5; line-height: 1.5; }
+  /* Two covers a row on a phone: each is ~170px wide, so the titles can be larger. */
+  @media (max-width: 559px) {
+    .iu-library .lb-cover-title.is-s { font-size: 22px; }
+    .iu-library .lb-cover-title.is-m { font-size: 18.5px; }
+    .iu-library .lb-cover-title.is-l { font-size: 16px; }
+    .iu-library .lb-cover-title.is-xl { font-size: 14.5px; }
+  }
+  .iu-library .lb-cover-level { position: absolute; bottom: 8%; inset-inline: 0; text-align: center; font-size: 10.5px; font-weight: 700; opacity: .72; }
+  .iu-library .lb-cover-prog { position: absolute; inset-inline: 10px 16px; bottom: 7px; height: 4px; border-radius: 99px; background: rgba(255, 255, 255, .25); overflow: hidden; }
+  .iu-library .lb-cover-prog > span { display: block; height: 100%; width: var(--p, 0%); border-radius: inherit; background: #fff; }
+  .iu-library .lb-cover:has(.lb-cover-prog:not(.hidden)) .lb-cover-level { bottom: 11%; }
+
+  .iu-library .lb-text { display: flex; flex-direction: column; min-width: 0; padding-inline: 2px; }
+  .iu-library .lb-name { display: none; }
+  .iu-library .lb-meta { display: none; }
+  .iu-library .lb-meta-short { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 13px; font-weight: 600; color: var(--iu-text-3); }
+  .iu-library .lb-pct:empty { display: none; }
+  .iu-library .lb-pct { padding: 1px 8px; border-radius: 99px; font-size: 12px; font-weight: 700; color: var(--iu-primary-text); background: var(--iu-primary-soft); }
+  .iu-library .lb-chev { display: none; }
+
   @media (hover: hover) {
-    .iu-library .lb-book:hover { transform: translateY(-3px); box-shadow: var(--iu-shadow-lift); border-color: var(--iu-teal); }
-    .iu-library .lb-book:hover .lb-chev { translate: -3px 0; color: var(--iu-text-2); }
-    .iu-library[dir='ltr'] .lb-book:hover .lb-chev { translate: 3px 0; }
+    .iu-library .lb-book:hover .lb-cover { transform: translateY(-6px) rotate(-.6deg); box-shadow: inset -7px 0 0 rgba(0, 0, 0, .16), inset -8px 0 0 rgba(255, 255, 255, .10), 0 2px 4px rgba(23, 56, 71, .14), 0 22px 34px -14px rgba(23, 56, 71, .55); }
+    .iu-library[dir='ltr'] .lb-book:hover .lb-cover { transform: translateY(-6px) rotate(.6deg); }
   }
-  .iu-library .lb-book:active { transform: translateY(-1px) scale(.99); }
-  .iu-library .lb-empty { padding: 40px 0; text-align: center; }
+  .iu-library .lb-book:active .lb-cover { transform: translateY(-2px) scale(.985); transition-duration: .12s; }
+
+  /* ── List view: a compact row per book, the cover shrunk to a thumbnail. ── */
+  .iu-library.is-list .lb-grid { grid-template-columns: 1fr; gap: 10px; }
+  @media (min-width: 820px) { .iu-library.is-list .lb-grid { grid-template-columns: 1fr 1fr; gap: 12px; } }
+  .iu-library.is-list .lb-book {
+    flex-direction: row; align-items: center; gap: 14px; padding: 12px; padding-inline-end: 16px; border-radius: 16px;
+    background: var(--iu-card); border: 1px solid var(--iu-border); box-shadow: var(--iu-shadow-card);
+    transition: transform .35s var(--lb-ease), box-shadow .3s ease, border-color .2s ease;
+  }
+  .iu-library.is-list .lb-cover { width: 46px; flex: none; padding: 0; border-radius: 6px 3px 3px 6px; box-shadow: inset -4px 0 0 rgba(0, 0, 0, .16), 0 4px 10px -4px rgba(23, 56, 71, .4); }
+  .iu-library.is-list .lb-cover::before { inset: 4px 7px 4px 4px; border-width: 1px; border-style: solid; height: auto; background: none; }
+  .iu-library.is-list :is(.lb-cover-field, .lb-cover-title, .lb-cover-level, .lb-cover-prog) { display: none !important; }
+  .iu-library.is-list .lb-orn { position: static; width: 52%; margin: 0; padding: 0; background: none; opacity: .75; }
+  .iu-library.is-list .lb-text { flex: 1; gap: 4px; }
+  .iu-library.is-list .lb-name { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 17px; font-weight: 700; line-height: 1.55; color: var(--iu-text); }
+  .iu-library[dir='ltr'].is-list .lb-name { text-align: left; }
+  .iu-library.is-list .lb-meta { display: block; font-size: 13.5px; font-weight: 500; color: var(--iu-text-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .iu-library.is-list .lb-meta-short { display: none; }
+  .iu-library.is-list .lb-chev { display: block; width: 18px; height: 18px; flex: none; color: var(--iu-text-3); transition: translate .3s var(--lb-ease), color .2s ease; }
+  @media (hover: hover) {
+    .iu-library.is-list .lb-book:hover { transform: translateY(-2px); box-shadow: var(--iu-shadow-lift); border-color: var(--iu-border-strong); }
+    .iu-library.is-list .lb-book:hover .lb-cover { transform: none; }
+    .iu-library.is-list .lb-book:hover .lb-chev { translate: -3px 0; color: var(--iu-text-2); }
+    .iu-library[dir='ltr'].is-list .lb-book:hover .lb-chev { translate: 3px 0; }
+  }
+
+  /* ── Empty search ── */
+  .iu-library .lb-empty { padding: 56px 0 24px; text-align: center; }
+  .iu-library .lb-empty p { margin: 0 0 14px; font-size: 18px; color: var(--iu-text-2); }
+  .iu-library .lb-clear { height: 42px; padding: 0 18px; border-radius: 999px; cursor: pointer; font-family: var(--iu-ui); font-size: 15px; font-weight: 700; color: var(--iu-primary-text); background: var(--iu-primary-soft); border: 0; }
+
   @media (prefers-reduced-motion: reduce) {
-    .iu-library .lb-book { transform: none !important; }
-    .iu-library .lb-chev { translate: none !important; }
+    .iu-library :is(.lb-cover, .lb-resume, .lb-book, .lb-chev, .lb-resume-bar > span) { transition: none !important; transform: none !important; }
   }
 </style>
 
 <script>
   import { digits } from '../../lib/irab/strings';
+  import { revealOnScroll } from '../../lib/scroll-in';
+
+  // "Onward": left in Arabic, right in English.
+  const arrow = (lang: string) => {
+    const d = lang === 'en' ? 'M5 12h14m-6-6 6 6-6 6' : 'M19 12H5m6-6-6 6 6 6';
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+  };
 
   const root = document.querySelector<HTMLElement>('[data-lib-root]');
   if (root) {
     const lang = root.getAttribute('lang') === 'en' ? 'en' : 'ar';
-    const cards = Array.from(root.querySelectorAll<HTMLAnchorElement>('[data-lib-grid] [data-book]'));
+    const cards = Array.from(root.querySelectorAll<HTMLAnchorElement>('.lb-shelf [data-book]'));
+    const shelves = Array.from(root.querySelectorAll<HTMLElement>('[data-shelf]'));
     const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('.lb-chip'));
     const search = root.querySelector<HTMLInputElement>('[data-lib-search]');
     const empty = root.querySelector<HTMLElement>('[data-lib-empty]');
+    const results = root.querySelector<HTMLElement>('[data-lib-results]');
+    const viewBtns = Array.from(root.querySelectorAll<HTMLButtonElement>('.lb-view-btn'));
     let activeCat = 'all';
+
+    const store = {
+      get: (k: string) => { try { return localStorage.getItem(k); } catch { return null; } },
+      set: (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* private mode */ } },
+    };
+
+    const countLabel = (v: number) => {
+      if (lang === 'en') return v === 1 ? '1 book' : `${v} books`;
+      if (v === 1) return 'كتاب واحد';
+      if (v === 2) return 'كتابان';
+      return `${digits(v, 'ar')} ${v <= 10 ? 'كتب' : 'كتابًا'}`;
+    };
 
     const norm = (v: string) => (v || '')
       .replace(/[ً-ْٰـ]/g, '')
@@ -211,12 +418,24 @@ const SEP = '\u2002·\u2002';
     function apply() {
       const qv = norm(search?.value || '');
       let shown = 0;
-      cards.forEach((c) => {
-        const show = (activeCat === 'all' || c.dataset.cat === activeCat) && (!qv || norm(c.dataset.search || '').includes(qv));
-        c.classList.toggle('hidden', !show);
-        if (show) shown++;
+      shelves.forEach((sh) => {
+        const inCat = activeCat === 'all' || sh.dataset.shelf === activeCat;
+        let inShelf = 0;
+        sh.querySelectorAll<HTMLAnchorElement>('[data-book]').forEach((c) => {
+          const show = inCat && (!qv || norm(c.dataset.search || '').includes(qv));
+          c.classList.toggle('hidden', !show);
+          if (show) inShelf++;
+        });
+        sh.classList.toggle('hidden', inShelf === 0);
+        shown += inShelf;
       });
       empty?.classList.toggle('hidden', shown > 0);
+      // A shelf's full count would mislead while only some of it matches.
+      root!.classList.toggle('is-searching', !!qv);
+      if (results) {
+        results.textContent = qv && shown ? countLabel(shown) : '';
+        results.classList.toggle('hidden', !(qv && shown));
+      }
     }
     chips.forEach((chip) => chip.addEventListener('click', () => {
       activeCat = chip.dataset.cat || 'all';
@@ -227,35 +446,85 @@ const SEP = '\u2002·\u2002';
       apply();
     }));
     search?.addEventListener('input', apply);
+    root.querySelector('[data-lib-clear]')?.addEventListener('click', () => {
+      if (search) { search.value = ''; search.focus(); }
+      apply();
+    });
+
+    // Covers or list, remembered on this device.
+    function setView(v: string, remember: boolean) {
+      const list = v === 'list';
+      root!.classList.toggle('is-list', list);
+      viewBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === (list ? 'list' : 'grid'))));
+      if (remember) store.set('irab-lib-view', list ? 'list' : 'grid');
+    }
+    setView(store.get('irab-lib-view') || 'grid', false);
+    viewBtns.forEach((b) => b.addEventListener('click', () => {
+      if (b.getAttribute('aria-pressed') === 'true') return;
+      setView(b.dataset.view || 'grid', true);
+      revealOnScroll(root!, '[data-book]:not(.hidden)');
+    }));
 
     // Reading progress: the reader keeps the last chapter (and when) per book.
-    const read = (key: string) => { try { return localStorage.getItem(key); } catch { return null; } };
-    const reading: { card: HTMLAnchorElement; at: number }[] = [];
+    const fmtPct = (p: number) => (lang === 'ar' ? `${digits(p, 'ar')}٪` : `${p}%`);
+    const reading: { card: HTMLAnchorElement; at: number; last: number; pct: number }[] = [];
     cards.forEach((card) => {
-      const last = parseInt(read(`irab-lib-last:${card.dataset.id}`) || '', 10);
+      const last = parseInt(store.get(`irab-lib-last:${card.dataset.id}`) || '', 10);
       const total = parseInt(card.dataset.total || '0', 10);
       if (!Number.isFinite(last) || last < 0 || total <= 0) return;
       const pct = Math.min(100, Math.max(1, Math.round(((last + 1) / total) * 100)));
-      const prog = card.querySelector<HTMLElement>('.lb-progress');
-      if (!prog) return;
-      prog.classList.remove('hidden');
-      prog.querySelector<HTMLElement>('.lb-bar > span')?.style.setProperty('--p', `${pct}%`);
-      const label = prog.querySelector<HTMLElement>('[data-pct]');
-      if (label) label.textContent = lang === 'ar' ? `${digits(pct, 'ar')}٪` : `${pct}%`;
-      reading.push({ card, at: parseInt(read(`irab-lib-at:${card.dataset.id}`) || '0', 10) || 0 });
+      const prog = card.querySelector<HTMLElement>('.lb-cover-prog');
+      prog?.classList.remove('hidden');
+      prog?.querySelector<HTMLElement>('span')?.style.setProperty('--p', `${pct}%`);
+      const label = card.querySelector<HTMLElement>('[data-pct]');
+      if (label) label.textContent = fmtPct(pct);
+      reading.push({ card, last, pct, at: parseInt(store.get(`irab-lib-at:${card.dataset.id}`) || '0', 10) || 0 });
     });
+
     if (reading.length) {
       const list = root.querySelector<HTMLElement>('[data-lib-continue-list]');
       const tmpl = root.dataset.chapterOf || '';
-      reading.sort((a, b) => b.at - a.at).slice(0, 2).forEach(({ card }) => {
-        const copy = card.cloneNode(true) as HTMLAnchorElement;
-        const last = parseInt(read(`irab-lib-last:${card.dataset.id}`) || '0', 10);
-        const meta = copy.querySelector<HTMLElement>('.lb-meta');
-        if (meta) meta.textContent = digits(tmpl.replace('{i}', String(last + 1)).replace('{n}', card.dataset.total || ''), lang);
-        copy.removeAttribute('data-book');
-        list?.appendChild(copy);
+      reading.sort((a, b) => b.at - a.at).slice(0, 3).forEach(({ card, last, pct }) => {
+        const a = document.createElement('a');
+        a.href = card.href;
+        a.className = `lb-resume ${[...card.classList].find((c) => c.startsWith('is-')) || ''}`;
+        // The book's own cover, as a thumbnail: colour and star only.
+        const cover = card.querySelector('.lb-cover')?.cloneNode(true) as HTMLElement | undefined;
+        if (cover) {
+          cover.querySelectorAll('.lb-cover-field, .lb-cover-title, .lb-cover-level, .lb-cover-prog').forEach((el) => el.remove());
+          cover.className = 'lb-cover v0';
+          cover.style.padding = '0';
+          a.appendChild(cover);
+        }
+        const body = document.createElement('span');
+        body.className = 'lb-resume-body';
+        const name = document.createElement('span');
+        name.className = 'lb-resume-name';
+        name.lang = 'ar';
+        name.dir = 'rtl';
+        name.textContent = card.querySelector('.lb-name')?.textContent || '';
+        const meta = document.createElement('span');
+        meta.className = 'lb-resume-meta';
+        meta.textContent = `${digits(tmpl.replace('{i}', String(last + 1)).replace('{n}', card.dataset.total || ''), lang)} · ${fmtPct(pct)}`;
+        const bar = document.createElement('span');
+        bar.className = 'lb-resume-bar';
+        const fill = document.createElement('span');
+        bar.appendChild(fill);
+        body.append(name, meta, bar);
+        const go = document.createElement('span');
+        go.className = 'lb-resume-go';
+        const goLabel = document.createElement('span');
+        goLabel.textContent = root!.dataset.resume || '';
+        go.appendChild(goLabel);
+        go.insertAdjacentHTML('beforeend', arrow(lang));
+        a.append(body, go);
+        list?.appendChild(a);
+        // The bar fills once it is on screen.
+        requestAnimationFrame(() => requestAnimationFrame(() => fill.style.setProperty('--p', `${pct}%`)));
       });
       root.querySelector<HTMLElement>('[data-lib-continue]')?.classList.remove('hidden');
     }
+
+    revealOnScroll(root, '[data-book]');
   }
 </script>
