@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LoginScreen from '../../components/auth/LoginScreen.astro';
 ---
-<BaseLayout lang="en" title="Sign in · Irab App" description="Sign in to your Irab account or create one: one account for web and the app.">
+<BaseLayout displayFont={false} lang="en" title="Sign in · Irab App" description="Sign in to your Irab account or create one: one account for web and the app.">
   <meta slot="head" name="robots" content="noindex, nofollow" />
   {/* No site nav on purpose (see AuthHeader): nothing here competes with
       signing in. LoginScreen lays out the header, the form and, on wide

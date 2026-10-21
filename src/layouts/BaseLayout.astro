@@ -33,6 +33,13 @@ interface Props {
   /** Absolute canonical URL override (e.g. a multi-ayah group member pointing
    *  at its group head). Defaults to this page's own URL. */
   canonicalOverride?: string;
+  /** Preload the Quran face (Uthmanic Hafs, 90 KB): only pages that show a
+   *  verse in the first screen. Elsewhere it still loads when a verse scrolls
+   *  into view, without competing with the first paint. */
+  quranFont?: boolean;
+  /** Preload the Ruqaa display face. The nav wordmark uses it on every page
+   *  with the nav; screens without the nav (login, reader) set this false. */
+  displayFont?: boolean;
 }
 
 const {
@@ -45,6 +52,8 @@ const {
   pathOverride,
   hasEn = false,
   canonicalOverride,
+  quranFont = false,
+  displayFont = true,
 } = Astro.props;
 
 const dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -84,12 +93,14 @@ const hasAlternate = lang === 'en' || hasEn;
   <link rel="manifest" href="/manifest.json" />
   <link rel="canonical" href={canonical.toString()} />
 
-  {/* Preload the three self-hosted faces (body, display, Quran) for fast,
-      flash-free first paint. Stable /public paths: not content-hashed. */}
+  {/* Preload only the faces the first screen paints. Every preload is fetched
+      at high priority beside the render-blocking CSS, so an unused one (the
+      90 KB Quran face on a pricing page) delays the first paint on slow
+      networks. Stable /public paths: not content-hashed. */}
   <link rel="preload" href="/fonts/thmanyah-text-regular.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/thmanyah-text-medium.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/fonts/aref-ruqaa.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/fonts/uthmanic-hafs.woff2" as="font" type="font/woff2" crossorigin />
+  {displayFont && <link rel="preload" href="/fonts/aref-ruqaa.woff2" as="font" type="font/woff2" crossorigin />}
+  {quranFont && <link rel="preload" href="/fonts/uthmanic-hafs.woff2" as="font" type="font/woff2" crossorigin />}
 
   {noindex && <meta name="robots" content="noindex, nofollow" />}
   {!noindex && googlebotNoindex && <meta name="googlebot" content="noindex" />}

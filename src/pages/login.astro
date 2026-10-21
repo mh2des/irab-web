@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LoginScreen from '../components/auth/LoginScreen.astro';
 ---
-<BaseLayout lang="ar" title="تسجيل الدخول · إعراب آب" description="سجّل الدخول إلى حسابك في إعراب أو أنشئ حساباً جديداً للوصول إلى ميزاتك عبر الويب والتطبيق.">
+<BaseLayout displayFont={false} lang="ar" title="تسجيل الدخول · إعراب آب" description="سجّل الدخول إلى حسابك في إعراب أو أنشئ حساباً جديداً للوصول إلى ميزاتك عبر الويب والتطبيق.">
   <meta slot="head" name="robots" content="noindex, nofollow" />
   {/* No site nav on purpose (see AuthHeader): nothing here competes with
       signing in. LoginScreen lays out the header, the form and, on wide
