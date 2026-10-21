@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-afal-al-khamsa';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Five Verbs" description="The five patterns, the nūn as nominative marker, its dropping for accusative and jussive, and distinguishing it from the feminine and emphatic nūn." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-afal-al-khamsa'].en}
-      title="The Five Verbs"
-      summary="The five verbs are not five particular verbs but five patterns that any imperfect verb can enter. What makes them a chapter of their own is that they take a letter as their case marker instead of a vowel: the nūn is present for the nominative and dropped for the accusative and the jussive. The difficulty is that Arabic has three different nūns that look alike and behave completely differently."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Five Verbs"
+    summary="The five verbs are not five particular verbs but five patterns that any imperfect verb can enter. What makes them a chapter of their own is that they take a letter as their case marker instead of a vowel: the nūn is present for the nominative and dropped for the accusative and the jussive. The difficulty is that Arabic has three different nūns that look alike and behave completely differently."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: five patterns, not five verbs"
@@ -58,9 +51,9 @@ const faqs = [
       <LessonObjective items={objectives} />
       <p>The five shapes are: <em>yafʿalāni</em>, <em>tafʿalāni</em>, <em>yafʿalūna</em>, <em>tafʿalūna</em>, <em>tafʿalīna</em>. Notice what all five have in common: an imperfect verb, a pronoun suffix that is the doer, and a nūn at the end. That nūn is the whole subject of this lesson.</p>
       <p>Note that the attached letter is itself the doer. In <em>yaktubūna</em> the wāw is the doer, an attached pronoun in the position of nominative. The verb is not "they write" as a single unanalysable word; it is a verb plus its doer, and iʿrāb treats them separately.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="raf"
       title="See: the nūn as the nominative marker"
@@ -75,9 +68,9 @@ const faqs = [
         irab="الطلابُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، يكتبونَ فعل مضارع مرفوع وعلامة رفعه ثبوت النون لأنه من الأفعال الخمسة، وواو الجماعة ضمير متصل مبني في محل رفع فاعل، الدرسَ مفعول به منصوب، والجملة الفعلية في محل رفع خبر."
         note="Two separate things are happening at the end of yaktubūna. The wāw is the doer, a pronoun in the position of nominative. The nūn is the case marker of the verb itself. Learners often treat the whole ending as one unit and can then account for neither."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="nasb-jazm"
       title="Understand: dropping the nūn for accusative and jussive"
@@ -109,9 +102,9 @@ const faqs = [
         answer="Jussive, and the marker is the dropping of the nūn, because it is one of the five verbs."
         why="lam is a particle of negation and jussive. Had the particle been lan the verb would have been accusative with exactly the same visible ending, which is why the particle and not the ending decides the case."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="The three nūns"
@@ -132,9 +125,9 @@ const faqs = [
         irab="الطالباتُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، يكتبنَ فعل مضارع مبني على السكون لاتصاله بنون النسوة، ونون النسوة ضمير متصل مبني في محل رفع فاعل، الدرسَ مفعول به منصوب، والجملة الفعلية في محل رفع خبر."
         note="Compare this with yaktubūna in the first card. They look parallel and are not. Here the verb is mabnī, built, and has no case marker at all, because an imperfect verb stops declining when the feminine nūn or the emphatic nūn attaches to it. Saying 'nominative by the presence of the nūn' here would be an error."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -145,12 +138,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span>: the conditions under which the imperfect is built rather than declined.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the implied an after ḥattā and its sisters.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

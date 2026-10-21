@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما الفرق بين التوكيد اللفظي والمعنوي؟', a: 'اللفظي إعادة اللفظ نفسه أو مرادفه: جاء جاء الحقُّ. والمعنوي يكون بألفاظ محفوظة: النفس والعين لرفع المجاز عن الذات، وكل وجميع وعامة للشمول، وكلا وكلتا للمثنى، بشرط اتصالها بضمير يعود على المؤكد.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="التوكيد" description="شرح التوكيد وقسميه: اللفظي بإعادة اللفظ، والمعنوي بالنفس والعين وكل وجميع وكلا وكلتا، وشرط الضمير الرابط، وإعراب التوكيد تابعًا، مع أمثلة قرآنية معربة." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-tawkid'].ar}
+    slug="al-tawkid"
     title="التوكيد"
     summary="التوكيد تابع يذكر لتقرير المتبوع ورفع احتمال السهو أو المجاز عنه، وهو رابع التوابع مع النعت والعطف والبدل. قسمان: لفظي بإعادة اللفظ، ومعنوي بألفاظ محفوظة أشهرها النفس والعين وكل وجميع وكلا وكلتا. هذا الدرس يعرض القسمين وشروطهما بأمثلة قرآنية معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف والإعراب"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">جَاءَ الْأَمِيرُ نَفْسُهُ</span></p>
     <p><strong>الإعراب:</strong> جاء فعل ماضٍ مبني على الفتح. الأميرُ <a href="/duroos/al-fail">فاعل</a> مرفوع وعلامة رفعه الضمة الظاهرة. نفسُه توكيد معنوي مرفوع وعلامة رفعه الضمة الظاهرة وهو مضاف، والهاء ضمير متصل مبني في محل جر مضاف إليه.</p>
     <p>ففائدة "نفسه" دفع احتمال أن يكون الجائي رسولَه أو خبرَه، فالمجيء للأمير ذاته.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="lafzi"
     title="التوكيد اللفظي"
@@ -60,14 +55,14 @@ const faqs = [
       <li><strong>توكيد الجملة:</strong> <span class="ar">﴿فَإِنَّ مَعَ الْعُسْرِ يُسْرًا * إِنَّ مَعَ الْعُسْرِ يُسْرًا﴾</span>، فالجملة الثانية توكيد لفظي للأولى لا محل لها من الإعراب تبعًا للأولى.</li>
       <li><strong>توكيد الضمير المتصل بالمنفصل:</strong> <span class="ar">قُمْتُ أَنَا</span>، أنا توكيد للتاء في محل رفع.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">أكِّد ولا تكرر عبثًا.</span>
     ألصق جملة فيها توكيد في محلّل الإعراب وشاهده يميز التوكيد اللفظي من المعنوي ويعين المؤكد وعلامة التبعية.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="manawi"
     title="التوكيد المعنوي وألفاظه"
@@ -76,9 +71,9 @@ const faqs = [
     <p>المثال الجامع في التنزيل: <span class="ar">﴿فَسَجَدَ الْمَلَائِكَةُ كُلُّهُمْ أَجْمَعُونَ﴾</span></p>
     <p><strong>الإعراب:</strong> سجدَ فعل ماضٍ مبني على الفتح. الملائكةُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة. كلُّهم توكيد معنوي مرفوع وعلامة رفعه الضمة وهو مضاف، والهاء ضمير متصل مبني في محل جر مضاف إليه، والميم للجمع. أجمعون توكيد ثانٍ مرفوع وعلامة رفعه الواو لأنه ملحق بجمع المذكر السالم.</p>
     <p>ومن كلا وكلتا: <span class="ar">نَجَحَ الطَّالِبَانِ كِلَاهُمَا</span>: كلاهما توكيد معنوي مرفوع وعلامة رفعه الألف لأنه ملحق بالمثنى وهو مضاف، والضمير مضاف إليه. وعلامات المثنى في <a href="/duroos/alamat-al-irab">علامات الإعراب</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -90,11 +85,8 @@ const faqs = [
       <li>"نفس وعين" بلا ضمير مطابق ليستا توكيدًا: في <span class="ar">رَأَيْتُ نَفْسَ الرَّجُلِ</span> نفسَ مفعول به مضاف لا توكيد.</li>
     </ul>
     <p>وبهذا تكتمل التوابع الأربعة: <a href="/duroos/al-naat">النعت</a> و<a href="/duroos/al-atf">العطف</a> و<a href="/duroos/al-badal">البدل</a> والتوكيد، وتطبيقها كله في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-tawkid" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

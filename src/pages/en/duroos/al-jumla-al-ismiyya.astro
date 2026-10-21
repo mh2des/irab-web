@@ -29,17 +29,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-jumla-al-ismiyya';
 
@@ -67,17 +62,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Nominal Sentence (al-jumla al-ismiyya)" description="A full lesson on al-jumla al-ismiyya: its two pillars mubtadaʾ and khabar, why both are marfūʿ without any verb, the three kinds of khabar, fronting the predicate, indefinite subjects, and the abrogators, with complete classical iʿrāb and Quranic evidence." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-jumla-al-ismiyya'].en}
-      title="The Nominal Sentence"
-      summary="Arabic builds statements in two ways, and everything in naḥw follows from which one you are looking at. The nominal sentence, al-jumla al-ismiyya, opens with a noun and rests on two pillars: the mubtadaʾ and the khabar, both in the nominative. This lesson explains what puts them there when there is no verb in sight, the three shapes the predicate can take, when the order reverses, and what happens when an abrogator enters."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Nominal Sentence"
+    summary="Arabic builds statements in two ways, and everything in naḥw follows from which one you are looking at. The nominal sentence, al-jumla al-ismiyya, opens with a noun and rests on two pillars: the mubtadaʾ and the khabar, both in the nominative. This lesson explains what puts them there when there is no verb in sight, the three shapes the predicate can take, when the order reverses, and what happens when an abrogator enters."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="terms"
       title="The terms, before anything else"
@@ -94,9 +87,9 @@ const faqs = [
         <li><strong>نواسخ</strong>, <em>nawāsikh</em>, "abrogators": words that enter the nominal sentence and overturn its default case pattern.</li>
       </ul>
       <p>Arabic terms are given in script, then transliterated, then glossed. The transliteration is academic: macrons mark long vowels, <em>ʿ</em> is ʿayn and <em>ʾ</em> is hamza, so every form can be read back into Arabic without ambiguity.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: what makes a sentence nominal"
@@ -135,9 +128,9 @@ const faqs = [
         answer="Nominal. al-muʿallimūna is a mubtadaʾ, not a fāʿil."
         why="A noun opens the sentence, so the sentence is nominal regardless of the verb that follows. The verbal sentence yashraḥūna l-darsa then sits in the position of khabar. Had the verb come first, yashraḥu l-muʿallimūna l-darsa, the noun would have been a fāʿil."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="the-two-pillars"
       title="Understand: what raises the two pillars"
@@ -167,9 +160,9 @@ const faqs = [
       />
 
       <p>The markers themselves, original and substitute, are the subject of <a href="/en/duroos/alamat-al-irab">the markers of iʿrāb</a>.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="english-contrast"
       title="What English can and cannot lend you"
@@ -178,9 +171,9 @@ const faqs = [
       <p>English marks case on pronouns only: <em>he</em> against <em>him</em>, <em>who</em> against <em>whom</em>. Nobody thinks "him" means something different from "he"; it is the same word wearing a different grammatical role. Arabic simply does openly, on nearly every noun, what English does on a handful of pronouns. When you read <em>al-ʿilmu</em> and later <em>al-ʿilma</em>, that final vowel is doing the work that <em>he</em> and <em>him</em> do.</p>
       <p>The habit to unlearn is supplying "is". "Knowledge <strong>is</strong> light" needs a verb in English; the Arabic has none, and no word in it corresponds to "is". If you go looking for the copula you will invent a governor that is not there. The equational relationship is carried by two nouns standing together, both in the nominative.</p>
       <p>Learners who know Latin, German, Greek or Russian have a real advantage and should lean on it: marfūʿ is close to nominative, manṣūb to accusative, majrūr to genitive. The correspondence is close enough to be useful and loose enough to be dangerous, so treat it as a bridge to intuition rather than a definition.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="types-of-khabar"
       title="See: the three shapes of the khabar"
@@ -227,9 +220,9 @@ const faqs = [
         answer="A sentence-predicate (khabar jumla). The link is the attached pronoun -hu in akhlāquhu."
         why="akhlāquhu ḥasanatun is itself a complete nominal sentence occupying the position of khabar for al-muslimu, fī maḥall rafʿ. Remove the pronoun and nothing would tie the two halves together."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="word-order"
       title="Reversing the order, and starting with an indefinite"
@@ -259,9 +252,9 @@ const faqs = [
         <li><strong>It expresses a prayer:</strong> <span class="ar" lang="ar" dir="rtl">سَلَامٌ عَلَيْكُمْ</span>, <em>salāmun ʿalaykum</em>, "peace be upon you".</li>
         <li><strong>The predicate is fronted:</strong> the case above.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="nawasikh"
       title="The abrogators: when the pattern is overturned"
@@ -295,9 +288,9 @@ const faqs = [
         answer="al-ṣabra is manṣūb and is called ism inna; miftāḥu is marfūʿ and is called khabar inna."
         why="Inna puts the first pillar in the accusative and leaves the predicate nominative. Had this been kāna l-ṣabru miftāḥan, the cases would have been the other way round."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where English speakers go wrong"
@@ -310,9 +303,9 @@ const faqs = [
         <li><strong>Confusing a postponed mubtadaʾ with a fāʿil.</strong> In <span class="ar" lang="ar" dir="rtl">فِي الصَّفِّ طَالِبٌ</span>, <em>fī l-ṣaffi ṭālibun</em>, there is no verb in the sentence at all, so <em>ṭālibun</em> cannot be a fāʿil. It is a postponed mubtadaʾ. A fāʿil requires a verb; no verb, no fāʿil, ever.</li>
       </ul>
       <p>The cure for all four is the same: parse real sentences, out loud, in the full classical wording, until the shape of the iʿrāb line is automatic. Read the <a href="/en/irab">iʿrāb reference</a> for that wording, then take sentences from anything you are reading and parse them before checking yourself.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -324,14 +317,8 @@ const faqs = [
         <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: for the finer disagreements over what exactly raises the khabar.</li>
         <li>Quranic iʿrāb on this site is quoted from <strong>Maḥmūd Ṣāfī</strong>, <span class="ar" lang="ar" dir="rtl">الجدول في إعراب القرآن وصرفه وبيانه</span>, as set out on our <a href="/en/methodology">methodology page</a>.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-
-    <ArticleFaq lang="en" items={faqs} />
-
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

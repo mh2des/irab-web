@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'كم عدد حروف الجر؟', a: 'المشهور في المتون عشرون حرفًا جمعها ابن مالك في الألفية، وأكثرها دورانًا تسعة: من، إلى، عن، على، في، الباء، الكاف، اللام، ورب، ويضاف إليها واو القسم وتاؤه ومذ ومنذ وحتى.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="حروف الجر" description="شرح حروف الجر: عملها في الأسماء، معاني من وإلى وعن وعلى وفي والباء واللام والكاف، علامات الجر الأصلية والفرعية، والتعلق، مع أمثلة قرآنية معربة." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['huruf-al-jarr'].ar}
+    slug="huruf-al-jarr"
     title="حروف الجر"
     summary="حروف الجر مفاتيح المعاني: حروف مختصة بالأسماء تجر ما بعدها وتصل معنى الفعل إليه. إتقانها إتقان لنصف الإعراب العملي، فقلّ أن تخلو جملة من جار ومجرور. هذا الدرس يعرض عملها ومعانيها وعلامات الجر بعدها ومسألة التعلق، بأمثلة معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="العمل والاختصاص"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">صَلَّيْتُ فِي الْمَسْجِدِ</span></p>
     <p><strong>الإعراب:</strong> صليتُ فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني في محل رفع فاعل. في حرف جر مبني على السكون لا محل له من الإعراب. المسجدِ اسم مجرور بفي وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بالفعل صليتُ.</p>
     <p>ودخول حرف الجر علامة على الاسمية: فكل ما قبل حرفُ جرٍّ فهو اسم قطعًا، وهذه من أنفع القرائن عند تحليل الجملة في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="meanings"
     title="معاني أشهر الحروف"
@@ -65,14 +60,14 @@ const faqs = [
       <li><span class="ar">الْكَاف</span>: التشبيه، <span class="ar">الْعِلْمُ كَالنُّورِ</span>.</li>
       <li><span class="ar">رُبَّ</span>: التقليل أو التكثير، <span class="ar">رُبَّ ضَارَّةٍ نَافِعَةٌ</span>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">اكشف معنى الحرف في جملتك.</span>
     ألصق أي جملة فيها جار ومجرور في محلّل الإعراب، وسيبين لك الحرف وعمله والاسم المجرور وعلامة جره وما يتعلقان به.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="signs"
     title="علامات الجر بعد الحرف"
@@ -86,9 +81,9 @@ const faqs = [
       <li><strong>الفتحة في الممنوع من الصرف:</strong> <span class="ar">مَرَرْتُ بِمَسَاجِدَ عَظِيمَةٍ</span>، وتفصيله في <a href="/duroos/al-mamnu-min-al-sarf">درسه</a>.</li>
     </ul>
     <p>وجدول العلامات كاملًا في <a href="/duroos/alamat-al-irab">علامات الإعراب</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="taalluq"
     title="التعلق: بماذا يرتبط الجار والمجرور"
@@ -100,9 +95,9 @@ const faqs = [
       <li><strong>التعلق بمحذوف خبر:</strong> <span class="ar">الْكِتَابُ عَلَى الطَّاوِلَةِ</span>: الكتابُ <a href="/duroos/al-mubtada-wal-khabar">مبتدأ</a> مرفوع، وشبه الجملة متعلق بمحذوف خبر تقديره كائنٌ أو مستقرٌّ.</li>
       <li><strong>التعلق بمحذوف نعت:</strong> <span class="ar">رَأَيْتُ عُصْفُورًا عَلَى الْغُصْنِ</span>، متعلقان بمحذوف <a href="/duroos/al-naat">نعت</a>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -113,11 +108,8 @@ const faqs = [
       <li>الاسم المجرور بعد اسم قبله لا حرف معه مجرور بالإضافة لا بالحرف: في <span class="ar">كِتَابُ النَّحْوِ</span> النحوِ مضاف إليه، وتفصيله في درس <a href="/duroos/al-idafa">الإضافة</a>.</li>
       <li>"حتى" الجارة تدخل على الاسم: <span class="ar">أَكَلْتُ السَّمَكَةَ حَتَّى رَأْسِهَا</span>، فإذا دخلت على مضارع فهي ناصبة به بأن مضمرة، وبيانه في <a href="/duroos/nasb-al-mudari">نصب المضارع</a>.</li>
     </ul>
-  </ArticleSection>
-
-  <AyatExamples slug="huruf-al-jarr" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

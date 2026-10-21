@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما الفرق بين البدل وعطف البيان؟', a: 'كلاهما تابع يوضح متبوعه، والفرق دقيق: البدل مقصود بالحكم والمبدل منه توطئة له، وعطف البيان موضح لمتبوعه والمتبوع هو المقصود. كثير من النحاة يجيز الوجهين في نحو "جاء أخوك محمدٌ".' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="البدل" description="شرح البدل: البدل المطابق وبدل البعض من الكل وبدل الاشتمال، شرط الضمير الرابط، إعراب البدل تبعًا للمبدل منه، والبدل بعد اسم الإشارة، مع أمثلة قرآنية معربة." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-badal'].ar}
+    slug="al-badal"
     title="البدل"
     summary="البدل تابع مقصود بالحكم بلا واسطة حرف، يمهد له بذكر متبوعه ثم يقع عليه الحكم نفسه. أنواعه ثلاثة مشهورة: المطابق، وبعض من كل، والاشتمال. هذا الدرس يعرضها بأمثلتها المعربة، ويبين شرط الضمير، وإعراب الاسم المعرف بعد اسم الإشارة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف والإعراب"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">جَاءَ الْخَلِيفَةُ عُمَرُ</span></p>
     <p><strong>الإعراب:</strong> جاء فعل ماضٍ مبني على الفتح. الخليفةُ <a href="/duroos/al-fail">فاعل</a> مرفوع وعلامة رفعه الضمة الظاهرة. عمرُ بدل مطابق من الخليفة مرفوع مثله، ولم ينون لأنه ممنوع من الصرف للعلمية والعدل، وبيانه في <a href="/duroos/al-mamnu-min-al-sarf">درسه</a>.</p>
     <p>فالمقصود بالمجيء هو عمر، وذكر الخليفة توطئة وتمهيد. ولو حذفت المبدل منه لاستقامت الجملة: جاء عمرُ.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="types"
     title="أنواع البدل الثلاثة"
@@ -59,14 +54,14 @@ const faqs = [
       <li><strong>بدل بعض من كل:</strong> <span class="ar">أَكَلْتُ الرَّغِيفَ نِصْفَهُ</span>، نصفَ بدل بعض من كل منصوب وعلامة نصبه الفتحة وهو مضاف، والهاء ضمير متصل مبني في محل جر مضاف إليه، والضمير رابط بين البدل والمبدل منه.</li>
       <li><strong>بدل اشتمال:</strong> <span class="ar">أَعْجَبَنِي الطَّالِبُ خُلُقُهُ</span>، خلقُ بدل اشتمال مرفوع وعلامة رفعه الضمة وهو مضاف والهاء مضاف إليه، والخلق معنى يشتمل عليه الطالب لا جزء حسي منه.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">ميّز نوع البدل في جملتك.</span>
     ألصق جملة فيها بدل في محلّل الإعراب وشاهده يعين المبدل منه ونوع البدل وعلامة الإعراب المشتركة بينهما.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="demonstratives"
     title="البدل بعد اسم الإشارة"
@@ -75,9 +70,9 @@ const faqs = [
     <p><span class="ar">هَذَا الْكِتَابُ مُفِيدٌ</span></p>
     <p><strong>الإعراب:</strong> هذا: الهاء للتنبيه، ذا اسم إشارة مبني على السكون في محل رفع <a href="/duroos/al-mubtada-wal-khabar">مبتدأ</a>. الكتابُ بدل من اسم الإشارة مرفوع مثله وعلامة رفعه الضمة الظاهرة. مفيدٌ خبر المبتدأ مرفوع وعلامة رفعه الضمة الظاهرة.</p>
     <p>ومنه قوله تعالى: <span class="ar">﴿إِنَّ هَذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ﴾</span>: هذا اسم إشارة مبني في محل نصب اسم إنّ، القرآنَ بدل منه منصوب وعلامة نصبه الفتحة، وعمل إنّ كله في <a href="/duroos/inna-wa-akhawatuha">درسها</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -89,11 +84,8 @@ const faqs = [
       <li>البدل جامد غالبًا والمقصود بالحكم، بخلاف <a href="/duroos/al-naat">النعت</a> المشتق الواصف، والتوابع الأخرى في <a href="/duroos/al-atf">العطف</a> و<a href="/duroos/al-tawkid">التوكيد</a>.</li>
     </ul>
     <p>وتمام النظرية في <a href="/nahw">ما هو النحو</a>، وتطبيقها على أي جملة في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-badal" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

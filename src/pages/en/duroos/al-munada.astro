@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-munada';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Vocative (al-munādā)" description="The particles of calling, built and declined vocatives, addressing a noun with al-, and allāhumma." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-munada'].en}
-      title="The Vocative"
-      summary="Calling someone is grammatically an act of the speaker, and Arabic treats the person called as the object of a verb that is never said. That single insight explains everything else in the chapter: why the vocative sits in the accusative position, why two of its five kinds nevertheless appear with a ḍamma, and why the wording of its iʿrāb has to mention both facts at once."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Vocative"
+    summary="Calling someone is grammatically an act of the speaker, and Arabic treats the person called as the object of a verb that is never said. That single insight explains everything else in the chapter: why the vocative sits in the accusative position, why two of its five kinds nevertheless appear with a ḍamma, and why the wording of its iʿrāb has to mention both facts at once."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the omitted verb behind every call"
@@ -58,9 +51,9 @@ const faqs = [
       <LessonObjective items={objectives} />
       <p>The particles: <strong>yā</strong> for any distance and by far the most common; the bare <strong>hamza</strong> and <strong>ay</strong> for the near; <strong>ayā</strong> and <strong>hayā</strong> for the far; <strong>wā</strong> for lamentation.</p>
       <p>Hold on to the omitted verb, because it makes the strange wording of the next section ordinary. <em>yā Zaydu</em> is <em>unādī Zaydan</em> with the verb suppressed and a particle in its place.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="mabni-types"
       title="Understand: the two kinds that are built"
@@ -87,9 +80,9 @@ const faqs = [
         irab="يا حرف نداء، رجلُ منادى نكرة مقصودة مبني على الضم في محل نصب، أقبلْ فعل أمر مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت."
         note="The word is indefinite, but a particular man is meant, and that intention is what builds it on ḍamma. Contrast yā rajulan khudh biyadī, spoken to nobody in particular, which is declined in the accusative."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="mansub-types"
       title="See: the three kinds that are declined"
@@ -111,9 +104,9 @@ const faqs = [
         answer="Declined, and accusative: ṭāliʿan is a noun resembling an annexed noun."
         why="ṭāliʿan is an active participle governing an object after it, jabalan, which makes it shabīh bi-l-muḍāf. That resemblance puts it among the declined kinds, so the accusative shows openly rather than being merely a position."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="al-and-allahumma"
       title="Calling a noun that carries al-"
@@ -138,9 +131,9 @@ const faqs = [
         irab="اللهمَّ منادى مبني على الضم في محل نصب، والميم المشددة عوض عن حرف النداء المحذوف، اغفرْ فعل دعاء مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت، لنا جار ومجرور."
         note="The doubled mīm stands in for the omitted yā, which is why yā allāhumma is not said: the call is already carried twice over."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -151,9 +144,9 @@ const faqs = [
         <li><strong>Attaching yā to a word with al-.</strong> Say <em>yā ayyuhā l-nāsu</em>, not <em>yā l-nāsu</em>.</li>
         <li><strong>Declining what should be built, or building what should be declined.</strong> Ask first whether the vocative is annexed or resembles an annexed noun. If it does, it is declined.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -163,12 +156,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the five kinds and the omitted verb behind the call.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: ayyuhā with al-, allāhumma, and the vocative annexed to the speaker.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

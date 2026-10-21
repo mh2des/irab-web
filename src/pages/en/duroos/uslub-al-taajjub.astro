@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'uslub-al-taajjub';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Style of Wonder" description="The two patterns of wonder, their fixed iʿrāb, and the conditions on the verb they are built from." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['uslub-al-taajjub'].en}
-      title="The Style of Wonder"
-      summary="Arabic expresses wonder through two frozen patterns whose analysis never changes, which makes this one of the few chapters you can finish and be finished with. The difficulty is elsewhere: both patterns look like something they are not. In mā ajmala l-samāʾa the middle word looks like an adjective and is a verb, and in ajmil bi-l-samāʾi the last word looks genitive and is a doer."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Style of Wonder"
+    summary="Arabic expresses wonder through two frozen patterns whose analysis never changes, which makes this one of the few chapters you can finish and be finished with. The difficulty is elsewhere: both patterns look like something they are not. In mā ajmala l-samāʾa the middle word looks like an adjective and is a verb, and in ajmil bi-l-samāʾi the last word looks genitive and is a doer."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the first pattern"
@@ -65,9 +58,9 @@ const faqs = [
         irab="ما نكرة تامة بمعنى شيء مبنية على السكون في محل رفع مبتدأ، أجملَ فعل ماضٍ مبني على الفتح والفاعل ضمير مستتر وجوبًا تقديره هو يعود على ما، السماءَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، وجملة أجمل السماءَ في محل رفع خبر."
         note="Read the vowels rather than the shape. ajmala with a fatḥa is a verb; ajmalu with a ḍamma would be the elative. Everything downstream follows from that one distinction, including why al-samāʾa is accusative."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="second-form"
       title="Understand: the second pattern"
@@ -99,9 +92,9 @@ const faqs = [
         answer="A past-tense verb, so khālidan is its object in the accusative."
         why="The fatḥa on akrama settles it. Were it an elative, the following noun could not be accusative. Every part of the analysis, including the hidden doer referring to mā, depends on reading that one vowel correctly."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="conditions"
       title="See: when the patterns cannot be used"
@@ -116,9 +109,9 @@ const faqs = [
         irab="ما نكرة تامة في محل رفع مبتدأ، أشدَّ فعل ماضٍ مبني على الفتح والفاعل ضمير مستتر تقديره هو، حمرةَ مفعول به منصوب وهو مضاف، الوردِ مضاف إليه مجرور."
         note="The verb iḥmarra is a colour on the pattern afʿal, so wonder cannot be built from it directly. The helper ashadda carries the pattern and the original meaning moves into the verbal noun ḥumra, which becomes the object."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -129,9 +122,9 @@ const faqs = [
         <li><strong>Parsing the noun after the redundant bāʾ as genitive.</strong> It is the doer, genitive only in form.</li>
         <li><strong>Building wonder from a colour verb.</strong> Use a helper and a verbal noun.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -141,12 +134,8 @@ const faqs = [
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the patterns, their iʿrāb and the conditions.</li>
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the redundant bāʾ and what may separate the parts.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

@@ -2,14 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'هل يجوز أن يتقدم الفاعل على فعله؟', a: 'لا عند جمهور البصريين. إذا تقدم الاسم على الفعل صارت الجملة اسمية، وأعرب الاسم مبتدأ، والجملة الفعلية بعده خبرًا، وصار فاعل الفعل ضميرًا مستترًا. ففي "الطالبُ نجح" الطالب مبتدأ مرفوع، وفاعل نجح ضمير مستتر تقديره هو.' },
@@ -28,16 +25,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الفاعل" description="الفاعل اسم مرفوع يدل على من قام بالفعل أو اتصف به. شرح تعريف الفاعل وأحكامه الأربعة وصوره: الاسم الظاهر والضمير والمصدر المؤول، مع أمثلة معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-fail'].ar}
+    slug="al-fail"
     title="الفاعل"
     summary="الفاعل اسم مرفوع يدل على من قام بالفعل أو اتصف به، وهو عمدة الجملة الفعلية التي لا تستقيم بدونه. هذا الدرس يعرض تعريف الفاعل عند النحاة، وأحكامه الأربعة التي لا يخرج عنها، وصوره من الاسم الظاهر والضمير والمصدر المؤول، مع أمثلة معربة إعرابًا كاملًا على طريقة كتب النحو المعتمدة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="تعريف الفاعل"
@@ -45,9 +41,9 @@ const faqs = [
   >
     <p>خذ جملة <span class="ar">نَجَحَ الطَّالِبُ</span>: الطالب هو الذي قام بالنجاح، وجاء بعد فعله مرفوعًا، فهو فاعل. وقد يدل الفاعل على من اتصف بالفعل من غير قصد، نحو <span class="ar">مَاتَ الرَّجُلُ</span> و<span class="ar">انْكَسَرَ الزُّجَاجُ</span>؛ فالنحاة يسمون الجميع فاعلًا ما دام اسمًا مرفوعًا بعد فعل تام مبني للمعلوم.</p>
     <p>وهذا الباب مفتاح <a href="/duroos/al-jumla-al-filiyya">الجملة الفعلية</a> كلها، ومن أوائل ما يدرس في <a href="/nahw">النحو</a>؛ فمن أتقن تمييز الفاعل سهل عليه تمييز بقية المرفوعات والمنصوبات.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="rules"
     title="أحكام الفاعل الأربعة"
@@ -60,14 +56,14 @@ const faqs = [
       <li><strong>تأنيث الفعل:</strong> إذا كان الفاعل مؤنثًا لحقت الفعل الماضي تاء التأنيث الساكنة، نحو <span class="ar">جَاءَتْ فَاطِمَةُ</span>.</li>
     </ul>
     <p>وإعراب المثال الأخير كاملًا: <span class="ar">جَاءَتْ فَاطِمَةُ</span>: جاءت فعل ماضٍ مبني على الفتح، والتاء تاء التأنيث الساكنة لا محل لها من الإعراب، فاطمةُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">طبق الدرس على جملتك.</span>
     ألصق أي جملة عربية في المحلل على الصفحة الرئيسية وشاهد الدرس مطبقًا كلمة كلمة: الفعل، والفاعل، وكل ما بعدهما، بإعراب كامل خلال ثوانٍ.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="forms"
     title="صور الفاعل"
@@ -77,22 +73,22 @@ const faqs = [
     <p><strong>الضمير البارز:</strong> نحو <span class="ar">كَتَبْتُ الدَّرْسَ</span>، فالتاء ضمير متصل مبني على الضم في محل رفع فاعل. ومثلها واو الجماعة في <span class="ar">كَتَبُوا</span>، وألف الاثنين في <span class="ar">كَتَبَا</span>، ونون النسوة في <span class="ar">كَتَبْنَ</span>.</p>
     <p><strong>الضمير المستتر:</strong> نحو <span class="ar">مُحَمَّدٌ يَقْرَأُ</span>، ففاعل يقرأ ضمير مستتر جوازًا تقديره هو، والجملة الفعلية في محل رفع خبر المبتدأ.</p>
     <p><strong>المصدر المؤول:</strong> نحو <span class="ar">يَسُرُّنِي أَنْ تَجْتَهِدَ</span>، فالمصدر المؤول من أن والفعل في محل رفع فاعل، والتقدير: يسرني اجتهادُك.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="worked-examples"
     title="أمثلة معربة إعرابًا كاملًا"
     lead="الإعراب الكامل هو الحكم على كل كلمة بعبارة النحاة المعتمدة: نوع الكلمة، ثم حكمها، ثم علامتها، ثم سبب العلامة. هذه أربعة أمثلة تغطي صور الفاعل وعلامات رفعه بالصياغة نفسها التي تجدها في كتب النحو المدرسية."
   >
-    <p><span class="ar">نَجَحَ الطَّالِبُ</span>: نجح فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره.</p>
-    <p><span class="ar">حَضَرَ الْمُعَلِّمُونَ</span>: حضر فعل ماضٍ مبني على الفتح، المعلمون فاعل مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم، والنون عوض عن التنوين في الاسم المفرد.</p>
-    <p><span class="ar">كَتَبَ أَخُوكَ الدَّرْسَ</span>: كتب فعل ماضٍ مبني على الفتح، أخو فاعل مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة وهو مضاف، والكاف ضمير متصل مبني على الفتح في محل جر مضاف إليه، الدرسَ <a href="/duroos/al-maful-bih">مفعول به</a> منصوب وعلامة نصبه الفتحة الظاهرة على آخره.</p>
-    <p><span class="ar">يَسُرُّنِي أَنْ تَجْتَهِدَ</span>: يسر فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والنون للوقاية، والياء ضمير متصل مبني في محل نصب مفعول به، أن حرف مصدري ونصب، تجتهد فعل مضارع منصوب بأن وعلامة نصبه الفتحة الظاهرة، والفاعل ضمير مستتر وجوبًا تقديره أنت، والمصدر المؤول من أن والفعل في محل رفع فاعل للفعل يسر.</p>
+    <IrabExample ar="نَجَحَ الطَّالِبُ">نجح فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره.</IrabExample>
+    <IrabExample ar="حَضَرَ الْمُعَلِّمُونَ">حضر فعل ماضٍ مبني على الفتح، المعلمون فاعل مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم، والنون عوض عن التنوين في الاسم المفرد.</IrabExample>
+    <IrabExample ar="كَتَبَ أَخُوكَ الدَّرْسَ">كتب فعل ماضٍ مبني على الفتح، أخو فاعل مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة وهو مضاف، والكاف ضمير متصل مبني على الفتح في محل جر مضاف إليه، الدرسَ <a href="/duroos/al-maful-bih">مفعول به</a> منصوب وعلامة نصبه الفتحة الظاهرة على آخره.</IrabExample>
+    <IrabExample ar="يَسُرُّنِي أَنْ تَجْتَهِدَ">يسر فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والنون للوقاية، والياء ضمير متصل مبني في محل نصب مفعول به، أن حرف مصدري ونصب، تجتهد فعل مضارع منصوب بأن وعلامة نصبه الفتحة الظاهرة، والفاعل ضمير مستتر وجوبًا تقديره أنت، والمصدر المؤول من أن والفعل في محل رفع فاعل للفعل يسر.</IrabExample>
     <p>وبهذه الصياغة نفسها يجري <a href="/irab">الإعراب</a> الكلاسيكي في كل باب من أبواب النحو.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة في إعراب الفاعل"
@@ -104,11 +100,8 @@ const faqs = [
       <li><strong>إلحاق علامة التثنية والجمع بالفعل:</strong> لا يقال حضرا الطالبان، والصواب <span class="ar">حَضَرَ الطَّالِبَانِ</span>؛ وما ورد من نحو "أكلوني البراغيث" لغة قليلة لا يقاس عليها.</li>
       <li><strong>الاعتماد على الترتيب وحده:</strong> قد يتقدم المفعول به على الفاعل، نحو <span class="ar">كَتَبَ الدَّرْسَ الطَّالِبُ</span>، فالعبرة بالعلامة الإعرابية والمعنى لا بالموقع وحده.</li>
     </ul>
-  </ArticleSection>
-
-  <AyatExamples slug="al-fail" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

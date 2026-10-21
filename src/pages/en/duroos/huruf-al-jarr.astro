@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'huruf-al-jarr';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Prepositions" description="Why they govern only nouns, their meanings, the genitive markers, and attachment of the prepositional phrase." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['huruf-al-jarr'].en}
-      title="Prepositions"
-      summary="A preposition puts the noun after it into the genitive, and it may never precede a verb. That single restriction is worth more than it looks: it is the reason an implied particle has to be posited after li- and ḥattā when a verb follows them. This lesson covers the commonest nine, the markers of the genitive including the diptote, and the notion of attachment, which no English grammar prepares you for."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Prepositions"
+    summary="A preposition puts the noun after it into the genitive, and it may never precede a verb. That single restriction is worth more than it looks: it is the reason an implied particle has to be posited after li- and ḥattā when a verb follows them. This lesson covers the commonest nine, the markers of the genitive including the diptote, and the notion of attachment, which no English grammar prepares you for."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: nouns only"
@@ -65,9 +58,9 @@ const faqs = [
         irab="ذهبتُ فعل وفاعل، إلى حرف جر مبني على السكون لا محل له من الإعراب، المدرسةِ اسم مجرور بإلى وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بالفعل ذهبت."
         note="Three parts to the answer: the particle is built with no position, the noun is genitive with its marker, and the phrase attaches to the verb. Leaving out the attachment leaves the iʿrāb incomplete."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="meanings"
       title="See: the commonest nine"
@@ -94,9 +87,9 @@ const faqs = [
         irab="مررتُ فعل وفاعل، الباء حرف جر، إبراهيمَ اسم مجرور وعلامة جره الفتحة نيابة عن الكسرة لأنه ممنوع من الصرف للعلمية والعجمة، والجار والمجرور متعلقان بالفعل مررت."
         note="A fatḥa after a preposition, and the noun is still genitive. Without naming the reason, prevention from ṣarf for proper-noun status and foreignness, the answer looks like a mistake."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="taalluq"
       title="Understand: attachment"
@@ -120,9 +113,9 @@ const faqs = [
         answer="An omitted predicate, estimated as kāʾinun or mustaqirrun."
         why="No verb is present. The phrase cannot itself be the predicate, because a predicate must be a noun or a sentence, so an omitted one is supplied and the phrase attaches to it."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -133,9 +126,9 @@ const faqs = [
         <li><strong>Putting a preposition before a verb.</strong> Impossible. If a verb follows li- or ḥattā, an implied an is doing the governing.</li>
         <li><strong>Omitting the attachment.</strong> Always say what the phrase attaches to, and supply the omitted word when there is none.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -146,12 +139,8 @@ const faqs = [
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: attachment and the omitted governor.</li>
         <li><strong>Ibn Ājurrūm</strong>, <span class="ar" lang="ar" dir="rtl">الآجرومية</span>: the list of particles governing the genitive.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

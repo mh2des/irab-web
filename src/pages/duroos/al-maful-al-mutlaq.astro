@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما الفرق بين المفعول المطلق والمفعول به؟', a: 'المفعول به اسم وقع عليه فعل الفاعل وهو غير مشتق من لفظ الفعل غالبًا، أما المفعول المطلق فمصدر من لفظ الفعل نفسه يؤكد الفعل أو يبين نوعه أو عدده. في "قرأتُ الكتابَ قراءةً متأنيةً": الكتابَ مفعول به، وقراءةً مفعول مطلق.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="المفعول المطلق" description="شرح المفعول المطلق: تعريفه، أنواعه الثلاثة المؤكد والمبين للنوع والعدد، ما ينوب عن المصدر، وحذف عامله في مثل سبحان وصبرًا، مع أمثلة قرآنية معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-maful-al-mutlaq'].ar}
+    slug="al-maful-al-mutlaq"
     title="المفعول المطلق"
     summary="المفعول المطلق مصدر منصوب من لفظ الفعل يذكر معه ليؤكده أو يبين نوعه أو عدده. هو أقرب المنصوبات إلى الفعل لأنه ابنه من جهة الاشتقاق، ولذلك سماه النحاة المفعول الحق. هذا الدرس يعرض أنواعه الثلاثة وما ينوب عن مصدره وحذف عامله، بأمثلة معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">حَفِظْتُ الدَّرْسَ حِفْظًا</span></p>
     <p><strong>الإعراب:</strong> حفظتُ فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني في محل رفع فاعل. الدرسَ <a href="/duroos/al-maful-bih">مفعول به</a> منصوب وعلامة نصبه الفتحة الظاهرة. حفظًا مفعول مطلق منصوب وعلامة نصبه الفتحة الظاهرة.</p>
     <p>مثال قرآني: <span class="ar">﴿وَكَلَّمَ اللَّهُ مُوسَى تَكْلِيمًا﴾</span>: تكليمًا مفعول مطلق منصوب مؤكد للفعل، وفائدته هنا رفع احتمال المجاز: كلمه حقيقةً.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="types"
     title="أنواعه الثلاثة"
@@ -59,14 +54,14 @@ const faqs = [
       <li><strong>مبين للنوع:</strong> <span class="ar">سِرْتُ سَيْرَ الْعُقَلَاءِ</span>، سيرَ مفعول مطلق منصوب وهو مضاف، والعقلاءِ مضاف إليه مجرور، وبيان النوع جاء من <a href="/duroos/al-idafa">الإضافة</a>.</li>
       <li><strong>مبين للعدد:</strong> <span class="ar">دُرْتُ حَوْلَ الْمَلْعَبِ دَوْرَتَيْنِ</span>، دورتين مفعول مطلق منصوب وعلامة نصبه الياء لأنه مثنى.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">أكّد فعلك بمصدره.</span>
     ألصق جملة فيها مفعول مطلق في محلّل الإعراب وشاهده يميز المصدر المؤكد من المبين للنوع أو العدد، مع إعراب كل كلمة.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="substitutes"
     title="ما ينوب عن المصدر"
@@ -78,9 +73,9 @@ const faqs = [
       <li><strong>كل وبعض:</strong> <span class="ar">فَرِحْتُ كُلَّ الْفَرَحِ</span>، كلَّ نائب عن المفعول المطلق منصوب وهو مضاف.</li>
       <li><strong>الآلة:</strong> <span class="ar">ضَرَبْتُهُ سَوْطًا</span>، أي ضربَ سوطٍ.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="hidden-verb"
     title="حذف عامل المفعول المطلق"
@@ -91,9 +86,9 @@ const faqs = [
       <li><span class="ar">شُكْرًا لَكَ</span>: شكرًا مفعول مطلق لفعل محذوف تقديره أشكرُ.</li>
       <li><span class="ar">سُبْحَانَ اللَّهِ</span>: سبحانَ مفعول مطلق منصوب لفعل محذوف وجوبًا وهو مضاف، ولفظ الجلالة مضاف إليه مجرور. ومنه قوله تعالى: <span class="ar">﴿سُبْحَانَ الَّذِي أَسْرَى بِعَبْدِهِ﴾</span>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -105,11 +100,8 @@ const faqs = [
       <li>المصدر المجرور بحرف ليس مفعولًا مطلقًا: في "قرأتُ بتأنٍّ" الجار والمجرور متعلقان بالفعل، وراجع <a href="/duroos/huruf-al-jarr">حروف الجر</a>.</li>
     </ul>
     <p>وأخوا هذا الباب في المفاعيل: <a href="/duroos/al-maful-li-ajlih">المفعول لأجله</a> و<a href="/duroos/al-maful-fih">المفعول فيه</a>، والإطار كله في <a href="/irab">ما هو الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-maful-al-mutlaq" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

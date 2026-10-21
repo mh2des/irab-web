@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'uslub-al-madh-wal-dhamm';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Praise and Blame" description="niʿma and biʾsa, the shapes of their doer, the specified noun and its two analyses, and ḥabbadhā." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['uslub-al-madh-wal-dhamm'].en}
-      title="Praise and Blame"
-      summary="Two frozen verbs carry this chapter, niʿma for praise and biʾsa for blame, and each governs a sentence in three parts. The doer is restricted to four shapes, which makes it easy to check your work. The specified noun is the interesting part, because two analyses are genuinely accepted and knowing both is what separates a student who has memorised a pattern from one who understands it."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Praise and Blame"
+    summary="Two frozen verbs carry this chapter, niʿma for praise and biʾsa for blame, and each governs a sentence in three parts. The doer is restricted to four shapes, which makes it easy to check your work. The specified noun is the interesting part, because two analyses are genuinely accepted and knowing both is what separates a student who has memorised a pattern from one who understands it."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: three parts, always"
@@ -65,9 +58,9 @@ const faqs = [
         irab="نعمَ فعل ماضٍ جامد لإنشاء المدح مبني على الفتح، الرجلُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، خالدٌ المخصوص بالمدح مبتدأ مؤخر مرفوع والجملة قبله في محل رفع خبر، أو خبر لمبتدأ محذوف تقديره هو."
         note="Both analyses of khālidun are written into the iʿrāb, which is how the classical commentaries present it. Neither is a concession; the grammarians simply did not settle on one, and examinations accept either when it is stated clearly."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="fail-forms"
       title="Understand: the four shapes of the doer"
@@ -99,9 +92,9 @@ const faqs = [
         answer="niʿma rajulan khālidun, or niʿma l-rajulu khālidun."
         why="An indefinite doer is not one of the four permitted shapes. Either make it definite with al- and let it be the doer, or put it in the accusative as a specifier for a hidden doer. The two repairs give the same meaning by different routes."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="habbadha"
       title="See: ḥabbadhā, parsed in halves"
@@ -116,9 +109,9 @@ const faqs = [
         irab="حبَّ فعل ماضٍ لإنشاء المدح مبني على الفتح، ذا اسم إشارة مبني على السكون في محل رفع فاعل، العلمُ المخصوص بالمدح مبتدأ مؤخر مرفوع والجملة قبله في محل رفع خبر."
         note="The two halves are parsed independently even though speakers treat the word as a unit. The blame counterpart lā ḥabbadhā works the same way, with the negative particle added before the verb."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="fronting"
       title="When the specified noun comes first"
@@ -135,9 +128,9 @@ const faqs = [
         irab="خالدٌ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، نعمَ فعل ماضٍ جامد مبني على الفتح، الرجلُ فاعل مرفوع، وجملة نعم الرجلُ في محل رفع خبر."
         note="One analysis, not two. This is a useful demonstration of a general habit in Arabic grammar: a disagreement about an omitted element often disappears the moment the word order removes the place where the omission could have sat."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -148,9 +141,9 @@ const faqs = [
         <li><strong>Using an indefinite doer without al-.</strong> Only four shapes are permitted.</li>
         <li><strong>Treating ḥabbadhā as one word.</strong> It is a verb plus a demonstrative doer.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -160,12 +153,8 @@ const faqs = [
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: niʿma and biʾsa, their doer and the specified noun.</li>
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: ḥabbadhā and the Baṣran and Kūfan positions.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

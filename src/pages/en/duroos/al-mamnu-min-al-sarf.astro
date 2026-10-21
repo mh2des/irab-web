@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-mamnu-min-al-sarf';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Diptotes (al-mamnūʿ min al-ṣarf)" description="What prevention from ṣarf means, the causes, and when a diptote returns to kasra, with complete classical iʿrāb." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-mamnu-min-al-sarf'].en}
-      title="Diptotes"
-      summary="Some nouns refuse two things at once: they take no tanwīn, and in the genitive they take fatḥa where every other noun takes kasra. Arabic calls them prevented from ṣarf. The chapter is a list of causes, some sufficient alone and some needing a partner, and it is worth learning properly because a fatḥa that means genitive will otherwise mislead you every time you meet one."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Diptotes"
+    summary="Some nouns refuse two things at once: they take no tanwīn, and in the genitive they take fatḥa where every other noun takes kasra. Arabic calls them prevented from ṣarf. The chapter is a list of causes, some sufficient alone and some needing a partner, and it is worth learning properly because a fatḥa that means genitive will otherwise mislead you every time you meet one."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the definition and the marker"
@@ -67,9 +60,9 @@ const faqs = [
         irab="صليتُ فعل وفاعل، في حرف جر، مساجدَ اسم مجرور وعلامة جره الفتحة نيابة عن الكسرة لأنه ممنوع من الصرف على صيغة منتهى الجموع، كثيرةٍ نعت مجرور وعلامة جره الكسرة الظاهرة."
         note="The preposition fī requires the genitive, and masājida is genitive, but its marker is fatḥa. Notice the adjective kathīratin beside it takes an ordinary kasra with tanwīn, which shows the two words are in the same case and only the marker differs."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="one-reason"
       title="See: the two causes that suffice alone"
@@ -88,9 +81,9 @@ const faqs = [
         en="I passed by a wide desert."
         irab="مررتُ فعل وفاعل، الباء حرف جر، صحراءَ اسم مجرور وعلامة جره الفتحة نيابة عن الكسرة لأنه ممنوع من الصرف لألف التأنيث الممدودة، واسعةٍ نعت مجرور وعلامة جره الكسرة الظاهرة."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="proper-nouns"
       title="Understand: proper nouns need a partner"
@@ -122,9 +115,9 @@ const faqs = [
         answer="No. Nūḥ is fully declined, which is why it carries kasra and tanwīn."
         why="It is a foreign proper noun, but it is only three letters with a quiescent middle, so the foreignness is not enough to prevent ṣarf. Compare Ibrāhīm, which exceeds three letters and is prevented."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="adjectives"
       title="Adjectives need a partner too"
@@ -135,9 +128,9 @@ const faqs = [
         <li><strong>faʿlān with a feminine in faʿlā:</strong> <em>ʿaṭshān</em> and <em>ʿaṭshā</em>.</li>
         <li><strong>Deflection in numerals:</strong> <em>mathnā</em>, <em>thulātha</em>, <em>rubāʿa</em>.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="back-to-kasra"
       title="When a diptote returns to kasra"
@@ -152,9 +145,9 @@ const faqs = [
         irab="صليتُ فعل وفاعل، في حرف جر، المساجدِ اسم مجرور وعلامة جره الكسرة الظاهرة لاقترانه بأل."
         note="The same word that took fatḥa in the first card of this lesson now takes kasra, because al- has been attached. Annexation does the same: fī masājidi l-madīnati. Note that even here there is no tanwīn."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -165,12 +158,8 @@ const faqs = [
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on deflection and on the conditions governing foreign proper nouns.</li>
         <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: on the pattern of ultimate plurals.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

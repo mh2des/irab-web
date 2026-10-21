@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما الفرق بين الظرف المتصرف وغير المتصرف؟', a: 'المتصرف ما يستعمل ظرفًا وغير ظرف، فيقع مبتدأ وفاعلًا ومجرورًا، مثل يوم وساعة: "يومُ الجمعةِ مباركٌ" فيوم هنا مبتدأ لا ظرف. وغير المتصرف ما يلزم النصب على الظرفية أو الجر بمن، مثل: عند، قبل، بعد، فوق، تحت.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="المفعول فيه" description="شرح المفعول فيه: ظرف الزمان وظرف المكان، شرط تضمن معنى في، المبهم والمختص، المتصرف وغير المتصرف، وتعلق الظرف، مع أمثلة قرآنية معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-maful-fih'].ar}
+    slug="al-maful-fih"
     title="المفعول فيه"
     summary="المفعول فيه هو الظرف: اسم منصوب يبين زمان وقوع الفعل أو مكانه متضمنًا معنى في. ظروف الزمان تنصب كلها، وظروف المكان ينصب مبهمها ويجر مختصها. هذا الدرس يعرض القسمين وشرط الظرفية والمتصرف وغير المتصرف، بأمثلة قرآنية معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف وشرط الظرفية"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">سَافَرْتُ لَيْلًا</span></p>
     <p><strong>الإعراب:</strong> سافرتُ فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني في محل رفع فاعل. ليلًا مفعول فيه ظرف زمان منصوب وعلامة نصبه الفتحة الظاهرة، متعلق بالفعل سافر. والمعنى: سافرتُ في الليل.</p>
     <p>وقارن: <span class="ar">يَوْمُ الْجُمُعَةِ مُبَارَكٌ</span>، فيومُ هنا <a href="/duroos/al-mubtada-wal-khabar">مبتدأ</a> مرفوع لا ظرف، إذ لا يصح تقدير "في"، فالحكم واقع على اليوم نفسه.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="time"
     title="ظرف الزمان"
@@ -56,14 +51,14 @@ const faqs = [
   >
     <p>مثال قرآني: <span class="ar">﴿وَسَبِّحُوهُ بُكْرَةً وَأَصِيلًا﴾</span></p>
     <p><strong>الإعراب:</strong> سبحوه فعل أمر مبني على حذف النون لأن مضارعه من <a href="/duroos/al-afal-al-khamsa">الأفعال الخمسة</a>، وواو الجماعة فاعل، والهاء مفعول به. بكرةً مفعول فيه ظرف زمان منصوب وعلامة نصبه الفتحة الظاهرة. وأصيلًا: الواو حرف <a href="/duroos/al-atf">عطف</a>، أصيلًا معطوف على بكرة منصوب مثله.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">متى وأين وقع فعلك؟</span>
     ألصق جملة فيها ظرف في محلّل الإعراب وشاهده يميز ظرف الزمان من المكان ويحدد متعلقه، كلمة بكلمة.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="place"
     title="ظرف المكان"
@@ -74,9 +69,9 @@ const faqs = [
       <li><strong>عند:</strong> <span class="ar">جَلَسْتُ عِنْدَ الشَّيْخِ</span>، عندَ ظرف مكان منصوب وهو مضاف.</li>
       <li><strong>المكان المختص يجر ولا ينصب:</strong> <span class="ar">صَلَّيْتُ فِي الْمَسْجِدِ</span>، فلا يقال "صليتُ المسجدَ"، وراجع <a href="/duroos/huruf-al-jarr">حروف الجر</a>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="taalluq"
     title="تعلق الظرف ووقوعه خبرًا"
@@ -87,9 +82,9 @@ const faqs = [
       <li><strong>صفة:</strong> <span class="ar">رَأَيْتُ عُصْفُورًا فَوْقَ الْغُصْنِ</span>، متعلق بمحذوف <a href="/duroos/al-naat">نعت</a>.</li>
       <li><strong>حال:</strong> <span class="ar">رَأَيْتُ الْهِلَالَ بَيْنَ السَّحَابِ</span>، متعلق بمحذوف <a href="/duroos/al-hal">حال</a>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -101,11 +96,8 @@ const faqs = [
       <li>ما بعد الظرف المضاف مضاف إليه مجرور دائمًا: <span class="ar">قَبْلَ الْفَجْرِ</span> و<span class="ar">بَعْدَ الْعَصْرِ</span>.</li>
     </ul>
     <p>وهذا ثالث المفاعيل بعد <a href="/duroos/al-maful-bih">المفعول به</a> و<a href="/duroos/al-maful-al-mutlaq">المفعول المطلق</a> و<a href="/duroos/al-maful-li-ajlih">المفعول لأجله</a>، والتطبيق الكامل في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-maful-fih" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

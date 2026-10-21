@@ -2,14 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما القاعدة الجامعة لتذكير العدد وتأنيثه؟', a: 'واحد واثنان يوافقان المعدود دائمًا. ثلاثة إلى تسعة تخالف المعدود: ثلاثةُ رجالٍ وثلاثُ نساءٍ. عشرة تخالف مفردة وتوافق مركبة. أما ألفاظ العقود والمائة والألف فبلفظ واحد للمذكر والمؤنث.' },
@@ -28,16 +25,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="العدد وإعرابه" description="شرح العدد: موافقة واحد واثنين، مخالفة ثلاثة إلى عشرة، بناء المركب على فتح الجزأين، إعراب اثني عشر وألفاظ العقود، وتمييز العدد جرًّا ونصبًا، بأمثلة قرآنية معربة." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-adad'].ar}
+    slug="al-adad"
     title="العدد وإعرابه"
     summary="باب العدد أكثر أبواب النحو استعمالًا في الحياة اليومية وأكثرها زللًا في الكتابة. مداره على سؤالين: متى يوافق العدد معدوده ومتى يخالفه؟ وكيف يعرب العدد وتمييزه؟ هذا الدرس يرتب الأقسام الأربعة ترتيبًا لا يُنسى، بأمثلة قرآنية معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="one-two"
     title="واحد واثنان: الموافقة"
@@ -46,47 +42,47 @@ const faqs = [
     <p><strong>أمثلة:</strong> <span class="ar">جَاءَ رَجُلٌ وَاحِدٌ</span>، و<span class="ar">قَرَأْتُ قِصَّةً وَاحِدَةً</span>، و<span class="ar">حَضَرَ طَالِبَانِ اثْنَانِ</span>.</p>
     <p><strong>الإعراب:</strong> واحدٌ <a href="/duroos/al-naat">نعت</a> مرفوع وعلامة رفعه الضمة الظاهرة. واثنان نعت مرفوع وعلامة رفعه الألف لأنه ملحق بالمثنى.</p>
     <p>فهذان العددان لا يتقدمان على المعدود، وذكرهما بعده توكيد للعدة.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="three-ten"
     title="من ثلاثة إلى عشرة: المخالفة"
     lead="تخالف الأعداد من ثلاثة إلى عشرة معدودها: تؤنث مع المذكر وتذكر مع المؤنث، وتمييزها جمع مجرور بالإضافة."
   >
     <p><strong>مع المذكر:</strong> <span class="ar">ثَلَاثَةُ رِجَالٍ</span>، و<strong>مع المؤنث:</strong> <span class="ar">ثَلَاثُ نِسَاءٍ</span>. والعبرة بمفرد المعدود لا بجمعه.</p>
-    <p><strong>مثال قرآني معرب:</strong> <span class="ar">﴿سَخَّرَهَا عَلَيْهِمْ سَبْعَ لَيَالٍ وَثَمَانِيَةَ أَيَّامٍ﴾</span>: سبعَ مفعول فيه ظرف زمان منصوب وهو مضاف، وليالٍ مضاف إليه مجرور وعلامة جره الكسرة المقدرة على الياء المحذوفة لأنه اسم منقوص. وثمانيةَ معطوفة منصوبة وهي مضاف، وأيامٍ مضاف إليه مجرور. أنّثت سبع مع الليالي المؤنثة وذُكّرت ثمانية مع الأيام المذكرة: المخالفة في آية واحدة.</p>
+    <IrabExample label="مثال قرآني معرب" ar="﴿سَخَّرَهَا عَلَيْهِمْ سَبْعَ لَيَالٍ وَثَمَانِيَةَ أَيَّامٍ﴾">سبعَ مفعول فيه ظرف زمان منصوب وهو مضاف، وليالٍ مضاف إليه مجرور وعلامة جره الكسرة المقدرة على الياء المحذوفة لأنه اسم منقوص. وثمانيةَ معطوفة منصوبة وهي مضاف، وأيامٍ مضاف إليه مجرور. أنّثت سبع مع الليالي المؤنثة وذُكّرت ثمانية مع الأيام المذكرة: المخالفة في آية واحدة.</IrabExample>
     <p>والتمييز المجرور هنا مضاف إليه في اللفظ، وتفصيل ذلك في درسي <a href="/duroos/al-tamyiz">التمييز</a> و<a href="/duroos/al-idafa">الإضافة</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">جرّب عددًا بمعدوده.</span>
     ألصق جملة فيها عدد في محلّل الإعراب وشاهده يعلل الموافقة أو المخالفة ويعرب العدد وتمييزه، كلمة بكلمة.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="compound"
     title="المركب من أحد عشر إلى تسعة عشر"
     lead="الأعداد المركبة مبنية على فتح الجزأين في محل رفع أو نصب أو جر، وتمييزها مفرد منصوب. ويستثنى اثنا عشر فيعرب صدره إعراب المثنى."
   >
-    <p><strong>المثال الأول:</strong> <span class="ar">﴿إِنِّي رَأَيْتُ أَحَدَ عَشَرَ كَوْكَبًا﴾</span>: أحدَ عشرَ اسم عدد مبني على فتح الجزأين في محل نصب <a href="/duroos/al-maful-bih">مفعول به</a>، كوكبًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة.</p>
-    <p><strong>المثال الثاني:</strong> <span class="ar">﴿فَانْفَجَرَتْ مِنْهُ اثْنَتَا عَشْرَةَ عَيْنًا﴾</span>: اثنتا <a href="/duroos/al-fail">فاعل</a> مرفوع وعلامة رفعه الألف لأنه ملحق بالمثنى، وعشرةَ جزء مبني على الفتح لا محل له من الإعراب، وعينًا تمييز منصوب.</p>
+    <IrabExample label="المثال الأول" ar="﴿إِنِّي رَأَيْتُ أَحَدَ عَشَرَ كَوْكَبًا﴾">أحدَ عشرَ اسم عدد مبني على فتح الجزأين في محل نصب <a href="/duroos/al-maful-bih">مفعول به</a>، كوكبًا تمييز منصوب وعلامة نصبه الفتحة الظاهرة.</IrabExample>
+    <IrabExample label="المثال الثاني" ar="﴿فَانْفَجَرَتْ مِنْهُ اثْنَتَا عَشْرَةَ عَيْنًا﴾">اثنتا <a href="/duroos/al-fail">فاعل</a> مرفوع وعلامة رفعه الألف لأنه ملحق بالمثنى، وعشرةَ جزء مبني على الفتح لا محل له من الإعراب، وعينًا تمييز منصوب.</IrabExample>
     <p>وفي التركيب من ثلاثة عشر إلى تسعة عشر يخالف الصدر ويوافق العجز: <span class="ar">ثَلَاثَةَ عَشَرَ رَجُلًا</span> و<span class="ar">ثَلَاثَ عَشْرَةَ امْرَأَةً</span>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="decades"
     title="ألفاظ العقود والمائة والألف"
     lead="العقود من عشرين إلى تسعين ملحقة بجمع المذكر السالم بلفظ واحد للجنسين، وتمييزها مفرد منصوب. والمائة والألف تمييزهما مفرد مجرور."
   >
-    <p><strong>مثال قرآني معرب:</strong> <span class="ar">﴿وَوَاعَدْنَا مُوسَى ثَلَاثِينَ لَيْلَةً﴾</span>: ثلاثين مفعول فيه ظرف زمان منصوب وعلامة نصبه الياء لأنه ملحق بجمع المذكر السالم، وليلةً تمييز منصوب وعلامة نصبه الفتحة الظاهرة.</p>
-    <p><strong>المعطوف على العقود:</strong> <span class="ar">قَرَأْتُ خَمْسَةً وَعِشْرِينَ كِتَابًا</span>: خمسةً مفعول به منصوب، وعشرين معطوف بالواو منصوب بالياء، وكتابًا تمييز منصوب، وأحكام <a href="/duroos/al-atf">العطف</a> في بابه.</p>
-    <p><strong>المائة والألف:</strong> <span class="ar">فِي الْمَكْتَبَةِ مِائَةُ كِتَابٍ وَأَلْفُ مَجَلَّةٍ</span>: مائةُ مبتدأ مؤخر مرفوع وهو مضاف، وكتابٍ مضاف إليه مجرور.</p>
-  </ArticleSection>
+    <IrabExample label="مثال قرآني معرب" ar="﴿وَوَاعَدْنَا مُوسَى ثَلَاثِينَ لَيْلَةً﴾">ثلاثين مفعول فيه ظرف زمان منصوب وعلامة نصبه الياء لأنه ملحق بجمع المذكر السالم، وليلةً تمييز منصوب وعلامة نصبه الفتحة الظاهرة.</IrabExample>
+    <IrabExample label="المعطوف على العقود" ar="قَرَأْتُ خَمْسَةً وَعِشْرِينَ كِتَابًا">خمسةً مفعول به منصوب، وعشرين معطوف بالواو منصوب بالياء، وكتابًا تمييز منصوب، وأحكام <a href="/duroos/al-atf">العطف</a> في بابه.</IrabExample>
+    <IrabExample label="المائة والألف" ar="فِي الْمَكْتَبَةِ مِائَةُ كِتَابٍ وَأَلْفُ مَجَلَّةٍ">مائةُ مبتدأ مؤخر مرفوع وهو مضاف، وكتابٍ مضاف إليه مجرور.</IrabExample>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -98,11 +94,8 @@ const faqs = [
       <li>يقال خطأً "جاء اثنا عشرَ طالبًا" بألف ثابتة في النصب، والصواب <span class="ar">رَأَيْتُ اثْنَيْ عَشَرَ طَالِبًا</span> بالياء، فصدره معرب إعراب المثنى.</li>
     </ul>
     <p>ويقوم هذا الباب كله على <a href="/duroos/al-tamyiz">التمييز</a>، ومرجع العلامات في <a href="/duroos/alamat-al-irab">علامات الإعراب</a>، والتطبيق في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-adad" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

@@ -2,14 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما الفرق بين ظن وأخواتها وأعطى وأخواتها؟', a: 'كلاهما ينصب مفعولين، لكن مفعولي ظن أصلهما مبتدأ وخبر: "ظننت الطالبَ ناجحًا" أصلها "الطالبُ ناجحٌ". أما مفعولا أعطى فليس أصلهما كذلك: "أعطيت الفقيرَ درهمًا" لا يصح فيها "الفقيرُ درهمٌ". ولهذا يجوز حذف أحد مفعولي أعطى، ولا يجوز في باب ظن الاقتصار على مفعول واحد.' },
@@ -28,16 +25,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="ظنّ وأخواتها" description="ظنّ وأخواتها: أفعال القلوب والتحويل التي تنصب مفعولين أصلهما مبتدأ وخبر، أقسامها من يقين ورجحان وتحويل، وأحكام الإلغاء والتعليق، مع أمثلة معربة وآية من القرآن." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['zanna-wa-akhawatuha'].ar}
+    slug="zanna-wa-akhawatuha"
     title="ظنّ وأخواتها"
     summary="ظنّ وأخواتها أفعال تدخل على الجملة الاسمية فتنصب المبتدأ والخبر مفعولين لها. منها أفعال القلوب التي تفيد اليقين أو الرجحان، ومنها أفعال التحويل التي تفيد التصيير. هذا الدرس يعرض أقسامها ومعانيها، وقاعدتي الإلغاء والتعليق اللتين يسأل عنهما الطلاب كثيرًا، مع أمثلة معربة إعرابًا كاملًا وشاهد من القرآن الكريم."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="ما ظنّ وأخواتها وما عملها؟"
@@ -46,9 +42,9 @@ const faqs = [
     <p>الأصل جملة اسمية كما في درس <a href="/duroos/al-jumla-al-ismiyya">الجملة الاسمية</a>: <span class="ar">الطَّالِبُ نَاجِحٌ</span>. فإذا دخلت ظنّ قلت: <span class="ar">ظَنَنْتُ الطَّالِبَ نَاجِحًا</span>، فانقلب المبتدأ مفعولًا به أول، والخبر مفعولًا به ثانيًا.</p>
     <p>وإعراب المثال إعرابًا كاملًا: <span class="ar">ظَنَنْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">الطَّالِبَ</span>: مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة على آخره. <span class="ar">نَاجِحًا</span>: مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة على آخره.</p>
     <p>والفرق بينها وبين <a href="/duroos/kana-wa-akhawatuha">كان وأخواتها</a> و<a href="/duroos/inna-wa-akhawatuha">إنّ وأخواتها</a> أن تلك تنصب ركنًا وترفع ركنًا، وهذه تنصب الركنين معًا؛ ولذلك يسميها النحاة النواسخ الفعلية الناصبة لمفعولين.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="members"
     title="أقسامها ومعانيها"
@@ -60,14 +56,14 @@ const faqs = [
       <li><strong>أفعال التحويل</strong>: <span class="ar">صَيَّرَ</span> و<span class="ar">جَعَلَ</span> بمعنى صير و<span class="ar">اتَّخَذَ</span> و<span class="ar">تَرَكَ</span> و<span class="ar">رَدَّ</span> و<span class="ar">وَهَبَ</span>، نحو <span class="ar">صَيَّرَ الْحَدَّادُ الْحَدِيدَ سَيْفًا</span>.</li>
     </ul>
     <p>وتنبه إلى أن بعض هذه الأفعال يخرج من الباب بتغير معناه: فرأى البصرية بمعنى أبصر تنصب مفعولًا واحدًا، ووجد بمعنى عثر على كذلك، وجعل بمعنى خلق كذلك. فالمعنى هو الذي يدخل الفعل في الباب أو يخرجه منه، وتفصيل <a href="/duroos/al-maful-bih">المفعول به</a> الواحد في درسه.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">جرب المفعولين بنفسك.</span>
     ألصق جملة تبدأ بظننت أو علمت أو صيّرت في محلل الإعراب، وشاهده يميز المفعول الأول من الثاني ويعلل نصب كل منهما.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="rules"
     title="الإلغاء والتعليق وسدّ المصدر مسدّ المفعولين"
@@ -78,9 +74,9 @@ const faqs = [
       <li><strong>التعليق</strong>: إبطال العمل لفظًا لا محلًا حين يقع بعد الفعل ما له صدر الكلام: لام الابتداء، أو الاستفهام، أو النفي بما ولا وإن. نحو <span class="ar">عَلِمْتُ لَلْعِلْمُ نَافِعٌ</span>: العلمُ مبتدأ مرفوع، نافعٌ خبر مرفوع، والجملة الاسمية في محل نصب سدت مسد المفعولين.</li>
       <li><strong>المصدر المؤول</strong>: <span class="ar">ظَنَنْتُ أَنَّكَ نَاجِحٌ</span>: أنّ ومعمولاها في تأويل مصدر في محل نصب سد مسد مفعولي ظن، والتقدير: ظننت نجاحَك. وراجع فتح همزة أنّ في درس <a href="/duroos/inna-wa-akhawatuha">إنّ وأخواتها</a>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -91,21 +87,21 @@ const faqs = [
       <li>يقال خطأً إن "ناجحًا" حال، والصواب أنه مفعول به ثانٍ لأنه هو الخبر في الأصل ولا يستغنى عنه؛ أما <a href="/duroos/al-hal">الحال</a> فضلة يتم الكلام بدونها: <span class="ar">رَأَيْتُ الطَّالِبَ مُبْتَسِمًا</span> برأى البصرية.</li>
       <li>يقال خطأً "رأيت الهلالَ ساطعًا" على أن ساطعًا مفعول ثانٍ، والصواب أنه حال لأن رأى هنا بصرية تنصب مفعولًا واحدًا.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="worked-examples"
     title="أمثلة معربة إعرابًا كاملًا"
     lead="هذه نماذج جاهزة بالصياغة الكلاسيكية المعتمدة في كتب النحو، تصلح مراجعة سريعة قبل الامتحان وقالبًا تحاكيه في إعرابك."
   >
-    <p><strong>المثال الأول</strong>: <span class="ar">عَلِمْتُ الصِّدْقَ مَنْجَاةً</span>: <span class="ar">عَلِمْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">الصِّدْقَ</span>: مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">مَنْجَاةً</span>: مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة.</p>
-    <p><strong>المثال الثاني</strong>: <span class="ar">صَيَّرَ الْحَدَّادُ الْحَدِيدَ سَيْفًا</span>: <span class="ar">صَيَّرَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">الْحَدَّادُ</span>: فاعل مرفوع وعلامة رفعه الضمة الظاهرة. <span class="ar">الْحَدِيدَ</span>: مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">سَيْفًا</span>: مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة.</p>
-    <p><strong>المثال الثالث</strong>: <span class="ar">رَأَيْتُ الْعِلْمَ نَافِعًا</span>: <span class="ar">رَأَيْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل، ورأى هنا قلبية بمعنى علم. <span class="ar">الْعِلْمَ</span>: مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">نَافِعًا</span>: مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة.</p>
-    <p><strong>المثال الرابع</strong>: <span class="ar">حَسِبْتُ الْأَمْرَ سَهْلًا</span>: <span class="ar">حَسِبْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">الْأَمْرَ</span>: مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">سَهْلًا</span>: مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة.</p>
-  </ArticleSection>
+    <IrabExample label="المثال الأول" ar="عَلِمْتُ الصِّدْقَ مَنْجَاةً"><span class="ar">عَلِمْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">الصِّدْقَ</span>: مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">مَنْجَاةً</span>: مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة.</IrabExample>
+    <IrabExample label="المثال الثاني" ar="صَيَّرَ الْحَدَّادُ الْحَدِيدَ سَيْفًا"><span class="ar">صَيَّرَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">الْحَدَّادُ</span>: فاعل مرفوع وعلامة رفعه الضمة الظاهرة. <span class="ar">الْحَدِيدَ</span>: مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">سَيْفًا</span>: مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة.</IrabExample>
+    <IrabExample label="المثال الثالث" ar="رَأَيْتُ الْعِلْمَ نَافِعًا"><span class="ar">رَأَيْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل، ورأى هنا قلبية بمعنى علم. <span class="ar">الْعِلْمَ</span>: مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">نَافِعًا</span>: مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة.</IrabExample>
+    <IrabExample label="المثال الرابع" ar="حَسِبْتُ الْأَمْرَ سَهْلًا"><span class="ar">حَسِبْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">الْأَمْرَ</span>: مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">سَهْلًا</span>: مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة.</IrabExample>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="in-quran"
     title="من القرآن الكريم"
@@ -114,11 +110,8 @@ const faqs = [
     <p><span class="ar">وَلَا تَحْسَبَنَّ ٱللَّهَ غَٰفِلًا عَمَّا يَعْمَلُ ٱلظَّٰلِمُونَ</span> (إبراهيم: ٤٢)</p>
     <p><strong>الإعراب:</strong> الواو استئنافية. لا ناهية جازمة. تحسبنَّ: فعل مضارع مبني على الفتح لاتصاله بنون التوكيد في محل جزم، والفاعل ضمير مستتر وجوبًا تقديره أنت، والنون للتوكيد. اللهَ: لفظ الجلالة مفعول به أول منصوب. غافلًا: مفعول به ثانٍ منصوب. عمّا: عن حرف جر، وما حرف مصدري. يعملُ: فعل مضارع مرفوع. الظالمونَ: فاعل مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم.</p>
     <p>ومن الباب أيضًا قوله تعالى في الكهف: <span class="ar">وَتَحْسَبُهُمْ أَيْقَاظًۭا وَهُمْ رُقُودٌۭ</span>، فالهاء مفعول به أول وأيقاظًا مفعول به ثانٍ. وتجد الإعراب الكامل لهذه الآيات وغيرها في <a href="/quran">إعراب القرآن</a>، والتطبيق على جملك في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="zanna-wa-akhawatuha" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-istithna';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Exception (al-istithnāʾ)" description="The three parts, the instruments, the three cases after illā, ghayr and siwā, and the parsing of lā ilāha illā Llāh." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-istithna'].en}
-      title="Exception"
-      summary="Exception looks simple and turns out to be one of the most decision-heavy chapters in the grammar. The case of the excepted noun does not depend on the word itself but on what came before the instrument: whether the whole was mentioned, and whether the sentence was affirmative or negative. Three configurations, three different answers, and one of them is the sentence a Muslim says most often."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Exception"
+    summary="Exception looks simple and turns out to be one of the most decision-heavy chapters in the grammar. The case of the excepted noun does not depend on the word itself but on what came before the instrument: whether the whole was mentioned, and whether the sentence was affirmative or negative. Three configurations, three different answers, and one of them is the sentence a Muslim says most often."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the parts and the instruments"
@@ -62,9 +55,9 @@ const faqs = [
         <li><strong>ghayr</strong> and <strong>siwā</strong> are nouns, so they take cases and annex what follows.</li>
         <li><strong>ʿadā</strong>, <strong>khalā</strong>, <strong>ḥāshā</strong> may be read as verbs or as prepositions.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="three-cases"
       title="Understand: the three configurations after illā"
@@ -105,9 +98,9 @@ const faqs = [
         answer="Accusative, but as a direct object, not as an excepted noun."
         why="The sentence is emptied: no whole precedes illā. So Muḥammadan takes the case its own role requires, and its role is the object of raʾaytu. The accusative here is a coincidence of role, not of exception."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="ghayr-siwa"
       title="See: ghayr and siwā"
@@ -122,9 +115,9 @@ const faqs = [
         irab="قام فعل ماضٍ مبني على الفتح، القومُ فاعل مرفوع، غيرَ مستثنى منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، زيدٍ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
         note="Compare card 1 above. The case that sat on Zaydan there now sits on ghayra, and Zayd has become genitive by annexation. ghayr absorbs the ruling and passes the genitive on."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="ada-khala"
       title="ʿadā, khalā and ḥāshā"
@@ -139,9 +132,9 @@ const faqs = [
         irab="قام فعل ماضٍ مبني على الفتح، القومُ فاعل مرفوع، ما مصدرية، خلا فعل ماضٍ مبني على الفتح، والفاعل ضمير مستتر، زيدًا مفعول به منصوب وعلامة نصبه الفتحة الظاهرة."
         note="Without mā, both khalā Zaydan and khalā Zaydin would be correct. With mā the word must be a verb, because mā here is the infinitival mā and only a verb can follow it, so the accusative is required."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="la-ilaha"
       title="The sentence said most often"
@@ -156,9 +149,9 @@ const faqs = [
         irab="لا نافية للجنس، إلهَ اسم لا مبني على الفتح في محل نصب، وخبر لا محذوف وجوبًا تقديره موجودٌ أو حقٌّ، إلا أداة استثناء، لفظ الجلالة بدل من محل اسم لا مرفوع وعلامة رفعه الضمة الظاهرة."
         note="Note what is happening. ilāha is built on fatḥa, not accusative by fatḥa, because the noun of this lā is built. Its predicate is obligatorily omitted. And lafẓ al-jalāla is nominative because it substitutes for the position of ilāha, which as a subject-like element would be nominative. Reading Allāhu as an excepted noun would require the accusative, which is not what the phrase says."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -169,12 +162,8 @@ const faqs = [
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: ghayr and siwā, and the two readings of ʿadā and its companions.</li>
         <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: the parsing of lā ilāha illā Llāh.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

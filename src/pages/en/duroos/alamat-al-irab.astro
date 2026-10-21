@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'alamat-al-irab';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Markers of Iʿrāb" description="The four original markers, the seven chapters of substitution, visible and estimated marking, and how to choose the right marker, with complete classical iʿrāb." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['alamat-al-irab'].en}
-      title="The Markers of Iʿrāb"
-      summary="Case in Arabic is one thing and the sign that shows it is another. Four vowels are the original signs, but in seven chapters of the language a substitute takes over: a letter instead of a vowel, a different vowel, or a dropped letter. This lesson gives the four originals, the complete list of seven substitutions, the cases where a marker is estimated rather than seen, and a procedure for choosing correctly every time."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Markers of Iʿrāb"
+    summary="Case in Arabic is one thing and the sign that shows it is another. Four vowels are the original signs, but in seven chapters of the language a substitute takes over: a letter instead of a vowel, a different vowel, or a dropped letter. This lesson gives the four originals, the complete list of seven substitutions, the cases where a marker is estimated rather than seen, and a procedure for choosing correctly every time."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="original-signs"
       title="Learn: the four original markers"
@@ -68,9 +61,9 @@ const faqs = [
         irab="لم حرف نفي وجزم وقلب، يكتبْ فعل مضارع مجزوم بلم وعلامة جزمه السكون، وحُرِّك بالكسر منعًا لالتقاء الساكنين، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، الدرسَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، في حرف جر، البيتِ اسم مجرور وعلامة جره الكسرة الظاهرة."
         note="Four markers, four jobs, one sentence. Note the aside on yaktub: its jussive marker is sukūn, but a kasra is pronounced to avoid two unvowelled letters meeting. The marker is still sukūn; the kasra is phonetic, not grammatical."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="substitute-signs"
       title="Understand: the seven chapters of substitution"
@@ -120,9 +113,9 @@ const faqs = [
         answer="abīka is majrūr, and the marker of its genitive is yāʾ, because it is one of the five nouns."
         why="ʿalā is a preposition, so what follows is genitive. ab is one of the five nouns and is annexed here to the pronoun ka, so it takes letters as markers rather than vowels: wāw, alif, yāʾ for nominative, accusative, genitive respectively."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="visible-and-estimated"
       title="See: visible and estimated markers"
@@ -143,9 +136,9 @@ const faqs = [
         irab="إنّ حرف توكيد ونصب، الهدى اسم إنّ منصوب وعلامة نصبه الفتحة المقدرة على الألف منع من ظهورها التعذر، هدى خبر إنّ مرفوع وعلامة رفعه الضمة المقدرة على الألف منع من ظهورها التعذر وهو مضاف، اللهِ لفظ الجلالة مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
         note="Two words spelled identically, in two different cases, with neither case visible. Only the analysis distinguishes them. This is the sentence to remember when you wonder whether estimated marking matters."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="choosing-the-sign"
       title="A procedure that always works"
@@ -158,9 +151,9 @@ const faqs = [
         <li><strong>Can the marker be pronounced?</strong> If the word ends in alif, yāʾ or wāw, the marker may be estimated. Say so, and give the reason.</li>
       </ol>
       <p>The habit worth building is never saying a marker without its reason. "Nominative by wāw" is incomplete. "Nominative, and the marker of its nominative is wāw because it is a sound masculine plural" is the wording the books use and the wording that keeps you correct.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -171,12 +164,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span>: substitute markers and the conditions on each chapter.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: estimated marking, and the distinction between impossibility and heaviness.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

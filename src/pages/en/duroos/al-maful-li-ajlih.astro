@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-maful-li-ajlih';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Object of Purpose" description="The four conditions, what happens when one fails, the three states, and distinguishing it from the absolute object." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-maful-li-ajlih'].en}
-      title="The Object of Purpose"
-      summary="This accusative answers a single question: why did the act happen? It is a verbal noun naming an inward state, and it takes the accusative only when four conditions hold together. When one fails, Arabic reaches for a preposition instead, which is why the same idea appears sometimes accusative and sometimes genitive. Knowing the four conditions is knowing the chapter."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Object of Purpose"
+    summary="This accusative answers a single question: why did the act happen? It is a verbal noun naming an inward state, and it takes the accusative only when four conditions hold together. When one fails, Arabic reaches for a preposition instead, which is why the same idea appears sometimes accusative and sometimes genitive. Knowing the four conditions is knowing the chapter."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the reason for the act"
@@ -65,9 +58,9 @@ const faqs = [
         irab="قمتُ فعل وفاعل، احترامًا مفعول لأجله منصوب وعلامة نصبه الفتحة الظاهرة، اللام حرف جر، المعلمِ اسم مجرور وعلامة جره الكسرة الظاهرة."
         note="Check the four conditions on iḥtirāman: it is a verbal noun, it names an inward state, it gives the reason for standing, and the respecting and the standing share both time and doer. All four hold, so the accusative is available."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="conditions"
       title="Understand: the four conditions"
@@ -96,9 +89,9 @@ const faqs = [
         answer="Accusative, raghbatan, as an object of purpose."
         why="It is a verbal noun, it names an inward state (desire), it gives the reason for studying, and the desiring and the studying share their time and their doer. All four conditions hold."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="states"
       title="See: the three states"
@@ -110,9 +103,9 @@ const faqs = [
         <li><strong>With al-:</strong> <em>qumtu li-l-iḥtirāmi</em>. Genitive is the norm.</li>
       </ul>
       <p>Notice that all three express the same idea. The grammar is offering a scale, not a set of different meanings, and the bare form is the one that most naturally takes the accusative.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -123,9 +116,9 @@ const faqs = [
         <li><strong>Confusing it with the circumstantial accusative.</strong> The ḥāl answers "how?" and is usually a participle; this answers "why?" and is a verbal noun.</li>
         <li><strong>Putting every reason in the accusative.</strong> Run the four conditions first. If any fails, use a preposition.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -135,12 +128,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the four conditions and what follows from their failure.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the three states with al- and annexation.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

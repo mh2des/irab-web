@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-idafa';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Annexation (al-iḍāfa)" description="The case of each term, what annexation deletes, meaningful and verbal annexation, and the implied prepositions." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-idafa'].en}
-      title="Annexation"
-      summary="Two nouns placed together so that the second qualifies the first is one of the most frequent structures in Arabic, and one of the simplest to state: the second term is genitive, always. What repays study is everything around that rule, namely the three things annexation deletes from the first term, the preposition it quietly implies, and the one variety that gives no definiteness at all."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Annexation"
+    summary="Two nouns placed together so that the second qualifies the first is one of the most frequent structures in Arabic, and one of the simplest to state: the second term is genitive, always. What repays study is everything around that rule, namely the three things annexation deletes from the first term, the preposition it quietly implies, and the one variety that gives no definiteness at all."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the two terms"
@@ -65,9 +58,9 @@ const faqs = [
         irab="قرأتُ فعل وفاعل، كتابَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، الطالبِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
         note="Change the sentence and only the first term moves: jāʾa kitābu l-ṭālibi has it nominative, naẓartu fī kitābi l-ṭālibi has it genitive. al-ṭālibi stays put in every version."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="what-drops"
       title="Understand: what annexation deletes"
@@ -89,9 +82,9 @@ const faqs = [
         answer="muʿallimū l-madrasati. The nūn of the sound masculine plural is deleted by annexation."
         why="Annexation removes tanwīn, the dual nūn, and the sound masculine plural nūn from the first term. The wāw stays to mark the nominative."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="manawiyya"
       title="See: meaningful annexation and its implied preposition"
@@ -113,9 +106,9 @@ const faqs = [
         irab="يومَ ظرف زمان منصوب وهو مضاف، يقومُ فعل مضارع مرفوع، الناسُ فاعل مرفوع، والجملة الفعلية في محل جر مضاف إليه، لربِّ جار ومجرور وهو مضاف، العالمينَ مضاف إليه مجرور وعلامة جره الياء لأنه جمع مذكر سالم."
         note="A whole verbal sentence occupies the genitive slot. A sentence has no ending to inflect, so the analysis gives it a position instead: fī maḥall jarr. Note also the second annexation inside the verse, rabbi l-ʿālamīn, and that al-ʿālamīn is genitive by yāʾ."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="lafziyya"
       title="Verbal annexation, which gives nothing"
@@ -130,9 +123,9 @@ const faqs = [
         irab="جاء فعل ماضٍ مبني على الفتح، الحسنُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة وهو مضاف، الوجهِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
         note="The first term carries al-, which a meaningful annexation forbids. It is permitted here because this annexation is merely verbal: al-ḥasanu is a descriptive word governing al-wajhi, and the phrase is a lighter way of saying al-ḥasanu wajhuhu."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -143,9 +136,9 @@ const faqs = [
         <li><strong>Keeping the dual or plural nūn.</strong> <em>muʿallimā l-madrasati</em>, <em>muʿallimū l-madrasati</em>.</li>
         <li><strong>Moving the second term.</strong> It is genitive whatever happens to the first.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -156,12 +149,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: meaningful and verbal annexation and the implied prepositions.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: annexation to a clause, and what is deleted from the first term.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

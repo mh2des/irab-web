@@ -162,28 +162,8 @@ export const EN_GROUPS: { title: string; accent: string; lessons: { slug: string
   },
 ];
 
-/** Flat teaching order, used for the lesson counter and prev/next. */
+/** Flat teaching order. Course position and neighbours: lib/duroos-course.ts. */
 export const EN_ORDER: EnLesson[] = EN_GROUPS.flatMap((g) => g.lessons);
-
-export interface LessonPlace {
-  no: number;            // 1-based position in the whole course
-  total: number;
-  group: string;
-  prev?: EnLesson;       // previous PUBLISHED lesson, if any
-  next?: EnLesson;       // next PUBLISHED lesson, if any
-}
-
-/** Where a lesson sits in the course, and its published neighbours. Prev/next
- *  skip unpublished lessons so a learner is never sent to a page that is not
- *  there yet, while the counter still reflects the real course position. */
-export function lessonPlace(slug: string): LessonPlace | undefined {
-  const i = EN_ORDER.findIndex((l) => l.slug === slug);
-  if (i < 0) return undefined;
-  const group = EN_GROUPS.find((g) => g.lessons.some((l) => l.slug === slug))!.title;
-  const before = EN_ORDER.slice(0, i).reverse().find((l) => EN_DUROOS.has(l.slug));
-  const after = EN_ORDER.slice(i + 1).find((l) => EN_DUROOS.has(l.slug));
-  return { no: i + 1, total: EN_ORDER.length, group, prev: before, next: after };
-}
 
 const enBySlug = new Map(EN_ORDER.map((l) => [l.slug, l]));
 

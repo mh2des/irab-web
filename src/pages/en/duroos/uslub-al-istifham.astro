@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'uslub-al-istifham';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Interrogative Style" description="Interrogative particles and nouns, how positions are determined by the expected answer, and rhetorical questioning." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['uslub-al-istifham'].en}
-      title="The Interrogative Style"
-      summary="Asking a question in Arabic uses two kinds of tool that behave completely differently. The particles hamza and hal have no position in iʿrāb at all, while the interrogative nouns take positions like any other noun. The technique for finding those positions is unusually satisfying: imagine the answer, and the question word occupies exactly the slot the answer would fill."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Interrogative Style"
+    summary="Asking a question in Arabic uses two kinds of tool that behave completely differently. The particles hamza and hal have no position in iʿrāb at all, while the interrogative nouns take positions like any other noun. The technique for finding those positions is unusually satisfying: imagine the answer, and the question word occupies exactly the slot the answer would fill."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: two particles, and the rest are nouns"
@@ -57,9 +50,9 @@ const faqs = [
     >
       <LessonObjective items={objectives} />
       <p>Two differences separate the particles. The hamza can ask for specification and can enter a negative sentence; <em>hal</em> can do neither. That is why <em>a-lam yaʾtika l-khabaru</em> is sound Arabic and the same sentence with <em>hal</em> is not.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="mahall"
       title="Understand: imagine the answer"
@@ -91,9 +84,9 @@ const faqs = [
         answer="In the position of nominative as a fronted predicate, with ḥāluka the subject."
         why="Test it by the answer: ḥālī ḥasanun. The word ḥasanun is the predicate, so kayfa occupies the predicate slot. Grammarians describe it as khabar muqaddam because the interrogative must come first."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="meanings"
       title="See: questions that are not questions"
@@ -108,9 +101,9 @@ const faqs = [
         irab="الهمزة حرف استفهام لا محل له، لم حرف نفي وجزم وقلب، نشرحْ فعل مضارع مجزوم وعلامة جزمه السكون والفاعل ضمير مستتر تقديره نحن، لك جار ومجرور، صدرَ مفعول به منصوب وهو مضاف والكاف في محل جر."
         note="The meaning is an emphatic statement, not an enquiry. This is why the hamza matters: it enters the negative, and a question over a negation reads as strong affirmation. hal could not do this work."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -121,9 +114,9 @@ const faqs = [
         <li><strong>Calling a fronted interrogative nominative because it comes first.</strong> Position follows the expected answer.</li>
         <li><strong>Using hal in a negative sentence.</strong> The hamza does that work.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -133,12 +126,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span>: the particles, their meanings and their differences.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the interrogative nouns and obligatory fronting.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

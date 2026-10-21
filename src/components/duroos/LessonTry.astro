@@ -1,0 +1,26 @@
+---
+/**
+ * LessonTry: the "try it on your own sentence" pause inside a lesson.
+ *
+ * Takes the same slots as the shared ArticleCta it replaces in the lessons
+ * (a `title` slot and the body), so each lesson keeps its own wording, but it
+ * reads as a short aside in the lesson's flow rather than a page-wide banner,
+ * with one action: the analyzer on the home page, which is what the copy
+ * points to.
+ */
+interface Props { lang?: 'ar' | 'en' }
+const { lang = 'ar' } = Astro.props;
+const en = lang === 'en';
+const href = en ? '/en#demo' : '/#demo';
+const cta = en ? 'Open the analyzer' : 'افتح المحلّل';
+const pen = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg>';
+const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>';
+---
+<aside class="ls-try" data-reveal>
+  <span class="ls-try-mark" aria-hidden="true"><Fragment set:html={pen} /></span>
+  <div class="ls-try-text">
+    <p class="ls-try-t"><slot name="title" /></p>
+    <p class="ls-try-b"><slot /></p>
+  </div>
+  <a class="ls-try-go" href={href}><span>{cta}</span><Fragment set:html={arrow} /></a>
+</aside>

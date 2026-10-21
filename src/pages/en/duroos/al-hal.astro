@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-hal';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Circumstantial Accusative (al-ḥāl)" description="The ḥāl: its holder, its three shapes, the required link, and distinguishing it from the adjective and specifier." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-hal'].en}
-      title="The Circumstantial Accusative"
-      summary="The ḥāl is an indefinite accusative describing the state of someone or something at the moment the act took place. It answers the question how. Its difficulty for English speakers is not the rule but the three shapes it can take, and the fact that a whole sentence can be a ḥāl provided it carries a link back to the person it describes. Find the holder first and everything else follows."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Circumstantial Accusative"
+    summary="The ḥāl is an indefinite accusative describing the state of someone or something at the moment the act took place. It answers the question how. Its difficulty for English speakers is not the rule but the three shapes it can take, and the fact that a whole sentence can be a ḥāl provided it carries a link back to the person it describes. Find the holder first and everything else follows."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the state and its holder"
@@ -68,9 +61,9 @@ const faqs = [
         irab="جاء فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة وهو صاحب الحال، مبتسمًا حال منصوبة وعلامة نصبها الفتحة الظاهرة."
         note="Note the shape of the pair: the holder is definite and nominative, the state is indefinite and accusative. That contrast is the most reliable signature of this chapter."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="hal-mufrada"
       title="See: the single-word ḥāl"
@@ -85,9 +78,9 @@ const faqs = [
         irab="رجع فعل ماضٍ مبني على الفتح، الجنودُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، منتصرينَ حال منصوبة وعلامة نصبها الياء لأنه جمع مذكر سالم."
         note="mufrad here means 'not a sentence', not 'singular'. The word is plural and still counts as a single-word ḥāl. Its accusative shows as yāʾ because it is a sound masculine plural."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="hal-jumla"
       title="Understand: when a whole sentence is the state"
@@ -121,9 +114,9 @@ const faqs = [
         answer="An adjective, naʿt, in the position of accusative."
         why="ṭāliban is indefinite, and sentences after indefinites are adjectives. Had it been raʾaytu l-ṭāliba yaqraʾu, with a definite noun, the same clause would have been a ḥāl. One word decides the analysis."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="hal-shibh-jumla"
       title="The quasi-sentence as ḥāl"
@@ -138,9 +131,9 @@ const faqs = [
         irab="خرج فعل ماضٍ مبني على الفتح، الأميرُ فاعل مرفوع وهو صاحب الحال، على حرف جر، فرسِ اسم مجرور وهو مضاف، والهاء في محل جر مضاف إليه، والجار والمجرور متعلقان بمحذوف حال تقديره راكبًا."
         note="The phrase is not itself the ḥāl. It attaches to an omitted one, estimated as rākiban, 'riding'. The same reasoning applies here as with an omitted predicate: a ḥāl must be a noun or a sentence, and a prepositional phrase is neither."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Telling it apart"
@@ -151,9 +144,9 @@ const faqs = [
         <li><strong>Against the specifier:</strong> ask "how?" for a ḥāl and "of what?" for a tamyīz. A ḥāl is usually derived, a tamyīz usually solid.</li>
         <li><strong>The wāw:</strong> if it introduces a state rather than joining two like things, it is the wāw of the ḥāl and should be translated "while".</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -164,12 +157,8 @@ const faqs = [
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the sentence-ḥāl and its link, and the omitted ḥāl behind a quasi-sentence.</li>
         <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: on the rare definite ḥāl.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

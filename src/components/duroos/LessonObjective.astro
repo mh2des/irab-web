@@ -1,15 +1,8 @@
 ---
 /**
  * LessonObjective: what the learner will be able to do by the end, stated
- * before any explanation, so the page opens with a purpose rather than a
- * definition.
- *
- * It also carries the lesson-wide typography and rhythm overrides, scoped
- * under `.en-lesson`. They live here because every lesson renders this
- * component exactly once, at the top. The overrides exist because the shared
- * ArticleSection is tuned for Arabic readers of Arabic prose; an English
- * lesson carrying Arabic examples needs more air between blocks and a longer
- * measure of line height to stay comfortable.
+ * before any explanation, so the lesson opens with a purpose rather than a
+ * definition. Each objective carries a small check in the chapter colour.
  */
 interface Props {
   items: string[];
@@ -19,44 +12,18 @@ const { items } = Astro.props;
 <div class="obj">
   <p class="obj-k">By the end of this lesson</p>
   <ul class="obj-list">
-    {items.map((i) => <li>{i}</li>)}
+    {items.map((i) => <li><span class="obj-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><span>{i}</span></li>)}
   </ul>
 </div>
 
 <style is:global>
-  .obj {
-    margin: 0 0 0.5rem;
-    padding: 1.6rem 1.8rem;
-    border-radius: 1.1rem;
-    border: 1px solid color-mix(in srgb, var(--color-purple) 22%, transparent);
-    background: color-mix(in srgb, var(--color-purple) 5%, transparent);
+  .ls .obj {
+    margin: 1.6rem 0 0; padding: 1.3rem 1.4rem; border-radius: 22px;
+    background: var(--iu-card); border: 1px solid var(--iu-border);
   }
-  .dark .obj { background: color-mix(in srgb, var(--color-purple) 11%, transparent); }
-  .obj-k {
-    margin: 0 0 0.85rem; font-size: 0.74rem; font-weight: 800;
-    letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-purple);
-  }
-  .obj-list { margin: 0; padding-inline-start: 1.15rem; display: grid; gap: 0.6rem; list-style: disc; }
-  .obj-list li { font-size: 1.05rem; line-height: 1.8; color: var(--color-ink); }
-  .dark .obj-list li { color: var(--color-mist); }
-  .obj-list li::marker { color: color-mix(in srgb, var(--color-purple) 60%, transparent); }
-
-  /* ── Lesson rhythm ─────────────────────────────────────────────────────
-     The shared article styles are tuned for Arabic prose read by Arabic
-     readers. An English lesson threaded with Arabic examples was reported as
-     feeling packed, so inside .en-lesson the measure opens up: more space
-     between sections, between paragraphs, and inside each line. */
-  .en-lesson .article-sec { padding-block: 2.25rem; }
-  @media (min-width: 768px) { .en-lesson .article-sec { padding-block: 3rem; } }
-  .en-lesson .prose-irab { line-height: 1.95; }
-  .en-lesson .prose-irab > * + * { margin-top: 1.5rem; }
-  .en-lesson .prose-irab li { margin-bottom: 0.8rem; line-height: 1.9; }
-  .en-lesson .prose-irab ul,
-  .en-lesson .prose-irab ol { margin: 1rem 0; padding-inline-start: 1.4rem; }
-  .en-lesson .sec-lead { line-height: 1.85; padding: 1.35rem 1.6rem; margin-bottom: 2rem; }
-  .en-lesson .article-sec h2 { margin-bottom: 0.2rem; }
-
-  /* Inline Arabic inside English prose still reads as a pill, but at a size
-     that does not get lost between English words. */
-  .en-lesson .prose-irab .ar { font-size: 1.2em; line-height: 2.1; }
+  .ls .obj-k { margin: 0 0 0.8rem; font-size: 0.85rem; font-weight: 700; color: var(--acc-text); }
+  .ls .obj-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; }
+  .ls .obj-list li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.04rem; line-height: 1.75; color: var(--iu-text); }
+  .ls .obj-ic { flex: none; display: grid; place-items: center; width: 1.45rem; height: 1.45rem; margin-top: 0.15rem; border-radius: 99px; color: var(--acc-text); background: var(--acc-soft); }
+  .ls .obj-ic svg { width: 0.85rem; height: 0.85rem; }
 </style>

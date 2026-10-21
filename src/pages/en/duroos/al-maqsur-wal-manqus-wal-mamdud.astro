@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-maqsur-wal-manqus-wal-mamdud';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Shortened, Defective and Extended Nouns" description="How each type is recognised, estimated and visible case marking, dropping the yāʾ, and forming the dual and plural." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-maqsur-wal-manqus-wal-mamdud'].en}
-      title="Shortened, Defective and Extended Nouns"
-      summary="Three kinds of noun end in a way that interferes with case marking. A shortened noun ends in a fixed alif, a defective noun in a fixed yāʾ after a kasra, and an extended noun in a hamza after an added alif. The first cannot show any case, the second can show only one, and the third shows all three normally. This lesson explains why, and what happens to each in the dual and the plural."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Shortened, Defective and Extended Nouns"
+    summary="Three kinds of noun end in a way that interferes with case marking. A shortened noun ends in a fixed alif, a defective noun in a fixed yāʾ after a kasra, and an extended noun in a hamza after an added alif. The first cannot show any case, the second can show only one, and the third shows all three normally. This lesson explains why, and what happens to each in the dual and the plural."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the three types"
@@ -62,9 +55,9 @@ const faqs = [
         <li><strong>al-mamdūd</strong>, extended: <em>ṣaḥrāʾ</em>, <em>samāʾ</em>, <em>qurrāʾ</em>.</li>
       </ul>
       <p>The word "fixed", <em>lāzima</em>, matters in each definition. The letter must belong to the word, not be an accident of inflection. The alif of the dual in <em>muʿallimāni</em> is not fixed, so that word is not shortened.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="irab"
       title="Understand: which cases can be seen"
@@ -91,9 +84,9 @@ const faqs = [
         irab="جاء فعل ماضٍ مبني على الفتح، القاضي فاعل مرفوع وعلامة رفعه الضمة المقدرة على الياء منع من ظهورها الثقل، رأيتُ فعل وفاعل، القاضيَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة على الياء."
         note="Here the two cases do look different, because fatḥa is light enough to sit on a yāʾ. Note the wording changes accordingly: 'estimated, prevented by heaviness' for the nominative, 'visible' for the accusative."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="dropping-the-yaa"
       title="See: the disappearing yāʾ"
@@ -115,9 +108,9 @@ const faqs = [
         answer="Genitive, with an estimated kasra on the deleted yāʾ."
         why="ʿalā requires the genitive. The noun is indefinite and defective, so the yāʾ is dropped in the genitive as it is in the nominative, and the marker is estimated on the letter that has been removed. Only the accusative would restore it."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="dual-plural"
       title="The dual and the plural"
@@ -128,9 +121,9 @@ const faqs = [
         <li><strong>Defective:</strong> the yāʾ is kept in the dual, <em>qāḍiyāni</em>, and dropped in the sound masculine plural, <em>qāḍūna</em> and <em>qāḍīna</em>.</li>
         <li><strong>Extended:</strong> an original hamza stays, <em>qurrāʾāni</em>; a feminine hamza becomes wāw, <em>ṣaḥrāwāni</em>; a converted hamza allows both, <em>samāʾāni</em> or <em>samāwāni</em>.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -141,9 +134,9 @@ const faqs = [
         <li><strong>Estimating the fatḥa on a defective noun.</strong> Fatḥa is visible there. Only ḍamma and kasra are estimated.</li>
         <li><strong>Estimating on an extended noun.</strong> The hamza is a full consonant and carries all three vowels normally.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -154,12 +147,8 @@ const faqs = [
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: impossibility and heaviness as the two reasons for estimation, and the dropping of the yāʾ.</li>
         <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: the treatment of the hamza of an extended noun in the dual.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

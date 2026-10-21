@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'zanna-wa-akhawatuha';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Ẓanna and its Sisters" description="Verbs of the heart and transformation, the origin of their two objects, cancellation and suspension." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['zanna-wa-akhawatuha'].en}
-      title="Ẓanna and its Sisters"
-      summary="A third family of abrogators, and the most aggressive: where kāna changes one pillar and inna changes the other, these verbs put both into the accusative at once. Knowing that the two objects were originally a subject and a predicate explains everything else about them, including why the second describes the first and why an infinitival clause can replace them both together."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Ẓanna and its Sisters"
+    summary="A third family of abrogators, and the most aggressive: where kāna changes one pillar and inna changes the other, these verbs put both into the accusative at once. Knowing that the two objects were originally a subject and a predicate explains everything else about them, including why the second describes the first and why an infinitival clause can replace them both together."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: both pillars into the accusative"
@@ -65,9 +58,9 @@ const faqs = [
         irab="ظننتُ فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل في محل رفع فاعل، الأمرَ مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة، سهلًا مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة."
         note="Before the verb arrived the sentence was al-amru sahlun. That origin is why the second object describes the first: it was its predicate. Contrast aʿṭaytu l-faqīra dirhaman, where no such relation exists between the two."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="members"
       title="See: two families"
@@ -97,9 +90,9 @@ const faqs = [
         en="I turned the clay into pottery."
         irab="صيّرتُ فعل وفاعل، الطينَ مفعول به أول منصوب وعلامة نصبه الفتحة الظاهرة، خزفًا مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="rules"
       title="Understand: cancellation and suspension"
@@ -124,9 +117,9 @@ const faqs = [
         answer="Of the heart, taking two objects."
         why="A second accusative, nāfiʿan, describes the first, al-ʿilma. That relation only exists with the heart-verb. Had it been raʾaytu l-hilāla, with one accusative and nothing describing it, the verb would have been the eye-verb taking a single object."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -137,9 +130,9 @@ const faqs = [
         <li><strong>Calling the second object a ḥāl.</strong> A ḥāl is additional and removable; the second object completes the verb and cannot be dropped.</li>
         <li><strong>Confusing the two raʾās, and the two jaʿalas.</strong> Count the accusatives and ask whether the second describes the first.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -149,12 +142,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the two families and the origin of the two objects.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: cancellation, suspension, and the infinitival phrase replacing both objects.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما الفرق بين النعت والصفة؟', a: 'لا فرق في الاصطلاح الشائع، فالنعت والصفة اسمان لباب واحد. البصريون يغلب عليهم "الصفة" والكوفيون "النعت"، وكتب الإعراب المدرسية تستعملهما بمعنى واحد.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="النعت" description="شرح النعت (الصفة): تعريفه، النعت الحقيقي ومطابقته في أربعة من عشرة، النعت السببي وأحكامه، النعت الجملة وشبه الجملة، مع أمثلة معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-naat'].ar}
+    slug="al-naat"
     title="النعت"
     summary="النعت تابع يكمل منعوته ببيان صفة من صفاته أو صفات ما تعلق به. وهو أول التوابع وأكثرها استعمالًا، وقواعد مطابقته للمنعوت من أدق ما يمتحن به المعربون. هذا الدرس يفصل النعت الحقيقي والسببي والنعت الجملة، مع أمثلة معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">جَاءَ الطَّالِبُ الْمُجْتَهِدُ</span></p>
     <p><strong>الإعراب:</strong> جاءَ فعل ماضٍ مبني على الفتح. الطالبُ <a href="/duroos/al-fail">فاعل</a> مرفوع وعلامة رفعه الضمة الظاهرة. المجتهدُ نعت مرفوع وعلامة رفعه الضمة الظاهرة.</p>
     <p>فالنعت تبع منعوته في الرفع، ولو نصب المنعوت أو جر لتبعه: <span class="ar">رَأَيْتُ الطَّالِبَ الْمُجْتَهِدَ</span>، <span class="ar">مَرَرْتُ بِالطَّالِبِ الْمُجْتَهِدِ</span>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="haqiqi"
     title="النعت الحقيقي والمطابقة"
@@ -60,14 +55,14 @@ const faqs = [
       <li><span class="ar">كَافَأْتُ الْمُعَلِّمِينَ الْمُخْلِصِينَ</span>: المخلصِينَ نعت منصوب وعلامة نصبه الياء لأنه جمع مذكر سالم.</li>
     </ul>
     <p>مثال قرآني: <span class="ar">﴿وَقُلْ رَبِّ أَدْخِلْنِي مُدْخَلَ صِدْقٍ﴾</span> ثم <span class="ar">﴿وَاجْعَلْ لِي مِنْ لَدُنْكَ سُلْطَانًا نَصِيرًا﴾</span>: نصيرًا نعت لسلطانًا منصوب مثله، نكرة مثله.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">اختبر المطابقة بنفسك.</span>
     ألصق جملة فيها نعت في محلّل الإعراب وشاهده يعين المنعوت ويعلل التبعية في الإعراب والتعريف والعدد والجنس.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="sababi"
     title="النعت السببي"
@@ -76,9 +71,9 @@ const faqs = [
     <p><span class="ar">جَاءَ الرَّجُلُ الْكَرِيمُ أَبُوهُ</span></p>
     <p><strong>الإعراب:</strong> الرجلُ فاعل مرفوع. الكريمُ نعت سببي مرفوع تبعًا للرجل. أبوهُ فاعل للصفة المشبهة "الكريم" مرفوع وعلامة رفعه الواو لأنه من <a href="/duroos/al-asma-al-khamsa">الأسماء الخمسة</a>، والهاء ضمير متصل مبني في محل جر مضاف إليه يربط النعت بالمنعوت.</p>
     <p>ولو كان ما بعده مؤنثًا أُنِّث النعت تبعًا له لا للمنعوت: <span class="ar">جَاءَ الرَّجُلُ الْكَرِيمَةُ أُمُّهُ</span>. فالسببي ينظر إلى ما بعده في التذكير والتأنيث، وإلى ما قبله في الإعراب والتعريف.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="jumla"
     title="النعت الجملة وشبه الجملة"
@@ -90,9 +85,9 @@ const faqs = [
       <li><strong>شبه جملة:</strong> <span class="ar">رَأَيْتُ عُصْفُورًا عَلَى الْغُصْنِ</span>، الجار والمجرور متعلقان بمحذوف نعت لعصفورًا في محل نصب.</li>
     </ul>
     <p>وضابط الباب المشهور: الجمل بعد النكرات صفات، وبعد المعارف أحوال، وفرقه عن <a href="/duroos/al-hal">الحال</a> مفصل في درسها.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -104,11 +99,8 @@ const faqs = [
       <li>النعت يتبع في الجر أيضًا، فيقال خطأً "مررتُ بالطالبِ المجتهدَ"، والصواب <span class="ar">بِالطَّالِبِ الْمُجْتَهِدِ</span>، وانظر عمل <a href="/duroos/huruf-al-jarr">حروف الجر</a>.</li>
     </ul>
     <p>وباقي التوابع في دروس <a href="/duroos/al-atf">العطف</a> و<a href="/duroos/al-badal">البدل</a> و<a href="/duroos/al-tawkid">التوكيد</a>، والأصل النظري في <a href="/nahw">ما هو النحو</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-naat" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

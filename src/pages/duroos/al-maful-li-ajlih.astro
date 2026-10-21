@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما شروط نصب المفعول لأجله؟', a: 'أربعة شروط: أن يكون مصدرًا، قلبيًّا (من أفعال النفس الباطنة كالخوف والرغبة والطمع)، معللًا لما قبله بأن يصح وقوعه جوابًا عن "لماذا؟"، ومشاركًا للفعل في الزمن والفاعل. فإن فقد شرط جُر بلام التعليل.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="المفعول لأجله" description="شرح المفعول لأجله (المفعول له): تعريفه، شروط نصبه الأربعة، أحواله مع أل والإضافة والتجرد، ومتى يجر بلام التعليل، مع أمثلة قرآنية معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-maful-li-ajlih'].ar}
+    slug="al-maful-li-ajlih"
     title="المفعول لأجله"
     summary="المفعول لأجله مصدر قلبي منصوب يبين سبب وقوع الفعل وعلته، ويسمى المفعول له. هو جواب سؤال: لماذا فعلت؟ في كلمة واحدة منصوبة. هذا الدرس يعرض شروط نصبه الأربعة، وأحواله الثلاثة مع أل والإضافة، ومتى يهجر النصب إلى الجر باللام، بأمثلة معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">وَقَفَ التَّلَامِيذُ احْتِرَامًا لِمُعَلِّمِهِمْ</span></p>
     <p><strong>الإعراب:</strong> وقفَ فعل ماضٍ مبني على الفتح. التلاميذُ <a href="/duroos/al-fail">فاعل</a> مرفوع وعلامة رفعه الضمة الظاهرة. احترامًا مفعول لأجله منصوب وعلامة نصبه الفتحة الظاهرة. لمعلمهم جار ومجرور متعلقان بالمصدر احترامًا، والهاء مضاف إليه.</p>
     <p>فالوقوف وقع بسبب الاحترام، والواقف هو المحترِم نفسه، والزمن واحد: اجتمعت الشروط فوجب النصب.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="conditions"
     title="شروط النصب الأربعة"
@@ -60,14 +55,14 @@ const faqs = [
       <li><strong>أن يكون علة لما قبله:</strong> يصح جوابًا عن "لماذا؟".</li>
       <li><strong>أن يتحد مع الفعل زمنًا وفاعلًا:</strong> فالخائف في <span class="ar">﴿يَجْعَلُونَ أَصَابِعَهُمْ فِي آذَانِهِمْ مِنَ الصَّوَاعِقِ حَذَرَ الْمَوْتِ﴾</span> هم الجاعلون أنفسهم، والحذر مقارن للجعل. وحذرَ مفعول لأجله منصوب وهو مضاف والموتِ مضاف إليه مجرور.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">اسأل جملتك: لماذا؟</span>
     ألصق جملة فيها مصدر منصوب في محلّل الإعراب وشاهده يفرق بين المفعول لأجله والمفعول المطلق والحال، مع بيان السبب.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="states"
     title="أحواله الثلاثة"
@@ -78,9 +73,9 @@ const faqs = [
       <li><strong>المضاف:</strong> <span class="ar">﴿وَلَا تَقْتُلُوا أَوْلَادَكُمْ خَشْيَةَ إِمْلَاقٍ﴾</span>: خشيةَ مفعول لأجله منصوب وهو مضاف، وإملاقٍ مضاف إليه مجرور. ويجوز في غير القرآن: لخشيةِ إملاقٍ.</li>
       <li><strong>المقترن بأل:</strong> <span class="ar">سَافَرْتُ لِلرَّغْبَةِ فِي الْعِلْمِ</span> بالجر غالبًا، والجار والمجرور متعلقان بالفعل، وعمل اللام مفصل في <a href="/duroos/huruf-al-jarr">حروف الجر</a>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -92,11 +87,8 @@ const faqs = [
       <li>لا ينصب الاسم الجامد على التعليل: يقال "جئتُ للكتابِ" ولا يقال "جئتُ الكتابَ".</li>
     </ul>
     <p>وثالث المفاعيل في هذه السلسلة <a href="/duroos/al-maful-fih">المفعول فيه</a>، وأولها <a href="/duroos/al-maful-bih">المفعول به</a>، والأصل النظري في <a href="/nahw">ما هو النحو</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-maful-li-ajlih" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

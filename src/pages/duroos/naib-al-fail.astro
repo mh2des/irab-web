@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'لماذا يُحذف الفاعل أصلًا؟', a: 'لأغراض بلاغية أو عملية: الجهل به نحو "سُرِقَ الْمَتَاعُ"، أو العلم به فلا حاجة لذكره نحو ﴿خُلِقَ الْإِنسَانُ ضَعِيفًا﴾، أو الخوف منه أو عليه، أو الرغبة في الإيجاز، أو تعظيمه بصون اسمه عن الاقتران بالفعل.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="نائب الفاعل" description="شرح نائب الفاعل: بناء الماضي والمضارع للمجهول، ما ينوب عن الفاعل المحذوف، علامات رفع النائب، والفرق بينه وبين المفعول به، مع أمثلة معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['naib-al-fail'].ar}
+    slug="naib-al-fail"
     title="نائب الفاعل"
     summary="إذا حُذف الفاعل من الجملة وبُني الفعل للمجهول، ناب عن الفاعل غيرُه وأخذ أحكامه كلها: الرفع، والعمدة، وتأنيث الفعل. هذا الدرس يشرح كيف يُبنى الفعل للمجهول، وما الذي ينوب عن الفاعل، وكيف يُعرب النائب، مع التنبيه على الفرق الجوهري بينه وبين المفعول به."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف"
@@ -47,9 +42,9 @@ const faqs = [
     <p><strong>إعراب الأولى:</strong> فتحَ فعل ماضٍ مبني على الفتح، الطالبُ <a href="/duroos/al-fail">فاعل</a> مرفوع وعلامة رفعه الضمة الظاهرة، البابَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة.</p>
     <p><strong>إعراب الثانية:</strong> فُتِحَ فعل ماضٍ مبني للمجهول مبني على الفتح، البابُ نائب فاعل مرفوع وعلامة رفعه الضمة الظاهرة.</p>
     <p>فالمفعول به في الجملة الأولى هو نفسه نائب الفاعل في الثانية: حُذف الفاعل، فارتقى <a href="/duroos/al-maful-bih">المفعول به</a> إلى مكانه وأخذ رفعه.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="building"
     title="بناء الفعل للمجهول"
@@ -62,14 +57,14 @@ const faqs = [
       <li><strong>المبدوء بتاء زائدة:</strong> يضم أوله وثانيه: <span class="ar">تَعَلَّمَ → تُعُلِّمَ</span>.</li>
     </ul>
     <p>مثال قرآني: <span class="ar">﴿وَقِيلَ يَا أَرْضُ ابْلَعِي مَاءَكِ﴾</span>، قِيلَ فعل ماضٍ مبني للمجهول، وجملة النداء وما بعدها في محل رفع نائب فاعل على المقول.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">جرّب المبني للمجهول بنفسك.</span>
     ألصق جملة مبنية للمجهول في محلّل الإعراب وشاهد كيف يميز نائب الفاعل من الفاعل ومن المفعول به، مع بيان العلامة والسبب.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="what-substitutes"
     title="ما ينوب عن الفاعل"
@@ -82,9 +77,9 @@ const faqs = [
       <li><strong>المصدر المتصرف المختص:</strong> <span class="ar">سِيرَ سَيْرٌ طَوِيلٌ</span>، سيرٌ نائب فاعل مرفوع.</li>
     </ul>
     <p>وإذا تعددت المفاعيل ناب الأول: <span class="ar">أُعْطِيَ الْفَائِزُ جَائِزَةً</span>، الفائزُ نائب فاعل مرفوع، جائزةً مفعول به ثانٍ باقٍ على نصبه.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="signs"
     title="علامات رفع نائب الفاعل"
@@ -97,9 +92,9 @@ const faqs = [
       <li><strong>الواو في الأسماء الخمسة:</strong> <span class="ar">شُكِرَ أَبُوكَ</span>، أبو نائب فاعل مرفوع وعلامة رفعه الواو لأنه من <a href="/duroos/al-asma-al-khamsa">الأسماء الخمسة</a> والكاف مضاف إليه.</li>
     </ul>
     <p>وتفصيل الأصلي والفرعي من العلامات كله في درس <a href="/duroos/alamat-al-irab">علامات الإعراب</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -110,11 +105,8 @@ const faqs = [
       <li>عند التحويل يجب تغيير صورة الفعل لا حذف الفاعل فقط: "كتبَ الدرسُ" خطأ مركب، والصواب <span class="ar">كُتِبَ الدَّرْسُ</span>.</li>
       <li>الفعل مع نائب الفاعل يؤنث كما يؤنث مع الفاعل: <span class="ar">كُتِبَتِ الرِّسَالَةُ</span> لا "كُتِبَ الرسالةُ". وترتيب الجملة كلها مشروح في درس <a href="/duroos/al-jumla-al-filiyya">الجملة الفعلية</a>، والأصل النظري في <a href="/irab">ما هو الإعراب</a>.</li>
     </ul>
-  </ArticleSection>
-
-  <AyatExamples slug="naib-al-fail" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

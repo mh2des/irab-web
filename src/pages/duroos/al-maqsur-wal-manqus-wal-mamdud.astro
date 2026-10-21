@@ -2,14 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'لماذا تقدر الحركات على المقصور والمنقوص؟', a: 'لأن الألف لا تقبل الحركة أصلًا، فتقدر عليها الحركات الثلاث ويقال منع من ظهورها التعذر. أما الياء فتقبل الفتحة بخفتها ولا تقبل الضمة والكسرة لثقلهما، فتقدر الضمة والكسرة على المنقوص ويقال منع من ظهورهما الثقل، وتظهر الفتحة.' },
@@ -28,16 +25,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الاسم المقصور والمنقوص والممدود" description="المقصور آخره ألف لازمة، والمنقوص آخره ياء لازمة، والممدود آخره همزة بعد ألف زائدة. شرح إعرابها بالحركات المقدرة وتثنيتها وجمعها، بأمثلة معربة وآيات تطبيقية." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-maqsur-wal-manqus-wal-mamdud'].ar}
+    slug="al-maqsur-wal-manqus-wal-mamdud"
     title="المقصور والمنقوص والممدود"
     summary="ثلاثة أنواع من الأسماء المعربة يفرقها آخرها: ألف لازمة في المقصور، وياء لازمة قبلها كسرة في المنقوص، وهمزة بعد ألف زائدة في الممدود. وعلى هذا الآخر يتوقف إعرابها: أتظهر الحركة أم تقدر؟ هذا الدرس يعرف الأنواع الثلاثة، ويبين إعراب كل منها، ومتى تحذف ياء المنقوص، وكيف تثنى وتجمع، بأمثلة معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="الأنواع الثلاثة"
@@ -49,9 +45,9 @@ const faqs = [
       <li><strong>الممدود</strong>: <span class="ar">الصَّحْرَاءُ</span> و<span class="ar">السَّمَاءُ</span> و<span class="ar">الْبِنَاءُ</span> و<span class="ar">الْقُرَّاءُ</span>.</li>
     </ul>
     <p>وقيد "اسم معرب" يخرج الأفعال والحروف والأسماء المبنية: فألف <span class="ar">سَعَى</span> ألف فعل، وألف <span class="ar">عَلَى</span> ألف حرف، وياء <span class="ar">الَّذِي</span> ياء اسم مبني، فليست من هذا الباب. وقيد "لازمة" يخرج نحو <span class="ar">أَخُو</span> و<span class="ar">أَخِي</span> فالواو والياء فيهما عارضتان، وبيانهما في درس <a href="/duroos/al-asma-al-khamsa">الأسماء الخمسة</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="irab"
     title="إعراب كل نوع"
@@ -63,14 +59,14 @@ const faqs = [
       <li><strong>الممدود</strong>: <span class="ar">هَذِهِ سَمَاءٌ</span> و<span class="ar">رَأَيْتُ سَمَاءً</span> و<span class="ar">نَظَرْتُ إِلَى سَمَاءٍ</span>: الحركات ظاهرة على الهمزة.</li>
     </ul>
     <p>فإذا كان المنقوص نكرة غير مضاف حذفت ياؤه رفعًا وجرًّا وعوض عنها التنوين: <span class="ar">مَرَرْتُ بِدَاعٍ إِلَى الْخَيْرِ</span>: داعٍ اسم مجرور بالباء وعلامة جره الكسرة المقدرة على الياء المحذوفة منع من ظهورها الثقل. وتثبت الياء في النصب: <span class="ar">سَمِعْتُ دَاعِيًا</span>. وراجع أصل الحركات وما ينوب عنها في درس <a href="/duroos/alamat-al-irab">علامات الإعراب</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">اختبر الحركة المقدرة.</span>
     ألصق جملة فيها اسم مقصور أو منقوص في محلل الإعراب، وشاهده يبين الحركة المقدرة وسبب تقديرها كلمة كلمة.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="dual-plural"
     title="التثنية والجمع"
@@ -81,9 +77,9 @@ const faqs = [
       <li><strong>المنقوص</strong>: تثبت ياؤه في التثنية: <span class="ar">قَاضِيَانِ</span>، وتحذف في جمع المذكر السالم ويضم ما قبل الواو ويكسر ما قبل الياء: <span class="ar">قَاضُونَ</span> و<span class="ar">قَاضِينَ</span>.</li>
       <li><strong>الممدود</strong>: تبقى الهمزة الأصلية: <span class="ar">قُرَّاءَانِ</span>، وتقلب همزة التأنيث واوًا: <span class="ar">صَحْرَاوَانِ</span>، ويجوز الوجهان في المنقلبة عن أصل: <span class="ar">سَمَاءَانِ</span> و<span class="ar">سَمَاوَانِ</span>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -94,21 +90,21 @@ const faqs = [
       <li>يقال خطأً "رأيت القاضي بفتحة مقدرة"، والصواب أن الفتحة ظاهرة على الياء: <span class="ar">رَأَيْتُ الْقَاضِيَ</span>، فالياء تقبل الفتحة لخفتها.</li>
       <li>يقال خطأً إن حركات الممدود مقدرة، والصواب أنها ظاهرة على الهمزة: <span class="ar">اتَّسَعَتِ الصَّحْرَاءُ</span>. وإنما الذي يحتاج إلى نظر منعه من الصرف إن كانت همزته للتأنيث، وتفصيله في درس <a href="/duroos/al-mamnu-min-al-sarf">الممنوع من الصرف</a>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="worked-examples"
     title="أمثلة معربة إعرابًا كاملًا"
     lead="هذه نماذج جاهزة بالصياغة الكلاسيكية المعتمدة في كتب النحو، تصلح مراجعة سريعة قبل الامتحان وقالبًا تحاكيه في إعرابك."
   >
-    <p><strong>المثال الأول</strong>: <span class="ar">جَاءَ الْفَتَى</span>: <span class="ar">جَاءَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">الْفَتَى</span>: فاعل مرفوع وعلامة رفعه الضمة المقدرة على الألف منع من ظهورها التعذر.</p>
-    <p><strong>المثال الثاني</strong>: <span class="ar">حَكَمَ الْقَاضِي بِالْعَدْلِ</span>: <span class="ar">حَكَمَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">الْقَاضِي</span>: فاعل مرفوع وعلامة رفعه الضمة المقدرة على الياء منع من ظهورها الثقل. <span class="ar">بِالْعَدْلِ</span>: الباء حرف جر، والعدلِ اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بالفعل حكم.</p>
-    <p><strong>المثال الثالث</strong>: <span class="ar">رَأَيْتُ قَاضِيًا عَادِلًا</span>: <span class="ar">رَأَيْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">قَاضِيًا</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، وقد ثبتت ياء المنقوص لأنه منصوب. <span class="ar">عَادِلًا</span>: نعت لقاضيًا منصوب مثله وعلامة نصبه الفتحة الظاهرة.</p>
-    <p><strong>المثال الرابع</strong>: <span class="ar">سِرْتُ فِي الصَّحْرَاءِ</span>: <span class="ar">سِرْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">فِي</span>: حرف جر مبني على السكون. <span class="ar">الصَّحْرَاءِ</span>: اسم مجرور وعلامة جره الكسرة الظاهرة على الهمزة، وقد جر بالكسرة مع أنه ممنوع من الصرف لتعريفه بأل، والجار والمجرور متعلقان بالفعل سرت.</p>
-  </ArticleSection>
+    <IrabExample label="المثال الأول" ar="جَاءَ الْفَتَى"><span class="ar">جَاءَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">الْفَتَى</span>: فاعل مرفوع وعلامة رفعه الضمة المقدرة على الألف منع من ظهورها التعذر.</IrabExample>
+    <IrabExample label="المثال الثاني" ar="حَكَمَ الْقَاضِي بِالْعَدْلِ"><span class="ar">حَكَمَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">الْقَاضِي</span>: فاعل مرفوع وعلامة رفعه الضمة المقدرة على الياء منع من ظهورها الثقل. <span class="ar">بِالْعَدْلِ</span>: الباء حرف جر، والعدلِ اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بالفعل حكم.</IrabExample>
+    <IrabExample label="المثال الثالث" ar="رَأَيْتُ قَاضِيًا عَادِلًا"><span class="ar">رَأَيْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">قَاضِيًا</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، وقد ثبتت ياء المنقوص لأنه منصوب. <span class="ar">عَادِلًا</span>: نعت لقاضيًا منصوب مثله وعلامة نصبه الفتحة الظاهرة.</IrabExample>
+    <IrabExample label="المثال الرابع" ar="سِرْتُ فِي الصَّحْرَاءِ"><span class="ar">سِرْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">فِي</span>: حرف جر مبني على السكون. <span class="ar">الصَّحْرَاءِ</span>: اسم مجرور وعلامة جره الكسرة الظاهرة على الهمزة، وقد جر بالكسرة مع أنه ممنوع من الصرف لتعريفه بأل، والجار والمجرور متعلقان بالفعل سرت.</IrabExample>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="in-quran"
     title="من القرآن الكريم"
@@ -117,11 +113,8 @@ const faqs = [
     <p><span class="ar">قُلْ إِنَّ ٱلْهُدَىٰ هُدَى ٱللَّهِ</span> (آل عمران: ٧٣)</p>
     <p><strong>الإعراب:</strong> قلْ: فعل أمر مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت. إنّ: حرف توكيد ونصب. الهدى: اسم إنّ منصوب وعلامة نصبه الفتحة المقدرة على الألف. هدى: خبر إنّ مرفوع وعلامة رفعه الضمة المقدرة على الألف، وهو مضاف. اللهِ: لفظ الجلالة مضاف إليه مجرور وعلامة جره الكسرة الظاهرة.</p>
     <p>ومن المنقوص قوله تعالى في طه: <span class="ar">فَٱقْضِ مَآ أَنتَ قَاضٍ</span>، فقاضٍ خبر المبتدأ أنت مرفوع، وعلامة رفعه الضمة المقدرة على الياء المحذوفة، فهو اسم منقوص نكرة حذفت ياؤه وعوض عنها التنوين. وتجد إعراب الآيتين كاملًا في <a href="/quran">إعراب القرآن</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-maqsur-wal-manqus-wal-mamdud" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

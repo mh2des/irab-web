@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما الأسماء الموصولة الخاصة والمشتركة؟', a: 'الخاصة تختص بنوع وعدد: الذي للمفرد المذكر، والتي للمفردة، واللذان واللتان للمثنى، والذين لجمع الذكور، واللاتي واللائي لجمع الإناث. والمشتركة تصلح للجميع بلفظ واحد: من للعاقل، وما لغير العاقل، وأي، وذا بعد ما أو من الاستفهاميتين.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الأسماء الموصولة" description="شرح الأسماء الموصولة: الخاصة والمشتركة، إعراب اللذان واللتان إعراب المثنى، صلة الموصول التي لا محل لها، العائد وحذفه، ومحل الموصول من الإعراب، بأمثلة قرآنية معربة." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-asma-al-mawsula'].ar}
+    slug="al-asma-al-mawsula"
     title="الأسماء الموصولة"
     summary="الاسم الموصول اسم مبهم لا يتم معناه إلا بجملة بعده تسمى الصلة، فيها ضمير يعود عليه يسمى العائد. وهو مبني له محل من الإعراب، إلا مثناه فمعرب. هذا الدرس يعرض الخاصة والمشتركة وأحكام الصلة والعائد ومحل الموصول، بأمثلة قرآنية معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف والمحل"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">جَاءَ الَّذِي نَجَحَ</span></p>
     <p><strong>الإعراب:</strong> جاء فعل ماضٍ مبني على الفتح. الذي اسم موصول مبني على السكون في محل رفع <a href="/duroos/al-fail">فاعل</a>. نجحَ فعل ماضٍ والفاعل ضمير مستتر جوازًا تقديره هو يعود على الموصول، وهو العائد، وجملة نجح صلة الموصول لا محل لها من الإعراب.</p>
     <p>فللموصول ثلاثة أجزاء تذكر في كل إعراب: محل الموصول، وجملة الصلة، والعائد.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="types"
     title="الخاصة والمشتركة"
@@ -60,14 +55,14 @@ const faqs = [
       <li><strong>للجمع:</strong> <span class="ar">الَّذِينَ</span> للذكور مبني على الفتح، و<span class="ar">اللَّاتِي واللَّائِي</span> للإناث.</li>
       <li><strong>المشتركة:</strong> <span class="ar">مَنْ</span> للعاقل و<span class="ar">مَا</span> لغير العاقل: <span class="ar">أَعْجَبَنِي مَا قُلْتَ</span> أي الذي قلتَ.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">صِلْ وأعرِب.</span>
     ألصق جملة فيها اسم موصول في محلّل الإعراب وشاهده يعين محل الموصول وجملة الصلة والعائد، كلمة بكلمة.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="silah"
     title="الصلة والعائد"
@@ -76,9 +71,9 @@ const faqs = [
     <p><strong>مثال قرآني معرب:</strong> <span class="ar">﴿قَدْ أَفْلَحَ الْمُؤْمِنُونَ الَّذِينَ هُمْ فِي صَلَاتِهِمْ خَاشِعُونَ﴾</span></p>
     <p><strong>الإعراب:</strong> قد حرف تحقيق، أفلحَ فعل ماضٍ مبني على الفتح، المؤمنون فاعل مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم. الذين اسم موصول مبني على الفتح في محل رفع <a href="/duroos/al-naat">نعت</a> للمؤمنين. هم ضمير منفصل مبني في محل رفع مبتدأ، وخاشعون خبر مرفوع بالواو، والجملة الاسمية صلة الموصول لا محل لها، والعائد الضمير هم.</p>
     <p><strong>حذف العائد المنصوب:</strong> <span class="ar">قَرَأْتُ الْكِتَابَ الَّذِي اشْتَرَيْتُ</span> أي اشتريتُه، فالعائد محذوف لأنه ضمير متصل منصوب.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="mahall-examples"
     title="محل الموصول من الإعراب"
@@ -89,9 +84,9 @@ const faqs = [
       <li><strong>مفعول به:</strong> <span class="ar">أَكْرَمْتُ الَّذِي سَاعَدَنِي</span>: الذي في محل نصب <a href="/duroos/al-maful-bih">مفعول به</a>.</li>
       <li><strong>مجرور:</strong> <span class="ar">سَلَّمْتُ عَلَى الَّذِي فَازَ</span>: الذي في محل جر بعلى، وعمل الحرف في <a href="/duroos/huruf-al-jarr">حروف الجر</a>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -103,11 +98,8 @@ const faqs = [
       <li>الجمل بعد النكرات صفات لا صلات: <span class="ar">جَاءَ طِفْلٌ يَضْحَكُ</span> جملة يضحك نعت، أما الصلة فلا تكون إلا بعد موصول، وراجع <a href="/duroos/al-naat">النعت</a>.</li>
     </ul>
     <p>وأخو هذا الباب في المبنيات <a href="/duroos/al-damair">الضمائر</a>، والأصل الجامع في <a href="/nahw">ما هو النحو</a> وتطبيقه في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-asma-al-mawsula" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

@@ -2,14 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'لماذا تعرب الأسماء الخمسة بالحروف لا بالحركات؟', a: 'لأنها إذا استوفت شروطها أعربت بعلامات فرعية تنوب عن الأصلية: الواو تنوب عن الضمة، والألف عن الفتحة، والياء عن الكسرة. وعلل النحاة ذلك بأن إضافتها إلى ما بعدها أطالت الاسم فناسبه الإعراب بالحروف الطويلة، وهو باب من أبواب النيابة في علامات الإعراب.' },
@@ -28,16 +25,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الأسماء الخمسة" description="الأسماء الخمسة: أب وأخ وحم وفو وذو، تُرفع بالواو وتُنصب بالألف وتُجر بالياء بشروط، نحو: جاء أبوك. شرح شروط الإفراد والتكبير والإضافة بأمثلة معربة وآيات تطبيقية." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-asma-al-khamsa'].ar}
+    slug="al-asma-al-khamsa"
     title="الأسماء الخمسة"
     summary="الأسماء الخمسة هي: أب وأخ وحم وفو وذو، ترفع بالواو وتنصب بالألف وتجر بالياء، نيابة عن الضمة والفتحة والكسرة. لكن هذا الإعراب بالحروف مشروط بشروط متى فقد أحدها عادت إلى الإعراب بالحركات. هذا الدرس يفصل العلامات والشروط، مع أمثلة معربة إعرابًا كاملًا على طريقة كتب النحو."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="ما الأسماء الخمسة؟"
@@ -51,9 +47,9 @@ const faqs = [
       <li><span class="ar">ذُو</span>: بمعنى صاحب، نحو <span class="ar">ذُو عِلْمٍ</span>.</li>
     </ul>
     <p>وموقعها من الجملة كموقع أي اسم آخر: تقع مبتدأ وخبرًا و<a href="/duroos/al-fail">فاعلًا</a> ومفعولًا به ومجرورة بالحرف والإضافة، والذي يتغير هو شكل العلامة لا الوظيفة.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="irab-signs"
     title="علامات إعرابها بالحروف"
@@ -65,14 +61,14 @@ const faqs = [
       <li><strong>الجر بالياء</strong>: <span class="ar">سَلِّمْ عَلَى أَبِيكَ</span>.</li>
     </ul>
     <p>فالكلمة واحدة والوظائف ثلاث، والحرف الأخير هو الذي يحمل العلامة: واو ثم ألف ثم ياء. وهذا الباب فرع عن قاعدة أوسع تجدها مفصلة في درس <a href="/duroos/alamat-al-irab">علامات الإعراب</a> الأصلية والفرعية، وهو نظير ما يقع في المثنى وجمع المذكر السالم و<a href="/duroos/al-afal-al-khamsa">الأفعال الخمسة</a> من إعراب بغير الحركات.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">اختبر فهمك للعلامات الفرعية.</span>
     ألصق أي جملة فيها أبوك أو أخاك أو ذو علم في المحلل على الصفحة الرئيسية، وشاهد الدرس يطبق كلمة كلمة: العلامة الفرعية، وموقع الاسم، وسبب النيابة.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="general-conditions"
     title="الشروط العامة لإعرابها بالحروف"
@@ -85,9 +81,9 @@ const faqs = [
       <li><strong>أن تكون إضافتها إلى غير ياء المتكلم</strong>: فإن أضيفت إلى الياء أعربت بحركات مقدرة، نحو <span class="ar">جَاءَ أَبِي</span>.</li>
     </ul>
     <p>ولأن الإضافة شرط جوهري هنا، فإن هذا الدرس لا يكتمل إلا بفهم أحكام <a href="/duroos/al-idafa">الإضافة</a>: فالاسم من هذه الأسماء مضاف دائمًا، وما بعده مضاف إليه مجرور.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="dhu-and-fu-conditions"
     title="شرطا فو وذو الخاصان"
@@ -96,22 +92,22 @@ const faqs = [
     <p><strong>شرط فو</strong>: أن تخلو من الميم. تقول: <span class="ar">هَذَا فُوكَ، وَنَظِّفْ فَاكَ، وَلَا تُدْخِلْ فِي فِيكَ إِلَّا طَيِّبًا</span>. فإن بقيت الميم صارت <span class="ar">فَمٌ</span> وأعربت بالحركات الظاهرة، نحو <span class="ar">نَظَافَةُ الْفَمِ وَاجِبَةٌ</span>.</p>
     <p><strong>شرطا ذو</strong>: أن تكون بمعنى صاحب، وأن تضاف إلى اسم جنس ظاهر، نحو <span class="ar">ذُو مَالٍ</span> و<span class="ar">ذُو الْجَلَالِ</span>. فلا تضاف إلى ضمير، ولا تكون بمعنى الذي، فإن جاءت موصولة على لغة طيِّئ فهي مبنية لا معربة.</p>
     <p>وإعراب مثال على فو: <span class="ar">نَظِّفْ فَاكَ</span>: <span class="ar">نَظِّفْ</span>: فعل أمر مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت. <span class="ar">فَاكَ</span>: مفعول به منصوب وعلامة نصبه الألف لأنه من الأسماء الخمسة، وهو مضاف، والكاف ضمير متصل مبني في محل جر مضاف إليه.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="worked-examples"
     title="أمثلة معربة إعرابًا كاملًا"
     lead="هذه نماذج تغطي الرفع والنصب والجر، بالصياغة الكلاسيكية التي تعتمدها كتب النحو، حتى ترسخ عندك العبارة كما ترسخ القاعدة."
   >
-    <p><strong>المثال الأول، الرفع</strong>: <span class="ar">جَاءَ أَبُوكَ</span>: <span class="ar">جَاءَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">أَبُوكَ</span>: فاعل مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة، وهو مضاف، والكاف ضمير متصل مبني في محل جر مضاف إليه.</p>
-    <p><strong>المثال الثاني، النصب</strong>: <span class="ar">أَكْرِمْ أَخَاكَ</span>: <span class="ar">أَكْرِمْ</span>: فعل أمر مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت. <span class="ar">أَخَاكَ</span>: مفعول به منصوب وعلامة نصبه الألف لأنه من الأسماء الخمسة، وهو مضاف، والكاف ضمير متصل مبني في محل جر مضاف إليه.</p>
-    <p><strong>المثال الثالث، الجر</strong>: <span class="ar">مَرَرْتُ بِذِي عِلْمٍ</span>: <span class="ar">مَرَرْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني في محل رفع فاعل. الباء: حرف جر مبني على الكسر. <span class="ar">ذِي</span>: اسم مجرور وعلامة جره الياء لأنه من الأسماء الخمسة، وهو مضاف. <span class="ar">عِلْمٍ</span>: مضاف إليه مجرور وعلامة جره الكسرة الظاهرة.</p>
-    <p><strong>المثال الرابع، مع ناسخ</strong>: <span class="ar">كَانَ ذُو الْمَالِ كَرِيمًا</span>: <span class="ar">كَانَ</span>: فعل ماضٍ ناقص مبني على الفتح. <span class="ar">ذُو</span>: اسم كان مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة، وهو مضاف. <span class="ar">الْمَالِ</span>: مضاف إليه مجرور وعلامة جره الكسرة الظاهرة. <span class="ar">كَرِيمًا</span>: خبر كان منصوب وعلامة نصبه الفتحة الظاهرة.</p>
+    <IrabExample label="المثال الأول، الرفع" ar="جَاءَ أَبُوكَ"><span class="ar">جَاءَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">أَبُوكَ</span>: فاعل مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة، وهو مضاف، والكاف ضمير متصل مبني في محل جر مضاف إليه.</IrabExample>
+    <IrabExample label="المثال الثاني، النصب" ar="أَكْرِمْ أَخَاكَ"><span class="ar">أَكْرِمْ</span>: فعل أمر مبني على السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت. <span class="ar">أَخَاكَ</span>: مفعول به منصوب وعلامة نصبه الألف لأنه من الأسماء الخمسة، وهو مضاف، والكاف ضمير متصل مبني في محل جر مضاف إليه.</IrabExample>
+    <IrabExample label="المثال الثالث، الجر" ar="مَرَرْتُ بِذِي عِلْمٍ"><span class="ar">مَرَرْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني في محل رفع فاعل. الباء: حرف جر مبني على الكسر. <span class="ar">ذِي</span>: اسم مجرور وعلامة جره الياء لأنه من الأسماء الخمسة، وهو مضاف. <span class="ar">عِلْمٍ</span>: مضاف إليه مجرور وعلامة جره الكسرة الظاهرة.</IrabExample>
+    <IrabExample label="المثال الرابع، مع ناسخ" ar="كَانَ ذُو الْمَالِ كَرِيمًا"><span class="ar">كَانَ</span>: فعل ماضٍ ناقص مبني على الفتح. <span class="ar">ذُو</span>: اسم كان مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة، وهو مضاف. <span class="ar">الْمَالِ</span>: مضاف إليه مجرور وعلامة جره الكسرة الظاهرة. <span class="ar">كَرِيمًا</span>: خبر كان منصوب وعلامة نصبه الفتحة الظاهرة.</IrabExample>
     <p>ومن الشواهد القرآنية: <span class="ar">وَأَبُونَا شَيْخٌ كَبِيرٌ</span>: <span class="ar">أَبُونَا</span>: مبتدأ مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة، وهو مضاف، ونا ضمير متصل مبني في محل جر مضاف إليه. <span class="ar">شَيْخٌ</span>: خبر مرفوع وعلامة رفعه الضمة الظاهرة. <span class="ar">كَبِيرٌ</span>: نعت مرفوع وعلامة رفعه الضمة الظاهرة.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="when-conditions-missing"
     title="إذا فقدت الشروط"
@@ -124,11 +120,8 @@ const faqs = [
       <li><strong>الإضافة إلى ياء المتكلم</strong>: <span class="ar">جَاءَ أَبِي</span>: فاعل مرفوع وعلامة رفعه الضمة المقدرة على ما قبل الياء منع من ظهورها اشتغال المحل بالحركة المناسبة، وهو مضاف، والياء ضمير متصل مبني في محل جر مضاف إليه.</li>
     </ul>
     <p>فالقاعدة إذن ليست في الكلمة نفسها بل في حالها داخل الجملة. وهذا جوهر <a href="/irab">الإعراب</a> كله: النظر في الموقع والشروط قبل إطلاق الحكم، وهو المنهج الذي يقوم عليه <a href="/nahw">النحو</a> من أوله إلى آخره.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-asma-al-khamsa" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

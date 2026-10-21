@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-tawkid';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Emphasis (al-tawkīd)" description="Verbal and semantic emphasis, the fixed vocabulary, the returning pronoun, and kilā and kiltā." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-tawkid'].en}
-      title="Emphasis"
-      summary="The last of the four followers, and the one with the clearest purpose: it exists to close off a doubt. Either the listener might think the speaker misspoke, or might read the statement figuratively, and emphasis removes both possibilities. It comes in two forms, one of which draws on a small fixed vocabulary that every one of its members requires a returning pronoun."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Emphasis"
+    summary="The last of the four followers, and the one with the clearest purpose: it exists to close off a doubt. Either the listener might think the speaker misspoke, or might read the statement figuratively, and emphasis removes both possibilities. It comes in two forms, one of which draws on a small fixed vocabulary that every one of its members requires a returning pronoun."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: closing off a doubt"
@@ -57,9 +50,9 @@ const faqs = [
     >
       <LessonObjective items={objectives} />
       <p>Both halves of that purpose matter, and they map onto the two kinds. Verbal emphasis guards against the listener thinking the speaker slipped. Semantic emphasis guards against a figurative reading, which is why <em>nafs</em> and <em>ʿayn</em> exist.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="lafzi"
       title="See: verbal emphasis"
@@ -74,9 +67,9 @@ const faqs = [
         irab="كلا حرف ردع وزجر، سوف حرف تنفيس، تعلمونَ فعل مضارع مرفوع وعلامة رفعه ثبوت النون، وواو الجماعة في محل رفع فاعل، ثم حرف عطف، والجملة الثانية توكيد لفظي للأولى."
         note="A whole sentence repeated for emphasis. Note that the second instance adds no new content: that is the defining feature of emphasis, and it is how you tell a repetition that emphasises from one that informs."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="manawi"
       title="Understand: semantic emphasis and its fixed words"
@@ -108,9 +101,9 @@ const faqs = [
         answer="The returning pronoun: kilāhumā, nominative by alif."
         why="Every semantic emphasiser requires a pronoun agreeing with the emphasised word. kilā annexed to a pronoun is declined like a dual, so it takes alif here to match the nominative al-ṭālibāni."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="pronoun"
       title="Emphasising an attached pronoun"
@@ -127,9 +120,9 @@ const faqs = [
         irab="قمتَ فعل ماضٍ مبني على السكون والتاء ضمير متصل في محل رفع فاعل، أنتَ ضمير منفصل توكيد لفظي للتاء في محل رفع، نفسُ توكيد معنوي للتاء مرفوع وهو مضاف والكاف في محل جر."
         note="Two emphasisers of different kinds are working here. The detached pronoun is verbal emphasis, repeating the doer, and nafs is semantic emphasis. Without anta the sentence is rejected, which is why the two are usually taught together."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -140,9 +133,9 @@ const faqs = [
         <li><strong>Dropping the returning pronoun.</strong> Every semantic emphasiser needs it.</li>
         <li><strong>Confusing emphasis with an adjective.</strong> An adjective describes and adds content; emphasis adds none and only removes doubt.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -153,12 +146,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the conditions on each emphasiser.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: kilā and kiltā, and pairing two emphasisers.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

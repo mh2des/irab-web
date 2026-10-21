@@ -1,0 +1,557 @@
+---
+/**
+ * LessonShell: everything of a grammar lesson between the site nav and the
+ * footer, in both languages. A lesson page passes its title, summary and
+ * questions, and puts its LessonSections in the default slot.
+ *
+ *   header   where the lesson sits (chapter, number, reading time), the title,
+ *            the short answer (lessonAnswers, the passage answer engines
+ *            quote), the summary, and the byline
+ *   article  the lesson's sections, then the Quranic evidence, the questions
+ *            and LessonEnd
+ *   aside    from 1100px, a sticky outline of the sections that follows the
+ *            scroll, and the other lessons of the same chapter
+ *
+ * The outline is built here at build time from the rendered sections, so it
+ * exists without JavaScript and never shifts the page. On a narrower screen
+ * the same list sits closed under the header. A reading-progress hairline
+ * runs along the top of the window.
+ *
+ * Progress (lib/duroos-progress): opening a lesson records it as the last
+ * one read; reaching LessonEnd marks it finished. Both are local to the
+ * browser and only feed the hub's checks and "continue" card.
+ *
+ * Body styles are global under .ls because the body is each page's own
+ * markup: inline examples (.ar), the label chips that open example
+ * paragraphs, lists, and the common-mistakes list drawn as cautions.
+ */
+import '../../styles/irab-ui.css';
+import AyatExamples from './AyatExamples.astro';
+import LessonFaq from './LessonFaq.astro';
+import LessonEnd from './LessonEnd.astro';
+import { placeOf, num, arCount, type Lang } from '../../lib/duroos-course';
+import { lessonAnswers } from '../../data/lesson-answers';
+import { ayatForLesson } from '../../lib/lesson-links';
+import { lastCommitDate, sourceFileFor, formatDate } from '../../lib/content-dates';
+
+interface Faq { q: string; a: string }
+interface Props {
+  lang?: Lang;
+  slug: string;
+  title: string;
+  summary: string;
+  faqs?: Faq[];
+}
+const { lang = 'ar', slug, title, summary, faqs = [] } = Astro.props;
+const en = lang === 'en';
+const dir = en ? 'ltr' : 'rtl';
+const base = en ? '/en' : '';
+const p = placeOf(lang, slug);
+const answer = lessonAnswers[slug]?.[lang];
+const accent = p?.chapter.accent ?? 'var(--color-purple)';
+
+const body = await Astro.slots.render('default');
+
+// The outline: every LessonSection in the body, then the two closing ones.
+const strip = (h: string) => h.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+const toc = [...body.matchAll(/<section id="([^"]+)" class="ls-sec[^"]*"[^>]*>\s*<h2[^>]*>[\s\S]*?<span class="ls-h2-t"[^>]*>([\s\S]*?)<\/span>/g)]
+  .map((m) => ({ id: m[1], title: strip(m[2]) }));
+const hasAyat = ayatForLesson(slug, 6).length > 0;
+if (hasAyat) toc.push({ id: 'quran-examples', title: en ? 'Quranic evidence' : 'آيات تطبيقية من القرآن' });
+if (faqs.length) toc.push({ id: 'faq', title: en ? 'Common questions' : 'أسئلة شائعة' });
+
+// Reading time from the words a reader actually reads.
+const words = strip(`${answer ?? ''} ${summary} ${body.replace(/<(script|style)[\s\S]*?<\/\1>/g, '')} ${faqs.map((f) => `${f.q} ${f.a}`).join(' ')}`).split(' ').length;
+const minutes = Math.max(2, Math.round(words / (en ? 190 : 130)));
+
+const source = sourceFileFor(Astro.url.pathname);
+const iso = source ? lastCommitDate(source) : undefined;
+const updated = iso ? formatDate(iso, lang) : undefined;
+
+const t = en
+  ? {
+      hub: 'Grammar lessons',
+      lessonOf: p ? `Lesson ${p.lesson.no} of ${p.total}` : '',
+      read: `${minutes} min read`,
+      finished: 'Finished',
+      answerK: 'In short',
+      by: 'By Mansoor Hasan Shokla', about: '/en/about',
+      reviewed: 'Reviewed before publishing', updatedK: 'Updated',
+      inLesson: 'In this lesson',
+      parts: `${toc.length} parts`,
+      chapter: 'This chapter',
+      crumbs: 'Breadcrumb',
+    }
+  : {
+      hub: 'دروس النحو',
+      lessonOf: p ? `الدرس ${num('ar', p.lesson.no)} من ${num('ar', p.total)}` : '',
+      read: `${arCount(minutes, ['دقيقة واحدة', 'دقيقتان', 'دقائق', 'دقيقة'])} قراءة`,
+      finished: 'قرأته',
+      answerK: 'الخلاصة',
+      by: 'بقلم منصور حسن', about: '/about',
+      reviewed: 'يُراجع كل درس قبل النشر', updatedK: 'آخر تحديث',
+      inLesson: 'في هذا الدرس',
+      parts: arCount(toc.length, ['قسم واحد', 'قسمان', 'أقسام', 'قسمًا']),
+      chapter: 'دروس الباب',
+      crumbs: 'مسار التنقل',
+    };
+
+const clock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg>';
+const check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+const chev = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+---
+
+<link rel="preload" href="/fonts/thmanyah-text-bold.woff2" as="font" type="font/woff2" crossorigin />
+<div class="iu ls" lang={lang} dir={dir} data-ls={slug} data-ls-total={p?.total ?? 40} style={`--acc:${accent}`}>
+  <div class="ls-progress" aria-hidden="true"><span data-ls-bar></span></div>
+
+  <div class="ls-grid">
+    <article class="ls-article">
+      <header class="ls-head">
+        {p && (
+          <nav class="ls-crumbs" aria-label={t.crumbs}>
+            <a href={`${base}/duroos`}>{t.hub}</a>
+            <span aria-hidden="true">/</span>
+            <a href={`${base}/duroos#ch-${p.chapter.no}`}>{p.chapter.title}</a>
+          </nav>
+        )}
+        <div class="ls-meta" data-reveal>
+          {p && <span class="ls-chip is-acc">{t.lessonOf}</span>}
+          <span class="ls-chip"><Fragment set:html={clock} />{t.read}</span>
+          <span class="ls-chip is-done" data-ls-done hidden><Fragment set:html={check} />{t.finished}</span>
+        </div>
+        <h1 class="ls-title" data-reveal data-reveal-delay="60">{title}</h1>
+        {answer && (
+          <div class="ls-answer" data-reveal data-reveal-delay="120">
+            <p class="ls-answer-k">{t.answerK}</p>
+            <p class="ls-answer-t">{answer}</p>
+          </div>
+        )}
+        <p class="ls-summary" data-reveal data-reveal-delay="160">{summary}</p>
+        <p class="ls-byline">
+          <a href={t.about} rel="author">{t.by}</a>
+          <span aria-hidden="true">·</span>
+          <a href="/methodology#editorial">{t.reviewed}</a>
+          {updated && (<><span aria-hidden="true">·</span><span>{t.updatedK} <time datetime={iso}>{updated}</time></span></>)}
+        </p>
+      </header>
+
+      {toc.length > 1 && (
+        <details class="ls-toc-m">
+          <summary><span>{t.inLesson}</span><span class="ls-toc-m-n">{t.parts}</span><span class="ls-toc-m-ic"><Fragment set:html={chev} /></span></summary>
+          <ol>{toc.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}</ol>
+        </details>
+      )}
+
+      <div class="ls-body">
+        <Fragment set:html={body} />
+        <AyatExamples slug={slug} lang={lang} />
+        {faqs.length > 0 && <LessonFaq lang={lang} items={faqs} />}
+        <LessonEnd lang={lang} slug={slug} />
+      </div>
+    </article>
+
+    <aside class="ls-aside">
+      {toc.length > 1 && (
+        <nav class="ls-toc" aria-label={t.inLesson}>
+          <p class="ls-aside-k">{t.inLesson}</p>
+          <ol>
+            {toc.map((s, i) => (
+              <li><a href={`#${s.id}`} data-toc={s.id}><span class="ls-toc-n">{num(lang, i + 1)}</span><span>{s.title}</span></a></li>
+            ))}
+          </ol>
+        </nav>
+      )}
+      {p && (
+        <nav class="ls-chap" aria-label={t.chapter}>
+          <p class="ls-aside-k">{p.chapter.title}</p>
+          <ol>
+            {p.chapter.lessons.map((l) => (
+              <li data-slug={l.slug} class:list={[l.slug === slug && 'is-here']}>
+                {l.slug === slug ? (
+                  <span aria-current="page"><span class="ls-chap-dot"><Fragment set:html={check} /></span>{l.title}</span>
+                ) : (
+                  <a href={l.href}><span class="ls-chap-dot"><Fragment set:html={check} /></span>{l.title}</a>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+    </aside>
+  </div>
+</div>
+
+<style is:global>
+  .ls {
+    --ls-ease: cubic-bezier(.22, 1, .36, 1);
+    --acc-soft: color-mix(in srgb, var(--acc) 9%, transparent);
+    --acc-line: color-mix(in srgb, var(--acc) 55%, transparent);
+    /* The accent as text: a touch toward the ink so small labels on the soft
+       tint keep 4.5:1 in every chapter colour, in both themes. */
+    --acc-text: color-mix(in srgb, var(--acc) 76%, var(--iu-text));
+    font-family: var(--iu-ui); color: var(--iu-text);
+    counter-reset: ls-sec;
+  }
+
+  /* Reading progress: a hairline across the very top of the window. */
+  .ls-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 70; pointer-events: none; }
+  .ls-progress > span { display: block; height: 100%; background: var(--acc); transform: scaleX(var(--p, 0)); transform-origin: right; will-change: transform; }
+  .ls[dir='ltr'] .ls-progress > span { transform-origin: left; }
+
+  .ls-grid { max-width: 1180px; margin: 0 auto; padding: clamp(1.75rem, 4vw, 3rem) 1.25rem 4rem; }
+  @media (min-width: 640px) { .ls-grid { padding-inline: 1.75rem; } }
+  .ls-article { max-width: 46rem; margin-inline: auto; min-width: 0; }
+  .ls-aside { display: none; }
+  @media (min-width: 1100px) {
+    .ls-grid { display: grid; grid-template-columns: minmax(0, 46rem) 16rem; justify-content: center; gap: 4rem; align-items: start; }
+    .ls-article { margin: 0; }
+    .ls-aside { display: flex; flex-direction: column; gap: 1.75rem; position: sticky; top: 5.5rem; max-height: calc(100vh - 7rem); overflow-y: auto; padding-bottom: 1rem; scrollbar-width: thin; }
+    .ls-toc-m { display: none; }
+  }
+
+  /* ── Header ── */
+  .ls-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.55rem; margin-bottom: 1.25rem; font-size: 0.95rem; color: var(--iu-text-3); }
+  .ls-crumbs a { color: var(--iu-text-2); font-weight: 600; text-decoration: none; padding-block: 0.4rem; transition: color .2s; }
+  .ls-crumbs a:hover { color: var(--acc-text); }
+  .ls-crumbs a:last-child { color: var(--acc-text); }
+  .ls-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .ls-chip {
+    display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.28rem 0.8rem; border-radius: 999px;
+    font-size: 0.86rem; font-weight: 700; color: var(--iu-text-2); background: var(--iu-card); border: 1px solid var(--iu-border);
+  }
+  .ls-chip svg { width: 0.95rem; height: 0.95rem; }
+  .ls-chip.is-acc { color: var(--acc-text); background: var(--acc-soft); border-color: transparent; }
+  .ls-chip.is-done { color: var(--iu-success-text); background: var(--iu-success-soft); border-color: transparent; }
+  .ls-chip[hidden] { display: none; }
+  .ls-title { margin-top: 1rem !important; font-size: clamp(2.3rem, 5.4vw, 3.5rem); font-weight: 700; line-height: 1.3; text-wrap: balance; }
+  .ls[lang='en'] .ls-title { line-height: 1.1; letter-spacing: -0.025em; }
+
+  .ls-answer {
+    position: relative; margin-top: 1.5rem; padding: 1.15rem 1.35rem 1.25rem; border-radius: 20px;
+    background: var(--iu-card); border: 1px solid var(--iu-border); box-shadow: var(--iu-shadow-card);
+  }
+  .ls-answer::before { content: ''; position: absolute; inset-block: 1.1rem; inset-inline-start: 0; width: 4px; border-radius: 0 4px 4px 0; background: var(--acc); }
+  .ls[dir='rtl'] .ls-answer::before { border-radius: 4px 0 0 4px; }
+  .ls-answer-k { margin: 0 0 0.35rem; font-size: 0.85rem; font-weight: 700; color: var(--acc-text); }
+  .ls-answer-t { margin: 0; font-size: 1.14rem; font-weight: 600; line-height: 2; color: var(--iu-text); }
+  .ls[lang='en'] .ls-answer-t { line-height: 1.75; }
+  .ls-summary { margin: 1.25rem 0 0; font-size: 1.1rem; line-height: 2; color: var(--iu-text-2); }
+  .ls[lang='en'] .ls-summary { line-height: 1.8; }
+  .ls-byline { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem 0.55rem; margin: 1.25rem 0 0; padding-top: 0.6rem; border-top: 1px solid var(--iu-border); font-size: 0.92rem; color: var(--iu-text-3); }
+  .ls-byline a { color: inherit; text-decoration: none; padding-block: 0.55rem; }
+  .ls-byline a:hover { color: var(--acc-text); text-decoration: underline; text-underline-offset: 3px; }
+  .ls-byline time { font-variant-numeric: tabular-nums; }
+
+  /* Outline on narrow screens: one closed row under the header. */
+  .ls-toc-m { margin-top: 1.5rem; border-radius: 16px; background: var(--iu-card); border: 1px solid var(--iu-border); }
+  .ls-toc-m summary { display: flex; align-items: center; gap: 0.6rem; min-height: 3.25rem; padding: 0 1.1rem; cursor: pointer; list-style: none; font-weight: 700; }
+  .ls-toc-m summary::-webkit-details-marker { display: none; }
+  .ls-toc-m-n { font-size: 0.85rem; font-weight: 600; color: var(--iu-text-3); }
+  .ls-toc-m-ic { margin-inline-start: auto; display: grid; color: var(--iu-text-3); transition: rotate .3s var(--ls-ease); }
+  .ls-toc-m-ic svg { width: 1.15rem; height: 1.15rem; }
+  .ls-toc-m[open] .ls-toc-m-ic { rotate: 180deg; }
+  .ls-toc-m ol { margin: 0; padding: 0 1.1rem 0.9rem; padding-inline-start: 2.4rem; display: grid; gap: 0.15rem; list-style: arabic-indic; color: var(--iu-text-3); }
+  .ls[lang='en'] .ls-toc-m ol { list-style: decimal; }
+  .ls-toc-m li::marker { font-weight: 700; color: var(--acc); }
+  .ls-toc-m a { display: block; padding: 0.45rem 0.25rem; color: var(--iu-text-2); text-decoration: none; font-weight: 600; }
+  .ls-toc-m a:hover { color: var(--acc); }
+
+  /* ── Aside ── */
+  .ls-aside-k { margin: 0 0 0.55rem; padding-inline: 0.7rem; font-size: 0.82rem; font-weight: 700; color: var(--iu-text-3); }
+  .ls-toc ol, .ls-chap ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+  .ls-toc a {
+    position: relative; display: grid; grid-template-columns: 1.4rem 1fr; gap: 0.35rem; padding: 0.45rem 0.7rem; border-radius: 10px;
+    font-size: 0.9rem; font-weight: 600; line-height: 1.6; color: var(--iu-text-3); text-decoration: none;
+    transition: color .25s, background-color .25s;
+  }
+  .ls-toc a::before {
+    content: ''; position: absolute; inset-block: 0.5rem; inset-inline-start: 0; width: 2.5px; border-radius: 99px;
+    background: var(--acc); transform: scaleY(0); transition: transform .35s var(--ls-ease);
+  }
+  .ls-toc-n { font-weight: 700; color: var(--acc-text); }
+  .ls-toc a:hover { color: var(--iu-text); background: var(--iu-card); }
+  .ls-toc a.is-on { color: var(--iu-text); }
+  .ls-toc a.is-on::before { transform: scaleY(1); }
+  .ls-toc a.is-past { color: var(--iu-text-2); }
+
+  .ls-chap li > a, .ls-chap li > span {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.42rem 0.7rem; border-radius: 10px;
+    font-size: 0.9rem; font-weight: 600; line-height: 1.55; color: var(--iu-text-2); text-decoration: none;
+    transition: background-color .25s, color .25s;
+  }
+  .ls-chap li > a:hover { background: var(--iu-card); color: var(--acc-text); }
+  .ls-chap li.is-here > span { color: var(--iu-text); background: var(--iu-card); box-shadow: 0 1px 3px rgb(23 56 71 / 0.08); }
+  .ls-chap-dot { flex: none; display: grid; place-items: center; width: 1.15rem; height: 1.15rem; border-radius: 99px; border: 1.5px solid var(--iu-border-strong); color: transparent; transition: background-color .3s, border-color .3s; }
+  .ls-chap-dot svg { width: 0.7rem; height: 0.7rem; }
+  .ls-chap li.is-here .ls-chap-dot { border-color: var(--acc); background: radial-gradient(circle, var(--acc) 0 3px, transparent 3.5px); }
+  .ls-chap li.is-done .ls-chap-dot { border-color: var(--acc); background: var(--acc); color: #fff; }
+
+  /* ── Sections ── */
+  .ls-body { margin-top: 0.5rem; }
+  .ls-sec { counter-increment: ls-sec; padding-top: clamp(2.75rem, 6vw, 3.75rem); scroll-margin-top: 5rem; }
+  .ls-h2 { display: flex; align-items: center; gap: 0.85rem; font-size: clamp(1.5rem, 3.2vw, 1.9rem) !important; font-weight: 700; line-height: 1.45; }
+  .ls[lang='en'] .ls-h2 { line-height: 1.25; letter-spacing: -0.015em; }
+  .ls-h2-n {
+    flex: none; display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 12px;
+    font-size: 1rem; font-weight: 700; color: var(--acc-text); background: var(--acc-soft);
+  }
+  .ls-h2-n::before { content: counter(ls-sec, arabic-indic); }
+  .ls[lang='en'] .ls-h2-n::before { content: counter(ls-sec, decimal-leading-zero); font-size: 0.9rem; }
+  .ls-lead {
+    margin: 1.1rem 0 0; padding-inline-start: 1.1rem; border-inline-start: 3px solid var(--acc-line);
+    font-size: 1.16rem; font-weight: 500; line-height: 2; color: var(--iu-text);
+  }
+  .ls[lang='en'] .ls-lead { line-height: 1.8; }
+
+  .ls-prose { margin-top: 1.4rem; font-size: 1.15rem; line-height: 2.1; color: var(--iu-text-2); }
+  .ls[lang='en'] .ls-prose { font-size: 1.1rem; line-height: 1.85; }
+  .ls-prose > * + * { margin-top: 1.1rem; }
+  .ls[lang='en'] .ls-prose > * + * { margin-top: 1.3rem; }
+  .ls-prose strong { font-weight: 700; color: var(--iu-text); }
+  .ls-prose em { font-style: italic; }
+  .ls-prose a { color: var(--iu-primary-text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; text-decoration-color: color-mix(in srgb, var(--iu-primary) 40%, transparent); transition: text-decoration-color .2s, color .2s; }
+  .ls-prose a:hover { text-decoration-color: currentColor; }
+  .ls-prose ul, .ls-prose ol { margin: 0; padding-inline-start: 1.4rem; display: grid; gap: 0.6rem; }
+  .ls-prose ul { list-style: disc; }
+  .ls-prose ol { list-style: decimal; }
+  .ls-prose li::marker { color: var(--acc); }
+  .ls-prose li > strong:first-child { color: var(--acc-text); }
+
+  /* Inline examples: the vocalised شاهد reads as a phrase set apart. */
+  .ls-prose .ar, .ls-answer .ar {
+    font-family: var(--iu-ui); direction: rtl; unicode-bidi: isolate;
+    padding: 0.05em 0.42em; border-radius: 0.45em; font-weight: 700; color: var(--iu-text);
+    background: var(--acc-soft);
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  }
+  .ls[lang='en'] .ls-prose .ar { font-size: 1.18em; line-height: 2.05; }
+
+  /* A label that opens a paragraph ("المثال الأول:", "1. It is always
+     nominative.") becomes a small chip, so worked examples have an anchor. */
+  .ls-prose > p > strong:first-child {
+    display: inline-block; margin-inline-end: 0.4em; padding: 0.02em 0.7em; border-radius: 999px;
+    font-size: 0.82em; line-height: 1.75; color: var(--acc-text); background: var(--acc-soft);
+  }
+
+  /* Common mistakes: each one a caution row instead of a bullet. */
+  .ls-sec[id*='mistake'] .ls-prose > ul { list-style: none; padding: 0; gap: 0.75rem; }
+  .ls-sec[id*='mistake'] .ls-prose > ul > li {
+    position: relative; padding: 1rem 1.15rem; padding-inline-start: 3.25rem; border-radius: 18px;
+    background: var(--iu-card); border: 1px solid var(--iu-border);
+    line-height: 2; transition: border-color .25s, box-shadow .3s var(--ls-ease);
+  }
+  .ls[lang='en'] .ls-sec[id*='mistake'] .ls-prose > ul > li { line-height: 1.8; }
+  .ls-sec[id*='mistake'] .ls-prose > ul > li::before {
+    content: '!'; position: absolute; top: 1.05rem; inset-inline-start: 1.05rem;
+    display: grid; place-items: center; width: 1.55rem; height: 1.55rem; border-radius: 99px;
+    font-size: 0.9rem; font-weight: 700; line-height: 1; color: var(--iu-partial-text); background: var(--iu-partial-soft);
+  }
+  .ls-sec[id*='mistake'] .ls-prose > ul > li > strong:first-child { display: block; margin-bottom: 0.15rem; color: var(--iu-text); }
+  @media (hover: hover) { .ls-sec[id*='mistake'] .ls-prose > ul > li:hover { border-color: var(--iu-border-strong); box-shadow: var(--iu-shadow-card); } }
+
+  /* ── The try-it aside (Arabic lessons) ── */
+  .ls-try {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.9rem 1.1rem; align-items: center;
+    margin-top: clamp(2.75rem, 6vw, 3.75rem); padding: 1.25rem 1.35rem; border-radius: 22px;
+    background: var(--iu-teal-soft);
+  }
+  @media (min-width: 640px) { .ls-try { grid-template-columns: auto minmax(0, 1fr) auto; } }
+  .ls-try-mark { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 15px; color: #fff; background: var(--iu-teal); }
+  .ls-try-mark svg { width: 1.45rem; height: 1.45rem; }
+  .ls-try-t { margin: 0; font-size: 1.12rem; font-weight: 700; line-height: 1.6; }
+  .ls-try-b { margin: 0.2rem 0 0; font-size: 0.98rem; line-height: 1.85; color: var(--iu-text-2); }
+  .ls-try-go {
+    grid-column: 1 / -1; justify-self: start; display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0 1.2rem; border-radius: 999px;
+    font-size: 0.98rem; font-weight: 700; text-decoration: none; color: #fff; background: var(--iu-teal);
+    transition: transform .3s var(--ls-ease), box-shadow .3s var(--ls-ease);
+  }
+  @media (min-width: 640px) { .ls-try-go { grid-column: auto; } }
+  .ls-try-go svg { width: 1rem; height: 1rem; transition: translate .35s var(--ls-ease); }
+  .ls[dir='ltr'] .ls-try-go svg { transform: scaleX(-1); }
+  @media (hover: hover) {
+    .ls-try-go:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -12px rgb(31 120 155 / 0.7); }
+    .ls-try-go:hover svg { translate: -3px 0; }
+    .ls[dir='ltr'] .ls-try-go:hover svg { translate: 3px 0; }
+  }
+
+  /* ── Questions ── */
+  .ls-faq-list { margin-top: 1.25rem; border-top: 1px solid var(--iu-border); }
+  .ls-q { border-bottom: 1px solid var(--iu-border); }
+  .ls-q summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1.25rem;
+    padding: 1.1rem 0.6rem; border-radius: 14px; cursor: pointer; list-style: none;
+    transition: background-color .25s var(--ls-ease);
+  }
+  .ls-q summary::-webkit-details-marker { display: none; }
+  @media (hover: hover) { .ls-q summary:hover { background: color-mix(in srgb, var(--iu-sunken) 80%, transparent); } }
+  .ls-q h3 { font-size: 1.1rem !important; font-weight: 700; line-height: 1.7; transition: color .2s; }
+  .ls-q summary:hover h3 { color: var(--acc-text); }
+  .ls .ls-q[open] h3, .ls details.ls-q.acc-open summary h3 { color: var(--acc-text); }
+  .ls-q-ic {
+    flex: none; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 999px;
+    color: var(--acc-text); background: var(--acc-soft);
+    transition: rotate .5s cubic-bezier(.34, 1.56, .64, 1), scale .3s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .ls-q summary:hover .ls-q-ic { scale: 1.12; }
+  .ls-q-ic svg { width: 1rem; height: 1rem; }
+  .ls-a { margin: 0; padding: 0 0.6rem 1.3rem; font-size: 1.06rem; line-height: 2; color: var(--iu-text-2); }
+  .ls[lang='en'] .ls-a { line-height: 1.8; }
+
+  /* ── End of lesson ── */
+  .ls-end { margin-top: clamp(3.5rem, 8vw, 5rem); padding-top: 1.75rem; border-top: 1px solid var(--iu-border); display: grid; gap: 1rem; }
+  .ls-end-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; }
+  .ls-end-k { font-size: 0.9rem; font-weight: 700; color: var(--iu-text-3); }
+  .ls-end-prog { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.88rem; font-weight: 700; color: var(--iu-text-2); }
+  .ls-end-prog[hidden] { display: none; }
+  .ls-end-bar { width: 7rem; height: 6px; border-radius: 99px; background: var(--iu-sunken); overflow: hidden; }
+  .ls-end-bar > span { display: block; height: 100%; width: var(--p, 0%); border-radius: inherit; background: var(--acc); transition: width .9s var(--ls-ease); }
+
+  .ls-next {
+    position: relative; isolation: isolate; overflow: hidden; display: grid; gap: 0.35rem;
+    padding: 1.5rem 1.6rem 1.6rem; padding-inline-end: 5rem; border-radius: 24px; text-decoration: none;
+    color: #fff; background-color: #173847; box-shadow: 0 26px 50px -30px rgb(23 56 71 / 0.75);
+    transition: box-shadow .45s var(--ls-ease);
+  }
+  .ls-next::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background-image:
+      repeating-linear-gradient(45deg, rgb(255 255 255 / 0.05) 0 1px, transparent 1px 30px),
+      repeating-linear-gradient(135deg, rgb(255 255 255 / 0.05) 0 1px, transparent 1px 30px);
+  }
+  .ls-next.spot-card::after { background: radial-gradient(300px circle at var(--spot-x, 50%) var(--spot-y, 30%), rgb(255 255 255 / 0.10), transparent 62%); }
+  .dark .ls-next { background-color: #131B22; box-shadow: inset 0 0 0 1px #2B3844; }
+  .ls-next-top { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin-bottom: 0.35rem; }
+  .ls-next-chip { padding: 0.24rem 0.7rem; border-radius: 999px; font-size: 0.82rem; font-weight: 700; background: rgb(255 255 255 / 0.14); }
+  .ls-next-no { font-size: 0.85rem; font-weight: 600; color: rgb(255 255 255 / 0.7); }
+  .ls-next-title { font-size: clamp(1.45rem, 3vw, 1.8rem); font-weight: 700; line-height: 1.45; }
+  .ls[lang='en'] .ls-next-title { line-height: 1.2; letter-spacing: -0.015em; }
+  .ls-next-blurb { font-size: 1rem; line-height: 1.75; color: rgb(255 255 255 / 0.74); }
+  .ls-next-go {
+    position: absolute; top: 50%; inset-inline-end: 1.5rem; translate: 0 -50%;
+    display: grid; place-items: center; width: 2.9rem; height: 2.9rem; border-radius: 999px; color: #173847; background: #fff;
+    transition: background-color .25s;
+  }
+  .ls-next-go svg { width: 1.2rem; height: 1.2rem; transition: translate .35s var(--ls-ease); }
+  .ls[dir='ltr'] .ls-next-go svg { transform: scaleX(-1); }
+  @media (hover: hover) {
+    .ls-next:hover { box-shadow: 0 32px 60px -28px rgb(23 56 71 / 0.85); }
+    .ls-next:hover .ls-next-go { background: #C4B0FF; }
+    .ls-next:hover .ls-next-go svg { translate: -4px 0; }
+    .ls[dir='ltr'] .ls-next:hover .ls-next-go svg { translate: 4px 0; }
+  }
+  .ls-next:focus-visible { outline: 3px solid var(--iu-primary); outline-offset: 4px; }
+  .ls-last { margin: 0; padding: 1.25rem 1.4rem; border-radius: 20px; font-weight: 700; background: var(--iu-sunken); }
+
+  .ls-end-row { display: grid; gap: 1rem; }
+  @media (min-width: 640px) { .ls-end-row { grid-template-columns: 1.3fr 1fr; } }
+  .ls-practice, .ls-prev {
+    display: flex; flex-direction: column; gap: 0.25rem; padding: 1.15rem 1.3rem; border-radius: 20px; text-decoration: none; color: var(--iu-text);
+    transition: transform .35s var(--ls-ease), box-shadow .35s var(--ls-ease), border-color .25s;
+  }
+  .ls-practice { background: var(--iu-teal-soft); }
+  .ls-practice-k { font-size: 0.8rem; font-weight: 700; color: var(--iu-teal-text); }
+  .ls-practice-t { font-size: 1.08rem; font-weight: 700; }
+  .ls-practice-b { font-size: 0.92rem; line-height: 1.7; color: var(--iu-text-2); }
+  .ls-prev { justify-content: center; background: var(--iu-card); border: 1px solid var(--iu-border); }
+  .ls-prev-k { font-size: 0.8rem; font-weight: 700; color: var(--iu-text-3); }
+  .ls-prev-t { font-size: 1.05rem; font-weight: 700; line-height: 1.6; }
+  @media (hover: hover) {
+    .ls-practice:hover, .ls-prev:hover { transform: translateY(-2px); box-shadow: var(--iu-shadow-lift); }
+    .ls-prev:hover { border-color: var(--acc); }
+  }
+  .ls-practice:focus-visible, .ls-prev:focus-visible, .ls-all:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 3px; }
+  .ls-all { justify-self: center; margin-top: 0.5rem; padding: 0.5rem 0.75rem; font-weight: 700; color: var(--iu-primary-text); text-decoration: none; }
+  .ls-all:hover { text-decoration: underline; text-underline-offset: 5px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ls-progress { display: none; }
+    .ls-practice:hover, .ls-prev:hover, .ls-try-go:hover { transform: none; }
+    .ls-end-bar > span { transition: none; }
+  }
+</style>
+
+<script>
+  import { readProgress, markOpened, markDone } from '../../lib/duroos-progress';
+
+  (() => {
+    const root = document.querySelector<HTMLElement>('[data-ls]');
+    if (!root) return;
+    const slug = root.dataset.ls || '';
+
+    // ── Progress record ────────────────────────────────────────────────
+    markOpened(slug);
+    const paint = () => {
+      const p = readProgress();
+      const done = new Set(p.done);
+      if (done.has(slug)) root.querySelector<HTMLElement>('[data-ls-done]')?.removeAttribute('hidden');
+      root.querySelectorAll<HTMLElement>('.ls-chap li[data-slug]').forEach((li) => li.classList.toggle('is-done', done.has(li.dataset.slug || '')));
+      return done;
+    };
+    paint();
+
+    const end = root.querySelector<HTMLElement>('[data-ls-end]');
+    const course = root.querySelector<HTMLElement>('[data-ls-course]');
+    const total = Number(root.dataset.lsTotal) || 40;
+    if (end) {
+      const io = new IntersectionObserver((entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        markDone(slug);
+        const done = paint();
+        if (course) {
+          const label = course.querySelector<HTMLElement>('[data-ls-course-label]');
+          const fmt = root.lang === 'en'
+            ? `${done.size} of ${total} lessons finished`
+            : `أتممت ${String(done.size).replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[+d])} من ${String(total).replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[+d])}`;
+          if (label) label.textContent = fmt;
+          course.hidden = false;
+          requestAnimationFrame(() => course.querySelector<HTMLElement>('[data-ls-course-bar]')?.style.setProperty('--p', `${Math.min(100, (done.size / total) * 100)}%`));
+        }
+      }, { threshold: 0.15 });
+      io.observe(end);
+    }
+
+    // ── Quranic evidence: load its face only when the reader nears it ──
+    const ayat = root.querySelector<HTMLElement>('[data-ayat-ex]');
+    if (ayat) {
+      const near = new IntersectionObserver((entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        near.disconnect();
+        ayat.classList.add('is-near');
+      }, { rootMargin: '1400px 0px' });
+      near.observe(ayat);
+    }
+
+    // ── Reading progress hairline ──────────────────────────────────────
+    const bar = root.querySelector<HTMLElement>('[data-ls-bar]');
+    const article = root.querySelector<HTMLElement>('.ls-article');
+    let ticking = false;
+    const measure = () => {
+      ticking = false;
+      if (!bar || !article) return;
+      const r = article.getBoundingClientRect();
+      const span = r.height - window.innerHeight;
+      const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 1;
+      bar.style.setProperty('--p', p.toFixed(4));
+    };
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(measure); } }, { passive: true });
+    addEventListener('resize', measure, { passive: true });
+    measure();
+
+    // ── Outline follows the reader ─────────────────────────────────────
+    const links = [...root.querySelectorAll<HTMLAnchorElement>('[data-toc]')];
+    if (links.length) {
+      const secs = links.map((a) => document.getElementById(a.dataset.toc || '')).filter((s): s is HTMLElement => !!s);
+      const pick = () => {
+        const line = window.innerHeight * 0.3;
+        let current = -1;
+        secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= line) current = i; });
+        links.forEach((a, i) => { a.classList.toggle('is-on', i === current); a.classList.toggle('is-past', i < current); });
+      };
+      let queued = false;
+      addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; pick(); }); } }, { passive: true });
+      pick();
+    }
+  })();
+</script>
