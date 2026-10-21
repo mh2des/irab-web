@@ -19,10 +19,9 @@ const { lang = 'ar' } = Astro.props;
 // account page.
 const account = lang === 'ar' ? '/app' : '/en/app';
 
-// The legal pages exist in Arabic only; Footer.astro sends English readers to
-// the same two URLs, so this stays consistent with the rest of the site.
-const termsHref = '/terms';
-const privacyHref = '/privacy';
+// Each language has its own legal pages, as the footer links them.
+const termsHref = lang === 'ar' ? '/terms' : '/en/terms';
+const privacyHref = lang === 'ar' ? '/privacy' : '/en/privacy';
 
 const t = lang === 'ar'
   ? {

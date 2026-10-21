@@ -20,6 +20,7 @@ interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const en = lang === 'en';
 const dir = en ? 'ltr' : 'rtl';
+const base = en ? '/en' : '';
 
 const t = en
   ? {
@@ -59,9 +60,9 @@ const t = en
     <footer class="ls-foot">
       <span>{t.copy}</span>
       <span aria-hidden="true">·</span>
-      <a href="/privacy">{t.privacy}</a>
+      <a href={`${base}/privacy`}>{t.privacy}</a>
       <span aria-hidden="true">·</span>
-      <a href="/terms">{t.terms}</a>
+      <a href={`${base}/terms`}>{t.terms}</a>
       <span aria-hidden="true">·</span>
       <a href="mailto:support@irab.app" dir="ltr">support@irab.app</a>
     </footer>

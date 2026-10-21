@@ -520,7 +520,8 @@ const icon = (d: string, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" f
         return;
       }
       const el = e.target as HTMLElement;
-      if (e.altKey || e.ctrlKey || e.metaKey || el.closest('input, textarea, [contenteditable]') || !chapters.length) return;
+      // Arrow keys already used by the settings' option groups are not chapter turns.
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || el.closest('input, textarea, [contenteditable], [data-prefs]') || !chapters.length) return;
       // The arrow toward "next" follows the buttons: left in Arabic, right in English.
       const nextKey = lang === 'ar' ? 'ArrowLeft' : 'ArrowRight';
       const prevKey = lang === 'ar' ? 'ArrowRight' : 'ArrowLeft';
@@ -606,7 +607,9 @@ const icon = (d: string, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" f
       nextBtn.disabled = i === n - 1;
       prevTitle.textContent = i > 0 ? labels[i - 1] : '';
       nextTitle.textContent = i < n - 1 ? labels[i + 1] : '';
-      tocList.querySelector('button.is-active')?.classList.remove('is-active');
+      const was = tocList.querySelector('button.is-active');
+      was?.classList.remove('is-active');
+      was?.removeAttribute('aria-current');
       const active = tocList.querySelector<HTMLElement>(`button[data-i="${i}"]`);
       active?.classList.add('is-active');
       active?.setAttribute('aria-current', 'true');

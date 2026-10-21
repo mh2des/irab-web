@@ -271,7 +271,7 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
     {s.trust.map((t, i) => <li><span class="pr-trust-ic" set:html={trustIcons[i]} />{t}</li>)}
   </ul>
   <p class="pr-fine">
-    {s.fine1} <strong>Paddle</strong> {s.fine2} <a href="/refund">{s.refund}</a> {s.and} <a href="/terms">{s.terms}</a>.
+    {s.fine1} <strong>Paddle</strong> {s.fine2} <a href={`${base}/refund`}>{s.refund}</a> {s.and} <a href={`${base}/terms`}>{s.terms}</a>.
   </p>
 
   {/* ── Comparison ───────────────────────────────────────────────────── */}

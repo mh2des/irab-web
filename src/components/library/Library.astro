@@ -50,8 +50,8 @@ const s = en
       view: 'View', grid: 'Covers', list: 'List',
       continueTitle: 'Continue reading', resume: 'Resume',
       empty: 'No book matches your search.', clear: 'Clear search',
-      books: (v: number) => `${v} books`,
-      chapters: (v: number) => `${fmt(v)} chapters`,
+      books: (v: number) => (v === 1 ? '1 book' : `${v} books`),
+      chapters: (v: number) => (v === 1 ? '1 chapter' : `${fmt(v)} chapters`),
       chapterOf: 'Chapter {i} of {n}',
     }
   : {
@@ -328,7 +328,9 @@ const listIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
   .iu-library .lb-cover:has(.lb-cover-prog:not(.hidden)) .lb-cover-level { bottom: 11%; }
 
   .iu-library .lb-text { display: flex; flex-direction: column; min-width: 0; padding-inline: 2px; }
-  .iu-library .lb-name { display: none; }
+  /* On a cover the title is drawn in an aria-hidden layer; this copy stays
+     in the tree (visually hidden) so each link is named by its book. */
+  .iu-library:not(.is-list) .lb-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .iu-library .lb-meta { display: none; }
   .iu-library .lb-meta-short { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 13px; font-weight: 600; color: var(--iu-text-3); }
   .iu-library .lb-pct:empty { display: none; }
