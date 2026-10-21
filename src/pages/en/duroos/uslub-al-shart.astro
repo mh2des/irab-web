@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'uslub-al-shart';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Conditional Sentences" description="The three parts, governing and non-governing particles, the linking fāʾ, and the positions of the two clauses." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['uslub-al-shart'].en}
-      title="Conditional Sentences"
-      summary="A conditional sentence is a particle and two clauses, tied so that the first is the cause and the second the consequence. Some particles apocopate both verbs and some carry the same meaning without touching a single ending, which is the first thing to establish when parsing one. The second is whether the answer needs a fāʾ to link it, and there is a memorable rule for that."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Conditional Sentences"
+    summary="A conditional sentence is a particle and two clauses, tied so that the first is the cause and the second the consequence. Some particles apocopate both verbs and some carry the same meaning without touching a single ending, which is the first thing to establish when parsing one. The second is whether the answer needs a fāʾ to link it, and there is a memorable rule for that."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="structure"
       title="Learn: the three parts"
@@ -65,9 +58,9 @@ const faqs = [
         irab="إنْ حرف شرط جازم، تدرسْ فعل مضارع مجزوم فعل الشرط وعلامة جزمه السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت، تنجحْ فعل مضارع مجزوم جواب الشرط وعلامة جزمه السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت."
         note="Both verbs jussive from one particle. Note the positions: the condition clause has no position in iʿrāb, and neither does the answer here, because it is directly governed rather than linked by a fāʾ."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="non-jazima"
       title="See: the particles that do not govern"
@@ -89,9 +82,9 @@ const faqs = [
         answer="No. idhā does not govern, so both verbs keep their own forms."
         why="idhā carries conditional meaning without apocopating. Compare in ijtahadta najaḥta, where in also leaves past verbs unchanged in form but is still a governing particle, so the analysis says the verbs are in the position of jussive."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="fa-jawab"
       title="Understand: when the answer needs a fāʾ"
@@ -108,18 +101,18 @@ const faqs = [
         irab="من اسم شرط جازم مبني في محل رفع مبتدأ، يعملْ فعل مضارع مجزوم فعل الشرط وعلامة جزمه السكون، صالحًا مفعول به منصوب، الفاء واقعة في جواب الشرط، اللام حرف جر، نفسِ اسم مجرور وهو مضاف، والهاء في محل جر مضاف إليه، والجار والمجرور متعلقان بمحذوف خبر لمبتدأ محذوف، والجملة في محل جزم جواب الشرط."
         note="The answer is a nominal sentence, which cannot be apocopated, so the fāʾ links it and the whole clause takes the position of the jussive. Without the fāʾ the sentence would be ungrammatical."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="mahall"
       title="The positions of the two clauses"
       lead="The condition clause has no position. The answer has none either, unless the particle governs and the answer is linked by a fāʾ or by the surprising idhā, in which case it takes the position of the jussive."
     >
       <p>This is the part most often left out of a student's answer, and it is exactly what an examiner is looking for. Say it explicitly: <em>lā maḥalla lahā min al-iʿrāb</em> for the condition, and either the same or <em>fī maḥall jazm jawāb al-sharṭ</em> for the answer.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -130,9 +123,9 @@ const faqs = [
         <li><strong>Omitting the required fāʾ.</strong> Run the list: nominal, imperative, frozen, negated, or preceded by qad or sīn.</li>
         <li><strong>Apocopating after idhā.</strong> It does not govern. The clause after it is genitive by annexation, and the verb keeps its form.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -142,12 +135,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the particles and the cases requiring the fāʾ.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: idhā and law, and the positions of the two clauses.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

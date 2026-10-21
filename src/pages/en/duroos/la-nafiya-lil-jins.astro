@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'la-nafiya-lil-jins';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Lā of Absolute Negation" description="Its meaning, the four conditions, built and declined nouns, and the parsing of lā ilāha illā Llāh." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['la-nafiya-lil-jins'].en}
-      title="The Lā of Absolute Negation"
-      summary="This lā governs like inna and denies its predicate of a whole class rather than of an individual. It is a short chapter with strict conditions, and it matters more than its length suggests, because the sentence a Muslim says most often is built on it. The lesson ends by parsing the testimony of faith completely, which turns out to combine this chapter, an omitted predicate, and an emptied exception."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Lā of Absolute Negation"
+    summary="This lā governs like inna and denies its predicate of a whole class rather than of an individual. It is a short chapter with strict conditions, and it matters more than its length suggests, because the sentence a Muslim says most often is built on it. The lesson ends by parsing the testimony of faith completely, which turns out to combine this chapter, an omitted predicate, and an emptied exception."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: denying a whole class"
@@ -67,9 +60,9 @@ const faqs = [
         irab="لا نافية للجنس تعمل عمل إنّ، رجلَ اسم لا مبني على الفتح في محل نصب، في حرف جر، الدارِ اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بمحذوف خبر لا."
         note="Read the wording precisely: built on fatḥa, in the position of accusative. Not 'accusative by fatḥa'. The noun of this lā, when it is a single word, is built rather than declined, and the analysis must say both things."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="conditions"
       title="Understand: the four conditions"
@@ -98,9 +91,9 @@ const faqs = [
         answer="No. al-ṭālibu is a mubtadaʾ, nominative."
         why="The noun carries al-, so it is definite and the first condition fails. lā is neutralised and the sentence is an ordinary nominal one being negated. Writing lā l-ṭāliba would be an error."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="ism-states"
       title="See: built or declined"
@@ -115,9 +108,9 @@ const faqs = [
         irab="لا نافية للجنس، طالبَ اسم لا منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، علمٍ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة، مملولٌ خبر لا مرفوع وعلامة رفعه الضمة الظاهرة."
         note="Here the wording is 'accusative by fatḥa', not 'built on fatḥa', because an annexed noun is declined. The visible letter is the same; the analysis is different, and examiners ask for exactly this distinction."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="la-ilaha"
       title="The testimony, parsed completely"
@@ -132,9 +125,9 @@ const faqs = [
         irab="لا نافية للجنس تعمل عمل إنّ، إلهَ اسم لا مبني على الفتح في محل نصب، وخبر لا محذوف وجوبًا تقديره حقٌّ أو موجودٌ، إلا أداة استثناء، لفظ الجلالة بدل من محل اسم لا مرفوع وعلامة رفعه الضمة الظاهرة."
         note="Three points worth dwelling on. ilāha is built, not accusative. The predicate is obligatorily omitted, and many scholars prefer estimating it as ḥaqqun, 'rightful', rather than mawjūdun, since the denial concerns rightful worship rather than mere existence. And lafẓ al-jalāla is nominative because it substitutes for the position of the noun of lā, which as a subject-like element would be nominative."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -145,9 +138,9 @@ const faqs = [
         <li><strong>Leaving it nominative while intending class negation.</strong> If you mean "no man at all", the noun must be built on fatḥa.</li>
         <li><strong>Confusing the three lās.</strong> Prohibition is followed by a verb and makes it jussive; coordination joins two nouns; this one is followed by an indefinite noun and governs it.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -158,12 +151,8 @@ const faqs = [
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the omitted predicate and the substitution in the testimony.</li>
         <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: lā siyyamā and its readings.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

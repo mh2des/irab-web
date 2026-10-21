@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'لماذا يقال في المنادى "مبني في محل نصب"؟', a: 'لأن المنادى في الأصل مفعول به لفعل محذوف تقديره أدعو أو أنادي. فالعلم المفرد والنكرة المقصودة يبنيان على الضم ويبقى المحل نصبًا، أما المضاف والشبيه بالمضاف والنكرة غير المقصودة فتظهر فيها الأصل فتنصب لفظًا.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="المنادى" description="شرح المنادى: أحرف النداء، أنواعه الخمسة من العلم المفرد إلى المضاف، متى يبنى على الضم ومتى ينصب، ونداء ما فيه أل، مع أمثلة قرآنية معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-munada'].ar}
+    slug="al-munada"
     title="المنادى"
     summary="المنادى اسم يذكر بعد حرف نداء طلبًا لإقبال صاحبه، وهو في أصله مفعول به لفعل محذوف. أنواعه خمسة: اثنان يبنيان على الضم وثلاثة تنصب. هذا الدرس يعرض الأحرف والأنواع الخمسة ونداء ما فيه أل، بأمثلة قرآنية معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف وأحرف النداء"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">يَا طَالِبُ، اجْتَهِدْ</span></p>
     <p><strong>الإعراب:</strong> يا حرف نداء مبني على السكون لا محل له من الإعراب. طالبُ منادى نكرة مقصودة مبني على الضم في محل نصب. اجتهدْ فعل أمر مبني على السكون والفاعل ضمير مستتر وجوبًا تقديره أنت.</p>
     <p>فسر البناء على الضم مع كون المحل نصبًا أن أصل الكلام: أنادي طالبًا، فالمنادى <a href="/duroos/al-maful-bih">مفعول به</a> في المعنى، حذف عامله والتزم حذفه.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="mabni-types"
     title="ما يبنى على الضم: العلم والنكرة المقصودة"
@@ -59,14 +54,14 @@ const faqs = [
       <li><strong>النكرة المقصودة:</strong> <span class="ar">يَا رَجُلُ، انْتَبِهْ</span> لرجل بعينه: رجلُ منادى نكرة مقصودة مبني على الضم في محل نصب.</li>
       <li><strong>المثنى والجمع مبنيان على ما يرفعان به:</strong> <span class="ar">يَا طَالِبَانِ</span> مبني على الألف، و<span class="ar">يَا مُسْلِمُونَ</span> مبني على الواو، في محل نصب.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">نادِ وأعرِب.</span>
     ألصق جملة نداء في محلّل الإعراب وشاهده يحدد نوع المنادى الخمسة ويعلل البناء أو النصب، كلمة بكلمة.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="mansub-types"
     title="ما ينصب: المضاف والشبيه به وغير المقصودة"
@@ -78,9 +73,9 @@ const faqs = [
       <li><strong>النكرة غير المقصودة:</strong> قول الأعمى: <span class="ar">يَا رَجُلًا خُذْ بِيَدِي</span>: رجلًا منادى نكرة غير مقصودة منصوب وعلامة نصبه الفتحة الظاهرة.</li>
     </ul>
     <p>مثال قرآني للمضاف: <span class="ar">﴿قَالَ يَا ابْنَ أُمَّ لَا تَأْخُذْ بِلِحْيَتِي﴾</span>: ابنَ منادى مضاف منصوب وعلامة نصبه الفتحة.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="al-and-allahumma"
     title="نداء ما فيه أل"
@@ -89,9 +84,9 @@ const faqs = [
     <p><span class="ar">﴿يَا أَيُّهَا النَّاسُ اتَّقُوا رَبَّكُمْ﴾</span></p>
     <p><strong>الإعراب:</strong> يا حرف نداء. أيُّ منادى نكرة مقصودة مبني على الضم في محل نصب، وها حرف تنبيه لا محل له. الناسُ صفة لأيّ مرفوعة وعلامة رفعها الضمة الظاهرة على اللفظ. اتقوا فعل أمر مبني على حذف النون وواو الجماعة فاعل، وربكم مفعول به منصوب والكاف مضاف إليه.</p>
     <p>ولفظ الجلالة خاصة ينادى مباشرة: <span class="ar">يَا اللهُ</span>، والأكثر التعويض بالميم: <span class="ar">اللَّهُمَّ</span>، منادى مبني على الضم والميم المشددة عوض عن حرف النداء.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -104,11 +99,8 @@ const faqs = [
       <li>قد يحذف حرف النداء: <span class="ar">﴿يُوسُفُ أَعْرِضْ عَنْ هَذَا﴾</span> أي يا يوسفُ، فلا تعرب يوسف مبتدأ.</li>
     </ul>
     <p>وإذا وقع بعد المنادى نعت أو <a href="/duroos/al-tawkid">توكيد</a> أو <a href="/duroos/al-badal">بدل</a> فلكل حكمه في باب التوابع، والأصل الجامع في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-munada" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

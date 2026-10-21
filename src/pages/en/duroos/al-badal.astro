@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-badal';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Substitution (al-badal)" description="The case of the substitute, the three kinds, the returning pronoun, and the noun after a demonstrative." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-badal'].en}
-      title="Substitution"
-      summary="A substitute follows its antecedent in case with no particle between them, and it is the word actually intended, the antecedent having served as a way of reaching it. Three kinds are distinguished, two of which require a pronoun pointing back. The construction is far more common than its short chapter suggests, because every noun following a demonstrative is one."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Substitution"
+    summary="A substitute follows its antecedent in case with no particle between them, and it is the word actually intended, the antecedent having served as a way of reaching it. Three kinds are distinguished, two of which require a pronoun pointing back. The construction is far more common than its short chapter suggests, because every noun following a demonstrative is one."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the follower with no particle"
@@ -67,9 +60,9 @@ const faqs = [
         irab="جاء فعل ماضٍ مبني على الفتح، أخوك فاعل مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة وهو مضاف، والكاف في محل جر مضاف إليه، زيدٌ بدل مطابق من أخيك مرفوع وعلامة رفعه الضمة الظاهرة."
         note="One person, named twice. Note the traditional test: remove akhūka and the sentence still stands as jāʾa Zaydun, which is what shows Zayd to be the word actually intended."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="types"
       title="See: the three kinds"
@@ -101,9 +94,9 @@ const faqs = [
         answer="An inclusive substitute, badal ishtimāl."
         why="Style is not a physical portion of the book but a quality it contains. Had it been al-kitāba niṣfahu, half of it, the substitute would have been partial. Both require the returning pronoun, present here in uslūbuhu."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="demonstratives"
       title="Understand: the noun after a demonstrative"
@@ -118,9 +111,9 @@ const faqs = [
         irab="هذا اسم إشارة مبني على السكون في محل رفع مبتدأ، الكتابُ بدل من اسم الإشارة مرفوع وعلامة رفعه الضمة الظاهرة، نافعٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة."
         note="The demonstrative is the subject and al-kitābu substitutes for it. Note the consequence for parsing: nāfiʿun is the predicate of hādhā, not of al-kitābu. Reading al-kitābu as the subject would leave hādhā unaccounted for."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -131,9 +124,9 @@ const faqs = [
         <li><strong>Omitting the returning pronoun.</strong> The partial and inclusive kinds require it.</li>
         <li><strong>Confusing substitute and adjective.</strong> Ask which word is intended. If the second names what the first pointed at, it is a substitute; if it describes, it is an adjective.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -143,12 +136,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the kinds of substitute and the conditions on each.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: substitution after a demonstrative, and substituting a verb for a verb.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

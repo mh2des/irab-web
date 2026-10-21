@@ -1,0 +1,75 @@
+---
+/**
+ * IrabExample: one worked example in an Arabic lesson, the sentence set on
+ * its own line and its full i'rab under it.
+ *
+ * The lessons write examples two ways, and both keep their exact wording:
+ *   flowing   «نجح فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع…»
+ *   by word   «<span class="ar">جَاءَ</span>: فعل ماضٍ… <span class="ar">أَبُوكَ</span>: فاعل…»
+ * The second is split, at build time, into word and analysis rows, the way
+ * the analyzer shows a result. Only a word span followed by a colon starts a
+ * row, so a word quoted inside an analysis stays where it is.
+ *
+ * A Quranic sentence (written between ﴿ ﴾) is set in the Uthmanic face.
+ */
+interface Props {
+  ar: string;
+  label?: string;
+}
+const { ar, label } = Astro.props;
+const html = (await Astro.slots.render('default')).trim();
+const quran = ar.trim().startsWith('﴿');
+
+const ROW = /<span class="ar"[^>]*>([^<]+)<\/span>\s*:\s*/g;
+const byWord = /^<span class="ar"[^>]*>/.test(html) && (html.match(ROW)?.length ?? 0) >= 2;
+const rows: { w: string; r: string }[] = [];
+if (byWord) {
+  const marks = [...html.matchAll(ROW)];
+  marks.forEach((m, i) => {
+    const from = (m.index ?? 0) + m[0].length;
+    const to = i + 1 < marks.length ? marks[i + 1].index : html.length;
+    rows.push({ w: m[1], r: html.slice(from, to).trim() });
+  });
+}
+---
+<figure class:list={['ix', quran && 'is-quran']} data-reveal>
+  {label && <figcaption class="ix-label">{label}</figcaption>}
+  <p class="ix-ar" lang="ar" dir="rtl">{ar}</p>
+  {byWord ? (
+    <ol class="ix-rows">
+      {rows.map((row) => (
+        <li><span class="ix-w" lang="ar">{row.w}</span><span class="ix-r" set:html={row.r} /></li>
+      ))}
+    </ol>
+  ) : (
+    <p class="ix-irab" set:html={html} />
+  )}
+</figure>
+
+<style is:global>
+  .ls .ix {
+    margin: 1.5rem 0 0; padding: 1.35rem 1.4rem 1.3rem; border-radius: 22px;
+    background: var(--iu-card); border: 1px solid var(--iu-border); box-shadow: var(--iu-shadow-card);
+  }
+  .ls .ix + .ix { margin-top: 1rem; }
+  .ls .ix-label {
+    display: inline-flex; padding: 0.15rem 0.75rem; border-radius: 999px;
+    font-size: 0.84rem; font-weight: 700; line-height: 1.8; color: var(--acc-text); background: var(--acc-soft);
+  }
+  .ls .ix-ar {
+    margin: 0.7rem 0 0; padding-bottom: 1rem; border-bottom: 1px dashed var(--iu-border-strong);
+    font-size: clamp(1.55rem, 4vw, 1.9rem); font-weight: 700; line-height: 1.9; color: var(--iu-text); text-align: center;
+  }
+  .ls .ix.is-quran .ix-ar { font-family: var(--font-quran); font-weight: 400; line-height: 2.1; }
+  .ls .ix-irab { margin: 0.95rem 0 0; font-size: 1.07rem; line-height: 2.1; color: var(--iu-text-2); }
+
+  /* Word by word: the analyzer's rows. */
+  .ls .ix-rows { list-style: none; margin: 0.6rem 0 0; padding: 0; display: grid; }
+  .ls .ix-rows li { display: grid; grid-template-columns: minmax(4.5rem, max-content) minmax(0, 1fr); gap: 0.25rem 1.1rem; align-items: baseline; padding: 0.6rem 0.2rem; }
+  .ls .ix-rows li + li { border-top: 1px solid var(--iu-border); }
+  .ls .ix-w { font-size: 1.22rem; font-weight: 700; line-height: 1.9; color: var(--acc-text); }
+  .ls .ix-r { font-size: 1.04rem; line-height: 2; color: var(--iu-text-2); }
+
+  /* Words quoted inside an analysis keep the inline example look. */
+  .ls .ix .ar { font-weight: 700; color: var(--iu-text); }
+</style>

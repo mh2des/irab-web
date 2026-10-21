@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'jazm-al-mudari';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Jussive Imperfect" description="Particles apocopating one and two verbs, the three markers, conversion, and the linking fāʾ." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['jazm-al-mudari'].en}
-      title="The Imperfect in the Jussive"
-      summary="The jussive belongs to verbs alone, as the genitive belongs to nouns alone. Four particles apocopate a single verb, and a family of conditional particles apocopate two at once, the condition and its answer. Its three markers include one that English speakers consistently miss, because it consists of deleting a letter rather than adding a vowel."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Imperfect in the Jussive"
+    summary="The jussive belongs to verbs alone, as the genitive belongs to nouns alone. Four particles apocopate a single verb, and a family of conditional particles apocopate two at once, the condition and its answer. Its three markers include one that English speakers consistently miss, because it consists of deleting a letter rather than adding a vowel."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="one-verb"
       title="Learn: the four that apocopate one verb"
@@ -65,9 +58,9 @@ const faqs = [
         irab="لم حرف نفي وجزم وقلب، يلدْ فعل مضارع مجزوم بلم وعلامة جزمه السكون، والفاعل ضمير مستتر تقديره هو، لم حرف نفي وجزم وقلب، يولدْ فعل مضارع مبني للمجهول مجزوم وعلامة جزمه السكون، ونائب الفاعل ضمير مستتر تقديره هو."
         note="The description of lam has three parts, and all three are doing work: negation, apocopation, and conversion, meaning it turns the imperfect into a past sense. That is why the translation is past even though the verb form is not."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="signs"
       title="See: the three markers"
@@ -89,9 +82,9 @@ const faqs = [
         answer="lam yadʿu, and the marker is the deletion of the weak letter."
         why="yadʿū ends in wāw. The jussive deletes it, leaving yadʿu. The same rule gives lam yamshi from yamshī and lam yakhsha from yakhshā."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="two-verbs"
       title="Understand: the particles that apocopate two"
@@ -106,9 +99,9 @@ const faqs = [
         irab="ما اسم شرط جازم مبني في محل نصب مفعول به مقدم، تفعلوا فعل مضارع مجزوم فعل الشرط وعلامة جزمه حذف النون لأنه من الأفعال الخمسة، وواو الجماعة في محل رفع فاعل، من حرف جر، خيرٍ اسم مجرور، يعلمْه فعل مضارع مجزوم جواب الشرط وعلامة جزمه السكون، والهاء في محل نصب مفعول به، اللهُ لفظ الجلالة فاعل مرفوع."
         note="Two jussive verbs with two different markers: a dropped nūn on the first because it is one of the five verbs, and sukūn on the second because it is sound. Note also that mā here is a conditional noun occupying the position of a fronted object, not a particle."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -119,9 +112,9 @@ const faqs = [
         <li><strong>Confusing the two lās.</strong> The prohibitive apocopates and addresses; the negating leaves the verb nominative and reports.</li>
         <li><strong>Missing the deletion.</strong> On a verb ending in a weak letter, and on the five verbs, the jussive is marked by removing something rather than adding a vowel.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -132,12 +125,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: lam against lammā, and the conditional particles.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the markers of the jussive on weak-ending verbs.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

@@ -1,0 +1,85 @@
+---
+/**
+ * LessonEnd: what follows the last section of a lesson, in both languages.
+ *
+ * The next lesson comes first and largest, on the same ink card the lessons
+ * hub uses for "start here", because moving on is what most readers want at
+ * this point. Then practice, then the previous lesson and the way back to
+ * the index. Reaching this block is also what LessonShell counts as having
+ * finished the lesson; the course progress line here is filled in by that
+ * script and stays hidden without it.
+ */
+import { placeOf, num, type Lang } from '../../lib/duroos-course';
+
+interface Props { lang?: Lang; slug: string }
+const { lang = 'ar', slug } = Astro.props;
+const en = lang === 'en';
+const p = placeOf(lang, slug);
+const base = en ? '/en' : '';
+
+const t = en
+  ? {
+      k: 'End of lesson',
+      next: 'Next lesson',
+      prev: 'Previous lesson',
+      last: 'You have reached the last lesson of the course.',
+      lessonOf: (n: number, total: number) => `Lesson ${n} of ${total}`,
+      practiceK: 'Practice',
+      practiceT: 'Practise what you just read',
+      practiceB: 'Write your own iʿrāb for any sentence and get it corrected word by word.',
+      all: (n: number) => `All ${n} lessons`,
+    }
+  : {
+      k: 'نهاية الدرس',
+      next: 'الدرس التالي',
+      prev: 'الدرس السابق',
+      last: 'وصلت إلى آخر دروس المنهج.',
+      lessonOf: (n: number, total: number) => `الدرس ${num('ar', n)} من ${num('ar', total)}`,
+      practiceK: 'التدريب',
+      practiceT: 'طبّق ما قرأته',
+      practiceB: 'اكتب إعرابك لأي جملة، وصحّحه كلمةً كلمة.',
+      all: (n: number) => `كل الدروس (${num('ar', n)})`,
+    };
+const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>';
+---
+{p && (
+  <section class="ls-end" data-ls-end aria-label={t.k}>
+    <div class="ls-end-head">
+      <span class="ls-end-k">{t.k}</span>
+      <span class="ls-end-prog" data-ls-course hidden>
+        <span class="ls-end-bar"><span data-ls-course-bar></span></span>
+        <span data-ls-course-label></span>
+      </span>
+    </div>
+
+    {p.next ? (
+      <a class="ls-next spot-card" href={p.next.href} rel="next" data-tilt="3">
+        <span class="ls-next-top">
+          <span class="ls-next-chip">{t.next}</span>
+          <span class="ls-next-no">{t.lessonOf(p.next.no, p.total)}</span>
+        </span>
+        <span class="ls-next-title">{p.next.title}</span>
+        <span class="ls-next-blurb">{p.next.blurb}</span>
+        <span class="ls-next-go" aria-hidden="true"><Fragment set:html={arrow} /></span>
+      </a>
+    ) : (
+      <p class="ls-last">{t.last}</p>
+    )}
+
+    <div class="ls-end-row">
+      <a class="ls-practice" href={`${base}/practice/play`}>
+        <span class="ls-practice-k">{t.practiceK}</span>
+        <span class="ls-practice-t">{t.practiceT}</span>
+        <span class="ls-practice-b">{t.practiceB}</span>
+      </a>
+      {p.prev && (
+        <a class="ls-prev" href={p.prev.href} rel="prev">
+          <span class="ls-prev-k">{t.prev}</span>
+          <span class="ls-prev-t">{p.prev.title}</span>
+        </a>
+      )}
+    </div>
+
+    <a class="ls-all" href={`${base}/duroos`}>{t.all(p.total)}</a>
+  </section>
+)}

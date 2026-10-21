@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'inna-wa-akhawatuha';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Inna and its Sisters" description="The six particles, their governance, breaking and opening the hamza, the mā of restraint, and the sliding lām." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['inna-wa-akhawatuha'].en}
-      title="Inna and its Sisters"
-      summary="Six particles enter the nominal sentence and do the exact reverse of kāna: they put the first pillar into the accusative and leave the predicate nominative. Governance is the easy half of this chapter. The harder and more useful half is knowing when the hamza of inna is written with a kasra and when with a fatḥa, which is not a spelling convention but a grammatical decision with a test behind it."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Inna and its Sisters"
+    summary="Six particles enter the nominal sentence and do the exact reverse of kāna: they put the first pillar into the accusative and leave the predicate nominative. Governance is the easy half of this chapter. The harder and more useful half is knowing when the hamza of inna is written with a kasra and when with a fatḥa, which is not a spelling convention but a grammatical decision with a test behind it."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the six, and what each adds"
@@ -73,9 +66,9 @@ const faqs = [
         irab="إنّ حرف توكيد ونصب مبني على الفتح لا محل له من الإعراب، اللهَ لفظ الجلالة اسم إنّ منصوب وعلامة نصبه الفتحة الظاهرة، غفورٌ خبر إنّ مرفوع وعلامة رفعه الضمة الظاهرة، رحيمٌ خبر ثانٍ مرفوع."
         note="Note that inna itself is described as built and having no position in iʿrāb. Particles never carry case. Note also that one noun takes two predicates here without any coordinating particle."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="hamza"
       title="Understand: kasra or fatḥa on the hamza"
@@ -101,9 +94,9 @@ const faqs = [
         answer="Broken: innī."
         why="After qāla the clause is quoted speech, not a noun filling a slot. The quoted sentence occupies the position of the object, but it remains a sentence rather than being replaced by a verbal noun, so the hamza is broken."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="word-order"
       title="See: fronting the predicate"
@@ -118,9 +111,9 @@ const faqs = [
         irab="إنّ حرف توكيد ونصب، في حرف جر، ذلك اسم إشارة مبني في محل جر، والجار والمجرور متعلقان بمحذوف خبر إنّ مقدم، اللام هي المزحلقة، عبرةً اسم إنّ مؤخر منصوب وعلامة نصبه الفتحة الظاهرة."
         note="Two things at once: the quasi-sentence predicate is fronted because the noun is indefinite, and the lām has slid onto the delayed noun. Note that the noun of inna is accusative even when it comes last."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="ma-kaffa"
       title="The mā that cancels, and the lām that slides"
@@ -135,9 +128,9 @@ const faqs = [
         irab="إنّما كافة ومكفوفة، المؤمنونَ مبتدأ مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم، إخوةٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة."
         note="al-muʾminūna is nominative, and it is a mubtadaʾ rather than an ism inna, because mā has cancelled the governance. Parsing it as an accusative ism inna would be wrong. The construction also carries restriction, which is why English adds 'but' or 'only'."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -148,9 +141,9 @@ const faqs = [
         <li><strong>Choosing the hamza by habit.</strong> Run the noun-substitution test rather than guessing.</li>
         <li><strong>Reading the sliding lām as a preposition.</strong> It carries emphasis and has no position in iʿrāb.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -160,12 +153,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the positions where the hamza is broken and opened.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the mā of restraint and the sliding lām.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-naat';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Adjective (al-naʿt)" description="Agreement in four respects, the causal adjective, sentence adjectives, and the difference from the ḥāl." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-naat'].en}
-      title="The Adjective"
-      summary="The first of the four followers, words that take their case from the word before them rather than from any governor of their own. A real adjective agrees with its noun in four respects at once, which is more than English asks of an adjective in any construction. And one variety agrees with one word while describing another, which has no English parallel at all."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Adjective"
+    summary="The first of the four followers, words that take their case from the word before them rather than from any governor of their own. A real adjective agrees with its noun in four respects at once, which is more than English asks of an adjective in any construction. And one variety agrees with one word while describing another, which has no English parallel at all."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: a follower, not a governed word"
@@ -67,9 +60,9 @@ const faqs = [
         irab="جاء فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، المجتهدُ نعت مرفوع وعلامة رفعه الضمة الظاهرة."
         note="Four agreements at once: nominative like its noun, definite like it, masculine like it, singular like it. Break any one and the phrase stops being a phrase. Notably, al-ṭālibu mujtahidun, with the adjective indefinite, is no longer a phrase at all but a sentence: 'the student is diligent'."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sababi"
       title="Understand: the causal adjective"
@@ -93,9 +86,9 @@ const faqs = [
         answer="Because it is causal, and takes its gender from khuluquhā, which is what it describes."
         why="al-ḥasanu follows al-fatātu in case and definiteness only. Its gender comes from the word after it, khuluq, which is masculine. A real adjective would have had to be al-ḥasanatu."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="jumla"
       title="See: sentences and phrases as adjectives"
@@ -110,9 +103,9 @@ const faqs = [
         irab="رأيتُ فعل وفاعل، رجلًا مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، يقرأُ فعل مضارع مرفوع، والفاعل ضمير مستتر تقديره هو، القرآنَ مفعول به منصوب، والجملة الفعلية في محل نصب نعت لرجلًا."
         note="The clause takes the position of the accusative because the noun it describes is accusative. Had the noun been definite, al-rajula, the same clause would have been a ḥāl and the translation would shift from 'who was reciting' to 'while he was reciting'."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="qat"
       title="Cutting the adjective loose"
@@ -129,9 +122,9 @@ const faqs = [
         irab="الحمدُ مبتدأ مرفوع، لله جار ومجرور متعلقان بمحذوف خبر، الحميدَ مفعول به لفعل محذوف تقديره أمدح، والجملة استئنافية لا محل لها."
         note="Agreement would have required a genitive after li-llāhi. The accusative announces that the word is no longer identifying anyone, since God needs no identifying, but praising. Reading it as a grammatical error is the mistake; it is a deliberate departure."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -142,9 +135,9 @@ const faqs = [
         <li><strong>Making a causal adjective follow the word after it in case.</strong> It takes its case from the noun before it and only its gender from the noun after.</li>
         <li><strong>Confusing adjective and ḥāl.</strong> Check the definiteness of the noun being described.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -155,12 +148,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the four respects and the causal adjective.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: sentences and quasi-sentences serving as adjectives.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-asma-al-mawsula';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Relative Nouns" description="Specific and shared relatives, the ṣila and the ʿāʾid, and parsing the relative by its outer role." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-asma-al-mawsula'].en}
-      title="Relative Nouns"
-      summary="A relative noun is a word deliberately left incomplete. It means nothing until a clause finishes it, which is why the clause is treated as part of the word rather than as a piece of the sentence, and why it is never given a position in iʿrāb. Two skills carry the chapter: finding the pronoun that returns to the relative, and parsing the relative by what it does in the outer sentence."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Relative Nouns"
+    summary="A relative noun is a word deliberately left incomplete. It means nothing until a clause finishes it, which is why the clause is treated as part of the word rather than as a piece of the sentence, and why it is never given a position in iʿrāb. Two skills carry the chapter: finding the pronoun that returns to the relative, and parsing the relative by what it does in the outer sentence."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: incomplete by design"
@@ -58,9 +51,9 @@ const faqs = [
       <LessonObjective items={objectives} />
       <p>The set divides in two. The <strong>specific</strong> relatives agree in number and gender: <em>alladhī</em>, <em>allatī</em>, <em>alladhāni</em> and <em>allatāni</em>, <em>alladhīna</em> and <em>allātī</em>. The <strong>shared</strong> relatives do not change at all: <em>man</em> for rational beings, <em>mā</em> for everything else.</p>
       <p>All of them are built, with the usual exception: the duals decline by alif and yāʾ, because being dual outranks being built.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="silah"
       title="Understand: the clause and the pronoun that returns"
@@ -92,9 +85,9 @@ const faqs = [
         answer="The returning pronoun is omitted and estimated as qultahu. The clause qulta has no position in iʿrāb."
         why="An object pronoun may be dropped when no confusion follows, and it is restored in the analysis. mā itself is in the position of nominative as the doer of aʿjaba. The clause completing it never takes a position, no matter what role the relative plays."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="mahall"
       title="See: the relative takes its position from outside"
@@ -109,9 +102,9 @@ const faqs = [
         irab="سلمتُ فعل وفاعل، على حرف جر، الذين اسم موصول مبني على الفتح في محل جر بحرف الجر، وجملة حضروا صلة الموصول لا محل لها، والواو عائد في محل رفع فاعل."
         note="The preposition governs the relative, so the position is genitive. The clause after it is invisible to the preposition entirely, which is exactly what having no position means in practice."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -122,9 +115,9 @@ const faqs = [
         <li><strong>Forgetting the returning pronoun.</strong> If nothing refers back, the clause is not a ṣila.</li>
         <li><strong>Using alladhīna for the dual.</strong> The duals are alladhāni and alladhayni, and they decline.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -134,12 +127,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the specific and shared relatives.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the clause, the returning pronoun, and when it may be omitted.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

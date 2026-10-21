@@ -2,14 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'كيف أميز النكرة من المعرفة بسرعة؟', a: 'النكرة ما قبل أل فأثرت فيه التعريف: "رجل" تقبل أل فتصير "الرجل". أو ما وقع موقع ما يقبل أل، كذي بمعنى صاحب. فإن لم يقبل الاسم أل ولم يقع موقع ما يقبلها فهو معرفة، كالضمائر والأعلام وأسماء الإشارة.' },
@@ -28,16 +25,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="النكرة والمعرفة" description="النكرة والمعرفة: تعريف النكرة وعلامتها، أقسام المعارف السبعة من الضمير إلى المنادى، وأثر التعريف والتنكير في المبتدأ والنعت والحال والتمييز، مع أمثلة معربة." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-nakira-wal-marifa'].ar}
+    slug="al-nakira-wal-marifa"
     title="النكرة والمعرفة"
     summary="الاسم في العربية إما نكرة تدل على شائع في جنسها، وإما معرفة تدل على معين. وهذا التقسيم ليس مسألة معنى فحسب، بل يغير الإعراب: فالمبتدأ لا يكون نكرة إلا بمسوغ، والجملة بعد النكرة صفة وبعد المعرفة حال، والنعت يتبع منعوته في التعريف والتنكير. هذا الدرس يعرض أقسام المعارف السبعة وأثر كل ذلك في الإعراب بأمثلة معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="ما النكرة وما المعرفة؟"
@@ -45,9 +41,9 @@ const faqs = [
   >
     <p><span class="ar">رَجُلٌ</span> نكرة لأنها تصدق على كل رجل، وتقبل أل فتصير <span class="ar">الرَّجُلُ</span>. و<span class="ar">مُحَمَّدٌ</span> معرفة لأنه علم على واحد بعينه، ولا يقال "المحمد". و<span class="ar">هُوَ</span> معرفة لأنه ضمير لا يدل إلا على معين.</p>
     <p>ويظهر أثر الفرق أول ما يظهر في <a href="/duroos/al-jumla-al-ismiyya">الجملة الاسمية</a>: <span class="ar">الطَّالِبُ مُجْتَهِدٌ</span> بدأت بمعرفة لأن المبتدأ محكوم عليه، والحكم على المجهول لا يفيد، وجاء الخبر نكرة لأنه هو الفائدة الجديدة.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="kinds"
     title="أقسام المعارف السبعة"
@@ -62,14 +58,14 @@ const faqs = [
       <li><strong>المضاف إلى معرفة</strong>: <span class="ar">كِتَابُ الطَّالِبِ</span> و<span class="ar">بَيْتُكَ</span>، وبيانه في درس <a href="/duroos/al-idafa">الإضافة</a>.</li>
       <li><strong>النكرة المقصودة بالنداء</strong>: <span class="ar">يَا طَالِبُ</span> إذا قصدت واحدًا بعينه، وبيانه في درس <a href="/duroos/al-munada">المنادى</a>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">راقب أثر التعريف في جملتك.</span>
     ألصق جملة فيها نكرة ومعرفة في محلل الإعراب، وشاهده يقرر النعت من الحال، والخبر من البدل، بحسب التعريف والتنكير.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="effect"
     title="أثر التعريف والتنكير في الإعراب"
@@ -81,9 +77,9 @@ const faqs = [
       <li><strong>مطابقة النعت</strong>: <span class="ar">كِتَابٌ مُفِيدٌ</span> و<span class="ar">الْكِتَابُ الْمُفِيدُ</span>، ولا يقال "كتابٌ المفيدُ"، وتفصيله في درس <a href="/duroos/al-naat">النعت</a>.</li>
       <li><strong>النكرات الواجبة</strong>: <a href="/duroos/al-hal">الحال</a> نكرة وصاحبها معرفة: <span class="ar">جَاءَ الطَّالِبُ مُبْتَسِمًا</span>، و<a href="/duroos/al-tamyiz">التمييز</a> نكرة: <span class="ar">اشْتَرَيْتُ رِطْلًا عَسَلًا</span>، واسم <a href="/duroos/la-nafiya-lil-jins">لا النافية للجنس</a> نكرة: <span class="ar">لَا طَالِبَ فِي الصَّفِّ</span>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -94,21 +90,21 @@ const faqs = [
       <li>يقال خطأً "قرأت كتابًا المفيدَ"، والصواب <span class="ar">قَرَأْتُ كِتَابًا مُفِيدًا</span>، فالنعت يتبع منعوته في التنكير.</li>
       <li>يقال خطأً إن "المسرعُ" في <span class="ar">جَاءَ الطَّالِبُ الْمُسْرِعُ</span> حال، والصواب أنه نعت لأنه معرفة تبعت معرفة؛ والحال نكرة: <span class="ar">جَاءَ الطَّالِبُ مُسْرِعًا</span>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="worked-examples"
     title="أمثلة معربة إعرابًا كاملًا"
     lead="هذه نماذج جاهزة بالصياغة الكلاسيكية المعتمدة في كتب النحو، تصلح مراجعة سريعة قبل الامتحان وقالبًا تحاكيه في إعرابك."
   >
-    <p><strong>المثال الأول</strong>: <span class="ar">فِي الدَّارِ رَجُلٌ</span>: <span class="ar">فِي</span>: حرف جر مبني على السكون. <span class="ar">الدَّارِ</span>: اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بمحذوف خبر مقدم. <span class="ar">رَجُلٌ</span>: مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، وسوغ الابتداء بالنكرة تقدم الخبر شبه الجملة.</p>
-    <p><strong>المثال الثاني</strong>: <span class="ar">قَرَأْتُ كِتَابًا مُفِيدًا</span>: <span class="ar">قَرَأْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">كِتَابًا</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">مُفِيدًا</span>: نعت لكتابًا منصوب مثله وعلامة نصبه الفتحة الظاهرة، وقد طابقه في التنكير.</p>
-    <p><strong>المثال الثالث</strong>: <span class="ar">جَاءَ الطَّالِبُ مُبْتَسِمًا</span>: <span class="ar">جَاءَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">الطَّالِبُ</span>: فاعل مرفوع وعلامة رفعه الضمة الظاهرة، وهو معرفة بأل. <span class="ar">مُبْتَسِمًا</span>: حال منصوبة وعلامة نصبها الفتحة الظاهرة، وهي نكرة وصاحبها الطالب.</p>
-    <p><strong>المثال الرابع</strong>: <span class="ar">رَأَيْتُ طَالِبًا يَقْرَأُ</span>: <span class="ar">رَأَيْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">طَالِبًا</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">يَقْرَأُ</span>: فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والفاعل ضمير مستتر جوازًا تقديره هو، والجملة الفعلية في محل نصب نعت لطالبًا لأنه نكرة.</p>
-  </ArticleSection>
+    <IrabExample label="المثال الأول" ar="فِي الدَّارِ رَجُلٌ"><span class="ar">فِي</span>: حرف جر مبني على السكون. <span class="ar">الدَّارِ</span>: اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بمحذوف خبر مقدم. <span class="ar">رَجُلٌ</span>: مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، وسوغ الابتداء بالنكرة تقدم الخبر شبه الجملة.</IrabExample>
+    <IrabExample label="المثال الثاني" ar="قَرَأْتُ كِتَابًا مُفِيدًا"><span class="ar">قَرَأْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">كِتَابًا</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">مُفِيدًا</span>: نعت لكتابًا منصوب مثله وعلامة نصبه الفتحة الظاهرة، وقد طابقه في التنكير.</IrabExample>
+    <IrabExample label="المثال الثالث" ar="جَاءَ الطَّالِبُ مُبْتَسِمًا"><span class="ar">جَاءَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">الطَّالِبُ</span>: فاعل مرفوع وعلامة رفعه الضمة الظاهرة، وهو معرفة بأل. <span class="ar">مُبْتَسِمًا</span>: حال منصوبة وعلامة نصبها الفتحة الظاهرة، وهي نكرة وصاحبها الطالب.</IrabExample>
+    <IrabExample label="المثال الرابع" ar="رَأَيْتُ طَالِبًا يَقْرَأُ"><span class="ar">رَأَيْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">طَالِبًا</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة. <span class="ar">يَقْرَأُ</span>: فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والفاعل ضمير مستتر جوازًا تقديره هو، والجملة الفعلية في محل نصب نعت لطالبًا لأنه نكرة.</IrabExample>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="in-quran"
     title="من القرآن الكريم"
@@ -117,11 +113,8 @@ const faqs = [
     <p><span class="ar">رَبِّ ٱجْعَلْ هَٰذَا بَلَدًا ءَامِنًۭا</span> (البقرة: ١٢٦)</p>
     <p><strong>الإعراب:</strong> ربِّ: منادى مضاف منصوب وعلامة نصبه الفتحة المقدرة على ما قبل ياء المتكلم المحذوفة، والياء المحذوفة في محل جر مضاف إليه. اجعلْ: فعل أمر دعائي، والفاعل ضمير مستتر وجوبًا تقديره أنت. هذا: الهاء حرف تنبيه، وذا اسم إشارة مبني على السكون في محل نصب مفعول به أول. بلدًا: مفعول به ثانٍ منصوب وعلامة نصبه الفتحة الظاهرة. آمنًا: نعت لبلدًا منصوب مثله وعلامة نصبه الفتحة الظاهرة.</p>
     <p>فاسم الإشارة معرفة، وقد صار بالجعل بلدًا آمنًا، وجاء النعت نكرة لأن منعوته نكرة. وتجد الإعراب الكامل للآية في <a href="/quran">إعراب القرآن</a>، والتطبيق على جملك في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-nakira-wal-marifa" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

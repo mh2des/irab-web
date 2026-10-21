@@ -2,14 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'لماذا الضمائر كلها مبنية؟', a: 'لأنها أشبهت الحروف في الجمود وقلة الحروف والافتقار إلى غيرها في بيان المعنى، فبنيت مثلها. لكن لكل ضمير محل إعرابي: رفع أو نصب أو جر، يقال فيه: مبني في محل كذا.' },
@@ -28,16 +25,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الضمائر وإعرابها" description="الضمير اسم مبني، ومحله رفع أو نصب أو جر بحسب موقعه. شرح الضمائر المنفصلة والمتصلة والمستترة ونا الفاعلين وضمير الفصل، بأمثلة معربة كلمةً كلمة وآيات تطبيقية." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-damair'].ar}
+    slug="al-damair"
     title="الضمائر وإعرابها"
     summary="نصف كلمات العربية الجارية ضمائر، وكلها مبنية ذات محل إعرابي. من ضبط ثلاث قوائم صغيرة، المنفصل والمتصل والمستتر، أمِن نصف زلات الإعراب. هذا الدرس يرتبها ويبين محل كل ضمير من الرفع والنصب والجر، مع نا الفاعلين وضمير الفصل، بأمثلة معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="mabniyya"
     title="الضمائر مبنية ولها محل"
@@ -46,9 +42,9 @@ const faqs = [
     <p><span class="ar">أَنَا طَالِبٌ</span></p>
     <p><strong>الإعراب:</strong> أنا ضمير منفصل مبني على السكون في محل رفع <a href="/duroos/al-mubtada-wal-khabar">مبتدأ</a>. طالبٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة.</p>
     <p>فالضمير لم تظهر عليه حركة إعراب، لكنه أخذ محل المبتدأ كاملًا. وهذا معنى المحل الإعرابي في كل المبنيات.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="munfasil"
     title="الضمائر المنفصلة"
@@ -58,15 +54,15 @@ const faqs = [
       <li><strong>ضمائر الرفع:</strong> <span class="ar">أَنَا، نَحْنُ، أَنْتَ، أَنْتِ، أَنْتُمَا، أَنْتُمْ، أَنْتُنَّ، هُوَ، هِيَ، هُمَا، هُمْ، هُنَّ</span>.</li>
       <li><strong>ضمائر النصب:</strong> <span class="ar">إِيَّايَ، إِيَّانَا، إِيَّاكَ، إِيَّاهُ</span> وفروعها.</li>
     </ul>
-    <p><strong>المثال الأشهر:</strong> <span class="ar">﴿إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ﴾</span>: إياك ضمير منفصل مبني على الفتح في محل نصب <a href="/duroos/al-maful-bih">مفعول به</a> مقدم، وتقديمه أفاد الحصر. نعبدُ فعل مضارع مرفوع والفاعل ضمير مستتر وجوبًا تقديره نحن.</p>
-  </ArticleSection>
+    <IrabExample label="المثال الأشهر" ar="﴿إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ﴾">إياك ضمير منفصل مبني على الفتح في محل نصب <a href="/duroos/al-maful-bih">مفعول به</a> مقدم، وتقديمه أفاد الحصر. نعبدُ فعل مضارع مرفوع والفاعل ضمير مستتر وجوبًا تقديره نحن.</IrabExample>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">اختبر ضمائر جملتك.</span>
     ألصق جملة مليئة بالضمائر في محلّل الإعراب وشاهده يعين محل كل ضمير من الرفع والنصب والجر مع التعليل.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="muttasil"
     title="الضمائر المتصلة ومحالها"
@@ -77,21 +73,21 @@ const faqs = [
       <li><strong>في محل نصب مفعول به:</strong> الياء والكاف والهاء بعد الفعل: <span class="ar">أَكْرَمَنِي، أَكْرَمَكَ، أَكْرَمَهُ</span>، والنون في أكرمني للوقاية لا محل لها.</li>
       <li><strong>في محل جر:</strong> الضمائر نفسها بعد الاسم مضاف إليه: <span class="ar">كِتَابِي، كِتَابُكَ، كِتَابُهُ</span>، وبعد حرف الجر: <span class="ar">بِكَ، لَهُ، عَنِّي</span>، وراجع <a href="/duroos/al-idafa">الإضافة</a> و<a href="/duroos/huruf-al-jarr">حروف الجر</a>.</li>
     </ul>
-    <p><strong>نا الفاعلين تجمع المحال الثلاثة:</strong> <span class="ar">رَبَّنَا إِنَّنَا سَمِعْنَا</span>: نا في ربنا مضاف إليه في محل جر، وفي إننا اسم <a href="/duroos/inna-wa-akhawatuha">إنّ</a> في محل نصب، وفي سمعنا <a href="/duroos/al-fail">فاعل</a> في محل رفع. ثلاثة محال في ثلاث كلمات متتاليات.</p>
-  </ArticleSection>
+    <IrabExample label="نا الفاعلين تجمع المحال الثلاثة" ar="رَبَّنَا إِنَّنَا سَمِعْنَا">نا في ربنا مضاف إليه في محل جر، وفي إننا اسم <a href="/duroos/inna-wa-akhawatuha">إنّ</a> في محل نصب، وفي سمعنا <a href="/duroos/al-fail">فاعل</a> في محل رفع. ثلاثة محال في ثلاث كلمات متتاليات.</IrabExample>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="mustatir"
     title="الضمير المستتر وضمير الفصل"
     lead="المستتر ضمير لا صورة له في اللفظ: يستتر وجوبًا مع المتكلم والمخاطب، وجوازًا مع الغائب. وضمير الفصل يتوسط المبتدأ والخبر للتوكيد والحصر."
   >
     <p><strong>المستتر وجوبًا:</strong> <span class="ar">أُحِبُّ الْعَرَبِيَّةَ</span>: الفاعل ضمير مستتر وجوبًا تقديره أنا، إذ لا يصح: أحبُّ محمدٌ.</p>
-    <p><strong>المستتر جوازًا:</strong> <span class="ar">مُحَمَّدٌ يَقْرَأُ</span>: الفاعل ضمير مستتر جوازًا تقديره هو، والجملة الفعلية في محل رفع خبر.</p>
-    <p><strong>ضمير الفصل:</strong> <span class="ar">﴿وَأُولَئِكَ هُمُ الْمُفْلِحُونَ﴾</span>: أولئك اسم إشارة مبني في محل رفع مبتدأ، هم ضمير فصل لا محل له من الإعراب على المختار، المفلحون خبر مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم.</p>
-  </ArticleSection>
+    <IrabExample label="المستتر جوازًا" ar="مُحَمَّدٌ يَقْرَأُ">الفاعل ضمير مستتر جوازًا تقديره هو، والجملة الفعلية في محل رفع خبر.</IrabExample>
+    <IrabExample label="ضمير الفصل" ar="﴿وَأُولَئِكَ هُمُ الْمُفْلِحُونَ﴾">أولئك اسم إشارة مبني في محل رفع مبتدأ، هم ضمير فصل لا محل له من الإعراب على المختار، المفلحون خبر مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم.</IrabExample>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -103,11 +99,8 @@ const faqs = [
       <li>الألف في <span class="ar">كَتَبَا</span> ضمير الاثنين في محل رفع فاعل، والألف في <span class="ar">كَتَبُوا</span> فارقة لا محل لها.</li>
     </ul>
     <p>وأخو هذا الباب في المبنيات <a href="/duroos/al-asma-al-mawsula">الأسماء الموصولة</a>، والأصل الجامع في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-damair" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

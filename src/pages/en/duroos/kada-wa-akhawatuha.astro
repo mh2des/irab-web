@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'kada-wa-akhawatuha';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Kāda and its Sisters" description="Verbs of approach, hope and beginning, their verbal-sentence predicate, and the reversal of the negated kāda." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['kada-wa-akhawatuha'].en}
-      title="Kāda and its Sisters"
-      summary="These verbs govern exactly as kāna does, raising a noun and requiring a predicate, with one defining difference: their predicate is never a single word. It is always a verbal sentence with an imperfect verb. They express nearness, hope or beginning, and one of them, when negated, behaves in a way that has occupied commentators for centuries."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Kāda and its Sisters"
+    summary="These verbs govern exactly as kāna does, raising a noun and requiring a predicate, with one defining difference: their predicate is never a single word. It is always a verbal sentence with an imperfect verb. They express nearness, hope or beginning, and one of them, when negated, behaves in a way that has occupied commentators for centuries."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: like kāna, with one difference"
@@ -65,9 +58,9 @@ const faqs = [
         irab="يكادُ فعل مضارع ناقص مرفوع وعلامة رفعه الضمة الظاهرة، البرقُ اسم يكاد مرفوع وعلامة رفعه الضمة الظاهرة، يخطفُ فعل مضارع مرفوع، والفاعل ضمير مستتر تقديره هو، أبصارَ مفعول به منصوب وهو مضاف، وهم ضمير متصل في محل جر مضاف إليه، وجملة يخطف في محل نصب خبر يكاد."
         note="The predicate is the whole clause yakhṭafu abṣārahum, and it is given a position rather than an ending. Writing kāda l-barqu khāṭifan, with a single-word predicate, would be ungrammatical."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="members"
       title="See: three families"
@@ -95,9 +88,9 @@ const faqs = [
         answer="No. With verbs of beginning, an is forbidden."
         why="Beginning an act and merely intending it are incompatible: an points to something not yet real, while sharaʿa says the act is already under way. So sharaʿa an yaktuba is wrong; sharaʿa yaktubu is correct."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="negated-kada"
       title="Understand: the negated kāda"
@@ -112,9 +105,9 @@ const faqs = [
         irab="ذبحوا فعل ماضٍ مبني على الضم لاتصاله بواو الجماعة، وواو الجماعة في محل رفع فاعل، وها ضمير متصل في محل نصب مفعول به، ما نافية، كادوا فعل ماضٍ ناقص، وواو الجماعة في محل رفع اسم كاد، يفعلونَ فعل مضارع مرفوع وعلامة رفعه ثبوت النون، وواو الجماعة في محل رفع فاعل، والجملة في محل نصب خبر كاد."
         note="The verse says they did slaughter it, and yet negates the nearness. The resolution offered by the grammarians is that mā kādū denies the ease and readiness rather than the act: they did it, but only barely and after great reluctance. Hence the maxim that negating kāda affirms and affirming it negates."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -125,9 +118,9 @@ const faqs = [
         <li><strong>Putting an after a verb of beginning.</strong> Forbidden, for a reason of meaning rather than form.</li>
         <li><strong>Calling its noun a fāʿil.</strong> These are deficient verbs, so the nominative is an ism, and the analysis must say which verb it belongs to.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -137,12 +130,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the three families and the conditions on an.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the frozen forms and the discussion of the negated kāda.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

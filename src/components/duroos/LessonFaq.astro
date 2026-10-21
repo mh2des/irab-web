@@ -1,0 +1,40 @@
+---
+/**
+ * LessonFaq: the questions at the foot of a lesson, with their FAQPage
+ * JSON-LD. Same data as the shared ArticleFaq, drawn as a numbered lesson
+ * section so it sits in the lesson's outline, and as quiet rows rather than
+ * stacked cards: questions in the UI face (Aref Ruqaa is for short labels
+ * only), animated by ui-fx's details[data-acc], one open at a time.
+ */
+interface FaqItem { q: string; a: string }
+interface Props { items: FaqItem[]; lang?: 'ar' | 'en' }
+const { items, lang = 'ar' } = Astro.props;
+const en = lang === 'en';
+const t = en
+  ? { title: 'Common questions', lead: 'Short answers to questions that come up in this chapter.' }
+  : { title: 'أسئلة شائعة', lead: 'أجوبة قصيرة عن أسئلة تتكرر في هذا الباب.' };
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<section id="faq" class="ls-sec ls-faq" data-ls-sec>
+  <h2 class="ls-h2"><span class="ls-h2-n" aria-hidden="true"></span><span class="ls-h2-t">{t.title}</span></h2>
+  <p class="ls-lead">{t.lead}</p>
+  <div class="ls-faq-list" data-acc-group>
+    {items.map((f) => (
+      <details class="ls-q" data-acc>
+        <summary>
+          <h3>{f.q}</h3>
+          <span class="acc-icon ls-q-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path class="acc-v" d="M12 5v14"/><path d="M5 12h14"/></svg>
+          </span>
+        </summary>
+        <div><p class="ls-a">{f.a}</p></div>
+      </details>
+    ))}
+  </div>
+</section>
+<script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />

@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-asma-al-khamsa';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Five Nouns" description="The five nouns, their letter markers, the four general conditions, the extra conditions on fū and dhū, and what happens when a condition fails." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-asma-al-khamsa'].en}
-      title="The Five Nouns"
-      summary="Five particular nouns take letters as case markers instead of vowels: wāw for the nominative, alif for the accusative, yāʾ for the genitive. But only when four conditions hold together, with two more attaching to fū and dhū. Miss a condition and the noun quietly returns to ordinary vowel marking, which is the source of nearly every error in this chapter."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Five Nouns"
+    summary="Five particular nouns take letters as case markers instead of vowels: wāw for the nominative, alif for the accusative, yāʾ for the genitive. But only when four conditions hold together, with two more attaching to fū and dhū. Miss a condition and the noun quietly returns to ordinary vowel marking, which is the source of nearly every error in this chapter."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: which nouns, and which markers"
@@ -67,9 +60,9 @@ const faqs = [
         irab="جاء فعل ماضٍ مبني على الفتح، أبوك فاعل مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة وهو مضاف، والكاف ضمير متصل في محل جر مضاف إليه، رأيتُ فعل وفاعل، أباك مفعول به منصوب وعلامة نصبه الألف لأنه من الأسماء الخمسة، سلّمتُ فعل وفاعل، على حرف جر، أبيك اسم مجرور وعلامة جره الياء لأنه من الأسماء الخمسة."
         note="One word in three cases, and not a single vowel does the work. In an unvowelled text these letters are still written, which makes the five nouns among the most reliable case signals you will ever meet."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="general-conditions"
       title="Understand: the four conditions"
@@ -98,9 +91,9 @@ const faqs = [
         answer="abawāni is nominative, marked by alif because it is a dual. It is not treated as a five noun here."
         why="The first condition requires the singular. In the dual the word takes dual markers instead, alif for nominative and yāʾ for accusative and genitive, exactly like any other dual."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="dhu-and-fu-conditions"
       title="The extra conditions on fū and dhū"
@@ -120,9 +113,9 @@ const faqs = [
         irab="جاء فعل ماضٍ مبني على الفتح، ذو فاعل مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة وهو مضاف، علمٍ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
         note="Do not confuse this dhū with the relative pronoun alladhī. dhū is declinable and means 'possessor of'; alladhī is built, never changes, and means 'the one who'."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="when-conditions-missing"
       title="Where learners go wrong"
@@ -134,9 +127,9 @@ const faqs = [
         <li><strong>Treating the plural as a five noun.</strong> <em>ābāʾ</em> takes ordinary vowels.</li>
         <li><strong>Confusing dhū with alladhī.</strong> Different words, different behaviour.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -147,12 +140,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the four general conditions and the extra conditions on fū and dhū.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the disagreement over hanun as a sixth noun.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

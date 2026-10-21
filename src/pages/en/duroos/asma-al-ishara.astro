@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'asma-al-ishara';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Demonstratives" description="The forms, the declinable duals, parsing the noun after a demonstrative, and the attached particles." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['asma-al-ishara'].en}
-      title="Demonstratives"
-      summary="Demonstratives are built, like all the indeclinables, with one exception that proves instructive: the duals decline, because being dual outranks being built. The chapter's most useful rule concerns what follows them, since a single change in definiteness turns a phrase into a whole sentence. This is what separates this book from this is a book."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Demonstratives"
+    summary="Demonstratives are built, like all the indeclinables, with one exception that proves instructive: the duals decline, because being dual outranks being built. The chapter's most useful rule concerns what follows them, since a single change in definiteness turns a phrase into a whole sentence. This is what separates this book from this is a book."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the forms"
@@ -62,9 +55,9 @@ const faqs = [
         <li><strong>kāf of address</strong>, suffixed, agreeing with the addressee: <em>dhāka</em>.</li>
         <li><strong>lām of distance</strong>: <em>dhālika</em>, farther than <em>dhāka</em>.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="irab"
       title="Understand: built, except the duals"
@@ -86,9 +79,9 @@ const faqs = [
         answer="raʾaytu hādhayni l-ṭālibayni."
         why="The dual demonstrative is declined, so the accusative takes yāʾ, not alif. This is the one place demonstratives behave like ordinary nouns, and using hādhāni in every position is the commonest error in the chapter."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="after"
       title="See: the noun after a demonstrative"
@@ -103,9 +96,9 @@ const faqs = [
         irab="هذا اسم إشارة مبني على السكون في محل رفع مبتدأ، كتابٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة."
         note="Compare hādhā l-kitābu, 'this book', which is a phrase and not yet a sentence, with al-kitābu a substitute for the demonstrative. The difference between a phrase and a statement is a single al-."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="place"
       title="The demonstratives of place"
@@ -122,9 +115,9 @@ const faqs = [
         irab="هناك اسم إشارة للمكان البعيد مبني على الفتح في محل نصب مفعول فيه ظرف مكان متعلق بمحذوف خبر مقدم، مسجدٌ مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، قديمٌ نعت مرفوع."
         note="Two things happen at once. The adverbial is fronted, and the predicate it attaches to is omitted, which is why the analysis names a deleted predicate. The kāf here is again the particle of address, exactly as in dhālika."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -135,9 +128,9 @@ const faqs = [
         <li><strong>Parsing the kāf of dhālika as a pronoun.</strong> It is a particle of address with no position.</li>
         <li><strong>Naming the position without the bināʾ.</strong> Say built, then in the position of, never simply nominative.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -147,12 +140,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the forms and the attached particles.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the declined duals and the noun following a demonstrative.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-mubtada-wal-khabar';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Mubtadaʾ and Khabar" description="A full lesson on the mubtadaʾ and khabar: what raises each of them, the forms the subject takes, the three kinds of predicate, obligatory omission, and multiple predicates, with complete classical iʿrāb." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-mubtada-wal-khabar'].en}
-      title="Subject and Predicate"
-      summary="The two pillars of the nominal sentence deserve a chapter of their own. The mubtadaʾ is not always a noun, the khabar comes in three quite different shapes, one construction replaces the predicate with a subject, and in a few sentences the predicate is obligatorily left unsaid. This lesson works through each, with the classical iʿrāb for every case."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Subject and Predicate"
+    summary="The two pillars of the nominal sentence deserve a chapter of their own. The mubtadaʾ is not always a noun, the khabar comes in three quite different shapes, one construction replaces the predicate with a subject, and in a few sentences the predicate is obligatorily left unsaid. This lesson works through each, with the classical iʿrāb for every case."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the definition, and what raises each pillar"
@@ -66,9 +59,9 @@ const faqs = [
         en="Knowledge is beneficial."
         irab="العلمُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة على آخره، نافعٌ خبر مرفوع وعلامة رفعه الضمة الظاهرة على آخره."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="types-of-mubtada"
       title="See: the three forms of the mubtadaʾ"
@@ -109,9 +102,9 @@ const faqs = [
         answer="The maṣdar muʾawwal an taʿfū, 'that you pardon', in the position of nominative."
         why="No explicit noun opens the sentence. The infinitival phrase stands in for the verbal noun al-ʿafwu, and aqrabu is its predicate. Note also that aqrabu is a diptote, so it would take fatḥa rather than kasra in the genitive."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="types-of-khabar"
       title="The three kinds of khabar, and multiple predicates"
@@ -138,9 +131,9 @@ const faqs = [
         irab="الطالبُ مبتدأ مرفوع، يدرسُ فعل مضارع مرفوع وعلامة رفعه الضمة الظاهرة، والفاعل ضمير مستتر وجوبًا تقديره هو، والجملة الفعلية في محل رفع خبر."
         note="The link is not visible. The doer of yadrusu is an implied pronoun, ḍamīr mustatir, understood as huwa and referring back to al-ṭālibu. That implied pronoun is the rābiṭ. English speakers often look for a written pronoun and conclude there is no link."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sadd-masadd-al-khabar"
       title="Understand: when a subject replaces the predicate"
@@ -157,9 +150,9 @@ const faqs = [
         irab="الهمزة حرف استفهام، قائمٌ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، الزيدانِ فاعل سد مسد الخبر مرفوع وعلامة رفعه الألف لأنه مثنى."
         note="qāʾimun is the mubtadaʾ, and al-zaydāni is not a predicate but a fāʿil raised by the participle, which has 'blocked the place of the predicate', sadda masadda l-khabar. This is the Baṣran analysis and the one the syllabuses follow. The conditions are strict: a descriptive word, preceded by negation or a question, raising an explicit noun, with the sentence complete."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="taqdim-and-hadhf"
       title="Fronting, omission, and the abrogators"
@@ -185,9 +178,9 @@ const faqs = [
         answer="dafʿu is the mubtadaʾ, marfūʿ. Its khabar is obligatorily omitted, estimated as mawjūdun."
         why="Everything after lawlā down to the lām is the subject and what is annexed to it. The predicate is never spoken in this construction, and the answer clause la-fasadati l-arḍu follows."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="signs"
       title="The markers, and where learners go wrong"
@@ -199,9 +192,9 @@ const faqs = [
         <li><strong>Declaring a pronoun marfūʿ.</strong> A pronoun is built. Say <em>fī maḥall rafʿ</em>, in the position of nominative, not marfūʿ.</li>
         <li><strong>Looking for a written link.</strong> When the predicate is a verbal sentence the link is usually an implied pronoun inside the verb.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -212,12 +205,8 @@ const faqs = [
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on multiple predicates and on the conditions of sadd masadd al-khabar.</li>
         <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: on the estimated wording of omitted predicates.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

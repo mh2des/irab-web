@@ -20,8 +20,8 @@ const { q, ar, answer, why } = Astro.props;
   <p class="chk-k">Check yourself</p>
   <p class="chk-q">{q}</p>
   {ar && <p class="chk-ar" lang="ar" dir="rtl">{ar}</p>}
-  <details class="chk-a">
-    <summary><span>Show the answer</span></summary>
+  <details class="chk-a" data-acc>
+    <summary><span>Show the answer</span><span class="chk-chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
     <div class="chk-a-body">
       <p class="chk-ans">{answer}</p>
       {why && <p class="chk-why">{why}</p>}
@@ -30,43 +30,33 @@ const { q, ar, answer, why } = Astro.props;
 </div>
 
 <style is:global>
-  .chk {
-    margin: 2rem 0;
-    padding: 1.4rem 1.6rem;
-    border-radius: 1rem;
-    border: 1px dashed color-mix(in srgb, var(--color-teal) 40%, transparent);
-    background: color-mix(in srgb, var(--color-teal) 5%, transparent);
+  .ls .chk {
+    margin: 1.75rem 0 0; padding: 1.3rem 1.4rem 1.35rem; border-radius: 22px;
+    background: var(--iu-teal-soft); border: 1px solid color-mix(in srgb, var(--iu-teal) 18%, transparent);
   }
-  .dark .chk { background: color-mix(in srgb, var(--color-teal) 10%, transparent); }
-  .chk-k {
-    margin: 0 0 0.5rem; font-size: 0.72rem; font-weight: 800;
-    letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-teal-deep);
+  .ls .chk-k {
+    display: inline-flex; align-items: center; gap: 0.4rem; margin: 0 0 0.6rem; padding: 0.15rem 0.75rem; border-radius: 999px;
+    font-size: 0.82rem; font-weight: 700; line-height: 1.8; color: #fff; background: var(--iu-teal);
   }
-  .dark .chk-k { color: color-mix(in srgb, var(--color-teal) 85%, white); }
-  .chk-q { margin: 0; font-size: 1.05rem; line-height: 1.8; font-weight: 600; color: var(--color-ink); }
-  .dark .chk-q { color: var(--color-mist); }
-  .chk-ar {
-    font-family: var(--font-arabic); direction: rtl; unicode-bidi: isolate; text-align: right;
-    font-size: 1.55rem; line-height: 2.1; margin: 0.9rem 0 0; color: var(--color-ink);
+  .ls .chk-q { margin: 0; font-size: 1.1rem; font-weight: 700; line-height: 1.7; color: var(--iu-text); }
+  .ls .chk-ar {
+    margin: 0.9rem 0 0; padding: 0.7rem 1rem; border-radius: 16px; background: var(--iu-card);
+    direction: rtl; unicode-bidi: isolate; text-align: center;
+    font-size: clamp(1.45rem, 3.6vw, 1.75rem); font-weight: 700; line-height: 2; color: var(--iu-text);
   }
-  .dark .chk-ar { color: var(--color-mist); }
-  .chk-a { margin-top: 1rem; }
-  .chk-a > summary {
-    cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 0.5rem;
-    font-size: 0.9rem; font-weight: 700; color: var(--color-teal-deep);
+  .ls .chk-a { margin-top: 1rem; }
+  .ls .chk-a > summary {
+    display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.6rem; padding: 0 1.1rem; border-radius: 999px; cursor: pointer; list-style: none;
+    font-size: 0.95rem; font-weight: 700; color: var(--iu-teal-text); background: var(--iu-card); border: 1px solid color-mix(in srgb, var(--iu-teal) 25%, transparent);
+    transition: background-color .25s, color .25s, border-color .25s;
   }
-  .dark .chk-a > summary { color: color-mix(in srgb, var(--color-teal) 88%, white); }
-  .chk-a > summary::-webkit-details-marker { display: none; }
-  .chk-a > summary::before {
-    content: ''; width: 0.5rem; height: 0.5rem; flex: none;
-    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
-    transform: rotate(-45deg); transition: transform .2s var(--ease-out-quart);
-  }
-  .chk-a[open] > summary::before { transform: rotate(45deg); }
-  .chk-a-body { margin-top: 0.85rem; display: grid; gap: 0.5rem; }
-  .chk-ans { margin: 0; font-size: 1.02rem; line-height: 1.85; font-weight: 600; color: var(--color-ink); }
-  .dark .chk-ans { color: var(--color-mist); }
-  .chk-why { margin: 0; font-size: 0.97rem; line-height: 1.85; color: var(--color-ink-muted); }
-  .dark .chk-why { color: var(--color-mist-muted); }
-  @media (prefers-reduced-motion: reduce) { .chk-a > summary::before { transition: none; } }
+  .ls .chk-a > summary::-webkit-details-marker { display: none; }
+  .ls .chk-a > summary:hover { color: #fff; background: var(--iu-teal); border-color: var(--iu-teal); }
+  .ls .chk-chev { display: grid; transition: rotate .35s cubic-bezier(.22, 1, .36, 1); }
+  .ls .chk-chev svg { width: 1rem; height: 1rem; }
+  .ls .chk-a[open] .chk-chev, .ls .chk-a.acc-open .chk-chev { rotate: 180deg; }
+  .ls .chk-a:not(.acc-open).acc-on .chk-chev { rotate: 0deg; }
+  .ls .chk-a-body { display: grid; gap: 0.45rem; margin-top: 0.9rem; padding: 1rem 1.15rem; border-radius: 16px; background: var(--iu-card); border-inline-start: 3px solid var(--iu-success); }
+  .ls .chk-ans { margin: 0; font-size: 1.05rem; font-weight: 700; line-height: 1.8; color: var(--iu-text); }
+  .ls .chk-why { margin: 0; font-size: 1rem; line-height: 1.85; color: var(--iu-text-2); }
 </style>

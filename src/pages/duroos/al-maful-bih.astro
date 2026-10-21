@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما الفرق بين المفعول به ونائب الفاعل؟', a: 'المفعول به منصوب يقع عليه فعل الفاعل في الجملة المبنية للمعلوم. فإذا بُني الفعل للمجهول وحُذف الفاعل، ارتفع المفعول به وصار نائب فاعل. في "كَتَبَ الطالبُ الدرسَ" الدرسَ مفعول به منصوب، وفي "كُتِبَ الدرسُ" الدرسُ نائب فاعل مرفوع.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="المفعول به" description="شرح المفعول به: تعريفه، علامات نصبه بالفتحة والياء والكسرة، تقديمه وتأخيره، تعدده، وأمثلة معربة إعرابًا كاملًا من القرآن والنصوص الفصيحة." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-maful-bih'].ar}
+    slug="al-maful-bih"
     title="المفعول به"
     summary="المفعول به اسم منصوب يقع عليه فعل الفاعل، وهو أشهر المنصوبات وأكثرها دورانًا في الكلام. هذا الدرس يشرح تعريفه وعلامات نصبه الأصلية والفرعية، ومتى يتقدم على الفاعل أو يتعدد أو يحذف، مع أمثلة معربة إعرابًا كاملًا كما تكتب في كتب النحو."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف"
@@ -46,9 +41,9 @@ const faqs = [
     <p>خذ المثال الأشهر: <span class="ar">كَتَبَ الطَّالِبُ الدَّرْسَ</span>. وقع فعل الكتابة من الطالب على الدرس، فالدرس هو المفعول به.</p>
     <p><strong>الإعراب الكامل:</strong> <span class="ar">كَتَبَ</span>: فعل ماضٍ مبني على الفتح. <span class="ar">الطَّالِبُ</span>: فاعل مرفوع وعلامة رفعه الضمة الظاهرة. <span class="ar">الدَّرْسَ</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة.</p>
     <p>ويأتي المفعول به ضميرًا متصلًا نحو <span class="ar">أَكْرَمَكَ الْمُعَلِّمُ</span>: الكاف ضمير متصل مبني على الفتح في محل نصب مفعول به. ومصدرًا مؤولًا نحو <span class="ar">أُحِبُّ أَنْ أَقْرَأَ</span>: المصدر المؤول من "أنْ والفعل" في محل نصب مفعول به، والتقدير: أحبُّ القراءةَ. وهذا الباب فرع عن <a href="/duroos/al-jumla-al-filiyya">الجملة الفعلية</a> بأكملها.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="signs"
     title="علامات نصب المفعول به"
@@ -62,14 +57,14 @@ const faqs = [
       <li><strong>الكسرة نيابة عن الفتحة:</strong> <span class="ar">شَكَرْتُ الْمُعَلِّمَاتِ</span>، المعلماتِ مفعول به منصوب وعلامة نصبه الكسرة لأنه جمع مؤنث سالم.</li>
       <li><strong>الألف في الأسماء الخمسة:</strong> <span class="ar">رَأَيْتُ أَبَاكَ</span>، أبا مفعول به منصوب وعلامة نصبه الألف لأنه من <a href="/duroos/al-asma-al-khamsa">الأسماء الخمسة</a>، والكاف ضمير متصل مبني في محل جر مضاف إليه.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">أَعرِب جملتك الآن.</span>
     ألصق أي جملة فيها مفعول به في محلّل الإعراب على الصفحة الرئيسية، وشاهد نصبه وعلامته والسبب، كلمة بكلمة خلال ثوانٍ.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="order"
     title="تقديم المفعول به وتأخيره"
@@ -78,9 +73,9 @@ const faqs = [
     <p><strong>يجب تقديمه على الفاعل</strong> إذا كان ضميرًا متصلًا والفاعل اسم ظاهر: <span class="ar">أَكْرَمَنِي الْمُعَلِّمُ</span>، النون للوقاية والياء ضمير متصل مبني في محل نصب مفعول به مقدم، والمعلمُ فاعل مؤخر مرفوع.</p>
     <p><strong>ويجب كذلك</strong> إذا اتصل بالفاعل ضمير يعود على المفعول به: <span class="ar">أَكْرَمَ الْمُعَلِّمَ تِلْمِيذُهُ</span>، فلو أُخّر المفعول لعاد الضمير على متأخر لفظًا ورتبة وهو ممتنع.</p>
     <p><strong>ويتقدم على الفعل والفاعل معًا</strong> إذا كان له الصدارة، كأسماء الاستفهام والشرط: <span class="ar">مَنْ قَابَلْتَ؟</span> مَن اسم استفهام مبني على السكون في محل نصب مفعول به مقدم. ومنه قوله تعالى: <span class="ar">﴿إِيَّاكَ نَعْبُدُ﴾</span>، إياك ضمير منفصل مبني في محل نصب مفعول به مقدم، وتقديمه أفاد الحصر والاختصاص.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="multiple"
     title="الأفعال التي تنصب أكثر من مفعول"
@@ -91,9 +86,9 @@ const faqs = [
       <li><strong>مفعولان ليس أصلهما المبتدأ والخبر:</strong> <span class="ar">أَعْطَى الْمُعَلِّمُ الطَّالِبَ جَائِزَةً</span>، الطالبَ مفعول به أول، جائزةً مفعول به ثانٍ.</li>
       <li><strong>ثلاثة مفاعيل</strong> مع "أعلمَ" و"أرى" وأخواتهما: <span class="ar">أَعْلَمْتُ أَخِي الْخَبَرَ صَحِيحًا</span>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة في إعراب المفعول به"
@@ -105,11 +100,8 @@ const faqs = [
       <li><strong>إعراب المضاف إليه مفعولًا:</strong> في <span class="ar">قَرَأْتُ كِتَابَ النَّحْوِ</span> المفعول به "كتابَ" وحده، والنحوِ مضاف إليه مجرور، فراجع درس <a href="/duroos/al-idafa">الإضافة</a>.</li>
     </ul>
     <p>ولمعرفة العلامات الفرعية كلها في بابها، انظر درس <a href="/duroos/alamat-al-irab">علامات الإعراب</a>، وللأصل النظري كله راجع <a href="/nahw">ما هو النحو</a> و<a href="/irab">ما هو الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-maful-bih" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

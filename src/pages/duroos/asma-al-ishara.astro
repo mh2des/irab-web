@@ -2,14 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'لماذا أسماء الإشارة مبنية؟', a: 'لشبهها بالحروف في الافتقار إلى ما يوضح معناها: فكما لا يفهم الحرف إلا بما بعده، لا يفهم اسم الإشارة إلا بإشارة حسية أو معنوية تصاحبه. ولذلك بنيت ولزمت صورة واحدة، إلا المثنى منها فأعرب لأنه جاء على صورة المثنى.' },
@@ -28,16 +25,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="أسماء الإشارة" description="أسماء الإشارة: ألفاظها للمفرد والمثنى والجمع والمكان، حروف التنبيه والخطاب والبعد، بناؤها ومحلها من الإعراب، وإعراب هذان وهاتان والاسم بعدها، مع أمثلة معربة." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['asma-al-ishara'].ar}
+    slug="asma-al-ishara"
     title="أسماء الإشارة"
     summary="أسماء الإشارة معارف مبنية تدل على معين بإشارة إليه، ولها ألفاظ للمفرد والمثنى والجمع مذكرًا ومؤنثًا، وألفاظ للمكان. تلتبس على الطلاب في ثلاثة مواضع: محلها من الإعراب، وإعراب المثنى منها بالحروف، وإعراب الاسم الواقع بعدها بدلًا أو خبرًا. هذا الدرس يفصل الثلاثة بأمثلة معربة كاملة وشاهد من فاتحة سورة البقرة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="ألفاظها"
@@ -51,9 +47,9 @@ const faqs = [
       <li><strong>المكان</strong>: <span class="ar">هُنَا</span> للقريب و<span class="ar">هُنَاكَ</span> و<span class="ar">هُنَالِكَ</span> و<span class="ar">ثَمَّ</span> للبعيد.</li>
     </ul>
     <p>وهي من المعارف، رتبتها بعد الضمير والعلم، وبيان أقسام المعارف في درس <a href="/duroos/al-nakira-wal-marifa">النكرة والمعرفة</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="irab"
     title="بناؤها ومحلها من الإعراب"
@@ -66,14 +62,14 @@ const faqs = [
       <li><strong>المثنى معرب</strong>: <span class="ar">جَاءَ هَذَانِ</span> مرفوع بالألف، و<span class="ar">رَأَيْتُ هَذَيْنِ</span> منصوب بالياء، و<span class="ar">مَرَرْتُ بِهَذَيْنِ</span> مجرور بالياء.</li>
     </ul>
     <p>فهي أخت <a href="/duroos/al-damair">الضمائر</a> و<a href="/duroos/al-asma-al-mawsula">الأسماء الموصولة</a> في البناء، ويجمعها باب المبنيات. وراجع علامات المثنى في درس <a href="/duroos/alamat-al-irab">علامات الإعراب</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">أشر واعرب.</span>
     ألصق جملة تبدأ بهذا أو ذلك أو هؤلاء في محلل الإعراب، وشاهده يبين محل اسم الإشارة وإعراب الاسم الواقع بعده.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="after"
     title="إعراب الاسم الواقع بعد اسم الإشارة"
@@ -84,9 +80,9 @@ const faqs = [
       <li><strong>المعرف بأل بدل</strong>: <span class="ar">هَذَا الْكِتَابُ مُفِيدٌ</span>، الكتابُ بدل من اسم الإشارة مرفوع، ومفيدٌ خبر المبتدأ. وتفصيل <a href="/duroos/al-badal">البدل</a> في درسه.</li>
       <li><strong>المضاف إلى معرفة بدل كذلك</strong>: <span class="ar">هَذَا كِتَابُ الطَّالِبِ مُفِيدٌ</span>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -97,21 +93,21 @@ const faqs = [
       <li>يقال خطأً "هذا: مبتدأ مرفوع"، والصواب: اسم إشارة مبني على السكون في محل رفع مبتدأ، فالمبني لا يوصف بالرفع بل بالمحل.</li>
       <li>يقال خطأً إن الكاف في <span class="ar">ذَلِكَ</span> ضمير مضاف إليه، والصواب أنها حرف خطاب لا محل له من الإعراب، واللام حرف للبعد.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="worked-examples"
     title="أمثلة معربة إعرابًا كاملًا"
     lead="هذه نماذج جاهزة بالصياغة الكلاسيكية المعتمدة في كتب النحو، تصلح مراجعة سريعة قبل الامتحان وقالبًا تحاكيه في إعرابك."
   >
-    <p><strong>المثال الأول</strong>: <span class="ar">هَذَا كِتَابٌ مُفِيدٌ</span>: <span class="ar">هَذَا</span>: الهاء حرف تنبيه مبني على السكون لا محل له من الإعراب، وذا اسم إشارة مبني على السكون في محل رفع مبتدأ. <span class="ar">كِتَابٌ</span>: خبر مرفوع وعلامة رفعه الضمة الظاهرة. <span class="ar">مُفِيدٌ</span>: نعت لكتابٌ مرفوع مثله وعلامة رفعه الضمة الظاهرة.</p>
-    <p><strong>المثال الثاني</strong>: <span class="ar">هَذَا الطَّالِبُ مُجْتَهِدٌ</span>: <span class="ar">هَذَا</span>: الهاء للتنبيه، وذا اسم إشارة مبني على السكون في محل رفع مبتدأ. <span class="ar">الطَّالِبُ</span>: بدل من اسم الإشارة مرفوع وعلامة رفعه الضمة الظاهرة. <span class="ar">مُجْتَهِدٌ</span>: خبر المبتدأ مرفوع وعلامة رفعه الضمة الظاهرة.</p>
-    <p><strong>المثال الثالث</strong>: <span class="ar">رَأَيْتُ هَذَيْنِ الطَّالِبَيْنِ</span>: <span class="ar">رَأَيْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">هَذَيْنِ</span>: الهاء للتنبيه، وذين اسم إشارة مفعول به منصوب وعلامة نصبه الياء لأنه مثنى. <span class="ar">الطَّالِبَيْنِ</span>: بدل من اسم الإشارة منصوب وعلامة نصبه الياء لأنه مثنى.</p>
-    <p><strong>المثال الرابع</strong>: <span class="ar">قَرَأْتُ فِي تِلْكَ الْمَكْتَبَةِ</span>: <span class="ar">قَرَأْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">فِي</span>: حرف جر مبني على السكون. <span class="ar">تِلْكَ</span>: تي اسم إشارة مبني على السكون في محل جر بفي، واللام للبعد، والكاف حرف خطاب. <span class="ar">الْمَكْتَبَةِ</span>: بدل من اسم الإشارة مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بالفعل قرأت.</p>
-  </ArticleSection>
+    <IrabExample label="المثال الأول" ar="هَذَا كِتَابٌ مُفِيدٌ"><span class="ar">هَذَا</span>: الهاء حرف تنبيه مبني على السكون لا محل له من الإعراب، وذا اسم إشارة مبني على السكون في محل رفع مبتدأ. <span class="ar">كِتَابٌ</span>: خبر مرفوع وعلامة رفعه الضمة الظاهرة. <span class="ar">مُفِيدٌ</span>: نعت لكتابٌ مرفوع مثله وعلامة رفعه الضمة الظاهرة.</IrabExample>
+    <IrabExample label="المثال الثاني" ar="هَذَا الطَّالِبُ مُجْتَهِدٌ"><span class="ar">هَذَا</span>: الهاء للتنبيه، وذا اسم إشارة مبني على السكون في محل رفع مبتدأ. <span class="ar">الطَّالِبُ</span>: بدل من اسم الإشارة مرفوع وعلامة رفعه الضمة الظاهرة. <span class="ar">مُجْتَهِدٌ</span>: خبر المبتدأ مرفوع وعلامة رفعه الضمة الظاهرة.</IrabExample>
+    <IrabExample label="المثال الثالث" ar="رَأَيْتُ هَذَيْنِ الطَّالِبَيْنِ"><span class="ar">رَأَيْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">هَذَيْنِ</span>: الهاء للتنبيه، وذين اسم إشارة مفعول به منصوب وعلامة نصبه الياء لأنه مثنى. <span class="ar">الطَّالِبَيْنِ</span>: بدل من اسم الإشارة منصوب وعلامة نصبه الياء لأنه مثنى.</IrabExample>
+    <IrabExample label="المثال الرابع" ar="قَرَأْتُ فِي تِلْكَ الْمَكْتَبَةِ"><span class="ar">قَرَأْتُ</span>: فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني على الضم في محل رفع فاعل. <span class="ar">فِي</span>: حرف جر مبني على السكون. <span class="ar">تِلْكَ</span>: تي اسم إشارة مبني على السكون في محل جر بفي، واللام للبعد، والكاف حرف خطاب. <span class="ar">الْمَكْتَبَةِ</span>: بدل من اسم الإشارة مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور متعلقان بالفعل قرأت.</IrabExample>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="in-quran"
     title="من القرآن الكريم"
@@ -120,11 +116,8 @@ const faqs = [
     <p><span class="ar">ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًۭى لِّلْمُتَّقِينَ</span> (البقرة: ٢)</p>
     <p><strong>الإعراب:</strong> ذا: اسم إشارة مبني على السكون في محل رفع مبتدأ، واللام للبعد، والكاف للخطاب. الكتابُ: بدل من ذا أو عطف بيان تبعه في الرفع. لا: نافية للجنس. ريبَ: اسم لا مبني على الفتح في محل نصب. فيه: في حرف جر، والهاء ضمير متصل مبني في محل جر بفي، والجار والمجرور متعلقان بمحذوف خبر لا. هدًى: خبر ثانٍ للمبتدأ ذا مرفوع وعلامة رفعه الضمة المقدرة على الألف منع من ظهورها التعذر. للمتقين: جار ومجرور متعلقان بهدى، وعلامة الجر الياء لأنه جمع مذكر سالم.</p>
     <p>ومن الباب قوله تعالى في البقرة: <span class="ar">أُو۟لَٰٓئِكَ ٱلَّذِينَ ٱشْتَرَوُا۟ ٱلضَّلَٰلَةَ بِٱلْهُدَىٰ</span>، فأولاء اسم إشارة في محل رفع مبتدأ، والذين اسم موصول في محل رفع خبر. وتجد الإعراب الكامل في <a href="/quran">إعراب القرآن</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="asma-al-ishara" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

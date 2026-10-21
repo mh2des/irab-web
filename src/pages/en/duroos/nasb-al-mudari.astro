@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'nasb-al-mudari';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Subjunctive Imperfect" description="The particles of the accusative, the implied an, the two markers, and confusable particles." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['nasb-al-mudari'].en}
-      title="The Imperfect in the Accusative"
-      summary="The imperfect is the only declinable verb in Arabic, and its default state is nominative. A particle of the accusative changes that. Some govern the verb directly, and some cannot govern at all, because they are prepositions, so the tradition posits an implied particle between them and the verb. Understanding why that implied particle exists explains a rule that otherwise looks invented."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Imperfect in the Accusative"
+    summary="The imperfect is the only declinable verb in Arabic, and its default state is nominative. A particle of the accusative changes that. Some govern the verb directly, and some cannot govern at all, because they are prepositions, so the tradition posits an implied particle between them and the verb. Understanding why that implied particle exists explains a rule that otherwise looks invented."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="when-nasb"
       title="Learn: a departure from the default"
@@ -67,9 +60,9 @@ const faqs = [
         irab="لن حرف نفي ونصب واستقبال، تنالوا فعل مضارع منصوب بلن وعلامة نصبه حذف النون لأنه من الأفعال الخمسة، وواو الجماعة في محل رفع فاعل، البرَّ مفعول به منصوب، حتى حرف غاية وجر، تنفقوا فعل مضارع منصوب بأن مضمرة بعد حتى وعلامة نصبه حذف النون."
         note="Two accusatives, two different governors. lan governs directly. ḥattā cannot, because it is a preposition and prepositions never precede verbs, so an implied an governs instead. The wording records the difference precisely."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="direct-particles"
       title="See: the particles that govern directly"
@@ -90,9 +83,9 @@ const faqs = [
         irab="أريدُ فعل مضارع مرفوع، والفاعل ضمير مستتر وجوبًا تقديره أنا، أنْ حرف مصدري ونصب، تنجحَ فعل مضارع منصوب بأن وعلامة نصبه الفتحة الظاهرة، والمصدر المؤول في محل نصب مفعول به."
         note="The clause an tanjaḥa stands in for najāḥaka, 'your success', and that noun is the object of urīdu. Notice how English restructures completely: 'I want you to succeed' has no equivalent of an at all."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="hidden-an"
       title="Understand: why an must be implied"
@@ -117,9 +110,9 @@ const faqs = [
         answer="An implied an after ḥattā. The verb is accusative with a visible fatḥa."
         why="ḥattā is a preposition and cannot govern a verb, so an is implied obligatorily after it. The sense here is purpose, which is what calls for the accusative; had the sense been completed result, the verb would have been nominative."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="nasb-signs"
       title="The two markers"
@@ -134,9 +127,9 @@ const faqs = [
         irab="لن حرف نفي ونصب، يسعى فعل مضارع منصوب بلن وعلامة نصبه الفتحة المقدرة على الألف منع من ظهورها التعذر، إلا أداة حصر، مجتهدٌ فاعل مرفوع وعلامة رفعه الضمة الظاهرة."
         note="Nothing visible marks the accusative, because a final alif carries no vowel. Note also the emptied exception: no whole precedes illā, so mujtahidun takes the case of its own role, doer."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Look-alike particles"
@@ -148,9 +141,9 @@ const faqs = [
         <li><strong>The lām of purpose against the lām of denial:</strong> both take an implied an, but the second follows a negated kāna and denies rather than explains.</li>
         <li><strong>Forgetting the substitute marker.</strong> In the five verbs the accusative shows as a dropped nūn, not a fatḥa.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -160,12 +153,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">مغني اللبيب</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the particles and the positions of the implied an.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the lām of denial and the conditions on idhan.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

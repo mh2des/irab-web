@@ -13,7 +13,7 @@
  * anything not yet mirrored falls back to the Arabic page, which carries the
  * full word-by-word i'rab either way.
  */
-import ArticleSection from '../ArticleSection.astro';
+import LessonSection from './LessonSection.astro';
 import { ayatForLesson } from '../../lib/lesson-links';
 import { toArabicDigits, SURAHS } from '../../lib/quran';
 import { hasEnAyah } from '../../lib/quran-en';
@@ -55,17 +55,17 @@ const t = isEn
     };
 ---
 {ayat.length > 0 && (
-  <ArticleSection
+  <LessonSection
     lang={lang}
     id="quran-examples"
     title={t.title}
     lead={t.lead}
   >
-    <ul class="ayat-ex" role="list">
+    <ul class="ayat-ex" role="list" data-ayat-ex>
       {ayat.map((a) => (
         <li>
           <a class="ayat-ex-card" href={hrefFor(a.surahSlug, a.ayah)}>
-            <span class="ayat-ex-verse quran-text" lang="ar" dir="rtl">{clip(a.verse)}</span>
+            <span class="ayat-ex-verse" lang="ar" dir="rtl">{clip(a.verse)}</span>
             <span class="ayat-ex-meta">
               <span>{t.ref(surahLabel(a.surahSlug, a.surahName), num(a.ayah))}</span>
               <span class="ayat-ex-cta">{t.cta}</span>
@@ -74,36 +74,38 @@ const t = isEn
         </li>
       ))}
     </ul>
-  </ArticleSection>
+  </LessonSection>
 )}
 
 <style>
   .ayat-ex {
     list-style: none; padding: 0; margin: 0;
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.85rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr)); gap: 0.9rem;
   }
   .ayat-ex-card {
-    display: flex; flex-direction: column; gap: 0.75rem; height: 100%;
-    padding: 1.1rem 1.2rem 1rem; text-decoration: none;
-    border: 1px solid var(--color-card-edge); border-radius: 14px;
-    background: var(--color-card); box-shadow: var(--shadow-card);
-    transition: border-color .2s, transform .2s, box-shadow .2s;
+    position: relative; display: flex; flex-direction: column; gap: 0.9rem; height: 100%;
+    padding: 1.2rem 1.3rem 1.05rem; text-decoration: none; color: var(--iu-text);
+    border: 1px solid var(--iu-border); border-radius: 20px;
+    background: var(--iu-card); box-shadow: var(--iu-shadow-card);
+    transition: border-color .25s, transform .4s cubic-bezier(.22, 1, .36, 1), box-shadow .4s cubic-bezier(.22, 1, .36, 1);
   }
-  :global(.dark) .ayat-ex-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
-  .ayat-ex-card:hover { border-color: var(--color-purple); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
-  .ayat-ex-card:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 3px; }
+  .ayat-ex-card:focus-visible { outline: 2px solid var(--acc, var(--iu-primary)); outline-offset: 3px; }
+  /* The Uthmanic face (90 KB) is switched on by LessonShell as this list
+     nears the screen, so the first paint of a lesson never waits for it. */
+  .ayat-ex.is-near .ayat-ex-verse { font-family: var(--font-quran); font-feature-settings: 'ss01' 1, 'kern' 1, 'liga' 1, 'calt' 1; }
   .ayat-ex-verse {
-    font-size: 1.45rem; line-height: 2; color: var(--color-ink);
+    font-size: 1.5rem; line-height: 2.05; color: var(--iu-text);
     /* Long verses are clipped in the data; keep short ones from stretching cards unevenly. */
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
   }
-  :global(.dark) .ayat-ex-verse { color: var(--color-mist); }
   .ayat-ex-meta {
-    display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;
-    margin-top: auto; font-size: 1rem;
-    color: color-mix(in srgb, var(--color-ink) 65%, transparent);
+    display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    margin-top: auto; padding-top: 0.8rem; border-top: 1px solid var(--iu-border);
+    font-size: 0.9rem; font-weight: 600; color: var(--iu-text-3);
   }
-  :global(.dark) .ayat-ex-meta { color: color-mix(in srgb, var(--color-mist) 65%, transparent); }
-  .ayat-ex-cta { color: var(--color-purple); font-weight: 700; }
+  .ayat-ex-cta { color: var(--acc-text, var(--iu-primary-text)); font-weight: 700; transition: letter-spacing .3s; }
+  @media (hover: hover) {
+    .ayat-ex-card:hover { border-color: var(--acc, var(--iu-primary)); transform: translateY(-3px); box-shadow: var(--iu-shadow-lift); }
+  }
   @media (prefers-reduced-motion: reduce) { .ayat-ex-card { transition: none; } .ayat-ex-card:hover { transform: none; } }
 </style>

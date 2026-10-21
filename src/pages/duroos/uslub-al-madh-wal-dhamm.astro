@@ -2,14 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'لماذا نعم وبئس فعلان جامدان؟', a: 'لأنهما لا يتصرفان: لا مضارع لهما ولا أمر ولا مصدر، ولزما صيغة الماضي لإنشاء المدح والذم لا للإخبار عن حدث مضى. وفعليتهما ثابتة باتصال تاء التأنيث بهما: "نعمت المرأةُ" و"بئست الخصلةُ".' },
@@ -28,16 +25,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="أسلوب المدح والذم" description="شرح أسلوب المدح والذم: نعم وبئس فعلان جامدان، صور فاعلهما الأربع، إعراب المخصوص بالمدح أو الذم وحذفه، وحبذا ولا حبذا، مع أمثلة معربة كاملة وشواهد قرآنية." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['uslub-al-madh-wal-dhamm'].ar}
+    slug="uslub-al-madh-wal-dhamm"
     title="أسلوب المدح والذم"
     summary="نعم وبئس فعلان ماضيان جامدان وضعا لإنشاء المدح والذم، ولهما فاعل لا يكون إلا على صور محدودة، ثم اسم مرفوع بعدهما هو المخصوص بالمدح أو الذم. ومثلهما حبذا في المدح ولا حبذا في الذم. هذا الدرس يعرض صور الفاعل وإعراب المخصوص ومواضع حذفه، بأمثلة معربة كاملة وشواهد من القرآن الكريم."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="نعم وبئس وعملهما"
@@ -46,9 +42,9 @@ const faqs = [
     <p><span class="ar">نِعْمَ الرَّجُلُ زَيْدٌ</span></p>
     <p><strong>الإعراب:</strong> <span class="ar">نِعْمَ</span>: فعل ماضٍ جامد لإنشاء المدح مبني على الفتح. <span class="ar">الرَّجُلُ</span>: فاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره. <span class="ar">زَيْدٌ</span>: مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، والجملة الفعلية قبله في محل رفع خبر مقدم. ويجوز إعرابه خبرًا لمبتدأ محذوف وجوبًا تقديره هو.</p>
     <p>فالجملة في حقيقتها جملة اسمية قدم خبرها، وراجع أحكام التقديم في درس <a href="/duroos/al-mubtada-wal-khabar">المبتدأ والخبر</a>، وأحكام <a href="/duroos/al-fail">الفاعل</a> في درسه.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="fail-forms"
     title="صور فاعل نعم وبئس"
@@ -60,14 +56,14 @@ const faqs = [
       <li><strong>الضمير المستتر المفسر بتمييز</strong>: <span class="ar">نِعْمَ رَجُلًا خَالِدٌ</span>، الفاعل ضمير مستتر وجوبًا تقديره هو، ورجلًا تمييز منصوب يفسره، وتفصيله في درس <a href="/duroos/al-tamyiz">التمييز</a>.</li>
       <li><strong>ما</strong>: <span class="ar">بِئْسَمَا صَنَعْتَ</span>، ما نكرة تامة بمعنى شيء أو اسم موصول في محل رفع فاعل.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">امدح وذمّ بجملتك.</span>
     ألصق جملة تبدأ بنعم أو بئس أو حبذا في محلل الإعراب، وشاهده يبين الفاعل والمخصوص ويعلل رفعهما.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="makhsus"
     title="المخصوص بالمدح أو الذم"
@@ -79,9 +75,9 @@ const faqs = [
       <li><strong>تقديمه</strong>: <span class="ar">زَيْدٌ نِعْمَ الرَّجُلُ</span>، زيدٌ مبتدأ، وجملة نعم الرجل في محل رفع خبر.</li>
     </ul>
     <p>وحبذا للمدح: <span class="ar">حَبَّذَا الصِّدْقُ</span>، حبَّ فعل ماضٍ جامد، وذا اسم إشارة مبني في محل رفع فاعل، والصدقُ مبتدأ مؤخر أو خبر لمبتدأ محذوف. وللذم: <span class="ar">لَا حَبَّذَا الْكَذِبُ</span>. وبيان أسماء الإشارة في <a href="/duroos/asma-al-ishara">درسها</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -93,21 +89,21 @@ const faqs = [
       <li>يقال خطأً "حبذت الفتاةُ"، والصواب <span class="ar">حَبَّذَا الْفَتَاةُ</span>، فحبذا تلزم صيغة واحدة مع المذكر والمؤنث والمثنى والجمع.</li>
     </ul>
     <p>وأخو هذا الباب في الجمود والإنشاء <a href="/duroos/uslub-al-taajjub">أسلوب التعجب</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="worked-examples"
     title="أمثلة معربة إعرابًا كاملًا"
     lead="هذه نماذج جاهزة بالصياغة الكلاسيكية المعتمدة في كتب النحو، تصلح مراجعة سريعة قبل الامتحان وقالبًا تحاكيه في إعرابك."
   >
-    <p><strong>المثال الأول</strong>: <span class="ar">بِئْسَ الْخُلُقُ الْكَذِبُ</span>: <span class="ar">بِئْسَ</span>: فعل ماضٍ جامد لإنشاء الذم مبني على الفتح. <span class="ar">الْخُلُقُ</span>: فاعل مرفوع وعلامة رفعه الضمة الظاهرة. <span class="ar">الْكَذِبُ</span>: مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، والجملة الفعلية قبله في محل رفع خبر مقدم.</p>
-    <p><strong>المثال الثاني</strong>: <span class="ar">نِعْمَ رَجُلًا خَالِدٌ</span>: <span class="ar">نِعْمَ</span>: فعل ماضٍ جامد لإنشاء المدح مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو. <span class="ar">رَجُلًا</span>: تمييز منصوب وعلامة نصبه الفتحة الظاهرة يفسر الضمير المستتر. <span class="ar">خَالِدٌ</span>: مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، والجملة قبله في محل رفع خبر مقدم.</p>
-    <p><strong>المثال الثالث</strong>: <span class="ar">نِعْمَ صَاحِبُ الْعِلْمِ زَيْدٌ</span>: <span class="ar">نِعْمَ</span>: فعل ماضٍ جامد لإنشاء المدح مبني على الفتح. <span class="ar">صَاحِبُ</span>: فاعل مرفوع وعلامة رفعه الضمة الظاهرة، وهو مضاف. <span class="ar">الْعِلْمِ</span>: مضاف إليه مجرور وعلامة جره الكسرة الظاهرة. <span class="ar">زَيْدٌ</span>: مبتدأ مؤخر مرفوع، والجملة قبله في محل رفع خبر مقدم.</p>
-    <p><strong>المثال الرابع</strong>: <span class="ar">حَبَّذَا الصِّدْقُ</span>: <span class="ar">حَبَّ</span>: فعل ماضٍ جامد لإنشاء المدح مبني على الفتح. <span class="ar">ذَا</span>: اسم إشارة مبني على السكون في محل رفع فاعل. <span class="ar">الصِّدْقُ</span>: مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، وجملة حبذا في محل رفع خبر مقدم.</p>
-  </ArticleSection>
+    <IrabExample label="المثال الأول" ar="بِئْسَ الْخُلُقُ الْكَذِبُ"><span class="ar">بِئْسَ</span>: فعل ماضٍ جامد لإنشاء الذم مبني على الفتح. <span class="ar">الْخُلُقُ</span>: فاعل مرفوع وعلامة رفعه الضمة الظاهرة. <span class="ar">الْكَذِبُ</span>: مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، والجملة الفعلية قبله في محل رفع خبر مقدم.</IrabExample>
+    <IrabExample label="المثال الثاني" ar="نِعْمَ رَجُلًا خَالِدٌ"><span class="ar">نِعْمَ</span>: فعل ماضٍ جامد لإنشاء المدح مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو. <span class="ar">رَجُلًا</span>: تمييز منصوب وعلامة نصبه الفتحة الظاهرة يفسر الضمير المستتر. <span class="ar">خَالِدٌ</span>: مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، والجملة قبله في محل رفع خبر مقدم.</IrabExample>
+    <IrabExample label="المثال الثالث" ar="نِعْمَ صَاحِبُ الْعِلْمِ زَيْدٌ"><span class="ar">نِعْمَ</span>: فعل ماضٍ جامد لإنشاء المدح مبني على الفتح. <span class="ar">صَاحِبُ</span>: فاعل مرفوع وعلامة رفعه الضمة الظاهرة، وهو مضاف. <span class="ar">الْعِلْمِ</span>: مضاف إليه مجرور وعلامة جره الكسرة الظاهرة. <span class="ar">زَيْدٌ</span>: مبتدأ مؤخر مرفوع، والجملة قبله في محل رفع خبر مقدم.</IrabExample>
+    <IrabExample label="المثال الرابع" ar="حَبَّذَا الصِّدْقُ"><span class="ar">حَبَّ</span>: فعل ماضٍ جامد لإنشاء المدح مبني على الفتح. <span class="ar">ذَا</span>: اسم إشارة مبني على السكون في محل رفع فاعل. <span class="ar">الصِّدْقُ</span>: مبتدأ مؤخر مرفوع وعلامة رفعه الضمة الظاهرة، وجملة حبذا في محل رفع خبر مقدم.</IrabExample>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="in-quran"
     title="من القرآن الكريم"
@@ -116,11 +112,8 @@ const faqs = [
     <p><span class="ar">وَوَهَبْنَا لِدَاوُۥدَ سُلَيْمَٰنَ ۚ نِعْمَ ٱلْعَبْدُ ۖ إِنَّهُۥٓ أَوَّابٌ</span> (ص: ٣٠)</p>
     <p><strong>الإعراب:</strong> الواو استئنافية. وهبنا: فعل ماضٍ مبني على السكون لاتصاله بنا الفاعلين، ونا ضمير متصل مبني على السكون في محل رفع فاعل. لداودَ: جار ومجرور متعلقان بوهبنا، وعلامة الجر الفتحة لأنه ممنوع من الصرف. سليمانَ: مفعول به منصوب وعلامة نصبه الفتحة، ممنوع من الصرف. نعمَ: فعل ماضٍ جامد لإنشاء المدح مبني على الفتح. العبدُ: فاعل مرفوع وعلامة رفعه الضمة الظاهرة. والمخصوص بالمدح محذوف تقديره سليمان. إنه أوابٌ: إنّ حرف توكيد ونصب، والهاء اسمها في محل نصب، وأوابٌ خبرها مرفوع.</p>
     <p>ومن الذم قوله تعالى في البقرة: <span class="ar">وَبِئْسَ ٱلْمَصِيرُ</span>، بئسَ فعل ماضٍ جامد لإنشاء الذم، والمصيرُ فاعل مرفوع، والمخصوص بالذم محذوف تقديره عذاب النار. وفي الحجرات: <span class="ar">بِئْسَ ٱلِٱسْمُ ٱلْفُسُوقُ بَعْدَ ٱلْإِيمَٰنِ</span>، والفسوقُ خبر لمبتدأ محذوف وجوبًا وهو المخصوص بالذم. وتجد إعرابها كاملًا في <a href="/quran">إعراب القرآن</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="uslub-al-madh-wal-dhamm" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

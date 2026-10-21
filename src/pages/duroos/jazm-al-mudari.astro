@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما الفرق بين لم ولما؟', a: 'كلاهما حرف نفي وجزم وقلب، لكن "لم" تنفي الفعل نفيًا مطلقًا في الماضي، و"لما" تنفيه إلى زمن التكلم مع توقع حدوثه: "لما يحضرْ" أي لم يحضر حتى الآن ويتوقع حضوره.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="جزم الفعل المضارع" description="شرح جزم المضارع: الأدوات التي تجزم فعلًا واحدًا (لم، لما، لام الأمر، لا الناهية) وأدوات الشرط الجازمة لفعلين، وعلامات الجزم بالسكون وحذف حرف العلة وحذف النون." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['jazm-al-mudari'].ar}
+    slug="jazm-al-mudari"
     title="جزم الفعل المضارع"
     summary="الجزم أثر يختص بالفعل المضارع، تحدثه أدوات قسمها النحاة قسمين: ما يجزم فعلًا واحدًا، وما يجزم فعلين في أسلوب الشرط. وعلاماته ثلاث: السكون، وحذف حرف العلة، وحذف النون. هذا الدرس يجمع الأدوات والعلامات بأمثلة قرآنية معربة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="one-verb"
     title="ما يجزم فعلًا واحدًا"
@@ -49,9 +44,9 @@ const faqs = [
       <li><span class="ar">لَامُ الْأَمْرِ</span>: <span class="ar">﴿لِيُنْفِقْ ذُو سَعَةٍ مِنْ سَعَتِهِ﴾</span>: ينفقْ مجزوم بلام الأمر وعلامة جزمه السكون، وذو فاعل مرفوع بالواو لأنه من <a href="/duroos/al-asma-al-khamsa">الأسماء الخمسة</a>.</li>
       <li><span class="ar">لَا النَّاهِيَة</span>: <span class="ar">لَا تُؤَجِّلْ عَمَلَ الْيَوْمِ إِلَى الْغَدِ</span>: تؤجلْ فعل مضارع مجزوم بلا الناهية وعلامة جزمه السكون، والفاعل ضمير مستتر وجوبًا تقديره أنت.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="two-verbs"
     title="أدوات الشرط الجازمة لفعلين"
@@ -60,14 +55,14 @@ const faqs = [
     <p><span class="ar">مَنْ يَزْرَعْ يَحْصُدْ</span></p>
     <p><strong>الإعراب:</strong> من اسم شرط جازم مبني على السكون في محل رفع مبتدأ. يزرعْ فعل مضارع مجزوم لأنه فعل الشرط وعلامة جزمه السكون، والفاعل ضمير مستتر تقديره هو. يحصدْ فعل مضارع مجزوم لأنه جواب الشرط وعلامة جزمه السكون، وجملتا الشرط والجواب في محل رفع خبر المبتدأ.</p>
     <p>مثال قرآني: <span class="ar">﴿وَمَا تَفْعَلُوا مِنْ خَيْرٍ يَعْلَمْهُ اللَّهُ﴾</span>: تفعلوا فعل الشرط مجزوم بحذف النون لأنه من <a href="/duroos/al-afal-al-khamsa">الأفعال الخمسة</a>، ويعلمْه جواب الشرط مجزوم بالسكون.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">اختبر أسلوب الشرط.</span>
     ألصق جملة شرطية في محلّل الإعراب وشاهده يعين الأداة وفعل الشرط وجوابه وعلامة الجزم في كل منهما.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="signs"
     title="علامات الجزم الثلاث"
@@ -79,9 +74,9 @@ const faqs = [
       <li><strong>حذف النون:</strong> <span class="ar">لَمْ يَكْتُبُوا</span>، مجزوم وعلامة جزمه حذف النون لأنه من الأفعال الخمسة، وواو الجماعة فاعل.</li>
     </ul>
     <p>وجدول العلامات الأصلية والفرعية كلها في درس <a href="/duroos/alamat-al-irab">علامات الإعراب</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -93,11 +88,8 @@ const faqs = [
       <li>الفرق بين <span class="ar">لَا تَكْذِبْ</span> (نهي مجزوم) و<span class="ar">لَا يَكْذِبُ الْمُؤْمِنُ</span> (نفي مرفوع) في العلامة، فالحركة الأخيرة تحسم المعنى.</li>
     </ul>
     <p>ونظير هذا الباب في النصب درس <a href="/duroos/nasb-al-mudari">نصب المضارع</a>، وبناء الجملة الفعلية كلها في <a href="/duroos/al-jumla-al-filiyya">درسها</a>، والأصل في <a href="/irab">ما هو الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="jazm-al-mudari" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

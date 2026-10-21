@@ -1,0 +1,27 @@
+---
+/**
+ * LessonSection: one titled part of a grammar lesson.
+ *
+ * Same props as the shared ArticleSection (which the other long-form pages
+ * keep), drawn for the lesson page: a numbered heading in the UI face, then
+ * the section's lead as an editorial pull line, then the body. The number is
+ * a CSS counter, so the outline LessonShell builds from these headings and
+ * the numbers on the page always agree. Styles for the body (examples,
+ * lists, mistakes) live in LessonShell, because the body is the page's own
+ * markup.
+ */
+interface Props {
+  id: string;
+  title: string;
+  lead: string;
+  lang?: 'ar' | 'en';
+}
+const { id, title, lead } = Astro.props;
+---
+<section id={id} class="ls-sec" data-ls-sec>
+  <h2 class="ls-h2" data-reveal><span class="ls-h2-n" aria-hidden="true"></span><span class="ls-h2-t">{title}</span></h2>
+  <p class="ls-lead" data-reveal data-reveal-delay="60">{lead}</p>
+  <div class="ls-prose">
+    <slot />
+  </div>
+</section>

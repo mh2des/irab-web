@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-maful-fih';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Adverbial Object" description="Adverbials of time and place: the fī test, which nouns qualify, attachment, and the adverbial as predicate." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-maful-fih'].en}
-      title="Adverbials of Time and Place"
-      summary="An adverbial is an accusative noun stating when or where an act happened, and the whole chapter turns on one test: can the sentence be restated with the preposition fī without changing its meaning? If it can, the noun is adverbial and accusative. If it cannot, the noun takes whatever case its real role demands. That single test also explains why every time noun qualifies while only some place nouns do."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Adverbials of Time and Place"
+    summary="An adverbial is an accusative noun stating when or where an act happened, and the whole chapter turns on one test: can the sentence be restated with the preposition fī without changing its meaning? If it can, the noun is adverbial and accusative. If it cannot, the noun takes whatever case its real role demands. That single test also explains why every time noun qualifies while only some place nouns do."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the fī test"
@@ -65,9 +58,9 @@ const faqs = [
         irab="سافرتُ فعل وفاعل، يومَ ظرف زمان منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، الجمعةِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة، والظرف متعلق بالفعل سافرت."
         note="Restate it as sāfartu fī yawmi l-jumuʿati and nothing changes. The test passes, so yawma is adverbial and accusative. Compare uḥibbu yawma l-jumuʿati, 'I love Friday', where inserting fī destroys the sense: there yawma is a direct object."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="time-and-place"
       title="Understand: why time is easier than place"
@@ -97,9 +90,9 @@ const faqs = [
         answer="Not adverbial. It is genitive, governed by the preposition fī."
         why="A mosque is a specific place, so it cannot take the accusative on adverbial grounds. The preposition is written rather than implied, and the noun is majrūr. Writing ṣallaytu l-masjida would be an error."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="taalluq"
       title="See: attachment, and the adverbial as predicate"
@@ -116,9 +109,9 @@ const faqs = [
         irab="الكتابُ مبتدأ مرفوع وعلامة رفعه الضمة الظاهرة، عندَ ظرف مكان منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، والكاف ضمير متصل في محل جر مضاف إليه، والظرف متعلق بمحذوف خبر."
         note="The adverbial is not itself the predicate. It attaches to an omitted predicate, estimated as kāʾinun. This is the same analysis given to a prepositional phrase in that position, and it is why the accusative on ʿinda does not conflict with the sentence being nominal."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -129,9 +122,9 @@ const faqs = [
         <li><strong>Calling every time noun an adverbial.</strong> Run the fī test. In <em>uḥibbu yawma l-jumuʿati</em> the noun is a direct object.</li>
         <li><strong>Forgetting the second term.</strong> Adverbials are usually annexed, and the noun after them is genitive. Leaving <em>al-muʿallimi</em> unparsed leaves the analysis incomplete.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -142,12 +135,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: vague and specific place, and fully against partly inflected adverbials.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: attachment of the quasi-sentence and the omitted predicate.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

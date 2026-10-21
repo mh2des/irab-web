@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-nakira-wal-marifa';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Definite and Indefinite" description="The test, the seven kinds of definite noun, the four grammatical consequences of definiteness, and the errors it causes." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-nakira-wal-marifa'].en}
-      title="Definite and Indefinite"
-      summary="Definiteness looks like a small topic and is not. Four separate rules elsewhere in the grammar are decided by it: whether a sentence may begin with a word, whether a following clause is an adjective or a circumstantial accusative, whether an adjective agrees, and why three whole chapters require indefinite nouns. This lesson gives the test, the seven kinds of definite noun, and the consequences."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="Definite and Indefinite"
+    summary="Definiteness looks like a small topic and is not. Four separate rules elsewhere in the grammar are decided by it: whether a sentence may begin with a word, whether a following clause is an adjective or a circumstantial accusative, whether an adjective agrees, and why three whole chapters require indefinite nouns. This lesson gives the test, the seven kinds of definite noun, and the consequences."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: the test"
@@ -58,9 +51,9 @@ const faqs = [
       <LessonObjective items={objectives} />
       <p>The test is genuinely mechanical, which makes it valuable. Ask: can this word take al-? <em>Rajul</em> can, so it is indefinite. <em>Muḥammad</em>, <em>huwa</em> and <em>hādhā</em> cannot, so each is already definite. Tanwīn is a reliable secondary clue: a definite noun does not carry it.</p>
       <p>English speakers should resist mapping this onto "a" and "the". The overlap is real but partial: Arabic has seven routes to definiteness and only one of them is the article.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="kinds"
       title="See: the seven definite nouns"
@@ -86,9 +79,9 @@ const faqs = [
         irab="قرأتُ فعل وفاعل، كتابَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف، الطالبِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة."
         note="kitāba carries no al- and no tanwīn, yet it is definite, because al-ṭālibi is. Had it been kitāba ṭālibin, 'a student's book', the whole phrase would have remained indefinite."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="effect"
       title="Understand: four rules that depend on this"
@@ -126,9 +119,9 @@ const faqs = [
         answer="A circumstantial accusative, ḥāl, in the position of accusative."
         why="al-ṭālibu is definite, so the clause cannot be identifying which student. It describes his state as he arrived: carrying his book. Had it been jāʾa ṭālibun yaḥmilu kitābahu, the clause would have been an adjective."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -139,9 +132,9 @@ const faqs = [
         <li><strong>Making an adjective disagree in definiteness.</strong> <em>al-kitābu l-jadīdu</em>, both definite; <em>kitābun jadīdun</em>, both indefinite. Mixing them produces a sentence, not a phrase: <em>al-kitābu jadīdun</em> means "the book is new".</li>
         <li><strong>Confusing adjective with circumstantial accusative.</strong> Look at the noun before the clause and let its definiteness decide.</li>
       </ul>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -152,12 +145,8 @@ const faqs = [
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: the maxim on clauses after definite and indefinite nouns, and the licensors of an indefinite subject.</li>
         <li><strong>Al-Ashmūnī</strong>, <span class="ar" lang="ar" dir="rtl">شرح الأشموني على الألفية</span>: on generic al- and its effect.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

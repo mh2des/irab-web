@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'al-jumla-al-filiyya';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="The Verbal Sentence" description="A full lesson on the verbal sentence: its two pillars, transitivity, the doer and its forms, the object, the passive, and word order, with complete classical iʿrāb." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['al-jumla-al-filiyya'].en}
-      title="The Verbal Sentence"
-      summary="A verbal sentence opens with a verb. Its two pillars are the verb and its doer, and everything else in it is additional. This lesson covers the kinds of verb and what transitivity means for iʿrāb, the forms the doer takes including the ones you cannot see, why the verb never agrees in number with a following doer, and the rules that fix the order of the three parts."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Verbal Sentence"
+    summary="A verbal sentence opens with a verb. Its two pillars are the verb and its doer, and everything else in it is additional. This lesson covers the kinds of verb and what transitivity means for iʿrāb, the forms the doer takes including the ones you cannot see, why the verb never agrees in number with a following doer, and the rules that fix the order of the three parts."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: pillars and additions"
@@ -77,9 +70,9 @@ const faqs = [
         irab="كتب فعل ماضٍ مبني على الفتح، الطالبُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، الدرسَ مفعول به منصوب وعلامة نصبه الفتحة الظاهرة."
         note="Two different cases doing two different jobs: ḍamma marks who acted, fatḥa marks what was acted upon. This is the clearest demonstration in the language of why case exists."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="the-verb"
       title="The verb: three kinds, and transitivity"
@@ -91,9 +84,9 @@ const faqs = [
         <li><strong>By meaning:</strong> <em>lāzim</em>, intransitive, is satisfied by its doer. <em>Mutaʿaddin</em>, transitive, puts one or more nouns in the accusative.</li>
       </ul>
       <p>The practical consequence: never look for a direct object after an intransitive verb. If you find an accusative noun there, it is something else, a circumstantial accusative or an adverbial, not an object.</p>
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="the-fail"
       title="See: the doer and the shapes it takes"
@@ -125,9 +118,9 @@ const faqs = [
         answer="The wāw of the group, wāw al-jamāʿa, an attached pronoun in the position of nominative."
         why="dhahabū is a past verb built on ḍamma because the wāw attaches to it, and that wāw is the doer: mabnī ʿalā l-sukūn fī maḥall rafʿ fāʿil. There is no explicit noun in the sentence performing the act."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="the-maful-bih"
       title="The object, and its markers"
@@ -144,9 +137,9 @@ const faqs = [
         irab="كرّم فعل ماضٍ مبني على الفتح، المديرُ فاعل مرفوع وعلامة رفعه الضمة الظاهرة، الطالباتِ مفعول به منصوب وعلامة نصبه الكسرة نيابة عن الفتحة لأنه جمع مؤنث سالم."
         note="A kasra that means accusative, not genitive. Learners who read endings mechanically will call this majrūr every time. The wording that protects you is the one the books use: 'kasra standing in place of fatḥa, because it is a sound feminine plural'."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="naib-al-fail"
       title="Understand: when the doer is removed"
@@ -163,9 +156,9 @@ const faqs = [
         irab="كُتِبَ فعل ماضٍ مبني للمجهول مبني على الفتح، الدرسُ نائب فاعل مرفوع وعلامة رفعه الضمة الظاهرة."
         note="Compare kataba l-ṭālibu l-darsa. The doer has gone, and al-darsa, which was accusative, is now al-darsu, nominative. Arabic does not say by whom in this construction: there is no equivalent of 'by the student'. The full treatment is in the deputy doer lesson."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="word-order"
       title="Word order, and the rule that surprises everyone"
@@ -200,9 +193,9 @@ const faqs = [
         answer="Nominal. al-muʾminūna is a mubtadaʾ, and the doer of yaʿmalūna is the attached wāw."
         why="A noun opened the sentence, so it is nominal and the noun cannot be a fāʿil. The verbal sentence yaʿmalūna l-ṣāliḥāti occupies the position of khabar. Note al-ṣāliḥāti: a sound feminine plural object, accusative by kasra."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -213,12 +206,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">قطر الندى وبل الصدى</span> and <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: transitivity, the forms of the doer, and the cases of obligatory fronting.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on the doer not preceding its verb, and on the passive.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>

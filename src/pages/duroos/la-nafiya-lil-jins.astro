@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'لماذا سميت لا النافية للجنس؟', a: 'لأنها تنفي الحكم عن جنس اسمها كله نفيًّا نصًّا لا احتمال فيه. "لا طالبَ في الصفِّ" تنفي وجود أي طالب أصلًا، بينما "لا طالبٌ في الصف" بالرفع تحتمل نفي الواحد ووجود اثنين.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="لا النافية للجنس" description="شرح لا النافية للجنس: عملها عمل إن، شروطها الخمسة، بناء اسمها المفرد ونصب المضاف والشبيه بالمضاف، وحذف خبرها، وإعراب لا إله إلا الله، مع أمثلة معربة." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['la-nafiya-lil-jins'].ar}
+    slug="la-nafiya-lil-jins"
     title="لا النافية للجنس"
     summary="لا النافية للجنس أخت إنّ في العمل: تنصب الاسم وترفع الخبر، وتنفي الحكم عن الجنس كله نفيًّا قاطعًا. عليها مدار أعظم جملة في العربية: لا إله إلا الله. هذا الدرس يعرض شروط عملها الخمسة وأحوال اسمها الثلاث وحذف خبرها، بأمثلة معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="عملها ومعناها"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">لَا كَسُولَ نَاجِحٌ</span></p>
     <p><strong>الإعراب:</strong> لا نافية للجنس حرف مبني على السكون لا محل له من الإعراب. كسولَ اسم لا مبني على الفتح في محل نصب. ناجحٌ خبر لا مرفوع وعلامة رفعه الضمة الظاهرة.</p>
     <p>وهي بهذا رابعة النواسخ الحرفية مع <a href="/duroos/inna-wa-akhawatuha">إنّ وأخواتها</a>، والفرق أن نفيها نص في العموم: لا ناجح من جنس الكسالى أصلًا.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="conditions"
     title="شروط إعمالها"
@@ -59,14 +54,14 @@ const faqs = [
       <li><strong>الاتصال:</strong> إن فصل بينها وبين النكرة أهملت ووجب التكرار: <span class="ar">لَا فِي الدَّارِ رَجُلٌ وَلَا امْرَأَةٌ</span>، رجلٌ مبتدأ مؤخر مرفوع.</li>
       <li><strong>عدم الجار:</strong> إن دخل عليها حرف جر جر ما بعدها: <span class="ar">جِئْتُ بِلَا زَادٍ</span>، زادٍ اسم مجرور بالباء ولا ملغاة، وراجع <a href="/duroos/huruf-al-jarr">حروف الجر</a>.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">انفِ الجنس كله بجملتك.</span>
     ألصق جملة تبدأ بلا النافية للجنس في محلّل الإعراب وشاهده يبين اسمها المبني أو المنصوب وخبرها، مع التعليل.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="ism-states"
     title="أحوال اسمها الثلاث"
@@ -77,9 +72,9 @@ const faqs = [
       <li><strong>المضاف ينصب:</strong> <span class="ar">لَا طَالِبَ عِلْمٍ مَمْنُوعٌ مِنَ السُّؤَالِ</span>: طالبَ اسم لا منصوب وعلامة نصبه الفتحة وهو مضاف، وعلمٍ مضاف إليه مجرور، وتفصيل <a href="/duroos/al-idafa">الإضافة</a> في درسها.</li>
       <li><strong>الشبيه بالمضاف ينصب:</strong> <span class="ar">لَا طَالِعًا جَبَلًا ظَاهِرٌ</span>: طالعًا اسم لا منصوب لاتصاله بما يتمم معناه.</li>
     </ul>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="la-ilaha"
     title="إعراب: لا إله إلا الله"
@@ -88,9 +83,9 @@ const faqs = [
     <p><span class="ar">لَا إِلَهَ إِلَّا اللَّهُ</span></p>
     <p><strong>الإعراب:</strong> لا نافية للجنس. إلهَ اسم لا مبني على الفتح في محل نصب، وخبر لا محذوف وجوبًا تقديره حقٌّ أو موجودٌ. إلا أداة <a href="/duroos/al-istithna">استثناء</a> ملغاة أفادت الحصر. لفظ الجلالة اللهُ بدل من محل لا واسمها مرفوع، أو بدل من الضمير المستتر في الخبر المحذوف.</p>
     <p>ومن الباب أيضًا: <span class="ar">لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ</span>: حولَ اسم لا مبني على الفتح، وقوةَ كذلك بعد لا الثانية المؤكدة.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -102,11 +97,8 @@ const faqs = [
       <li>لا الداخلة على الفعل ليست من هذا الباب: <span class="ar">لَا تَكْسَلْ</span> ناهية جازمة، وبيانها في <a href="/duroos/jazm-al-mudari">جزم المضارع</a>.</li>
     </ul>
     <p>والإطار النظري للنواسخ كلها يبدأ من <a href="/duroos/al-jumla-al-ismiyya">الجملة الاسمية</a>، والتطبيق في <a href="/irab">الإعراب</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="la-nafiya-lil-jins" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

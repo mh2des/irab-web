@@ -2,14 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'ما إعراب "ما" في ما أجمل السماء؟', a: 'ما نكرة تامة تعجبية بمعنى شيء، مبنية على السكون في محل رفع مبتدأ. وأجمل فعل ماضٍ جامد لإنشاء التعجب، فاعله ضمير مستتر وجوبًا تقديره هو يعود على ما، والسماءَ مفعول به. والجملة الفعلية في محل رفع خبر المبتدأ. والمعنى: شيءٌ جعل السماءَ جميلة.' },
@@ -28,16 +25,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="أسلوب التعجب" description="أسلوب التعجب: صيغتاه القياسيتان ما أفعله وأفعِل به، إعراب كل منهما، شروط الفعل الذي يصاغ منه، والتوصل بأشدّ وما أشبهها، مع أمثلة معربة كاملة وشاهد قرآني." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['uslub-al-taajjub'].ar}
+    slug="uslub-al-taajjub"
     title="أسلوب التعجب"
     summary="التعجب استعظام أمر يخفى سببه، وله في العربية صيغتان قياسيتان: ما أفعلَه وأفعِلْ به. إعرابهما من أكثر ما يُسأل عنه في الامتحانات، لأن الفعل فيهما جامد والفاعل مستتر وجوبًا، والباء في الصيغة الثانية زائدة. هذا الدرس يعرض الصيغتين وشروط الفعل الذي يصاغان منه، وكيف نتعجب مما لا يستوفي الشروط، بأمثلة معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="الصيغة الأولى: ما أفعلَه"
@@ -46,9 +42,9 @@ const faqs = [
     <p><span class="ar">مَا أَجْمَلَ السَّمَاءَ!</span></p>
     <p><strong>الإعراب:</strong> <span class="ar">مَا</span>: نكرة تامة تعجبية بمعنى شيء، مبنية على السكون في محل رفع مبتدأ. <span class="ar">أَجْمَلَ</span>: فعل ماضٍ جامد لإنشاء التعجب مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو يعود على ما. <span class="ar">السَّمَاءَ</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة. والجملة الفعلية في محل رفع خبر المبتدأ.</p>
     <p>والمعنى: شيءٌ عظيم جعل السماءَ جميلةً. فما هنا اسم لا حرف، وهذا سر إعرابها مبتدأ، وراجع أحكام <a href="/duroos/al-mubtada-wal-khabar">المبتدأ والخبر</a> في درسهما.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="second-form"
     title="الصيغة الثانية: أفعِلْ به"
@@ -57,14 +53,14 @@ const faqs = [
     <p><span class="ar">أَكْرِمْ بِزَيْدٍ!</span></p>
     <p><strong>الإعراب:</strong> <span class="ar">أَكْرِمْ</span>: فعل ماضٍ جاء على صورة الأمر لإنشاء التعجب، مبني على الفتح المقدر منع من ظهوره السكون الذي جيء به لمناسبة صيغة الأمر. <span class="ar">بِزَيْدٍ</span>: الباء حرف جر زائد، وزيدٍ فاعل مرفوع محلًا مجرور لفظًا بحرف الجر الزائد.</p>
     <p>والمعنى: ما أكرمَ زيدًا. فالصيغتان بمعنى واحد، والباء الزائدة هنا من نظائر الباء في خبر ليس وفي فاعل كفى، وبيان الزائد من حروف الجر في درس <a href="/duroos/huruf-al-jarr">حروف الجر</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">تعجّب بجملتك.</span>
     ألصق جملة تبدأ بما أفعله أو أفعِل به في محلل الإعراب، وشاهده يبين ما التعجبية والفعل الجامد والمتعجب منه، مع التعليل.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="conditions"
     title="شروط الفعل الذي يصاغ منه التعجب"
@@ -77,9 +73,9 @@ const faqs = [
       <li><strong>الفعل الجامد وما لا يقبل التفاوت</strong>: لا يتعجب منه أصلًا، فلا يقال "ما أليسَ" ولا "ما أنعمَ" ولا "ما أموتَ". أما الناقص والمنفي والمبني للمجهول فيتوصل إليها بالمصدر المؤول: <span class="ar">مَا أَحْسَنَ مَا كَانَ الطَّالِبُ مُنْصِفًا!</span></li>
     </ul>
     <p>وإذا كان المصدر بعد الفعل المساعد مؤولًا فهو في محل نصب مفعول به: <span class="ar">مَا أَعْظَمَ أَنْ تَصْدُقَ!</span>، وراجع عمل أن في درس <a href="/duroos/nasb-al-mudari">نصب المضارع</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -91,21 +87,21 @@ const faqs = [
       <li>يقال خطأً "ما أحمرَ الوردَ" و"ما أستخرجَ المعادنَ"، والصواب التوصل بفعل مساعد: <span class="ar">مَا أَشَدَّ حُمْرَةَ الْوَرْدِ</span> و<span class="ar">مَا أَشَدَّ اسْتِخْرَاجَ الْمَعَادِنِ</span>.</li>
     </ul>
     <p>وأخت هذا الباب في الجمود والإنشاء <a href="/duroos/uslub-al-madh-wal-dhamm">أسلوب المدح والذم</a> بنعم وبئس.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="worked-examples"
     title="أمثلة معربة إعرابًا كاملًا"
     lead="هذه نماذج جاهزة بالصياغة الكلاسيكية المعتمدة في كتب النحو، تصلح مراجعة سريعة قبل الامتحان وقالبًا تحاكيه في إعرابك."
   >
-    <p><strong>المثال الأول</strong>: <span class="ar">مَا أَصْدَقَ الْمُؤْمِنَ!</span>: <span class="ar">مَا</span>: نكرة تامة تعجبية مبنية على السكون في محل رفع مبتدأ. <span class="ar">أَصْدَقَ</span>: فعل ماضٍ جامد لإنشاء التعجب مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو. <span class="ar">الْمُؤْمِنَ</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة. والجملة الفعلية في محل رفع خبر المبتدأ.</p>
-    <p><strong>المثال الثاني</strong>: <span class="ar">أَحْسِنْ بِالصِّدْقِ!</span>: <span class="ar">أَحْسِنْ</span>: فعل ماضٍ جاء على صورة الأمر لإنشاء التعجب، مبني على الفتح المقدر منع من ظهوره السكون الذي جيء به لمناسبة صيغة الأمر. <span class="ar">بِالصِّدْقِ</span>: الباء حرف جر زائد، والصدقِ فاعل مرفوع محلًا مجرور لفظًا بحرف الجر الزائد.</p>
-    <p><strong>المثال الثالث</strong>: <span class="ar">مَا أَشَدَّ حُمْرَةَ الْوَرْدِ!</span>: <span class="ar">مَا</span>: نكرة تامة تعجبية مبنية على السكون في محل رفع مبتدأ. <span class="ar">أَشَدَّ</span>: فعل ماضٍ جامد لإنشاء التعجب مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو. <span class="ar">حُمْرَةَ</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، وهو مضاف. <span class="ar">الْوَرْدِ</span>: مضاف إليه مجرور وعلامة جره الكسرة الظاهرة. والجملة الفعلية في محل رفع خبر.</p>
-    <p><strong>المثال الرابع</strong>: <span class="ar">مَا أَعْظَمَ أَنْ تَصْدُقَ!</span>: <span class="ar">مَا</span>: نكرة تامة تعجبية في محل رفع مبتدأ. <span class="ar">أَعْظَمَ</span>: فعل ماضٍ جامد لإنشاء التعجب مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو. <span class="ar">أَنْ</span>: حرف مصدري ونصب. <span class="ar">تَصْدُقَ</span>: فعل مضارع منصوب بأن وعلامة نصبه الفتحة الظاهرة، والفاعل ضمير مستتر وجوبًا تقديره أنت. والمصدر المؤول من أن والفعل في محل نصب مفعول به، والجملة الفعلية في محل رفع خبر.</p>
-  </ArticleSection>
+    <IrabExample label="المثال الأول" ar="مَا أَصْدَقَ الْمُؤْمِنَ!"><span class="ar">مَا</span>: نكرة تامة تعجبية مبنية على السكون في محل رفع مبتدأ. <span class="ar">أَصْدَقَ</span>: فعل ماضٍ جامد لإنشاء التعجب مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو. <span class="ar">الْمُؤْمِنَ</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة. والجملة الفعلية في محل رفع خبر المبتدأ.</IrabExample>
+    <IrabExample label="المثال الثاني" ar="أَحْسِنْ بِالصِّدْقِ!"><span class="ar">أَحْسِنْ</span>: فعل ماضٍ جاء على صورة الأمر لإنشاء التعجب، مبني على الفتح المقدر منع من ظهوره السكون الذي جيء به لمناسبة صيغة الأمر. <span class="ar">بِالصِّدْقِ</span>: الباء حرف جر زائد، والصدقِ فاعل مرفوع محلًا مجرور لفظًا بحرف الجر الزائد.</IrabExample>
+    <IrabExample label="المثال الثالث" ar="مَا أَشَدَّ حُمْرَةَ الْوَرْدِ!"><span class="ar">مَا</span>: نكرة تامة تعجبية مبنية على السكون في محل رفع مبتدأ. <span class="ar">أَشَدَّ</span>: فعل ماضٍ جامد لإنشاء التعجب مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو. <span class="ar">حُمْرَةَ</span>: مفعول به منصوب وعلامة نصبه الفتحة الظاهرة، وهو مضاف. <span class="ar">الْوَرْدِ</span>: مضاف إليه مجرور وعلامة جره الكسرة الظاهرة. والجملة الفعلية في محل رفع خبر.</IrabExample>
+    <IrabExample label="المثال الرابع" ar="مَا أَعْظَمَ أَنْ تَصْدُقَ!"><span class="ar">مَا</span>: نكرة تامة تعجبية في محل رفع مبتدأ. <span class="ar">أَعْظَمَ</span>: فعل ماضٍ جامد لإنشاء التعجب مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو. <span class="ar">أَنْ</span>: حرف مصدري ونصب. <span class="ar">تَصْدُقَ</span>: فعل مضارع منصوب بأن وعلامة نصبه الفتحة الظاهرة، والفاعل ضمير مستتر وجوبًا تقديره أنت. والمصدر المؤول من أن والفعل في محل نصب مفعول به، والجملة الفعلية في محل رفع خبر.</IrabExample>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="in-quran"
     title="من القرآن الكريم"
@@ -114,11 +110,8 @@ const faqs = [
     <p><span class="ar">قُتِلَ ٱلْإِنسَٰنُ مَآ أَكْفَرَهُۥ</span> (عبس: ١٧)</p>
     <p><strong>الإعراب:</strong> قُتِلَ: فعل ماضٍ مبني للمجهول مبني على الفتح. الإنسانُ: نائب فاعل مرفوع وعلامة رفعه الضمة الظاهرة. ما: تعجبية نكرة تامة بمعنى شيء، في محل رفع مبتدأ. أكفرَ: فعل ماضٍ جامد لإنشاء التعجب مبني على الفتح، والفاعل ضمير مستتر وجوبًا تقديره هو. والهاء: ضمير متصل مبني على الضم في محل نصب مفعول به. والجملة الفعلية في محل رفع خبر المبتدأ.</p>
     <p>ومن الباب قوله تعالى في البقرة: <span class="ar">فَمَآ أَصْبَرَهُمْ عَلَى ٱلنَّارِ</span>، فأصبرَ فعل ماضٍ جامد لإنشاء التعجب، وهم في محل نصب مفعول به، والفاعل ضمير مستتر وجوبًا تقديره هو يعود على ما. وتجد الإعراب الكامل في <a href="/quran">إعراب القرآن</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="uslub-al-taajjub" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

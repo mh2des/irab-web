@@ -2,14 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
-import Byline from '../../components/Byline.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import ArticleSection from '../../components/ArticleSection.astro';
-import ArticleCta from '../../components/ArticleCta.astro';
-import ArticleFaq from '../../components/ArticleFaq.astro';
-import AyatExamples from '../../components/duroos/AyatExamples.astro';
-import { lessonAnswers } from '../../data/lesson-answers';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
 
 const faqs = [
   { q: 'هل المضاف إليه مجرور دائمًا؟', a: 'نعم، المضاف إليه مجرور أبدًا، هذه من القواعد المطردة بلا استثناء. أما المضاف نفسه فيعرب بحسب موقعه في الجملة: فاعلًا أو مفعولًا أو مبتدأ أو غير ذلك.' },
@@ -28,16 +24,15 @@ const faqs = [
 >
   <ArticleSchema slot="head" lang="ar" kind="lesson" headline="الإضافة والمضاف إليه" description="شرح الإضافة: تعريفها، جر المضاف إليه دائمًا، ما يحذف من المضاف، الإضافة المعنوية واللفظية وتقديرها بالحروف، مع أمثلة قرآنية معربة إعرابًا كاملًا." />
   <Nav lang="ar" />
-
-  <ArticleHero
+  <LessonShell
     lang="ar"
-    answer={lessonAnswers['al-idafa'].ar}
+    slug="al-idafa"
     title="الإضافة والمضاف إليه"
     summary="الإضافة نسبة بين اسمين يتنزل ثانيهما من الأول منزلة التنوين، فيجر أبدًا. لا تكاد تخلو جملة عربية من إضافة، وأخطاؤها من أكثر ما يقع في الكتابة. هذا الدرس يشرح أركانها وما يحذف لأجلها، والفرق بين المعنوية واللفظية، مع أمثلة معربة كاملة."
-  />
-  <Byline lang="ar" kind="lesson" />
+    faqs={faqs}
+  >
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="definition"
     title="التعريف والحكم"
@@ -46,9 +41,9 @@ const faqs = [
     <p><span class="ar">قَرَأْتُ كِتَابَ النَّحْوِ</span></p>
     <p><strong>الإعراب:</strong> قرأتُ فعل ماضٍ مبني على السكون لاتصاله بتاء الفاعل، والتاء ضمير متصل مبني في محل رفع فاعل. كتابَ <a href="/duroos/al-maful-bih">مفعول به</a> منصوب وعلامة نصبه الفتحة الظاهرة وهو مضاف. النحوِ مضاف إليه مجرور وعلامة جره الكسرة الظاهرة.</p>
     <p>فالمضاف "كتاب" أخذ إعرابه من موقعه في الجملة، والمضاف إليه "النحو" لزم الجر. ولو وقع المضاف فاعلًا لارتفع: <span class="ar">أَعْجَبَنِي كِتَابُ النَّحْوِ</span>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="what-drops"
     title="ما يحذف من المضاف"
@@ -60,14 +55,14 @@ const faqs = [
       <li><strong>نون جمع المذكر السالم:</strong> <span class="ar">مُعَلِّمُونَ</span> ثم <span class="ar">مُعَلِّمُو الْمَدْرَسَةِ</span>، ونصبًا وجرًّا: <span class="ar">مُعَلِّمِي الْمَدْرَسَةِ</span>.</li>
     </ul>
     <p>مثال قرآني: <span class="ar">﴿إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ﴾</span>: شانئَ اسم إنّ منصوب وهو مضاف، والكاف ضمير متصل مبني في محل جر مضاف إليه. فالضمائر المتصلة بالأسماء كلها في محل جر بالإضافة، وعمل إنّ في <a href="/duroos/inna-wa-akhawatuha">درسها</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleCta lang="ar">
+  <LessonTry lang="ar">
     <span slot="title">أَعرِب سلسلة إضافات.</span>
     ألصق تركيبًا مثل "بابُ بيتِ جارِ صديقي" في محلّل الإعراب وشاهد كل مضاف إليه يجر ما بعده، حلقة بعد حلقة.
-  </ArticleCta>
+  </LessonTry>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="manawiyya"
     title="الإضافة المعنوية"
@@ -79,9 +74,9 @@ const faqs = [
       <li><strong>بتقدير في:</strong> <span class="ar">﴿بَلْ مَكْرُ اللَّيْلِ وَالنَّهَارِ﴾</span> أي المكر في الليل والنهار.</li>
     </ul>
     <p>ولأن المعنوية تعرّف المضاف، لا تدخل عليه أل: يقال <span class="ar">كِتَابُ الطَّالِبِ</span> ولا يقال "الكتابُ الطالبِ". ومعاني حروف الجر المقدرة مفصلة في درس <a href="/duroos/huruf-al-jarr">حروف الجر</a>.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="lafziyya"
     title="الإضافة اللفظية"
@@ -90,9 +85,9 @@ const faqs = [
     <p><span class="ar">هَذَا رَجُلٌ حَسَنُ الْوَجْهِ</span></p>
     <p><strong>الإعراب:</strong> حسنُ نعت لرجل مرفوع وهو مضاف، الوجهِ مضاف إليه مجرور. والأصل: حسنٌ وجهُه، فأضيفت الصفة المشبهة إلى معمولها تخفيفًا. وأحكام النعت نفسه في <a href="/duroos/al-naat">درسه</a>.</p>
     <p>وعلامة اللفظية أن الإضافة لم تفد المضاف تعريفًا، بدليل وصف النكرة "رجل" بها، ولذلك جاز فيها نحو <span class="ar">الْحَسَنُ الْوَجْهِ</span> بدخول أل على المضاف.</p>
-  </ArticleSection>
+  </LessonSection>
 
-  <ArticleSection
+  <LessonSection
     lang="ar"
     id="common-mistakes"
     title="أخطاء شائعة"
@@ -104,11 +99,8 @@ const faqs = [
       <li>المضاف إليه لا يكون إلا مجرورًا، فيقال خطأً "قرأتُ كتابَ الطالبَ"، والصواب <span class="ar">كِتَابَ الطَّالِبِ</span>.</li>
     </ul>
     <p>ويلتبس المضاف إليه المجرور بالاسم المجرور بالحرف، والتمييز بينهما أساس في <a href="/irab">الإعراب</a> الصحيح. وإذا كان المضاف إليه ممنوعًا من الصرف جُر بالفتحة، وتفصيله في <a href="/duroos/al-mamnu-min-al-sarf">درسه</a>، والإطار كله في <a href="/nahw">ما هو النحو</a>.</p>
-  </ArticleSection>
-
-  <AyatExamples slug="al-idafa" />
-
-  <ArticleFaq lang="ar" items={faqs} />
+  </LessonSection>
+  </LessonShell>
 
   <Footer lang="ar" />
 </BaseLayout>

@@ -3,17 +3,12 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import ArticleHero from '../../../components/ArticleHero.astro';
-import Byline from '../../../components/Byline.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
-import ArticleSection from '../../../components/ArticleSection.astro';
-import ArticleFaq from '../../../components/ArticleFaq.astro';
-import AyatExamples from '../../../components/duroos/AyatExamples.astro';
-import LessonNav from '../../../components/duroos/LessonNav.astro';
+import LessonShell from '../../../components/duroos/LessonShell.astro';
+import LessonSection from '../../../components/duroos/LessonSection.astro';
 import LessonObjective from '../../../components/duroos/LessonObjective.astro';
 import ExampleCard from '../../../components/duroos/ExampleCard.astro';
 import CheckQuestion from '../../../components/duroos/CheckQuestion.astro';
-import { lessonAnswers } from '../../../data/lesson-answers';
 
 const slug = 'naib-al-fail';
 const objectives = [
@@ -39,17 +34,15 @@ const faqs = [
   <ArticleSchema slot="head" lang="en" kind="lesson" headline="Nāʾib al-Fāʿil (the deputy doer)" description="A full lesson on the deputy doer: rebuilding the verb for the passive, what deputises when there is no object, the markers of its nominative, and common errors, with complete classical iʿrāb." />
   <Nav lang="en" />
 
-  <div class="en-lesson">
-    <ArticleHero
-      lang="en"
-      answer={lessonAnswers['naib-al-fail'].en}
-      title="The Deputy Doer"
-      summary="Arabic forms the passive by removing the doer from the sentence entirely and rebuilding the verb around its absence. What was the object rises into the nominative and inherits every ruling the doer had. This lesson covers the two patterns for rebuilding the verb, what deputises when the verb has no object to promote, and why Arabic will not tell you who did it."
-    />
-    <Byline lang="en" kind="lesson" />
-    <LessonNav slug={slug} place="top" />
+  <LessonShell
+    lang="en"
+    slug={slug}
+    title="The Deputy Doer"
+    summary="Arabic forms the passive by removing the doer from the sentence entirely and rebuilding the verb around its absence. What was the object rises into the nominative and inherits every ruling the doer had. This lesson covers the two patterns for rebuilding the verb, what deputises when the verb has no object to promote, and why Arabic will not tell you who did it."
+    faqs={faqs}
+  >
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="definition"
       title="Learn: what the deputy is"
@@ -68,9 +61,9 @@ const faqs = [
         irab="كُتِبَ فعل ماضٍ مبني للمجهول مبني على الفتح، الدرسُ نائب فاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره."
         note="Compare kataba l-ṭālibu l-darsa. The doer al-ṭālibu is gone, not moved, and al-darsa has become al-darsu. There is no way in this sentence to say who wrote it."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="building"
       title="See: rebuilding the verb"
@@ -99,9 +92,9 @@ const faqs = [
         answer="shuriḥa l-darsu. al-darsa was accusative as an object; as deputy it becomes nominative, al-darsu."
         why="The past passive takes ḍamma on the first letter and kasra before the last, giving shuriḥa. The doer al-muʿallimu leaves the sentence entirely and cannot be reintroduced with a preposition."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="what-substitutes"
       title="Understand: when there is no object to promote"
@@ -118,9 +111,9 @@ const faqs = [
         irab="سِيرَ فعل ماضٍ مبني للمجهول مبني على الفتح، في حرف جر، الطريقِ اسم مجرور وعلامة جره الكسرة الظاهرة، والجار والمجرور في محل رفع نائب فاعل."
         note="sāra is intransitive, so there is no object to raise. The prepositional phrase deputises, and note the wording: the phrase is fī maḥall rafʿ, in the position of nominative, because a phrase cannot itself carry a case ending. The noun inside it stays genitive, governed by fī."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="signs"
       title="The markers of its nominative"
@@ -135,9 +128,9 @@ const faqs = [
         irab="كُرِّمَ فعل ماضٍ مبني للمجهول مبني على الفتح، الفائزونَ نائب فاعل مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم."
         note="Had this been active, kurrima would be karrama and al-fāʾizīna would be the object, accusative by yāʾ. The letters wāw and yāʾ are visible even in unvowelled text, which makes them the most reliable clue you have."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="common-mistakes"
       title="Where learners go wrong"
@@ -155,9 +148,9 @@ const faqs = [
         answer="Two faults: al-darsa should be al-darsu, and the agent phrase should not be there at all."
         why="The deputy takes the nominative, so al-darsu. And min qibali, a calque of English 'by', defeats the purpose of a construction built for an unnamed doer. Say kataba l-ṭālibu l-darsa instead."
       />
-    </ArticleSection>
+    </LessonSection>
 
-    <ArticleSection
+    <LessonSection
       lang="en"
       id="sources"
       title="Sources"
@@ -168,12 +161,8 @@ const faqs = [
         <li><strong>Ibn Hishām al-Anṣārī</strong>, <span class="ar" lang="ar" dir="rtl">أوضح المسالك</span>: the order of what deputises when there is no object.</li>
         <li><strong>Ibn ʿAqīl</strong>, <span class="ar" lang="ar" dir="rtl">شرح ابن عقيل على ألفية ابن مالك</span>: on the passive of hollow verbs and on the reasons the doer is left unnamed.</li>
       </ul>
-    </ArticleSection>
-
-    <AyatExamples slug={slug} lang="en" />
-    <ArticleFaq lang="en" items={faqs} />
-    <LessonNav slug={slug} place="bottom" />
-  </div>
+    </LessonSection>
+  </LessonShell>
 
   <Footer lang="en" />
 </BaseLayout>
