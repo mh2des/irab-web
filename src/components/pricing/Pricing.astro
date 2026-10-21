@@ -211,7 +211,7 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
 
   {/* ── Plans ────────────────────────────────────────────────────────── */}
   <div class="pr-plans">
-    <article class="pr-plan pr-plus" aria-labelledby="pr-plus-name">
+    <article class="pr-plan pr-plus spot-card" aria-labelledby="pr-plus-name">
       <span class="pr-badge"><Fragment set:html={I.crown} />{s.plusBadge}</span>
       <h2 id="pr-plus-name" class="pr-plan-name">{s.plusName}</h2>
 
@@ -255,7 +255,7 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
       </ul>
     </article>
 
-    <article class="pr-plan pr-free" aria-labelledby="pr-free-name">
+    <article class="pr-plan pr-free spot-card" aria-labelledby="pr-free-name">
       <h2 id="pr-free-name" class="pr-free-name">{s.freeName}</h2>
       {/* Arabic says «مجانًا»: a lone Arabic zero (٠) is a dot and «$٠» read as «$ •». */}
       <p class="pr-free-price">{en ? <bdi dir="ltr" class="pr-num">{s.freePrice}</bdi> : <span class="pr-num">{s.freePrice}</span>}</p>
@@ -335,7 +335,7 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
   <section class="pr-final" data-reveal>
     <h2 class="pr-final-title">{s.finalTitle}</h2>
     <p class="pr-final-lead">{s.finalLead}</p>
-    <a href={`${base}/app?checkout=annual`} class="pr-final-btn">{s.finalCta}<Fragment set:html={arrow} /></a>
+    <a href={`${base}/app?checkout=annual`} class="pr-final-btn" data-magnetic>{s.finalCta}<Fragment set:html={arrow} /></a>
     <p class="pr-final-fine">{s.finalFine}</p>
   </section>
 </div>
@@ -355,6 +355,8 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
     --pr-teal: var(--color-teal);
     --pr-shadow: 0 1px 2px rgb(23 56 71 / 0.06), 0 10px 30px -14px rgb(23 56 71 / 0.18);
     --pr-shadow-plus: 0 1px 2px rgb(23 56 71 / 0.06), 0 22px 50px -22px color-mix(in srgb, var(--color-purple) 45%, rgb(23 56 71 / 0.3));
+    --pr-shadow-hover: 0 2px 4px rgb(23 56 71 / 0.06), 0 30px 60px -26px color-mix(in srgb, var(--color-purple) 38%, rgb(23 56 71 / 0.38));
+    --pr-shadow-plus-hover: 0 2px 4px rgb(23 56 71 / 0.06), 0 34px 70px -26px color-mix(in srgb, var(--color-purple) 58%, rgb(23 56 71 / 0.35));
     --pr-ease: var(--ease-out-quart);
     max-width: 68rem;
     margin: 0 auto;
@@ -375,6 +377,8 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
     --pr-teal: #4FB3D9;
     --pr-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 14px 32px -14px rgb(0 0 0 / 0.6);
     --pr-shadow-plus: 0 1px 2px rgb(0 0 0 / 0.4), 0 24px 54px -22px rgb(0 0 0 / 0.75);
+    --pr-shadow-hover: 0 2px 4px rgb(0 0 0 / 0.45), 0 30px 60px -24px rgb(0 0 0 / 0.8);
+    --pr-shadow-plus-hover: 0 2px 4px rgb(0 0 0 / 0.45), 0 34px 70px -24px color-mix(in srgb, #8F66FF 35%, rgb(0 0 0 / 0.8));
   }
 
   /* ── Hero ── */
@@ -419,17 +423,20 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
     background: var(--pr-surface);
     border: 1px solid var(--pr-edge);
     box-shadow: var(--pr-shadow);
-    transition: transform .35s var(--pr-ease), box-shadow .35s var(--pr-ease), border-color .25s;
+    transition: transform .45s var(--ease-out-expo), box-shadow .45s var(--ease-out-expo), border-color .3s var(--pr-ease);
   }
   .pr-plus {
     border: 1.5px solid var(--pr-accent-line);
     box-shadow: var(--pr-shadow-plus), 0 0 0 5px color-mix(in srgb, var(--pr-accent) 6%, transparent);
   }
+  /* The site's card hover: the card rises on a longer, softer shadow, and
+     the brand spotlight (spot-card, ui-fx) follows the pointer inside it. */
   @media (hover: hover) {
-    .pr-plan:hover { transform: translateY(-4px); }
-    .pr-free:hover { border-color: color-mix(in srgb, var(--pr-teal) 40%, var(--pr-edge)); }
-    .pr-plus:hover { border-color: var(--pr-accent); }
+    .pr-plan:hover { transform: translateY(-6px); box-shadow: var(--pr-shadow-hover); }
+    .pr-free:hover { border-color: color-mix(in srgb, var(--pr-accent) 32%, var(--pr-edge)); }
+    .pr-plus:hover { border-color: var(--pr-accent); box-shadow: var(--pr-shadow-plus-hover), 0 0 0 6px color-mix(in srgb, var(--pr-accent) 10%, transparent); }
   }
+  .pr-plan:active { transform: translateY(-2px); transition-duration: .12s; }
 
   .pr-badge {
     align-self: flex-start;
@@ -457,7 +464,10 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
     border: 1.5px solid var(--pr-edge);
     transition: border-color .22s var(--pr-ease), background-color .22s var(--pr-ease), box-shadow .22s var(--pr-ease);
   }
-  .pr-opt:hover { border-color: var(--pr-accent-line); }
+  .pr-opt:hover { border-color: var(--pr-accent-line); background: color-mix(in srgb, var(--pr-accent) 3%, var(--pr-surface)); }
+  .pr-opt:hover .pr-dot { border-color: var(--pr-accent); }
+  .pr-opt:active { scale: .99; }
+  .pr-opt { transition: border-color .22s var(--pr-ease), background-color .22s var(--pr-ease), box-shadow .22s var(--pr-ease), scale .15s var(--pr-ease); }
   .pr-opt:has(.pr-radio:checked) {
     border-color: var(--pr-accent);
     background: var(--pr-accent-soft);
@@ -491,7 +501,7 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
     font-family: var(--font-arabic); font-weight: 700; font-size: 1.65rem;
     font-variant-numeric: tabular-nums; letter-spacing: -0.01em; unicode-bidi: isolate;
   }
-  .pr-frac { font-size: 0.5em; font-weight: 800; vertical-align: 0.8em; margin-inline-start: 0.04em; }
+  .pr-frac { font-size: 0.5em; font-weight: 700; vertical-align: 0.8em; margin-inline-start: 0.04em; }
   .pr-per { margin-top: 0.3rem; font-size: 0.82rem; font-weight: 600; color: var(--pr-subtle); }
   @media (max-width: 479px) {
     .pr-opt { gap: 0.7rem; padding: 0.85rem 0.85rem; }
@@ -574,12 +584,16 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
   .pr-table td.is-plus, .pr-table thead th.is-plus { background: var(--pr-accent-soft); }
   .pr-group th {
     padding: 1.15rem 1.5rem 0.55rem; text-align: start;
-    font-size: 0.92rem; font-weight: 800; color: var(--pr-accent);
+    font-size: 0.92rem; font-weight: 700; color: var(--pr-accent);
     background: var(--pr-surface);
   }
   .pr-table tbody tr:not(.pr-group) { border-top: 1px solid color-mix(in srgb, var(--pr-edge) 70%, transparent); transition: background-color .2s; }
   .pr-table tbody tr.pr-group + tr { border-top: 0; }
-  @media (hover: hover) { .pr-table tbody tr:not(.pr-group):hover { background: color-mix(in srgb, var(--pr-sunken) 60%, transparent); } }
+  .pr-feat-name { transition: color .2s; }
+  @media (hover: hover) {
+    .pr-table tbody tr:not(.pr-group):hover { background: color-mix(in srgb, var(--pr-sunken) 60%, transparent); }
+    .pr-table tbody tr:not(.pr-group):hover .pr-feat-name { color: var(--pr-accent-text); }
+  }
   .pr-feat { padding: 1rem 1.5rem; text-align: start; font-weight: 400; width: 40%; }
   .pr-feat-name { display: block; font-size: 1.02rem; font-weight: 700; line-height: 1.55; }
   .pr-feat-desc { display: block; margin-top: 0.15rem; font-size: 0.88rem; line-height: 1.6; color: var(--pr-subtle); }
@@ -617,8 +631,10 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
   .pr-q { border-bottom: 1px solid var(--pr-edge); }
   .pr-q summary {
     display: flex; align-items: center; justify-content: space-between; gap: 1.25rem;
-    padding: 1.2rem 0.25rem; cursor: pointer; list-style: none;
+    padding: 1.2rem 0.75rem; margin-inline: -0.5rem; border-radius: 14px; cursor: pointer; list-style: none;
+    transition: background-color .25s var(--pr-ease);
   }
+  @media (hover: hover) { .pr-q summary:hover { background: color-mix(in srgb, var(--pr-sunken) 70%, transparent); } }
   .pr-q summary::-webkit-details-marker { display: none; }
   .pr-q h3 {
     margin: 0; font-family: var(--font-arabic); font-weight: 700;
@@ -629,7 +645,9 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
   .pr-q-ic {
     flex: none; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 999px;
     color: var(--pr-accent); background: color-mix(in srgb, var(--pr-accent) 9%, transparent);
+    transition: rotate .5s cubic-bezier(.34, 1.56, .64, 1), scale .3s cubic-bezier(.34, 1.56, .64, 1), background-color .25s, color .25s;
   }
+  .pr-q summary:hover .pr-q-ic { scale: 1.12; background: color-mix(in srgb, var(--pr-accent) 16%, transparent); }
   .pr-q-ic svg { width: 1rem; height: 1rem; }
   .pr-a { margin: 0; padding: 0 0.25rem 1.35rem; font-size: 1.02rem; line-height: 1.95; color: var(--pr-muted); }
 

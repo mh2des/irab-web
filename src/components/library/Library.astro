@@ -150,7 +150,7 @@ const listIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
             <a href={reader(b.id)} class={`lb-book is-${sh.cls}`}
                data-book data-id={b.id} data-cat={b.category} data-total={b.totalChapters}
                data-search={`${b.title} ${b.level}`}>
-              <span class={`lb-cover v${variant(b.id)}`} aria-hidden="true">
+              <span class={`lb-cover v${variant(b.id)} spot-card`} aria-hidden="true" data-tilt="7">
                 <span class="lb-cover-field">{sh.key}</span>
                 <svg class="lb-orn"><use href="#lb-star" /></svg>
                 <span class={`lb-cover-title ${sizeClass(b.title)}`} lang="ar" dir="rtl">{b.title}</span>
@@ -247,9 +247,10 @@ const listIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
     flex: none; display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 999px; cursor: pointer;
     border: 1px solid var(--iu-border); background: var(--iu-card); color: var(--iu-text-2);
     font-family: var(--iu-ui); font-size: 15px; font-weight: 600; white-space: nowrap;
-    transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .3s var(--lb-ease), box-shadow .3s ease;
   }
-  .iu-library .lb-chip:hover { border-color: var(--iu-border-strong); }
+  @media (hover: hover) { .iu-library .lb-chip:not(.is-on):hover { border-color: var(--iu-border-strong); transform: translateY(-2px); box-shadow: 0 6px 14px -8px rgba(23, 56, 71, .35); } }
+  .iu-library .lb-chip:active { transform: translateY(0) scale(.97); }
   .iu-library .lb-chip.is-on { background: var(--iu-text); border-color: var(--iu-text); color: var(--iu-card); }
   .iu-library .lb-chip:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
   .iu-library .lb-count { font-size: 13px; font-weight: 600; opacity: .65; }
@@ -266,7 +267,7 @@ const listIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
   /* ── Shelves ── */
   .iu-library .lb-shelf { margin-top: 36px; }
   .iu-library .lb-shelf-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--iu-border); }
-  .iu-library .lb-shelf-name { display: inline-flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; line-height: 1.4; color: var(--iu-text); }
+  .iu-library .lb-shelf-name { display: inline-flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--iu-text); }
   .iu-library .lb-shelf-name .lb-chip-dot { width: 12px; height: 12px; border-radius: 4px; }
   .iu-library .lb-shelf-desc { margin: 0; font-size: 15px; line-height: 1.6; color: var(--iu-text-3); }
   .iu-library .lb-shelf-count { font-weight: 700; }
@@ -302,6 +303,13 @@ const listIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
   .iu-library .lb-cover.v1::before { border: 3px double rgba(255, 255, 255, .34); }
   .iu-library .lb-cover.v2::before { inset: 0 8px auto 0; height: 30%; border: 0; border-radius: 0; border-bottom: 1px solid rgba(255, 255, 255, .28);
     background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .12) 0 1px, transparent 1px 9px), repeating-linear-gradient(135deg, rgba(255, 255, 255, .12) 0 1px, transparent 1px 9px); }
+  /* Hover light: ui-fx tilts the cover toward the pointer (data-tilt) and
+     moves --spot-x/y (spot-card); on a coloured cover the spotlight is a
+     soft white sheen rather than the site's purple glow. */
+  .iu-library .lb-cover.spot-card::after,
+  .dark .iu-library .lb-cover.spot-card::after {
+    background: radial-gradient(220px circle at var(--spot-x, 50%) var(--spot-y, 30%), rgba(255, 255, 255, .22), transparent 62%);
+  }
   .iu-library .lb-cover-field { position: absolute; top: 9%; inset-inline: 0; text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0; opacity: .78; }
   .iu-library .lb-cover.v2 .lb-cover-field { display: none; }
   .iu-library .lb-orn { width: 26%; aspect-ratio: 1; flex: none; margin-bottom: 9%; opacity: .62; }
@@ -489,12 +497,13 @@ const listIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
       reading.sort((a, b) => b.at - a.at).slice(0, 3).forEach(({ card, last, pct }) => {
         const a = document.createElement('a');
         a.href = card.href;
-        a.className = `lb-resume ${[...card.classList].find((c) => c.startsWith('is-')) || ''}`;
+        a.className = `lb-resume spot-card ${[...card.classList].find((c) => c.startsWith('is-')) || ''}`;
         // The book's own cover, as a thumbnail: colour and star only.
         const cover = card.querySelector('.lb-cover')?.cloneNode(true) as HTMLElement | undefined;
         if (cover) {
           cover.querySelectorAll('.lb-cover-field, .lb-cover-title, .lb-cover-level, .lb-cover-prog').forEach((el) => el.remove());
           cover.className = 'lb-cover v0';
+          cover.removeAttribute('data-tilt');
           cover.style.padding = '0';
           a.appendChild(cover);
         }
