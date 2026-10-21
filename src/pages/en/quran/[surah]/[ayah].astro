@@ -37,7 +37,7 @@ const idx = inSurah.findIndex((a) => a.ayah === ayah.ayah);
 const prev = idx > 0 ? inSurah[idx - 1] : null;
 const next = idx >= 0 && idx < inSurah.length - 1 ? inSurah[idx + 1] : null;
 ---
-<BaseLayout lang="en" title={title} description={description} canonicalOverride={selfUrl}>
+<BaseLayout quranFont lang="en" title={title} description={description} canonicalOverride={selfUrl}>
   <AyahSchemaEn slot="head" surah={surah} ayah={ayah.ayah} canonical={selfUrl} title={h1} description={description} faqs={ayah.faqs_en} />
   <Nav lang="en" />
 

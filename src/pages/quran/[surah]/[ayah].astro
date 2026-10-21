@@ -83,7 +83,7 @@ const hasEnTwin = hasEnAyah(ayah.surah, ayah.ayah);
 // our own structure around the quoted text (see src/lib/lesson-links.ts).
 const lessons = lessonsForAyah(ayah);
 ---
-<BaseLayout lang="ar" title={title} description={description} noindex={thin} googlebotNoindex={googlebotNoindex} canonicalOverride={canonical} hasEn={hasEnTwin}>
+<BaseLayout quranFont lang="ar" title={title} description={description} noindex={thin} googlebotNoindex={googlebotNoindex} canonicalOverride={canonical} hasEn={hasEnTwin}>
   <AyahSchema slot="head" ayah={ayah} surah={surah} canonical={canonical} title={h1} description={description} faqs={faqs} />
   <Nav lang="ar" />
 

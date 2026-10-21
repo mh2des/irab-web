@@ -67,7 +67,7 @@ const icon = (d: string, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" f
      data-strings={JSON.stringify(s)}>
   <header class="rd-bar">
     <div class="rd-bar-in">
-      <a href={libHref} class="rd-back">
+      <a href={libHref} class="rd-back" aria-label={s.library}>
         <Fragment set:html={icon(backPath)} />
         <span>{s.library}</span>
       </a>
@@ -161,11 +161,11 @@ const icon = (d: string, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" f
       </article>
 
       <nav class="rd-nav hidden" data-chapter-nav aria-label={s.contents}>
-        <button type="button" class="rd-nav-card is-prev" data-prev>
+        <button type="button" class="rd-nav-card is-prev spot-card" data-prev>
           <span class="rd-nav-label"><Fragment set:html={icon(backPath)} />{s.prev}</span>
           <span class="rd-nav-title" data-prev-title lang="ar" dir="rtl"></span>
         </button>
-        <button type="button" class="rd-nav-card is-next" data-next>
+        <button type="button" class="rd-nav-card is-next spot-card" data-next>
           <span class="rd-nav-label">{s.next}<Fragment set:html={icon(en ? 'M5 12h14m-6-6 6 6-6 6' : 'M19 12H5m6-6-6 6 6 6')} /></span>
           <span class="rd-nav-title" data-next-title lang="ar" dir="rtl"></span>
         </button>
@@ -287,7 +287,7 @@ const icon = (d: string, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" f
   }
   @media (min-width: 1100px) { .iu-reader .rd-toc { position: sticky; top: calc(var(--rd-bar-h) + 20px); max-height: calc(100dvh - var(--rd-bar-h) - 40px); } }
   .iu-reader .rd-toc-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px 6px; }
-  .iu-reader .rd-toc-title { margin: 0; display: flex; align-items: baseline; gap: 8px; font-size: 17px; font-weight: 800; }
+  .iu-reader .rd-toc-title { margin: 0; display: flex; align-items: baseline; gap: 8px; font-size: 17px; font-weight: 700; }
   .iu-reader .rd-toc-count { font-size: 13px; font-weight: 600; color: var(--iu-text-3); }
   .iu-reader .rd-toc-close { display: none; }
   .iu-reader .rd-toc-search { padding: 6px 12px 10px; border-bottom: 1px solid var(--iu-border); }
@@ -341,14 +341,14 @@ const icon = (d: string, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" f
   .iu-reader .rd-kicker { margin: 0 0 8px; font-size: 14px; font-weight: 700; color: var(--iu-primary-text); }
   .iu-reader[data-page='paper'] .rd-kicker { color: #8A5B0C; }
   .dark .iu-reader[data-page='paper'] .rd-kicker { color: #E3B55A; }
-  .iu-reader .rd-title { margin: 0 0 24px; padding-bottom: 20px; border-bottom: 1px solid var(--rd-rule); font-size: clamp(22px, 3.2vw, 30px); font-weight: 800; line-height: 1.6; color: var(--rd-ink); }
+  .iu-reader .rd-title { margin: 0 0 24px; padding-bottom: 20px; border-bottom: 1px solid var(--rd-rule); font-size: clamp(22px, 3.2vw, 30px); font-weight: 700; line-height: 1.6; color: var(--rd-ink); }
 
   .iu-reader .rd-text { font-family: var(--iu-ui); font-size: var(--rd-size); line-height: var(--rd-lh); color: var(--rd-ink); overflow-wrap: anywhere; }
   .iu-reader[data-font='amiri'] .rd-text { font-family: var(--iu-studied); font-size: calc(var(--rd-size) * 1.08); }
   .iu-reader .rd-text p { margin: 0 0 1em; }
-  .iu-reader .rd-text :is(h1, h2, h3, h4) { margin: 1.4em 0 .6em; font-family: var(--iu-ui); font-size: 1.12em; font-weight: 800; line-height: 1.6; color: var(--rd-ink); }
+  .iu-reader .rd-text :is(h1, h2, h3, h4) { margin: 1.4em 0 .6em; font-family: var(--iu-ui); font-size: 1.12em; font-weight: 700; line-height: 1.6; color: var(--rd-ink); }
   .iu-reader .rd-text .category-badge { display: inline-block; padding: 2px 12px; border-radius: 99px; font-size: .72em; font-weight: 700; color: var(--iu-teal-text); background: var(--iu-teal-soft); }
-  .iu-reader .rd-text .book-info-title { display: block; margin-bottom: .5em; font-size: 1.3em; font-weight: 800; }
+  .iu-reader .rd-text .book-info-title { display: block; margin-bottom: .5em; font-size: 1.3em; font-weight: 700; }
   .iu-reader .rd-text table { width: 100%; margin: 1.2em 0; border-collapse: collapse; font-size: .9em; }
   .iu-reader .rd-text :is(td, th) { padding: .5em .8em; border: 1px solid var(--rd-rule); }
   .iu-reader .rd-text a { color: var(--iu-primary-text); text-underline-offset: 3px; }
@@ -365,11 +365,16 @@ const icon = (d: string, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" f
   .iu-reader .rd-nav-card.is-next .rd-nav-title { text-align: start; }
   .iu-reader .rd-nav-card:disabled { visibility: hidden; }
   .iu-reader .rd-nav-label { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--iu-text-3); }
-  .iu-reader .rd-nav-label svg { width: 15px; height: 15px; }
+  .iu-reader .rd-nav-label svg { width: 15px; height: 15px; transition: translate .35s var(--rd-ease); }
   .iu-reader .rd-nav-card.is-next .rd-nav-label { color: var(--iu-primary-text); }
   .iu-reader .rd-nav-title { max-width: 100%; font-size: 15px; font-weight: 700; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   @media (hover: hover) {
-    .iu-reader .rd-nav-card:hover { transform: translateY(-2px); box-shadow: var(--iu-shadow-lift); border-color: var(--iu-border-strong); }
+    .iu-reader .rd-nav-card:hover { transform: translateY(-4px); box-shadow: var(--iu-shadow-lift); border-color: var(--iu-border-strong); }
+    .iu-reader .rd-nav-card.is-next:hover { border-color: color-mix(in srgb, var(--iu-primary) 45%, var(--iu-border)); }
+    .iu-reader .rd-nav-card.is-next:hover .rd-nav-label svg { translate: -4px 0; }
+    .iu-reader .rd-nav-card.is-prev:hover .rd-nav-label svg { translate: 4px 0; }
+    .iu-reader[dir='ltr'] .rd-nav-card.is-next:hover .rd-nav-label svg { translate: 4px 0; }
+    .iu-reader[dir='ltr'] .rd-nav-card.is-prev:hover .rd-nav-label svg { translate: -4px 0; }
   }
   .iu-reader .rd-nav-card:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
 

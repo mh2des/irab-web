@@ -28,7 +28,7 @@ const breadcrumb = {
   itemListElement: [{ '@type': 'ListItem', position: 1, name: "Quran I'rab", item: `${SITE}/en/quran` }],
 };
 ---
-<BaseLayout lang="en" title={title} description={description}>
+<BaseLayout quranFont lang="en" title={title} description={description}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(itemList)} is:inline />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumb)} is:inline />
   <Nav lang="en" />

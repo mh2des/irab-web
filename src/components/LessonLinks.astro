@@ -171,9 +171,10 @@ const arrow = en ? '→' : '←';
     font-family: var(--font-arabic);
     font-size: 1.15rem;
     line-height: 1.7;
-    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    /* The AA-safe muted tokens: 62% ink over white was 3.9:1. */
+    color: var(--color-ink-subtle);
   }
-  :global(.dark) .ll-blurb { color: color-mix(in srgb, var(--color-mist) 62%, transparent); }
+  :global(.dark) .ll-blurb { color: var(--color-mist-subtle); }
 
   .ll-all { margin: 1.1rem 0 0; font-size: 1.25rem; }
   .ll-all a {
