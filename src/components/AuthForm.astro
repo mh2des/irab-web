@@ -67,10 +67,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
   <header class="text-center mb-8 panel-in">
     <h1
       data-auth-head
-      class:list={[
-        lang === 'ar' ? 'font-arabic-display font-bold' : 'font-display',
-        'text-[clamp(1.8rem,4vw,2.6rem)] leading-tight mb-2',
-      ]}
+      class="auth-title"
     >{t.headIn}</h1>
     <p data-auth-sub class="text-ink-muted dark:text-mist-muted">{t.subIn}</p>
   </header>
@@ -258,6 +255,17 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
 </div>
 
 <style>
+  /* The heading changes with the step («استعادة كلمة المرور» is three words),
+     so it takes the body face in bold, not the Ruqaa display face the
+     site keeps for two-word labels. */
+  .auth-title {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-arabic); font-weight: 700;
+    font-size: clamp(1.9rem, 4vw, 2.5rem); line-height: 1.35;
+  }
+  .auth-still :global(*) { transition: none !important; }
+  [data-lang='en'] .auth-title { font-family: var(--font-sans); line-height: 1.15; letter-spacing: -0.02em; }
+
   .auth-label {
     display: block;
     margin-bottom: 0.375rem;
@@ -568,7 +576,16 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       clearMsg();
     }
 
-    setMode('in', false);
+    // ?mode=up opens on «create account» (the pricing page's free plan). The
+    // starting state lands as it is: no field growing open, no tab fading
+    // across while the page is still appearing.
+    const startUp = new URLSearchParams(window.location.search).get('mode') === 'up';
+    if (startUp) root.classList.add('auth-still');
+    setMode(startUp ? 'up' : 'in', false);
+    if (startUp) {
+      void root.offsetWidth;
+      requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('auth-still')));
+    }
 
     tabs.forEach((b) => b.addEventListener('click', () => setMode(b.dataset.tab as 'in' | 'up')));
     switchBtn.addEventListener('click', () => setMode(mode === 'in' ? 'up' : 'in'));

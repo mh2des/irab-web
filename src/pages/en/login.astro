@@ -1,16 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import AuthHeader from '../../components/AuthHeader.astro';
-import Footer from '../../components/sections/Footer.astro';
-import AuthForm from '../../components/AuthForm.astro';
+import LoginScreen from '../../components/auth/LoginScreen.astro';
 ---
 <BaseLayout lang="en" title="Sign in · Irab App" description="Sign in to your Irab account or create one: one account for web and the app.">
   <meta slot="head" name="robots" content="noindex, nofollow" />
   {/* No site nav on purpose (see AuthHeader): nothing here competes with
-      signing in. The heading belongs to AuthForm — it answers the mode. */}
-  <AuthHeader lang="en" />
-  <main class="px-6 pt-10 pb-16 md:pt-14 md:pb-24">
-    <AuthForm lang="en" />
-  </main>
-  <Footer lang="en" />
+      signing in. LoginScreen lays out the header, the form and, on wide
+      screens, the brand half. */}
+  <LoginScreen lang="en" />
 </BaseLayout>
