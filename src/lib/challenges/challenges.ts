@@ -108,7 +108,7 @@ export function mountChallenges(root: HTMLElement): void {
   });
   topicsEl.addEventListener('click', (e) => {
     const el = e.target as HTMLElement;
-    if (el.closest('[data-plus]')) { paywall(); return; }
+    if (el.closest('[data-plus-banner]')) { paywall(); return; }
     const b = el.closest<HTMLElement>('[data-topic]');
     const t = b && topics.find((x) => x.id === b.dataset.topic);
     if (!t) return;
