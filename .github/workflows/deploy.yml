@@ -44,7 +44,10 @@ jobs:
 
       # The predeploy hook in firebase.json runs the frozen-lockfile install
       # and the production build before publishing.
+      # Pinned: 15.34.1 first checks that the Hosting API is enabled, which
+      # the deploy service account has no permission to read (403). Unpin once
+      # the account has the Service Usage Consumer role.
       - name: Deploy (live channel)
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-sa.json
-        run: npx firebase-tools@15 deploy --only hosting --project arabic-grammar-app-43de9 --force
+        run: npx firebase-tools@15.34.0 deploy --only hosting --project arabic-grammar-app-43de9 --force
