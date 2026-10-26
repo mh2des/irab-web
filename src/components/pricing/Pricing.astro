@@ -46,6 +46,7 @@ const s = en
       fineMonthly: 'Renews every month. Cancel whenever you like.',
       plusList: [
         'Everything in Free, with no daily limits',
+        'Deep analysis of every sentence',
         'The full practice bank (576 sentences) and all seven challenge babs',
         'Bigger majalis with every question type',
         'OCR camera and PDF export',
@@ -96,6 +97,7 @@ const s = en
       fineMonthly: 'يتجدّد كل شهر، وتلغيه متى شئت.',
       plusList: [
         'كل ما في المجاني، بلا حدود يومية',
+        'الإعراب المعمّق لكل جملة',
         'بنك التدريب كاملًا (٥٧٦ جملة) وكل أبواب التحدّي السبعة',
         'مجالس أكبر بكل أنواع الأسئلة',
         'الكاميرا وتصدير PDF',
@@ -134,6 +136,7 @@ const groups: Group[] = en
   ? [
       { title: "I'rab", rows: [
         { f: "I'rab analyses", d: 'Word by word: type, role, case marker and vocalization.', free: '5 a day (7 in your first week)', plus: 'Unlimited' },
+        { f: 'Deep analysis', d: 'Each clause and its place, other valid readings, morphology and the rule.', free: null, plus: true },
         { f: "Grading your own i'rab", d: 'Write the i\'rab yourself and get every word corrected.', free: '3 a day', plus: 'Unlimited, with per-word explanations' },
         { f: 'Ask the teacher', d: 'Ask about any word in your sentence and get the reason, with an example.', free: '5 questions a day', plus: 'Unlimited' },
         { f: 'Smart Dictionary', d: "A word's meaning, root, pattern and how it is parsed.", free: '5 a day (10 in your first week)', plus: 'Unlimited' },
@@ -156,6 +159,7 @@ const groups: Group[] = en
   : [
       { title: 'الإعراب', rows: [
         { f: 'التحليلات الإعرابية', d: 'كلمة بكلمة: النوع والوظيفة والعلامة والتشكيل.', free: '٥ يوميًّا (٧ في أسبوعك الأول)', plus: 'غير محدودة' },
+        { f: 'الإعراب المعمّق', d: 'إعراب الجمل ومحلّها، والأوجه الأخرى، والصرف، والقاعدة.', free: null, plus: true },
         { f: 'تقييم إعرابك الخاص', d: 'أعرِب بنفسك واحصل على تصحيحٍ لكل كلمة.', free: '٣ يوميًّا', plus: 'بلا حدود، مع شرحٍ لكل كلمة' },
         { f: 'اسأل الأستاذ', d: 'اسأل عن أي كلمة في جملتك فيشرح لك السبب مع مثال.', free: '٥ أسئلة يوميًّا', plus: 'بلا حدود' },
         { f: 'المعجم الذكي', d: 'معنى الكلمة وجذرها ووزنها وكيف تُعرب.', free: '٥ يوميًّا (١٠ في أسبوعك الأول)', plus: 'بلا حدود' },

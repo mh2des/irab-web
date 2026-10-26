@@ -7,6 +7,8 @@
  *    analysis, 200 characters. Both return the same analysis object.
  */
 
+import { emailGateFor, guardHeaders } from '../guard';
+
 export const WORKER = 'https://irab-api-v2.mansourhassan783.workers.dev';
 
 export interface IrabWord {
@@ -44,6 +46,8 @@ export type AnalyzeError =
   | { kind: 'account_required' }
   | { kind: 'too_long' }
   | { kind: 'not_arabic' }
+  /** Unconfirmed or throwaway email: the paywall's email view is open. */
+  | { kind: 'email' }
   | { kind: 'failed' };
 
 export class AnalyzeFailure extends Error {
@@ -88,6 +92,7 @@ async function failureFrom(res: Response, signedIn: boolean): Promise<AnalyzeFai
   let body: any = {};
   try { body = await res.json(); } catch { /* not JSON */ }
   const error = String(body?.error ?? '');
+  if (emailGateFor(res.status, body)) return new AnalyzeFailure({ kind: 'email' });
   if (res.status === 429) return new AnalyzeFailure({ kind: signedIn ? 'daily_limit' : 'guest_limit' });
   if (res.status === 403 && error === 'premium_required') return new AnalyzeFailure({ kind: 'deep_locked' });
   if (res.status === 403 && error === 'account_required') return new AnalyzeFailure({ kind: 'account_required' });
@@ -110,7 +115,7 @@ export async function analyze(text: string, opts: AnalyzeOptions): Promise<{ res
     if (opts.idToken) {
       res = await fetch(`${WORKER}/api/irab`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${opts.idToken}` },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${opts.idToken}`, ...(await guardHeaders()) },
         body: JSON.stringify({
           sentence: text,
           ...(opts.deep ? { depth: 'deep' } : {}),
@@ -141,7 +146,7 @@ export interface UsageStatus {
   premium: boolean;
   /** Standard analyses left today, null when unknown. */
   standard: { remaining: number; limit: number } | null;
-  /** Free deep tries left (lifetime), null when unknown. */
+  /** Deep analyses open to a free account: 0 (Irab Plus only since 2026-10-26), null when unknown. */
   deep: number | null;
 }
 
@@ -150,7 +155,7 @@ export async function usageStatus(idToken: string): Promise<UsageStatus | null> 
   try {
     const res = await fetch(`${WORKER}/api/usage`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}`, ...(await guardHeaders()) },
       body: '{}',
     });
     if (!res.ok) return null;
@@ -161,7 +166,7 @@ export async function usageStatus(idToken: string): Promise<UsageStatus | null> 
     return {
       premium: d.isPremium === true,
       standard: a && typeof a.remaining === 'number' && a.limit > 0 ? { remaining: Math.max(0, a.remaining), limit: a.limit } : null,
-      deep: deep && typeof deep.remaining === 'number' && deep.limit > 0 ? Math.max(0, deep.remaining) : null,
+      deep: deep && typeof deep.remaining === 'number' && deep.limit >= 0 ? Math.max(0, deep.remaining) : null,
     };
   } catch {
     return null;

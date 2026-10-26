@@ -249,6 +249,8 @@ export function mountDictionary(root: HTMLElement): void {
         refreshQuota();
       } else if (r.kind === 'session') {
         showMsg(s.sessionEnded, 'error');
+      } else if (r.kind === 'email') {
+        // The paywall's email view says what to do.
       } else {
         showMsg(s.error, 'error', true);
       }

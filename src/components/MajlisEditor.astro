@@ -1461,7 +1461,11 @@ import { MARK_SVG } from '../lib/majlis/stage/shapes';
               if (!isPremium) paywall();
               return;
             }
-            if (res.status === 403) { paywall(); return; }
+            if (res.status === 403) {
+              const { emailGateFor } = await import('../lib/guard');
+              if (!emailGateFor(403, j)) paywall();
+              return;
+            }
             const maps: any[] = Array.isArray(j?.data?.questions) ? j.data.questions : [];
             if (!res.ok || !maps.length) { aiErr('تعذر التوليد. حاول مجددًا.'); return; }
 

@@ -162,7 +162,7 @@ export function mountAnalyzer(root: HTMLElement): void {
     const m = opt.dataset.modeOption as Mode;
     if (m === 'deep' && deepSpent()) {
       sheet.close();
-      (window as any).IrabPaywall?.show();
+      (window as any).IrabPaywall?.show({ reason: 'deep' });
       return;
     }
     setMode(m);
@@ -237,7 +237,9 @@ export function mountAnalyzer(root: HTMLElement): void {
       track('irab_failed', { source: 'web_tool', reason: kind });
       if (kind === 'guest_limit') showGate(s.guestTitle, s.guestBody);
       else if (kind === 'account_required') showGate(s.deepAccountTitle, s.deepAccountBody);
-      else if (kind === 'daily_limit' || kind === 'deep_locked') { show('compose'); (window as any).IrabPaywall?.show(); }
+      else if (kind === 'daily_limit') { show('compose'); (window as any).IrabPaywall?.show(); }
+      else if (kind === 'deep_locked') { show('compose'); (window as any).IrabPaywall?.show({ reason: 'deep' }); }
+      else if (kind === 'email') show('compose');
       else if (kind === 'too_long') { show('compose'); setNote(user.signedIn ? s.tooLong(MAX_WORDS) : s.tooManyChars(GUEST_CHARS)); }
       else if (kind === 'not_arabic') { show('compose'); setNote(s.arabicOnly); }
       else show('error');

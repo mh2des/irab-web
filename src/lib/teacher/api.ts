@@ -6,6 +6,7 @@
  * then `done` or `error`. A stopped or failed answer is not counted.
  */
 import { WORKER } from '../irab/api';
+import { emailGateFor, guardHeaders } from '../guard';
 
 export type TeacherMode = 'ask' | 'quiz' | 'review' | 'hint';
 
@@ -38,7 +39,8 @@ export interface TeacherPartial { mode: TeacherMode; lead: string; body: string;
 /** Remaining questions today; -1 is unlimited. */
 export interface TeacherUsage { remaining: number; limit: number }
 
-export type TeacherError = 'account' | 'limit' | 'session' | 'stopped' | 'failed';
+/** 'email': unconfirmed or throwaway email, the paywall's email view is open. */
+export type TeacherError = 'account' | 'limit' | 'session' | 'stopped' | 'email' | 'failed';
 export class TeacherFailure extends Error {
   constructor(public kind: TeacherError) { super(kind); }
 }
@@ -54,6 +56,7 @@ export function answerText(a: TeacherAnswer): string {
 }
 
 function failureFor(status: number, body: any): TeacherFailure {
+  if (emailGateFor(status, body)) return new TeacherFailure('email');
   if (status === 403 && body?.error === 'account_required') return new TeacherFailure('account');
   if (status === 429) return new TeacherFailure('limit');
   if (status === 401) return new TeacherFailure('session');
@@ -74,7 +77,7 @@ export async function askTeacher(
   try {
     res = await fetch(`${WORKER}/api/teacher`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}`, Accept: 'text/event-stream' },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}`, Accept: 'text/event-stream', ...(await guardHeaders()) },
       body: JSON.stringify({ ...req, stream: true }),
       signal,
     });
@@ -138,7 +141,7 @@ export async function teacherLeft(idToken: string): Promise<TeacherUsage | null>
   try {
     const res = await fetch(`${WORKER}/api/usage`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}`, ...(await guardHeaders()) },
       body: '{}',
     });
     if (!res.ok) return null;
