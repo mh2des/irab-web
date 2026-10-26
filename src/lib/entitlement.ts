@@ -21,9 +21,11 @@ export async function fetchMe(user: User): Promise<Me | null> {
     if (!res.ok) return null;
     const data = (await res.json()) as Partial<Me>;
     const premium = data.premium === true;
-    // Cache for Firebase-free surfaces (the Nav's Plus chip reads this
-    // synchronously). Stale values only affect chip visibility, never access.
+    // Cache for Firebase-free surfaces: BaseLayout turns it into
+    // html[data-plus] before paint, which hides the upsell. Stale values only
+    // affect what is shown, never access.
     try { localStorage.setItem('irab-premium', premium ? '1' : '0'); } catch { /* ignore */ }
+    document.documentElement.toggleAttribute('data-plus', premium);
     return { uid: String(data.uid ?? user.uid), premium };
   } catch {
     return null;
