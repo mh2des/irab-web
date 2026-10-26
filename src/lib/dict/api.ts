@@ -4,6 +4,7 @@
  * /api/usage. A v3 entry is generated once and served from the store after.
  */
 import { WORKER } from '../irab/api';
+import { emailGateFor, guardHeaders } from '../guard';
 
 export interface DictExample { text: string; translation_en?: string | null }
 export interface DictSense { definition: string; register?: string | null; domain?: string | null; examples?: DictExample[] }
@@ -40,6 +41,8 @@ export type Lookup =
   | { kind: 'not_found' }
   | { kind: 'limit' }
   | { kind: 'session' }
+  /** Unconfirmed or throwaway email: the paywall's email view is open. */
+  | { kind: 'email' }
   | { kind: 'failed' };
 
 const arr = <T>(v: unknown): T[] => (Array.isArray(v) ? v.filter((x) => x != null) as T[] : []);
@@ -58,7 +61,7 @@ export async function lookup(word: string, idToken: string): Promise<Lookup> {
   try {
     res = await fetch(`${WORKER}/api/dictionary`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}`, ...(await guardHeaders()) },
       body: JSON.stringify({ word }),
     });
   } catch {
@@ -66,6 +69,7 @@ export async function lookup(word: string, idToken: string): Promise<Lookup> {
   }
   if (res.status === 429) return { kind: 'limit' };
   if (res.status === 401) return { kind: 'session' };
+  if (res.status === 403 && emailGateFor(403, await res.json().catch(() => null))) return { kind: 'email' };
   if (!res.ok) return { kind: 'failed' };
   const json = await res.json().catch(() => null);
   if (!json) return { kind: 'failed' };
@@ -79,7 +83,7 @@ export async function searchesLeft(idToken: string): Promise<number | null> {
   try {
     const res = await fetch(`${WORKER}/api/usage`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}`, ...(await guardHeaders()) },
       body: '{}',
     });
     if (!res.ok) return null;

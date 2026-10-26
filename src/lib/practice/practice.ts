@@ -278,6 +278,8 @@ export function mountPractice(root: HTMLElement): void {
         renderQuota();
         openReview();
         (window as any).IrabPaywall?.show({ uid: user.uid ?? undefined, email: user.email ?? undefined, reason: 'limit' });
+      } else if (kind === 'email') {
+        openReview();
       } else if (kind === 'session') {
         openReview();
         note(q('[data-review-msg]'), s.sessionEnded);

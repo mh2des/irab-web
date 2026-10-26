@@ -4,6 +4,7 @@
  * server) and today's allowance from /api/usage. Signed-in only.
  */
 import { WORKER } from '../irab/api';
+import { emailGateFor, guardHeaders } from '../guard';
 
 export type GradeStatus = 'correct' | 'incomplete' | 'wrong' | 'empty';
 export type PartVerdict = 'correct' | 'partial' | 'wrong' | 'missing';
@@ -29,7 +30,8 @@ export interface GradeResult {
   wordFeedback: WordFeedback[];
 }
 
-export type GradeError = 'limit' | 'premium' | 'session' | 'failed';
+/** 'email': unconfirmed or throwaway email, the paywall's email view is open. */
+export type GradeError = 'limit' | 'premium' | 'session' | 'email' | 'failed';
 export class GradeFailure extends Error {
   constructor(readonly kind: GradeError) { super(kind); }
 }
@@ -72,14 +74,17 @@ export async function grade(sentence: string, answers: { word: string; irab: str
   try {
     res = await fetch(`${WORKER}/api/grade-custom-irab`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}`, ...(await guardHeaders()) },
       body: JSON.stringify({ sentence, userAnalysis: answers }),
     });
   } catch {
     throw new GradeFailure('failed');
   }
   if (res.status === 429) throw new GradeFailure('limit');
-  if (res.status === 403) throw new GradeFailure('premium');
+  if (res.status === 403) {
+    if (emailGateFor(403, await res.json().catch(() => null))) throw new GradeFailure('email');
+    throw new GradeFailure('premium');
+  }
   if (res.status === 401) throw new GradeFailure('session');
   if (!res.ok) throw new GradeFailure('failed');
   const raw = await res.json().catch(() => null);
@@ -93,7 +98,7 @@ export async function checksLeft(idToken: string): Promise<number | null> {
   try {
     const res = await fetch(`${WORKER}/api/usage`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}`, ...(await guardHeaders()) },
       body: '{}',
     });
     if (!res.ok) return null;

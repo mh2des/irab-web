@@ -8,6 +8,7 @@
  * checkout flow:
  *
  *     window.IrabPaywall.show({ uid?, email?, reason?, onActivated? })
+ *     window.IrabPaywall.showEmail('unverified' | 'disposable')   (src/lib/guard.ts)
  *     window.IrabPaywall.hide()
  *
  * When uid/email are omitted it reads the current Firebase user itself, so most
@@ -34,6 +35,7 @@ const t = lang === 'ar'
       body: 'أنهيت محاولاتك المجانية لليوم. اشترك لتُحلّل وتتدرّب بلا حدود، مع تصحيح إعرابك بالذكاء الاصطناعي، الميزة التي تميّزنا.',
       benefits: [
         'تحليل وتدريب بلا حدود كل يوم',
+        'الإعراب المعمّق: الجمل ومحلّها، والأوجه، والصرف، والقاعدة',
         'تصحيح ذكي مفصّل لإعراب كل كلمة',
         'اسأل الأستاذ بلا حدود',
         'بنك التدريب الكامل: ٥٧٦ جملة',
@@ -64,6 +66,17 @@ const t = lang === 'ar'
       checkoutError: 'تعذّر فتح صفحة الدفع. تحقّق من اتصالك بالإنترنت أو عطّل مانع الإعلانات، ثم أعد المحاولة.',
       close: 'إغلاق',
       signedIn: 'الحساب الحالي:',
+      emailTitle: 'أكّد بريدك الإلكتروني أولًا',
+      emailBody: 'أرسلنا رابط التأكيد إلى بريدك. افتحه، ثم ارجع واضغط «أكّدتُ بريدي».',
+      emailDone: 'أكّدتُ بريدي',
+      emailResend: 'أعد إرسال الرابط',
+      emailSent: 'أرسلنا الرابط من جديد. تفقّد البريد الوارد ورسائل البريد غير المرغوب فيه.',
+      emailNotYet: 'لم يُؤكَّد البريد بعد. افتح الرابط في رسالتنا، ثم اضغط الزر من جديد.',
+      emailOk: 'أُكِّد بريدك. أعد المحاولة الآن.',
+      emailFailed: 'تعذّر ذلك الآن. حاول بعد قليل.',
+      tempTitle: 'استخدم بريدًا دائمًا',
+      tempBody: 'البريد المؤقت لا يفتح الخطة المجانية. سجّل الدخول بحساب Google أو Apple، أو ببريد دائم.',
+      tempCta: 'الدخول بحساب آخر',
     }
   : {
       eyebrow: 'Irab Plus',
@@ -71,6 +84,7 @@ const t = lang === 'ar'
       body: "You've used today's free tries. Subscribe to analyze and practice without limits, with AI feedback on your own i'rab, the feature that sets us apart.",
       benefits: [
         'Unlimited analysis & practice, every day',
+        'Deep analysis: clauses, other readings, morphology and the rule',
         'Detailed AI feedback on every word',
         'Unlimited questions to the teacher',
         'Full practice bank: 576 sentences',
@@ -101,6 +115,17 @@ const t = lang === 'ar'
       checkoutError: "Couldn't open the checkout. Check your connection or disable ad-blockers, then try again.",
       close: 'Close',
       signedIn: 'Signed in as',
+      emailTitle: 'Confirm your email first',
+      emailBody: "We sent a confirmation link to your email. Open it, then come back and press “I've confirmed”.",
+      emailDone: "I've confirmed",
+      emailResend: 'Resend the link',
+      emailSent: 'Sent again. Check your inbox and your spam folder.',
+      emailNotYet: 'Not confirmed yet. Open the link in our email, then press the button again.',
+      emailOk: 'Your email is confirmed. Try again now.',
+      emailFailed: "That didn't work just now. Try again in a moment.",
+      tempTitle: 'Use a permanent email',
+      tempBody: "Temporary inboxes don't unlock the free plan. Sign in with Google or Apple, or with a permanent email.",
+      tempCta: 'Sign in with another account',
     };
 ---
 
@@ -193,6 +218,25 @@ const t = lang === 'ar'
       <div data-pw-spinner class="pw-spinner" aria-hidden="true"></div>
       <button type="button" data-pw-refresh class="pw-refresh pw-hidden">{t.refresh}</button>
     </div>
+
+    {/* ── Email view: a free website account must confirm a permanent email first ── */}
+    <div data-pw-email class="pw-activating pw-hidden" aria-live="polite"
+         data-s-title={t.emailTitle} data-s-body={t.emailBody} data-s-sent={t.emailSent}
+         data-s-not-yet={t.emailNotYet} data-s-ok={t.emailOk} data-s-failed={t.emailFailed}
+         data-s-temp-title={t.tempTitle} data-s-temp-body={t.tempBody}>
+      <div class="pw-activating-mark pw-email-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+      </div>
+      <h3 data-pw-email-title class:list={[titleFont, 'pw-activating-title']}>{t.emailTitle}</h3>
+      <p data-pw-email-body>{t.emailBody}</p>
+      <p data-pw-email-addr dir="ltr" class="pw-email-addr pw-hidden"></p>
+      <div class="pw-email-actions">
+        <button type="button" data-pw-email-done class="pw-refresh">{t.emailDone}</button>
+        <button type="button" data-pw-email-resend class="pw-email-ghost">{t.emailResend}</button>
+        <a data-pw-email-switch href={login} class="pw-refresh pw-hidden">{t.tempCta}</a>
+      </div>
+      <p data-pw-email-note class="pw-email-note" role="status"></p>
+    </div>
   </section>
 </div>
 
@@ -240,6 +284,8 @@ const t = lang === 'ar'
 
   /* ── Layout: two columns on desktop, stacked on mobile ── */
   .pw-grid { display: grid; grid-template-columns: 1.04fr 0.96fr; }
+  /* The plans hide behind the activating and email views; the account line until an email is known. */
+  .pw-grid.pw-hidden, .pw-account.pw-hidden { display: none; }
   @media (max-width: 800px) { .pw-grid { grid-template-columns: 1fr; } }
 
   /* Left pitch pane */
@@ -403,6 +449,20 @@ const t = lang === 'ar'
   }
   @keyframes pw-spin { to { transform: rotate(360deg); } }
 
+  .pw-email-mark { background: var(--color-purple); }
+  .pw-email-addr { margin-top: 0.35rem; font-weight: 600; color: var(--color-ink); }
+  .dark .pw-email-addr { color: var(--color-mist); }
+  .pw-email-addr.pw-hidden, .pw-email-actions .pw-hidden { display: none; }
+  .pw-email-actions { margin-top: 1.4rem; display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
+  .pw-email-actions .pw-refresh { margin-top: 0; text-decoration: none; }
+  .pw-email-ghost {
+    padding: 0.7rem 1.2rem; border-radius: 999px; font-weight: 600; cursor: pointer;
+    color: var(--color-purple-deep); background: color-mix(in srgb, var(--color-purple) 10%, transparent);
+  }
+  .dark .pw-email-ghost { color: var(--color-mist); background: color-mix(in srgb, var(--color-mist) 12%, transparent); }
+  .pw-email-ghost:disabled, .pw-email-actions .pw-refresh:disabled { opacity: 0.55; cursor: default; }
+  .pw-email-note { min-height: 1.5em; font-size: 0.92rem; }
+
   @media (prefers-reduced-motion: reduce) {
     .pw-backdrop, .pw-dialog, .pw-activating-mark { animation: none; }
     .pw-plan:hover { transform: none; }
@@ -446,6 +506,16 @@ const t = lang === 'ar'
             body: 'Levels 1–2 are free. Subscribe to Irab Plus to unlock every remaining level and curated sentence with the same account on web and mobile.',
           };
 
+      const deepCopy = lang === 'ar'
+        ? {
+            title: 'الإعراب المعمّق من مزايا إعراب بلاس',
+            body: 'إعراب الجمل ومحلّها، والأوجه الأخرى، والصرف، والقاعدة، لكل جملة تكتبها. اشترك لتحصل عليه مع كل مزايا إعراب بلاس، بالحساب نفسه على الويب والتطبيق.',
+          }
+        : {
+            title: 'Deep analysis is part of Irab Plus',
+            body: 'Every clause and its place, other valid readings, morphology and the rule, for every sentence you write. Subscribe to get it with everything in Irab Plus, on web and mobile with one account.',
+          };
+
       let onActivated: (() => void) | null = null;
       let passedUid: string | null = null;
       let passedEmail: string | null = null;
@@ -454,13 +524,15 @@ const t = lang === 'ar'
         root!.classList.add('pw-hidden');
         document.documentElement.style.removeProperty('overflow');
       }
-      function show(opts?: { uid?: string; email?: string; reason?: 'limit' | 'challenges'; onActivated?: () => void }) {
+      function show(opts?: { uid?: string; email?: string; reason?: 'limit' | 'challenges' | 'deep'; onActivated?: () => void }) {
         track('paywall_shown', { trigger: opts?.reason ?? 'web_upgrade', platform: 'web' });
         openedAt = performance.now();
         onActivated = opts?.onActivated ?? null;
         passedUid = opts?.uid ?? null;
         passedEmail = opts?.email ?? null;
-        const copy = opts?.reason === 'challenges' ? challengeCopy : { title: defaultTitle, body: defaultBody };
+        const copy = opts?.reason === 'challenges' ? challengeCopy
+          : opts?.reason === 'deep' ? deepCopy
+          : { title: defaultTitle, body: defaultBody };
         titleEl.textContent = copy.title;
         bodyEl.textContent = copy.body;
         errorEl?.classList.add('pw-hidden');
@@ -477,6 +549,7 @@ const t = lang === 'ar'
           .catch(() => { /* identity is a nicety here, never a blocker */ });
         mainView.classList.remove('pw-hidden');
         activating.classList.add('pw-hidden');
+        emailView.classList.add('pw-hidden');
         root!.classList.remove('pw-hidden');
         document.documentElement.style.overflow = 'hidden';
         setTimeout(() => root!.querySelector<HTMLButtonElement>('[data-pw-plan="annual"]')?.focus(), 80);
@@ -531,6 +604,84 @@ const t = lang === 'ar'
       }
       refreshBtn.addEventListener('click', () => window.location.reload());
 
+      // ── Email view (src/lib/guard.ts): the Worker refused free AI to an
+      // unconfirmed or throwaway email address.
+      const emailView = q<HTMLElement>('[data-pw-email]');
+      const emailTitle = q<HTMLElement>('[data-pw-email-title]');
+      const emailBody = q<HTMLElement>('[data-pw-email-body]');
+      const emailAddr = q<HTMLElement>('[data-pw-email-addr]');
+      const emailNote = q<HTMLElement>('[data-pw-email-note]');
+      const emailDone = q<HTMLButtonElement>('[data-pw-email-done]');
+      const emailResend = q<HTMLButtonElement>('[data-pw-email-resend]');
+      const emailSwitch = q<HTMLAnchorElement>('[data-pw-email-switch]');
+      const es = emailView.dataset;
+      let emailCloseTimer = 0;
+
+      function showEmail(kind: 'unverified' | 'disposable') {
+        track('email_gate_shown', { kind, platform: 'web' });
+        const temp = kind === 'disposable';
+        emailTitle.textContent = (temp ? es.sTempTitle : es.sTitle) || '';
+        emailBody.textContent = (temp ? es.sTempBody : es.sBody) || '';
+        emailNote.textContent = '';
+        emailDone.classList.toggle('pw-hidden', temp);
+        emailResend.classList.toggle('pw-hidden', temp);
+        emailSwitch.classList.toggle('pw-hidden', !temp);
+        emailAddr.classList.add('pw-hidden');
+        void currentUser().then((u) => {
+          if (!u?.email) return;
+          emailAddr.textContent = u.email;
+          emailAddr.classList.remove('pw-hidden');
+        }).catch(() => {});
+        window.clearTimeout(emailCloseTimer);
+        mainView.classList.add('pw-hidden');
+        activating.classList.add('pw-hidden');
+        emailView.classList.remove('pw-hidden');
+        root!.classList.remove('pw-hidden');
+        document.documentElement.style.overflow = 'hidden';
+        setTimeout(() => (temp ? emailSwitch : emailDone).focus(), 80);
+      }
+
+      emailDone.addEventListener('click', async () => {
+        emailDone.disabled = true;
+        try {
+          const { auth } = await import('../lib/firebase');
+          const u = auth.currentUser;
+          if (!u) { window.location.href = loginHref; return; }
+          await u.reload();
+          if (u.emailVerified) {
+            await u.getIdToken(true); // the Worker reads email_verified from the token
+            track('email_gate_confirmed', { platform: 'web' });
+            emailNote.textContent = es.sOk || '';
+            emailCloseTimer = window.setTimeout(hide, 1400);
+          } else {
+            emailNote.textContent = es.sNotYet || '';
+          }
+        } catch {
+          emailNote.textContent = es.sFailed || '';
+        } finally {
+          emailDone.disabled = false;
+        }
+      });
+      emailResend.addEventListener('click', async () => {
+        emailResend.disabled = true;
+        try {
+          const [{ auth }, { resendVerification }] = await Promise.all([import('../lib/firebase'), import('../lib/auth')]);
+          const u = auth.currentUser;
+          if (!u) { window.location.href = loginHref; return; }
+          await resendVerification(u);
+          emailNote.textContent = es.sSent || '';
+        } catch {
+          emailNote.textContent = es.sFailed || '';
+        } finally {
+          emailResend.disabled = false;
+        }
+      });
+      emailSwitch.addEventListener('click', async (ev) => {
+        ev.preventDefault();
+        try { const { logout } = await import('../lib/auth'); await logout(); } catch { /* the login page signs in over it */ }
+        window.location.href = loginHref;
+      });
+
       if (PADDLE_ENABLED) {
         root.querySelectorAll<HTMLButtonElement>('[data-pw-plan]').forEach((btn) => {
           btn.addEventListener('click', async () => {
@@ -565,7 +716,7 @@ const t = lang === 'ar'
         });
       }
 
-      (window as any).IrabPaywall = { show, hide };
+      (window as any).IrabPaywall = { show, hide, showEmail };
     }
   }
 </script>

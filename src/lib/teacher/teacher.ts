@@ -563,6 +563,7 @@ class Panel {
         else if (kind === 'limit') { this.usage = { remaining: 0, limit: this.usage?.limit ?? 0 }; this.retry = null; this.add({ kind: 'limit' }); }
         else if (kind === 'account') { this.signedIn = false; this.retry = null; this.renderAll(); }
         else if (kind === 'session') { this.retry = () => void attempt(); this.add({ kind: 'failed', message: this.s.sessionEnded }); }
+        else if (kind === 'email') { this.retry = () => void attempt(); this.add({ kind: 'stopped', draft }); }
         else { this.retry = () => void attempt(); this.add({ kind: 'failed' }); }
         if (kind !== 'stopped') this.o.track?.('teacher_failed', { mode, kind });
       } finally {

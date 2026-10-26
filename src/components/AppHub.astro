@@ -488,9 +488,10 @@ const tools = en
 
           if (idToken) {
             try {
+              const { guardHeaders } = await import('../lib/guard');
               const res = await fetch(`${WORKER}/api/usage`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}`, ...(await guardHeaders()) },
                 body: '{}',
               });
               if (res.ok) {
