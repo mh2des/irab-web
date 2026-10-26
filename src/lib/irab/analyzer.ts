@@ -200,11 +200,17 @@ export function mountAnalyzer(root: HTMLElement): void {
   function stopSteps() { stepTimers.forEach(clearTimeout); stepTimers = []; }
 
   // ── Running an analysis ──────────────────────────────────────────────────
+  // A guest asked for what needs an account: «as typed» needs a free one,
+  // deep analysis Irab Plus.
+  const accountGate = (r: Run) => r.asTyped
+    ? showGate(s.asTypedAccountTitle, s.asTypedAccountBody)
+    : showGate(s.deepAccountTitle, s.deepAccountBody);
+
   async function run(r: Run) {
     if (busy) return;
     gate.hidden = true;
     setNote('');
-    if (!user.signedIn && (r.deep || r.asTyped)) { showGate(s.deepAccountTitle, s.deepAccountBody); return; }
+    if (!user.signedIn && (r.deep || r.asTyped)) { accountGate(r); return; }
     if (!user.signedIn && guestUsed() >= GUEST_TRIES && !maybeSignedIn()) { showGate(s.guestTitle, s.guestBody); return; }
     if (!user.signedIn && r.text.length > GUEST_CHARS) { show('compose', false); setNote(s.tooManyChars(GUEST_CHARS)); return; }
     busy = true;
@@ -236,7 +242,7 @@ export function mountAnalyzer(root: HTMLElement): void {
       const kind = e instanceof AnalyzeFailure ? e.reason.kind : 'failed';
       track('irab_failed', { source: 'web_tool', reason: kind });
       if (kind === 'guest_limit') showGate(s.guestTitle, s.guestBody);
-      else if (kind === 'account_required') showGate(s.deepAccountTitle, s.deepAccountBody);
+      else if (kind === 'account_required') accountGate(r);
       else if (kind === 'daily_limit') { show('compose'); (window as any).IrabPaywall?.show(); }
       else if (kind === 'deep_locked') { show('compose'); (window as any).IrabPaywall?.show({ reason: 'deep' }); }
       else if (kind === 'email') show('compose');
