@@ -46,7 +46,7 @@ export function topicsHtml(topics: Topic[], premium: boolean, s: ChallengeString
 
 export function plusBannerHtml(s: ChallengeStrings): string {
   return `
-    <button type="button" class="iu-card ch-plus-banner" data-plus>
+    <button type="button" class="iu-card ch-plus-banner" data-plus-banner>
       <span class="ch-plus-icon" aria-hidden="true">${I.crown}</span>
       <span class="ch-topic-text"><span class="t-card-title c-1">${esc(s.plusTitle)}</span><span class="t-caption c-2">${esc(s.plusSub)}</span></span>
       ${chev}
