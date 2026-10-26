@@ -217,11 +217,11 @@ export function mountAnalyzer(root: HTMLElement): void {
     track('irab_requested', { source: 'web_tool', word_count: R.wordCount(r.text), signed_in: user.signedIn, depth: r.deep ? 'deep' : 'standard', as_typed: r.asTyped });
     try {
       const idToken = user.getToken ? await user.getToken().catch(() => user.idToken) : user.idToken;
-      const { result, fromCache } = await analyze(r.text, { idToken, fingerprint: getFingerprint, deep: r.deep, asTyped: r.asTyped });
-      if (!user.signedIn && !fromCache) bumpGuestUsed();
+      const { result } = await analyze(r.text, { idToken, fingerprint: getFingerprint, deep: r.deep, asTyped: r.asTyped });
+      if (!user.signedIn) bumpGuestUsed(); // saved answers count too (Worker, 2026-10-26)
       if (usage && !premium()) {
         if (r.deep && typeof usage.deep === 'number') usage.deep = Math.max(0, usage.deep - 1);
-        if (!r.deep && usage.standard && !fromCache) usage.standard.remaining = Math.max(0, usage.standard.remaining - 1);
+        if (!r.deep && usage.standard) usage.standard.remaining = Math.max(0, usage.standard.remaining - 1);
       }
       track('irab_completed', { source: 'web_tool', word_count: result.words.length, latency_ms: Math.round(performance.now() - started), signed_in: user.signedIn, depth: r.deep ? 'deep' : 'standard' });
       try {

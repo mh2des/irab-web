@@ -93,7 +93,9 @@ async function failureFrom(res: Response, signedIn: boolean): Promise<AnalyzeFai
   try { body = await res.json(); } catch { /* not JSON */ }
   const error = String(body?.error ?? '');
   if (emailGateFor(res.status, body)) return new AnalyzeFailure({ kind: 'email' });
-  if (res.status === 429) return new AnalyzeFailure({ kind: signedIn ? 'daily_limit' : 'guest_limit' });
+  // A guest refused because this browser or network already used the day's
+  // allowance: signing in would not help, so it is the daily limit.
+  if (res.status === 429) return new AnalyzeFailure({ kind: signedIn || error === 'daily_limit_reached' ? 'daily_limit' : 'guest_limit' });
   if (res.status === 403 && error === 'premium_required') return new AnalyzeFailure({ kind: 'deep_locked' });
   if (res.status === 403 && error === 'account_required') return new AnalyzeFailure({ kind: 'account_required' });
   if (res.status === 400 && /long/i.test(error)) return new AnalyzeFailure({ kind: 'too_long' });
@@ -108,7 +110,7 @@ export interface AnalyzeOptions {
   asTyped?: boolean;
 }
 
-/** One analysis; throws AnalyzeFailure. `fromCache` answers cost nothing. */
+/** One analysis; throws AnalyzeFailure. Saved (`fromCache`) answers count on the allowance too. */
 export async function analyze(text: string, opts: AnalyzeOptions): Promise<{ result: IrabResult; fromCache: boolean }> {
   let res: Response;
   try {
@@ -126,7 +128,7 @@ export async function analyze(text: string, opts: AnalyzeOptions): Promise<{ res
       if (opts.deep || opts.asTyped) throw new AnalyzeFailure({ kind: 'account_required' });
       res = await fetch(`${WORKER}/v1/parse-public`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(await guardHeaders()) },
         body: JSON.stringify({ text, fingerprint: await opts.fingerprint() }),
       });
     }
