@@ -148,7 +148,7 @@ const hasAlternate = lang === 'en' || hasEn;
   <meta name="theme-color" content="#F8F6F1" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#0B1115" media="(prefers-color-scheme: dark)" />
 
-  {/* No-flash theme init, runs before paint */}
+  {/* No-flash theme and Irab Plus init, runs before paint */}
   <script is:inline>
     (function() {
       try {
@@ -156,6 +156,10 @@ const hasAlternate = lang === 'en' || hasEn;
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         var theme = stored || (prefersDark ? 'dark' : 'light');
         if (theme === 'dark') document.documentElement.classList.add('dark');
+        // A subscriber sees no upsell (the Nav's «جرِّب بلس», the pricing
+        // checkout): html[data-plus]. 'irab-premium' is the cached /v1/me
+        // answer (src/lib/entitlement.ts), cleared with the session.
+        if (localStorage.getItem('irab-premium') === '1') document.documentElement.setAttribute('data-plus', '');
       } catch (e) {}
     })();
   </script>

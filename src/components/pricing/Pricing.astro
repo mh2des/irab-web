@@ -42,6 +42,8 @@ const s = en
       monthlyNote: 'Flexible, month to month',
       perYear: '/ year', perMonth: '/ month',
       ctaAnnual: 'Start the free trial', ctaMonthly: 'Subscribe monthly',
+      memberCta: 'Go to your account',
+      memberNote: 'Your Irab Plus subscription is active on web and mobile with the same account.',
       fineAnnual: "You pay $0.00 today. Cancel before day 7 and you won't be charged.",
       fineMonthly: 'Renews every month. Cancel whenever you like.',
       plusList: [
@@ -93,6 +95,8 @@ const s = en
       monthlyNote: 'مرونة كاملة، شهرًا بشهر',
       perYear: '/ سنويًّا', perMonth: '/ شهريًّا',
       ctaAnnual: 'ابدأ التجربة المجانية', ctaMonthly: 'اشترك شهريًّا',
+      memberCta: 'اذهب إلى حسابك',
+      memberNote: 'اشتراكك في إعراب بلاس فعّال على الويب والتطبيق بالحساب نفسه.',
       fineAnnual: 'تدفع ٠٫٠٠$ اليوم. ألغِ قبل اليوم السابع ولن تُحاسَب.',
       fineMonthly: 'يتجدّد كل شهر، وتلغيه متى شئت.',
       plusList: [
@@ -251,6 +255,10 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
         <div class="pr-cta is-monthly">
           <a href={`${base}/app?checkout=monthly`} class="btn-primary btn-block btn-lg">{s.ctaMonthly}<Fragment set:html={arrow} /></a>
           <p class="pr-cta-fine">{s.fineMonthly}</p>
+        </div>
+        <div class="pr-cta pr-member">
+          <a href={`${base}/app`} class="btn-primary btn-block btn-lg">{s.memberCta}<Fragment set:html={arrow} /></a>
+          <p class="pr-cta-fine">{s.memberNote}</p>
         </div>
       </div>
 
@@ -525,6 +533,14 @@ const cellHtml = (v: Cell, plus: boolean) => v === true
   }
   .pr-plus:has(.pr-radio[value='monthly']:checked) .pr-cta.is-monthly { opacity: 1; translate: 0 0; visibility: visible; }
   .pr-cta-fine { margin: 0.7rem 0 0; text-align: center; font-size: 0.88rem; line-height: 1.6; color: var(--pr-subtle); }
+  /* A subscriber (html[data-plus], BaseLayout) gets their account, not a
+     checkout that would only land back on it; no sign-up or closing call. */
+  .pr-member { display: none; }
+  :global(html[data-plus]) .pr-cta.is-annual,
+  :global(html[data-plus]) .pr-cta.is-monthly,
+  :global(html[data-plus]) .pr-free-cta,
+  :global(html[data-plus]) .pr-final { display: none; }
+  :global(html[data-plus]) .pr-member { display: block; }
   /* Injected with set:html, so outside the scope: reached through :global. */
   .pr :global(.pr-arrow) { width: 1.1rem; height: 1.1rem; flex: none; transition: translate .25s var(--pr-ease); }
   .pr :global(a:hover > .pr-arrow) { translate: -3px 0; }

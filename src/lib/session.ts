@@ -14,6 +14,7 @@ export function forgetSignedIn(): void {
     localStorage.removeItem(FLAG);
     localStorage.removeItem('irab-premium'); // entitlement cache follows the session
   } catch { /* ignore */ }
+  document.documentElement.removeAttribute('data-plus');
 }
 export function maybeSignedIn(): boolean {
   try { return localStorage.getItem(FLAG) === '1'; } catch { return false; }

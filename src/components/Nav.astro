@@ -405,6 +405,11 @@ const chevPath = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
   .nav-mlink-teal .nav-mlink-ic { color: var(--color-teal); background: color-mix(in srgb, var(--color-teal) 12%, transparent); }
   :global(.dark) .nav-mlink-teal { color: color-mix(in srgb, var(--color-teal) 88%, white); }
 
+  /* Subscribers (html[data-plus], set before paint in BaseLayout) see no
+     «جرِّب بلس». A class could not do it: the button's own inline-flex
+     utility outranked `hidden`, so the button stayed for every subscriber. */
+  :global(html[data-plus]) [data-upsell-cta] { display: none; }
+
   @media (prefers-reduced-motion: reduce) {
     .nav-mlink, .nav-mlink:active { transform: none; transition: none; }
     .nav-mlink:hover .nav-mlink-chev { transform: none; }
@@ -418,14 +423,6 @@ const chevPath = lang === 'ar' ? 'M15 18l-6-6 6-6' : 'M9 18l6-6-6-6';
   if (maybeSignedIn()) {
     document.querySelectorAll<HTMLElement>('[data-signin-link]').forEach((el) => el.classList.add('hidden'));
     document.querySelectorAll<HTMLElement>('[data-app-link]').forEach((el) => el.classList.remove('hidden'));
-    // Hide the «جرِّب بلس» CTA for already-premium users. 'irab-premium' is a
-    // cached copy of the last /v1/me answer (written by entitlement.fetchMe);
-    // a stale value only shows/hides the button, never blocks anything.
-    let premium = false;
-    try { premium = localStorage.getItem('irab-premium') === '1'; } catch { /* keep the CTA */ }
-    if (premium) {
-      document.querySelectorAll<HTMLElement>('[data-upsell-cta]').forEach((el) => el.classList.add('hidden'));
-    }
   }
 
   const toggle = document.querySelector<HTMLButtonElement>('[data-mobile-toggle]');
