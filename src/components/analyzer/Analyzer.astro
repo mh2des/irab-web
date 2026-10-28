@@ -35,6 +35,7 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
       <textarea id={`az-input-${lang}`} class="az-input" data-input rows="3" dir="rtl" lang="ar"
         placeholder={s.composerHint} autocomplete="off" spellcheck="false"></textarea>
       <div class="az-meta">
+        <span class="t-caption c-3 az-min-words" data-min-words hidden>{s.minWords}</span>
         <span class="t-caption c-3" data-counter aria-live="polite"></span>
       </div>
       <div class="az-bar">
@@ -177,6 +178,8 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
   .iu-analyzer .az-submit { margin-top: 16px; }
   .iu-analyzer .az-hint { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; }
   .iu-analyzer .az-hint svg { width: 17px; height: 17px; }
+  /* «كلمتان على الأقل» at the start of the word-count row while one word is typed. */
+  .iu-analyzer .az-min-words { margin-inline-end: auto; }
   /* Today's allowance: the teacher's «left today» pill style (irab-teacher.css), as one line. */
   .iu-analyzer .az-quota { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 14px; margin-top: 14px; color: var(--iu-text-2); text-align: center; }
   .iu-analyzer .az-quota-left svg { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; margin-inline-end: 6px; color: var(--iu-teal); fill: currentColor; }
