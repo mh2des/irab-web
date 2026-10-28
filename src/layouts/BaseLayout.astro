@@ -12,6 +12,7 @@ const CF_BEACON_TOKEN = "ca448779bf664e088c61c0f1fe75e19a"; // Cloudflare Web An
  *   • Reduced-motion respect
  */
 import AnalyticsNotice from '../components/AnalyticsNotice.astro';
+import LegalNotice from '../components/LegalNotice.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -204,5 +205,6 @@ const hasAlternate = lang === 'en' || hasEn;
     else window.addEventListener('load', boot, { once: true });
   </script>
   <AnalyticsNotice lang={lang} />
+  <LegalNotice lang={lang} />
 </body>
 </html>

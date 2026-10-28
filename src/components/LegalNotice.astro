@@ -1,0 +1,126 @@
+---
+/**
+ * One-line notice that the terms and the privacy policy changed (owner
+ * decision 2026-10-29: the change notice both documents promise for material
+ * changes). Same manners as AnalyticsNotice (owner 2026-09-22 and 2026-10-21:
+ * no blocking banner, as rarely as possible): at most once per browser,
+ * counted as seen the moment it appears, shown after the first scroll, tap
+ * or key press, and gone by itself after a few seconds unless the pointer or
+ * focus is on it.
+ *
+ * For account holders only (a browser that has signed in here before): they
+ * accepted the earlier documents, and AnalyticsNotice never shows to them, so
+ * the two never stack. Shown until UNTIL, and never on the terms or privacy
+ * page itself (reading it counts as seen). For a later change, bump VERSION,
+ * UNTIL and the copy.
+ */
+interface Props { lang?: 'ar' | 'en' }
+const { lang = 'ar' } = Astro.props;
+const VERSION = '2026-10-28';
+const UNTIL = '2026-11-28T00:00:00Z';
+const t = lang === 'en'
+  ? {
+      body: 'We updated our Terms and Privacy Policy on October 28, 2026: clearer free use limits, and what we count to apply them.',
+      terms: 'Terms', termsHref: '/en/terms',
+      privacy: 'Privacy', privacyHref: '/en/privacy',
+      ok: 'OK',
+    }
+  : {
+      body: 'حدّثنا شروط الخدمة وسياسة الخصوصية في ٢٨ أكتوبر ٢٠٢٦: صياغة أوضح لحدود الاستخدام المجاني، وما نعدّه لتطبيقها.',
+      terms: 'الشروط', termsHref: '/terms',
+      privacy: 'الخصوصية', privacyHref: '/privacy',
+      ok: 'حسنًا',
+    };
+---
+<div data-legal-notice data-version={VERSION} data-until={UNTIL} hidden role="status" class="ln">
+  <p class="ln-body">{t.body}</p>
+  <div class="ln-actions">
+    <a href={t.termsHref} class="ln-link">{t.terms}</a>
+    <a href={t.privacyHref} class="ln-link">{t.privacy}</a>
+    <button type="button" data-legal-notice-ok class="ln-ok">{t.ok}</button>
+  </div>
+</div>
+<style>
+  /* AnalyticsNotice's look, so the site has one kind of notice. */
+  .ln {
+    position: fixed; z-index: 60; bottom: 12px; inset-inline: 12px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
+    padding: 10px; padding-inline-start: 16px;
+    border-radius: 16px; font-size: 13.5px; line-height: 1.6;
+    color: var(--color-ink); background: var(--color-card);
+    border: 1px solid var(--color-card-edge);
+    box-shadow: 0 2px 6px rgb(23 56 71 / 0.08), 0 18px 40px -18px rgb(23 56 71 / 0.35);
+    opacity: 0; translate: 0 14px;
+    transition: opacity .35s var(--ease-out-quart), translate .45s var(--ease-out-expo);
+  }
+  @media (min-width: 640px) { .ln { inset-inline: 16px auto; bottom: 16px; max-width: 34rem; } }
+  :global(.dark) .ln { color: var(--color-mist); background: var(--color-coal-soft); border-color: var(--color-coal-edge); box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.7); }
+  .ln.is-in { opacity: 1; translate: 0 0; }
+  .ln[hidden] { display: none; }
+  .ln-body { flex: 1 1 16rem; margin: 0; color: var(--color-ink-muted); }
+  :global(.dark) .ln-body { color: var(--color-mist-muted); }
+  .ln-actions { display: flex; align-items: center; gap: 12px; margin-inline-start: auto; }
+  .ln-link { font-size: 12.5px; color: var(--color-ink-subtle); text-decoration: underline; text-underline-offset: 3px; }
+  :global(.dark) .ln-link { color: var(--color-mist-subtle); }
+  .ln-link:hover { color: var(--color-purple); }
+  .ln-ok {
+    min-height: 36px; padding: 0 18px; border-radius: 999px; border: 0; cursor: pointer;
+    font-size: 13.5px; font-weight: 700; color: var(--color-paper); background: var(--color-ink);
+    transition: opacity .2s;
+  }
+  :global(.dark) .ln-ok { color: var(--color-coal); background: var(--color-mist); }
+  .ln-ok:hover { opacity: .9; }
+  .ln-ok:focus-visible, .ln-link:focus-visible { outline: 2px solid var(--color-purple); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { .ln { transition: opacity .2s; translate: none; } }
+</style>
+<script>
+  import { maybeSignedIn } from '../lib/session';
+
+  (() => {
+    const el = document.querySelector<HTMLElement>('[data-legal-notice]');
+    if (!el) return;
+    const key = 'irab-legal-notice';
+    const version = el.dataset.version || '1';
+    const until = Date.parse(el.dataset.until || '');
+    if (!(Date.now() < until)) return;
+    const markSeen = () => { try { localStorage.setItem(key, version); } catch { /* private mode */ } };
+    let seen = false;
+    try { seen = localStorage.getItem(key) === version; } catch { /* treat as unseen */ }
+    if (seen || !maybeSignedIn()) return;
+    if (/^\/(en\/)?(terms|privacy)\/?$/.test(location.pathname)) { markSeen(); return; }
+
+    let timer = 0;
+    let hovered = false;
+    const hide = () => {
+      clearTimeout(timer);
+      el.classList.remove('is-in');
+      setTimeout(() => { el.hidden = true; }, 450);
+    };
+    // Slides away on its own, unless the pointer or keyboard focus is on it.
+    const arm = () => {
+      clearTimeout(timer);
+      timer = window.setTimeout(() => { if (!hovered && !el.contains(document.activeElement)) hide(); }, 12000);
+    };
+    el.querySelector('[data-legal-notice-ok]')?.addEventListener('click', hide);
+    el.addEventListener('pointerenter', () => { hovered = true; clearTimeout(timer); });
+    el.addEventListener('pointerleave', () => { hovered = false; arm(); });
+    el.addEventListener('focusout', () => setTimeout(() => { if (!el.contains(document.activeElement)) arm(); }, 0));
+
+    // The first scroll, tap or key press shows it, once, a moment later.
+    const events = ['scroll', 'pointerdown', 'keydown'] as const;
+    let pending = false;
+    const show = () => {
+      markSeen();
+      el.hidden = false;
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('is-in')));
+      arm();
+    };
+    const onFirst = () => {
+      if (pending) return;
+      pending = true;
+      events.forEach((ev) => removeEventListener(ev, onFirst));
+      setTimeout(show, 700);
+    };
+    events.forEach((ev) => addEventListener(ev, onFirst, { passive: true }));
+  })();
+</script>
