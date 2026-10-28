@@ -54,11 +54,12 @@ const otherHref = isEn ? `/en${meta.other.href}` : meta.other.href;
 // time rather than in the source, so the stored document stays untouched.
 const html = isEn ? body.replace(/href="\/(privacy|terms|refund)/g, 'href="/en/$1') : body;
 
-// Per document: the privacy policy changed on 10 October 2026 (Anthropic
-// for Ask the Teacher), the terms on 28 October 2026 (free limits point to
-// the pricing page); the refund policy did not.
-const updatedAr = { privacy: '١٠ أكتوبر ٢٠٢٦', terms: '٢٨ أكتوبر ٢٠٢٦', refund: '١ مايو ٢٠٢٦' }[kind];
-const updatedEn = { privacy: 'October 10, 2026', terms: 'October 28, 2026', refund: 'May 1, 2026' }[kind];
+// Per document: the privacy policy changed on 28 October 2026 (free use
+// limits: the website's browser and network counts, and retention), the
+// terms on 28 October 2026 (free limits point to the pricing page); the
+// refund policy did not.
+const updatedAr = { privacy: '٢٨ أكتوبر ٢٠٢٦', terms: '٢٨ أكتوبر ٢٠٢٦', refund: '١ مايو ٢٠٢٦' }[kind];
+const updatedEn = { privacy: 'October 28, 2026', terms: 'October 28, 2026', refund: 'May 1, 2026' }[kind];
 ---
 <Nav lang={lang} />
 

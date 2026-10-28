@@ -24,8 +24,11 @@
         <h3>Search History</h3>
         <ul><li>Arabic words and sentences submitted for irab/dictionary analysis</li><li>Timestamps of each query</li></ul>
         <h3>Device & Technical</h3>
-        <ul><li>FCM push token (for notifications you opt into)</li><li>Firebase Installation ID and Android Device ID (for analytics)</li><li>IP address: processed transiently by Cloudflare, not stored by us</li></ul>
-        <div class="callout green"><svg class="lucide lucide-sm callout-ico" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span><strong>Guest users:</strong> Only a local usage counter is stored on your device (max 4 irab / 5 dictionary per install). No Firestore profile is created for guests.</span></div>
+        <ul><li>FCM push token (for notifications you opt into)</li><li>Firebase Installation ID and Android Device ID (for analytics)</li><li>IP address: processed by Cloudflare to deliver the service. For free use, your network address is also kept in short lived usage counters (see Free Use Limits below)</li></ul>
+        <h3>Free Use Limits (Abuse Prevention)</h3>
+        <ul><li><strong>Daily usage counters:</strong> how many AI uses (analyses, dictionary lookups, questions and the like) an account, or a guest's anonymous ID, has made today: for the free limits and, for Irab Plus, a high ceiling against abuse</li><li><strong>First use date:</strong> when an account first used an AI feature, to give it its welcome week</li><li><strong>On the website (irab.app), for free use only:</strong> the same uses are also counted per browser and per network, so that one person gets one free allowance rather than one per account. For this the site sends us: a random browser ID that it keeps in your browser's local storage; a device signature, which is a one way hash of your browser type, operating system, language, screen size, time zone and processor and memory class, also kept in your browser (our server hashes it again together with your network); and your network address, meaning your IPv4 address or the first half (the /64 prefix) of your IPv6 address</li><li><strong>Welcome week on the website:</strong> to give it once per browser and home network, we note which account each browser ID, device signature and home network saw first</li><li><strong>Website guests:</strong> a guest's free tries are counted the same way, and also under the device signature over a longer period and per IP address and address range for the day</li><li><strong>Email check:</strong> before a free website account uses AI features, we check that its email address is confirmed and not from a disposable email service</li></ul>
+        <p>These identifiers are used only to enforce the free limits. They are never used for analytics or advertising, or to follow you on other sites, and the website's browser and network counts are not kept for Irab Plus subscribers.</p>
+        <div class="callout green"><svg class="lucide lucide-sm callout-ico" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span><strong>Guest users:</strong> No Firestore profile is created for guests. In the app, a guest gets an anonymous ID: free tries are counted on the device and, for the day, on our server under that ID. On the website, guest tries are counted on the device and as described under Free Use Limits above.</span></div>
         <div class="table-wrap">
           <table><thead><tr><th>Data Category</th><th>Linked to Account</th><th>Retention</th></tr></thead>
           <tbody>
@@ -33,13 +36,19 @@
             <tr><td>XP, Ranks, Streaks, Badges</td><td>Yes</td><td>Until account deletion</td></tr>
             <tr><td>Practice & Challenge History</td><td>Yes</td><td>Until account deletion</td></tr>
             <tr><td>Search History, Favorites</td><td>Yes</td><td>Until account deletion</td></tr>
-            <tr><td>Daily Usage Counters</td><td>Yes</td><td>30 days, auto deleted</td></tr>
+            <tr><td>Daily Usage Counters</td><td>Yes</td><td>Expire after 2 days</td></tr>
+            <tr><td>First Use Date (welcome week)</td><td>Yes</td><td>60 days</td></tr>
+            <tr><td>Website Usage Counters (browser ID, device signature, network)</td><td>No</td><td>Expire after 2 days</td></tr>
+            <tr><td>Website First Account Markers (browser, home network)</td><td>Yes (stores the account ID)</td><td>60 days</td></tr>
+            <tr><td>Website Guest Tries (device signature)</td><td>No</td><td>90 days</td></tr>
+            <tr><td>Website Guest Counters (IP address, address range)</td><td>No</td><td>Expire after 25 hours</td></tr>
             <tr><td>XP Award Logs</td><td>Yes</td><td>60 days, auto deleted</td></tr>
             <tr><td>FCM Token</td><td>Yes</td><td>Deleted on logout</td></tr>
             <tr><td>Analytics Events</td><td>Pseudonymised</td><td>26 months (Firebase)</td></tr><tr><td>Product analytics (PostHog)</td><td>Pseudonymised, EU-hosted</td><td>Events 7 years, session recordings 30 days</td></tr>
-            <tr><td>Guest Usage Counters</td><td>Device only</td><td>Until app uninstall</td></tr>
+            <tr><td>Guest Usage Counters on the Device</td><td>Device only</td><td>Until the app is removed or site data is cleared</td></tr>
           </tbody></table>
         </div>
+        <p>Expired counters and markers are no longer read, and are deleted automatically in the background.</p>
       </div>
       <div class="ar">
         <h3>بيانات الحساب والهوية</h3>
@@ -50,7 +59,11 @@
         <ul><li>أحداث استخدام الميزات وعدّادات الاستخدام اليومية</li><li>بيانات الجلسة من Firebase Analytics (إصدار التطبيق، النظام، الجهاز)</li><li>تحليلات الاستخدام وتسجيلات شاشة مطموسة عبر PostHog (خوادم الاتحاد الأوروبي، فرانكفورت): الشاشات التي تُزار، الميزات المستخدمة، أحداث الاشتراك، ومصدر الحملة الإعلانية للتثبيت (معاملات UTM ومعرّفات نقر الإعلانات). النصوص التي تُعربها أو تبحث عنها أو تنطقها لا تُرسل أبدًا إلى التحليلات، والتسجيلات تطمس كل النصوص والصور. يمكنك إيقاف ذلك من إعدادات التطبيق أو من التنبيه في الموقع.</li><li>تقارير الأعطال ومعلومات الأداء</li></ul>
         <h3>سجل البحث والاستعلام</h3>
         <ul><li>الكلمات والجمل العربية التي ترسلها للتحليل</li><li>الطوابع الزمنية لكل استعلام</li></ul>
-        <div class="callout green"><svg class="lucide lucide-sm callout-ico" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span><strong>المستخدمون كضيوف:</strong> يُخزَّن محليًا على جهازك فقط عدّاد الاستخدام (٤ تحليلات / ٥ بحث كحدّ أقصى). لا يُنشأ ملف Firestore للضيوف.</span></div>
+        <h3>حدود الاستخدام المجاني (منع الإساءة)</h3>
+        <ul><li><strong>عدّادات الاستخدام اليومية:</strong> عدد مرات استخدام ميزات الذكاء الاصطناعي (التحليلات وبحث المعجم والأسئلة ونحوها) لكل حساب، أو للمعرّف المجهول للضيف، في اليوم: لتطبيق الحدود المجانية، ولمشتركي إعراب بلس سقفٌ مرتفع لمنع الإساءة</li><li><strong>تاريخ أول استخدام:</strong> متى استخدم الحساب ميزة ذكاء اصطناعي أول مرة، ليحصل على أسبوعه الأول</li><li><strong>على الموقع (irab.app) وللاستخدام المجاني فقط:</strong> يُعدّ الاستخدام نفسه أيضًا لكل متصفح ولكل شبكة، ليحصل الشخص الواحد على حصة مجانية واحدة لا حصة لكل حساب. ولذلك يرسل إلينا الموقع: معرّفًا عشوائيًا للمتصفح يحفظه في التخزين المحلي لمتصفحك؛ وبصمةً للجهاز، وهي قيمة مُجزَّأة (hash) باتجاه واحد لنوع المتصفح ونظام التشغيل واللغة وحجم الشاشة والمنطقة الزمنية وفئة المعالج والذاكرة، تُحفظ كذلك في متصفحك (ويجزّئها خادمنا مرة أخرى مع شبكتك)؛ وعنوان شبكتك، أي عنوان IPv4 أو النصف الأول (البادئة ‎/64) من عنوان IPv6</li><li><strong>الأسبوع الأول على الموقع:</strong> ليُمنح مرة واحدة لكل متصفح ولكل شبكة منزلية، نسجّل أول حساب رآه كل معرّف متصفح وكل بصمة جهاز وكل شبكة منزلية</li><li><strong>ضيوف الموقع:</strong> تُعدّ محاولات الضيف المجانية بالطريقة نفسها، وكذلك تحت بصمة الجهاز لمدة أطول، ولكل عنوان IP ونطاق عناوين خلال اليوم</li><li><strong>التحقق من البريد:</strong> قبل أن يستخدم حساب مجاني على الموقع ميزات الذكاء الاصطناعي، نتحقق من أن بريده الإلكتروني مؤكَّد وليس من خدمة بريد مؤقت</li></ul>
+        <p>تُستخدم هذه المعرّفات لتطبيق الحدود المجانية فقط، ولا تُستخدم أبدًا للتحليلات أو الإعلانات أو لتتبّعك في مواقع أخرى، ولا تُحفظ عدّادات المتصفح والشبكة على الموقع لمشتركي إعراب بلس. مدة الاحتفاظ: تنتهي العدّادات اليومية بعد يومين، ويُحفظ تاريخ أول استخدام وعلامات أول حساب ٦٠ يومًا، وعدّاد محاولات ضيف الموقع ٩٠ يومًا، وعدّادات العناوين للضيوف ٢٥ ساعة. وما انتهت مدته لا يُقرأ، ويُحذف تلقائيًا في الخلفية.</p>
+        <p><strong>عنوان IP:</strong> تعالجه Cloudflare لتقديم الخدمة، ويُحفظ عنوان شبكتك كذلك في عدّادات الاستخدام قصيرة المدة الموضّحة أعلاه.</p>
+        <div class="callout green"><svg class="lucide lucide-sm callout-ico" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span><strong>المستخدمون كضيوف:</strong> لا يُنشأ ملف Firestore للضيوف. في التطبيق يحصل الضيف على معرّف مجهول، وتُعدّ محاولاته المجانية على الجهاز، وعلى خادمنا لليوم تحت ذلك المعرّف. وعلى الموقع تُعدّ محاولات الضيف على الجهاز وكما هو موضّح في حدود الاستخدام المجاني أعلاه.</span></div>
       </div>
     </section>
 
@@ -68,7 +81,7 @@
           <li><strong>Personalization:</strong> Show saved favorites, library entries, practice history</li>
           <li><strong>Notifications:</strong> Send daily reminders and streak alerts (opt in only)</li>
           <li><strong>Subscription:</strong> Verify premium entitlement and gate features</li>
-          <li><strong>Abuse prevention:</strong> Enforce usage limits via Cloudflare rate limiting</li>
+          <li><strong>Abuse prevention:</strong> Enforce free usage limits and request limits, including counting free website use per browser and network (see Section 02)</li>
           <li><strong>App improvement:</strong> Analyze aggregated, anonymized analytics to identify issues</li>
           <li><strong>Legal compliance:</strong> Maintain records required by law</li>
         </ul>
@@ -82,7 +95,7 @@
           <li><strong>التخصيص:</strong> عرض المحفوظات وإدخالات المكتبة وسجل التدرّب</li>
           <li><strong>الإشعارات:</strong> إرسال تذكيرات وتنبيهات السلسلة (بموافقتك فقط)</li>
           <li><strong>الاشتراك:</strong> التحقق من الاستحقاق المميز وتفعيل الميزات</li>
-          <li><strong>منع الإساءة:</strong> تطبيق حدود الاستخدام عبر Cloudflare</li>
+          <li><strong>منع الإساءة:</strong> تطبيق حدود الاستخدام المجاني وحدود الطلبات، ومنها عدّ الاستخدام المجاني على الموقع لكل متصفح وشبكة (انظر القسم ٠٢)</li>
           <li><strong>تحسين التطبيق:</strong> تحليل بيانات مجمَّعة ومجهولة الهوية</li>
         </ul>
         <div class="callout purple"><svg class="lucide lucide-sm callout-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>لا نستخدم بياناتك للإعلانات ولا نبيعها لوسطاء البيانات. بيانات Firebase Analytics تُستخدم لتحسين التطبيق فقط.</span></div>
@@ -221,11 +234,11 @@
         <div><div class="s-eyebrow en">Section 09</div><div class="s-eyebrow ar">القسم ٠٩</div><div class="section-title en">Data Retention</div><div class="section-title ar">مدة الاحتفاظ بالبيانات</div></div>
       </div>
       <div class="en">
-        <ul><li><strong>Account data</strong> (email, display name, profile): until account deletion</li><li><strong>Learning progress, favorites, history:</strong> until account deletion</li><li><strong>Daily usage counters:</strong> auto deleted after <strong>30 days</strong></li><li><strong>XP award logs:</strong> auto deleted after <strong>60 days</strong></li><li><strong>Certificates:</strong> until account deletion (stored in Cloudflare R2)</li><li><strong>FCM token:</strong> deleted on logout</li><li><strong>Firebase Analytics data:</strong> up to <strong>26 months</strong> (Google's retention)</li></ul>
+        <ul><li><strong>Account data</strong> (email, display name, profile): until account deletion</li><li><strong>Learning progress, favorites, history:</strong> until account deletion</li><li><strong>Daily usage counters</strong> (account, browser, network): expire after <strong>2 days</strong></li><li><strong>First use date and website first account markers:</strong> <strong>60 days</strong></li><li><strong>Website guest tries</strong> (device signature): <strong>90 days</strong>; website guest address counters: <strong>25 hours</strong></li><li><strong>XP award logs:</strong> auto deleted after <strong>60 days</strong></li><li><strong>Certificates:</strong> until account deletion (stored in Cloudflare R2)</li><li><strong>FCM token:</strong> deleted on logout</li><li><strong>Firebase Analytics data:</strong> up to <strong>26 months</strong> (Google's retention)</li></ul>
         <p>When you delete your account, a Cloud Function removes all associated data from Firestore and Cloudflare R2 within 24 hours.</p>
       </div>
       <div class="ar">
-        <ul><li><strong>بيانات الحساب:</strong> حتى حذف الحساب</li><li><strong>التقدّم والمحفوظات والسجل:</strong> حتى حذف الحساب</li><li><strong>عدّادات الاستخدام اليومية:</strong> تُحذف تلقائيًا بعد <strong>٣٠ يومًا</strong></li><li><strong>سجلات XP:</strong> تُحذف تلقائيًا بعد <strong>٦٠ يومًا</strong></li><li><strong>الشهادات:</strong> حتى حذف الحساب (Cloudflare R2)</li><li><strong>رمز FCM:</strong> يُحذف فور تسجيل الخروج</li><li><strong>بيانات Firebase Analytics:</strong> حتى <strong>٢٦ شهرًا</strong> (وفق Google)</li></ul>
+        <ul><li><strong>بيانات الحساب:</strong> حتى حذف الحساب</li><li><strong>التقدّم والمحفوظات والسجل:</strong> حتى حذف الحساب</li><li><strong>عدّادات الاستخدام اليومية</strong> (الحساب والمتصفح والشبكة): تنتهي بعد <strong>يومين</strong></li><li><strong>تاريخ أول استخدام وعلامات أول حساب على الموقع:</strong> <strong>٦٠ يومًا</strong></li><li><strong>محاولات ضيف الموقع</strong> (بصمة الجهاز): <strong>٩٠ يومًا</strong>؛ وعدّادات عناوين ضيوف الموقع: <strong>٢٥ ساعة</strong></li><li><strong>سجلات XP:</strong> تُحذف تلقائيًا بعد <strong>٦٠ يومًا</strong></li><li><strong>الشهادات:</strong> حتى حذف الحساب (Cloudflare R2)</li><li><strong>رمز FCM:</strong> يُحذف فور تسجيل الخروج</li><li><strong>بيانات Firebase Analytics:</strong> حتى <strong>٢٦ شهرًا</strong> (وفق Google)</li></ul>
         <p>عند حذف حسابك، تُزال جميع البيانات من Firestore وCloudflare R2 خلال ٢٤ ساعة.</p>
       </div>
     </section>
