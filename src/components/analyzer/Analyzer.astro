@@ -21,6 +21,7 @@ const s = STRINGS[lang];
 const dir = lang === 'ar' ? 'rtl' : 'ltr';
 const login = lang === 'ar' ? '/login' : '/en/login';
 const historyHref = lang === 'ar' ? '/history' : '/en/history';
+const pricingHref = lang === 'ar' ? '/pricing' : '/en/pricing';
 const fwd = lang === 'ar' ? I.arrowLeft : I.arrowRight;
 const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
 ---
@@ -58,6 +59,12 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
     <button type="button" class="iu-btn primary lg block az-submit" data-submit disabled>
       <span data-submit-label>{s.analyze}</span><Fragment set:html={fwd} />
     </button>
+    {/* Today's allowance, for a free account only (not guests, not Irab
+        Plus): what is left and the way to no limit, or when it renews. */}
+    <p class="t-caption az-quota" data-quota hidden aria-live="polite">
+      <span class="az-quota-left"><Fragment set:html={I.zap} /><span data-quota-text></span></span>
+      <a class="az-quota-plus" data-quota-plus href={pricingHref}></a>
+    </p>
     <p class="t-caption c-3 az-hint"><Fragment set:html={I.lightbulb} />{s.tashkeelHint}</p>
 
     <div class="iu-card az-gate" data-gate hidden role="alert">
@@ -170,6 +177,13 @@ const back = lang === 'ar' ? I.arrowRight : I.arrowLeft;
   .iu-analyzer .az-submit { margin-top: 16px; }
   .iu-analyzer .az-hint { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; }
   .iu-analyzer .az-hint svg { width: 17px; height: 17px; }
+  /* Today's allowance: the teacher's «left today» pill style (irab-teacher.css), as one line. */
+  .iu-analyzer .az-quota { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 14px; margin-top: 14px; color: var(--iu-text-2); text-align: center; }
+  .iu-analyzer .az-quota-left svg { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; margin-inline-end: 6px; color: var(--iu-teal); fill: currentColor; }
+  .iu-analyzer .az-quota.is-spent .az-quota-left svg { color: var(--iu-text-3); }
+  .iu-analyzer .az-quota-plus { color: var(--iu-primary-text); font-weight: 600; text-decoration: none; border-radius: 4px; }
+  .iu-analyzer .az-quota-plus:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .iu-analyzer .az-quota-plus:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 2px; }
 
   .iu-analyzer .az-gate { margin-top: 18px; padding: 18px; display: flex; flex-direction: column; gap: 6px; border-color: var(--iu-primary-soft); }
   .iu-analyzer .az-gate-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }

@@ -56,6 +56,9 @@ export function mountAnalyzer(root: HTMLElement): void {
   const gate = q('[data-gate]');
   const sheet = q<HTMLDialogElement>('[data-mode-sheet]');
   const sticky = q('[data-sticky]');
+  const quota = q('[data-quota]');
+  const quotaText = q('[data-quota-text]');
+  const quotaPlus = q<HTMLAnchorElement>('[data-quota-plus]');
 
   const user = { signedIn: false, uid: null as string | null, idToken: null as string | null, premium: false, getToken: null as null | (() => Promise<string>) };
   let mode: Mode = 'standard';
@@ -63,6 +66,7 @@ export function mountAnalyzer(root: HTMLElement): void {
   let last: { run: Run; result: IrabResult } | null = null;
   let lastRun: Run | null = null;
   let usage: UsageStatus | null = null;
+  let usageAt = 0; // when usage was last read from the Worker
 
   // A refused character says why, and the notice stays long enough to read.
   const arabic = guardArabicOnly(input, { note: q('[data-arabic-only-note]'), linger: 4500 });
@@ -151,7 +155,7 @@ export function mountAnalyzer(root: HTMLElement): void {
     sheet.showModal();
     if (user.signedIn && user.getToken) {
       const token = await user.getToken().catch(() => null);
-      if (token) { usage = (await usageStatus(token)) ?? usage; renderSheet(); }
+      if (token) { usage = (await usageStatus(token)) ?? usage; usageAt = Date.now(); renderSheet(); renderQuota(); }
     }
   });
   sheet.addEventListener('click', (e) => {
@@ -168,6 +172,56 @@ export function mountAnalyzer(root: HTMLElement): void {
     setMode(m);
     renderSheet();
     window.setTimeout(() => sheet.close(), 120);
+  });
+
+  // ── Today's allowance (A1) ───────────────────────────────────────────────
+  // Under the button, for a free account only: what is left today and the
+  // way to no limit, or, once it is used, when it renews. Not for a guest,
+  // whose tries are not counted out (owner, 2026-10-13), nor for Irab Plus.
+  async function refreshUsage() {
+    if (!user.signedIn || !user.getToken || premium()) return;
+    const token = await user.getToken().catch(() => null);
+    if (!token) return;
+    usage = (await usageStatus(token)) ?? usage;
+    usageAt = Date.now();
+    renderQuota();
+  }
+  /** The Worker's daily reset: the next UTC midnight. */
+  function nextReset(): Date {
+    const at = new Date();
+    at.setUTCHours(24, 0, 0, 0);
+    return at;
+  }
+  /** That reset in this browser's time zone, as the app says it. */
+  function renewsLine(at: Date): string {
+    const when = at.toDateString() === new Date().toDateString() ? s.renewsToday : s.renewsTomorrow;
+    return s.quotaSpent(when, D(new Intl.DateTimeFormat(lang, { hour: 'numeric', minute: '2-digit' }).format(at)));
+  }
+  let renewTimer = 0;
+  function renderQuota() {
+    window.clearTimeout(renewTimer);
+    const st = user.signedIn && !premium() ? usage?.standard : null;
+    quota.hidden = !st;
+    if (!st) return;
+    const spent = st.remaining <= 0;
+    quota.classList.toggle('is-spent', spent);
+    quotaPlus.textContent = spent ? s.quotaSpentCta : s.quotaPlus;
+    if (!spent) { quotaText.textContent = D(s.leftToday(String(st.remaining), String(st.limit))); return; }
+    const at = nextReset();
+    quotaText.textContent = renewsLine(at);
+    // Still on the page when the day renews: read the new allowance then.
+    renewTimer = window.setTimeout(() => void refreshUsage(), at.getTime() - Date.now() + 5000);
+  }
+  quotaPlus.addEventListener('click', (e) => {
+    const left = usage?.standard?.remaining ?? null;
+    track('quota_upgrade_clicked', { source: 'web_tool', remaining: left });
+    // A used-up day opens the limit paywall in place; otherwise the pricing page.
+    const paywall = (window as any).IrabPaywall;
+    if (left === 0 && paywall) { e.preventDefault(); paywall.show(); }
+  });
+  document.addEventListener('visibilitychange', () => {
+    // Back on the tab: the day may have renewed, or the app used some.
+    if (document.visibilityState === 'visible' && Date.now() - usageAt > 60_000) void refreshUsage();
   });
 
   // ── Gates ────────────────────────────────────────────────────────────────
@@ -228,6 +282,7 @@ export function mountAnalyzer(root: HTMLElement): void {
       if (usage && !premium()) {
         if (r.deep && typeof usage.deep === 'number') usage.deep = Math.max(0, usage.deep - 1);
         if (!r.deep && usage.standard) usage.standard.remaining = Math.max(0, usage.standard.remaining - 1);
+        renderQuota();
       }
       track('irab_completed', { source: 'web_tool', word_count: result.words.length, latency_ms: Math.round(performance.now() - started), signed_in: user.signedIn, depth: r.deep ? 'deep' : 'standard' });
       try {
@@ -243,7 +298,12 @@ export function mountAnalyzer(root: HTMLElement): void {
       track('irab_failed', { source: 'web_tool', reason: kind });
       if (kind === 'guest_limit') showGate(s.guestTitle, s.guestBody);
       else if (kind === 'account_required') accountGate(r);
-      else if (kind === 'daily_limit') { show('compose'); (window as any).IrabPaywall?.show(); }
+      else if (kind === 'daily_limit') {
+        // The Worker is the authority: the day is used (in this browser or network too).
+        if (usage?.standard) { usage.standard.remaining = 0; renderQuota(); } else void refreshUsage();
+        show('compose');
+        (window as any).IrabPaywall?.show();
+      }
       else if (kind === 'deep_locked') { show('compose'); (window as any).IrabPaywall?.show({ reason: 'deep' }); }
       else if (kind === 'email') show('compose');
       else if (kind === 'too_long') { show('compose'); setNote(user.signedIn ? s.tooLong(MAX_WORDS) : s.tooManyChars(GUEST_CHARS)); }
@@ -566,6 +626,7 @@ export function mountAnalyzer(root: HTMLElement): void {
           user.getToken = () => u.getIdToken();
           try { user.idToken = await u.getIdToken(); } catch { /* retried per request */ }
           try { const me = await fetchMe(u); user.premium = me?.premium === true; } catch { /* free */ }
+          void refreshUsage();
           input.maxLength = MEMBER_CHARS;
           gate.hidden = true;
           renderRecent();
