@@ -44,6 +44,7 @@ export type AnalyzeError =
   | { kind: 'daily_limit' }
   | { kind: 'deep_locked' }
   | { kind: 'account_required' }
+  | { kind: 'too_short' }
   | { kind: 'too_long' }
   | { kind: 'not_arabic' }
   /** Unconfirmed or throwaway email: the paywall's email view is open. */
@@ -98,6 +99,7 @@ async function failureFrom(res: Response, signedIn: boolean): Promise<AnalyzeFai
   if (res.status === 429) return new AnalyzeFailure({ kind: signedIn || error === 'daily_limit_reached' ? 'daily_limit' : 'guest_limit' });
   if (res.status === 403 && error === 'premium_required') return new AnalyzeFailure({ kind: 'deep_locked' });
   if (res.status === 403 && error === 'account_required') return new AnalyzeFailure({ kind: 'account_required' });
+  if (res.status === 400 && /at least 2 words/i.test(error)) return new AnalyzeFailure({ kind: 'too_short' });
   if (res.status === 400 && /long/i.test(error)) return new AnalyzeFailure({ kind: 'too_long' });
   if (res.status === 400 && /arabic/i.test(error)) return new AnalyzeFailure({ kind: 'not_arabic' });
   return new AnalyzeFailure({ kind: 'failed' });

@@ -14,6 +14,7 @@ import { maybeSignedIn } from '../session';
 import { addHistory, getHistory, getHistoryItem } from '../history';
 import { guardArabicOnly } from '../../scripts/arabic-only';
 
+const MIN_WORDS = 2; // as the Worker's validateIrabInput and the app's sentence_too_short
 const MAX_WORDS = 30;
 const GUEST_CHARS = 200;
 const MEMBER_CHARS = 1000;
@@ -44,6 +45,7 @@ export function mountAnalyzer(root: HTMLElement): void {
   const form = q<HTMLFormElement>('[data-form]');
   const input = q<HTMLTextAreaElement>('[data-input]');
   const counter = q('[data-counter]');
+  const minWords = q('[data-min-words]');
   const submit = q<HTMLButtonElement>('[data-submit]');
   const submitLabel = q('[data-submit-label]');
   const modeBtn = q<HTMLButtonElement>('[data-mode]');
@@ -89,8 +91,10 @@ export function mountAnalyzer(root: HTMLElement): void {
     const n = words();
     counter.textContent = s.counter(D(n), D(MAX_WORDS));
     counter.classList.toggle('c-error', n > MAX_WORDS);
+    // One word is not a sentence: the button waits, and says why.
+    minWords.hidden = n !== 1;
     form.classList.toggle('is-filled', input.value.trim().length > 0);
-    submit.disabled = busy || n === 0 || n > MAX_WORDS;
+    submit.disabled = busy || n < MIN_WORDS || n > MAX_WORDS;
   }
   function setNote(text: string) {
     composerNote.textContent = text;
@@ -107,7 +111,7 @@ export function mountAnalyzer(root: HTMLElement): void {
     e.preventDefault();
     arabic.sanitize();
     const text = input.value.trim();
-    if (!text || words() > MAX_WORDS) return;
+    if (!text || words() < MIN_WORDS || words() > MAX_WORDS) return; // ⌘/Ctrl+Enter skips the button
     void run({ text, deep: mode === 'deep', asTyped: false });
   });
 
@@ -306,6 +310,7 @@ export function mountAnalyzer(root: HTMLElement): void {
       }
       else if (kind === 'deep_locked') { show('compose'); (window as any).IrabPaywall?.show({ reason: 'deep' }); }
       else if (kind === 'email') show('compose');
+      else if (kind === 'too_short') { show('compose'); setNote(s.tooShort); }
       else if (kind === 'too_long') { show('compose'); setNote(user.signedIn ? s.tooLong(MAX_WORDS) : s.tooManyChars(GUEST_CHARS)); }
       else if (kind === 'not_arabic') { show('compose'); setNote(s.arabicOnly); }
       else show('error');
