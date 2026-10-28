@@ -17,7 +17,7 @@ const ar = {
   leftToday: (n: string) => `المتبقي اليوم: ${n}`,
   noneLeft: 'انتهى بحث اليوم',
   unlimited: 'بحث غير محدود',
-  plusTag: 'إعراب بلاس',
+  plusTag: 'إعراب بلس',
   arabicOnly: 'اكتب الكلمة بالحروف العربية.',
   tryWords: 'جرّب',
   recent: 'بحثت عنها مؤخرًا',
