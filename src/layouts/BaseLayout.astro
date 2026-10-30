@@ -200,6 +200,9 @@ const hasAlternate = lang === 'en' || hasEn;
       // PostHog: same after-load rule. No-op until src/config/analytics.ts
       // has a project token.
       import('../scripts/analytics-boot');
+      // Paddle.js where Paddle sends customers: payment links (?_ptxn=) and
+      // the home pages (Retain's recovery emails). Nothing loads elsewhere.
+      import('../scripts/paddle-boot');
     };
     if (document.readyState === 'complete') boot();
     else window.addEventListener('load', boot, { once: true });

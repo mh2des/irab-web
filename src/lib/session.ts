@@ -13,6 +13,7 @@ export function forgetSignedIn(): void {
   try {
     localStorage.removeItem(FLAG);
     localStorage.removeItem('irab-premium'); // entitlement cache follows the session
+    localStorage.removeItem('irab-paddle-ctm'); // so does the Paddle Retain customer id
   } catch { /* ignore */ }
   document.documentElement.removeAttribute('data-plus');
 }

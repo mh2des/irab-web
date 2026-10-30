@@ -31,7 +31,8 @@ function loadScript(src: string): Promise<void> {
     s.src = src;
     s.async = true;
     s.onload = () => resolve();
-    s.onerror = () => reject(new Error('Failed to load Paddle.js'));
+    // Drop the dead tag, or the check above would "resolve" every retry.
+    s.onerror = () => { s.remove(); reject(new Error('Failed to load Paddle.js')); };
     document.head.appendChild(s);
   });
 }
@@ -46,6 +47,9 @@ export async function loadPaddle(): Promise<any> {
     if (PADDLE_ENV === 'sandbox') Paddle.Environment.set('sandbox');
     Paddle.Initialize({
       token: PADDLE_CLIENT_TOKEN,
+      // Paddle Retain: an empty object until a signed-in web buyer's customer
+      // id is known (setRetainCustomer). Paddle asks for {} over leaving it out.
+      pwCustomer: {},
       eventCallback: (ev: any) => {
         if (ev?.name === 'checkout.completed' && onCompleteCb) {
           try { onCompleteCb(); } catch { /* ignore */ }
@@ -54,7 +58,19 @@ export async function loadPaddle(): Promise<any> {
     });
     return Paddle;
   })();
+  // A failed load must not stick: the next caller (a checkout click) retries.
+  paddlePromise.catch(() => { paddlePromise = null; });
   return paddlePromise;
+}
+
+/**
+ * Paddle Retain: the signed-in web buyer's Paddle customer id (ctm_ only), so
+ * Retain can show its "update your card" notice when their payment failed.
+ * '' = nobody (back to the empty object).
+ */
+export async function setRetainCustomer(id: string): Promise<void> {
+  const Paddle = await loadPaddle();
+  Paddle.Update({ pwCustomer: id ? { id } : {} });
 }
 
 export interface CheckoutOpts {
