@@ -28,6 +28,9 @@ export function onAuth(cb: (u: User | null) => void) {
     // sign-in (same uid as the app, RevenueCat and Paddle), reset on sign-out.
     // Lazy import: analytics is a no-op until BaseLayout has booted it.
     import('./analytics').then((m) => m.syncIdentity(u)).catch(() => {});
+    // Paddle Retain: a web buyer whose card failed sees Paddle's "update your
+    // card" notice. Only subscribers are looked up; see lib/paddle-retain.ts.
+    if (u) import('./paddle-retain').then((m) => m.syncRetain(u)).catch(() => {});
     cb(u);
   });
 }
