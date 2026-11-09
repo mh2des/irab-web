@@ -56,10 +56,11 @@ const html = isEn ? body.replace(/href="\/(privacy|terms|refund)/g, 'href="/en/$
 
 // Per document: the privacy policy changed on 28 October 2026 (free use
 // limits: the website's browser and network counts, and retention), the
-// terms on 28 October 2026 (free limits point to the pricing page); the
-// refund policy did not.
-const updatedAr = { privacy: '٢٨ أكتوبر ٢٠٢٦', terms: '٢٨ أكتوبر ٢٠٢٦', refund: '١ مايو ٢٠٢٦' }[kind];
-const updatedEn = { privacy: 'October 28, 2026', terms: 'October 28, 2026', refund: 'May 1, 2026' }[kind];
+// terms on 28 October 2026 (free limits point to the pricing page) and on
+// 9 November 2026 (voice input in the app became Irab Plus); the refund
+// policy did not.
+const updatedAr = { privacy: '٢٨ أكتوبر ٢٠٢٦', terms: '٩ نوفمبر ٢٠٢٦', refund: '١ مايو ٢٠٢٦' }[kind];
+const updatedEn = { privacy: 'October 28, 2026', terms: 'November 9, 2026', refund: 'May 1, 2026' }[kind];
 ---
 <Nav lang={lang} />
 
