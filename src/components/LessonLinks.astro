@@ -14,6 +14,10 @@
  * Reader value first: each card names the lesson and what it covers, so the
  * block reads as "where to go next", not as a list of links.
  *
+ * The same block also lists the «إعراب كلمة» pages (/irab/<slug>) on the
+ * pages that teach around them: pass `items` instead of `slugs`, and
+ * `allHref` for the link under the grid.
+ *
  * Type note: the heading uses the body face in bold, not Aref Ruqaa. Per the
  * usage rule in global.css the display face is reserved for large labels of
  * two words or fewer, and these headings are sentences.
@@ -22,9 +26,16 @@ import Container from './Container.astro';
 import { lessonsBySlug, accentFor } from '../data/duroos';
 import { enLessonsBySlug, enAccentFor } from '../lib/en-duroos';
 
+interface Item { href: string; title: string; blurb: string; accent?: string }
 interface Props {
   /** Lesson slugs, in the order they should be read. */
-  slugs: string[];
+  slugs?: string[];
+  /** Ready-made cards instead of lessons (e.g. the word pages). */
+  items?: Item[];
+  /** Where the link under the grid goes; defaults to the lessons hub. */
+  allHref?: string;
+  /** id of the heading; set it when a page carries two of these blocks. */
+  id?: string;
   title?: string;
   lead?: string;
   /** Label on the link to the full lessons hub; omit to hide that link. */
@@ -36,7 +47,10 @@ interface Props {
   tone?: 'plain' | 'tinted';
 }
 const {
-  slugs,
+  slugs = [],
+  items,
+  allHref,
+  id = 'll-h',
   title = Astro.props.lang === 'en' ? 'Lessons on this topic' : 'دروس تشرح هذا الباب',
   lead,
   allLabel = Astro.props.lang === 'en' ? 'All grammar lessons' : 'كل دروس النحو',
@@ -48,22 +62,24 @@ const {
 // The English course is a separate set of pages with its own titles and its
 // own published subset, so each language reads its own list.
 const en = lang === 'en';
-const lessons = en ? enLessonsBySlug(...slugs) : lessonsBySlug(...slugs);
 const accent = en ? enAccentFor : accentFor;
-const hubHref = en ? '/en/duroos' : '/duroos';
 const base = en ? '/en/duroos' : '/duroos';
+const hubHref = allHref ?? (en ? '/en/duroos' : '/duroos');
+const lessons: Item[] = items ?? (en ? enLessonsBySlug(...slugs) : lessonsBySlug(...slugs)).map((l) => ({
+  href: `${base}/${l.slug}`, title: l.title, blurb: l.blurb, accent: accent(l.slug),
+}));
 const arrow = en ? '→' : '←';
 ---
 {lessons.length > 0 && (
-  <section class:list={['ll-sec', tone === 'tinted' && 'll-tinted']} aria-labelledby="ll-h" lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+  <section class:list={['ll-sec', tone === 'tinted' && 'll-tinted']} aria-labelledby={id} lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
     <Container size={width}>
       <div class="ll">
-        <h2 id="ll-h" class:list={['ll-h', en ? 'font-display' : 'font-arabic']}>{title}</h2>
+        <h2 id={id} class:list={['ll-h', en ? 'font-display' : 'font-arabic']}>{title}</h2>
         {lead && <p class:list={['ll-lead', !en && 'classical-naskh']}>{lead}</p>}
         <ul class="ll-grid" role="list">
           {lessons.map((l) => (
             <li>
-              <a class="ll-card" href={`${base}/${l.slug}`} style={`--acc:${accent(l.slug)}`}>
+              <a class="ll-card" href={l.href} style={`--acc:${l.accent ?? 'var(--color-purple)'}`}>
                 <b class="ll-title">{l.title}</b>
                 <span class="ll-blurb">{l.blurb}</span>
               </a>

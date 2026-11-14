@@ -65,6 +65,8 @@ const p = (path: string) => (lang === 'ar' ? path : `/en${path}`);
         <p class="eyebrow mb-4">{t.learn}</p>
         <ul class="space-y-2 text-small">
           <li><a href={p('/irab')}          class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.irab}</a></li>
+          {/* The word pages are Arabic only: no /en twin to link to. */}
+          {lang === 'ar' && <li><a href="/irab#kalimat" class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">إعراب الكلمات</a></li>}
           <li><a href={p('/nahw')}          class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.nahw}</a></li>
           <li><a href={p('/quran-parser')}  class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.quran}</a></li>
           <li><a href={p('/teachers')}      class="inline-block py-2 text-ink/70 hover:text-ink dark:text-mist/70 dark:hover:text-mist transition-colors duration-200">{t.links.teachers}</a></li>

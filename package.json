@@ -23,6 +23,7 @@
     "dev": "astro dev",
     "build": "astro build && node scripts/build-sitemaps.mjs",
     "seo:check": "node scripts/seo-check.mjs",
+    "irab:check": "node scripts/check-irab-words.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "export:quran": "node scripts/export-quran.mjs",

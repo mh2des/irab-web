@@ -19,6 +19,7 @@
 - Free AI i'rab analyzer (paste any sentence): https://irab.app/tool
 - What is i'rab (guide): https://irab.app/irab
 - Arabic grammar / nahw (guide): https://irab.app/nahw
+- I'rab of single words and particles (ما، من، في، إنّ، لا، كان، كل، مع…), each parsed in every position with worked examples: https://irab.app/irab#kalimat
 - Quran i'rab hub (6,236 ayah pages): https://irab.app/quran
 - Interactive i'rab practice with instant AI feedback: https://irab.app/practice
 - Methodology (sources, AI engine, verification): https://irab.app/methodology

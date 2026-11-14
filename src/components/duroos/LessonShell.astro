@@ -24,6 +24,13 @@
  * Body styles are global under .ls because the body is each page's own
  * markup: inline examples (.ar), the label chips that open example
  * paragraphs, lists, and the common-mistakes list drawn as cautions.
+ *
+ * The «إعراب كلمة» pages (/irab/<slug>) are read the same way, so they use
+ * this shell with `course={false}`: no course place, Quranic evidence, end
+ * of lesson or reading record, and they pass their own answer, breadcrumb,
+ * chip and date source. Every prop added for them is optional; a lesson page
+ * passes none of them and renders as before, plus one block: the word pages
+ * that name the lesson as related (Arabic only).
  */
 import '../../styles/irab-ui.css';
 import AyatExamples from './AyatExamples.astro';
@@ -33,6 +40,8 @@ import { placeOf, num, arCount, type Lang } from '../../lib/duroos-course';
 import { lessonAnswers } from '../../data/lesson-answers';
 import { ayatForLesson } from '../../lib/lesson-links';
 import { lastCommitDate, sourceFileFor, formatDate } from '../../lib/content-dates';
+import WordChips from '../irab/WordChips.astro';
+import { wordsForLesson } from '../../data/irab-words';
 
 interface Faq { q: string; a: string }
 interface Props {
@@ -41,14 +50,28 @@ interface Props {
   title: string;
   summary: string;
   faqs?: Faq[];
+  /** false on pages outside the course (/irab/<slug>). */
+  course?: boolean;
+  /** The short answer; a lesson reads its own from lessonAnswers. */
+  answer?: string;
+  /** Breadcrumb for a page outside the course. */
+  crumbs?: { href: string; label: string }[];
+  /** First chip of the meta row for a page outside the course. */
+  chip?: string;
+  /** Repo-relative file whose git date is the page's "last updated". */
+  dateFile?: string;
+  /** Accent colour for a page outside the course (a lesson takes its chapter's). */
+  accent?: string;
 }
-const { lang = 'ar', slug, title, summary, faqs = [] } = Astro.props;
+const { lang = 'ar', slug, title, summary, faqs = [], course = true, crumbs = [], chip, dateFile } = Astro.props;
 const en = lang === 'en';
 const dir = en ? 'ltr' : 'rtl';
 const base = en ? '/en' : '';
-const p = placeOf(lang, slug);
-const answer = lessonAnswers[slug]?.[lang];
-const accent = p?.chapter.accent ?? 'var(--color-purple)';
+const p = course ? placeOf(lang, slug) : undefined;
+const answer = Astro.props.answer ?? lessonAnswers[slug]?.[lang];
+// Word pages that send their reader to this lesson; the lesson links back.
+const relatedWords = course && !en ? wordsForLesson(slug) : [];
+const accent = Astro.props.accent ?? p?.chapter.accent ?? 'var(--color-purple)';
 
 const body = await Astro.slots.render('default');
 
@@ -56,7 +79,7 @@ const body = await Astro.slots.render('default');
 const strip = (h: string) => h.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 const toc = [...body.matchAll(/<section id="([^"]+)" class="ls-sec[^"]*"[^>]*>\s*<h2[^>]*>[\s\S]*?<span class="ls-h2-t"[^>]*>([\s\S]*?)<\/span>/g)]
   .map((m) => ({ id: m[1], title: strip(m[2]) }));
-const hasAyat = ayatForLesson(slug, 6).length > 0;
+const hasAyat = course && ayatForLesson(slug, 6).length > 0;
 if (hasAyat) toc.push({ id: 'quran-examples', title: en ? 'Quranic evidence' : 'آيات تطبيقية من القرآن' });
 if (faqs.length) toc.push({ id: 'faq', title: en ? 'Common questions' : 'أسئلة شائعة' });
 
@@ -64,7 +87,7 @@ if (faqs.length) toc.push({ id: 'faq', title: en ? 'Common questions' : 'أسئ�
 const words = strip(`${answer ?? ''} ${summary} ${body.replace(/<(script|style)[\s\S]*?<\/\1>/g, '')} ${faqs.map((f) => `${f.q} ${f.a}`).join(' ')}`).split(' ').length;
 const minutes = Math.max(2, Math.round(words / (en ? 190 : 130)));
 
-const source = sourceFileFor(Astro.url.pathname);
+const source = dateFile ?? sourceFileFor(Astro.url.pathname);
 const iso = source ? lastCommitDate(source) : undefined;
 const updated = iso ? formatDate(iso, lang) : undefined;
 
@@ -89,8 +112,8 @@ const t = en
       finished: 'قرأته',
       answerK: 'الخلاصة',
       by: 'بقلم منصور حسن', about: '/about',
-      reviewed: 'يُراجع كل درس قبل النشر', updatedK: 'آخر تحديث',
-      inLesson: 'في هذا الدرس',
+      reviewed: course ? 'يُراجع كل درس قبل النشر' : 'يُراجع قبل النشر', updatedK: 'آخر تحديث',
+      inLesson: course ? 'في هذا الدرس' : 'في هذه الصفحة',
       parts: arCount(toc.length, ['قسم واحد', 'قسمان', 'أقسام', 'قسمًا']),
       chapter: 'دروس الباب',
       crumbs: 'مسار التنقل',
@@ -102,7 +125,7 @@ const chev = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
 ---
 
 <link rel="preload" href="/fonts/thmanyah-text-bold.woff2" as="font" type="font/woff2" crossorigin />
-<div class="iu ls" lang={lang} dir={dir} data-ls={slug} data-ls-total={p?.total ?? 40} style={`--acc:${accent}`}>
+<div class="iu ls" lang={lang} dir={dir} data-ls={slug} data-ls-standalone={course ? undefined : ''} data-ls-total={p?.total ?? 40} style={`--acc:${accent}`}>
   <div class="ls-progress" aria-hidden="true"><span data-ls-bar></span></div>
 
   <div class="ls-grid">
@@ -115,8 +138,19 @@ const chev = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
             <a href={`${base}/duroos#ch-${p.chapter.no}`}>{p.chapter.title}</a>
           </nav>
         )}
+        {!p && crumbs.length > 0 && (
+          <nav class="ls-crumbs" aria-label={t.crumbs}>
+            {crumbs.map((c, i) => (
+              <>
+                {i > 0 && <span aria-hidden="true">/</span>}
+                <a href={c.href}>{c.label}</a>
+              </>
+            ))}
+          </nav>
+        )}
         <div class="ls-meta" data-reveal>
           {p && <span class="ls-chip is-acc">{t.lessonOf}</span>}
+          {!p && chip && <span class="ls-chip is-acc">{chip}</span>}
           <span class="ls-chip"><Fragment set:html={clock} />{t.read}</span>
           <span class="ls-chip is-done" data-ls-done hidden><Fragment set:html={check} />{t.finished}</span>
         </div>
@@ -145,9 +179,17 @@ const chev = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
 
       <div class="ls-body">
         <Fragment set:html={body} />
-        <AyatExamples slug={slug} lang={lang} />
+        {course && <AyatExamples slug={slug} lang={lang} />}
         {faqs.length > 0 && <LessonFaq lang={lang} items={faqs} />}
-        <LessonEnd lang={lang} slug={slug} />
+        {relatedWords.length > 0 && (
+          <WordChips
+            title="إعراب كلمات من هذا الباب"
+            lead="صفحات تُعرب الكلمة الواحدة في كل مواضعها، بأمثلة معربة كلمة كلمة."
+            slugs={relatedWords.map((w) => w.slug)}
+          />
+        )}
+        <slot name="end" />
+        {course && <LessonEnd lang={lang} slug={slug} />}
       </div>
     </article>
 
@@ -480,11 +522,14 @@ const chev = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
     const slug = root.dataset.ls || '';
 
     // ── Progress record ────────────────────────────────────────────────
-    markOpened(slug);
+    // Only lessons of the course are recorded; a page outside it (/irab/<slug>)
+    // must not become "the last lesson read" on the hub.
+    const standalone = root.hasAttribute('data-ls-standalone');
+    if (!standalone) markOpened(slug);
     const paint = () => {
       const p = readProgress();
       const done = new Set(p.done);
-      if (done.has(slug)) root.querySelector<HTMLElement>('[data-ls-done]')?.removeAttribute('hidden');
+      if (!standalone && done.has(slug)) root.querySelector<HTMLElement>('[data-ls-done]')?.removeAttribute('hidden');
       root.querySelectorAll<HTMLElement>('.ls-chap li[data-slug]').forEach((li) => li.classList.toggle('is-done', done.has(li.dataset.slug || '')));
       return done;
     };

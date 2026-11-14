@@ -7,6 +7,7 @@ import Byline from '../components/Byline.astro';
 import ArticleSchema from '../components/ArticleSchema.astro';
 import ArticleSection from '../components/ArticleSection.astro';
 import LessonLinks from '../components/LessonLinks.astro';
+import { wordCards } from '../data/irab-words';
 import ArticleCta from '../components/ArticleCta.astro';
 import ArticleFaq from '../components/ArticleFaq.astro';
 
@@ -108,6 +109,15 @@ const faqs = [
     slugs={['al-jumla-al-ismiyya', 'al-jumla-al-filiyya', 'alamat-al-irab', 'kana-wa-akhawatuha', 'inna-wa-akhawatuha', 'al-hal', 'al-naat', 'al-idafa']}
     title="أبواب النحو، درسًا درسًا"
     lead="هذه الأبواب هي عمود المنهج: نوعا الجملة، ثم علامات الإعراب، ثم النواسخ والمنصوبات والتوابع. لكل درس قاعدة واضحة وأمثلة معربة إعرابًا كاملًا."
+  />
+
+  <LessonLinks
+    id="ll-words"
+    items={wordCards('ma', 'min', 'inna', 'la', 'kana', 'kull', 'al-muthanna', 'al-fil-al-mudari')}
+    title="من القاعدة إلى الكلمة"
+    lead="الدرس يشرح الباب كله، وهذه الصفحات تأخذ كلمة واحدة فتعربها في كل مواضعها، بجدول مختصر وأمثلة معربة كلمة كلمة."
+    allLabel="كل الكلمات المعربة"
+    allHref="/irab#kalimat"
   />
 
   <ArticleFaq lang="ar" items={faqs} />

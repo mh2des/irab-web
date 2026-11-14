@@ -14,7 +14,7 @@
  *     to ignore. A URL whose source cannot be mapped gets no lastmod at all.
  *
  * Output (in dist/): sitemap-index.xml, sitemap-pages.xml, sitemap-duroos.xml,
- * sitemap-quran-ar.xml, sitemap-quran-en.xml. robots.txt, GSC and Bing point at
+ * sitemap-irab.xml, sitemap-quran-ar.xml, sitemap-quran-en.xml. robots.txt, GSC and Bing point at
  * https://irab.app/sitemap-index.xml, and firebase.json 301s /sitemap.xml to it.
  *
  * Also written, NOT listed in the index: sitemap-quran-retired.xml, the /quran
@@ -87,6 +87,10 @@ function lastmodFor(path) {
     const id = surahIdBySlug.get(m[1]);
     return id ? gitDate(`src/data/quran-en/${id}.json`) : null;
   }
+  // «إعراب كلمة» pages: one data file per page (src/data/irab-words).
+  if ((m = path.match(/^\/irab\/([^/]+)$/))) {
+    return gitDate(`src/data/irab-words/entries/${m[1]}.ts`);
+  }
   // Static pages (incl. /duroos/<slug>, /quran and /en/quran hubs): the .astro
   // file that renders them.
   const base = path === '/' ? 'src/pages/index' : `src/pages${path}`;
@@ -108,7 +112,7 @@ function* walk(dir) {
 const noindexRe = /<meta\b[^>]*\bname=["'](?:robots|googlebot)["'][^>]*\bcontent=["'][^"']*noindex[^"']*["'][^>]*>|<meta\b[^>]*\bcontent=["'][^"']*noindex[^"']*["'][^>]*\bname=["'](?:robots|googlebot)["'][^>]*>/i;
 const canonicalRe = /<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']([^"']+)["']|<link\b[^>]*\bhref=["']([^"']+)["'][^>]*\brel=["']canonical["']/i;
 
-const groups = { pages: [], duroos: [], 'quran-ar': [], 'quran-en': [], dictionary: [] };
+const groups = { pages: [], duroos: [], irab: [], 'quran-ar': [], 'quran-en': [], dictionary: [] };
 const retired = [];
 const googlebotOnlyRe = /<meta\b[^>]*\bname=["']googlebot["'][^>]*\bcontent=["'][^"']*noindex/i;
 const robotsRe = /<meta\b[^>]*\bname=["']robots["'][^>]*\bcontent=["'][^"']*noindex/i;
@@ -145,6 +149,7 @@ for (const file of walk(DIST)) {
     path === '/quran' || path.startsWith('/quran/') ? 'quran-ar'
     : path === '/en/quran' || path.startsWith('/en/quran/') ? 'quran-en'
     : path === '/duroos' || path.startsWith('/duroos/') ? 'duroos'
+    : path.startsWith('/irab/') ? 'irab'
     : path.startsWith('/dictionary/') ? 'dictionary'
     : 'pages';
   groups[group].push({ loc: self, lastmod: lastmodFor(path) });
