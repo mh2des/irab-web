@@ -1,0 +1,142 @@
+---
+/**
+ * /irab/<slug>: how one word (or one kind of word) is parsed, in every
+ * position it takes. Data: src/data/irab-words (one file per entry).
+ *
+ * The page is a lesson-style page outside the course: LessonShell with
+ * course={false}, the lessons' own sections and worked-example cards, a
+ * quick table first, then each case with its rule and examples parsed word
+ * by word, then how to tell the cases apart, the common mistakes, questions,
+ * and links to the lessons that carry the theory.
+ *
+ * Arabic only (no /en twin), so no hreflang. A Quranic example shows its
+ * surah and ayah in the label; scripts/check-irab-words.mjs reads that label
+ * from the built page and matches the quote against the corpus.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/sections/Footer.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+import LessonShell from '../../components/duroos/LessonShell.astro';
+import LessonSection from '../../components/duroos/LessonSection.astro';
+import LessonTry from '../../components/duroos/LessonTry.astro';
+import IrabExample from '../../components/duroos/IrabExample.astro';
+import WordChips from '../../components/irab/WordChips.astro';
+import { WORDS, WORD_GROUPS, wordFile, accentForWord, type IrabWord, type IrabEx } from '../../data/irab-words';
+import { lessonsBySlug } from '../../data/duroos';
+import surahs from '../../data/surahs.json';
+
+export function getStaticPaths() {
+  return WORDS.map((w) => ({ params: { word: w.slug }, props: { w } }));
+}
+
+const { w } = Astro.props as { w: IrabWord };
+
+const group = WORD_GROUPS.find((g) => g.id === w.group);
+const site = 'https://irab.app';
+const url = `${site}/irab/${w.slug}`;
+
+const arDigits = (n: number | string) => String(n).replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[+d]);
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/** «البقرة: ١٩٧» for a Quranic example, after the entry's own label if any. */
+const labelOf = (ex: IrabEx): string | undefined => {
+  if (!ex.ref) return ex.label;
+  const [s, a] = ex.ref.split(':').map(Number);
+  const surah = (surahs as { id: number; name: string }[]).find((x) => x.id === s);
+  if (!surah) throw new Error(`irab-words/${w.slug}: unknown surah in ref ${ex.ref}`);
+  const where = `${surah.name}: ${arDigits(a)}`;
+  return ex.label ? `${ex.label} · ${where}` : where;
+};
+/** The rows as the markup IrabExample splits into word and analysis. */
+const rowsHtml = (ex: IrabEx) =>
+  ex.rows.map(([word, irab]) => `<span class="ar">${esc(word)}</span>: ${esc(irab)}`).join(' ');
+
+const lessons = lessonsBySlug(...w.lessons);
+// The analyzer pause sits after the second case, or after the only ones.
+const tryAfter = Math.min(1, w.uses.length - 1);
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'إعراب آب', item: `${site}/` },
+    { '@type': 'ListItem', position: 2, name: 'الإعراب', item: `${site}/irab` },
+    { '@type': 'ListItem', position: 3, name: w.h1, item: url },
+  ],
+};
+---
+<BaseLayout lang="ar" title={w.title} description={w.description}>
+  <ArticleSchema slot="head" lang="ar" kind="article" headline={w.h1} description={w.description} file={wordFile(w.slug)} />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumb)} is:inline />
+  <Nav lang="ar" />
+  <LessonShell
+    lang="ar"
+    course={false}
+    slug={w.slug}
+    title={w.h1}
+    answer={w.answer}
+    summary={w.summary}
+    faqs={w.faqs}
+    crumbs={[{ href: '/irab', label: 'الإعراب' }, { href: '/irab#kalimat', label: 'إعراب الكلمات' }]}
+    chip={group?.title}
+    accent={accentForWord(w.slug)}
+    dateFile={wordFile(w.slug)}
+  >
+    <LessonSection lang="ar" id="quick" title="جدول الإعراب المختصر" lead={w.quickLead}>
+      <figure class="ix" data-reveal>
+        <ol class="ix-rows">
+          {w.quick.map(([k, v]) => (
+            <li><span class="ix-w" lang="ar">{k}</span><span class="ix-r">{v}</span></li>
+          ))}
+        </ol>
+      </figure>
+    </LessonSection>
+
+    {w.uses.map((u, i) => (
+      <>
+        <LessonSection lang="ar" id={u.id} title={u.title} lead={u.rule}>
+          {u.examples.map((ex) => (
+            <IrabExample ar={ex.ar} label={labelOf(ex)}><Fragment set:html={rowsHtml(ex)} /></IrabExample>
+          ))}
+          {u.notes?.map((n) => <p>{n}</p>)}
+        </LessonSection>
+        {i === tryAfter && (
+          <LessonTry lang="ar">
+            <span slot="title">أعرب جملتك أنت.</span>
+            ألصق الجملة التي أمامك في محلّل الإعراب لترى إعراب «{w.name}» وكل كلمة حولها، كلمة كلمة.
+          </LessonTry>
+        )}
+      </>
+    ))}
+
+    {w.steps && w.steps.length > 0 && (
+      <LessonSection lang="ar" id="how-to-tell" title={w.stepsTitle ?? 'كيف تميّز بين الحالات'} lead={w.stepsLead ?? ''}>
+        <ol>
+          {w.steps.map((s) => <li>{s}</li>)}
+        </ol>
+      </LessonSection>
+    )}
+
+    <LessonSection lang="ar" id="common-mistakes" title="أخطاء شائعة" lead={w.mistakesLead}>
+      <ul>
+        {w.mistakes.map((m) => <li>{m}</li>)}
+      </ul>
+    </LessonSection>
+
+    <Fragment slot="end">
+      <WordChips
+        title="الدروس التي تشرح القاعدة"
+        lead="هذه الصفحة تُعرب الكلمة، والدرس يشرح الباب كله بأحكامه وأمثلته."
+        links={lessons.map((l) => ({ href: `/duroos/${l.slug}`, label: l.title, hint: l.blurb }))}
+      />
+      <WordChips
+        title="كلمات أخرى معربة"
+        slugs={w.related ?? []}
+        links={[{ href: '/irab#kalimat', label: 'كل الكلمات المعربة', hint: 'فهرس إعراب الكلمات والأدوات' }]}
+      />
+    </Fragment>
+  </LessonShell>
+
+  <Footer lang="ar" />
+</BaseLayout>

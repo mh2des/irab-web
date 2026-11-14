@@ -1,0 +1,65 @@
+---
+/**
+ * WordChips: a short row of links at the foot of a lesson-style page.
+ *
+ * Two uses, both inside LessonShell's body (it draws with the .iu tokens):
+ *   on a lesson        the «إعراب كلمة» pages that name the lesson as related
+ *   on a word page     the related word pages, and the lessons with the theory
+ *
+ * Pass word slugs (label and one-line description come from the entry), or
+ * ready-made links for anything else.
+ */
+import { wordsBySlug, wordHref } from '../../data/irab-words';
+
+interface Link { href: string; label: string; hint?: string }
+interface Props {
+  title: string;
+  lead?: string;
+  /** Word entries, by slug. */
+  slugs?: string[];
+  /** Any other links, shown after the words. */
+  links?: Link[];
+}
+const { title, lead, slugs = [], links = [] } = Astro.props;
+
+const items: Link[] = [
+  ...wordsBySlug(...slugs).map((w) => ({ href: wordHref(w.slug), label: w.h1, hint: w.blurb })),
+  ...links,
+];
+---
+{items.length > 0 && (
+  <section class="wc">
+    <h2 class="wc-h">{title}</h2>
+    {lead && <p class="wc-lead">{lead}</p>}
+    <ul class="wc-list" role="list">
+      {items.map((i) => (
+        <li>
+          <a class="wc-chip" href={i.href}>
+            <b>{i.label}</b>
+            {i.hint && <span>{i.hint}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .wc { margin-top: clamp(2.75rem, 6vw, 3.75rem); padding-top: 1.75rem; border-top: 1px solid var(--iu-border); }
+  .wc + .wc { margin-top: 2.25rem; }
+  .wc-h { margin: 0; font-family: var(--iu-ui); font-size: 1.3rem; font-weight: 700; line-height: 1.6; color: var(--iu-text); }
+  .wc-lead { margin: 0.35rem 0 0; font-size: 1.02rem; line-height: 1.9; color: var(--iu-text-2); }
+  .wc-list { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr)); gap: 0.7rem; }
+  .wc-chip {
+    display: flex; flex-direction: column; gap: 0.15rem; height: 100%; min-height: 2.75rem; padding: 0.8rem 1rem; border-radius: 16px;
+    text-decoration: none; color: var(--iu-text); background: var(--iu-card); border: 1px solid var(--iu-border);
+    transition: border-color .25s, box-shadow .3s, transform .3s;
+  }
+  .wc-chip b { font-size: 1.08rem; font-weight: 700; line-height: 1.6; color: var(--acc-text, var(--iu-primary-text)); }
+  .wc-chip span { font-size: 0.9rem; line-height: 1.7; color: var(--iu-text-3); }
+  @media (hover: hover) {
+    .wc-chip:hover { border-color: var(--acc, var(--iu-primary)); box-shadow: var(--iu-shadow-card); transform: translateY(-2px); }
+  }
+  .wc-chip:focus-visible { outline: 2px solid var(--iu-primary); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .wc-chip:hover { transform: none; } }
+</style>

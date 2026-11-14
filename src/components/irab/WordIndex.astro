@@ -1,0 +1,95 @@
+---
+/**
+ * WordIndex: the full index of the «إعراب كلمة» pages, grouped, for the
+ * /irab guide page (anchor #kalimat). It is the section's hub: every word
+ * page links back to it, and the footer links to it from every Arabic page.
+ *
+ * Same card as LessonLinks, so the two blocks on /irab read as one family.
+ * The headings use the body face in bold: Aref Ruqaa is reserved for large
+ * labels of two words or fewer (usage rule in global.css).
+ */
+import Container from '../Container.astro';
+import { WORD_GROUPS, WORDS, wordHref } from '../../data/irab-words';
+
+interface Props {
+  id?: string;
+  title?: string;
+  lead?: string;
+}
+const {
+  id = 'kalimat',
+  title = 'إعراب الكلمات والأدوات',
+  lead = 'أكثر ما يُسأل عنه في الإعراب كلمات بعينها: «ما» و«مِن» و«كان» و«كل» و«مع». لكل كلمة صفحة تعربها في كل مواضعها، بجدول مختصر وأمثلة معربة كلمة كلمة.',
+} = Astro.props;
+---
+{WORDS.length > 0 && (
+  <section id={id} class="wi-sec" aria-labelledby={`${id}-h`} lang="ar" dir="rtl">
+    <Container size="narrow">
+      <div class="wi">
+        <h2 id={`${id}-h`} class="wi-h font-arabic">{title}</h2>
+        <p class="wi-lead classical-naskh">{lead}</p>
+        {WORD_GROUPS.map((g) => (
+          <div class="wi-group" style={`--acc:${g.accent}`}>
+            <h3 class="wi-gh font-arabic">{g.title}</h3>
+            <p class="wi-gd">{g.desc}</p>
+            <ul class="wi-grid" role="list">
+              {g.words.map((w) => (
+                <li>
+                  <a class="wi-card" href={wordHref(w.slug)}>
+                    <b class="wi-title">{w.h1}</b>
+                    <span class="wi-blurb">{w.blurb}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+)}
+
+<style>
+  .wi-sec { padding-block: 1rem; scroll-margin-top: 5rem; }
+  .wi { border-block: 1px solid var(--color-card-edge); padding-block: 2.25rem; }
+  :global(.dark) .wi { border-color: var(--color-coal-edge); }
+
+  .wi-h {
+    font-weight: 700; font-family: var(--font-arabic);
+    font-size: clamp(1.5rem, 3.2vw, 2.1rem); line-height: 1.35;
+    color: var(--color-ink); margin: 0 0 0.6rem;
+  }
+  :global(.dark) .wi-h { color: var(--color-mist); }
+  .wi-lead {
+    font-size: 1.4rem; line-height: 1.95; margin: 0; max-width: 44rem;
+    color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  }
+  :global(.dark) .wi-lead { color: color-mix(in srgb, var(--color-mist) 72%, transparent); }
+
+  .wi-group { margin-top: 2rem; }
+  .wi-gh {
+    display: inline-flex; align-items: center; gap: 0.55rem; margin: 0;
+    font-weight: 700; font-family: var(--font-arabic); font-size: 1.35rem; line-height: 1.5; color: var(--color-ink);
+  }
+  .wi-gh::before { content: ''; width: 0.6rem; height: 0.6rem; border-radius: 99px; background: var(--acc); }
+  :global(.dark) .wi-gh { color: var(--color-mist); }
+  .wi-gd { margin: 0.2rem 0 0.9rem; font-family: var(--font-arabic); font-size: 1.1rem; line-height: 1.8; color: var(--color-ink-subtle); }
+  :global(.dark) .wi-gd { color: var(--color-mist-subtle); }
+
+  .wi-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.75rem; }
+  .wi-card {
+    display: flex; flex-direction: column; gap: 0.3rem; height: 100%; min-height: 44px;
+    padding: 1rem 1.15rem; border: 1px solid var(--color-card-edge); border-radius: 14px;
+    background: var(--color-card); box-shadow: var(--shadow-card); text-decoration: none;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+  }
+  :global(.dark) .wi-card { border-color: var(--color-coal-edge); background: var(--color-coal-soft); }
+  .wi-card:hover { border-color: var(--acc); transform: translateY(-3px); box-shadow: var(--lift-shadow); }
+  .wi-card:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+  .wi-title { font-family: var(--font-arabic); font-weight: 700; font-size: 1.35rem; line-height: 1.45; color: var(--color-ink); transition: color .2s; }
+  :global(.dark) .wi-title { color: var(--color-mist); }
+  .wi-card:hover .wi-title { color: var(--acc); }
+  .wi-blurb { font-family: var(--font-arabic); font-size: 1.1rem; line-height: 1.7; color: var(--color-ink-subtle); }
+  :global(.dark) .wi-blurb { color: var(--color-mist-subtle); }
+  @media (prefers-reduced-motion: reduce) { .wi-card:hover { transform: none; } }
+</style>
