@@ -15,6 +15,8 @@ import Section from '../components/Section.astro';
 import ArticleHero from '../components/ArticleHero.astro';
 import Analyzer from '../components/analyzer/Analyzer.astro';
 import ArticleFaq from '../components/ArticleFaq.astro';
+import LessonLinks from '../components/LessonLinks.astro';
+import { wordCards } from '../data/irab-words';
 import Footer from '../components/sections/Footer.astro';
 
 const faqs = [
@@ -224,6 +226,15 @@ const whys = [
       </div>
     </Container>
   </Section>
+
+  <LessonLinks
+    items={wordCards('ma', 'min', 'fi', 'inna', 'la', 'kana', 'kull', 'maa')}
+    title="تسأل عن كلمة واحدة؟"
+    lead="إذا كان سؤالك عن إعراب كلمة بعينها لا عن جملة كاملة، فلكل كلمة من هذه صفحة تعربها في كل مواضعها بأمثلة معربة."
+    allLabel="كل الكلمات المعربة"
+    allHref="/irab#kalimat"
+    width="default"
+  />
 
   <ArticleFaq items={faqs} lang="ar" />
 

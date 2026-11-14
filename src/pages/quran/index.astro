@@ -8,6 +8,7 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/sections/Footer.astro';
 import Container from '../../components/Container.astro';
 import LessonLinks from '../../components/LessonLinks.astro';
+import { wordCards } from '../../data/irab-words';
 import { SURAHS, toArabicDigits } from '../../lib/quran';
 
 const title = 'إعراب القرآن الكريم، كل آية كلمةً كلمة | إعراب آب';
@@ -75,6 +76,16 @@ const breadcrumb = {
     slugs={['al-jumla-al-filiyya', 'al-asma-al-mawsula', 'al-damair', 'huruf-al-jarr', 'inna-wa-akhawatuha', 'al-idafa']}
     title="الأبواب التي تتكرّر في القرآن"
     lead="هذه الأبواب تلقاها في كل صفحة تقريبًا من المصحف. إتقانها يجعل إعراب الآية أيسر."
+    width="default"
+  />
+
+  <LessonLinks
+    id="ll-words"
+    items={wordCards('lafz-al-jalala', 'alladhi', 'inna', 'ma', 'min', 'huwa')}
+    title="كلمات تتكرر في كل صفحة من المصحف"
+    lead="لكل كلمة من هذه صفحة تعربها في كل مواضعها، بشواهد قرآنية معربة كلمة كلمة."
+    allLabel="كل الكلمات المعربة"
+    allHref="/irab#kalimat"
     width="default"
   />
 

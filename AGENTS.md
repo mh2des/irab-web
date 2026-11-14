@@ -39,6 +39,14 @@ Firebase project and subscription backend with the Irab mobile app.
 - `pnpm build` (Astro, Node 22). After building, sanity-check:
   `grep -c "firebaseapp.com" dist/index.html` → must be `0`; any new noindex tool
   route must NOT appear in `dist/sitemap-0.xml`.
+- **«إعراب كلمة» pages (`/irab/<slug>`)**: one data file per page in
+  `src/data/irab-words/entries/<slug>.ts` (shape: `types.ts`; order and groups:
+  `index.ts`), rendered by `src/pages/irab/[word].astro` on the lesson shell
+  (`course={false}`). Adding a file adds the page, its card on `/irab#kalimat`
+  and its sitemap URL. After a build run `pnpm irab:check`: it matches every
+  Quranic quote against the corpus and checks titles, descriptions and links.
+  Grow this section in small reviewed batches, never in bulk (see the
+  methodology page and `src/config/seo.ts` for why).
 
 ## Current focus
 Building out the **English layer** (`/en/*`). Most top-level pages are already
